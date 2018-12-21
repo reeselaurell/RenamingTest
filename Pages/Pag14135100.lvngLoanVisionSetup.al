@@ -47,12 +47,12 @@ page 14135100 "lvngLoanVisionSetup"
                         ApplicationArea = All;
                     }
 
-                    field(PropertyStateCode; lvngPropertyStateReasonCode)
+                    field(PropertyStateCode; lvngPropertyStateDimensionCode)
                     {
                         ApplicationArea = All;
                     }
 
-                    field(LoanTypeCode; lvngLoanTypeReasonCode)
+                    field(LoanTypeCode; lvngLoanTypeDimensionCode)
                     {
                         ApplicationArea = All;
                     }
@@ -62,7 +62,7 @@ page 14135100 "lvngLoanVisionSetup"
                         ApplicationArea = All;
                     }
 
-                    field(LoanPurposeCode; lvngLoanPurposeReasonCode)
+                    field(LoanPurposeCode; lvngLoanPurposeDimensionCode)
                     {
                         ApplicationArea = All;
                     }

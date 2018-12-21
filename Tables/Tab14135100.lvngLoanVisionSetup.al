@@ -39,14 +39,14 @@ table 14135100 "lvngLoanVisionSetup"
             TableRelation = Dimension;
         }
 
-        field(301; lvngPropertyStateReasonCode; Code[20])
+        field(301; lvngPropertyStateDimensionCode; Code[20])
         {
             Caption = 'Property State Dimension Code';
             DataClassification = CustomerContent;
             TableRelation = Dimension;
         }
 
-        field(302; lvngLoanTypeReasonCode; Code[20])
+        field(302; lvngLoanTypeDimensionCode; Code[20])
         {
             Caption = 'Loan Type Dimension Code';
             DataClassification = CustomerContent;
@@ -60,7 +60,7 @@ table 14135100 "lvngLoanVisionSetup"
             TableRelation = Dimension;
         }
 
-        field(304; lvngLoanPurposeReasonCode; Code[20])
+        field(304; lvngLoanPurposeDimensionCode; Code[20])
         {
             Caption = 'Loan Purpose Dimension Code';
             DataClassification = CustomerContent;
@@ -73,31 +73,31 @@ table 14135100 "lvngLoanVisionSetup"
             DataClassification = CustomerContent;
         }
 
-        field(401; lvngLevel1; enum LVNGHierarchyLevels)
+        field(401; lvngLevel1; enum lvngHierarchyLevels)
         {
             Caption = 'Level 1';
             DataClassification = CustomerContent;
         }
 
-        field(402; lvngLevel2; enum LVNGHierarchyLevels)
+        field(402; lvngLevel2; enum lvngHierarchyLevels)
         {
             Caption = 'Level 2';
             DataClassification = CustomerContent;
         }
 
-        field(403; lvngLevel3; enum LVNGHierarchyLevels)
+        field(403; lvngLevel3; enum lvngHierarchyLevels)
         {
             Caption = 'Level 3';
             DataClassification = CustomerContent;
         }
 
-        field(404; lvngLevel4; enum LVNGHierarchyLevels)
+        field(404; lvngLevel4; enum lvngHierarchyLevels)
         {
             Caption = 'Level 4';
             DataClassification = CustomerContent;
         }
 
-        field(405; lvngLevel5; enum LVNGHierarchyLevels)
+        field(405; lvngLevel5; enum lvngHierarchyLevels)
         {
             Caption = 'Level 5';
             DataClassification = CustomerContent;
