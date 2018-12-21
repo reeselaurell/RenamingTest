@@ -1,0 +1,23 @@
+{
+  "id": "bed3dc2e-9757-4353-b184-fe5b7dae9fb4",
+  "name": "LoanVision Core",
+  "publisher": "Bestborn Business Solutions",
+  "brief": "",
+  "description": "",
+  "version": "1.0.0.0",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "capabilities": [],
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "13.0.0.0",
+  "application": "13.0.0.0",
+  "idRange": {
+    "from": 14135100,
+    "to": 14135999
+  },
+  "runtime": "3.0"
+}

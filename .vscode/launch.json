@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "al",
+            "request": "launch",
+            "name": "NAV",
+            "server": "https://6b460d2322e0",
+            "serverInstance": "NAV",
+            "authentication": "UserPassword",
+            "startupObjectId": 14135100,
+            "startupObjectType": "Page",
+            "breakOnError": true,
+            "schemaUpdateMode": "Recreate"
+        }
+    ]
+}

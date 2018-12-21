@@ -1,0 +1,22 @@
+1 - Standard
+  Loan table
+  Loan Address table
+  Loan Value table
+  Loan Journal table
+  Loan Journal Value table
+  Corresponding pages
+  Add Loan No. field to Gen. Journal Line table
+  Add Loan No. field to G/L Entry table
+  Dimension Mapping table
+  Loan Fields Configuration table
+  Loan Cards creation functionality
+  Funded/Sold creation documents functionality and posting routine
+  Loan Servicing functionality
+  Loan Construction functionality
+  
+
+Import to Journal
+  --On Batch Level do Post Processing (PostProcessing should always rerun)
+  --Map Fields to Dimensions
+  --Depending on Journal Batch - switch is defined to identify Processing Schema or Default Processing Schema is defined on Batch
+  --Depending on Processing Schema - Title Company is Defined also Title company can be defined on Journal Batch

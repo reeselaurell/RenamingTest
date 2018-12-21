@@ -1,0 +1,122 @@
+table 14135100 "lvngLoanVisionSetup"
+{
+    DataClassification = CustomerContent;
+    Caption = 'Loan Vision Setup';
+
+    fields
+    {
+        field(1; lvngPrimaryKey; Code[10])
+        {
+            Caption = 'Primary Key';
+            DataClassification = CustomerContent;
+        }
+
+        field(10; lvngFundedReasonCode; Code[10])
+        {
+            Caption = 'Funded Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
+        }
+
+        field(11; lvngSoldReasonCode; Code[10])
+        {
+            Caption = 'Sold Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
+        }
+
+        field(12; lvngServicedReasonCode; Code[10])
+        {
+            Caption = 'Serviced Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
+        }
+
+        field(300; lvngLoanOfficerDimensionCode; Code[20])
+        {
+            Caption = 'Loan Officer Dimension Code';
+            DataClassification = CustomerContent;
+            TableRelation = Dimension;
+        }
+
+        field(301; lvngPropertyStateReasonCode; Code[20])
+        {
+            Caption = 'Property State Dimension Code';
+            DataClassification = CustomerContent;
+            TableRelation = Dimension;
+        }
+
+        field(302; lvngLoanTypeReasonCode; Code[20])
+        {
+            Caption = 'Loan Type Dimension Code';
+            DataClassification = CustomerContent;
+            TableRelation = Dimension;
+        }
+
+        field(303; lvngCostCenterDimensionCode; Code[20])
+        {
+            Caption = 'Cost Center Dimension Code';
+            DataClassification = CustomerContent;
+            TableRelation = Dimension;
+        }
+
+        field(304; lvngLoanPurposeReasonCode; Code[20])
+        {
+            Caption = 'Loan Purpose Dimension Code';
+            DataClassification = CustomerContent;
+            TableRelation = Dimension;
+        }
+
+        field(400; lvngHierarchyLevels; Integer)
+        {
+            Caption = 'Hierarchy Levels';
+            DataClassification = CustomerContent;
+        }
+
+        field(401; lvngLevel1; enum LVNGHierarchyLevels)
+        {
+            Caption = 'Level 1';
+            DataClassification = CustomerContent;
+        }
+
+        field(402; lvngLevel2; enum LVNGHierarchyLevels)
+        {
+            Caption = 'Level 2';
+            DataClassification = CustomerContent;
+        }
+
+        field(403; lvngLevel3; enum LVNGHierarchyLevels)
+        {
+            Caption = 'Level 3';
+            DataClassification = CustomerContent;
+        }
+
+        field(404; lvngLevel4; enum LVNGHierarchyLevels)
+        {
+            Caption = 'Level 4';
+            DataClassification = CustomerContent;
+        }
+
+        field(405; lvngLevel5; enum LVNGHierarchyLevels)
+        {
+            Caption = 'Level 5';
+            DataClassification = CustomerContent;
+        }
+
+        field(90000; lvngMaintenanceMode; Boolean)
+        {
+            Caption = 'Maintenance Mode';
+            DataClassification = CustomerContent;
+        }
+
+    }
+
+    keys
+    {
+        key(PK; lvngPrimaryKey)
+        {
+            Clustered = true;
+        }
+    }
+
+}
