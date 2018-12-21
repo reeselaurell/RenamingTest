@@ -1,4 +1,4 @@
-table 14135106 "LoanAddress"
+table 14135106 "lvngLoanAddress"
 {
     DataClassification = CustomerContent;
     Caption = 'Loan Address';
