@@ -2,6 +2,7 @@ table 14135105 lvngLoanJournalBatch
 {
     DataClassification = CustomerContent;
     Caption = 'Loan Journal Batch';
+    LookupPageId = lvngLoanJournalBatches;
 
     fields
     {

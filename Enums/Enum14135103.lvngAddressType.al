@@ -1,4 +1,4 @@
-enum 14135103 "lvngAddressType"
+enum 14135103 lvngAddressType
 {
     Extensible = false;
 

@@ -1,4 +1,4 @@
-enum 14135102 "lvngLoanJournalBatchType"
+enum 14135102 lvngLoanJournalBatchType
 {
     Extensible = true;
 

@@ -1,6 +1,7 @@
 table 14135107 "lvngLoanJournalLine"
 {
     DataClassification = CustomerContent;
+    Caption = 'Loan Journal Line';
 
     fields
     {
@@ -327,10 +328,6 @@ table 14135107 "lvngLoanJournalLine"
             DataClassification = CustomerContent;
             DecimalPlaces = 3 : 3;
         }
-
-
-
-
     }
 
     keys
