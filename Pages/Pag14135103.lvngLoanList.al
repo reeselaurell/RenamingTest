@@ -7,6 +7,7 @@ page 14135103 "lvngLoanList"
     Caption = 'Loan List';
     DeleteAllowed = false;
     InsertAllowed = false;
+    Editable = false;
     CardPageId = lvngLoanCard;
 
     layout

@@ -64,6 +64,11 @@ page 14135104 "lvngLoanCard"
                         ApplicationArea = All;
                         Importance = Additional;
                     }
+                    field(lvngDateLocked; lvngDateLocked)
+                    {
+                        ApplicationArea = All;
+                        Importance = Additional;
+                    }
                     field(lvngDateClosed; lvngDateClosed)
                     {
                         ApplicationArea = All;
