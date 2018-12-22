@@ -78,6 +78,7 @@ table 14135102 "lvngLoan"
 
         field(27; lvngWarehouseLineCode; Code[50])
         {
+            Caption = 'Warehouse Line Code';
             DataClassification = CustomerContent;
             TableRelation = lvngWarehouseLine;
         }

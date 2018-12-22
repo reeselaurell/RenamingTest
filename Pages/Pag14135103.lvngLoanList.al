@@ -15,148 +15,148 @@ page 14135103 "lvngLoanList"
         {
             repeater(Group)
             {
-                field(LoanNo; lvngLoanNo)
+                field(lvngLoanNo; lvngLoanNo)
                 {
                     ApplicationArea = All;
                 }
 
-                field(SearchName; lvngSearchName)
+                field(lvngSearchName; lvngSearchName)
                 {
                     ApplicationArea = All;
                 }
 
-                field(LoanAmount; lvngLoanAmount)
-                {
-                    ApplicationArea = All;
-                }
-
-
-                field(ApplicationDate; lvngApplicationDate)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(DateLocked; lvngDateLocked)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(DateClosed; lvngDateClosed)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(DateFunded; lvngDateFunded)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(DateSold; lvngDateSold)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(LoanTerm; lvngLoanTermMonths)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(InterestRate; lvngInterestRate)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(ConstructionInteresTRate; lvngConstrInterestRate)
+                field(lvngLoanAmount; lvngLoanAmount)
                 {
                     ApplicationArea = All;
                 }
 
 
-                field(MonthlyEscrowAmount; lvngMonthlyEscrowAmount)
+                field(lvngApplicationDate; lvngApplicationDate)
                 {
                     ApplicationArea = All;
                 }
 
-                field(MonthlyPaymentAmount; lvngMonthlyPaymentAmount)
+                field(lvngDateLocked; lvngDateLocked)
                 {
                     ApplicationArea = All;
                 }
 
-                field(FirstPaymentDue; lvngFirstPaymentDue)
-                {
-                    ApplicationArea = All;
-                }
-                field(NextPaymentdate; lvngNextPaymentDate)
-                {
-                    ApplicationArea = All;
-                }
-                field(FirstPaymentDueToInvestor; lvngFirstPaymentDueToInvestor)
-                {
-                    ApplicationArea = All;
-                }
-                field(CommissionDate; lvngCommissionDate)
+                field(lvngDateClosed; lvngDateClosed)
                 {
                     ApplicationArea = All;
                 }
 
-                field(CommissionBaseAmount; lvngCommissionBaseAmount)
+                field(lvngDateFunded; lvngDateFunded)
                 {
                     ApplicationArea = All;
                 }
 
-                field(Blocked; lvngBlocked)
+                field(lvngDateSold; lvngDateSold)
                 {
                     ApplicationArea = All;
                 }
 
-                field(WarehouseLineCode; lvngWarehouseLineCode)
+                field(lvngLoanTerm; lvngLoanTermMonths)
                 {
                     ApplicationArea = All;
                 }
 
-                field(BusinessUnitCode; lvngBusinessUnitCode)
+                field(lvngInterestRate; lvngInterestRate)
                 {
                     ApplicationArea = All;
                 }
 
-                field(Dimension1Code; lvngGlobalDimension1Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(Dimension2Code; lvngGlobalDimension2Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(Dimension3Code; lvngShortcutDimension3Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(Dimension4Code; lvngShortcutDimension4Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(Dimension5Code; lvngShortcutDimension5Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(Dimension6Code; lvngShortcutDimension6Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(Dimension7Code; lvngShortcutDimension7Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(Dimension8Code; lvngShortcutDimension8Code)
+                field(lvngConstructionInteresTRate; lvngConstrInterestRate)
                 {
                     ApplicationArea = All;
                 }
 
-                field(CreationDate; lvngCreationDate)
+
+                field(lvngMonthlyEscrowAmount; lvngMonthlyEscrowAmount)
                 {
                     ApplicationArea = All;
                 }
-                field(ModificationDate; lvngModifiedDate)
+
+                field(lvngMonthlyPaymentAmount; lvngMonthlyPaymentAmount)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngFirstPaymentDue; lvngFirstPaymentDue)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngNextPaymentdate; lvngNextPaymentDate)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngFirstPaymentDueToInvestor; lvngFirstPaymentDueToInvestor)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCommissionDate; lvngCommissionDate)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngCommissionBaseAmount; lvngCommissionBaseAmount)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngBlocked; lvngBlocked)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngWarehouseLineCode; lvngWarehouseLineCode)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngBusinessUnitCode; lvngBusinessUnitCode)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngDimension1Code; lvngGlobalDimension1Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDimension2Code; lvngGlobalDimension2Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDimension3Code; lvngShortcutDimension3Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDimension4Code; lvngShortcutDimension4Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDimension5Code; lvngShortcutDimension5Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDimension6Code; lvngShortcutDimension6Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDimension7Code; lvngShortcutDimension7Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDimension8Code; lvngShortcutDimension8Code)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngCreationDate; lvngCreationDate)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngModificationDate; lvngModifiedDate)
                 {
                     ApplicationArea = All;
                 }
