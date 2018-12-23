@@ -2,6 +2,7 @@ table 14135109 "lvngLoanImportSchema"
 {
     Caption = 'Loan Import Schema';
     DataClassification = CustomerContent;
+    LookupPageId = lvngLoanImportSchemaList;
 
     fields
     {
