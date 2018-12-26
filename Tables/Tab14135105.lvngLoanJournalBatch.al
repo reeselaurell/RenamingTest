@@ -24,6 +24,21 @@ table 14135105 lvngLoanJournalBatch
             DataClassification = CustomerContent;
         }
 
+        field(12; lvngDefaultReasonCode; Code[10])
+        {
+            Caption = 'Default Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code".Code;
+        }
+
+        field(13; lvngDefProcessingSchemaCode; Code[20])
+        {
+            Caption = 'Default Processing Schema Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngLoanProcessingSchema.lvngCode;
+        }
+
+
 
     }
 

@@ -158,7 +158,12 @@ page 14135106 "lvngFundedJournalLines"
         }
         area(Factboxes)
         {
-
+            part(lvngValues; lvngLoanImportValuePart)
+            {
+                Caption = 'Values';
+                ApplicationArea = All;
+                SubPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
+            }
         }
     }
 
@@ -166,13 +171,24 @@ page 14135106 "lvngFundedJournalLines"
     {
         area(Processing)
         {
-            action(ActionName)
+            action(lvngImport)
             {
+                Caption = 'Import';
                 ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                Image = Import;
+                PromotedCategory = Process;
 
                 trigger OnAction();
+                var
+                    lvngLoanJournalImport: Codeunit lvngLoanJournalImport;
+                    lvngLoanImportSchema: Record lvngLoanImportSchema;
                 begin
-
+                    if Page.RunModal(0, lvngLoanImportSchema) = Action::LookupOk then begin
+                        lvngLoanJournalImport.ReadCSVStream(Rec.lvngLoanJournalBatchCode, lvngLoanImportSchema);
+                        CurrPage.Update(false);
+                    end;
                 end;
             }
         }

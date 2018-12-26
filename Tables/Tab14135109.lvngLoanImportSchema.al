@@ -21,11 +21,6 @@ table 14135109 "lvngLoanImportSchema"
             Caption = 'Field Separator Character';
             DataClassification = CustomerContent;
         }
-        field(12; "lvngFieldDelimiterCharacter"; Text[10])
-        {
-            Caption = 'Field Delimiter Character';
-            DataClassification = CustomerContent;
-        }
         field(13; lvngSkipLines; Integer)
         {
             Caption = 'Skip Lines';

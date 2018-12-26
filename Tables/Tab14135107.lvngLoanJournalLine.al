@@ -328,6 +328,22 @@ table 14135107 "lvngLoanJournalLine"
             DataClassification = CustomerContent;
             DecimalPlaces = 3 : 3;
         }
+
+        field(5000; lvngProcessingSchemaCode; Code[20])
+        {
+            Caption = 'Processing Schema Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngLoanProcessingSchema.lvngCode;
+        }
+
+        field(5001; lvngReasonCode; Code[10])
+        {
+            Caption = 'Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code".Code;
+        }
+
+
     }
 
     keys
@@ -337,5 +353,15 @@ table 14135107 "lvngLoanJournalLine"
             Clustered = true;
         }
     }
+
+    trigger OnDelete()
+    var
+        lvngLoanJournalValue: Record lvngLoanJournalValue;
+    begin
+        lvngLoanJournalValue.reset;
+        lvngLoanJournalValue.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalBatchCode);
+        lvngLoanJournalValue.SetRange(lvngLineNo, lvngLineNo);
+        lvngLoanJournalValue.DeleteAll();
+    end;
 
 }

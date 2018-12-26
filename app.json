@@ -19,5 +19,6 @@
     "from": 14135100,
     "to": 14135999
   },
-  "runtime": "3.0"
+  "runtime": "3.0",
+  "target": "Internal"
 }

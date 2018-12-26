@@ -33,7 +33,7 @@ page 14135111 "lvngLoanImportSchemaLines"
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
-                                    FieldRec.SetFilter("No.", '>=%1', 10);
+                                    FieldRec.SetFilter("No.", '>=%1', 5);
                                     Clear(FieldsListPage);
                                     FieldsListPage.SetTableView(FieldRec);
                                     FieldsListPage.LookupMode(true);

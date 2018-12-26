@@ -24,10 +24,6 @@ page 14135110 "lvngLoanImportSchemaList"
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFieldDelimiterCharacter; lvngFieldDelimiterCharacter)
-                {
-                    ApplicationArea = All;
-                }
                 field(lvngFieldSeparatorCharacter; lvngFieldSeparatorCharacter)
                 {
                     ApplicationArea = All;
