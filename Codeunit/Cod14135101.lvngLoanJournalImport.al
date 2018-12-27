@@ -21,14 +21,11 @@ codeunit 14135101 "lvngLoanJournalImport"
         lvngLoanJournalBatch.Get(lvngLoanJournalCode);
         lvngImportToStream := UploadIntoStream(lvngOpenFileLabel, '', '', lvngFileName, lvngImportStream);
         if lvngImportToStream then begin
-
             CSVBufferTemp.LoadDataFromStream(lvngImportStream, lvngLoanImportSchemaTemp.lvngFieldSeparatorCharacter);
             CSVBufferTemp.ResetFilters();
             CSVBufferTemp.SetRange("Line No.", 0, lvngLoanImportSchemaTemp.lvngSkipLines);
             CSVBufferTemp.DeleteAll();
             ProcessImportCSVBuffer();
-            CSVBufferTemp.Reset();
-            CSVBufferTemp.DeleteAll();
         end else begin
             Error(lvngErrorReadingToStreamLabel);
         end;
@@ -65,8 +62,6 @@ codeunit 14135101 "lvngLoanJournalImport"
             Clear(lvngLoanJournalLine);
             lvngLoanJournalLine.lvngLoanJournalBatchCode := lvngLoanJournalBatch.lvngCode;
             lvngLoanJournalLine.lvngLineNo := lvngStartLine;
-            lvngLoanJournalLine.lvngProcessingSchemaCode := lvngLoanJournalBatch.lvngDefProcessingSchemaCode;
-            lvngLoanJournalLine.lvngReasonCode := lvngLoanJournalBatch.lvngDefaultReasonCode;
             lvngLoanJournalLine.Insert(true);
             lvngRecRef.GetTable(lvngLoanJournalLine);
             lvngLoanImportSchemaLineTemp.reset;
@@ -89,6 +84,11 @@ codeunit 14135101 "lvngLoanJournalImport"
             lvngRecRef.Modify(true);
             lvngRecRef.SetTable(lvngLoanJournalLine);
             lvngRecRef.Close();
+            if lvngLoanJournalLine.lvngProcessingSchemaCode = '' then
+                lvngLoanJournalLine.lvngProcessingSchemaCode := lvngLoanJournalBatch.lvngDefProcessingSchemaCode;
+            if lvngLoanJournalLine.lvngReasonCode = '' then
+                lvngLoanJournalLine.lvngReasonCode := lvngLoanJournalBatch.lvngDefaultReasonCode;
+            lvngLoanJournalLine.Modify();
             lvngStartLine := lvngStartLine + 1;
         until (lvngStartLine > lvngEndLine);
     end;
@@ -128,6 +128,7 @@ codeunit 14135101 "lvngLoanJournalImport"
         case lvngLoanImportSchemaLine.lvngValueType of
             lvngLoanImportSchemaLine.lvngValueType::lvngBoolean:
                 begin
+                    Clear(lvngBooleanField);
                     case lvngLoanImportSchemaLine.lvngBooleanFormat of
                         lvngLoanImportSchemaLine.lvngBooleanFormat::lvng10:
                             begin
@@ -181,6 +182,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                 end;
             lvngLoanImportSchemaLine.lvngValueType::lvngDate:
                 begin
+                    clear(lvngDateField);
                     if not Evaluate(lvngDateField, lvngValue) then
                         Error(lvngDateStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine.lvngName);
                     Clear(lvngLoanJournalValue);
@@ -193,6 +195,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                 end;
             lvngLoanImportSchemaLine.lvngValueType::lvngDecimal:
                 begin
+                    Clear(lvngDecimalField);
                     if not Evaluate(lvngDecimalField, lvngValue) then
                         Error(lvngDecimalStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine.lvngName);
                     if lvngLoanImportSchemaLine.lvngNumbericalFormatting = lvngLoanImportSchemaLine.lvngNumbericalFormatting::lvngNegative then
@@ -211,6 +214,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                 end;
             lvngLoanImportSchemaLine.lvngValueType::lvngInteger:
                 begin
+                    Clear(lvngIntegerField);
                     if not Evaluate(lvngIntegerField, lvngValue) then
                         Error(lvngIntegerStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine.lvngName);
                     if lvngLoanImportSchemaLine.lvngNumbericalFormatting = lvngLoanImportSchemaLine.lvngNumbericalFormatting::lvngNegative then
@@ -272,6 +276,7 @@ codeunit 14135101 "lvngLoanJournalImport"
         case lvngLoanImportSchemaLine.lvngValueType of
             lvngLoanImportSchemaLine.lvngValueType::lvngBoolean:
                 begin
+                    Clear(lvngBooleanField);
                     case lvngLoanImportSchemaLine.lvngBooleanFormat of
                         lvngLoanImportSchemaLine.lvngBooleanFormat::lvng10:
                             begin
@@ -317,12 +322,14 @@ codeunit 14135101 "lvngLoanJournalImport"
                 end;
             lvngLoanImportSchemaLine.lvngValueType::lvngDate:
                 begin
+                    Clear(lvngDateField);
                     if not Evaluate(lvngDateField, lvngValue) then
                         Error(lvngDateStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine.lvngName);
                     lvngFieldRef.Validate(lvngDateField);
                 end;
             lvngLoanImportSchemaLine.lvngValueType::lvngDecimal:
                 begin
+                    Clear(lvngDecimalField);
                     if not Evaluate(lvngDecimalField, lvngValue) then
                         Error(lvngDecimalStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine.lvngName);
                     if lvngLoanImportSchemaLine.lvngNumbericalFormatting = lvngLoanImportSchemaLine.lvngNumbericalFormatting::lvngNegative then
@@ -335,6 +342,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                 end;
             lvngLoanImportSchemaLine.lvngValueType::lvngInteger:
                 begin
+                    Clear(lvngIntegerField);
                     if not Evaluate(lvngIntegerField, lvngValue) then
                         Error(lvngIntegerStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine.lvngName);
                     if lvngLoanImportSchemaLine.lvngNumbericalFormatting = lvngLoanImportSchemaLine.lvngNumbericalFormatting::lvngNegative then

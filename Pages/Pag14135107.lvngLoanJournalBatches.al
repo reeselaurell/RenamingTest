@@ -36,7 +36,7 @@ page 14135107 "lvngLoanJournalBatches"
     {
         area(Processing)
         {
-            action(EditJournal)
+            action(lvngEditJournal)
             {
                 Caption = 'Edit Journal';
                 Promoted = true;
@@ -60,6 +60,17 @@ page 14135107 "lvngLoanJournalBatches"
                             end;
                     end;
                 end;
+            }
+            action(lvngPostProcessingLines)
+            {
+                Caption = 'Post Processing Lines';
+                RunObject = page lvngPostProcessingSchemaLines;
+                RunPageMode = Edit;
+                RunPageLink = lvngJournalBatchCode = field (lvngCode);
+                Promoted = true;
+                PromotedIsBig = true;
+                Image = EditLines;
+                ApplicationArea = All;
             }
         }
     }

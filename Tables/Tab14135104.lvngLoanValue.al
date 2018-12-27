@@ -39,6 +39,7 @@ table 14135104 "lvngLoanValue"
         {
             Caption = 'Decimal Value';
             DataClassification = CustomerContent;
+            DecimalPlaces = 2 : 5;
         }
         field(14; lvngBooleanValue; Boolean)
         {

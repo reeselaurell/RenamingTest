@@ -185,8 +185,13 @@ page 14135106 "lvngFundedJournalLines"
                     lvngLoanJournalImport: Codeunit lvngLoanJournalImport;
                     lvngLoanImportSchema: Record lvngLoanImportSchema;
                 begin
+                    lvngLoanImportSchema.reset;
+                    lvngLoanImportSchema.FilterGroup(2);
+                    lvngLoanImportSchema.SetRange(lvngLoanJournalBatchType, lvngLoanImportSchema.lvngLoanJournalBatchType::lvngFunded);
+                    lvngLoanImportSchema.FilterGroup(0);
                     if Page.RunModal(0, lvngLoanImportSchema) = Action::LookupOk then begin
-                        lvngLoanJournalImport.ReadCSVStream(Rec.lvngLoanJournalBatchCode, lvngLoanImportSchema);
+                        Clear(lvngLoanJournalImport);
+                        lvngLoanJournalImport.ReadCSVStream(lvngLoanJournalBatchCode, lvngLoanImportSchema);
                         CurrPage.Update(false);
                     end;
                 end;
