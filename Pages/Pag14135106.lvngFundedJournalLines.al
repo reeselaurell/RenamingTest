@@ -20,7 +20,20 @@ page 14135106 "lvngFundedJournalLines"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngBorrowerFirstName; lvngBorrowerFirstName)
+                {
+                    ApplicationArea = All;
+                }
 
+                field(lvngMiddleName; lvngBorrowerMiddleName)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngBorrowerLastName; lvngBorrowerLastName)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngLoanAmount; lvngLoanAmount)
                 {
                     ApplicationArea = All;
@@ -195,6 +208,29 @@ page 14135106 "lvngFundedJournalLines"
                         CurrPage.Update(false);
                     end;
                 end;
+            }
+            action(lvngRemoveFilteredEntries)
+            {
+                Caption = 'Remove Filtered Entries';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                Image = RemoveFilterLines;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    lvngLoanJournalLine: Record lvngLoanJournalLine;
+                    ConfirmEntriesRemovalLbl: Label 'Do You want to remove filtered lines?';
+                begin
+                    if Confirm(ConfirmEntriesRemovalLbl, false) then begin
+                        lvngLoanJournalLine.reset;
+                        lvngLoanJournalLine.CopyFilters(Rec);
+                        lvngLoanJournalLine.DeleteAll(true);
+                        CurrPage.Update(false);
+                    end;
+                end;
+
             }
         }
     }

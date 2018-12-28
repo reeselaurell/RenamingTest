@@ -26,6 +26,24 @@ page 14135103 "lvngLoanList"
                     ApplicationArea = All;
                 }
 
+                field(lvngBorrowerFirstName; lvngBorrowerFirstName)
+                {
+                    Visible = false;
+                    ApplicationArea = All;
+                }
+
+                field(lvngMiddleName; lvngBorrowerMiddleName)
+                {
+                    Visible = false;
+                    ApplicationArea = All;
+                }
+
+                field(lvngBorrowerLastName; lvngBorrowerLastName)
+                {
+                    Visible = false;
+                    ApplicationArea = All;
+                }
+
                 field(lvngLoanAmount; lvngLoanAmount)
                 {
                     ApplicationArea = All;

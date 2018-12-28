@@ -1,4 +1,4 @@
-table 14135111 "lvngLoanProcessingSchema"
+table 14135111 lvngLoanProcessingSchema
 {
     Caption = 'Loan Processing Schema';
     DataClassification = CustomerContent;
@@ -16,6 +16,14 @@ table 14135111 "lvngLoanProcessingSchema"
             Caption = 'Description';
             DataClassification = CustomerContent;
         }
+
+        field(11; lvngNoSeries; Code[20])
+        {
+            Caption = 'Document No. Series';
+            DataClassification = CustomerContent;
+            TableRelation = "No. Series";
+        }
+
 
     }
 

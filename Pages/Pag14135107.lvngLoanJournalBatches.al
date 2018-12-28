@@ -54,7 +54,9 @@ page 14135107 "lvngLoanJournalBatches"
                             begin
                                 Clear(lvngFundedJournalLinesPage);
                                 lvngLoanJournalLine.Reset();
+                                lvngLoanJournalLine.FilterGroup(2);
                                 lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngCode);
+                                lvngLoanJournalLine.FilterGroup(0);
                                 lvngFundedJournalLinesPage.SetTableView(lvngLoanJournalLine);
                                 lvngFundedJournalLinesPage.Run();
                             end;

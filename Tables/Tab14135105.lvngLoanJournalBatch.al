@@ -28,14 +28,14 @@ table 14135105 lvngLoanJournalBatch
         {
             Caption = 'Default Reason Code';
             DataClassification = CustomerContent;
-            TableRelation = "Reason Code".Code;
+            TableRelation = "Reason Code";
         }
 
         field(13; lvngDefProcessingSchemaCode; Code[20])
         {
             Caption = 'Default Processing Schema Code';
             DataClassification = CustomerContent;
-            TableRelation = lvngLoanProcessingSchema.lvngCode;
+            TableRelation = lvngLoanProcessingSchema;
         }
 
 

@@ -6,11 +6,12 @@ codeunit 14135101 "lvngLoanJournalImport"
         lvngLoanJournalBatch: Record lvngLoanJournalBatch;
         lvngOpenFileLabel: Label 'Open File for Import';
         lvngErrorReadingToStreamLabel: Label 'Error reading file to stream';
+        lvngPostProcessingMgmt: Codeunit lvngPostProcessingMgmt;
         lvngImportStream: InStream;
         lvngFileName: Text;
         lvngImportToStream: Boolean;
 
-    procedure ReadCSVStream(lvngLoanJournalCode: Code[20]; lvngImportSchema: Record lvngLoanImportSchema)
+    procedure ReadCSVStream(lvngLoanJournalBatchCode: Code[20]; lvngImportSchema: Record lvngLoanImportSchema)
     var
         TabChar: Char;
     begin
@@ -18,7 +19,7 @@ codeunit 14135101 "lvngLoanJournalImport"
         lvngLoanImportSchemaTemp := lvngImportSchema;
         if lvngLoanImportSchemaTemp.lvngFieldSeparatorCharacter = '<TAB>' then
             lvngLoanImportSchemaTemp.lvngFieldSeparatorCharacter := Format(TabChar);
-        lvngLoanJournalBatch.Get(lvngLoanJournalCode);
+        lvngLoanJournalBatch.Get(lvngLoanJournalBatchCode);
         lvngImportToStream := UploadIntoStream(lvngOpenFileLabel, '', '', lvngFileName, lvngImportStream);
         if lvngImportToStream then begin
             CSVBufferTemp.LoadDataFromStream(lvngImportStream, lvngLoanImportSchemaTemp.lvngFieldSeparatorCharacter);
@@ -26,6 +27,8 @@ codeunit 14135101 "lvngLoanJournalImport"
             CSVBufferTemp.SetRange("Line No.", 0, lvngLoanImportSchemaTemp.lvngSkipLines);
             CSVBufferTemp.DeleteAll();
             ProcessImportCSVBuffer();
+            Clear(lvngPostProcessingMgmt);
+            lvngPostProcessingMgmt.PostProcessBatch(lvngLoanJournalBatchCode);
         end else begin
             Error(lvngErrorReadingToStreamLabel);
         end;
