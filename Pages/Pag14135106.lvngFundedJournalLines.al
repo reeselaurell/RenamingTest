@@ -171,6 +171,12 @@ page 14135106 "lvngFundedJournalLines"
         }
         area(Factboxes)
         {
+            part(lvngErrors; lvngLoanJournalErrors)
+            {
+                Caption = 'Errors';
+                ApplicationArea = All;
+                SubPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
+            }
             part(lvngValues; lvngLoanImportValuePart)
             {
                 Caption = 'Values';

@@ -26,4 +26,8 @@ enum 14135109 "lvngPostProcessingType"
     {
         Caption = 'Expression';
     }
+    value(6; lvngDimensionMapping)
+    {
+        Caption = 'Dimension Mapping';
+    }
 }

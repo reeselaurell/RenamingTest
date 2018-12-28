@@ -357,11 +357,16 @@ table 14135107 "lvngLoanJournalLine"
     trigger OnDelete()
     var
         lvngLoanJournalValue: Record lvngLoanJournalValue;
+        lvngLoanImportErrorLine: Record lvngLoanImportErrorLine;
     begin
         lvngLoanJournalValue.reset;
         lvngLoanJournalValue.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalBatchCode);
         lvngLoanJournalValue.SetRange(lvngLineNo, lvngLineNo);
         lvngLoanJournalValue.DeleteAll();
+        lvngLoanImportErrorLine.reset;
+        lvngLoanImportErrorLine.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalBatchCode);
+        lvngLoanImportErrorLine.SetRange(lvngLineNo, lvngLineNo);
+        lvngLoanImportErrorLine.DeleteAll();
     end;
 
 }

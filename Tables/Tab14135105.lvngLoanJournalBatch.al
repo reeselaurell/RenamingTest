@@ -37,6 +37,21 @@ table 14135105 lvngLoanJournalBatch
             DataClassification = CustomerContent;
             TableRelation = lvngLoanProcessingSchema;
         }
+        field(14; lvngDimensionImportRule; enum lvngDimensionImportRule)
+        {
+            Caption = 'Dimension Import Rule';
+            DataClassification = CustomerContent;
+        }
+        field(15; lvngMapDimensionsUsingHierachy; Boolean)
+        {
+            Caption = 'Map Dimensions Using Hierarchy';
+            DataClassification = CustomerContent;
+        }
+        field(16; lvngDimensionHierarchyDate; enum lvngLoanDateType)
+        {
+            Caption = 'Dimension Mapping Hierarchy Date';
+            DataClassification = CustomerContent;
+        }
 
 
 

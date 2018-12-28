@@ -24,6 +24,18 @@ page 14135107 "lvngLoanJournalBatches"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngDimensionImportRule; lvngDimensionImportRule)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngMapDimensionsUsingHierachy; lvngMapDimensionsUsingHierachy)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDimensionHierarchyDate; lvngDimensionHierarchyDate)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
         area(Factboxes)
@@ -54,9 +66,7 @@ page 14135107 "lvngLoanJournalBatches"
                             begin
                                 Clear(lvngFundedJournalLinesPage);
                                 lvngLoanJournalLine.Reset();
-                                lvngLoanJournalLine.FilterGroup(2);
                                 lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngCode);
-                                lvngLoanJournalLine.FilterGroup(0);
                                 lvngFundedJournalLinesPage.SetTableView(lvngLoanJournalLine);
                                 lvngFundedJournalLinesPage.Run();
                             end;
