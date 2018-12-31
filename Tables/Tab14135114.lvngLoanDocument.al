@@ -21,6 +21,12 @@ table 14135114 "lvngLoanDocument"
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(11; lvngCustomerNo; Code[20])
+        {
+            Caption = 'Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer;
+        }
 
     }
 

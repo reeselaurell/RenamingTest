@@ -131,7 +131,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                 3:
                     DimensionCode := lvngLoanJournalLine.lvngShortcutDimension3Code;
                 4:
-                    DimensionCode := lvngLoanJournalLine.lvngShortcutDimension3Code;
+                    DimensionCode := lvngLoanJournalLine.lvngShortcutDimension4Code;
             end;
             lvngDimensionHierarchy.reset;
             lvngDimensionHierarchy.SetRange(lvngCode, DimensionCode);
@@ -143,7 +143,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                 if HierarchyDimensionsUsage[3] then
                     lvngLoanJournalLine.lvngShortcutDimension3Code := lvngDimensionHierarchy.lvngShortcutDimension3Code;
                 if HierarchyDimensionsUsage[4] then
-                    lvngLoanJournalLine.lvngShortcutDimension3Code := lvngDimensionHierarchy.lvngShortcutDimension4Code;
+                    lvngLoanJournalLine.lvngShortcutDimension4Code := lvngDimensionHierarchy.lvngShortcutDimension4Code;
                 if HierarchyDimensionsUsage[5] then
                     lvngLoanJournalLine.lvngBusinessUnitCode := lvngDimensionHierarchy.lvngBusinessUnitCode;
                 lvngLoanJournalLine.Modify();
