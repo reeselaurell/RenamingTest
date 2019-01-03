@@ -56,6 +56,21 @@ page 14135104 "lvngLoanCard"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngCoBorrowerFirstName; lvngCoBorrowerFirstName)
+                {
+                    Importance = Additional;
+                    ApplicationArea = All;
+                }
+                field(lvngCoBorrowerMiddleName; lvngCoBorrowerMiddleName)
+                {
+                    Importance = Additional;
+                    ApplicationArea = All;
+                }
+                field(lvngCoBorrowerLastName; lvngCoBorrowerLastName)
+                {
+                    Importance = Additional;
+                    ApplicationArea = All;
+                }
                 group(lvngDates)
                 {
                     Caption = 'Dates';
@@ -179,6 +194,19 @@ page 14135104 "lvngLoanCard"
 
                 }
             }
+            group(lvng203K)
+            {
+                Caption = '203K Information';
+                field(lvng203KContractorName; lvng203KContractorName)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvng203KInspectorName; lvng203KInspectorName)
+                {
+                    ApplicationArea = All;
+                }
+
+            }
             group(lvngServicing)
             {
                 Caption = 'Servicing';
@@ -233,6 +261,15 @@ page 14135104 "lvngLoanCard"
                 {
                     ApplicationArea = All;
                 }
+            }
+        }
+        area(Factboxes)
+        {
+            part(lvngValues; lvngLoanCardValuesPart)
+            {
+                Caption = 'Values';
+                ApplicationArea = All;
+                SubPageLink = lvngLoanNo = field (lvngLoanNo);
             }
         }
     }

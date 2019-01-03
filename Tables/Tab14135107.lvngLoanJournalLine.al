@@ -113,6 +113,34 @@ table 14135107 "lvngLoanJournalLine"
             DataClassification = CustomerContent;
             TableRelation = lvngWarehouseLine;
         }
+        field(28; lvngCoBorrowerFirstName; Text[30])
+        {
+            Caption = 'Co-Borrower First Name';
+            DataClassification = CustomerContent;
+        }
+
+        field(29; lvngCoBorrowerLastName; Text[30])
+        {
+            Caption = 'Co-Borrower Last Name';
+            DataClassification = CustomerContent;
+        }
+
+        field(30; lvngCoBorrowerMiddleName; Text[30])
+        {
+            Caption = 'Co-Borrower Middle Name';
+            DataClassification = CustomerContent;
+        }
+
+        field(31; lvng203KContractorName; Text[100])
+        {
+            Caption = '203K Contractor Name';
+            DataClassification = CustomerContent;
+        }
+        field(32; lvng203KInspectorName; Text[100])
+        {
+            Caption = '203K Inspector Name';
+            DataClassification = CustomerContent;
+        }
 
         field(80; lvngGlobalDimension1Code; Code[20])
         {

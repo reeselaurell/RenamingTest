@@ -24,6 +24,11 @@ table 14135104 "lvngLoanValue"
         {
             Caption = 'Field Value';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                lvngLoanCardManagement.EvaluateLoanFieldsValue(Rec, false);
+            end;
         }
         field(11; lvngDateValue; Date)
         {
@@ -56,5 +61,8 @@ table 14135104 "lvngLoanValue"
             Clustered = true;
         }
     }
+
+    var
+        lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
 
 }

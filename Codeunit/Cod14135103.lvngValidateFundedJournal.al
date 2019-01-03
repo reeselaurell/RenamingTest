@@ -14,7 +14,7 @@ codeunit 14135103 "lvngValidateFundedJournal"
         lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngJournalBatchCode);
         lvngLoanJournalLine.FindSet();
         repeat
-            ClearJournalLineErrors(lvngLoanJournalLine);
+            lvngLoanJournalErrorMgmt.ClearJournalLineErrors(lvngLoanJournalLine);
             ValidateSingleJournalLine(lvngLoanJournalLine);
         until lvngLoanJournalLine.Next() = 0;
 
@@ -35,18 +35,18 @@ codeunit 14135103 "lvngValidateFundedJournal"
     begin
         GetLoanVisionSetup();
         if lvngLoanJournalLine.lvngLoanNo = '' then
-            AddJournalLineError(lvngLoanJournalLine, LoanNoEmptyLbl);
+            lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, LoanNoEmptyLbl);
         if lvngLoanJournalLine.lvngDateFunded = 0D then
-            AddJournalLineError(lvngLoanJournalLine, FundedDateBlankLbl);
+            lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, FundedDateBlankLbl);
         if lvngLoanJournalLine.lvngSearchName = '' then begin
             GetLoanVisionSetup();
             lvngLoanJournalLine.lvngSearchName := StrSubstNo(lvngLoanVisionSetup.lvngSearchNameTemplate, lvngLoanJournalLine.lvngBorrowerFirstName, lvngLoanJournalLine.lvngBorrowerLastName, lvngLoanJournalLine.lvngBorrowerMiddleName);
             if DelChr(lvngLoanJournalLine.lvngSearchName, '=', ', ') = '' then
-                AddJournalLineError(lvngLoanJournalLine, SearchNameBlankLbl) else
+                lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, SearchNameBlankLbl) else
                 lvngLoanJournalLine.Modify();
         end;
         if lvngLoanJournalLine.lvngProcessingSchemaCode = '' then begin
-            AddJournalLineError(lvngLoanJournalLine, ProcessingSchemaBlankLbl)
+            lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, ProcessingSchemaBlankLbl)
         end else begin
             clear(lvngLoanJournalLine.lvngCalculatedDocumentAmount);
             Clear(lvngCreateFundedDocuments);
@@ -65,20 +65,20 @@ codeunit 14135103 "lvngValidateFundedJournal"
         if lvngJournalValidationRule.FindSet() then begin
             repeat
                 if not ValidateConditionLine(lvngLoanJournalLine) then begin
-                    AddJournalLineError(lvngLoanJournalLine, lvngJournalValidationRule.lvngErrorMessage);
+                    lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, lvngJournalValidationRule.lvngErrorMessage);
                 end;
             until lvngJournalValidationRule.Next() = 0;
         end;
         if (lvngLoanDocument.lvngCustomerNo = '') then
-            AddJournalLineError(lvngLoanJournalLine, TitleCustomerNoMissingLbl) else begin
+            lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, TitleCustomerNoMissingLbl) else begin
             if not Customer.get(lvngLoanDocument.lvngCustomerNo) then
-                AddJournalLineError(lvngLoanJournalLine, TitleCustomerNoMissingLbl);
+                lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, TitleCustomerNoMissingLbl);
         end;
         lvngLoanDocumentLine.reset;
         if lvngLoanDocumentLine.FindSet() then begin
             repeat
                 if lvngLoanDocumentLine.lvngReasonCode = '' then begin
-                    AddJournalLineError(lvngLoanJournalLine, strsubstno(ReasonCodeMissingOnLineLbl, lvngLoanDocumentLine.lvngLineNo));
+                    lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, strsubstno(ReasonCodeMissingOnLineLbl, lvngLoanDocumentLine.lvngLineNo));
                 end;
             until lvngLoanDocumentLine.Next() = 0;
         end;
@@ -90,33 +90,6 @@ codeunit 14135103 "lvngValidateFundedJournal"
         exit(false);
     end;
 
-    local procedure ClearJournalLineErrors(lvngLoanJournalLine: Record lvngLoanJournalLine)
-    begin
-        lvngLoanImportErrorLine.reset;
-        lvngLoanImportErrorLine.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
-        lvngLoanImportErrorLine.SetRange(lvngLineNo, lvngLoanJournalLine.lvngLineNo);
-        lvngLoanImportErrorLine.DeleteAll();
-    end;
-
-    local procedure AddJournalLineError(lvngLoanJournalLine: Record lvngLoanJournalLine; lvngErrorText: Text)
-    var
-        lvngErrorLineNo: Integer;
-    begin
-        lvngErrorLineNo := 100;
-        lvngLoanImportErrorLine.reset;
-        lvngLoanImportErrorLine.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
-        lvngLoanImportErrorLine.SetRange(lvngLineNo, lvngLoanJournalLine.lvngLineNo);
-        if lvngLoanImportErrorLine.FindLast() then
-            lvngErrorLineNo := lvngLoanImportErrorLine.lvngErrorLineNo + 100;
-        Clear(lvngLoanImportErrorLine);
-        lvngLoanImportErrorLine.Init();
-        lvngLoanImportErrorLine.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
-        lvngLoanImportErrorLine.lvngLineNo := lvngLoanJournalLine.lvngLineNo;
-        lvngLoanImportErrorLine.lvngErrorLineNo := lvngErrorLineNo;
-        lvngLoanImportErrorLine.lvngDescription := CopyStr(lvngErrorText, 1, MaxStrLen(lvngLoanImportErrorLine.lvngDescription));
-        lvngLoanImportErrorLine.Insert;
-    end;
-
     local procedure GetLoanVisionSetup()
     begin
         if not lvngLoanVisionSetupRetrieved then begin
@@ -124,5 +97,8 @@ codeunit 14135103 "lvngValidateFundedJournal"
             lvngLoanVisionSetupRetrieved := true;
         end;
     end;
+
+    var
+        lvngLoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
 
 }

@@ -44,6 +44,26 @@ page 14135103 "lvngLoanList"
                     ApplicationArea = All;
                 }
 
+                field(lvngCoBorrowerFirstName; lvngCoBorrowerFirstName)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCoBorrowerMiddleName; lvngCoBorrowerMiddleName)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCoBorrowerLastName; lvngCoBorrowerLastName)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvng203KContractorName; lvng203KContractorName)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvng203KInspectorName; lvng203KInspectorName)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngLoanAmount; lvngLoanAmount)
                 {
                     ApplicationArea = All;

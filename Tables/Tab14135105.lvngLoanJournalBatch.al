@@ -67,6 +67,11 @@ table 14135105 lvngLoanJournalBatch
             TableRelation = Customer."No.";
         }
 
+        field(50; lvngLoanCardUpdateOption; Enum lvngLoanCardUpdateOption)
+        {
+            Caption = 'Loan Card Update Option';
+            DataClassification = CustomerContent;
+        }
 
     }
 

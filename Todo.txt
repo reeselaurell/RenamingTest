@@ -14,3 +14,9 @@ Branch Portal Integration
 Alight Integration
 Concur Expenses Integration
 Concur Invoices Integration
+
+
+---
+Small bits
+Show red colored errors in journal
+Button to show only error loans and all loans

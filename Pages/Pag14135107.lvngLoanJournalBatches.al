@@ -53,6 +53,11 @@ page 14135107 "lvngLoanJournalBatches"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngLoanCardUpdateOption; lvngLoanCardUpdateOption)
+                {
+                    ApplicationArea = All;
+                }
+
             }
         }
         area(Factboxes)
@@ -99,6 +104,7 @@ page 14135107 "lvngLoanJournalBatches"
                 Promoted = true;
                 PromotedIsBig = true;
                 Image = EditLines;
+                PromotedCategory = Process;
                 ApplicationArea = All;
             }
 
@@ -110,8 +116,23 @@ page 14135107 "lvngLoanJournalBatches"
                 RunPageLink = lvngJournalBatchCode = field (lvngCode);
                 Promoted = true;
                 PromotedIsBig = true;
+                PromotedCategory = Process;
                 Image = BreakRulesOn;
                 ApplicationArea = All;
+            }
+
+            action(lvngLoanCardUpdateSchema)
+            {
+                Caption = 'Loan Card Update Schema';
+                RunObject = page lvngLoanUpdateSchema;
+                RunPageMode = Edit;
+                RunPageLink = lvngJournalBatchCode = field (lvngCode);
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = UpdateDescription;
+                ApplicationArea = All;
+
             }
         }
     }
