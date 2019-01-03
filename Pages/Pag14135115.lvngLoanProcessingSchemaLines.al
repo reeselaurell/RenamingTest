@@ -46,7 +46,17 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                 {
                     ApplicationArea = All;
                 }
+
+                field(lvngOverrideReasonCode; lvngOverrideReasonCode)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngReverseSign; lvngReverseSign)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngBalancingEntry; lvngBalancingEntry)
                 {
                     ApplicationArea = All;
                 }
@@ -122,6 +132,7 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                 {
                     ApplicationArea = All;
                 }
+
             }
         }
     }

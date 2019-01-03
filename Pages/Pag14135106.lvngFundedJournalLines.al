@@ -16,6 +16,11 @@ page 14135106 "lvngFundedJournalLines"
                     ApplicationArea = All;
                 }
 
+                field(lvngTitleCustomerNo; lvngTitleCustomerNo)
+                {
+                    ApplicationArea = All;
+                }
+
                 field(lvngSearchName; lvngSearchName)
                 {
                     ApplicationArea = All;
@@ -237,6 +242,24 @@ page 14135106 "lvngFundedJournalLines"
                     end;
                 end;
 
+            }
+
+            action(lvngPreviewDocument)
+            {
+                Caption = 'Preview Document';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                Image = PreviewChecks;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    lvngPreviewLoanDocument: Page lvngPreviewLoanDocument;
+                begin
+                    lvngPreviewLoanDocument.SetJournalLine(Rec);
+                    lvngPreviewLoanDocument.Run();
+                end;
             }
         }
     }

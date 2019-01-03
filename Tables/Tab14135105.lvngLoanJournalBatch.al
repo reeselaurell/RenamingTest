@@ -53,6 +53,19 @@ table 14135105 lvngLoanJournalBatch
             DataClassification = CustomerContent;
         }
 
+        field(17; lvngDefaultTitleCustomerNo; Code[20])
+        {
+            Caption = 'Default Title Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+
+        field(18; lvngDefaultInvestorCustomerNo; Code[20])
+        {
+            Caption = 'Default Investor Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
 
 
     }

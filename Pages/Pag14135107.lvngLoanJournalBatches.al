@@ -84,6 +84,18 @@ page 14135107 "lvngLoanJournalBatches"
                 Image = EditLines;
                 ApplicationArea = All;
             }
+
+            action(lvngValidationRules)
+            {
+                Caption = 'Validation Rules';
+                RunObject = page lvngJournalValidationRules;
+                RunPageMode = Edit;
+                RunPageLink = lvngJournalBatchCode = field (lvngCode);
+                Promoted = true;
+                PromotedIsBig = true;
+                Image = BreakRulesOn;
+                ApplicationArea = All;
+            }
         }
     }
 }

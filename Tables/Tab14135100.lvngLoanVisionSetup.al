@@ -32,6 +32,12 @@ table 14135100 "lvngLoanVisionSetup"
             TableRelation = "Reason Code";
         }
 
+        field(13; lvngSearchNameTemplate; Text[50])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Search Name Template';
+        }
+
         field(300; lvngLoanOfficerDimensionCode; Code[20])
         {
             Caption = 'Loan Officer Dimension Code';

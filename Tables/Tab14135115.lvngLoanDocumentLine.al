@@ -108,6 +108,24 @@ table 14135115 "lvngLoanDocumentLine"
             DataClassification = CustomerContent;
             TableRelation = "Business Unit";
         }
+
+        field(1000; lvngProcessingSchemaCode; code[20])
+        {
+            Caption = 'Processing Schema Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngLoanProcessingSchema.lvngCode;
+        }
+        field(1001; lvngProcessingSchemaLineNo; Integer)
+        {
+            Caption = 'Processing Schema Line No.';
+            DataClassification = CustomerContent;
+            TableRelation = lvngLoanProcessingSchemaline.lvngLineNo where (lvngProcessingCode = field (lvngProcessingSchemaCode));
+        }
+        field(1002; lvngBalancingEntry; boolean)
+        {
+            Caption = 'Balancing Entry';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

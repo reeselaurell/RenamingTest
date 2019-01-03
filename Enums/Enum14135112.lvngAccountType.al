@@ -8,11 +8,11 @@ enum 14135112 "lvngAccountType"
     }
     value(1; lvngCustomer)
     {
-        Caption = 'Customer';
+        Caption = '';
     }
     value(2; lvngVendor)
     {
-        Caption = 'Vendor';
+        Caption = '';
     }
     value(3; lvngBankAccount)
     {
@@ -28,6 +28,6 @@ enum 14135112 "lvngAccountType"
     }
     value(6; lvngEmployee)
     {
-        Caption = 'Employee';
+        Caption = '';
     }
 }

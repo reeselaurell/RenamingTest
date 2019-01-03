@@ -24,6 +24,19 @@ table 14135111 lvngLoanProcessingSchema
             TableRelation = "No. Series";
         }
 
+        field(12; lvngGlobalSchema; Boolean)
+        {
+            Caption = 'Global Schema';
+            DataClassification = CustomerContent;
+        }
+
+        field(13; lvngUseGlobalSchemaCode; Code[20])
+        {
+            Caption = 'Use Global Schema Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngLoanProcessingSchema.lvngCode where (lvngGlobalSchema = const (true));
+        }
+
 
     }
 

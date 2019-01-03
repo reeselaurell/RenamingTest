@@ -28,6 +28,7 @@ table 14135114 "lvngLoanDocument"
             TableRelation = Customer;
         }
 
+
     }
 
     keys

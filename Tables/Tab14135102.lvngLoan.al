@@ -35,6 +35,27 @@ table 14135102 "lvngLoan"
             DataClassification = CustomerContent;
         }
 
+        field(14; lvngTitleCustomerNo; Code[20])
+        {
+            Caption = 'Title Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+
+        field(15; lvngInvestorCustomerNo; Code[20])
+        {
+            Caption = 'Investor Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+
+        field(16; lvngBorrowerCustomerNo; Code[20])
+        {
+            Caption = 'Borrower Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+
         field(20; lvngApplicationDate; Date)
         {
             Caption = 'Application Date';

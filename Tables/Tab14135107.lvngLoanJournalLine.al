@@ -45,6 +45,27 @@ table 14135107 "lvngLoanJournalLine"
             DataClassification = CustomerContent;
         }
 
+        field(14; lvngTitleCustomerNo; Code[20])
+        {
+            Caption = 'Title Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+
+        field(15; lvngInvestorCustomerNo; Code[20])
+        {
+            Caption = 'Investor Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+
+        field(16; lvngBorrowerCustomerNo; Code[20])
+        {
+            Caption = 'Borrower Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+
         field(20; lvngApplicationDate; Date)
         {
             Caption = 'Application Date';
@@ -341,6 +362,12 @@ table 14135107 "lvngLoanJournalLine"
             Caption = 'Reason Code';
             DataClassification = CustomerContent;
             TableRelation = "Reason Code".Code;
+        }
+
+        field(10000; lvngCalculatedDocumentAmount; Decimal)
+        {
+            Caption = 'Document Amount';
+            DataClassification = CustomerContent;
         }
 
 

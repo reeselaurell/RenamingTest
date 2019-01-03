@@ -22,6 +22,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             DataClassification = CustomerContent;
         }
 
+
         field(11; lvngFieldNo; Integer)
         {
             Caption = 'Field No.';
@@ -63,6 +64,19 @@ table 14135113 "lvngLoanProcessingSchemaLine"
         {
             Caption = 'Reverse Sign';
             DataClassification = CustomerContent;
+        }
+
+        field(21; lvngBalancingEntry; Boolean)
+        {
+            Caption = 'Balancing Entry';
+            DataClassification = CustomerContent;
+        }
+
+        field(22; lvngOverrideReasonCode; Code[10])
+        {
+            Caption = 'Override Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
         }
 
         field(80; lvngGlobalDimension1Code; Code[20])

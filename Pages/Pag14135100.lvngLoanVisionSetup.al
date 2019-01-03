@@ -31,6 +31,12 @@ page 14135100 "lvngLoanVisionSetup"
                     ApplicationArea = All;
                 }
 
+                field(lvngSearchNameTemplate; lvngSearchNameTemplate)
+                {
+                    ApplicationArea = All;
+                    ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name';
+                }
+
                 field(MaintenanceMode; lvngMaintenanceMode)
                 {
                     ApplicationArea = All;

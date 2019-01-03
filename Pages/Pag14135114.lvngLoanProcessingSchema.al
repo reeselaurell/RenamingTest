@@ -1,4 +1,4 @@
-page 14135114 "lvngProcessingSchema"
+page 14135114 "lvngLoanProcessingSchema"
 {
     PageType = List;
     UsageCategory = Lists;
@@ -24,6 +24,16 @@ page 14135114 "lvngProcessingSchema"
                 {
                     ApplicationArea = All;
                 }
+
+                field(lvngGlobalSchema; lvngGlobalSchema)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngUseGlobalSchemaCode; lvngUseGlobalSchemaCode)
+                {
+                    ApplicationArea = All;
+                }
+
 
             }
         }
