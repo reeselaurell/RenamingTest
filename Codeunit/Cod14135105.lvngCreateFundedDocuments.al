@@ -38,7 +38,6 @@ codeunit 14135105 "lvngCreateFundedDocuments"
                 CreateDocumentLine(lvngLoanDocumentLine, lvngLoanDocument, lvngLoanProcessingSchemaLine, lvngLoanJournalLine, lvngLineNo);
             until lvngLoanProcessingSchemaLine.Next() = 0;
         end;
-
     end;
 
     local procedure CreateDocumentLine(var lvngLoanDocumentLine: Record lvngLoanDocumentLine; lvngLoanDocument: record lvngLoanDocument; lvngLoanProcessingSchemaLine: Record lvngLoanProcessingSchemaLine; lvngLoanJournalLine: Record lvngLoanJournalLine; var lvngLineNo: integer)
@@ -48,7 +47,6 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngFieldRef: FieldRef;
         lvngAccountNo: Code[20];
         lvngDecimalValue: Decimal;
-
     begin
         if CheckCondition(lvngLoanProcessingSchemaLine.lvngConditionCode, lvngLoanJournalLine) then begin
             Clear(lvngLoanDocumentLine);
@@ -93,7 +91,6 @@ codeunit 14135105 "lvngCreateFundedDocuments"
                             if Evaluate(lvngDecimalValue, lvngLoanJournalValue.lvngFieldValue) then
                                 lvngLoanDocumentLine.lvngAmount := lvngDecimalValue;
                         end;
-
                     end;
             end;
             if lvngLoanProcessingSchemaLine.lvngReverseSign then

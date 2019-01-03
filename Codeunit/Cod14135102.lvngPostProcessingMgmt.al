@@ -89,6 +89,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngLoan: Record lvngLoan;
         DimensionCode: Code[20];
         lvngDimensionHierarchy: Record lvngDimensionHierarchy;
+        lvngHierarchyBasedOnDate: Date;
     begin
         case lvngLoanJournalBatch.lvngDimensionImportRule of
             lvngloanjournalbatch.lvngDimensionImportRule::lvngCopyAllFromLoan:
@@ -143,6 +144,22 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                     DimensionCode := lvngLoanJournalLine.lvngShortcutDimension4Code;
             end;
             lvngDimensionHierarchy.reset;
+            lvngDimensionHierarchy.Ascending(false);
+            case lvngLoanJournalBatch.lvngDimensionHierarchyDate of
+                lvngLoanJournalBatch.lvngDimensionHierarchyDate::lvngApplicationDate:
+                    lvngHierarchyBasedOnDate := lvngLoanJournalLine.lvngApplicationDate;
+                lvngLoanJournalBatch.lvngDimensionHierarchyDate::lvngCommissionDate:
+                    lvngHierarchyBasedOnDate := lvngLoanJournalLine.lvngCommissionDate;
+                lvngLoanJournalBatch.lvngDimensionHierarchyDate::lvngDateClosed:
+                    lvngHierarchyBasedOnDate := lvngLoanJournalLine.lvngDateClosed;
+                lvngLoanJournalBatch.lvngDimensionHierarchyDate::lvngDateFunded:
+                    lvngHierarchyBasedOnDate := lvngLoanJournalLine.lvngDateFunded;
+                lvngLoanJournalBatch.lvngDimensionHierarchyDate::lvngDateLocked:
+                    lvngHierarchyBasedOnDate := lvngLoanJournalLine.lvngDateLocked;
+                lvngLoanJournalBatch.lvngDimensionHierarchyDate::lvngDateSold:
+                    lvngHierarchyBasedOnDate := lvngLoanJournalLine.lvngDateSold;
+            end;
+            lvngDimensionHierarchy.SetFilter(lvngDate, '..%1', lvngHierarchyBasedOnDate);
             lvngDimensionHierarchy.SetRange(lvngCode, DimensionCode);
             if lvngDimensionHierarchy.FindFirst() then begin
                 if HierarchyDimensionsUsage[1] then
