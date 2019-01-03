@@ -36,6 +36,23 @@ page 14135107 "lvngLoanJournalBatches"
                 {
                     ApplicationArea = All;
                 }
+
+                field(lvngDefaultTitleCustomerNo; lvngDefaultTitleCustomerNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDefaultInvestorCustomerNo; lvngDefaultInvestorCustomerNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDefaultReasonCode; lvngDefaultReasonCode)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDefProcessingSchemaCode; lvngDefProcessingSchemaCode)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
         area(Factboxes)

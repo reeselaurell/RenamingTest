@@ -23,20 +23,24 @@ page 14135106 "lvngFundedJournalLines"
 
                 field(lvngSearchName; lvngSearchName)
                 {
+                    Width = 50;
                     ApplicationArea = All;
                 }
                 field(lvngBorrowerFirstName; lvngBorrowerFirstName)
                 {
+                    Width = 30;
                     ApplicationArea = All;
                 }
 
                 field(lvngMiddleName; lvngBorrowerMiddleName)
                 {
+                    Width = 10;
                     ApplicationArea = All;
                 }
 
                 field(lvngBorrowerLastName; lvngBorrowerLastName)
                 {
+                    Width = 30;
                     ApplicationArea = All;
                 }
                 field(lvngLoanAmount; lvngLoanAmount)
@@ -156,6 +160,19 @@ page 14135106 "lvngFundedJournalLines"
                 {
                     ApplicationArea = All;
                 }
+
+                field(lvngProcessingSchemaCode; lvngProcessingSchemaCode)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngReasonCode; lvngReasonCode)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCalculatedDocumentAmount; lvngCalculatedDocumentAmount)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngBlocked; lvngBlocked)
                 {
                     Visible = false;
@@ -207,41 +224,36 @@ page 14135106 "lvngFundedJournalLines"
                 trigger OnAction();
                 var
                     lvngLoanJournalImport: Codeunit lvngLoanJournalImport;
+                    lvngValidateFundedJournal: Codeunit lvngValidateFundedJournal;
                     lvngLoanImportSchema: Record lvngLoanImportSchema;
                 begin
                     lvngLoanImportSchema.reset;
-                    lvngLoanImportSchema.FilterGroup(2);
                     lvngLoanImportSchema.SetRange(lvngLoanJournalBatchType, lvngLoanImportSchema.lvngLoanJournalBatchType::lvngFunded);
-                    lvngLoanImportSchema.FilterGroup(0);
                     if Page.RunModal(0, lvngLoanImportSchema) = Action::LookupOk then begin
                         Clear(lvngLoanJournalImport);
                         lvngLoanJournalImport.ReadCSVStream(lvngLoanJournalBatchCode, lvngLoanImportSchema);
+                        Commit();
+                        lvngValidateFundedJournal.ValidateFundedLines(lvngLoanJournalBatchCode);
                         CurrPage.Update(false);
                     end;
                 end;
             }
-            action(lvngRemoveFilteredEntries)
+
+            action(lvngValidateLines)
             {
-                Caption = 'Remove Filtered Entries';
+                Caption = 'Validate Lines';
                 ApplicationArea = All;
                 Promoted = true;
                 PromotedIsBig = true;
-                Image = RemoveFilterLines;
+                Image = Approve;
                 PromotedCategory = Process;
-
-                trigger OnAction()
+                trigger OnAction();
                 var
-                    lvngLoanJournalLine: Record lvngLoanJournalLine;
-                    ConfirmEntriesRemovalLbl: Label 'Do You want to remove filtered lines?';
+                    lvngValidateFundedJournal: Codeunit lvngValidateFundedJournal;
                 begin
-                    if Confirm(ConfirmEntriesRemovalLbl, false) then begin
-                        lvngLoanJournalLine.reset;
-                        lvngLoanJournalLine.CopyFilters(Rec);
-                        lvngLoanJournalLine.DeleteAll(true);
-                        CurrPage.Update(false);
-                    end;
+                    lvngValidateFundedJournal.ValidateFundedLines(lvngLoanJournalBatchCode);
+                    CurrPage.Update(false);
                 end;
-
             }
 
             action(lvngPreviewDocument)

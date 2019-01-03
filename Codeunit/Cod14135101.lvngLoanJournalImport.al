@@ -91,6 +91,8 @@ codeunit 14135101 "lvngLoanJournalImport"
                 lvngLoanJournalLine.lvngProcessingSchemaCode := lvngLoanJournalBatch.lvngDefProcessingSchemaCode;
             if lvngLoanJournalLine.lvngReasonCode = '' then
                 lvngLoanJournalLine.lvngReasonCode := lvngLoanJournalBatch.lvngDefaultReasonCode;
+            if lvngLoanJournalLine.lvngTitleCustomerNo = '' then
+                lvngLoanJournalLine.lvngTitleCustomerNo := lvngLoanJournalBatch.lvngDefaultTitleCustomerNo;
             lvngLoanJournalLine.Modify();
             lvngStartLine := lvngStartLine + 1;
         until (lvngStartLine > lvngEndLine);

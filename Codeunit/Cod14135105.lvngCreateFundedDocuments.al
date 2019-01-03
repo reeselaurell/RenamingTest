@@ -60,6 +60,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
             lvngloandocumentline.lvngProcessingSchemaLineNo := lvngLoanProcessingSchemaLine.lvngLineNo;
             lvngLoanDocumentLine.lvngBalancingEntry := lvngLoanProcessingSchemaLine.lvngBalancingEntry;
             lvngLineNo := lvngLineNo + 10000;
+            lvngLoanDocumentLine.Insert();
             if lvngLoanProcessingSchemaLine.lvngOverrideReasonCode <> '' then begin
                 lvngLoanDocumentLine.lvngReasonCode := lvngLoanProcessingSchemaLine.lvngOverrideReasonCode;
             end else begin
@@ -129,6 +130,8 @@ codeunit 14135105 "lvngCreateFundedDocuments"
     var
         myInt: Integer;
     begin
+        if lvngConditionCode = '' then
+            exit(true);
         exit(true);
     end;
 

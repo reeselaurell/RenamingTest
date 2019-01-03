@@ -5,6 +5,8 @@ page 14135120 "lvngPreviewLoanDocument"
     SourceTableTemporary = true;
     Caption = 'Document Preview';
     Editable = false;
+    InsertAllowed = false;
+    DeleteAllowed = false;
 
     layout
     {
@@ -12,6 +14,7 @@ page 14135120 "lvngPreviewLoanDocument"
         {
             group(lvngGeneral)
             {
+                Caption = 'General';
                 field(lvngLoanDocumentType; lvngLoanDocumentType)
                 {
                     ApplicationArea = All;
@@ -31,6 +34,7 @@ page 14135120 "lvngPreviewLoanDocument"
             }
             part(lvngLines; lvngPreviewLoanDocumentLines)
             {
+                ApplicationArea = All;
                 Caption = 'Lines';
                 Editable = false;
             }

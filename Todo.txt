@@ -1,22 +1,16 @@
-1 - Standard
-  Loan table
-  Loan Address table
-  Loan Value table
-  Loan Journal table
-  Loan Journal Value table
-  Corresponding pages
-  Add Loan No. field to Gen. Journal Line table
-  Add Loan No. field to G/L Entry table
-  Dimension Mapping table
-  Loan Fields Configuration table
-  Loan Cards creation functionality
-  Funded/Sold creation documents functionality and posting routine
-  Loan Servicing functionality
-  Loan Construction functionality
-  
+Add Conditions Engine
+Loan Cards Creation from Journal
+  1 - Schema to Update Loan fields from Import Schema only (Copy values to update schema)
+  2 - Add Validation via Conditions
 
-Import to Journal
-  --On Batch Level do Post Processing (PostProcessing should always rerun)
-  --Map Fields to Dimensions
-  --Depending on Journal Batch - switch is defined to identify Processing Schema or Default Processing Schema is defined on Batch
-  --Depending on Processing Schema - Title Company is Defined also Title company can be defined on Journal Batch
+Loan Funded Document Creation from Journal and Posting Routine
+Loan Sold Document Creation from Journal and Posting Routine
+Loan Servicing Functionality for Regular and Construction Loans
+Import Management
+Document Exchange Integration
+Create Rolecenters
+Reports
+Branch Portal Integration
+Alight Integration
+Concur Expenses Integration
+Concur Invoices Integration

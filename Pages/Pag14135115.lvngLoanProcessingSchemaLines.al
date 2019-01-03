@@ -33,6 +33,30 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                 field(lvngAccountNo; lvngAccountNo)
                 {
                     ApplicationArea = All;
+
+                    trigger OnLookup(var Text: Text): Boolean
+                    var
+                        GLAccount: Record "G/L Account";
+                        BankAccount: Record "Bank Account";
+                        ICPartner: Record "IC Partner";
+                    begin
+                        case lvngAccountType of
+                            lvngAccountType::lvngGLAccount:
+                                begin
+                                    GLAccount.reset;
+                                    GLAccount.SetRange("Direct Posting", true);
+                                    GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
+                                    if page.RunModal(0, GLAccount) = Action::LookupOK then
+                                        lvngAccountNo := GLAccount."No.";
+                                end;
+                            lvngAccountType::lvngBankAccount:
+                                begin
+                                    BankAccount.reset;
+                                    if Page.RunModal(0, BankAccount) = Action::LookupOK then
+                                        lvngAccountNo := BankAccount."No.";
+                                end;
+                        end;
+                    end;
                 }
                 field(lvngAccountNoSwitchCode; lvngAccountNoSwitchCode)
                 {
@@ -41,6 +65,37 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                 field(lvngFieldNo; lvngFieldNo)
                 {
                     ApplicationArea = All;
+                    trigger OnLookup(var Text: Text): Boolean
+                    var
+                        FieldsListPage: Page "Field List";
+                        FieldRec: Record Field;
+                        lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+                    begin
+                        case lvngProcessingSourceType of
+                            lvngProcessingSourceType::lvngLoanJournalValue:
+                                begin
+                                    FieldRec.reset;
+                                    FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
+                                    FieldRec.SetFilter("No.", '>=%1', 5);
+                                    Clear(FieldsListPage);
+                                    FieldsListPage.SetTableView(FieldRec);
+                                    FieldsListPage.LookupMode(true);
+                                    if FieldsListPage.RunModal() = Action::LookupOK then begin
+                                        FieldsListPage.GetRecord(FieldRec);
+                                        lvngFieldNo := FieldRec."No.";
+                                        lvngDescription := FieldRec."Field Caption";
+                                    end;
+                                end;
+                            lvngProcessingSourceType::lvngLoanJournalVariableValue:
+                                begin
+                                    if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
+                                        lvngFieldNo := lvngLoanFieldsConfiguration.lvngFieldNo;
+                                        lvngDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+                                    end;
+                                end;
+
+                        end;
+                    end;
                 }
                 field(lvngFunctionCode; lvngFunctionCode)
                 {

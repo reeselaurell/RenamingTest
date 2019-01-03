@@ -24,7 +24,7 @@ enum 14135112 "lvngAccountType"
     }
     value(5; lvngICPartner)
     {
-        Caption = 'IC Partner';
+        Caption = '';
     }
     value(6; lvngEmployee)
     {

@@ -2,6 +2,7 @@ table 14135111 lvngLoanProcessingSchema
 {
     Caption = 'Loan Processing Schema';
     DataClassification = CustomerContent;
+    LookupPageId = lvngLoanProcessingSchema;
 
     fields
     {

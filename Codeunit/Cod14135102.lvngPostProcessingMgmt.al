@@ -15,8 +15,16 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngLoanJournalBatch.Get(lvngJournalBatchCode);
         lvngPostProcessingSchemaLine.reset;
         lvngPostProcessingSchemaLine.SetRange(lvngJournalBatchCode, lvngJournalBatchCode);
-        if lvngPostProcessingSchemaLine.IsEmpty() then
+        if lvngPostProcessingSchemaLine.IsEmpty() then begin
+            lvngLoanJournalLine.Reset();
+            lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngJournalBatchCode);
+            if lvngLoanJournalLine.FindSet() then begin
+                repeat
+                    AssignDimensions(lvngLoanJournalBatch, lvngLoanJournalLine);
+                until lvngLoanJournalLine.Next() = 0;
+            end;
             exit;
+        end;
         lvngPostProcessingSchemaLine.SetCurrentKey(lvngPriority);
         lvngLoanJournalLine.Reset();
         lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngJournalBatchCode);
@@ -56,6 +64,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                 end;
             until lvngPostProcessingSchemaLine.Next() = 0;
             AssignDimensions(lvngLoanJournalBatch, lvngLoanJournalLine);
+            lvngLoanJournalLine.Modify();
         until lvngLoanJournalLine.Next() = 0;
     end;
 
