@@ -1,9 +1,9 @@
-page 14135123 "lvngLoanCardValuesPart"
+page 14135124 "lvngLoanCardValuesEdit"
 {
     Caption = 'Loan Values';
-    PageType = ListPart;
+    PageType = List;
     SourceTable = lvngLoanValue;
-    Editable = false;
+    DeleteAllowed = false;
 
     layout
     {
@@ -28,22 +28,18 @@ page 14135123 "lvngLoanCardValuesPart"
                 field(lvngBooleanValue; lvngBooleanValue)
                 {
                     ApplicationArea = All;
-                    Visible = false;
                 }
                 field(lvngDateValue; lvngDateValue)
                 {
                     ApplicationArea = All;
-                    Visible = false;
                 }
                 field(lvngDecimalValue; lvngDecimalValue)
                 {
                     ApplicationArea = All;
-                    Visible = false;
                 }
                 field(lvngIntegerValue; lvngIntegerValue)
                 {
                     ApplicationArea = All;
-                    Visible = false;
                 }
 
             }

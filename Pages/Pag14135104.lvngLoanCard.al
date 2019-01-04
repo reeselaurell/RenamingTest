@@ -278,14 +278,16 @@ page 14135104 "lvngLoanCard"
     {
         area(Processing)
         {
-            action(ActionName)
+            action(lvngShowLoanValues)
             {
                 ApplicationArea = All;
-
-                trigger OnAction()
-                begin
-
-                end;
+                Caption = 'Edit Loan Values';
+                Image = ShowList;
+                Promoted = true;
+                PromotedCategory = Process;
+                RunObject = page lvngLoanCardValuesEdit;
+                RunPageMode = Edit;
+                RunPageLink = lvngLoanNo = field (lvngLoanNo);
             }
         }
     }
@@ -314,9 +316,13 @@ page 14135104 "lvngLoanCard"
     var
         lvngLoanAddress: Record lvngLoanAddress;
         lvngAddressFormat: Label '%1 %2, %3 %4 %5';
+        lvngFormattedAddress: Text;
     begin
         if lvngLoanAddress.Get(lvngLoanNo, lvngAddressType) then begin
-            exit(strsubstno(lvngAddressFormat, lvngloanaddress.lvngAddress, lvngLoanAddress.lvngAddress2, lvngLoanAddress.lvngCity, lvngloanaddress.lvngState, lvngloanaddress.lvngZIPCode));
+            lvngFormattedAddress := strsubstno(lvngAddressFormat, lvngloanaddress.lvngAddress, lvngLoanAddress.lvngAddress2, lvngLoanAddress.lvngCity, lvngloanaddress.lvngState, lvngloanaddress.lvngZIPCode);
+            if DelChr(lvngFormattedAddress, '=', ' ,') = '' then
+                exit('') else
+                exit(lvngFormattedAddress);
         end;
     end;
 

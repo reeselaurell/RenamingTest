@@ -7,6 +7,9 @@ codeunit 14135106 "lvngLoanCardManagement"
         lvngLoanUpdateSchema: Record lvngLoanUpdateSchema;
         lvngLoanUpdateSchemaTemp: Record lvngLoanUpdateSchema temporary;
         lvngLoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
+        Window: Dialog;
+        lvngProgressLbl: Label 'Processing #1########### of #2###########';
+        lvngCounter: Integer;
 
     begin
         lvngLoanJournalBatch.Get(lvngJournalBatchCode);
@@ -22,7 +25,14 @@ codeunit 14135106 "lvngLoanCardManagement"
         end;
         lvngLoanJournalLine.reset;
         if lvngLoanJournalLine.FindSet() then begin
+            if GuiAllowed() then begin
+                Window.Open(lvngProgressLbl);
+                Window.Update(2, lvngLoanJournalLine.Count());
+            end;
             repeat
+                lvngCounter := lvngCounter + 1;
+                if GuiAllowed() then
+                    Window.Update(1, lvngCounter);
                 if not lvngLoanJournalErrorMgmt.HasError(lvngLoanJournalLine) then begin
                     case lvngLoanJournalBatch.lvngLoanCardUpdateOption of
                         lvngloanjournalbatch.lvngLoanCardUpdateOption::lvngAlways:
@@ -32,6 +42,8 @@ codeunit 14135106 "lvngLoanCardManagement"
                     end;
                 end;
             until lvngLoanJournalLine.Next() = 0;
+            if GuiAllowed() then
+                Window.Close();
         end;
     end;
 
@@ -263,6 +275,14 @@ codeunit 14135106 "lvngLoanCardManagement"
                 until lvngLoanFieldsConfiguration.Next() = 0;
             end;
         end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::DimensionManagement, 'OnAfterSetupObjectNoList', '', true, true)]
+    local procedure OnDimensionAfterSetupObjectNoList(var TempAllObjWithCaption: Record AllObjWithCaption)
+    var
+        DimensionManagement: Codeunit DimensionManagement;
+    begin
+        DimensionManagement.InsertObject(TempAllObjWithCaption, Database::lvngLoan);
     end;
 
     var

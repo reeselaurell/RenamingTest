@@ -293,6 +293,22 @@ page 14135106 "lvngFundedJournalLines"
                     lvngPreviewLoanDocument.Run();
                 end;
             }
+
+            action(lvngCreateLoanCards)
+            {
+                Caption = 'Create Loan Cards';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = CreateForm;
+                trigger OnAction()
+                var
+                    lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+                begin
+                    lvngLoanCardManagement.UpdateLoanCards(lvngLoanJournalBatchCode);
+                end;
+            }
         }
     }
 }
