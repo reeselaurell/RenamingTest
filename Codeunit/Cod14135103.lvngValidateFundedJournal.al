@@ -91,7 +91,6 @@ codeunit 14135103 "lvngValidateFundedJournal"
         lvngExpressionEngine: Codeunit lvngExpressionEngine;
     begin
         GetLoanVisionSetup();
-        lvngExpressionEngine.SetApplicationId(lvngLoanVisionSetup.lvngApplicationId);
         exit(lvngExpressionEngine.CheckCondition(lvngConditionCode, lvngExpressionValueBuffer));
     end;
 

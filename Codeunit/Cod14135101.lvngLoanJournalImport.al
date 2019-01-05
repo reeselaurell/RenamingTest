@@ -182,7 +182,9 @@ codeunit 14135101 "lvngLoanJournalImport"
                     lvngLoanJournalValue.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
                     lvngLoanJournalValue.lvngLineNo := lvngLoanJournalLine.lvngLineNo;
                     lvngLoanJournalValue.lvngFieldNo := lvngLoanImportSchemaLine.lvngFieldNo;
-                    lvngLoanJournalValue.lvngFieldValue := Format(lvngBooleanField);
+                    if lvngBooleanField then
+                        lvngLoanJournalValue.lvngFieldValue := 'True' else
+                        lvngLoanJournalValue.lvngFieldValue := 'False';
                     lvngLoanJournalValue.Insert(true)
                 end;
             lvngLoanImportSchemaLine.lvngValueType::lvngDate:

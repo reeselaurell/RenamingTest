@@ -100,6 +100,12 @@ codeunit 14135108 "lvngConditionsMgmt"
             ExpressionBuffer.Type := lvngExpressionEngine.GetNetType(format(lvngFieldReference.Type()));
             if (ExpressionBuffer.Type = 'System.DateTime') and (ExpressionBuffer.Value = '') then
                 ExpressionBuffer.Value := format(DMY2Date(1, 1, 1974));
+            if (ExpressionBuffer.Type = 'System.Boolean') then begin
+                if (ExpressionBuffer.Value = 'No') then
+                    ExpressionBuffer.Value := 'False';
+                if (ExpressionBuffer.Value = 'Yes') then
+                    ExpressionBuffer.Value := 'True';
+            end;
             ExpressionBuffer.Insert();
         until lvngTableFields.Next() = 0;
         lvngRecordReference.Close();
