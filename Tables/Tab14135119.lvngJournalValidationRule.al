@@ -26,6 +26,16 @@ table 14135119 "lvngJournalValidationRule"
         {
             Caption = 'Condition Code';
             DataClassification = CustomerContent;
+
+            trigger OnLookup()
+            var
+                lvngSelectedConditionCode: Code[20];
+            begin
+                Clear(lvngExpressionList);
+                lvngSelectedConditionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetApplicationId(), 'JOURNAL');
+                if lvngSelectedConditionCode <> '' then
+                    lvngConditionCode := lvngSelectedConditionCode;
+            end;
         }
         field(12; lvngErrorMessage; Text[250])
         {
@@ -41,5 +51,9 @@ table 14135119 "lvngJournalValidationRule"
             Clustered = true;
         }
     }
+
+    var
+        lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
+        lvngExpressionList: page lvngExpressionList;
 
 }

@@ -3,6 +3,8 @@ page 14135112 "lvngLoanImportValuePart"
     PageType = ListPart;
     SourceTable = lvngLoanJournalValue;
     Caption = 'Values';
+    DeleteAllowed = false;
+    Editable = false;
 
     layout
     {
@@ -24,22 +26,6 @@ page 14135112 "lvngLoanImportValuePart"
                 }
 
 
-            }
-        }
-    }
-
-    actions
-    {
-        area(Processing)
-        {
-            action(ActionName)
-            {
-                ApplicationArea = All;
-
-                trigger OnAction()
-                begin
-
-                end;
             }
         }
     }

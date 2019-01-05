@@ -114,6 +114,11 @@ table 14135100 "lvngLoanVisionSetup"
             Caption = 'Maintenance Mode';
             DataClassification = CustomerContent;
         }
+        field(90001; lvngApplicationId; Guid)
+        {
+            Caption = 'Application Id';
+            DataClassification = CustomerContent;
+        }
 
     }
 

@@ -23,6 +23,7 @@ codeunit 14135103 "lvngValidateFundedJournal"
     local procedure ValidateSingleJournalLine(var lvngLoanJournalLine: record lvngLoanJournalLine)
     var
         lvngJournalValidationRule: Record lvngJournalValidationRule;
+        lvngExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
         Customer: Record Customer;
         lvngLoanDocument: Record lvngLoanDocument temporary;
         lvngLoanDocumentLine: Record lvngLoanDocumentLine temporary;
@@ -63,8 +64,9 @@ codeunit 14135103 "lvngValidateFundedJournal"
         lvngJournalValidationRule.reset;
         lvngJournalValidationRule.SetRange(lvngJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
         if lvngJournalValidationRule.FindSet() then begin
+            lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
             repeat
-                if not ValidateConditionLine(lvngLoanJournalLine) then begin
+                if not ValidateConditionLine(lvngExpressionValueBuffer, lvngJournalValidationRule.lvngConditionCode) then begin
                     lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, lvngJournalValidationRule.lvngErrorMessage);
                 end;
             until lvngJournalValidationRule.Next() = 0;
@@ -84,10 +86,13 @@ codeunit 14135103 "lvngValidateFundedJournal"
         end;
     end;
 
-    local procedure ValidateConditionLine(var lvngLoanJournalLine: record lvngLoanJournalLine): Boolean
+    local procedure ValidateConditionLine(var lvngExpressionValueBuffer: Record lvngExpressionValueBuffer; lvngConditionCode: Code[20]): Boolean
+    var
+        lvngExpressionEngine: Codeunit lvngExpressionEngine;
     begin
-        //not implemented cz one alcoholic is off
-        exit(false);
+        GetLoanVisionSetup();
+        lvngExpressionEngine.SetApplicationId(lvngLoanVisionSetup.lvngApplicationId);
+        exit(lvngExpressionEngine.CheckCondition(lvngConditionCode, lvngExpressionValueBuffer));
     end;
 
     local procedure GetLoanVisionSetup()
@@ -100,5 +105,6 @@ codeunit 14135103 "lvngValidateFundedJournal"
 
     var
         lvngLoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
+        lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
 
 }

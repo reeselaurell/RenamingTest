@@ -42,6 +42,12 @@ page 14135100 "lvngLoanVisionSetup"
                     ApplicationArea = All;
                 }
 
+                field(lvngApplicationId; lvngApplicationId)
+                {
+                    Editable = false;
+                    ApplicationArea = All;
+                }
+
             }
             group(Dimensions)
             {
@@ -110,9 +116,29 @@ page 14135100 "lvngLoanVisionSetup"
             }
         }
         //You might want to add fields here
+
     }
 
+    actions
+    {
+        area(Processing)
+        {
+            action(lvngAssignApplicationId)
+            {
+                Caption = 'Assign Application Id';
+                ApplicationArea = All;
 
+                trigger OnAction();
+                begin
+                    Evaluate(lvngApplicationId, ApplicationGuidLbl);
+                    Modify();
+                end;
+            }
+        }
+    }
+
+    var
+        ApplicationGuidLbl: Label '{bed3dc2e-9757-4353-b184-fe5b7dae9fb4}';
 
     trigger OnOpenPage()
     begin
@@ -124,6 +150,7 @@ page 14135100 "lvngLoanVisionSetup"
         reset;
         if not get then begin
             Init();
+            EVALUATE(lvngApplicationId, ApplicationGuidLbl);
             Insert();
         end;
     end;

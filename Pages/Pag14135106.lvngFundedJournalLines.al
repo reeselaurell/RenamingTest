@@ -309,6 +309,18 @@ page 14135106 "lvngFundedJournalLines"
                     lvngLoanCardManagement.UpdateLoanCards(lvngLoanJournalBatchCode);
                 end;
             }
+
+            action(lvngShowLoanValues)
+            {
+                ApplicationArea = All;
+                Caption = 'Edit Loan Values';
+                Image = ShowList;
+                Promoted = true;
+                PromotedCategory = Process;
+                RunObject = page lvngLoanImportValueEdit;
+                RunPageMode = Edit;
+                RunPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
+            }
         }
     }
 }
