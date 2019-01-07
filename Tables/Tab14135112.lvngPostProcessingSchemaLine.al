@@ -57,6 +57,22 @@ table 14135112 "lvngPostProcessingSchemaLine"
             Caption = 'To Field No.';
             DataClassification = CustomerContent;
         }
+
+        field(17; lvngFunctionCode; Code[20])
+        {
+            Caption = 'Function Code';
+            DataClassification = CustomerContent;
+            trigger OnLookup()
+            var
+                lvngSelectedFunctionCode: Code[20];
+            begin
+                Clear(lvngExpressionList);
+                lvngSelectedFunctionCode := lvngExpressionList.SelectExpression('JOURNAL');
+                if lvngSelectedFunctionCode <> '' then
+                    lvngFunctionCode := lvngSelectedFunctionCode;
+            end;
+        }
+
     }
 
     keys
@@ -70,5 +86,9 @@ table 14135112 "lvngPostProcessingSchemaLine"
 
         }
     }
+
+    var
+        lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
+        lvngExpressionList: page lvngExpressionList;
 
 }

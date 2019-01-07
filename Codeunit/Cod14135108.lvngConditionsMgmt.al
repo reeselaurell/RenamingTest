@@ -111,18 +111,11 @@ codeunit 14135108 "lvngConditionsMgmt"
         lvngRecordReference.Close();
     end;
 
-    procedure GetApplicationId(): Guid
-    begin
-        GetLoanVisionSetup();
-        exit(lvngLoanVisionSetup.lvngApplicationId);
-    end;
-
     local procedure GetLoanVisionSetup()
     begin
         if not lvngLoanVisionSetupRetrieved then begin
             lvngLoanVisionSetupRetrieved := true;
             lvngLoanVisionSetup.get;
-            lvngLoanVisionSetup.TestField(lvngApplicationId);
         end;
     end;
 

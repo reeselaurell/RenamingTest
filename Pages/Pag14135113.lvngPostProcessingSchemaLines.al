@@ -66,6 +66,12 @@ page 14135113 "lvngPostProcessingSchemaLines"
 
                     end;
                 }
+
+                field(lvngFunctionCode; lvngFunctionCode)
+                {
+                    ApplicationArea = All;
+                }
+
                 field(lvngPriority; lvngPriority)
                 {
                     ApplicationArea = All;
