@@ -38,7 +38,6 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                     var
                         GLAccount: Record "G/L Account";
                         BankAccount: Record "Bank Account";
-                        ICPartner: Record "IC Partner";
                     begin
                         case lvngAccountType of
                             lvngAccountType::lvngGLAccount:
@@ -65,6 +64,29 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                 field(lvngFieldNo; lvngFieldNo)
                 {
                     ApplicationArea = All;
+
+                    trigger OnValidate()
+                    var
+                        FieldRec: Record Field;
+                        lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+                    begin
+                        case lvngProcessingSourceType of
+                            lvngProcessingSourceType::lvngLoanJournalValue:
+                                begin
+                                    FieldRec.reset;
+                                    FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
+                                    FieldRec.SetRange("No.", lvngFieldNo);
+                                    FieldRec.FindFirst();
+                                    lvngDescription := FieldRec."Field Caption";
+                                end;
+                            lvngProcessingSourceType::lvngLoanJournalVariableValue:
+                                begin
+                                    lvngLoanFieldsConfiguration.Get(lvngFieldNo);
+                                    lvngDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+                                end;
+                        end;
+                    end;
+
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         FieldsListPage: Page "Field List";
@@ -93,7 +115,6 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                                         lvngDescription := lvngLoanFieldsConfiguration.lvngFieldName;
                                     end;
                                 end;
-
                         end;
                     end;
                 }

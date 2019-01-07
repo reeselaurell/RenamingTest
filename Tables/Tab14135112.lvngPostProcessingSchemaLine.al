@@ -58,18 +58,18 @@ table 14135112 "lvngPostProcessingSchemaLine"
             DataClassification = CustomerContent;
         }
 
-        field(17; lvngFunctionCode; Code[20])
+        field(17; lvngExpressionCode; Code[20])
         {
-            Caption = 'Function Code';
+            Caption = 'Expression Code';
             DataClassification = CustomerContent;
             trigger OnLookup()
             var
-                lvngSelectedFunctionCode: Code[20];
+                lvngSelectedExpressionCode: Code[20];
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedFunctionCode := lvngExpressionList.SelectExpression('JOURNAL');
-                if lvngSelectedFunctionCode <> '' then
-                    lvngFunctionCode := lvngSelectedFunctionCode;
+                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression('JOURNAL');
+                if lvngSelectedExpressionCode <> '' then
+                    lvngExpressionCode := lvngSelectedExpressionCode;
             end;
         }
 

@@ -23,6 +23,7 @@ page 14135113 "lvngPostProcessingSchemaLines"
                 field(lvngFromFieldNo; lvngFromFieldNo)
                 {
                     ApplicationArea = All;
+
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         FieldsListPage: Page "Field List";
@@ -63,11 +64,10 @@ page 14135113 "lvngPostProcessingSchemaLines"
                                     end;
                                 end;
                         end;
-
                     end;
                 }
 
-                field(lvngFunctionCode; lvngFunctionCode)
+                field(lvngExpressionCode; lvngExpressionCode)
                 {
                     ApplicationArea = All;
                 }

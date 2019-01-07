@@ -1,7 +1,5 @@
-Add Conditions Engine
-Loan Cards Creation from Journal
-  1 - Schema to Update Loan fields from Import Schema only (Copy values to update schema)
-  2 - Add Validation via Conditions
+2 - Custom Schema Loans Creation
+
 
 Loan Funded Document Creation from Journal and Posting Routine
 Loan Sold Document Creation from Journal and Posting Routine

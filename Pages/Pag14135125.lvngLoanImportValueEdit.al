@@ -23,8 +23,6 @@ page 14135125 "lvngLoanImportValueEdit"
                 {
                     ApplicationArea = All;
                 }
-
-
             }
         }
     }

@@ -22,6 +22,47 @@ page 14135111 "lvngLoanImportSchemaLines"
                 {
                     ApplicationArea = All;
 
+                    trigger OnValidate()
+                    var
+                        FieldRec: Record Field;
+                        lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+                    begin
+                        case lvngFieldType of
+                            lvngFieldType::lvngTable:
+                                begin
+                                    FieldRec.reset;
+                                    FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
+                                    FieldRec.SetRange("No.", lvngFieldNo);
+                                    FieldRec.FindFirst();
+                                    lvngName := FieldRec."Field Caption";
+                                    case FieldRec.Type of
+                                        Fieldrec.Type::Integer:
+                                            begin
+                                                lvngValueType := lvngValueType::lvngInteger;
+                                            end;
+                                        FieldRec.Type::Boolean:
+                                            begin
+                                                lvngValueType := lvngValueType::lvngBoolean;
+                                            end;
+                                        FieldRec.Type::Decimal:
+                                            begin
+                                                lvngValueType := lvngValueType::lvngDecimal;
+                                            end;
+                                        FieldRec.Type::Date:
+                                            begin
+                                                lvngValueType := lvngValueType::lvngDate;
+                                            end;
+                                    end;
+                                end;
+                            lvngFieldType::lvngVariable:
+                                begin
+                                    lvngLoanFieldsConfiguration.Get(lvngFieldNo);
+                                    lvngName := lvngLoanFieldsConfiguration.lvngFieldName;
+                                    lvngValueType := lvngLoanFieldsConfiguration.lvngValueType;
+                                end;
+                        end;
+                    end;
+
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         FieldsListPage: Page "Field List";

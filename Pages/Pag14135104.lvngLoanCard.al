@@ -42,6 +42,19 @@ page 14135104 "lvngLoanCard"
                     ApplicationArea = All;
                 }
 
+                field(lvngTitleCustomerNo; lvngTitleCustomerNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngBorrowerCustomerNo; lvngBorrowerCustomerNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngInvestorCustomerNo; lvngInvestorCustomerNo)
+                {
+                    ApplicationArea = All;
+                }
+
                 field(lvngBorrowerFirstName; lvngBorrowerFirstName)
                 {
                     ApplicationArea = All;

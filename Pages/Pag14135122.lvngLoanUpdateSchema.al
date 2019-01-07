@@ -21,6 +21,58 @@ page 14135122 "lvngLoanUpdateSchema"
                 {
                     ApplicationArea = All;
 
+                    trigger OnValidate()
+                    var
+                        FieldRec: Record Field;
+                        lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+                    begin
+                        case lvngImportFieldType of
+                            lvngImportFieldType::lvngTable:
+                                begin
+                                    FieldRec.reset;
+                                    FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
+                                    FieldRec.SetRange("No.", lvngFieldNo);
+                                    FieldRec.FindFirst();
+                                    lvngFieldDescription := FieldRec."Field Caption";
+                                end;
+                            lvngImportFieldType::lvngVariable:
+                                begin
+                                    lvngLoanFieldsConfiguration.Get(lvngFieldNo);
+                                    lvngFieldDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+                                end;
+                        end;
+                    end;
+
+                    trigger OnLookup(var Text: Text): Boolean
+                    var
+                        FieldsListPage: Page "Field List";
+                        FieldRec: Record Field;
+                        lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+                    begin
+                        case lvngImportFieldType of
+                            lvngImportFieldType::lvngTable:
+                                begin
+                                    FieldRec.reset;
+                                    FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
+                                    FieldRec.SetFilter("No.", '%1..%2', 5, 4999);
+                                    Clear(FieldsListPage);
+                                    FieldsListPage.SetTableView(FieldRec);
+                                    FieldsListPage.LookupMode(true);
+                                    if FieldsListPage.RunModal() = Action::LookupOK then begin
+                                        FieldsListPage.GetRecord(FieldRec);
+                                        lvngFieldNo := FieldRec."No.";
+                                        lvngFieldDescription := FieldRec."Field Caption";
+                                    end;
+                                end;
+                            lvngImportFieldType::lvngVariable:
+                                begin
+                                    if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
+                                        lvngFieldNo := lvngLoanFieldsConfiguration.lvngFieldNo;
+                                        lvngFieldDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+                                    end;
+                                end;
+                        end;
+                    end;
                 }
                 field(lvngFieldDescription; lvngFieldDescription)
                 {
