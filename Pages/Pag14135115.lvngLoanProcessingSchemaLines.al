@@ -14,6 +14,10 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngTagCode; lvngTagCode)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngProcessingSourceType; lvngProcessingSourceType)
                 {
                     ApplicationArea = All;

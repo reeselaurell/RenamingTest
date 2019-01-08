@@ -14,4 +14,8 @@ enum 14135111 "lvngProcessingSourceType"
     {
         Caption = 'Function';
     }
+    value(3; lvngTag)
+    {
+        Caption = 'Tag Code';
+    }
 }

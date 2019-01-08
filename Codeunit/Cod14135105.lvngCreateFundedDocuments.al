@@ -12,6 +12,9 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngLoanJournalLine.TestField(lvngProcessingSchemaCode);
         lvngLoanProcessingSchema.Get(lvngLoanJournalLine.lvngProcessingSchemaCode);
         lvngLoanJournalBatch.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode);
+        lvngExpressionValueBuffer.reset;
+        lvngExpressionValueBuffer.DeleteAll();
+        lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
         lvngLineNo := 10000;
         clear(lvngLoanDocument);
         lvngLoanDocument.init;
@@ -24,6 +27,8 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngLoanDocument.Modify(true);
         if lvngLoanProcessingSchema.lvngUseGlobalSchemaCode <> '' then begin
             lvngLoanProcessingSchemaLine.reset;
+            lvngLoanProcessingSchemaLine.SetRange(lvngBalancingEntry, false);
+            lvngLoanProcessingSchemaLine.Setfilter(lvngProcessingSourceType, '<>%1', lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngTag);
             lvngLoanProcessingSchemaLine.SetRange(lvngProcessingCode, lvngLoanProcessingSchema.lvngUseGlobalSchemaCode);
             if lvngLoanProcessingSchemaLine.FindSet() then begin
                 repeat
@@ -33,11 +38,44 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         end;
         lvngLoanProcessingSchemaLine.reset;
         lvngLoanProcessingSchemaLine.SetRange(lvngProcessingCode, lvngLoanProcessingSchema.lvngCode);
+        lvngLoanProcessingSchemaLine.SetRange(lvngBalancingEntry, false);
+        lvngLoanProcessingSchemaLine.Setfilter(lvngProcessingSourceType, '<>%1', lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngTag);
         if lvngLoanProcessingSchemaLine.FindSet() then begin
             repeat
                 CreateDocumentLine(lvngLoanDocumentLine, lvngLoanDocument, lvngLoanProcessingSchemaLine, lvngLoanJournalLine, lvngLineNo);
             until lvngLoanProcessingSchemaLine.Next() = 0;
         end;
+        lvngLoanDocumentLineTemp.reset;
+        lvngLoanDocumentLineTemp.DeleteAll();
+        lvngLoanDocumentLine.reset;
+        if lvngLoanDocumentLine.FindSet() then begin
+            repeat
+                Clear(lvngLoanDocumentLineTemp);
+                lvngLoanDocumentLineTemp := lvngLoanDocumentLine;
+                lvngLoanDocumentLineTemp.Insert();
+            until lvngLoanDocumentLine.Next() = 0;
+        end;
+        if lvngLoanProcessingSchema.lvngUseGlobalSchemaCode <> '' then begin
+            lvngLoanProcessingSchemaLine.reset;
+            lvngLoanProcessingSchemaLine.SetRange(lvngBalancingEntry, true);
+            lvngLoanProcessingSchemaLine.SetRange(lvngProcessingCode, lvngLoanProcessingSchema.lvngUseGlobalSchemaCode);
+            if lvngLoanProcessingSchemaLine.FindSet() then begin
+                repeat
+                    CreateDocumentLine(lvngLoanDocumentLine, lvngLoanDocument, lvngLoanProcessingSchemaLine, lvngLoanJournalLine, lvngLineNo);
+                until lvngLoanProcessingSchemaLine.Next() = 0;
+            end;
+        end;
+        lvngLoanProcessingSchemaLine.reset;
+        lvngLoanProcessingSchemaLine.SetRange(lvngProcessingCode, lvngLoanProcessingSchema.lvngCode);
+        lvngLoanProcessingSchemaLine.SetRange(lvngBalancingEntry, true);
+        if lvngLoanProcessingSchemaLine.FindSet() then begin
+            repeat
+                CreateDocumentLine(lvngLoanDocumentLine, lvngLoanDocument, lvngLoanProcessingSchemaLine, lvngLoanJournalLine, lvngLineNo);
+            until lvngLoanProcessingSchemaLine.Next() = 0;
+        end;
+        lvngLoanDocumentLine.reset;
+        lvngloandocumentline.SetRange(lvngAmount, 0);
+        lvngLoanDocumentLine.DeleteAll();
     end;
 
     local procedure CreateDocumentLine(var lvngLoanDocumentLine: Record lvngLoanDocumentLine; lvngLoanDocument: record lvngLoanDocument; lvngLoanProcessingSchemaLine: Record lvngLoanProcessingSchemaLine; lvngLoanJournalLine: Record lvngLoanJournalLine; var lvngLineNo: integer)
@@ -48,7 +86,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngAccountNo: Code[20];
         lvngDecimalValue: Decimal;
     begin
-        if CheckCondition(lvngLoanProcessingSchemaLine.lvngConditionCode, lvngLoanJournalLine) then begin
+        if CheckCondition(lvngLoanProcessingSchemaLine.lvngConditionCode) then begin
             Clear(lvngLoanDocumentLine);
             lvngLoanDocumentLine.init;
             lvngLoanDocumentLine.lvngDocumentNo := lvngLoanDocument.lvngDocumentNo;
@@ -57,6 +95,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
             lvngLoanDocumentLine.lvngProcessingSchemaCode := lvngLoanProcessingSchemaLine.lvngProcessingCode;
             lvngloandocumentline.lvngProcessingSchemaLineNo := lvngLoanProcessingSchemaLine.lvngLineNo;
             lvngLoanDocumentLine.lvngBalancingEntry := lvngLoanProcessingSchemaLine.lvngBalancingEntry;
+            lvngloandocumentline.lvngTagCode := lvngLoanProcessingSchemaLine.lvngTagCode;
             lvngLineNo := lvngLineNo + 10000;
             lvngLoanDocumentLine.Insert();
             if lvngLoanProcessingSchemaLine.lvngOverrideReasonCode <> '' then begin
@@ -68,14 +107,14 @@ codeunit 14135105 "lvngCreateFundedDocuments"
             lvngLoanDocumentLine.lvngAccountType := lvngLoanProcessingSchemaLine.lvngAccountType;
             lvngLoanDocumentLine.lvngAccountNo := lvngLoanProcessingSchemaLine.lvngAccountNo;
             if lvngLoanProcessingSchemaLine.lvngAccountNoSwitchCode <> '' then begin
-                lvngAccountNo := GetSwitchValue(lvngLoanProcessingSchemaLine.lvngAccountNoSwitchCode, lvngLoanJournalLine);
+                lvngAccountNo := GetSwitchValue(lvngLoanProcessingSchemaLine.lvngAccountNoSwitchCode);
                 if lvngAccountNo <> '' then
                     lvngLoanDocumentLine.lvngAccountNo := lvngAccountNo;
             end;
             case lvngLoanProcessingSchemaLine.lvngProcessingSourceType of
                 lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngFunction:
                     begin
-                        if Evaluate(lvngDecimalValue, GetFunctionValue(lvngLoanProcessingSchemaLine.lvngFunctionCode, lvngLoanJournalLine)) then
+                        if Evaluate(lvngDecimalValue, GetFunctionValue(lvngLoanProcessingSchemaLine.lvngFunctionCode)) then
                             lvngLoanDocumentLine.lvngAmount := lvngDecimalValue;
                     end;
                 lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngLoanJournalValue:
@@ -91,6 +130,19 @@ codeunit 14135105 "lvngCreateFundedDocuments"
                             if Evaluate(lvngDecimalValue, lvngLoanJournalValue.lvngFieldValue) then
                                 lvngLoanDocumentLine.lvngAmount := lvngDecimalValue;
                         end;
+                    end;
+                lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngTag:
+                    begin
+                        Clear(lvngDecimalValue);
+                        lvngLoanProcessingSchemaLine.TestField(lvngBalancingEntry);
+                        lvngLoanDocumentLineTemp.reset;
+                        lvngLoanDocumentLineTemp.SetRange(lvngTagCode, lvngLoanProcessingSchemaLine.lvngTagCode);
+                        if lvngLoanDocumentLineTemp.FindSet() then begin
+                            repeat
+                                lvngDecimalValue := lvngDecimalValue + lvngLoanDocumentLineTemp.lvngAmount;
+                            until lvngLoanDocumentLineTemp.Next() = 0;
+                        end;
+                        lvngLoanDocumentLine.lvngAmount := lvngDecimalValue;
                     end;
             end;
             if lvngLoanProcessingSchemaLine.lvngReverseSign then
@@ -123,26 +175,31 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         end;
     end;
 
-    local procedure CheckCondition(lvngConditionCode: code[20]; lvngLoanJournalLine: Record lvngLoanJournalLine): Boolean
-    var
-        myInt: Integer;
+    local procedure CheckCondition(lvngConditionCode: code[20]): Boolean
     begin
         if lvngConditionCode = '' then
             exit(true);
-        exit(true);
+        exit(lvngExpressionEngine.CheckCondition(lvngConditionCode, lvngExpressionValueBuffer));
     end;
 
-    local procedure GetFunctionValue(lvngFunctionCode: code[20]; lvngLoanJournalLine: Record lvngLoanJournalLine): Text
-    var
-        myInt: Integer;
+    local procedure GetFunctionValue(lvngFunctionCode: code[20]): Text
     begin
-        exit('100');
+        exit(lvngExpressionEngine.CalculateFormula(lvngFunctionCode, lvngExpressionValueBuffer));
     end;
 
-    local procedure GetSwitchValue(lvngSwitchCode: code[20]; lvngLoanJournalLine: Record lvngLoanJournalLine): Code[20]
+    local procedure GetSwitchValue(lvngSwitchCode: code[20]): Code[20]
     var
-        myInt: Integer;
+        lvngResult: Text;
     begin
-        exit('TEST');
+        if not lvngExpressionEngine.SwitchCase(lvngSwitchCode, lvngResult, lvngExpressionValueBuffer) then
+            exit('');
+        exit(copystr(lvngResult, 1, 20));
+
     end;
+
+    var
+        lvngExpressionValueBuffer: record lvngExpressionValueBuffer temporary;
+        lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
+        lvngExpressionEngine: Codeunit lvngExpressionEngine;
+        lvngLoanDocumentLineTemp: Record lvngLoanDocumentLine temporary;
 }

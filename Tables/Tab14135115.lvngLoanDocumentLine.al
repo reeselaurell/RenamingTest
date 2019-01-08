@@ -126,6 +126,11 @@ table 14135115 "lvngLoanDocumentLine"
             Caption = 'Balancing Entry';
             DataClassification = CustomerContent;
         }
+        field(1003; lvngTagCode; Code[10])
+        {
+            Caption = 'Tag Code';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

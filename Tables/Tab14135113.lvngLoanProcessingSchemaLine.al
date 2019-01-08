@@ -33,6 +33,15 @@ table 14135113 "lvngLoanProcessingSchemaLine"
         {
             Caption = 'Function Code';
             DataClassification = CustomerContent;
+            trigger OnLookup()
+            var
+                lvngSelectedFunctionCode: Code[20];
+            begin
+                Clear(lvngExpressionList);
+                lvngSelectedFunctionCode := lvngExpressionList.SelectExpression('JOURNAL');
+                if lvngSelectedFunctionCode <> '' then
+                    lvngFunctionCode := lvngSelectedFunctionCode;
+            end;
         }
 
         field(13; lvngDescription; Text[50])
@@ -54,10 +63,34 @@ table 14135113 "lvngLoanProcessingSchemaLine"
         {
             Caption = 'Account No. Switch Code';
             DataClassification = CustomerContent;
+            trigger OnLookup()
+            var
+                lvngSelectedSwitchCode: Code[20];
+            begin
+                Clear(lvngExpressionList);
+                lvngSelectedSwitchCode := lvngExpressionList.SelectExpression('JOURNAL');
+                if lvngSelectedSwitchCode <> '' then
+                    lvngAccountNoSwitchCode := lvngSelectedSwitchCode;
+            end;
         }
         field(17; lvngConditionCode; Code[20])
         {
             Caption = 'Condition Code';
+            DataClassification = CustomerContent;
+            trigger OnLookup()
+            var
+                lvngSelectedConditionCode: Code[20];
+            begin
+                Clear(lvngExpressionList);
+                lvngSelectedConditionCode := lvngExpressionList.SelectExpression('JOURNAL');
+                if lvngSelectedConditionCode <> '' then
+                    lvngConditionCode := lvngSelectedConditionCode;
+            end;
+        }
+
+        field(18; lvngTagCode; Code[10])
+        {
+            Caption = 'Tag Code';
             DataClassification = CustomerContent;
         }
         field(20; "lvngReverseSign"; Boolean)
@@ -198,5 +231,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             Clustered = true;
         }
     }
+    var
+        lvngExpressionList: page lvngExpressionList;
 
 }

@@ -33,6 +33,7 @@ codeunit 14135103 "lvngValidateFundedJournal"
         ProcessingSchemaBlankLbl: Label 'Processing Schema Code can not be blank';
         TitleCustomerNoMissingLbl: Label 'Title Customer No. is missing';
         ReasonCodeMissingOnLineLbl: Label 'Reason Code is mandatory for Transaction, Line No. %1';
+        AccountNoMissingOnLineLbl: Label 'Account No. is mandatory for Transaction, Line No. %1';
     begin
         GetLoanVisionSetup();
         if lvngLoanJournalLine.lvngLoanNo = '' then
@@ -81,6 +82,9 @@ codeunit 14135103 "lvngValidateFundedJournal"
             repeat
                 if lvngLoanDocumentLine.lvngReasonCode = '' then begin
                     lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, strsubstno(ReasonCodeMissingOnLineLbl, lvngLoanDocumentLine.lvngLineNo));
+                end;
+                if lvngLoanDocumentLine.lvngAccountNo = '' then begin
+                    lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, strsubstno(AccountNoMissingOnLineLbl, lvngLoanDocumentLine.lvngLineNo));
                 end;
             until lvngLoanDocumentLine.Next() = 0;
         end;
