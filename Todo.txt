@@ -1,20 +1,22 @@
-2 - Custom Schema Loans Creation
+2 - Loan Funded Document Creation from Journal and Posting Routine
+3 - Loan Sold Document Creation from Journal and Posting Routine
+4 - Loans Creation Batch
+Show red colored errors in journal
+Button to show only error loans and all loans
 
 
-Loan Funded Document Creation from Journal and Posting Routine
-Loan Sold Document Creation from Journal and Posting Routine
-Loan Servicing Functionality for Regular and Construction Loans
-Import Management
-Document Exchange Integration
-Create Rolecenters
-Reports
-Branch Portal Integration
-Alight Integration
-Concur Expenses Integration
-Concur Invoices Integration
+1 - Loan Servicing Functionality for Regular and Construction Loans
+2 - Import Management Add-on
+3 - Document Exchange Integration
+
+1 - Create Rolecenters
+2 - Reports
+
+1 - Branch Portal Integration
+2 - Alight Integration
+3- Concur Expenses Integration
+4- Concur Invoices Integration
 
 
 ---
 Small bits
-Show red colored errors in journal
-Button to show only error loans and all loans
