@@ -37,6 +37,24 @@ table 14135100 "lvngLoanVisionSetup"
             DataClassification = CustomerContent;
             Caption = 'Search Name Template';
         }
+        field(14; lvngFundedVoidReasonCode; code[10])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Funded Void Reason Code';
+            TableRelation = "Reason Code";
+        }
+        field(15; lvngSoldVoidReasonCode; Code[10])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Sold Void Reason Code';
+            TableRelation = "Reason Code";
+        }
+        field(16; lvngServicedVoidReasonCode; code[10])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Serviced Void Reason Code';
+            TableRelation = "Reason Code";
+        }
 
         field(300; lvngLoanOfficerDimensionCode; Code[20])
         {

@@ -2,6 +2,7 @@ table 14135102 "lvngLoan"
 {
     DataClassification = CustomerContent;
     LookupPageId = lvngLoanList;
+    DrillDownPageId = lvngLoanList;
 
     fields
     {
@@ -328,6 +329,14 @@ table 14135102 "lvngLoan"
         }
 
 
+    }
+
+    fieldgroups
+    {
+        fieldgroup(DropDown; lvngLoanNo, lvngSearchName)
+        {
+
+        }
     }
 
     trigger OnInsert()

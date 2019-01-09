@@ -16,21 +16,31 @@ page 14135100 "lvngLoanVisionSetup"
             group(General)
             {
                 Caption = 'General';
-                field(FundedReasonCode; lvngFundedReasonCode)
+                field(lvngFundedReasonCode; lvngFundedReasonCode)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngFundedVoidReasonCode; lvngFundedVoidReasonCode)
                 {
                     ApplicationArea = All;
                 }
 
-                field(SoldReasonCode; lvngSoldReasonCode)
+                field(lvngSoldReasonCode; lvngSoldReasonCode)
                 {
                     ApplicationArea = All;
                 }
-
-                field(ServicedReasonCode; lvngServicedReasonCode)
+                field(lvngSoldVoidReasonCode; lvngSoldVoidReasonCode)
                 {
                     ApplicationArea = All;
                 }
-
+                field(lvngServicedReasonCode; lvngServicedReasonCode)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngServicedVoidReasonCode; lvngServicedVoidReasonCode)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngSearchNameTemplate; lvngSearchNameTemplate)
                 {
                     ApplicationArea = All;

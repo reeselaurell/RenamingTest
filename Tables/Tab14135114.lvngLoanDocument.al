@@ -27,6 +27,13 @@ table 14135114 "lvngLoanDocument"
             DataClassification = CustomerContent;
             TableRelation = Customer;
         }
+        field(10000; lvngBorrowerSearchName; Code[50])
+        {
+            Caption = 'Borrower Search Name';
+            FieldClass = FlowField;
+            CalcFormula = lookup (lvngLoan.lvngSearchName where (lvngLoanNo = field (lvngLoanNo)));
+            Editable = false;
+        }
 
 
     }

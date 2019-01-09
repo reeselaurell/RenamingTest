@@ -398,6 +398,12 @@ table 14135107 "lvngLoanJournalLine"
             DataClassification = CustomerContent;
         }
 
+        field(50000; lvngErrorExists; Boolean)
+        {
+            Caption = 'Error Exists';
+            FieldClass = FlowField;
+            CalcFormula = exist (lvngLoanImportErrorLine where (lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo)));
+        }
 
     }
 

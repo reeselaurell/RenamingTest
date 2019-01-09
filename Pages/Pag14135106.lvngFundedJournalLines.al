@@ -14,6 +14,8 @@ page 14135106 "lvngFundedJournalLines"
                 field(lvngLoanNo; lvngLoanNo)
                 {
                     ApplicationArea = All;
+                    Style = Unfavorable;
+                    StyleExpr = lvngErrorExists;
                 }
 
                 field(lvngTitleCustomerNo; lvngTitleCustomerNo)
@@ -294,6 +296,21 @@ page 14135106 "lvngFundedJournalLines"
                 end;
             }
 
+            action(lvngCreateDocuments)
+            {
+                Caption = 'Create Documents';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = CreateDocuments;
+                trigger OnAction()
+                var
+                    lvngCreateFundedDocuments: Codeunit lvngCreateFundedDocuments;
+                begin
+                    lvngCreateFundedDocuments.CreateDocuments(lvngLoanJournalBatchCode);
+                end;
+            }
             action(lvngCreateLoanCards)
             {
                 Caption = 'Create Loan Cards';
@@ -321,6 +338,40 @@ page 14135106 "lvngFundedJournalLines"
                 RunPageMode = Edit;
                 RunPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
             }
+
+            action(lvngShowErrorLinesOnly)
+            {
+                ApplicationArea = All;
+                Caption = 'Show Error Lines';
+                Image = ErrorLog;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                begin
+                    SetRange(lvngErrorExists, true);
+                    CurrPage.Update(false);
+                end;
+            }
+
+            action(lvngShowAllLines)
+            {
+                ApplicationArea = All;
+                Caption = 'Show All Lines';
+                Image = AllLines;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                begin
+                    SetRange(lvngErrorExists);
+                    CurrPage.Update(false);
+                end;
+            }
         }
     }
+    trigger OnAfterGetRecord()
+    begin
+        CalcFields(lvngErrorExists);
+    end;
 }

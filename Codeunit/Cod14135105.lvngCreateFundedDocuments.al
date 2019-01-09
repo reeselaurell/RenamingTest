@@ -1,5 +1,59 @@
 codeunit 14135105 "lvngCreateFundedDocuments"
 {
+    procedure CreateDocuments(lvngLoanJournalBatchCode: Code[20])
+    var
+        lvngLoanJournalLine: Record lvngLoanJournalLine;
+        lvngLoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
+        lvngValidateFundedJournal: Codeunit lvngValidateFundedJournal;
+        lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+        lvngLoanDocumentTemp: Record lvngLoanDocument temporary;
+        lvngLoanDocumentLineTemp: Record lvngLoanDocumentLine temporary;
+        lvngLoanDocument: Record lvngLoanDocument;
+        lvngLoanDocumentLine: Record lvngLoanDocumentLine;
+        lvngDocumentsCreated: Integer;
+        lvngTotalEntries: Integer;
+        lvngProcessResultLbl: Label '%1 of %2 documents were created';
+    begin
+        lvngValidateFundedJournal.ValidateFundedLines(lvngLoanJournalBatchCode);
+        lvngLoanCardManagement.UpdateLoanCards(lvngLoanJournalBatchCode);
+        lvngLoanJournalLine.reset;
+        lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode);
+        lvngTotalEntries := lvngLoanJournalLine.Count();
+        if lvngLoanJournalLine.FindSet() then begin
+            repeat
+                if not lvngLoanJournalErrorMgmt.HasError(lvngLoanJournalLine) then begin
+                    lvngLoanDocumentTemp.reset;
+                    lvngLoanDocumentTemp.DeleteAll();
+                    lvngLoanDocumentLineTemp.reset;
+                    lvngLoanDocumentLineTemp.DeleteAll();
+                    CreateSingleDocument(lvngLoanJournalLine, lvngLoanDocumentTemp, lvngLoanDocumentLineTemp, false);
+                    lvngLoanDocumentTemp.reset;
+                    if lvngLoanDocumentTemp.FindSet() then begin
+                        repeat
+                            Clear(lvngLoanDocument);
+                            lvngLoanDocument := lvngLoanDocumentTemp;
+                            lvngLoanDocument.Insert();
+                            lvngLoanDocumentLineTemp.reset;
+                            if lvngLoanDocumentLineTemp.FindSet() then begin
+                                repeat
+                                    clear(lvngLoanDocumentLine);
+                                    lvngLoanDocumentLine := lvngLoanDocumentLineTemp;
+                                    lvngLoanDocumentLine.Insert();
+                                until lvngLoanDocumentLineTemp.Next() = 0;
+                            end;
+                        until lvngLoanDocumentLineTemp.Next() = 0;
+                        lvngLoanJournalLine.Mark(true);
+                        lvngDocumentsCreated := lvngDocumentsCreated + 1;
+                    end;
+                end;
+            until lvngLoanJournalLine.Next() = 0;
+        end;
+        lvngLoanJournalLine.MarkedOnly(true);
+        lvngLoanJournalLine.DeleteAll(true);
+        commit;
+        Message(lvngProcessResultLbl, lvngTotalEntries, lvngDocumentsCreated);
+    end;
+
     procedure CreateSingleDocument(lvngLoanJournalLine: Record lvngLoanJournalLine; var lvngLoanDocument: record lvngLoanDocument; var lvngLoanDocumentLine: Record lvngLoanDocumentLine; lvngPreview: Boolean)
     var
         lvngLoanProcessingSchema: Record lvngLoanProcessingSchema;
