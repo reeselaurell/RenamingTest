@@ -21,8 +21,9 @@ f - Batch posting
 
 1 - Branch Portal Integration
 2 - Alight Integration
-3- Concur Expenses Integration
-4- Concur Invoices Integration
+3 - Concur Expenses Integration
+4 - Concur Invoices Integration
+5 - Commissions Implementation
 
 
 ---

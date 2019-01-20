@@ -27,6 +27,11 @@ table 14135114 "lvngLoanDocument"
             DataClassification = CustomerContent;
             TableRelation = Customer;
         }
+        field(12; lvngVoid; Boolean)
+        {
+            Caption = 'Void';
+            DataClassification = CustomerContent;
+        }
         field(10000; lvngBorrowerSearchName; Code[50])
         {
             Caption = 'Borrower Search Name';

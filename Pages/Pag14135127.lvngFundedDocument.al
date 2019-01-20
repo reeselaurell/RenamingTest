@@ -15,6 +15,10 @@ page 14135127 "lvngFundedDocument"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngVoid; lvngVoid)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngCustomerNo; lvngCustomerNo)
                 {
                     ApplicationArea = All;

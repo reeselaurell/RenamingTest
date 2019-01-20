@@ -28,6 +28,10 @@ page 14135126 "lvngLoanDocumentsList"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngVoid; lvngVoid)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngBorrowerSearchName; lvngBorrowerSearchName)
                 {
                     ApplicationArea = All;
