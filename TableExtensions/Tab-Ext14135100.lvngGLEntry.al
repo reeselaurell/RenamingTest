@@ -52,6 +52,12 @@ tableextension 14135100 "lvngGLEntry" extends "G/L Entry" //MyTargetTableId
             TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (8));
         }
 
+        field(14135107; lvngEntryDate; Date)
+        {
+            Caption = 'Entry Date';
+            DataClassification = CustomerContent;
+        }
+
         field(14135150; lvngWarehouseLineCode; Code[50])
         {
             Caption = 'Warehouse Line Code';

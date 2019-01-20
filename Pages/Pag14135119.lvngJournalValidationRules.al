@@ -1,8 +1,7 @@
 page 14135119 "lvngJournalValidationRules"
 {
     PageType = List;
-    UsageCategory = Lists;
-    ApplicationArea = All;
+    Caption = 'Loan Journal Validation Rules';
     SourceTable = lvngJournalValidationRule;
 
     layout

@@ -279,7 +279,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
     begin
         lvngPostProcessingSchemaLine.TestField(lvngExpressionCode);
         lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
-        if not lvngExpressionEngine.SwitchCase(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngResult, lvngExpressionValueBuffer) then
+        if not lvngExpressionEngine.SwitchCase(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngResult, lvngExpressionValueBuffer, true) then
             Error(SwitchCaseErrorLbl, lvngPostProcessingSchemaLine.lvngExpressionCode);
         case lvngPostProcessingSchemaLine.lvngAssignTo of
             lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalVariableField:
@@ -330,7 +330,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
     begin
         lvngPostProcessingSchemaLine.TestField(lvngExpressionCode);
         lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
-        lvngResult := lvngExpressionEngine.CalculateFormula(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngExpressionValueBuffer);
+        lvngResult := lvngExpressionEngine.CalculateFormula(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngExpressionValueBuffer, true);
         case lvngPostProcessingSchemaLine.lvngAssignTo of
             lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalVariableField:
                 begin

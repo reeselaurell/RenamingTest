@@ -4,10 +4,10 @@
         {
             "type": "al",
             "request": "launch",
-            "name": "NAV",
-            "server": "https://6b460d2322e0",
-            "serverInstance": "NAV",
-            "authentication": "UserPassword",
+            "name": "BCCU3",
+            "server": "http://localhost",
+            "serverInstance": "BCCU3",
+            "authentication": "Windows",
             "startupObjectId": 14135103,
             "startupObjectType": "Page",
             "breakOnError": true

@@ -233,19 +233,19 @@ codeunit 14135105 "lvngCreateFundedDocuments"
     begin
         if lvngConditionCode = '' then
             exit(true);
-        exit(lvngExpressionEngine.CheckCondition(lvngConditionCode, lvngExpressionValueBuffer));
+        exit(lvngExpressionEngine.CheckCondition(lvngConditionCode, lvngExpressionValueBuffer, true));
     end;
 
     local procedure GetFunctionValue(lvngFunctionCode: code[20]): Text
     begin
-        exit(lvngExpressionEngine.CalculateFormula(lvngFunctionCode, lvngExpressionValueBuffer));
+        exit(lvngExpressionEngine.CalculateFormula(lvngFunctionCode, lvngExpressionValueBuffer, true));
     end;
 
     local procedure GetSwitchValue(lvngSwitchCode: code[20]): Code[20]
     var
         lvngResult: Text;
     begin
-        if not lvngExpressionEngine.SwitchCase(lvngSwitchCode, lvngResult, lvngExpressionValueBuffer) then
+        if not lvngExpressionEngine.SwitchCase(lvngSwitchCode, lvngResult, lvngExpressionValueBuffer, true) then
             exit('');
         exit(copystr(lvngResult, 1, 20));
 
