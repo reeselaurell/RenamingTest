@@ -6,14 +6,12 @@ d - Add dimensions on header
 e - Do dimension Set ID
 f - Batch posting 
 
-2 - Loan Sold Document Creation from Journal and Posting Routine
-3 - Loans Creation Batch
-4 - Check if document was posted
-5 - Voids management
+2 - Loan Sold Document Creation from Journal and Posting Routine same as funded
 
+3 - Adjust pages with new fields (Page Extensions)
 
 1 - Loan Servicing Functionality for Regular and Construction Loans
-2 - Import Management Add-on
+2 - Import Management
 3 - Document Exchange Integration
 
 1 - Create Rolecenters

@@ -41,6 +41,10 @@ pageextension 14135101 "lvngGLEntry" extends "General Ledger Entries" //MyTarget
             {
                 ApplicationArea = All;
             }
+            field(lvngEntryDate; lvngEntryDate)
+            {
+                ApplicationArea = All;
+            }
 
         }
     }

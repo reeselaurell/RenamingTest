@@ -1,8 +1,6 @@
 page 14135122 "lvngLoanUpdateSchema"
 {
     PageType = List;
-    UsageCategory = Lists;
-    ApplicationArea = All;
     SourceTable = lvngLoanUpdateSchema;
     Caption = 'Loan Update Schema';
 

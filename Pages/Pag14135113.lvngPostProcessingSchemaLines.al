@@ -1,8 +1,6 @@
 page 14135113 "lvngPostProcessingSchemaLines"
 {
     PageType = List;
-    UsageCategory = Lists;
-    ApplicationArea = All;
     SourceTable = lvngPostProcessingSchemaLine;
     Caption = 'Post Processing Lines';
 
