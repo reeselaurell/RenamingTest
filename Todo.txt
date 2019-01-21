@@ -1,18 +1,20 @@
 1 - Loan Funded Document Creation from Journal and Posting Routine
-a - Voids via journal using reason code and void application handling
+a - Documents Generation
 b - Do not post posted document 
-c - Reason code for void
-d - Add dimensions on header
-e - Do dimension Set ID
-f - Batch posting 
+c - Add dimensions on header
+d - Do dimension Set ID
+e - Posting Routine
+f - Batch Posting
 
 2 - Loan Sold Document Creation from Journal and Posting Routine same as funded
 
 3 - Adjust pages with new fields (Page Extensions)
 
 1 - Loan Servicing Functionality for Regular and Construction Loans
-2 - Import Management
+2 - Import Management (Purchase/Journals/Deposits/Bank Rec./Checks Import)
 3 - Document Exchange Integration
+4 - QuickPay + Credits
+5 - Dimensions Change Toolkit
 
 1 - Create Rolecenters
 2 - Reports

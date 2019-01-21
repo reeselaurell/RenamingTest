@@ -37,6 +37,115 @@ table 14135111 lvngLoanProcessingSchema
             DataClassification = CustomerContent;
             TableRelation = lvngLoanProcessingSchema.lvngCode where (lvngGlobalSchema = const (true));
         }
+        field(80; lvngGlobalDimension1Code; Code[20])
+        {
+            Caption = 'Global Dimension 1 Code';
+            DataClassification = CustomerContent;
+            CaptionClass = '1,1,1';
+            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (1));
+        }
+        field(81; lvngGlobalDimension2Code; Code[20])
+        {
+            Caption = 'Global Dimension 2 Code';
+            DataClassification = CustomerContent;
+            CaptionClass = '1,1,2';
+            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (2));
+        }
+        field(82; lvngShortcutDimension3Code; Code[20])
+        {
+            Caption = 'Shortcut Dimension 3 Code';
+            DataClassification = CustomerContent;
+            CaptionClass = '1,2,3';
+            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (3));
+        }
+        field(83; lvngShortcutDimension4Code; Code[20])
+        {
+            Caption = 'Shortcut Dimension 4 Code';
+            DataClassification = CustomerContent;
+            CaptionClass = '1,2,4';
+            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (4));
+        }
+        field(84; lvngShortcutDimension5Code; Code[20])
+        {
+            Caption = 'Shortcut Dimension 5 Code';
+            DataClassification = CustomerContent;
+            CaptionClass = '1,2,5';
+            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (5));
+        }
+        field(85; lvngShortcutDimension6Code; Code[20])
+        {
+            Caption = 'Shortcut Dimension 6 Code';
+            DataClassification = CustomerContent;
+            CaptionClass = '1,2,6';
+            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (6));
+        }
+        field(86; lvngShortcutDimension7Code; Code[20])
+        {
+            Caption = 'Shortcut Dimension 7 Code';
+            DataClassification = CustomerContent;
+            CaptionClass = '1,2,7';
+            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (7));
+        }
+        field(87; lvngShortcutDimension8Code; Code[20])
+        {
+            Caption = 'Shortcut Dimension 8 Code';
+            DataClassification = CustomerContent;
+            CaptionClass = '1,2,8';
+            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (8));
+        }
+
+        field(88; lvngBusinessUnitCode; Code[10])
+        {
+            Caption = 'Business Unit Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Business Unit";
+        }
+
+        field(1000; lvngDimension1Rule; enum lvngProcessingDimensionRule)
+        {
+            Caption = 'Dimension 1 Rule';
+            DataClassification = CustomerContent;
+        }
+        field(1001; lvngDimension2Rule; enum lvngProcessingDimensionRule)
+        {
+            Caption = 'Dimension 2 Rule';
+            DataClassification = CustomerContent;
+        }
+        field(1002; lvngDimension3Rule; enum lvngProcessingDimensionRule)
+        {
+            Caption = 'Dimension 3 Rule';
+            DataClassification = CustomerContent;
+        }
+        field(1003; lvngDimension4Rule; enum lvngProcessingDimensionRule)
+        {
+            Caption = 'Dimension 4 Rule';
+            DataClassification = CustomerContent;
+        }
+        field(1004; lvngDimension5Rule; enum lvngProcessingDimensionRule)
+        {
+            Caption = 'Dimension 5 Rule';
+            DataClassification = CustomerContent;
+        }
+        field(1005; lvngDimension6Rule; enum lvngProcessingDimensionRule)
+        {
+            Caption = 'Dimension 6 Rule';
+            DataClassification = CustomerContent;
+        }
+        field(1006; lvngDimension7Rule; enum lvngProcessingDimensionRule)
+        {
+            Caption = 'Dimension 7 Rule';
+            DataClassification = CustomerContent;
+        }
+        field(1007; lvngDimension8Rule; enum lvngProcessingDimensionRule)
+        {
+            Caption = 'Dimension 8 Rule';
+            DataClassification = CustomerContent;
+        }
+        field(1008; lvngBusinessUnitRule; enum lvngProcessingDimensionRule)
+        {
+            Caption = 'Business Unit Rule';
+            DataClassification = CustomerContent;
+        }
 
 
     }

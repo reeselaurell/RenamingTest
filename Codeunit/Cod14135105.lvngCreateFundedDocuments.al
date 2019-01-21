@@ -78,6 +78,16 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngLoanDocument.Insert(true);
         lvngLoanDocument.lvngCustomerNo := lvngLoanJournalLine.lvngTitleCustomerNo;
         lvngLoanDocument.lvngLoanNo := lvngLoanJournalLine.lvngLoanNo;
+        AssignDimensions(lvngLoanDocument.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngGlobalDimension1Code, lvngLoanJournalLine.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngDimension1Rule);
+        AssignDimensions(lvngLoanDocument.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngGlobalDimension2Code, lvngLoanJournalLine.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngDimension2Rule);
+        AssignDimensions(lvngLoanDocument.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngShortcutDimension3Code, lvngLoanJournalLine.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngDimension3Rule);
+        AssignDimensions(lvngLoanDocument.lvngShortcutDimension4Code, lvngLoanProcessingSchema.lvngShortcutDimension4Code, lvngLoanJournalLine.lvngShortcutDimension4Code, lvngLoanProcessingSchema.lvngDimension4Rule);
+        AssignDimensions(lvngLoanDocument.lvngShortcutDimension5Code, lvngLoanProcessingSchema.lvngShortcutDimension5Code, lvngLoanJournalLine.lvngShortcutDimension5Code, lvngLoanProcessingSchema.lvngDimension5Rule);
+        AssignDimensions(lvngLoanDocument.lvngShortcutDimension6Code, lvngLoanProcessingSchema.lvngShortcutDimension6Code, lvngLoanJournalLine.lvngShortcutDimension6Code, lvngLoanProcessingSchema.lvngDimension6Rule);
+        AssignDimensions(lvngLoanDocument.lvngShortcutDimension7Code, lvngLoanProcessingSchema.lvngShortcutDimension7Code, lvngLoanJournalLine.lvngShortcutDimension7Code, lvngLoanProcessingSchema.lvngDimension7Rule);
+        AssignDimensions(lvngLoanDocument.lvngShortcutDimension8Code, lvngLoanProcessingSchema.lvngShortcutDimension8Code, lvngLoanJournalLine.lvngShortcutDimension8Code, lvngLoanProcessingSchema.lvngDimension8Rule);
+        AssignDimensions(lvngLoanDocument.lvngBusinessUnitCode, lvngLoanProcessingSchema.lvngBusinessUnitCode, lvngLoanJournalLine.lvngBusinessUnitCode, lvngLoanProcessingSchema.lvngBusinessUnitRule);
+        lvngLoanDocument.GenerateDimensionSetId();
         lvngLoanDocument.Modify(true);
         if lvngLoanProcessingSchema.lvngUseGlobalSchemaCode <> '' then begin
             lvngLoanProcessingSchemaLine.reset;
@@ -211,6 +221,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
             AssignDimensions(lvngLoanDocumentLine.lvngShortcutDimension7Code, lvngLoanProcessingSchemaLine.lvngShortcutDimension7Code, lvngLoanJournalLine.lvngShortcutDimension7Code, lvngLoanProcessingSchemaLine.lvngDimension7Rule);
             AssignDimensions(lvngLoanDocumentLine.lvngShortcutDimension8Code, lvngLoanProcessingSchemaLine.lvngShortcutDimension8Code, lvngLoanJournalLine.lvngShortcutDimension8Code, lvngLoanProcessingSchemaLine.lvngDimension8Rule);
             AssignDimensions(lvngLoanDocumentLine.lvngBusinessUnitCode, lvngLoanProcessingSchemaLine.lvngBusinessUnitCode, lvngLoanJournalLine.lvngBusinessUnitCode, lvngLoanProcessingSchemaLine.lvngBusinessUnitRule);
+            lvngLoanDocumentLine.GenerateDimensionSetId();
             lvngLoanDocumentLine.Modify();
         end;
     end;

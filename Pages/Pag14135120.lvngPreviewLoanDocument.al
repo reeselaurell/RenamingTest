@@ -31,6 +31,47 @@ page 14135120 "lvngPreviewLoanDocument"
                 {
                     ApplicationArea = All;
                 }
+
+                group(lvngDimensions)
+                {
+                    Caption = 'Dimensions';
+                    field(lvngGlobalDimension1Code; lvngGlobalDimension1Code)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngGlobalDimension2Code; lvngGlobalDimension2Code)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngShortcutDimension3Code; lvngShortcutDimension3Code)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngShortcutDimension4Code; lvngShortcutDimension4Code)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngShortcutDimension5Code; lvngShortcutDimension5Code)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngShortcutDimension6Code; lvngShortcutDimension6Code)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngBusinessUnitCode; lvngBusinessUnitCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                }
             }
             part(lvngLines; lvngPreviewLoanDocumentLines)
             {
