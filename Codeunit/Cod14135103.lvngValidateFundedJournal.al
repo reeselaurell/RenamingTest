@@ -25,8 +25,12 @@ codeunit 14135103 "lvngValidateFundedJournal"
         lvngJournalValidationRule: Record lvngJournalValidationRule;
         lvngExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
         Customer: Record Customer;
-        lvngLoanDocument: Record lvngLoanDocument temporary;
+        lvngLoanDocument: Record lvngLoanDocument;
+        lvngLoanFundedDocument: Record lvngLoanFundedDocument;
+        lvngLoanDocumentTemp: Record lvngLoanDocument temporary;
         lvngLoanDocumentLine: Record lvngLoanDocumentLine temporary;
+        lvngVoidedDocumentsCount: Integer;
+        lvngFundedDocumentsCount: Integer;
         LoanNoEmptyLbl: Label 'Loan No. can not be blank';
         FundedDateBlankLbl: Label 'Funded Date can not be blank';
         SearchNameBlankLbl: Label 'Search Name can not be compiled';
@@ -34,10 +38,54 @@ codeunit 14135103 "lvngValidateFundedJournal"
         TitleCustomerNoMissingLbl: Label 'Title Customer No. is missing';
         ReasonCodeMissingOnLineLbl: Label 'Reason Code is mandatory for Transaction, Line No. %1';
         AccountNoMissingOnLineLbl: Label 'Account No. is mandatory for Transaction, Line No. %1';
+        NonPostedVoidDocumentExistsLbl: Label 'Non-Posted Funded Void document already exists %1';
+        NonPostedDocumentExistsLbl: Label 'Non-Posted Funded document already exists %1';
+        PostedDocumentExistsLbl: Label 'Posted Funded document already exists %1';
+        NothingToVoidLbl: Label 'There is nothing to void';
     begin
         GetLoanVisionSetup();
         if lvngLoanJournalLine.lvngLoanNo = '' then
             lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, LoanNoEmptyLbl);
+        if (lvngLoanVisionSetup.lvngFundedVoidReasonCode <> '') and
+            (lvngLoanVisionSetup.lvngFundedVoidReasonCode = lvngLoanJournalLine.lvngReasonCode) then begin
+            lvngLoanDocument.reset;
+            lvngLoanDocument.SetRange(lvngVoid, true);
+            lvngLoanDocument.SetRange(lvngLoanNo, lvngLoanJournalLine.lvngLoanNo);
+            lvngLoanDocument.SetRange(lvngLoanDocumentType, lvngLoanDocument.lvngLoanDocumentType::lvngFunded);
+            if not lvngLoanDocument.IsEmpty() then begin
+                lvngLoanDocument.FindFirst();
+                lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, strsubstno(NonPostedVoidDocumentExistsLbl, lvngLoanDocument.lvngDocumentNo));
+            end;
+            lvngLoanFundedDocument.reset;
+            lvngLoanFundedDocument.SetRange(lvngLoanNo, lvngLoanJournalLine.lvngLoanNo);
+            lvngLoanFundedDocument.SetRange(lvngVoid, false);
+            if lvngLoanFundedDocument.IsEmpty() then begin
+                lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, NothingToVoidLbl);
+            end;
+            exit;
+        end else begin
+            lvngLoanDocument.reset;
+            lvngLoanDocument.SetRange(lvngVoid, false);
+            lvngLoanDocument.SetRange(lvngLoanNo, lvngLoanJournalLine.lvngLoanNo);
+            lvngLoanDocument.SetRange(lvngLoanDocumentType, lvngLoanDocument.lvngLoanDocumentType::lvngFunded);
+            if not lvngLoanDocument.IsEmpty() then begin
+                lvngLoanDocument.FindFirst();
+                lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, strsubstno(NonPostedDocumentExistsLbl, lvngLoanDocument.lvngDocumentNo));
+            end;
+            lvngLoanFundedDocument.reset;
+            lvngLoanFundedDocument.SetRange(lvngLoanNo, lvngLoanJournalLine.lvngLoanNo);
+            lvngLoanFundedDocument.SetRange(lvngVoid, false);
+            if not lvngLoanFundedDocument.IsEmpty() then begin
+                lvngFundedDocumentsCount := lvngLoanFundedDocument.Count();
+                lvngLoanFundedDocument.SetRange(lvngVoid, true);
+                lvngVoidedDocumentsCount := lvngLoanFundedDocument.Count();
+                if (lvngFundedDocumentsCount <> lvngVoidedDocumentsCount) then begin
+                    lvngLoanFundedDocument.SetRange(lvngVoid, false);
+                    lvngLoanFundedDocument.FindLast();
+                    lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, strsubstno(PostedDocumentExistsLbl, lvngLoanFundedDocument.lvngDocumentNo));
+                end;
+            end;
+        end;
         if lvngLoanJournalLine.lvngDateFunded = 0D then
             lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, FundedDateBlankLbl);
         if lvngLoanJournalLine.lvngSearchName = '' then begin
@@ -52,7 +100,7 @@ codeunit 14135103 "lvngValidateFundedJournal"
         end else begin
             clear(lvngLoanJournalLine.lvngCalculatedDocumentAmount);
             Clear(lvngCreateFundedDocuments);
-            lvngCreateFundedDocuments.CreateSingleDocument(lvngLoanJournalLine, lvngLoanDocument, lvngLoanDocumentLine, true);
+            lvngCreateFundedDocuments.CreateSingleDocument(lvngLoanJournalLine, lvngLoanDocumentTemp, lvngLoanDocumentLine, true);
             lvngLoanDocumentLine.reset;
             lvngLoanDocumentLine.SetRange(lvngBalancingEntry, false);
             if lvngLoanDocumentLine.FindSet() then begin
@@ -72,9 +120,9 @@ codeunit 14135103 "lvngValidateFundedJournal"
                 end;
             until lvngJournalValidationRule.Next() = 0;
         end;
-        if (lvngLoanDocument.lvngCustomerNo = '') then
+        if (lvngLoanDocumentTemp.lvngCustomerNo = '') then
             lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, TitleCustomerNoMissingLbl) else begin
-            if not Customer.get(lvngLoanDocument.lvngCustomerNo) then
+            if not Customer.get(lvngLoanDocumentTemp.lvngCustomerNo) then
                 lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, TitleCustomerNoMissingLbl);
         end;
         lvngLoanDocumentLine.reset;
