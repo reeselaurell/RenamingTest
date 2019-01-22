@@ -5,9 +5,9 @@ table 14135114 "lvngLoanDocument"
 
     fields
     {
-        field(1; lvngLoanDocumentType; Enum lvngLoanDocumentType)
+        field(1; lvngTransactionType; Enum lvngTransactionType)
         {
-            Caption = 'Document Type';
+            Caption = 'Transaction Type';
             DataClassification = CustomerContent;
         }
         field(2; lvngDocumentNo; code[20])
@@ -30,6 +30,25 @@ table 14135114 "lvngLoanDocument"
         field(12; lvngVoid; Boolean)
         {
             Caption = 'Void';
+            DataClassification = CustomerContent;
+        }
+
+        field(13; lvngPostingDate; Date)
+        {
+            Caption = 'Posting Date';
+            DataClassification = CustomerContent;
+        }
+
+        field(14; lvngReasonCode; Code[10])
+        {
+            Caption = 'Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
+        }
+
+        field(15; lvngDocumentType; enum lvngDocumentType)
+        {
+            Caption = 'Document Type';
             DataClassification = CustomerContent;
         }
 
@@ -148,7 +167,7 @@ table 14135114 "lvngLoanDocument"
 
     keys
     {
-        key(PK; lvngLoanDocumentType, lvngDocumentNo)
+        key(PK; lvngTransactionType, lvngDocumentNo)
         {
             Clustered = true;
         }

@@ -5,7 +5,7 @@ table 14135121 "lvngLoanFundedDocument"
 
     fields
     {
-        field(1; lvngDocumentNo; code[20])
+        field(2; lvngDocumentNo; code[20])
         {
             Caption = 'Document No.';
             DataClassification = CustomerContent;
@@ -27,6 +27,22 @@ table 14135121 "lvngLoanFundedDocument"
             Caption = 'Void';
             DataClassification = CustomerContent;
         }
+        field(13; lvngPostingDate; Date)
+        {
+            Caption = 'Posting Date';
+            DataClassification = CustomerContent;
+        }
+        field(14; lvngReasonCode; Code[10])
+        {
+            Caption = 'Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
+        }
+        field(15; lvngDocumentType; enum lvngDocumentType)
+        {
+            Caption = 'Document Type';
+            DataClassification = CustomerContent;
+        }
         field(10000; lvngBorrowerSearchName; Code[50])
         {
             Caption = 'Borrower Search Name';
@@ -34,6 +50,7 @@ table 14135121 "lvngLoanFundedDocument"
             CalcFormula = lookup (lvngLoan.lvngSearchName where (lvngLoanNo = field (lvngLoanNo)));
             Editable = false;
         }
+
 
 
     }

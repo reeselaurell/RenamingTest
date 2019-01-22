@@ -4,7 +4,7 @@ table 14135115 "lvngLoanDocumentLine"
     Caption = 'Loan Document Line';
     fields
     {
-        field(1; lvngLoanDocumentType; enum lvngLoanDocumentType)
+        field(1; lvngTransactionType; enum lvngTransactionType)
         {
             Caption = 'Document Type';
             DataClassification = CustomerContent;
@@ -13,6 +13,7 @@ table 14135115 "lvngLoanDocumentLine"
         {
             Caption = 'Document No.';
             DataClassification = CustomerContent;
+            TableRelation = lvngLoanDocument.lvngDocumentNo where (lvngTransactionType = field (lvngTransactionType));
         }
         field(3; lvngLineNo; Integer)
         {
@@ -28,6 +29,8 @@ table 14135115 "lvngLoanDocumentLine"
         {
             Caption = 'Account No.';
             DataClassification = CustomerContent;
+            TableRelation = if (lvngAccountType = const (lvngGLAccount)) "G/L Account"."No." where ("Account Type" = const (Posting), Blocked = const (false)) else
+            if (lvngAccountType = const (lvngBankAccount)) "Bank Account" where (Blocked = const (false));
         }
         field(12; lvngReasonCode; Code[10])
         {
@@ -45,6 +48,7 @@ table 14135115 "lvngLoanDocumentLine"
             Caption = 'Amount';
             DataClassification = CustomerContent;
         }
+
         field(80; lvngGlobalDimension1Code; Code[20])
         {
             Caption = 'Global Dimension 1 Code';
@@ -173,7 +177,7 @@ table 14135115 "lvngLoanDocumentLine"
 
     keys
     {
-        key(PK; lvngLoanDocumentType, lvngDocumentNo, lvngLineNo)
+        key(PK; lvngTransactionType, lvngDocumentNo, lvngLineNo)
         {
             Clustered = true;
         }

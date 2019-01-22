@@ -12,7 +12,7 @@ page 14135126 "lvngLoanDocumentsList"
         {
             repeater(lvngRepeater)
             {
-                field(lvngLoanDocumentType; lvngLoanDocumentType)
+                field(lvngTransactionType; lvngTransactionType)
                 {
                     ApplicationArea = All;
                 }
@@ -57,14 +57,15 @@ page 14135126 "lvngLoanDocumentsList"
 
                 trigger OnAction()
                 begin
-                    case lvngLoanDocumentType of
-                        lvngLoanDocumentType::lvngFunded:
+                    case lvngTransactionType of
+                        lvngTransactionType::lvngFunded:
                             begin
-                                page.Run(PAge::lvngFundedDocument, Rec);
+                                page.Run(Page::lvngFundedDocument, Rec);
                             end;
                     end;
                 end;
             }
         }
     }
+
 }

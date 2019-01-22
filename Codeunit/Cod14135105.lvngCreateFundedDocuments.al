@@ -62,6 +62,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         NoSeriesManagement: Codeunit NoSeriesManagement;
         TempDocumentLbl: Label 'XXXXXXXX';
         lvngLineNo: Integer;
+        lvngDocumentAmount: Decimal;
     begin
         lvngLoanJournalLine.TestField(lvngProcessingSchemaCode);
         lvngLoanProcessingSchema.Get(lvngLoanJournalLine.lvngProcessingSchemaCode);
@@ -78,6 +79,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngLoanDocument.Insert(true);
         lvngLoanDocument.lvngCustomerNo := lvngLoanJournalLine.lvngTitleCustomerNo;
         lvngLoanDocument.lvngLoanNo := lvngLoanJournalLine.lvngLoanNo;
+        lvngLoanDocument.lvngPostingDate := lvngLoanJournalLine.lvngDateFunded;
         AssignDimensions(lvngLoanDocument.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngGlobalDimension1Code, lvngLoanJournalLine.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngDimension1Rule);
         AssignDimensions(lvngLoanDocument.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngGlobalDimension2Code, lvngLoanJournalLine.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngDimension2Rule);
         AssignDimensions(lvngLoanDocument.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngShortcutDimension3Code, lvngLoanJournalLine.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngDimension3Rule);
@@ -138,8 +140,59 @@ codeunit 14135105 "lvngCreateFundedDocuments"
             until lvngLoanProcessingSchemaLine.Next() = 0;
         end;
         lvngLoanDocumentLine.reset;
-        lvngloandocumentline.SetRange(lvngAmount, 0);
+        lvngLoanDocumentLine.SetRange(lvngAmount, 0);
         lvngLoanDocumentLine.DeleteAll();
+        lvngLoanDocumentLine.reset;
+        lvngLoanDocumentLine.SetRange(lvngBalancingEntry, false);
+        if lvngLoanDocumentLine.FindSet() then begin
+            repeat
+                lvngDocumentAmount := lvngDocumentAmount + lvngLoanDocumentLine.lvngAmount;
+            until lvngLoanDocumentLine.Next() = 0;
+        end;
+        //Option here
+        case lvngLoanProcessingSchema.lvngDocumentTypeOption of
+            lvngloanprocessingschema.lvngDocumentTypeOption::lvngInvoice:
+                begin
+                    lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice;
+                end;
+            lvngloanprocessingschema.lvngDocumentTypeOption::lvngCreditMemo:
+                begin
+                    lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
+                end;
+            lvngloanprocessingschema.lvngDocumentTypeOption::lvngAmountBased:
+                begin
+                    IF lvngDocumentAmount > 0 THEN BEGIN
+                        lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice;
+                    END ELSE BEGIN
+                        lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
+                        lvngLoanDocumentLine.reset;
+                        lvngLoanDocumentLine.SetRange(lvngBalancingEntry, false);
+                        if lvngLoanDocumentLine.FindSet() then begin
+                            repeat
+                                lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
+                                lvngLoanDocumentLine.Modify();
+                            until lvngLoanDocumentLine.Next() = 0;
+                        end;
+                    END;
+                end;
+            lvngloanprocessingschema.lvngDocumentTypeOption::lvngAmountBasedReversed:
+                begin
+                    IF lvngDocumentAmount > 0 THEN BEGIN
+                        lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
+                    END ELSE BEGIN
+                        lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice;
+                        lvngLoanDocumentLine.reset;
+                        lvngLoanDocumentLine.SetRange(lvngBalancingEntry, false);
+                        if lvngLoanDocumentLine.FindSet() then begin
+                            repeat
+                                lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
+                                lvngLoanDocumentLine.Modify();
+                            until lvngLoanDocumentLine.Next() = 0;
+                        end;
+                    END;
+                end;
+        end;
+        lvngLoanDocument.Modify();
     end;
 
     local procedure CreateDocumentLine(var lvngLoanDocumentLine: Record lvngLoanDocumentLine; lvngLoanDocument: record lvngLoanDocument; lvngLoanProcessingSchemaLine: Record lvngLoanProcessingSchemaLine; lvngLoanJournalLine: Record lvngLoanJournalLine; var lvngLineNo: integer)
@@ -154,7 +207,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
             Clear(lvngLoanDocumentLine);
             lvngLoanDocumentLine.init;
             lvngLoanDocumentLine.lvngDocumentNo := lvngLoanDocument.lvngDocumentNo;
-            lvngLoanDocumentLine.lvngLoanDocumentType := lvngLoanDocument.lvngLoanDocumentType;
+            lvngLoanDocumentLine.lvngTransactionType := lvngLoanDocument.lvngTransactionType;
             lvngLoanDocumentLine.lvngLineNo := lvngLineNo;
             lvngLoanDocumentLine.lvngProcessingSchemaCode := lvngLoanProcessingSchemaLine.lvngProcessingCode;
             lvngloandocumentline.lvngProcessingSchemaLineNo := lvngLoanProcessingSchemaLine.lvngLineNo;

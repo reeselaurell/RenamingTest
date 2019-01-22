@@ -15,11 +15,23 @@ page 14135120 "lvngPreviewLoanDocument"
             group(lvngGeneral)
             {
                 Caption = 'General';
-                field(lvngLoanDocumentType; lvngLoanDocumentType)
+                field(lvngTransactionType; lvngTransactionType)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDocumentType; lvngDocumentType)
                 {
                     ApplicationArea = All;
                 }
                 field(lvngDocumentNo; lvngDocumentNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngPostingDate; lvngPostingDate)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngReasonCode; lvngReasonCode)
                 {
                     ApplicationArea = All;
                 }

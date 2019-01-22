@@ -56,6 +56,13 @@ table 14135100 "lvngLoanVisionSetup"
             TableRelation = "Reason Code";
         }
 
+        field(17; lvngFundedSourceCode; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Funded Source Code';
+            TableRelation = "Source Code".Code;
+        }
+
         field(300; lvngLoanOfficerDimensionCode; Code[20])
         {
             Caption = 'Loan Officer Dimension Code';

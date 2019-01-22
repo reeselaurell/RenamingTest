@@ -24,7 +24,10 @@ page 14135114 "lvngLoanProcessingSchema"
                 {
                     ApplicationArea = All;
                 }
-
+                field(lvngDocumentTypeOption; lvngDocumentTypeOption)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngGlobalSchema; lvngGlobalSchema)
                 {
                     ApplicationArea = All;

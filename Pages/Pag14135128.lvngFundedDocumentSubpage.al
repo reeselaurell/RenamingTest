@@ -18,6 +18,10 @@ page 14135128 "lvngFundedDocumentSubpage"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngBalancingEntry; lvngBalancingEntry)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngDescription; lvngDescription)
                 {
                     ApplicationArea = All;
@@ -70,4 +74,18 @@ page 14135128 "lvngFundedDocumentSubpage"
             }
         }
     }
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+        lvngLoanDocumentLine: Record lvngLoanDocumentLine;
+    begin
+        lvngLoanDocumentLine.reset;
+        lvngLoanDocumentLine.SetRange(lvngTransactionType, lvngTransactionType);
+        lvngLoanDocumentLine.SetRange(lvngDocumentNo, lvngDocumentNo);
+        if lvngLoanDocumentLine.FindLast() then begin
+            lvngLineNo := lvngLoanDocumentLine.lvngLineNo + 100;
+        end else begin
+            lvngLineNo := 100;
+        end;
+
+    end;
 }

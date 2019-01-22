@@ -1,10 +1,10 @@
 1 - Loan Funded Document Creation from Journal and Posting Routine
-a - Documents Generation
-b - Do not post posted document 
-c - Add dimensions on header
-d - Do dimension Set ID
-e - Posting Routine
-f - Batch Posting
+a - Document Type option on processing schema
+b - Create proper journals for documents
+c - Check functionality for loan Posting
+d - Do not post posted document 
+e - Batch Posting
+f - Navigation functionality
 
 2 - Loan Sold Document Creation from Journal and Posting Routine same as funded
 

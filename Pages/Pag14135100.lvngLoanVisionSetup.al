@@ -16,40 +16,56 @@ page 14135100 "lvngLoanVisionSetup"
             group(General)
             {
                 Caption = 'General';
-                field(lvngFundedReasonCode; lvngFundedReasonCode)
+                group(lvngReasonCodes)
                 {
-                    ApplicationArea = All;
-                }
-                field(lvngFundedVoidReasonCode; lvngFundedVoidReasonCode)
-                {
-                    ApplicationArea = All;
-                }
+                    Caption = 'Reason Codes';
+                    field(lvngFundedReasonCode; lvngFundedReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngFundedVoidReasonCode; lvngFundedVoidReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
 
-                field(lvngSoldReasonCode; lvngSoldReasonCode)
-                {
-                    ApplicationArea = All;
+                    field(lvngSoldReasonCode; lvngSoldReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngSoldVoidReasonCode; lvngSoldVoidReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngServicedReasonCode; lvngServicedReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngServicedVoidReasonCode; lvngServicedVoidReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
                 }
-                field(lvngSoldVoidReasonCode; lvngSoldVoidReasonCode)
+                group(lvngSourceCodes)
                 {
-                    ApplicationArea = All;
+                    Caption = 'Source Codes';
+                    field(lvngFundedSourceCode; lvngFundedSourceCode)
+                    {
+                        ApplicationArea = All;
+                    }
                 }
-                field(lvngServicedReasonCode; lvngServicedReasonCode)
+                group(lvngMisc)
                 {
-                    ApplicationArea = All;
-                }
-                field(lvngServicedVoidReasonCode; lvngServicedVoidReasonCode)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngSearchNameTemplate; lvngSearchNameTemplate)
-                {
-                    ApplicationArea = All;
-                    ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name';
-                }
+                    Caption = 'Misc.';
+                    field(lvngSearchNameTemplate; lvngSearchNameTemplate)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name';
+                    }
 
-                field(MaintenanceMode; lvngMaintenanceMode)
-                {
-                    ApplicationArea = All;
+                    field(MaintenanceMode; lvngMaintenanceMode)
+                    {
+                        ApplicationArea = All;
+                    }
                 }
             }
             group(Dimensions)

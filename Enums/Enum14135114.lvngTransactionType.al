@@ -1,4 +1,4 @@
-enum 14135114 "lvngLoanDocumentType"
+enum 14135114 "lvngTransactionType"
 {
     Extensible = false;
 
