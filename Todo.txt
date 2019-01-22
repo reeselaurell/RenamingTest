@@ -1,6 +1,4 @@
 1 - Loan Funded Document Creation from Journal and Posting Routine
-a - Document Type option on processing schema
-b - Create proper journals for documents
 c - Check functionality for loan Posting
 d - Do not post posted document 
 e - Batch Posting

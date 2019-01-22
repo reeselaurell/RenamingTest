@@ -62,6 +62,18 @@ table 14135100 "lvngLoanVisionSetup"
             Caption = 'Funded Source Code';
             TableRelation = "Source Code".Code;
         }
+        field(18; lvngSoldSourceCode; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Sold Source Code';
+            TableRelation = "Source Code".Code;
+        }
+        field(19; lvngServicedSourceCode; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Serviced Source Code';
+            TableRelation = "Source Code".Code;
+        }
 
         field(300; lvngLoanOfficerDimensionCode; Code[20])
         {

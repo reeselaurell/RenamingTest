@@ -52,6 +52,14 @@ page 14135100 "lvngLoanVisionSetup"
                     {
                         ApplicationArea = All;
                     }
+                    field(lvngSoldSourceCode; lvngSoldSourceCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngServicedSourceCode; lvngServicedSourceCode)
+                    {
+                        ApplicationArea = All;
+                    }
                 }
                 group(lvngMisc)
                 {

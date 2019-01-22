@@ -10,7 +10,7 @@ enum 14135114 "lvngTransactionType"
     {
         Caption = 'Sale';
     }
-    value(2; lvngServices)
+    value(2; lvngServiced)
     {
         Caption = 'Service';
     }

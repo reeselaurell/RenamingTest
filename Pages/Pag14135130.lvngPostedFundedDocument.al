@@ -1,8 +1,11 @@
-page 14135127 "lvngFundedDocument"
+page 14135130 "lvngPostedFundedDocument"
 {
-    Caption = 'Funded Document';
+    Caption = 'Posted Funded Document';
     PageType = Card;
-    SourceTable = lvngLoanDocument;
+    SourceTable = lvngLoanFundedDocument;
+    Editable = false;
+    DeleteAllowed = false;
+    InsertAllowed = false;
 
     layout
     {
@@ -28,10 +31,6 @@ page 14135127 "lvngFundedDocument"
                     ApplicationArea = All;
                 }
                 field(lvngVoid; lvngVoid)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoidDocumentNo; lvngVoidDocumentNo)
                 {
                     ApplicationArea = All;
                 }
@@ -89,30 +88,11 @@ page 14135127 "lvngFundedDocument"
                 }
 
             }
-            part(lvngFundedDocumentSubpage; lvngFundedDocumentSubpage)
+            part(lvngPostedFundedDocSubpage; lvngPostedFundedDocSubpage)
             {
                 Caption = 'Lines';
-                SubPageLink = lvngTransactionType = field (lvngTransactionType), lvngDocumentNo = field (lvngDocumentNo);
+                SubPageLink = lvngDocumentNo = field (lvngDocumentNo);
                 ApplicationArea = All;
-            }
-        }
-    }
-
-    actions
-    {
-        area(Processing)
-        {
-            action(lvngPost)
-            {
-                ApplicationArea = All;
-                Promoted = true;
-
-                trigger OnAction()
-                var
-                    cod: Codeunit lvngPostLoanDocument;
-                begin
-                    cod.Run(Rec);
-                end;
             }
         }
     }

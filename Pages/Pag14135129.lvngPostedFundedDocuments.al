@@ -1,10 +1,14 @@
-page 14135126 "lvngLoanDocumentsList"
+page 14135129 "lvngPostedFundedDocuments"
 {
-    Caption = 'Loan Documents';
     PageType = List;
     UsageCategory = Lists;
     ApplicationArea = All;
-    SourceTable = lvngLoanDocument;
+    SourceTable = lvngLoanFundedDocument;
+    Caption = 'Posted Funded Documents';
+    CardPageId = lvngPostedFundedDocument;
+    Editable = false;
+    DeleteAllowed = false;
+    InsertAllowed = false;
 
     layout
     {
@@ -12,10 +16,6 @@ page 14135126 "lvngLoanDocumentsList"
         {
             repeater(lvngRepeater)
             {
-                field(lvngTransactionType; lvngTransactionType)
-                {
-                    ApplicationArea = All;
-                }
                 field(lvngDocumentType; lvngDocumentType)
                 {
                     ApplicationArea = All;
@@ -33,10 +33,6 @@ page 14135126 "lvngLoanDocumentsList"
                     ApplicationArea = All;
                 }
                 field(lvngVoid; lvngVoid)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoidDocumentNo; lvngVoidDocumentNo)
                 {
                     ApplicationArea = All;
                 }
@@ -80,9 +76,11 @@ page 14135126 "lvngLoanDocumentsList"
                 {
                     ApplicationArea = All;
                 }
-
-
             }
+        }
+        area(Factboxes)
+        {
+
         }
     }
 
@@ -90,26 +88,15 @@ page 14135126 "lvngLoanDocumentsList"
     {
         area(Processing)
         {
-            action(lvngShowDocument)
+            action(ActionName)
             {
-                Caption = 'Show Document';
-                Image = DocumentEdit;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 ApplicationArea = All;
 
-                trigger OnAction()
+                trigger OnAction();
                 begin
-                    case lvngTransactionType of
-                        lvngTransactionType::lvngFunded:
-                            begin
-                                page.Run(Page::lvngFundedDocument, Rec);
-                            end;
-                    end;
+
                 end;
             }
         }
     }
-
 }

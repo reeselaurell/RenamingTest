@@ -1,10 +1,12 @@
-page 14135126 "lvngLoanDocumentsList"
+page 14135131 "lvngPostedFundedDocSubpage"
 {
-    Caption = 'Loan Documents';
-    PageType = List;
-    UsageCategory = Lists;
-    ApplicationArea = All;
-    SourceTable = lvngLoanDocument;
+
+    Caption = 'Posted Funded Document Subpage';
+    PageType = ListPart;
+    SourceTable = lvngLoanFundedDocumentLine;
+    Editable = false;
+    DeleteAllowed = false;
+    InsertAllowed = false;
 
     layout
     {
@@ -12,35 +14,27 @@ page 14135126 "lvngLoanDocumentsList"
         {
             repeater(lvngRepeater)
             {
-                field(lvngTransactionType; lvngTransactionType)
+                field(lvngAccountType; lvngAccountType)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDocumentType; lvngDocumentType)
+                field(lvngAccountNo; lvngAccountNo)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDocumentNo; lvngDocumentNo)
+                field(lvngBalancingEntry; lvngBalancingEntry)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCustomerNo; lvngCustomerNo)
+                field(lvngDescription; lvngDescription)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngLoanNo; lvngLoanNo)
+                field(lvngAmount; lvngAmount)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngVoid; lvngVoid)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoidDocumentNo; lvngVoidDocumentNo)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngBorrowerSearchName; lvngBorrowerSearchName)
+                field(lvngReasonCode; lvngReasonCode)
                 {
                     ApplicationArea = All;
                 }
@@ -70,7 +64,7 @@ page 14135126 "lvngLoanDocumentsList"
                 }
                 field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = all;
                 }
                 field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
                 {
@@ -81,33 +75,6 @@ page 14135126 "lvngLoanDocumentsList"
                     ApplicationArea = All;
                 }
 
-
-            }
-        }
-    }
-
-    actions
-    {
-        area(Processing)
-        {
-            action(lvngShowDocument)
-            {
-                Caption = 'Show Document';
-                Image = DocumentEdit;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
-                ApplicationArea = All;
-
-                trigger OnAction()
-                begin
-                    case lvngTransactionType of
-                        lvngTransactionType::lvngFunded:
-                            begin
-                                page.Run(Page::lvngFundedDocument, Rec);
-                            end;
-                    end;
-                end;
             }
         }
     }

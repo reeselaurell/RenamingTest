@@ -2,6 +2,7 @@ table 14135114 "lvngLoanDocument"
 {
     Caption = 'Loan Document';
     DataClassification = CustomerContent;
+    LookupPageId = lvngLoanDocumentsList;
 
     fields
     {
@@ -154,6 +155,12 @@ table 14135114 "lvngLoanDocument"
             Caption = 'Dimension Set ID';
             DataClassification = CustomerContent;
         }
+
+        field(1000; lvngVoidDocumentNo; Code[20])
+        {
+            Caption = 'Void Document No.';
+            DataClassification = CustomerContent;
+        }
         field(10000; lvngBorrowerSearchName; Code[50])
         {
             Caption = 'Borrower Search Name';
@@ -187,8 +194,13 @@ table 14135114 "lvngLoanDocument"
     end;
 
     trigger OnDelete()
+    var
+        lvngLoanDocumentLine: Record lvngLoanDocumentLine;
     begin
-
+        lvngLoanDocumentLine.reset;
+        lvngLoanDocumentLine.SetRange(lvngTransactionType, lvngTransactionType);
+        lvngLoanDocumentLine.SetRange(lvngDocumentNo, lvngDocumentNo);
+        lvngLoanDocumentLine.DeleteAll();
     end;
 
     trigger OnRename()

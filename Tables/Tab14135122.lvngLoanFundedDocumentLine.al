@@ -1,49 +1,48 @@
-table 14135121 "lvngLoanFundedDocument"
+table 14135122 "lvngLoanFundedDocumentLine"
 {
-    Caption = 'Loan Funded Document';
     DataClassification = CustomerContent;
-    LookupPageId = lvngPostedFundedDocuments;
-
+    Caption = 'Loan Funded Document Line';
     fields
     {
-        field(2; lvngDocumentNo; code[20])
+        field(2; lvngDocumentNo; Code[20])
         {
             Caption = 'Document No.';
             DataClassification = CustomerContent;
         }
-        field(10; lvngLoanNo; Code[20])
+        field(3; lvngLineNo; Integer)
         {
-            Caption = 'Loan No.';
-            DataClassification = CustomerContent;
-            TableRelation = lvngLoan;
-        }
-        field(11; lvngCustomerNo; Code[20])
-        {
-            Caption = 'Customer No.';
-            DataClassification = CustomerContent;
-            TableRelation = Customer;
-        }
-        field(12; lvngVoid; Boolean)
-        {
-            Caption = 'Void';
+            Caption = 'Line No.';
             DataClassification = CustomerContent;
         }
-        field(13; lvngPostingDate; Date)
+        field(10; lvngAccountType; enum lvngAccountType)
         {
-            Caption = 'Posting Date';
+            Caption = 'Account Type';
             DataClassification = CustomerContent;
         }
-        field(14; lvngReasonCode; Code[10])
+        field(11; lvngAccountNo; Code[20])
+        {
+            Caption = 'Account No.';
+            DataClassification = CustomerContent;
+            TableRelation = if (lvngAccountType = const (lvngGLAccount)) "G/L Account"."No." where ("Account Type" = const (Posting), Blocked = const (false)) else
+            if (lvngAccountType = const (lvngBankAccount)) "Bank Account" where (Blocked = const (false));
+        }
+        field(12; lvngReasonCode; Code[10])
         {
             Caption = 'Reason Code';
             DataClassification = CustomerContent;
             TableRelation = "Reason Code";
         }
-        field(15; lvngDocumentType; enum lvngDocumentType)
+        field(13; lvngDescription; Text[50])
         {
-            Caption = 'Document Type';
+            Caption = 'Description';
             DataClassification = CustomerContent;
         }
+        field(14; lvngAmount; Decimal)
+        {
+            Caption = 'Amount';
+            DataClassification = CustomerContent;
+        }
+
         field(80; lvngGlobalDimension1Code; Code[20])
         {
             Caption = 'Global Dimension 1 Code';
@@ -113,49 +112,39 @@ table 14135121 "lvngLoanFundedDocument"
             Caption = 'Dimension Set ID';
             DataClassification = CustomerContent;
         }
-
-        field(10000; lvngBorrowerSearchName; Code[50])
+        field(1000; lvngProcessingSchemaCode; code[20])
         {
-            Caption = 'Borrower Search Name';
-            FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan.lvngSearchName where (lvngLoanNo = field (lvngLoanNo)));
-            Editable = false;
+            Caption = 'Processing Schema Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngLoanProcessingSchema.lvngCode;
         }
-
-
-
-
+        field(1001; lvngProcessingSchemaLineNo; Integer)
+        {
+            Caption = 'Processing Schema Line No.';
+            DataClassification = CustomerContent;
+            TableRelation = lvngLoanProcessingSchemaline.lvngLineNo where (lvngProcessingCode = field (lvngProcessingSchemaCode));
+        }
+        field(1002; lvngBalancingEntry; boolean)
+        {
+            Caption = 'Balancing Entry';
+            DataClassification = CustomerContent;
+        }
+        field(1003; lvngTagCode; Code[10])
+        {
+            Caption = 'Tag Code';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
     {
-        key(PK; lvngDocumentNo)
+        key(PK; lvngDocumentNo, lvngLineNo)
         {
             Clustered = true;
         }
     }
 
     var
-        myInt: Integer;
-
-    trigger OnInsert()
-    begin
-
-    end;
-
-    trigger OnModify()
-    begin
-
-    end;
-
-    trigger OnDelete()
-    begin
-
-    end;
-
-    trigger OnRename()
-    begin
-
-    end;
+        DimensionManagement: Codeunit DimensionManagement;
 
 }
