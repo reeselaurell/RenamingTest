@@ -141,6 +141,34 @@ page 14135100 "lvngLoanVisionSetup"
                     }
                 }
             }
+            group(lvngNoSeries)
+            {
+                Caption = 'No. Series';
+                field(lvngFundedNoSeries; lvngFundedNoSeries)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngVoidFundedNoSeries; lvngVoidFundedNoSeries)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngSoldNoSeries; lvngSoldNoSeries)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngVoidSoldNoSeries; lvngVoidSoldNoSeries)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngServicedNoSeries; lvngServicedNoSeries)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngVoidServicedNoSeries; lvngVoidServicedNoSeries)
+                {
+                    ApplicationArea = All;
+                }
+            }
         }
         //You might want to add fields here
 

@@ -14,6 +14,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngTotalEntries: Integer;
         lvngProcessResultLbl: Label '%1 of %2 documents were created';
     begin
+        GetLoanVisionSetup();
         lvngValidateFundedJournal.ValidateFundedLines(lvngLoanJournalBatchCode);
         lvngLoanCardManagement.UpdateLoanCards(lvngLoanJournalBatchCode);
         lvngLoanJournalLine.reset;
@@ -73,9 +74,13 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngLineNo := 10000;
         clear(lvngLoanDocument);
         lvngLoanDocument.init;
-        if not lvngPreview then
-            lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanProcessingSchema.lvngNoSeries, TODAY, true, false) else
+        if not lvngPreview then begin
+            if lvngLoanProcessingSchema.lvngNoSeries <> '' then
+                lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanProcessingSchema.lvngNoSeries, TODAY, true, false) else
+                lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup.lvngFundedNoSeries, TODAY, true, false);
+        end else begin
             lvngLoanDocument.lvngDocumentNo := TempDocumentLbl;
+        end;
         lvngLoanDocument.Insert(true);
         lvngLoanDocument.lvngCustomerNo := lvngLoanJournalLine.lvngTitleCustomerNo;
         lvngLoanDocument.lvngLoanNo := lvngLoanJournalLine.lvngLoanNo;
@@ -315,9 +320,20 @@ codeunit 14135105 "lvngCreateFundedDocuments"
 
     end;
 
+    local procedure GetLoanVisionSetup()
+    begin
+        if not lvngLoanVisionSetupRetrieved then begin
+            lvngLoanVisionSetup.Get();
+            lvngLoanVisionSetupRetrieved := true;
+        end;
+    end;
+
     var
+        lvngLoanVisionSetup: Record lvngLoanVisionSetup;
+
         lvngExpressionValueBuffer: record lvngExpressionValueBuffer temporary;
         lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
         lvngExpressionEngine: Codeunit lvngExpressionEngine;
         lvngLoanDocumentLineTemp: Record lvngLoanDocumentLine temporary;
+        lvngLoanVisionSetupRetrieved: Boolean;
 }

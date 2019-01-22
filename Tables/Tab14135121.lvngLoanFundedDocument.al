@@ -113,7 +113,11 @@ table 14135121 "lvngLoanFundedDocument"
             Caption = 'Dimension Set ID';
             DataClassification = CustomerContent;
         }
-
+        field(1000; lvngVoidDocumentNo; Code[20])
+        {
+            Caption = 'Void Document No.';
+            DataClassification = CustomerContent;
+        }
         field(10000; lvngBorrowerSearchName; Code[50])
         {
             Caption = 'Borrower Search Name';

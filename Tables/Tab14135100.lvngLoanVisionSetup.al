@@ -75,6 +75,42 @@ table 14135100 "lvngLoanVisionSetup"
             TableRelation = "Source Code".Code;
         }
 
+        field(50; lvngFundedNoSeries; Code[20])
+        {
+            Caption = 'Funded No. Series';
+            DataClassification = CustomerContent;
+            TableRelation = "No. Series".Code;
+        }
+        field(51; lvngSoldNoSeries; Code[20])
+        {
+            Caption = 'Sold No. Series';
+            DataClassification = CustomerContent;
+            TableRelation = "No. Series".Code;
+        }
+        field(52; lvngServicedNoSeries; Code[20])
+        {
+            Caption = 'Serviced No. Series';
+            DataClassification = CustomerContent;
+            TableRelation = "No. Series".Code;
+        }
+        field(53; lvngVoidFundedNoSeries; Code[20])
+        {
+            Caption = 'Funded Void No. Series';
+            DataClassification = CustomerContent;
+            TableRelation = "No. Series".Code;
+        }
+        field(54; lvngVoidSoldNoSeries; Code[20])
+        {
+            Caption = 'Sold Void No. Series';
+            DataClassification = CustomerContent;
+            TableRelation = "No. Series".Code;
+        }
+        field(55; lvngVoidServicedNoSeries; Code[20])
+        {
+            Caption = 'Serviced Void No. Series';
+            DataClassification = CustomerContent;
+            TableRelation = "No. Series".Code;
+        }
         field(300; lvngLoanOfficerDimensionCode; Code[20])
         {
             Caption = 'Loan Officer Dimension Code';

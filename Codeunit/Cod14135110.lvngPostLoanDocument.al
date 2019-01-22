@@ -188,6 +188,11 @@ codeunit 14135110 "lvngPostLoanDocument"
                     Clear(lvngLoanFundedDocument);
                     lvngLoanFundedDocument.TransferFields(lvngLoanDocument);
                     lvngLoanFundedDocument.Insert(true);
+
+                    lvngLoanFundedDocument.Get(lvngLoanDocument.lvngVoidDocumentNo);
+                    lvngLoanFundedDocument.lvngVoid := true;
+                    lvngLoanFundedDocument.lvngVoidDocumentNo := lvngLoanDocument.lvngDocumentNo;
+                    lvngLoanFundedDocument.Modify();
                 end;
         end;
     end;

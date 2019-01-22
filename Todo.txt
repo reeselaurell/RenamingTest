@@ -1,12 +1,12 @@
 1 - Loan Funded Document Creation from Journal and Posting Routine
-c - Check functionality for loan Posting
-d - Do not post posted document 
-e - Batch Posting
-f - Navigation functionality
+a - Voids functionality - finish
+b - Batch Posting - finish
+c - Navigation functionality - finish
+3 - Adjust pages with new fields (Page Extensions) - finish
 
 2 - Loan Sold Document Creation from Journal and Posting Routine same as funded
 
-3 - Adjust pages with new fields (Page Extensions)
+
 
 1 - Loan Servicing Functionality for Regular and Construction Loans
 2 - Import Management (Purchase/Journals/Deposits/Bank Rec./Checks Import)
