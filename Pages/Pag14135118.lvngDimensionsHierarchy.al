@@ -76,9 +76,10 @@ page 14135118 "lvngDimensionsHierarchy"
     begin
         lvngLoanVisionSetup.Get();
         if lvngLoanVisionSetup.lvngHierarchyLevels = 1 then
-            if lvngLoanVisionSetup.lvngHierarchyLevels = 2 then begin
-                CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel1);
-            end;
+            exit;
+        if lvngLoanVisionSetup.lvngHierarchyLevels = 2 then begin
+            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel1);
+        end;
         if lvngLoanVisionSetup.lvngHierarchyLevels = 3 then begin
             CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel2);
             CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel1);

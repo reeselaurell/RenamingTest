@@ -28,18 +28,22 @@ page 14135124 "lvngLoanCardValuesEdit"
                 field(lvngBooleanValue; lvngBooleanValue)
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(lvngDateValue; lvngDateValue)
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(lvngDecimalValue; lvngDecimalValue)
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(lvngIntegerValue; lvngIntegerValue)
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
 
             }
