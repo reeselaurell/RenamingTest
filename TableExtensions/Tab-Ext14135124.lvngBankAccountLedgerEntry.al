@@ -8,6 +8,11 @@ tableextension 14135124 "lvngBankAccountLedgerEntry" extends "Bank Account Ledge
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(14135501; lvngVoided; Boolean)
+        {
+            Caption = 'Voided';
+            DataClassification = CustomerContent;
+        }
     }
 
 }

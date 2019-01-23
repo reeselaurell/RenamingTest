@@ -68,7 +68,10 @@ codeunit 14135110 "lvngPostLoanDocument"
                 TransferDocumentLineToPosted(lvngLoanDocumentLineTemp);
             until lvngLoanDocumentLineTemp.Next() = 0;
         end;
-
+        if lvngLoanDocument.lvngVoid then begin
+            VoidLedgerEntries(lvngLoanDocument.lvngDocumentNo, lvngLoanDocument.lvngPostingDate);
+            VoidLedgerEntries(lvngLoanDocument.lvngVoidDocumentNo, lvngLoanDocument.lvngPostingDate);
+        end;
     end;
 
     local procedure DeleteAfterPosting()
@@ -188,11 +191,12 @@ codeunit 14135110 "lvngPostLoanDocument"
                     Clear(lvngLoanFundedDocument);
                     lvngLoanFundedDocument.TransferFields(lvngLoanDocument);
                     lvngLoanFundedDocument.Insert(true);
-
-                    lvngLoanFundedDocument.Get(lvngLoanDocument.lvngVoidDocumentNo);
-                    lvngLoanFundedDocument.lvngVoid := true;
-                    lvngLoanFundedDocument.lvngVoidDocumentNo := lvngLoanDocument.lvngDocumentNo;
-                    lvngLoanFundedDocument.Modify();
+                    if lvngLoanDocument.lvngVoid then begin
+                        lvngLoanFundedDocument.Get(lvngLoanDocument.lvngVoidDocumentNo);
+                        lvngLoanFundedDocument.lvngVoid := true;
+                        lvngLoanFundedDocument.lvngVoidDocumentNo := lvngLoanDocument.lvngDocumentNo;
+                        lvngLoanFundedDocument.Modify();
+                    end;
                 end;
         end;
     end;
@@ -208,6 +212,45 @@ codeunit 14135110 "lvngPostLoanDocument"
                     lvngLoanFundedDocumentLine.TransferFields(lvngLoanDocumentLine);
                     lvngLoanFundedDocumentLine.Insert(true);
                 end;
+        end;
+    end;
+
+    local procedure VoidLedgerEntries(lvngDocumentNo: Code[20]; lvngPostingDate: Date)
+    var
+        GLEntry: Record "G/L Entry";
+        BankAccountLedgerEntry: Record "Bank Account Ledger Entry";
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+        lvngLedgerVoidEntry: Record lvngLedgerVoidEntry;
+    begin
+        GLEntry.reset;
+        GLEntry.SetCurrentKey("Document No.", "Posting Date");
+        GLEntry.SetRange("Document No.", lvngDocumentNo);
+        GLEntry.SetRange("Posting Date", lvngPostingDate);
+        if GLEntry.FindSet() then begin
+            repeat
+                Clear(lvngLedgerVoidEntry);
+                lvngLedgerVoidEntry.InsertFromGLEntry(GLEntry);
+            until GLEntry.Next() = 0;
+        end;
+        CustLedgerEntry.reset;
+        CustLedgerEntry.SetCurrentKey("Document No.", "Posting Date");
+        CustLedgerEntry.SetRange("Document No.", lvngDocumentNo);
+        CustLedgerEntry.SetRange("Posting Date", lvngPostingDate);
+        if CustLedgerEntry.FindSet() then begin
+            repeat
+                Clear(lvngLedgerVoidEntry);
+                lvngLedgerVoidEntry.InsertFromCustLedgEntry(CustLedgerEntry);
+            until CustLedgerEntry.Next() = 0;
+        end;
+        BankAccountLedgerEntry.reset;
+        BankAccountLedgerEntry.SetCurrentKey("Document No.", "Posting Date");
+        BankAccountLedgerEntry.SetRange("Document No.", lvngDocumentNo);
+        BankAccountLedgerEntry.SetRange("Posting Date", lvngPostingDate);
+        if BankAccountLedgerEntry.FindSet() then begin
+            repeat
+                Clear(lvngLedgerVoidEntry);
+                lvngLedgerVoidEntry.InsertFromBankAccountLedgerEntry(BankAccountLedgerEntry);
+            until BankAccountLedgerEntry.Next() = 0;
         end;
     end;
 

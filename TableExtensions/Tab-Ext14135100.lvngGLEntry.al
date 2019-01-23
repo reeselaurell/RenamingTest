@@ -77,6 +77,11 @@ tableextension 14135100 "lvngGLEntry" extends "G/L Entry" //MyTargetTableId
             Caption = 'Import ID';
             DataClassification = CustomerContent;
         }
+        field(14135501; lvngVoided; Boolean)
+        {
+            Caption = 'Voided';
+            DataClassification = CustomerContent;
+        }
 
 
     }

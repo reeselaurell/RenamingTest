@@ -1,14 +1,11 @@
-page 14135129 "lvngPostedFundedDocuments"
+page 14135132 "lvngVoidedLedgerEntries"
 {
+    Caption = 'Voided Ledger Entries';
     PageType = List;
     UsageCategory = Lists;
     ApplicationArea = All;
-    SourceTable = lvngLoanFundedDocument;
-    Caption = 'Posted Funded Documents';
-    CardPageId = lvngPostedFundedDocument;
+    SourceTable = lvngLedgerVoidEntry;
     Editable = false;
-    DeleteAllowed = false;
-    InsertAllowed = false;
 
     layout
     {
@@ -16,7 +13,31 @@ page 14135129 "lvngPostedFundedDocuments"
         {
             repeater(lvngRepeater)
             {
-                field(lvngDocumentType; lvngDocumentType)
+                field(lvngTableID; lvngTableID)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngEntryNo; lvngEntryNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngChangeNo; lvngChangeNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngDate; lvngDate)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngTime; lvngTime)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngUserID; lvngUserID)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngTransactionNo; lvngTransactionNo)
                 {
                     ApplicationArea = All;
                 }
@@ -24,19 +45,7 @@ page 14135129 "lvngPostedFundedDocuments"
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCustomerNo; lvngCustomerNo)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngLoanNo; lvngLoanNo)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoid; lvngVoid)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngBorrowerSearchName; lvngBorrowerSearchName)
+                field(lvngReasonCode; lvngReasonCode)
                 {
                     ApplicationArea = All;
                 }
@@ -66,7 +75,7 @@ page 14135129 "lvngPostedFundedDocuments"
                 }
                 field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = all;
                 }
                 field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
                 {
@@ -76,6 +85,11 @@ page 14135129 "lvngPostedFundedDocuments"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngLoanNo; lvngLoanNo)
+                {
+                    ApplicationArea = All;
+                }
+
             }
         }
         area(Factboxes)
@@ -88,16 +102,13 @@ page 14135129 "lvngPostedFundedDocuments"
     {
         area(Processing)
         {
-            action(lvngCreateVoidDocument)
+            action(ActionName)
             {
-                Caption = 'Create Void Document';
                 ApplicationArea = All;
 
                 trigger OnAction();
-                var
-                    lvngLoanVoidDocument: Codeunit lvngLoanVoidDocument;
                 begin
-                    lvngLoanVoidDocument.CreateFundedVoidDocument(Rec, true);
+
                 end;
             }
         }

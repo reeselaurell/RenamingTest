@@ -13,6 +13,11 @@ tableextension 14135106 "lvngVendorLedgerEntry" extends "Vendor Ledger Entry" //
             Caption = 'Entry Date';
             DataClassification = CustomerContent;
         }
+        field(14135501; lvngVoided; Boolean)
+        {
+            Caption = 'Voided';
+            DataClassification = CustomerContent;
+        }
     }
 
 }

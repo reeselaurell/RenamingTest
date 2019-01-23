@@ -8,6 +8,11 @@ tableextension 14135104 "lvngCustLedgEntry" extends "Cust. Ledger Entry" //MyTar
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(14135501; lvngVoided; Boolean)
+        {
+            Caption = 'Voided';
+            DataClassification = CustomerContent;
+        }
     }
 
 }
