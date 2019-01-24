@@ -60,11 +60,51 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngLoanProcessingSchema: Record lvngLoanProcessingSchema;
         lvngLoanProcessingSchemaLine: Record lvngLoanProcessingSchemaLine;
         lvngLoanJournalBatch: Record lvngLoanJournalBatch;
+        lvngLoanFundedDocument: Record lvngLoanFundedDocument;
+        lvngLoanFundedDocumentLine: Record lvngLoanFundedDocumentLine;
         NoSeriesManagement: Codeunit NoSeriesManagement;
         TempDocumentLbl: Label 'XXXXXXXX';
         lvngLineNo: Integer;
         lvngDocumentAmount: Decimal;
     begin
+        GetLoanVisionSetup();
+        if lvngLoanVisionSetup.lvngFundedVoidReasonCode <> '' then begin
+            if (lvngLoanVisionSetup.lvngFundedVoidReasonCode = lvngLoanJournalLine.lvngReasonCode) then begin
+                lvngLoanVisionSetup.TestField(lvngVoidFundedNoSeries);
+                lvngLoanFundedDocument.reset;
+                lvngLoanFundedDocument.SetRange(lvngLoanNo, lvngLoanJournalLine.lvngLoanNo);
+                lvngLoanFundedDocument.SetRange(lvngVoid, false);
+                lvngLoanFundedDocument.FindLast();
+                Clear(lvngLoanDocument);
+                lvngLoanDocument.init;
+                lvngLoanDocument.TransferFields(lvngLoanFundedDocument);
+                lvngLoanDocument.lvngTransactionType := lvngLoanDocument.lvngTransactionType::lvngFunded;
+                if not lvngPreview then begin
+                    lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup.lvngVoidFundedNoSeries, TODAY, true, false);
+                end else begin
+                    lvngLoanDocument.lvngDocumentNo := TempDocumentLbl;
+                end;
+                if lvngLoanDocument.lvngDocumentType = lvngLoanDocument.lvngDocumentType::lvngCreditMemo then
+                    lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice else
+                    lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
+
+                lvngLoanDocument.lvngVoid := true;
+                lvngLoanDocument.lvngVoidDocumentNo := lvngLoanFundedDocument.lvngDocumentNo;
+                lvngLoanDocument.Insert();
+                lvngLoanFundedDocumentLine.reset;
+                lvngLoanFundedDocumentLine.SetRange(lvngDocumentNo, lvngLoanFundedDocument.lvngDocumentNo);
+                lvngLoanFundedDocumentLine.FindSet();
+                repeat
+                    Clear(lvngLoanDocumentLine);
+                    lvngLoanDocumentLine.TransferFields(lvngLoanFundedDocumentLine);
+                    lvngLoanDocumentLine.lvngTransactionType := lvngLoanDocument.lvngTransactionType;
+                    lvngLoanDocumentLine.lvngDocumentNo := lvngLoanDocument.lvngDocumentNo;
+                    lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
+                    lvngLoanDocumentLine.Insert();
+                until lvngLoanFundedDocumentLine.Next() = 0;
+                exit;
+            end;
+        end;
         lvngLoanJournalLine.TestField(lvngProcessingSchemaCode);
         lvngLoanProcessingSchema.Get(lvngLoanJournalLine.lvngProcessingSchemaCode);
         lvngLoanJournalBatch.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode);

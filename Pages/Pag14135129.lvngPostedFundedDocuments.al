@@ -24,6 +24,10 @@ page 14135129 "lvngPostedFundedDocuments"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngPostingDate; lvngPostingDate)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngCustomerNo; lvngCustomerNo)
                 {
                     ApplicationArea = All;
@@ -91,6 +95,10 @@ page 14135129 "lvngPostedFundedDocuments"
             action(lvngCreateVoidDocument)
             {
                 Caption = 'Create Void Document';
+                Image = VoidElectronicDocument;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
                 ApplicationArea = All;
 
                 trigger OnAction();
@@ -99,6 +107,16 @@ page 14135129 "lvngPostedFundedDocuments"
                 begin
                     lvngLoanVoidDocument.CreateFundedVoidDocument(Rec, true);
                 end;
+            }
+            action(lvngCreateVoidMultipleDocument)
+            {
+                Caption = 'Create Multiple Void Documents';
+                Image = VoidAllElectronicDocuments;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ApplicationArea = All;
+                RunObject = report lvngVoidPostedFundDocuments;
             }
         }
     }

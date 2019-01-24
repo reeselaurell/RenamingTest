@@ -96,4 +96,26 @@ page 14135130 "lvngPostedFundedDocument"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(lvngCreateVoidDocument)
+            {
+                Caption = 'Create Void Document';
+                Image = VoidElectronicDocument;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ApplicationArea = All;
+
+                trigger OnAction();
+                var
+                    lvngLoanVoidDocument: Codeunit lvngLoanVoidDocument;
+                begin
+                    lvngLoanVoidDocument.CreateFundedVoidDocument(Rec, true);
+                end;
+            }
+        }
+    }
 }

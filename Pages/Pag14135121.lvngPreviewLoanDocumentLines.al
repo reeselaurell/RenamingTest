@@ -24,15 +24,19 @@ page 14135121 "lvngPreviewLoanDocumentLines"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngBalancingEntry; lvngBalancingEntry)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngDescription; lvngDescription)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngReasonCode; lvngReasonCode)
+                field(lvngAmount; lvngAmount)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngAmount; lvngAmount)
+                field(lvngReasonCode; lvngReasonCode)
                 {
                     ApplicationArea = All;
                 }
@@ -62,17 +66,13 @@ page 14135121 "lvngPreviewLoanDocumentLines"
                 }
                 field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = all;
                 }
                 field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
                 {
                     ApplicationArea = All;
                 }
                 field(lvngBusinessUnitCode; lvngBusinessUnitCode)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngBalancingEntry; lvngBalancingEntry)
                 {
                     ApplicationArea = All;
                 }

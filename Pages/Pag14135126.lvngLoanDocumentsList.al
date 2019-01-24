@@ -109,6 +109,36 @@ page 14135126 "lvngLoanDocumentsList"
                     end;
                 end;
             }
+            action(lvngPost)
+            {
+                Caption = 'Post';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = PostDocument;
+
+                trigger OnAction()
+                var
+                    lvngPostLoanDocument: Codeunit lvngPostLoanDocument;
+                    PostConfirmationLbl: Label 'Do You want to Post Document?';
+                begin
+                    if Confirm(PostConfirmationLbl, false) then begin
+                        lvngPostLoanDocument.Run(Rec);
+                    end;
+                end;
+            }
+
+            action(lvngBatchPost)
+            {
+                Caption = 'Post Batch';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = PostBatch;
+                RunObject = report lvngPostLoanDocuments;
+            }
         }
     }
 

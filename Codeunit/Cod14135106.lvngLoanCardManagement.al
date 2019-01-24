@@ -12,6 +12,7 @@ codeunit 14135106 "lvngLoanCardManagement"
         lvngCounter: Integer;
 
     begin
+        GetLoanVisionSetup();
         lvngLoanJournalBatch.Get(lvngJournalBatchCode);
         if lvngLoanJournalBatch.lvngLoanCardUpdateOption = lvngLoanJournalBatch.lvngLoanCardUpdateOption::lvngSchema then begin
             lvngLoanUpdateSchema.reset;
@@ -24,6 +25,16 @@ codeunit 14135106 "lvngLoanCardManagement"
             until lvngLoanUpdateSchema.Next() = 0;
         end;
         lvngLoanJournalLine.reset;
+        if lvngLoanJournalBatch.lvngLoanJournalType = lvngLoanJournalBatch.lvngLoanJournalType::lvngFunded then begin
+            if lvngLoanVisionSetup.lvngFundedVoidReasonCode <> '' then begin
+                lvngLoanJournalLine.SetFilter(lvngReasonCode, '<>%1', lvngLoanVisionSetup.lvngFundedVoidReasonCode);
+            end;
+        end;
+        if lvngLoanJournalBatch.lvngLoanJournalType = lvngLoanJournalBatch.lvngLoanJournalType::lvngSold then begin
+            if lvngLoanVisionSetup.lvngSoldVoidReasonCode <> '' then begin
+                lvngLoanJournalLine.SetFilter(lvngReasonCode, '<>%1', lvngLoanVisionSetup.lvngSoldVoidReasonCode);
+            end;
+        end;
         if lvngLoanJournalLine.FindSet() then begin
             if GuiAllowed() then begin
                 Window.Open(lvngProgressLbl);
@@ -57,6 +68,7 @@ codeunit 14135106 "lvngLoanCardManagement"
     begin
         if lvngLoanJournalLine.lvngLoanNo = '' then
             exit;
+
         if not lvngLoan.Get(lvngLoanJournalLine.lvngLoanNo) then begin
             Clear(lvngLoan);
             lvngloan.lvngLoanNo := lvngLoanJournalLine.lvngLoanNo;
@@ -1663,6 +1675,14 @@ codeunit 14135106 "lvngLoanCardManagement"
         end;
     end;
 
+    local procedure GetLoanVisionSetup()
+    begin
+        if not lvngLoanVisionSetupRetrieved then begin
+            lvngLoanVisionSetupRetrieved := true;
+            lvngLoanVisionSetup.Get();
+        end;
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::DimensionManagement, 'OnAfterSetupObjectNoList', '', true, true)]
     local procedure OnDimensionAfterSetupObjectNoList(var TempAllObjWithCaption: Record AllObjWithCaption)
     var
@@ -1674,6 +1694,8 @@ codeunit 14135106 "lvngLoanCardManagement"
     var
         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
         lvngLoanFieldsConfigurationTemp: Record lvngLoanFieldsConfiguration temporary;
+        lvngLoanVisionSetup: Record lvngLoanVisionSetup;
+        lvngLoanVisionSetupRetrieved: Boolean;
         lvngLoanFieldsConfigurationRetrieved: Boolean;
         lvngCompletedLbl: Label 'Completed';
 }

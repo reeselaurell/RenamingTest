@@ -104,14 +104,19 @@ page 14135127 "lvngFundedDocument"
         {
             action(lvngPost)
             {
+                Caption = 'Post';
                 ApplicationArea = All;
                 Promoted = true;
+                Image = PostDocument;
 
                 trigger OnAction()
                 var
-                    cod: Codeunit lvngPostLoanDocument;
+                    lvngPostLoanDocument: Codeunit lvngPostLoanDocument;
+                    PostConfirmationLbl: Label 'Do You want to Post Document?';
                 begin
-                    cod.Run(Rec);
+                    if Confirm(PostConfirmationLbl, false) then begin
+                        lvngPostLoanDocument.Run(Rec);
+                    end;
                 end;
             }
         }

@@ -35,7 +35,11 @@ page 14135120 "lvngPreviewLoanDocument"
                 {
                     ApplicationArea = All;
                 }
-                field(lvngLoanNo; lvngLoanNo)
+                field(lvngVoid; lvngVoid)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngVoidDocumentNo; lvngVoidDocumentNo)
                 {
                     ApplicationArea = All;
                 }
@@ -43,7 +47,14 @@ page 14135120 "lvngPreviewLoanDocument"
                 {
                     ApplicationArea = All;
                 }
-
+                field(lvngLoanNo; lvngLoanNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngBorrowerSearchName; lvngBorrowerSearchName)
+                {
+                    ApplicationArea = All;
+                }
                 group(lvngDimensions)
                 {
                     Caption = 'Dimensions';
@@ -84,6 +95,7 @@ page 14135120 "lvngPreviewLoanDocument"
                         ApplicationArea = All;
                     }
                 }
+
             }
             part(lvngLines; lvngPreviewLoanDocumentLines)
             {
