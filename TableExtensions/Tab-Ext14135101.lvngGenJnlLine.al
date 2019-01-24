@@ -8,6 +8,11 @@ tableextension 14135101 "lvngGenJnlLine" extends "Gen. Journal Line" //MyTargetT
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(14135108; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
 
         field(14135500; lvngImportID; Guid)
         {

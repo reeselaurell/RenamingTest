@@ -70,6 +70,10 @@ page 14135128 "lvngFundedDocumentSubpage"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngServicingType; lvngServicingType)
+                {
+                    ApplicationArea = All;
+                }
 
             }
         }

@@ -112,6 +112,11 @@ table 14135122 "lvngLoanFundedDocumentLine"
             Caption = 'Dimension Set ID';
             DataClassification = CustomerContent;
         }
+        field(200; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
         field(1000; lvngProcessingSchemaCode; code[20])
         {
             Caption = 'Processing Schema Code';

@@ -8,6 +8,11 @@ tableextension 14135115 "lvngSalesInvoiceLine" extends "Sales Invoice Line" //My
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(200; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
     }
 
 }

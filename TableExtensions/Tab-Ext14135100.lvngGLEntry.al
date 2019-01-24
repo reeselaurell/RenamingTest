@@ -57,6 +57,11 @@ tableextension 14135100 "lvngGLEntry" extends "G/L Entry" //MyTargetTableId
             Caption = 'Entry Date';
             DataClassification = CustomerContent;
         }
+        field(14135108; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
 
         field(14135150; lvngWarehouseLineCode; Code[50])
         {

@@ -76,6 +76,10 @@ page 14135121 "lvngPreviewLoanDocumentLines"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngServicingType; lvngServicingType)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngProcessingSchemaCode; lvngProcessingSchemaCode)
                 {
                     ApplicationArea = All;

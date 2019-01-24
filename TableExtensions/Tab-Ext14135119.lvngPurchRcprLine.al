@@ -8,6 +8,11 @@ tableextension 14135119 "lvngPurchRcprLine" extends "Purch. Rcpt. Line" //MyTarg
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(200; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
     }
 
 }

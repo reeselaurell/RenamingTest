@@ -125,6 +125,11 @@ table 14135123 "lvngLedgerVoidEntry"
             Caption = 'Dimension Set ID';
             DataClassification = CustomerContent;
         }
+        field(200; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
 
     }
 
@@ -161,6 +166,7 @@ table 14135123 "lvngLedgerVoidEntry"
         lvngDocumentNo := GLEntry."Document No.";
         lvngTransactionNo := GLEntry."Transaction No.";
         lvngLoanNo := GLEntry.lvngLoanNo;
+        lvngServicingType := GLEntry.lvngServicingType;
         Insert(true);
         clear(GLEntry."Reason Code");
         Clear(GLEntry."Global Dimension 1 Code");
@@ -174,6 +180,7 @@ table 14135123 "lvngLedgerVoidEntry"
         Clear(GLEntry."Business Unit Code");
         Clear(GLEntry."Dimension Set ID");
         Clear(GLEntry.lvngLoanNo);
+        Clear(GLEntry.lvngServicingType);
         GLEntry.lvngVoided := true;
         GLEntry.Modify()
     end;

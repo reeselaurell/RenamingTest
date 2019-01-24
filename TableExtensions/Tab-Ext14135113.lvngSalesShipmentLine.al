@@ -8,6 +8,11 @@ tableextension 14135113 "lvngSalesShipmentLine" extends "Sales Shipment Line" //
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(200; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
     }
 
 }

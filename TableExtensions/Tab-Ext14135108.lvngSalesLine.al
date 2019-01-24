@@ -8,6 +8,11 @@ tableextension 14135108 "lvngSalesLine" extends "Sales Line" //MyTargetTableId
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(200; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
     }
 
 }

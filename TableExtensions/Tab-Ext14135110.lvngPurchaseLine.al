@@ -8,6 +8,11 @@ tableextension 14135110 "lvngPurchaseLine" extends "Purchase Line" //MyTargetTab
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(200; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
     }
 
 }

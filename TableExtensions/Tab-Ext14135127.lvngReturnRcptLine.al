@@ -8,6 +8,11 @@ tableextension 14135127 "lvngReturnRcptLine" extends "Return Receipt Line" //MyT
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
+        field(200; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
     }
 
 }

@@ -175,7 +175,11 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             DataClassification = CustomerContent;
             TableRelation = "Business Unit";
         }
-
+        field(200; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
         field(1000; lvngDimension1Rule; enum lvngProcessingDimensionRule)
         {
             Caption = 'Dimension 1 Rule';

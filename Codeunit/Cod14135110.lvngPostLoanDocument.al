@@ -148,6 +148,7 @@ codeunit 14135110 "lvngPostLoanDocument"
         GenJnlLine."Source Code" := lvngSourceCode;
         GenJnlLine.lvngLoanNo := lvngLoanDocument.lvngLoanNo;
         GenJnlLine."Reason Code" := lvngLoanDocument.lvngReasonCode;
+        GenJnlLine.lvngServicingType := lvngLoanDocumentLine.lvngServicingType;
     end;
 
     local procedure CreateBalancingGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line")

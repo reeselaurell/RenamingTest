@@ -257,7 +257,8 @@ codeunit 14135105 "lvngCreateFundedDocuments"
             lvngLoanDocumentLine.lvngProcessingSchemaCode := lvngLoanProcessingSchemaLine.lvngProcessingCode;
             lvngloandocumentline.lvngProcessingSchemaLineNo := lvngLoanProcessingSchemaLine.lvngLineNo;
             lvngLoanDocumentLine.lvngBalancingEntry := lvngLoanProcessingSchemaLine.lvngBalancingEntry;
-            lvngloandocumentline.lvngTagCode := lvngLoanProcessingSchemaLine.lvngTagCode;
+            lvngLoanDocumentLine.lvngTagCode := lvngLoanProcessingSchemaLine.lvngTagCode;
+            lvngLoanDocumentLine.lvngServicingType := lvngLoanProcessingSchemaLine.lvngServicingType;
             lvngLineNo := lvngLineNo + 10000;
             lvngLoanDocumentLine.Insert();
             if lvngLoanProcessingSchemaLine.lvngOverrideReasonCode <> '' then begin

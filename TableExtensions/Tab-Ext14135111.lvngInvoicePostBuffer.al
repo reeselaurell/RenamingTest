@@ -12,6 +12,11 @@ tableextension 14135111 "lvngInvoicePostBuffer" extends "Invoice Post. Buffer" /
             Caption = 'Description';
             DataClassification = CustomerContent;
         }
+        field(14135102; lvngServicingType; enum lvngServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
     }
 
 }
