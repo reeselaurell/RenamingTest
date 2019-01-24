@@ -1,10 +1,14 @@
-page 14135126 "lvngLoanDocumentsList"
+page 14135133 "lvngPostedSoldDocuments"
 {
-    Caption = 'Loan Documents';
     PageType = List;
     UsageCategory = Lists;
     ApplicationArea = All;
-    SourceTable = lvngLoanDocument;
+    SourceTable = lvngLoanSoldDocument;
+    Caption = 'Posted Sold Documents';
+    CardPageId = lvngPostedSoldDocument;
+    Editable = false;
+    DeleteAllowed = false;
+    InsertAllowed = false;
 
     layout
     {
@@ -12,15 +16,15 @@ page 14135126 "lvngLoanDocumentsList"
         {
             repeater(lvngRepeater)
             {
-                field(lvngTransactionType; lvngTransactionType)
-                {
-                    ApplicationArea = All;
-                }
                 field(lvngDocumentType; lvngDocumentType)
                 {
                     ApplicationArea = All;
                 }
                 field(lvngDocumentNo; lvngDocumentNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngPostingDate; lvngPostingDate)
                 {
                     ApplicationArea = All;
                 }
@@ -33,10 +37,6 @@ page 14135126 "lvngLoanDocumentsList"
                     ApplicationArea = All;
                 }
                 field(lvngVoid; lvngVoid)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoidDocumentNo; lvngVoidDocumentNo)
                 {
                     ApplicationArea = All;
                 }
@@ -80,9 +80,11 @@ page 14135126 "lvngLoanDocumentsList"
                 {
                     ApplicationArea = All;
                 }
-
-
             }
+        }
+        area(Factboxes)
+        {
+
         }
     }
 
@@ -90,60 +92,32 @@ page 14135126 "lvngLoanDocumentsList"
     {
         area(Processing)
         {
-            action(lvngShowDocument)
+            action(lvngCreateVoidDocument)
             {
-                Caption = 'Show Document';
-                Image = DocumentEdit;
+                Caption = 'Create Void Document';
+                Image = VoidElectronicDocument;
                 Promoted = true;
-                PromotedIsBig = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
                 ApplicationArea = All;
 
-                trigger OnAction()
-                begin
-                    case lvngTransactionType of
-                        lvngTransactionType::lvngFunded:
-                            begin
-                                page.Run(Page::lvngFundedDocument, Rec);
-                            end;
-                        lvngTransactionType::lvngSold:
-                            begin
-                                page.Run(Page::lvngSoldDocument, Rec);
-                            end;
-                    end;
-                end;
-            }
-            action(lvngPost)
-            {
-                Caption = 'Post';
-                ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
-                Image = PostDocument;
-
-                trigger OnAction()
+                trigger OnAction();
                 var
-                    lvngPostLoanDocument: Codeunit lvngPostLoanDocument;
-                    PostConfirmationLbl: Label 'Do You want to Post Document?';
+                    lvngLoanVoidDocument: Codeunit lvngLoanVoidDocument;
                 begin
-                    if Confirm(PostConfirmationLbl, false) then begin
-                        lvngPostLoanDocument.Run(Rec);
-                    end;
+                    lvngLoanVoidDocument.CreateSoldVoidDocument(Rec, true);
                 end;
             }
-
-            action(lvngBatchPost)
+            action(lvngCreateVoidMultipleDocument)
             {
-                Caption = 'Post Batch';
-                ApplicationArea = All;
+                Caption = 'Create Multiple Void Documents';
+                Image = VoidAllElectronicDocuments;
                 Promoted = true;
-                PromotedIsBig = true;
                 PromotedCategory = Process;
-                Image = PostBatch;
-                RunObject = report lvngPostLoanDocuments;
+                PromotedIsBig = true;
+                ApplicationArea = All;
+                RunObject = report lvngVoidPostedSoldDocuments;
             }
         }
     }
-
 }

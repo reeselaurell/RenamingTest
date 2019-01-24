@@ -14,6 +14,8 @@ codeunit 14135110 "lvngPostLoanDocument"
     var
         lvngLoanFundedDocument: Record lvngLoanFundedDocument;
         lvngLoanFundedDocumentLine: Record lvngLoanFundedDocumentLine;
+        lvngLoanSoldDocument: Record lvngLoanSoldDocument;
+        lvngLoanSoldDocumentLine: Record lvngLoanSoldDocumentLine;
         lvngLoanDocumentLineTemp: Record lvngLoanDocumentLine temporary;
         GenJnlLine: Record "Gen. Journal Line";
         GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
@@ -185,6 +187,7 @@ codeunit 14135110 "lvngPostLoanDocument"
     local procedure TransferDocumentHeaderToPosted(lvngLoanDocument: Record lvngLoanDocument)
     var
         lvngLoanFundedDocument: Record lvngLoanFundedDocument;
+        lvngLoanSoldDocument: Record lvngLoanSoldDocument;
     begin
         case lvngLoanDocument.lvngTransactionType of
             lvngLoanDocument.lvngTransactionType::lvngFunded:
@@ -199,12 +202,25 @@ codeunit 14135110 "lvngPostLoanDocument"
                         lvngLoanFundedDocument.Modify();
                     end;
                 end;
+            lvngLoanDocument.lvngTransactionType::lvngSold:
+                begin
+                    Clear(lvngLoanSoldDocument);
+                    lvngLoanSoldDocument.TransferFields(lvngLoanDocument);
+                    lvngLoanSoldDocument.Insert(true);
+                    if lvngLoanDocument.lvngVoid then begin
+                        lvngLoanSoldDocument.Get(lvngLoanDocument.lvngVoidDocumentNo);
+                        lvngLoanSoldDocument.lvngVoid := true;
+                        lvngLoanSoldDocument.lvngVoidDocumentNo := lvngLoanDocument.lvngDocumentNo;
+                        lvngLoanSoldDocument.Modify();
+                    end;
+                end;
         end;
     end;
 
     local procedure TransferDocumentLineToPosted(lvngLoanDocumentLine: Record lvngLoanDocumentLine)
     var
         lvngLoanFundedDocumentLine: Record lvngLoanFundedDocumentLine;
+        lvngLoanSoldDocumentLine: Record lvngLoanSoldDocumentLine;
     begin
         case lvngLoanDocumentLine.lvngTransactionType of
             lvngLoanDocumentLine.lvngTransactionType::lvngFunded:
@@ -212,6 +228,12 @@ codeunit 14135110 "lvngPostLoanDocument"
                     Clear(lvngLoanFundedDocumentLine);
                     lvngLoanFundedDocumentLine.TransferFields(lvngLoanDocumentLine);
                     lvngLoanFundedDocumentLine.Insert(true);
+                end;
+            lvngLoanDocumentLine.lvngTransactionType::lvngSold:
+                begin
+                    Clear(lvngLoanSoldDocumentLine);
+                    lvngLoanSoldDocumentLine.TransferFields(lvngLoanDocumentLine);
+                    lvngLoanSoldDocumentLine.Insert(true);
                 end;
         end;
     end;
@@ -260,6 +282,7 @@ codeunit 14135110 "lvngPostLoanDocument"
         if not lvngLoanVisionSetupRetrieved then begin
             lvngLoanVisionSetup.Get();
             lvngLoanVisionSetup.TestField(lvngFundedSourceCode);
+            lvngLoanVisionSetup.TestField(lvngSoldSourceCode);
             lvngLoanVisionSetupRetrieved := true;
         end;
     end;

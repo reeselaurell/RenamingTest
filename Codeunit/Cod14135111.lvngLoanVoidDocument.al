@@ -38,6 +38,44 @@ codeunit 14135111 "lvngLoanVoidDocument"
         end;
     end;
 
+    procedure CreateSoldVoidDocument(lvngLoanSoldDocument: record lvngLoanSoldDocument; ShowConfirmation: Boolean)
+    var
+        lvngLoanDocument: Record lvngLoanDocument;
+        lvngLoanDocumentLine: Record lvngLoanDocumentLine;
+        lvngLoanSoldDocumentLine: Record lvngLoanSoldDocumentLine;
+        ConfirmationDialogLbl: Label 'Do you want to create Void document for %1?';
+    begin
+        GetLoanVisionSetup();
+        lvngLoanVisionSetup.TestField(lvngVoidFundedNoSeries);
+        if ShowConfirmation then begin
+            if not Confirm(ConfirmationDialogLbl, false, lvngLoanSoldDocument.lvngDocumentNo) then
+                exit;
+        end;
+        Clear(lvngLoanDocument);
+        lvngLoanDocument.TransferFields(lvngLoanSoldDocument);
+        lvngLoanDocument.lvngTransactionType := lvngLoanDocument.lvngTransactionType::lvngFunded;
+        lvngLoanDocument.lvngDocumentNo := NoSeriesMgmt.DoGetNextNo(lvngLoanVisionSetup.lvngVoidFundedNoSeries, TODAY, true, true);
+        if lvngLoanSoldDocument.lvngDocumentType = lvngLoanSoldDocument.lvngDocumentType::lvngCreditMemo then
+            lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice else
+            lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
+        lvngLoanDocument.lvngVoid := true;
+        lvngLoanDocument.lvngVoidDocumentNo := lvngLoanSoldDocument.lvngDocumentNo;
+        lvngLoanDocument.Insert();
+        lvngLoanSoldDocumentLine.reset;
+        lvngLoanSoldDocumentLine.SetRange(lvngDocumentNo, lvngLoanSoldDocument.lvngDocumentNo);
+        if lvngLoanSoldDocumentLine.FindSet() then begin
+            repeat
+                Clear(lvngLoanDocumentLine);
+                lvngLoanDocumentLine.TransferFields(lvngLoanSoldDocumentLine);
+                lvngLoanDocumentLine.lvngTransactionType := lvngLoanDocument.lvngTransactionType;
+                lvngLoanDocumentLine.lvngDocumentNo := lvngLoanDocument.lvngDocumentNo;
+                lvngLoanDocumentLine.lvngReasonCode := lvngLoanVisionSetup.lvngFundedVoidReasonCode;
+                lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
+                lvngLoanDocumentLine.Insert();
+            until lvngLoanSoldDocumentLine.Next() = 0;
+        end;
+    end;
+
     local procedure GetLoanVisionSetup()
     begin
         if not lvngLoanVisionSetupRetrieved then begin
