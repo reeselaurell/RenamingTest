@@ -9,4 +9,8 @@ enum 14135118 "lvngLoanCardUpdateOption"
     {
         Caption = 'Update Schema';
     }
+    value(2; lvngNoUpdate)
+    {
+        Caption = 'Do Not Update';
+    }
 }
