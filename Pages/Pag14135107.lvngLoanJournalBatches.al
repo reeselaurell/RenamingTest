@@ -81,6 +81,8 @@ page 14135107 "lvngLoanJournalBatches"
                 trigger OnAction();
                 var
                     lvngFundedJournalLinesPage: Page lvngFundedJournalLines;
+                    lvngSoldJournalLinesPage: Page lvngSoldJournalLines;
+                    lvngLoanJournalLinesPage: Page lvngLoanJournalLines;
                     lvngLoanJournalLine: Record lvngLoanJournalLine;
                 begin
                     case lvngLoanJournalType of
@@ -92,6 +94,23 @@ page 14135107 "lvngLoanJournalBatches"
                                 lvngFundedJournalLinesPage.SetTableView(lvngLoanJournalLine);
                                 lvngFundedJournalLinesPage.Run();
                             end;
+                        lvngLoanJournalType::lvngSold:
+                            begin
+                                Clear(lvngSoldJournalLinesPage);
+                                lvngLoanJournalLine.Reset();
+                                lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngCode);
+                                lvngSoldJournalLinesPage.SetTableView(lvngLoanJournalLine);
+                                lvngSoldJournalLinesPage.Run();
+                            end;
+                        lvngLoanJournalType::lvngLoan:
+                            begin
+                                Clear(lvngLoanJournalLinesPage);
+                                lvngLoanJournalLine.Reset();
+                                lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngCode);
+                                lvngLoanJournalLinesPage.SetTableView(lvngLoanJournalLine);
+                                lvngLoanJournalLinesPage.Run();
+                            end;
+
                     end;
                 end;
             }
