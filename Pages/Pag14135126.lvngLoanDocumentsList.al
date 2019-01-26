@@ -143,6 +143,17 @@ page 14135126 "lvngLoanDocumentsList"
                 Image = PostBatch;
                 RunObject = report lvngPostLoanDocuments;
             }
+
+            action(lvngPrint)
+            {
+                Caption = 'Print';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Report;
+                Image = Print;
+                RunObject = report lvngLoanDocument;
+            }
         }
     }
 

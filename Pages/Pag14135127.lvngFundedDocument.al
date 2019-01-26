@@ -119,6 +119,25 @@ page 14135127 "lvngFundedDocument"
                     end;
                 end;
             }
+            action(lvngPrint)
+            {
+                Caption = 'Print';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Report;
+                Image = Print;
+                trigger OnAction()
+                var
+                    lvngLoanDocumentReport: Report lvngLoanDocument;
+                    lvngLoanDocumentView: Record lvngLoanDocument;
+                begin
+                    lvngLoanDocumentView := Rec;
+                    lvngLoanDocumentView.SetRecFilter();
+                    lvngLoanDocumentReport.SetTableView(lvngLoanDocumentView);
+                    lvngLoanDocumentReport.Run();
+                end;
+            }
         }
     }
 }

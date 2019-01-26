@@ -116,6 +116,25 @@ page 14135130 "lvngPostedFundedDocument"
                     lvngLoanVoidDocument.CreateFundedVoidDocument(Rec, true);
                 end;
             }
+            action(lvngPrint)
+            {
+                Caption = 'Print';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Report;
+                Image = Print;
+                trigger OnAction()
+                var
+                    lvngLoanFundedDocumentReport: Report lvngLoanFundedDocument;
+                    lvngLoanFundedDocumentView: Record lvngLoanFundedDocument;
+                begin
+                    lvngLoanFundedDocumentView := Rec;
+                    lvngLoanFundedDocumentView.SetRecFilter();
+                    lvngLoanFundedDocumentReport.SetTableView(lvngLoanFundedDocumentView);
+                    lvngLoanFundedDocumentReport.Run();
+                end;
+            }
         }
     }
 }

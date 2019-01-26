@@ -116,6 +116,25 @@ page 14135134 "lvngPostedSoldDocument"
                     lvngLoanVoidDocument.CreateSoldVoidDocument(Rec, true);
                 end;
             }
+            action(lvngPrint)
+            {
+                Caption = 'Print';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Report;
+                Image = Print;
+                trigger OnAction()
+                var
+                    lvngLoanSoldDocumentReport: Report lvngLoanSoldDocument;
+                    lvngLoanSoldDocumentView: Record lvngLoanSoldDocument;
+                begin
+                    lvngLoanSoldDocumentView := Rec;
+                    lvngLoanSoldDocumentView.SetRecFilter();
+                    lvngLoanSoldDocumentReport.SetTableView(lvngLoanSoldDocumentView);
+                    lvngLoanSoldDocumentReport.Run();
+                end;
+            }
         }
     }
 }

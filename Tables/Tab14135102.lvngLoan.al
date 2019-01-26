@@ -356,6 +356,20 @@ table 14135102 "lvngLoan"
         Modify();
     end;
 
+    procedure GetLoanAddress(lvngAddressType: enum lvngAddressType): Text;
+    var
+        lvngLoanAddress: Record lvngLoanAddress;
+        lvngAddressFormat: Label '%1 %2, %3 %4 %5';
+        lvngFormattedAddress: Text;
+    begin
+        if lvngLoanAddress.Get(lvngLoanNo, lvngAddressType) then begin
+            lvngFormattedAddress := strsubstno(lvngAddressFormat, lvngloanaddress.lvngAddress, lvngLoanAddress.lvngAddress2, lvngLoanAddress.lvngCity, lvngloanaddress.lvngState, lvngloanaddress.lvngZIPCode);
+            if DelChr(lvngFormattedAddress, '=', ' ,') = '' then
+                exit('') else
+                exit(lvngFormattedAddress);
+        end;
+    end;
+
     var
         DimensionManagement: Codeunit DimensionManagement;
 

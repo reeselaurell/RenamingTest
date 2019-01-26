@@ -118,6 +118,16 @@ page 14135133 "lvngPostedSoldDocuments"
                 ApplicationArea = All;
                 RunObject = report lvngVoidPostedSoldDocuments;
             }
+            action(lvngPrint)
+            {
+                Caption = 'Print';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Report;
+                Image = Print;
+                RunObject = report lvngLoanSoldDocument;
+            }
         }
     }
 }
