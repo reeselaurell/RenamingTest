@@ -11,79 +11,6 @@
       <rd:DataSourceID>59279a76-75be-4489-bc9d-37088df7c4b9</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="DocumentType">
-          <DataField>DocumentType</DataField>
-        </Field>
-        <Field Name="lvngDocumentNo">
-          <DataField>lvngDocumentNo</DataField>
-        </Field>
-        <Field Name="lvngCustomerNo">
-          <DataField>lvngCustomerNo</DataField>
-        </Field>
-        <Field Name="lvngLoanNo">
-          <DataField>lvngLoanNo</DataField>
-        </Field>
-        <Field Name="BorrowerName">
-          <DataField>BorrowerName</DataField>
-        </Field>
-        <Field Name="lvngPostingDate">
-          <DataField>lvngPostingDate</DataField>
-        </Field>
-        <Field Name="lvngVoid">
-          <DataField>lvngVoid</DataField>
-        </Field>
-        <Field Name="PropertyAddress">
-          <DataField>PropertyAddress</DataField>
-        </Field>
-        <Field Name="lvngVoidDocumentNo">
-          <DataField>lvngVoidDocumentNo</DataField>
-        </Field>
-        <Field Name="CostCenter">
-          <DataField>CostCenter</DataField>
-        </Field>
-        <Field Name="LoanType">
-          <DataField>LoanType</DataField>
-        </Field>
-        <Field Name="LoanOfficer">
-          <DataField>LoanOfficer</DataField>
-        </Field>
-        <Field Name="State">
-          <DataField>State</DataField>
-        </Field>
-        <Field Name="lvngAccountNo">
-          <DataField>lvngAccountNo</DataField>
-        </Field>
-        <Field Name="lvngDescription">
-          <DataField>lvngDescription</DataField>
-        </Field>
-        <Field Name="lvngAmount">
-          <DataField>lvngAmount</DataField>
-        </Field>
-        <Field Name="lvngAmountFormat">
-          <DataField>lvngAmountFormat</DataField>
-        </Field>
-        <Field Name="lvngBalancingEntry">
-          <DataField>lvngBalancingEntry</DataField>
-        </Field>
-        <Field Name="lvngLineNo">
-          <DataField>lvngLineNo</DataField>
-        </Field>
-        <Field Name="lvngServicingType">
-          <DataField>lvngServicingType</DataField>
-        </Field>
-        <Field Name="DocumentLineCostCenter">
-          <DataField>DocumentLineCostCenter</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -2310,12 +2237,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -2371,4 +2292,77 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="DocumentType">
+          <DataField>DocumentType</DataField>
+        </Field>
+        <Field Name="lvngDocumentNo">
+          <DataField>lvngDocumentNo</DataField>
+        </Field>
+        <Field Name="lvngCustomerNo">
+          <DataField>lvngCustomerNo</DataField>
+        </Field>
+        <Field Name="lvngLoanNo">
+          <DataField>lvngLoanNo</DataField>
+        </Field>
+        <Field Name="BorrowerName">
+          <DataField>BorrowerName</DataField>
+        </Field>
+        <Field Name="lvngPostingDate">
+          <DataField>lvngPostingDate</DataField>
+        </Field>
+        <Field Name="lvngVoid">
+          <DataField>lvngVoid</DataField>
+        </Field>
+        <Field Name="PropertyAddress">
+          <DataField>PropertyAddress</DataField>
+        </Field>
+        <Field Name="lvngVoidDocumentNo">
+          <DataField>lvngVoidDocumentNo</DataField>
+        </Field>
+        <Field Name="CostCenter">
+          <DataField>CostCenter</DataField>
+        </Field>
+        <Field Name="LoanType">
+          <DataField>LoanType</DataField>
+        </Field>
+        <Field Name="LoanOfficer">
+          <DataField>LoanOfficer</DataField>
+        </Field>
+        <Field Name="State">
+          <DataField>State</DataField>
+        </Field>
+        <Field Name="lvngAccountNo">
+          <DataField>lvngAccountNo</DataField>
+        </Field>
+        <Field Name="lvngDescription">
+          <DataField>lvngDescription</DataField>
+        </Field>
+        <Field Name="lvngAmount">
+          <DataField>lvngAmount</DataField>
+        </Field>
+        <Field Name="lvngAmountFormat">
+          <DataField>lvngAmountFormat</DataField>
+        </Field>
+        <Field Name="lvngBalancingEntry">
+          <DataField>lvngBalancingEntry</DataField>
+        </Field>
+        <Field Name="lvngLineNo">
+          <DataField>lvngLineNo</DataField>
+        </Field>
+        <Field Name="lvngServicingType">
+          <DataField>lvngServicingType</DataField>
+        </Field>
+        <Field Name="DocumentLineCostCenter">
+          <DataField>DocumentLineCostCenter</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

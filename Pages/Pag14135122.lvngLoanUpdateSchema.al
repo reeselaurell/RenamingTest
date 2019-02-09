@@ -170,12 +170,19 @@ page 14135122 "lvngLoanUpdateSchema"
     trigger OnAfterGetRecord()
     var
         CaptionManagement: codeunit CaptionManagement;
+        TableField: Record Field;
         lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
     begin
         Clear(lvngFieldDescription);
         case lvngImportFieldType of
             lvngimportfieldtype::lvngTable:
-                lvngFieldDescription := CaptionManagement.GetTranslatedFieldCaption('', Database::lvngLoanJournalLine, lvngFieldNo);
+                begin
+                    TableField.SetRange("No.", lvngFieldNo);
+                    TableField.setrange(TableNo, Database::lvngLoanJournalLine);
+                    TableField.FindFirst();
+                    lvngFieldDescription := TableField."Field Caption";
+                    //lvngFieldDescription := CaptionManagement.GetTranslatedFieldCaption('', Database::lvngLoanJournalLine, lvngFieldNo);
+                end;
             lvngImportFieldType::lvngVariable:
                 lvngFieldDescription := lvngLoanCardManagement.GetFieldName(lvngFieldNo);
         end;
