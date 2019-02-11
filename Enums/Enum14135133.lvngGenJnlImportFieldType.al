@@ -58,9 +58,9 @@ enum 14135133 "lvngGenJnlImportFieldType"
     {
         Caption = 'External Document No.';
     }
-    value(14; lvngVendorPostingGroupCode)
+    value(14; lvngPostingGroupCode)
     {
-        Caption = 'Vendor Posting Group';
+        Caption = 'Posting Group';
     }
     value(15; lvngBankPaymentType)
     {

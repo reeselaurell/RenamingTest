@@ -38,7 +38,17 @@ pageextension 14135100 "lvngGenJournalExt" extends "General Journal"//MyTargetPa
 
     actions
     {
-
+        addafter(GetStandardJournals)
+        {
+            action(lvngMappingImport)
+            {
+                RunObject = report lvngImportGenJnlFile;
+                Image = Import;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+            }
+        }
     }
 
 }

@@ -2,6 +2,7 @@ table 14135126 "lvngFileImportSchema"
 {
     DataClassification = CustomerContent;
     Caption = 'File Import Schema';
+    LookupPageId = lvngFileImportSchemas;
 
     fields
     {
@@ -196,25 +197,25 @@ table 14135126 "lvngFileImportSchema"
                 ICPartner: Record "IC Partner";
             begin
                 case lvngGenJnlAccountType of
-                    lvngGenJnlAccountType::lvngBankAccount:
+                    lvngGenJnlAccountType::"Bank Account":
                         begin
                             if page.RunModal(0, BankAccount) = Action::LookupOK then begin
                                 lvngDefaultAccountNo := BankAccount."No.";
                             end;
                         end;
-                    lvngGenJnlAccountType::lvngCustomer:
+                    lvngGenJnlAccountType::Customer:
                         begin
                             if Page.RunModal(0, Customer) = Action::LookupOK then begin
                                 lvngDefaultAccountNo := Customer."No.";
                             end;
                         end;
-                    lvngGenJnlAccountType::lvngFixedAsset:
+                    lvngGenJnlAccountType::"Fixed Asset":
                         begin
                             if Page.RunModal(0, FixedAsset) = Action::LookupOK then begin
                                 lvngDefaultAccountNo := FixedAsset."No.";
                             end;
                         end;
-                    lvngGenJnlAccountType::lvngGLAccount:
+                    lvngGenJnlAccountType::"G/L Account":
                         begin
                             GLAccount.reset;
                             GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
@@ -222,13 +223,13 @@ table 14135126 "lvngFileImportSchema"
                                 lvngDefaultAccountNo := GLAccount."No.";
                             end;
                         end;
-                    lvngGenJnlAccountType::lvngICPartner:
+                    lvngGenJnlAccountType::"IC Partner":
                         begin
                             if Page.RunModal(0, ICPartner) = Action::LookupOK then begin
                                 lvngDefaultAccountNo := ICPartner.Code;
                             end;
                         end;
-                    lvngGenJnlAccountType::lvngVendor:
+                    lvngGenJnlAccountType::Vendor:
                         begin
                             if Page.RunModal(0, Vendor) = Action::LookupOK then begin
                                 lvngDefaultAccountNo := Vendor."No.";
@@ -271,25 +272,25 @@ table 14135126 "lvngFileImportSchema"
                 ICPartner: Record "IC Partner";
             begin
                 case lvngGenJnlBalAccountType of
-                    lvngGenJnlBalAccountType::lvngBankAccount:
+                    lvngGenJnlBalAccountType::"Bank Account":
                         begin
                             if page.RunModal(0, BankAccount) = Action::LookupOK then begin
                                 lvngDefaultBalAccountNo := BankAccount."No.";
                             end;
                         end;
-                    lvngGenJnlBalAccountType::lvngCustomer:
+                    lvngGenJnlBalAccountType::Customer:
                         begin
                             if Page.RunModal(0, Customer) = Action::LookupOK then begin
                                 lvngDefaultBalAccountNo := Customer."No.";
                             end;
                         end;
-                    lvngGenJnlBalAccountType::lvngFixedAsset:
+                    lvngGenJnlBalAccountType::"Fixed Asset":
                         begin
                             if Page.RunModal(0, FixedAsset) = Action::LookupOK then begin
                                 lvngDefaultBalAccountNo := FixedAsset."No.";
                             end;
                         end;
-                    lvngGenJnlBalAccountType::lvngGLAccount:
+                    lvngGenJnlBalAccountType::"G/L Account":
                         begin
                             GLAccount.reset;
                             GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
@@ -297,13 +298,13 @@ table 14135126 "lvngFileImportSchema"
                                 lvngDefaultBalAccountNo := GLAccount."No.";
                             end;
                         end;
-                    lvngGenJnlBalAccountType::lvngICPartner:
+                    lvngGenJnlBalAccountType::"IC Partner":
                         begin
                             if Page.RunModal(0, ICPartner) = Action::LookupOK then begin
                                 lvngDefaultBalAccountNo := ICPartner.Code;
                             end;
                         end;
-                    lvngGenJnlBalAccountType::lvngVendor:
+                    lvngGenJnlBalAccountType::Vendor:
                         begin
                             if Page.RunModal(0, Vendor) = Action::LookupOK then begin
                                 lvngDefaultBalAccountNo := Vendor."No.";
