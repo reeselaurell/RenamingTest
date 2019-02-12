@@ -182,11 +182,62 @@ table 14135128 "lvngGenJnlImportBuffer"
             DataClassification = CustomerContent;
         }
 
+        field(90; lvngGlobalDimension1Value; Text[50])
+        {
+            Caption = 'Global Dimension 1 Value';
+            DataClassification = CustomerContent;
+        }
+        field(91; lvngGlobalDimension2Value; Text[50])
+        {
+            Caption = 'Global Dimension 2 Value';
+            DataClassification = CustomerContent;
+        }
+        field(92; lvngShortcutDimension3Value; Text[50])
+        {
+            Caption = 'Shortcut Dimension 3 Value';
+            DataClassification = CustomerContent;
+        }
+        field(93; lvngShortcutDimension4Value; Text[50])
+        {
+            Caption = 'Shortcut Dimension 4 Value';
+            DataClassification = CustomerContent;
+        }
+        field(94; lvngShortcutDimension5Value; Text[50])
+        {
+            Caption = 'Shortcut Dimension 5 Value';
+            DataClassification = CustomerContent;
+        }
+        field(95; lvngShortcutDimension6Value; Text[50])
+        {
+            Caption = 'Shortcut Dimension 6 Value';
+            DataClassification = CustomerContent;
+        }
+        field(96; lvngShortcutDimension7Value; Text[50])
+        {
+            Caption = 'Shortcut Dimension 7 Value';
+            DataClassification = CustomerContent;
+        }
+        field(97; lvngShortcutDimension8Value; Text[50])
+        {
+            Caption = 'Shortcut Dimension 8 Value';
+            DataClassification = CustomerContent;
+        }
+        field(98; lvngAccountValue; Text[50])
+        {
+            Caption = 'Account Value';
+            DataClassification = CustomerContent;
+        }
+        field(99; lvngBalAccountValue; Text[50])
+        {
+            Caption = 'Bal. Account Value';
+            DataClassification = CustomerContent;
+        }
         field(14135100; lvngLoanNo; Code[20])
         {
             Caption = 'Loan No.';
             DataClassification = CustomerContent;
         }
+
     }
 
     keys
