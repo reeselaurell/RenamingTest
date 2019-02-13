@@ -1,1 +1,1 @@
-﻿{"Added":[],"Modified":[],"Removed":[]}
+﻿{"Added":[],"Modified":[{"Id":14135115,"Kind":11,"Name":"lvngGenJnlFileImportManagement","PackagePath":"/src/Codeunit/Cod14135115.lvngGenJnlFileImportManagement.al"},{"Id":14135141,"Kind":12,"Name":"lvngGenJnlImportSchema","PackagePath":"/src/Pages/Pag14135141.lvngGenJnlImportSchema.al"},{"Id":14135126,"Kind":10,"Name":"lvngFileImportSchema","PackagePath":"/src/Tables/Tab14135126.lvngFileImportSchema.al"}],"Removed":[]}

@@ -87,7 +87,7 @@ page 14135141 "lvngGenJnlImportSchema"
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngVendorPostingGroup; lvngVendorPostingGroup)
+                    field(lvngPostingGroup; lvngPostingGroup)
                     {
                         ApplicationArea = All;
                     }
@@ -121,6 +121,11 @@ page 14135141 "lvngGenJnlImportSchema"
             group(lvngDimensions)
             {
                 Caption = 'Dimensions';
+
+                field(lvngDimensionValidationRule; lvngDimensionValidationRule)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngDimension1MappingType; lvngDimension1MappingType)
                 {
                     ApplicationArea = All;

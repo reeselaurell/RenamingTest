@@ -14,8 +14,4 @@ enum 14135130 "lvngLoanNoValidationRule"
     {
         Caption = 'Validate';
     }
-    value(3; lvngValidateNoDimension)
-    {
-        Caption = 'Validate w/o Dimensions';
-    }
 }

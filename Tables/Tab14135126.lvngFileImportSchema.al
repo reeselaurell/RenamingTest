@@ -38,11 +38,11 @@ table 14135126 "lvngFileImportSchema"
             TableRelation = "Reason Code".Code;
             DataClassification = CustomerContent;
         }
-        field(14; lvngVendorPostingGroup; Code[10])
+        field(14; lvngPostingGroup; Code[10])
         {
-            Caption = 'Vendor Posting Group';
-            TableRelation = "Vendor Posting Group";
+            Caption = 'Posting Group';
             DataClassification = CustomerContent;
+
         }
 
         field(20; lvngDimension1MappingType; enum lvngDimensionMappingType)
@@ -170,6 +170,11 @@ table 14135126 "lvngFileImportSchema"
         {
             Caption = 'Default Dimension 8 Code';
             TableRelation = "Dimension Value".Code where ("Global Dimension No." = Const (8));
+            DataClassification = CustomerContent;
+        }
+        field(50; lvngDimensionValidationRule; enum lvngDimensionValidationRule)
+        {
+            Caption = 'Dimensions Validation Rule';
             DataClassification = CustomerContent;
         }
 
