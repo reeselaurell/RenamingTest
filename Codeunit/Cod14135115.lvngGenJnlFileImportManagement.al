@@ -238,13 +238,26 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
         lvngPostingGroupMissingLbl: Label '%1 %2 Posting Group is not available';
         lvngReasonCodeMissingLbl: Label '%1 Reason Code is not available';
         lvngPaymentMethodCodeMissingLbl: Label '%1 Payment Method Code is not available';
+        lvngExternalDocNoAlreadyPostedLbl: Label 'Document with External Document No. %1 for Vendor %2 is already posted';
+        lvngExternalDocNoIsBlankLbl: Label 'External Document No. can not be blank';
         UserSetupMgmt: codeunit "User Setup Management";
+        GLAccount: Record "G/L Account";
     begin
+        MainDimensionCode := lvngDimensionsManagement.GetMainHierarchyDimensionCode();
+        MainDimensionNo := lvngDimensionsManagement.GetMainHierarchyDimensionNo();
+        lvngDimensionsManagement.GetHierarchyDimensionsUsage(HierarchyDimensionsUsage);
+        if MainDimensionNo <> 0 then
+            HierarchyDimensionsUsage[MainDimensionNo] := false;
+
         lvngImportBufferError.reset;
         lvngImportBufferError.DeleteAll();
         lvngGenJnlImportBuffer.reset;
         if lvngGenJnlImportBuffer.FindSet() then begin
             repeat
+                //Amount
+                if lvngFileImportSchema.lvngReverseAmountSign then begin
+                    lvngGenJnlImportBuffer.lvngAmount := -lvngGenJnlImportBuffer.lvngAmount;
+                end;
                 //Posting Date
                 if lvngGenJnlImportBuffer.lvngPostingDate = 0D then begin
                     AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, lvngPostingDateIsBlankLbl);
@@ -256,18 +269,38 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
                 if lvngGenJnlImportBuffer.lvngDocumentDate = 0D then begin
                     lvngGenJnlImportBuffer.lvngDocumentDate := lvngGenJnlImportBuffer.lvngPostingDate;
                 end;
+
                 //Account Type and Account No.
                 FindAccountNo(lvngGenJnlImportBuffer.lvngAccountType, lvngGenJnlImportBuffer.lvngAccountValue, lvngGenJnlImportBuffer.lvngAccountNo);
+                if lvngFileImportSchema.lvngDefaultAccountNo <> '' then begin
+                    lvngGenJnlImportBuffer.lvngAccountType := lvngFileImportSchema.lvngGenJnlAccountType;
+                    lvngGenJnlImportBuffer.lvngAccountNo := lvngFileImportSchema.lvngDefaultAccountNo;
+                end;
                 if lvngGenJnlImportBuffer.lvngAccountNo = '' then begin
                     AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, StrSubstNo(lvngAccountNoBlankOrMissingLbl, lvngGenJnlImportBuffer.lvngAccountType, lvngGenJnlImportBuffer.lvngAccountValue));
-                end;
-                //Bal. Account Type and Bal. Account No.
-                if lvngGenJnlImportBuffer.lvngBalAccountValue <> '' then begin
-                    FindAccountNo(lvngGenJnlImportBuffer.lvngBalAccountType, lvngGenJnlImportBuffer.lvngBalAccountValue, lvngGenJnlImportBuffer.lvngBalAccountNo);
-                    if lvngGenJnlImportBuffer.lvngBalAccountNo = '' then begin
-                        AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, StrSubstNo(lvngBalAccountNoBlankOrMissingLbl, lvngGenJnlImportBuffer.lvngBalAccountType, lvngGenJnlImportBuffer.lvngBalAccountValue));
+                end else begin
+                    if lvngFileImportSchema.lvngSubsGLWithBankAcc then begin
+                        if GLAccount.Get(lvngGenJnlImportBuffer.lvngAccountNo) then begin
+                            lvngGenJnlImportBuffer.lvngAccountType := lvngGenJnlImportBuffer.lvngAccountType::"Bank Account";
+                            lvngGenJnlImportBuffer.lvngAccountNo := GLAccount.lvngLinkedBankAccountNo;
+                        end;
                     end;
                 end;
+
+
+                //Bal. Account Type and Bal. Account No.
+                if lvngFileImportSchema.lvngDefaultBalAccountNo <> '' then begin
+                    lvngGenJnlImportBuffer.lvngBalAccountType := lvngFileImportSchema.lvngGenJnlBalAccountType;
+                    lvngGenJnlImportBuffer.lvngBalAccountNo := lvngFileImportSchema.lvngDefaultBalAccountNo;
+                end else begin
+                    if lvngGenJnlImportBuffer.lvngBalAccountValue <> '' then begin
+                        FindAccountNo(lvngGenJnlImportBuffer.lvngBalAccountType, lvngGenJnlImportBuffer.lvngBalAccountValue, lvngGenJnlImportBuffer.lvngBalAccountNo);
+                        if lvngGenJnlImportBuffer.lvngBalAccountNo = '' then begin
+                            AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, StrSubstNo(lvngBalAccountNoBlankOrMissingLbl, lvngGenJnlImportBuffer.lvngBalAccountType, lvngGenJnlImportBuffer.lvngBalAccountValue));
+                        end;
+                    end;
+                end;
+
                 //Loan No.
                 if lvngGenJnlImportBuffer.lvngLoanNo <> '' then begin
                     if not CheckLoanNo(lvngGenJnlImportBuffer.lvngLoanNo) then begin
@@ -285,8 +318,30 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
                         end;
                     end;
                 end;
+
                 //Dimensions
+                AssignDimensions(lvngGenJnlImportBuffer);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension1Mandatory, 1, lvngGenJnlImportBuffer.lvngGlobalDimension1Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension2Mandatory, 2, lvngGenJnlImportBuffer.lvngGlobalDimension2Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension3Mandatory, 3, lvngGenJnlImportBuffer.lvngShortcutDimension3Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension4Mandatory, 4, lvngGenJnlImportBuffer.lvngShortcutDimension4Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension5Mandatory, 5, lvngGenJnlImportBuffer.lvngShortcutDimension5Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension6Mandatory, 6, lvngGenJnlImportBuffer.lvngShortcutDimension6Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension7Mandatory, 7, lvngGenJnlImportBuffer.lvngShortcutDimension7Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension8Mandatory, 8, lvngGenJnlImportBuffer.lvngShortcutDimension8Code, lvngImportBufferError);
+
                 //External Document No.
+                if (lvngGenJnlImportBuffer.lvngDocumentType in [lvngGenJnlImportBuffer.lvngDocumentType::"Credit Memo", lvngGenJnlImportBuffer.lvngDocumentType::Invoice]) and
+                    (lvngGenJnlImportBuffer.lvngAccountType = lvngGenJnlImportBuffer.lvngAccountType::Vendor) then begin
+                    if lvngGenJnlImportBuffer.lvngExternalDocumentNo = '' then begin
+                        AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, lvngExternalDocNoIsBlankLbl);
+                    end else begin
+                        if not CheckVendorExternalDocumentNo(lvngGenJnlImportBuffer) then begin
+                            AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, StrSubstNo(lvngExternalDocNoAlreadyPostedLbl, lvngGenJnlImportBuffer.lvngExternalDocumentNo, lvngGenJnlImportBuffer.lvngAccountNo));
+                        end;
+                    end;
+                end;
+
                 //Posting Group
                 if lvngGenJnlImportBuffer.lvngPostingGroup = '' then begin
                     lvngGenJnlImportBuffer.lvngPostingGroup := lvngFileImportSchema.lvngPostingGroup;
@@ -296,6 +351,7 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
                         AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, strsubstno(lvngPostingGroupMissingLbl, lvngGenJnlImportBuffer.lvngAccountType, lvngGenJnlImportBuffer.lvngPostingGroup));
                     end;
                 end;
+
                 //Reason Code
                 if lvngGenJnlImportBuffer.lvngReasonCode = '' then begin
                     lvngGenJnlImportBuffer.lvngReasonCode := lvngFileImportSchema.lvngReasonCode;
@@ -305,16 +361,144 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
                         AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, strsubstno(lvngReasonCodeMissingLbl, lvngGenJnlImportBuffer.lvngReasonCode));
                     end;
                 end;
+
                 //Payment Method Code
                 if lvngGenJnlImportBuffer.lvngPaymentMethodCode <> '' then begin
                     if not CheckPaymentMethodCode(lvngGenJnlImportBuffer) then begin
                         AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, strsubstno(lvngPaymentMethodCodeMissingLbl, lvngGenJnlImportBuffer.lvngPaymentMethodCode));
                     end;
                 end;
+
+                //Bank Payment Type
+                if lvngGenJnlImportBuffer.lvngBankPaymentType = lvngGenJnlImportBuffer.lvngBankPaymentType::" " then begin
+                    lvngGenJnlImportBuffer.lvngBankPaymentType := lvngFileImportSchema.lvngBankPaymentType;
+                end;
+
+                //Recurring Frequence
+                if format(lvngGenJnlImportBuffer.lvngRecurringFrequency) = '' then
+                    lvngGenJnlImportBuffer.lvngRecurringFrequency := lvngFileImportSchema.lvngRecurringFrequency;
+
+                //Recurring Method
+                if lvngGenJnlImportBuffer.lvngRecurringMethod = lvngGenJnlImportBuffer.lvngRecurringMethod::" " then begin
+                    lvngGenJnlImportBuffer.lvngRecurringMethod := lvngFileImportSchema.lvngRecurringMethod;
+                end;
+
+                //----
                 lvngGenJnlImportBuffer.Modify();
             until lvngGenJnlImportBuffer.Next() = 0
         end;
     end;
+
+    local procedure ValidateDimension(lvngLineNo: integer; Mandatory: boolean; DimensionNo: Integer; DimensionValueCode: Code[20]; var lvngImportBufferError: Record lvngImportBufferError)
+    var
+        DimensionValue: Record "Dimension Value";
+        lvngMandatoryDimensionBlankLbl: Label 'Mandatory Dimension %1 is blank';
+        lvngDimensionValueCodeMissingLbl: Label 'Dimension Value Code %1 is missing';
+        lvngDimensionValueCodeBlockedLbl: Label 'Dimension Value Code %1 is blocked';
+    begin
+        if Mandatory then begin
+            if DimensionValueCode = '' then begin
+                AddErrorLine(lvngLineNo, lvngImportBufferError, StrSubstNo(lvngMandatoryDimensionBlankLbl, DimensionNo));
+            end;
+        end;
+        if DimensionValueCode <> '' then begin
+            DimensionValue.reset;
+            DimensionValue.SetRange("Global Dimension No.", DimensionNo);
+            DimensionValue.SetRange(Code, DimensionValueCode);
+            if not DimensionValue.FindFirst() then begin
+                AddErrorLine(lvngLineNo, lvngImportBufferError, StrSubstNo(lvngDimensionValueCodeMissingLbl, DimensionValueCode));
+            end else begin
+                if DimensionValue.Blocked then begin
+                    AddErrorLine(lvngLineNo, lvngImportBufferError, StrSubstNo(lvngDimensionValueCodeBlockedLbl, DimensionValueCode));
+                end;
+            end;
+        end;
+    end;
+
+    local procedure AssignDimensions(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer)
+    var
+        lvngDimensionHierarchy: Record lvngDimensionHierarchy;
+        DimensionCode: Code[20];
+    begin
+        SearchDimension(1, lvngFileImportSchema.lvngDimension1MappingType, lvngGenJnlImportBuffer.lvngGlobalDimension1Value, lvngGenJnlImportBuffer.lvngGlobalDimension1Code);
+        SearchDimension(2, lvngFileImportSchema.lvngDimension2MappingType, lvngGenJnlImportBuffer.lvngGlobalDimension2Value, lvngGenJnlImportBuffer.lvngGlobalDimension2Code);
+        SearchDimension(3, lvngFileImportSchema.lvngDimension3MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension3Value, lvngGenJnlImportBuffer.lvngShortcutDimension3Code);
+        SearchDimension(4, lvngFileImportSchema.lvngDimension4MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension4Value, lvngGenJnlImportBuffer.lvngShortcutDimension4Code);
+        SearchDimension(5, lvngFileImportSchema.lvngDimension5MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension5Value, lvngGenJnlImportBuffer.lvngShortcutDimension5Code);
+        SearchDimension(6, lvngFileImportSchema.lvngDimension6MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension6Value, lvngGenJnlImportBuffer.lvngShortcutDimension6Code);
+        SearchDimension(7, lvngFileImportSchema.lvngDimension7MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension7Value, lvngGenJnlImportBuffer.lvngShortcutDimension7Code);
+        SearchDimension(8, lvngFileImportSchema.lvngDimension8MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension8Value, lvngGenJnlImportBuffer.lvngShortcutDimension8Code);
+        case MainDimensionNo of
+            1:
+                DimensionCode := lvngGenJnlImportBuffer.lvngGlobalDimension1Code;
+            2:
+                DimensionCode := lvngGenJnlImportBuffer.lvngGlobalDimension2Code;
+            3:
+                DimensionCode := lvngGenJnlImportBuffer.lvngShortcutDimension3Code;
+            4:
+                DimensionCode := lvngGenJnlImportBuffer.lvngShortcutDimension4Code;
+        end;
+        lvngDimensionHierarchy.reset;
+        lvngDimensionHierarchy.Ascending(false);
+        lvngDimensionHierarchy.SetFilter(lvngDate, '..%1', lvngGenJnlImportBuffer.lvngPostingDate);
+        lvngDimensionHierarchy.SetRange(lvngCode, DimensionCode);
+        if lvngDimensionHierarchy.FindFirst() then begin
+            if HierarchyDimensionsUsage[1] then
+                lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngDimensionHierarchy.lvngGlobalDimension1Code;
+            if HierarchyDimensionsUsage[2] then
+                lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngDimensionHierarchy.lvngGlobalDimension2Code;
+            if HierarchyDimensionsUsage[3] then
+                lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngDimensionHierarchy.lvngShortcutDimension3Code;
+            if HierarchyDimensionsUsage[4] then
+                lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngDimensionHierarchy.lvngShortcutDimension4Code;
+            if HierarchyDimensionsUsage[5] then
+                lvngGenJnlImportBuffer.lvngBusinessUnitCode := lvngDimensionHierarchy.lvngBusinessUnitCode;
+        end;
+    end;
+
+    local procedure SearchDimension(lvngDimensionNo: Integer; lvngDimensionMappingType: enum lvngDimensionMappingType; lvngDimensionValue: Text; var DimensionValueCode: Code[20])
+    var
+        DimensionValue: Record "Dimension Value";
+    begin
+        if (DimensionValueCode = '') and (lvngDimensionValue <> '') then begin
+            DimensionValue.reset;
+            DimensionValue.SetRange("Global Dimension No.", lvngDimensionNo);
+            case lvngDimensionMappingType of
+                lvngDimensionMappingType::lvngCode:
+                    begin
+                        DimensionValue.SetRange(Code, copystr(lvngDimensionValue, 1, MaxStrLen(DimensionValue.Code)));
+                    end;
+                lvngDimensionMappingType::lvngName:
+                    begin
+                        DimensionValue.SetFilter(Name, copystr(lvngDimensionValue, 1, MaxStrLen(DimensionValue.Name)));
+                    end;
+                lvngDimensionMappingType::lvngSearchName:
+                    begin
+                        DimensionValue.Setrange(Name, '@' + copystr(lvngDimensionValue, 1, MaxStrLen(DimensionValue.Name)));
+                    end;
+                lvngDimensionMappingType::lvngAdditionalCode:
+                    begin
+                        DimensionValue.SetRange(lvngAdditionalCode, copystr(lvngDimensionValue, 1, MaxStrLen(DimensionValue.lvngAdditionalCode)));
+                    end;
+            end;
+            if DimensionValue.FindFirst() then
+                DimensionValueCode := DimensionValue.Code;
+        end;
+    end;
+
+    local procedure CheckVendorExternalDocumentNo(lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer): Boolean
+    var
+        VendorMgt: codeunit "Vendor Mgt.";
+        VendorLedgerEntry: Record "Vendor Ledger Entry";
+    begin
+        Clear(VendorMgt);
+        VendorMgt.SetFilterForExternalDocNo(VendorLedgerEntry, lvngGenJnlImportBuffer.lvngDocumentType, lvngGenJnlImportBuffer.lvngExternalDocumentNo, lvngGenJnlImportBuffer.lvngAccountNo, lvngGenJnlImportBuffer.lvngPostingDate);
+        if not VendorLedgerEntry.IsEmpty() then
+            exit(false);
+        exit(true);
+    end;
+
+
 
     local procedure CheckPaymentMethodCode(lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer): Boolean
     var
@@ -677,13 +861,35 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
         lvngImportBufferError.Insert();
     end;
 
+    procedure AddErrorLine(lvngLineNo: Integer; var lvngImportBufferError: Record lvngImportBufferError; ErrorText: Text)
+    var
+        lvngErrorLineNo: Integer;
+    begin
+        lvngImportBufferError.reset;
+        lvngImportBufferError.SetRange(lvngLineNo, lvngLineNo);
+        if lvngImportBufferError.FindLast() then begin
+            lvngErrorLineNo := lvngImportBufferError.lvngErrorNo + 100;
+        end else begin
+            lvngErrorLineNo := 100;
+        end;
+        Clear(lvngImportBufferError);
+        lvngImportBufferError.lvngLineNo := lvngLineNo;
+        lvngImportBufferError.lvngErrorNo := lvngErrorLineNo;
+        lvngImportBufferError.lvngDescription := CopyStr(ErrorText, 1, MaxStrLen(lvngImportBufferError.lvngDescription));
+        lvngImportBufferError.Insert();
+    end;
+
     var
         lvngFileImportSchema: Record lvngFileImportSchema;
         lvngFileImportJnlLine: Record lvngFileImportJnlLine;
         lvngFileImportJnlLineTemp: Record lvngFileImportJnlLine temporary;
         CSVBufferTemp: Record "CSV Buffer" temporary;
+        lvngDimensionsManagement: Codeunit lvngDimensionsManagement;
         lvngOpenFileLabel: Label 'Open File for Import';
         lvngErrorReadingToStreamLabel: Label 'Error reading file to stream';
+        MainDimensionCode: Code[20];
+        HierarchyDimensionsUsage: array[5] of boolean;
+        MainDimensionNo: Integer;
         lvngImportStream: InStream;
         lvngFileName: Text;
         lvngImportToStream: Boolean;

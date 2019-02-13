@@ -126,6 +126,10 @@ page 14135141 "lvngGenJnlImportSchema"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngUseDimensionHierarchy; lvngUseDimensionHierarchy)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngDimension1MappingType; lvngDimension1MappingType)
                 {
                     ApplicationArea = All;

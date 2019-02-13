@@ -44,6 +44,11 @@ table 14135126 "lvngFileImportSchema"
             DataClassification = CustomerContent;
 
         }
+        field(15; lvngUseDimensionHierarchy; Boolean)
+        {
+            Caption = 'Use Dimension Hierarchy';
+            DataClassification = CustomerContent;
+        }
 
         field(20; lvngDimension1MappingType; enum lvngDimensionMappingType)
         {

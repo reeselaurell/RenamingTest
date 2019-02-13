@@ -17,6 +17,12 @@ tableextension 14135103 "lvngGLAccount" extends "G/L Account" //MyTargetTableId
             Caption = 'Loan No. Mandatory';
             DataClassification = CustomerContent;
         }
+        field(14135103; lvngLinkedBankAccountNo; Code[20])
+        {
+            Caption = 'Linked Bank Account No.';
+            DataClassification = CustomerContent;
+            TableRelation = "Bank Account"."No.";
+        }
 
     }
 
