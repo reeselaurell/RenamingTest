@@ -40,22 +40,34 @@ pageextension 14135100 "lvngGenJournalExt" extends "General Journal"//MyTargetPa
     {
         addafter(GetStandardJournals)
         {
-            action(lvngMappingImport)
+            action(lvngFileImport)
             {
-                Caption = 'Import';
+                Caption = 'Import From File';
+                ApplicationArea = All;
                 Image = Import;
                 Promoted = true;
-                PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
-                    lvngJournalDataImport: page lvngJournalDataImport;
+                    lvngImportGenJnlFile: codeunit lvngGenJnlFileImportManagement;
+                    lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer temporary;
+                    lvngImportBufferError: Record lvngImportBufferError temporary;
+                    lvngJournalDataImport: Page lvngJournalDataImport;
                 begin
-                    Clear(lvngJournalDataImport);
-                    lvngJournalDataImport.Run();
+                    clear(lvngImportGenJnlFile);
+                    lvngImportGenJnlFile.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError);
+                    lvngImportBufferError.reset;
+                    if not lvngImportBufferError.IsEmpty() then begin
+                        clear(lvngJournalDataImport);
+                        lvngJournalDataImport.SetParams(lvngGenJnlImportBuffer, lvngImportBufferError);
+                        lvngJournalDataImport.Run();
+                    end else begin
+                        Message('Process File');
+                    end;
+                    CurrPage.Update(false);
                 end;
-
             }
         }
     }

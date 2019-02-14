@@ -23,7 +23,7 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
         end;
     end;
 
-    procedure ReadCSVStream()
+    local procedure ReadCSVStream()
     var
         TabChar: Char;
     begin
@@ -41,7 +41,7 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
         end;
     end;
 
-    procedure ProcessImportCSVBuffer(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer)
+    local procedure ProcessImportCSVBuffer(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer)
     var
         lvngStartLine: Integer;
         lvngEndLine: Integer;
@@ -228,7 +228,7 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
         until (lvngStartLine > lvngEndLine);
     end;
 
-    procedure ValidateEntries(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError)
+    local procedure ValidateEntries(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError)
     var
         lvngPostingDateIsBlankLbl: Label 'Posting Date is Blank';
         lvngPostingDateIsNotValidLbl: Label '%1 Posting Date is not within allowed date ranges';
@@ -843,7 +843,7 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
         end;
     end;
 
-    procedure AddErrorLine(lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError; ErrorText: Text)
+    local procedure AddErrorLine(lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError; ErrorText: Text)
     var
         lvngErrorLineNo: Integer;
     begin
@@ -861,7 +861,7 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
         lvngImportBufferError.Insert();
     end;
 
-    procedure AddErrorLine(lvngLineNo: Integer; var lvngImportBufferError: Record lvngImportBufferError; ErrorText: Text)
+    local procedure AddErrorLine(lvngLineNo: Integer; var lvngImportBufferError: Record lvngImportBufferError; ErrorText: Text)
     var
         lvngErrorLineNo: Integer;
     begin

@@ -4,8 +4,7 @@ page 14135143 "lvngJournalDataImport"
     SourceTable = lvngGenJnlImportBuffer;
     Caption = 'Journal Data Import';
     SourceTableTemporary = true;
-    DeleteAllowed = false;
-    InsertAllowed = false;
+    Editable = false;
 
     layout
     {
@@ -214,53 +213,16 @@ page 14135143 "lvngJournalDataImport"
         }
     }
 
-    actions
-    {
-        area(Processing)
-        {
-            action(lvngFileImport)
-            {
-                Caption = 'Import From File';
-                ApplicationArea = All;
-                Image = Import;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
-
-                trigger OnAction()
-                var
-                    lvngImportGenJnlFile: codeunit lvngGenJnlFileImportManagement;
-                begin
-                    Rec.Reset();
-                    Rec.DeleteAll();
-                    lvngImportBufferError.Reset();
-                    lvngImportBufferError.DeleteAll();
-                    lvngImportGenJnlFile.ManualFileImport(Rec, lvngImportBufferError);
-                    CurrPage.lvngImportBufferErrors.Page.SetEntries(lvngImportBufferError);
-                    CurrPage.Update(false);
-                end;
-            }
-
-            action(lvngClearJournal)
-            {
-                Caption = 'Clear Entries';
-                ApplicationArea = All;
-                Image = ClearLog;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
-
-                trigger OnAction()
-                begin
-                    Rec.Reset();
-                    Rec.DeleteAll();
-                    lvngImportBufferError.Reset();
-                    lvngImportBufferError.DeleteAll();
-                end;
-            }
-        }
-    }
-
-    var
-        lvngImportBufferError: Record lvngImportBufferError temporary;
+    procedure SetParams(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError)
+    begin
+        lvngGenJnlImportBuffer.reset;
+        if not lvngGenJnlImportBuffer.FindSet() then
+            exit;
+        repeat
+            Clear(Rec);
+            Rec := lvngGenJnlImportBuffer;
+            Rec.Insert();
+        until lvngGenJnlImportBuffer.Next() = 0;
+        CurrPage.lvngImportBufferErrors.Page.SetEntries(lvngImportBufferError);
+    end;
 }
