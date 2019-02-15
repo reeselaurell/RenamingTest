@@ -334,7 +334,7 @@ table 14135126 "lvngFileImportSchema"
             Caption = 'Document Type';
             DataClassification = CustomerContent;
         }
-        field(110; lvngDocumentTypeOption; enum lvngDocumentTypeOption)
+        field(110; lvngDocumentTypeOption; enum lvngImportDocumentTypeOption)
         {
             Caption = 'Document Type Option';
             DataClassification = CustomerContent;

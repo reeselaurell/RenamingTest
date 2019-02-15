@@ -2,10 +2,6 @@ enum 14135129 "lvngGenJnlDocumentNoFilling"
 {
     Extensible = true;
 
-    value(0; lvngBatchNoSeries)
-    {
-        Caption = 'From Batch No. Series';
-    }
     value(1; lvngDefinedInFile)
     {
         Caption = 'Defined in File';

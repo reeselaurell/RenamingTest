@@ -1,4 +1,4 @@
-pageextension 14135100 "lvngGenJournalExt" extends "General Journal"//MyTargetPageId
+pageextension 14135107 "lvngPurchaseJournal" extends "Purchase Journal"
 {
     layout
     {
@@ -38,7 +38,7 @@ pageextension 14135100 "lvngGenJournalExt" extends "General Journal"//MyTargetPa
 
     actions
     {
-        addafter(GetStandardJournals)
+        addafter("Insert Conv. $ Rndg. Lines")
         {
             action(lvngFileImport)
             {
@@ -71,5 +71,4 @@ pageextension 14135100 "lvngGenJournalExt" extends "General Journal"//MyTargetPa
             }
         }
     }
-
 }
