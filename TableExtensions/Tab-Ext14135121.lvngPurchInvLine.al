@@ -8,10 +8,11 @@ tableextension 14135121 "lvngPurchInvLine" extends "Purch. Inv. Line" //MyTarget
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
-        field(200; lvngServicingType; enum lvngServicingType)
+        field(14135102; lvngReasonCode; Code[10])
         {
-            Caption = 'Servicing Type';
+            Caption = 'Reason Code';
             DataClassification = CustomerContent;
+            TableRelation = "Reason Code".Code;
         }
     }
 

@@ -26,7 +26,7 @@ codeunit 14135100 "lvngGLEntryEventsSubscriber"
         InvoicePostBuffer."Additional Grouping Identifier" := Format(PurchaseLine."Line No.");
         InvoicePostBuffer.lvngLoanNo := PurchaseLine.lvngLoanNo;
         InvoicePostBuffer.lvngDescription := PurchaseLine.Description;
-        InvoicePostBuffer.lvngServicingType := PurchaseLine.lvngServicingType;
+        InvoicePostBuffer.lvngReasonCode := PurchaseLine.lvngReasonCode;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Invoice Post. Buffer", 'OnAfterInvPostBufferPrepareSales', '', false, false)]
@@ -36,6 +36,7 @@ codeunit 14135100 "lvngGLEntryEventsSubscriber"
         InvoicePostBuffer.lvngLoanNo := SalesLine.lvngLoanNo;
         InvoicePostBuffer.lvngDescription := SalesLine.Description;
         InvoicePostBuffer.lvngServicingType := SalesLine.lvngServicingType;
+        InvoicePostBuffer.lvngReasonCode := SalesLine.lvngReasonCode;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterCopyGenJnlLineFromInvPostBuffer', '', false, false)]
@@ -44,5 +45,7 @@ codeunit 14135100 "lvngGLEntryEventsSubscriber"
         GenJournalLine.lvngServicingType := InvoicePostBuffer.lvngServicingType;
         GenJournalLine.lvngLoanNo := InvoicePostBuffer.lvngLoanNo;
         GenJournalLine.Description := InvoicePostBuffer.lvngDescription;
+        if InvoicePostBuffer.lvngReasonCode <> '' then
+            GenJournalLine."Reason Code" := InvoicePostBuffer.lvngReasonCode;
     end;
 }

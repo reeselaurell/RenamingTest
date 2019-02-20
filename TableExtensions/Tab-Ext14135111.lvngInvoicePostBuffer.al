@@ -17,6 +17,11 @@ tableextension 14135111 "lvngInvoicePostBuffer" extends "Invoice Post. Buffer" /
             Caption = 'Servicing Type';
             DataClassification = CustomerContent;
         }
+        field(14135103; lvngReasonCode; Code[10])
+        {
+            Caption = 'Reason Code';
+            DataClassification = CustomerContent;
+        }
     }
 
 }

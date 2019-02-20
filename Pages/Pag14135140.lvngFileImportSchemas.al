@@ -54,12 +54,18 @@ page 14135140 "lvngFileImportSchemas"
                 trigger OnAction();
                 var
                     lvngGenJnlImportSchema: page lvngGenJnlImportSchema;
+                    lvngPurchaseLinesImportSchema: Page lvngPurchaseLinesImportSchema;
                 begin
                     case lvngFileImportType of
                         lvngfileimportType::lvngGeneralJournal:
                             begin
                                 lvngGenJnlImportSchema.SetRecord(Rec);
                                 lvngGenJnlImportSchema.Run();
+                            end;
+                        lvngFileImportType::lvngPurchaseLine:
+                            begin
+                                lvngPurchaseLinesImportSchema.SetRecord(Rec);
+                                lvngPurchaseLinesImportSchema.Run();
                             end;
                     end;
                 end;

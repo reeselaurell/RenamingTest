@@ -43,6 +43,11 @@ table 14135127 "lvngFileImportJnlLine"
             MinValue = 0;
             MaxValue = 8;
         }
+        field(15; lvngPurchaseImportFieldType; enum lvngPurchaseImportFieldType)
+        {
+            Caption = 'Import Field Type';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
