@@ -1,4 +1,4 @@
-enum 14135136 "lvngPurchaseImportFieldType"
+enum 14135137 "lvngSalesImportFieldType"
 {
     Extensible = true;
 

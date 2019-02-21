@@ -37,7 +37,7 @@ table 14135128 "lvngGenJnlImportBuffer"
             Caption = 'External Document No.';
             DataClassification = CustomerContent;
         }
-        field(15; lvngDescription; Text[50])
+        field(15; lvngDescription; Text[100])
         {
             Caption = 'Description';
             DataClassification = CustomerContent;

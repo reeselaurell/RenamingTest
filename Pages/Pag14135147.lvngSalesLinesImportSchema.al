@@ -1,8 +1,8 @@
-page 14135145 "lvngPurchaseLinesImportSchema"
+page 14135147 "lvngSalesLinesImportSchema"
 {
     PageType = Card;
     SourceTable = lvngFileImportSchema;
-    Caption = 'Purchase Journal Import';
+    Caption = 'Sales Journal Import';
 
     layout
     {
@@ -152,7 +152,7 @@ page 14135145 "lvngPurchaseLinesImportSchema"
                     ApplicationArea = All;
                 }
             }
-            part(lvngPurchaseImportSchemaLines; lvngPurchaseImportSchemaLines)
+            part(lvngSalesImportSchemaLines; lvngSalesImportSchemaLines)
             {
                 Caption = 'Columns Mapping';
                 SubPageLink = lvngCode = field (lvngCode);

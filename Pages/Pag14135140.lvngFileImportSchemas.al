@@ -55,6 +55,7 @@ page 14135140 "lvngFileImportSchemas"
                 var
                     lvngGenJnlImportSchema: page lvngGenJnlImportSchema;
                     lvngPurchaseLinesImportSchema: Page lvngPurchaseLinesImportSchema;
+                    lvngSalesLinesImportSchema: Page lvngSalesLinesImportSchema;
                 begin
                     case lvngFileImportType of
                         lvngfileimportType::lvngGeneralJournal:
@@ -66,6 +67,11 @@ page 14135140 "lvngFileImportSchemas"
                             begin
                                 lvngPurchaseLinesImportSchema.SetRecord(Rec);
                                 lvngPurchaseLinesImportSchema.Run();
+                            end;
+                        lvngFileImportType::lvngSalesLine:
+                            begin
+                                lvngSalesLinesImportSchema.SetRecord(Rec);
+                                lvngSalesLinesImportSchema.Run();
                             end;
                     end;
                 end;
