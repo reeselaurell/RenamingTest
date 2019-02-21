@@ -27,7 +27,8 @@ pageextension 14135111 "lvngSalesInvoice" extends "Sales Invoice"
                     lvngJournalDataImport: Page lvngJournalDataImport;
                 begin
                     clear(lvngSalesFileImportManagement);
-                    lvngSalesFileImportManagement.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError);
+                    if not lvngSalesFileImportManagement.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError) then
+                        exit;
                     lvngImportBufferError.reset;
                     if not lvngImportBufferError.IsEmpty() then begin
                         clear(lvngJournalDataImport);

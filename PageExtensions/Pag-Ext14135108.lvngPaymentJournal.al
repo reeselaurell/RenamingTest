@@ -57,7 +57,8 @@ pageextension 14135108 "lvngPaymentJournal" extends "Payment Journal"
                     lvngJournalDataImport: Page lvngJournalDataImport;
                 begin
                     clear(lvngImportGenJnlFile);
-                    lvngImportGenJnlFile.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError);
+                    if not lvngImportGenJnlFile.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError) then
+                        exit;
                     lvngImportBufferError.reset;
                     if not lvngImportBufferError.IsEmpty() then begin
                         clear(lvngJournalDataImport);

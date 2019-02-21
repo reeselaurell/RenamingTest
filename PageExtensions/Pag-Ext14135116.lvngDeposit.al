@@ -1,44 +1,13 @@
-pageextension 14135107 "lvngPurchaseJournal" extends "Purchase Journal"
+pageextension 14135116 "lvngDeposit" extends Deposit
 {
     layout
     {
-        modify(ShortcutDimCode3)
-        {
-            Visible = true;
-        }
-        modify(ShortcutDimCode4)
-        {
-            Visible = true;
-        }
-        modify(ShortcutDimCode5)
-        {
-            Visible = true;
-        }
-        modify(ShortcutDimCode6)
-        {
-            Visible = true;
-        }
-        modify(ShortcutDimCode7)
-        {
-            Visible = true;
-        }
-        modify(ShortcutDimCode8)
-        {
-            Visible = true;
-        }
 
-        addlast(Control1)
-        {
-            field(lvngLoanNo; lvngLoanNo)
-            {
-                ApplicationArea = All;
-            }
-        }
     }
 
     actions
     {
-        addafter("Insert Conv. $ Rndg. Lines")
+        addafter(PostAndPrint)
         {
             action(lvngFileImport)
             {
@@ -51,13 +20,13 @@ pageextension 14135107 "lvngPurchaseJournal" extends "Purchase Journal"
 
                 trigger OnAction()
                 var
-                    lvngImportGenJnlFile: codeunit lvngGenJnlFileImportManagement;
+                    lvngDepositFileImportMgmt: codeunit lvngDepositFileImportMgmt;
                     lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer temporary;
                     lvngImportBufferError: Record lvngImportBufferError temporary;
                     lvngJournalDataImport: Page lvngJournalDataImport;
                 begin
-                    clear(lvngImportGenJnlFile);
-                    if not lvngImportGenJnlFile.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError) then
+                    clear(lvngDepositFileImportMgmt);
+                    if not lvngDepositFileImportMgmt.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError) then
                         exit;
                     lvngImportBufferError.reset;
                     if not lvngImportBufferError.IsEmpty() then begin
@@ -65,7 +34,7 @@ pageextension 14135107 "lvngPurchaseJournal" extends "Purchase Journal"
                         lvngJournalDataImport.SetParams(lvngGenJnlImportBuffer, lvngImportBufferError);
                         lvngJournalDataImport.Run();
                     end else begin
-                        lvngImportGenJnlFile.CreateJournalLines(lvngGenJnlImportBuffer, "Journal Template Name", "Journal Batch Name");
+                        lvngDepositFileImportMgmt.CreateJournalLines(lvngGenJnlImportBuffer, "No.");
                     end;
                     CurrPage.Update(false);
                 end;

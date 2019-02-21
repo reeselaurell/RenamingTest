@@ -123,7 +123,8 @@ pageextension 14135110 "lvngPurchaseCrMemo" extends "Purchase Credit Memo" //MyT
                     lvngJournalDataImport: Page lvngJournalDataImport;
                 begin
                     clear(lvngPurchFileImportManagement);
-                    lvngPurchFileImportManagement.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError);
+                    if not lvngPurchFileImportManagement.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError) then
+                        exit;
                     lvngImportBufferError.reset;
                     if not lvngImportBufferError.IsEmpty() then begin
                         clear(lvngJournalDataImport);

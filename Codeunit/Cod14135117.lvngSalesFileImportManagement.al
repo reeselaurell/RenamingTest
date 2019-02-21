@@ -63,7 +63,7 @@ codeunit 14135117 "lvngSalesFileImportManagement"
         until lvngGenJnlImportBuffer.Next() = 0;
     end;
 
-    procedure ManualFileImport(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError)
+    procedure ManualFileImport(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError): Boolean
     begin
         lvngFileImportSchema.reset;
         lvngFileImportSchema.SetRange(lvngFileImportType, lvngFileImportSchema.lvngFileImportType::lvngSalesLine);
@@ -82,7 +82,9 @@ codeunit 14135117 "lvngSalesFileImportManagement"
             ReadCSVStream();
             ProcessImportCSVBuffer(lvngGenJnlImportBuffer);
             ValidateEntries(lvngGenJnlImportBuffer, lvngImportBufferError);
+            exit(true);
         end;
+        exit(false);
     end;
 
     local procedure ReadCSVStream()

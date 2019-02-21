@@ -53,6 +53,11 @@ table 14135127 "lvngFileImportJnlLine"
             Caption = 'Import Field Type';
             DataClassification = CustomerContent;
         }
+        field(17; lvngDepositImportFieldType; Enum lvngDepositImportFieldType)
+        {
+            Caption = 'Import Field Type';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

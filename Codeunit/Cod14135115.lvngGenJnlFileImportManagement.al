@@ -79,7 +79,7 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
         until lvngGenJnlImportBuffer.Next() = 0;
     end;
 
-    procedure ManualFileImport(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError)
+    procedure ManualFileImport(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError): Boolean
     begin
         lvngFileImportSchema.reset;
         lvngFileImportSchema.SetRange(lvngFileImportType, lvngFileImportSchema.lvngFileImportType::lvngGeneralJournal);
@@ -98,7 +98,9 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
             ReadCSVStream();
             ProcessImportCSVBuffer(lvngGenJnlImportBuffer);
             ValidateEntries(lvngGenJnlImportBuffer, lvngImportBufferError);
+            exit(true);
         end;
+        exit(False);
     end;
 
     local procedure ReadCSVStream()
@@ -348,7 +350,7 @@ codeunit 14135115 "lvngGenJnlFileImportManagement"
                     AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, lvngPostingDateIsBlankLbl);
                 end else begin
                     if not UserSetupMgmt.IsPostingDateValid(lvngGenJnlImportBuffer.lvngPostingDate) then begin
-                        AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, strsubstno(lvngPostingDateIsBlankLbl, lvngGenJnlImportBuffer.lvngPostingDate));
+                        AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, strsubstno(lvngPostingDateIsNotValidLbl, lvngGenJnlImportBuffer.lvngPostingDate));
                     end;
                 end;
                 if lvngGenJnlImportBuffer.lvngDocumentDate = 0D then begin

@@ -127,7 +127,8 @@ pageextension 14135109 "lvngPurchaseInvoice" extends "Purchase Invoice" //MyTarg
                     lvngJournalDataImport: Page lvngJournalDataImport;
                 begin
                     clear(lvngPurchFileImportManagement);
-                    lvngPurchFileImportManagement.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError);
+                    if not lvngPurchFileImportManagement.ManualFileImport(lvngGenJnlImportBuffer, lvngImportBufferError) then
+                        exit;
                     lvngImportBufferError.reset;
                     if not lvngImportBufferError.IsEmpty() then begin
                         clear(lvngJournalDataImport);

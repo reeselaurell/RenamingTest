@@ -386,6 +386,11 @@ table 14135126 "lvngFileImportSchema"
             Caption = 'Recurring Frequency';
             DataClassification = CustomerContent;
         }
+        field(120; lvngDepositDocumentType; enum lvngDepositDocumentType)
+        {
+            Caption = 'Document Type';
+            DataClassification = CustomerContent;
+        }
 
 
 
