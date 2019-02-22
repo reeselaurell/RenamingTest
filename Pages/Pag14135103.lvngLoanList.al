@@ -102,6 +102,10 @@ page 14135103 "lvngLoanList"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngServicingFinished; lvngServicingFinished)
+                {
+                    ApplicationArea = All;
+                }
 
                 field(lvngLoanTerm; lvngLoanTermMonths)
                 {

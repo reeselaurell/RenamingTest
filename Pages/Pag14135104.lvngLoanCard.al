@@ -223,6 +223,10 @@ page 14135104 "lvngLoanCard"
             group(lvngServicing)
             {
                 Caption = 'Servicing';
+                field(lvngServicingFinished; lvngServicingFinished)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngLoanTerm; lvngLoanTermMonths)
                 {
                     ApplicationArea = All;

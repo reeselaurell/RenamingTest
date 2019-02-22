@@ -300,6 +300,12 @@ table 14135102 "lvngLoan"
             DecimalPlaces = 3 : 3;
         }
 
+        field(1000; lvngServicingFinished; Boolean)
+        {
+            Caption = 'Servicing Finished';
+            DataClassification = CustomerContent;
+        }
+
         field(80000; lvngCreationDate; Date)
         {
             Caption = 'Creation Date';
