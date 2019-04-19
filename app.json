@@ -13,8 +13,8 @@
   "capabilities": [],
   "dependencies": [{"appId": "3def5809-ac44-44c2-a1bb-1b4ced82881d", "name": "LoanVision Expression Engine", "publisher": "Bestborn Business Solutions", "version": "1.0.0.0"}],
   "screenshots": [],
-  "platform": "13.0.0.0",
-  "application": "13.0.0.0",
+  "platform": "14.0.0.0",
+  "application": "14.0.0.0",
   "idRange": {
     "from": 50000,
     "to": 14135999

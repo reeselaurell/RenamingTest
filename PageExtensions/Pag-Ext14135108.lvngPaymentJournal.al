@@ -38,7 +38,7 @@ pageextension 14135108 "lvngPaymentJournal" extends "Payment Journal"
 
     actions
     {
-        addafter("Insert Conv. $ Rndg. Lines")
+        addafter("Insert Conv. LCY Rndg. Lines")
         {
             action(lvngFileImport)
             {

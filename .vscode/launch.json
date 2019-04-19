@@ -4,15 +4,15 @@
         {
             "type": "al",
             "request": "launch",
-            "name": "BCCU3",
+            "name": "BC140",
             "server": "http://localhost",
-            "serverInstance": "BCCU3",
+            "serverInstance": "BC140",
             "authentication": "Windows",
             "startupObjectId": 14135103,
             "startupObjectType": "Page",
-            "breakOnError": true
-            //"schemaUpdateMode": "Recreate"
-            
+            "breakOnError": true,
+            "launchBrowser": true,
+            "schemaUpdateMode": "ForceSync"
         }
     ]
 }

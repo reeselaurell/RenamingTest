@@ -38,7 +38,7 @@ pageextension 14135107 "lvngPurchaseJournal" extends "Purchase Journal"
 
     actions
     {
-        addafter("Insert Conv. $ Rndg. Lines")
+        addafter("Insert Conv. LCY Rndg. Lines")
         {
             action(lvngFileImport)
             {
