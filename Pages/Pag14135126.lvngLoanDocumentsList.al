@@ -32,6 +32,10 @@ page 14135126 "lvngLoanDocumentsList"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngWarehouseLineCode; lvngWarehouseLineCode)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngVoid; lvngVoid)
                 {
                     ApplicationArea = All;
@@ -80,7 +84,6 @@ page 14135126 "lvngLoanDocumentsList"
                 {
                     ApplicationArea = All;
                 }
-
 
             }
         }

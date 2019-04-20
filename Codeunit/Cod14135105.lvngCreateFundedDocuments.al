@@ -125,6 +125,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngLoanDocument.lvngCustomerNo := lvngLoanJournalLine.lvngTitleCustomerNo;
         lvngLoanDocument.lvngLoanNo := lvngLoanJournalLine.lvngLoanNo;
         lvngLoanDocument.lvngPostingDate := lvngLoanJournalLine.lvngDateFunded;
+        lvngLoanDocument.lvngWarehouseLineCode := lvngLoanJournalLine.lvngWarehouseLineCode;
         AssignDimensions(lvngLoanDocument.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngGlobalDimension1Code, lvngLoanJournalLine.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngDimension1Rule);
         AssignDimensions(lvngLoanDocument.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngGlobalDimension2Code, lvngLoanJournalLine.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngDimension2Rule);
         AssignDimensions(lvngLoanDocument.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngShortcutDimension3Code, lvngLoanJournalLine.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngDimension3Rule);

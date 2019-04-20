@@ -51,6 +51,10 @@ page 14135120 "lvngPreviewLoanDocument"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngWarehouseLineCode; lvngWarehouseLineCode)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngBorrowerSearchName; lvngBorrowerSearchName)
                 {
                     ApplicationArea = All;

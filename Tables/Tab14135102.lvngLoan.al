@@ -3,6 +3,7 @@ table 14135102 "lvngLoan"
     DataClassification = CustomerContent;
     LookupPageId = lvngLoanList;
     DrillDownPageId = lvngLoanList;
+    DataCaptionFields = lvngLoanNo, lvngSearchName;
 
     fields
     {
@@ -340,6 +341,10 @@ table 14135102 "lvngLoan"
     fieldgroups
     {
         fieldgroup(DropDown; lvngLoanNo, lvngSearchName)
+        {
+
+        }
+        fieldgroup(Brick; lvngLoanNo, lvngSearchName, lvngLoanAmount)
         {
 
         }

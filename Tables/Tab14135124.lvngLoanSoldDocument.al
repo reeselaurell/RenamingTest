@@ -113,6 +113,12 @@ table 14135124 "lvngLoanSoldDocument"
             Caption = 'Dimension Set ID';
             DataClassification = CustomerContent;
         }
+        field(200; lvngWarehouseLineCode; Code[50])
+        {
+            Caption = 'Warehouse Line Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngWarehouseLine.lvngCode;
+        }
         field(1000; lvngVoidDocumentNo; Code[20])
         {
             Caption = 'Void Document No.';

@@ -90,6 +90,7 @@ codeunit 14135113 "lvngCreateSoldDocuments"
 
                 lvngLoanDocument.lvngVoid := true;
                 lvngLoanDocument.lvngVoidDocumentNo := lvngLoanSoldDocument.lvngDocumentNo;
+                lvngLoanDocument.lvngWarehouseLineCode := lvngLoanSoldDocument.lvngWarehouseLineCode;
                 lvngLoanDocument.Insert();
                 lvngLoanSoldDocumentLine.reset;
                 lvngLoanSoldDocumentLine.SetRange(lvngDocumentNo, lvngLoanSoldDocument.lvngDocumentNo);
@@ -125,6 +126,7 @@ codeunit 14135113 "lvngCreateSoldDocuments"
         lvngLoanDocument.lvngCustomerNo := lvngLoanJournalLine.lvngInvestorCustomerNo;
         lvngLoanDocument.lvngLoanNo := lvngLoanJournalLine.lvngLoanNo;
         lvngLoanDocument.lvngPostingDate := lvngLoanJournalLine.lvngDateSold;
+        lvngLoanDocument.lvngWarehouseLineCode := lvngLoanJournalLine.lvngWarehouseLineCode;
         AssignDimensions(lvngLoanDocument.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngGlobalDimension1Code, lvngLoanJournalLine.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngDimension1Rule);
         AssignDimensions(lvngLoanDocument.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngGlobalDimension2Code, lvngLoanJournalLine.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngDimension2Rule);
         AssignDimensions(lvngLoanDocument.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngShortcutDimension3Code, lvngLoanJournalLine.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngDimension3Rule);

@@ -43,6 +43,10 @@ page 14135136 "lvngSoldDocument"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngWarehouseLineCode; lvngWarehouseLineCode)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngBorrowerSearchName; lvngBorrowerSearchName)
                 {
                     ApplicationArea = All;

@@ -24,18 +24,6 @@ page 14135104 "lvngLoanCard"
                     ApplicationArea = All;
                 }
 
-                field(lvngCreationDate; lvngCreationDate)
-                {
-                    Editable = false;
-                    ApplicationArea = All;
-                    Importance = Additional;
-                }
-                field(lvngModifiedDate; lvngModifiedDate)
-                {
-                    Editable = false;
-                    ApplicationArea = All;
-                    Importance = Additional;
-                }
 
                 field(lvngSearchName; lvngSearchName)
                 {
@@ -46,71 +34,55 @@ page 14135104 "lvngLoanCard"
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBorrowerCustomerNo; lvngBorrowerCustomerNo)
-                {
-                    ApplicationArea = All;
-                }
+
                 field(lvngInvestorCustomerNo; lvngInvestorCustomerNo)
                 {
                     ApplicationArea = All;
                 }
+                group(lvngBorrower)
+                {
+                    Caption = 'Borrower';
+                    field(lvngBorrowerCustomerNo; lvngBorrowerCustomerNo)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngBorrowerFirstName; lvngBorrowerFirstName)
+                    {
+                        ApplicationArea = All;
+                    }
 
-                field(lvngBorrowerFirstName; lvngBorrowerFirstName)
+                    field(lvngBorrowerMiddleName; lvngBorrowerMiddleName)
+                    {
+                        ApplicationArea = All;
+                    }
+
+                    field(lvngBorrowerLastName; lvngBorrowerLastName)
+                    {
+                        ApplicationArea = All;
+                    }
+
+                }
+                group(lvngCoBorrower)
                 {
-                    ApplicationArea = All;
+                    Caption = 'Co-Borrower';
+
+                    field(lvngCoBorrowerFirstName; lvngCoBorrowerFirstName)
+                    {
+                        Importance = Additional;
+                        ApplicationArea = All;
+                    }
+                    field(lvngCoBorrowerMiddleName; lvngCoBorrowerMiddleName)
+                    {
+                        Importance = Additional;
+                        ApplicationArea = All;
+                    }
+                    field(lvngCoBorrowerLastName; lvngCoBorrowerLastName)
+                    {
+                        Importance = Additional;
+                        ApplicationArea = All;
+                    }
                 }
 
-                field(lvngMiddleName; lvngBorrowerMiddleName)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngBorrowerLastName; lvngBorrowerLastName)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngCoBorrowerFirstName; lvngCoBorrowerFirstName)
-                {
-                    Importance = Additional;
-                    ApplicationArea = All;
-                }
-                field(lvngCoBorrowerMiddleName; lvngCoBorrowerMiddleName)
-                {
-                    Importance = Additional;
-                    ApplicationArea = All;
-                }
-                field(lvngCoBorrowerLastName; lvngCoBorrowerLastName)
-                {
-                    Importance = Additional;
-                    ApplicationArea = All;
-                }
-                group(lvngDates)
-                {
-                    Caption = 'Dates';
-                    field(lvngApplicationDate; lvngApplicationDate)
-                    {
-                        ApplicationArea = All;
-                        Importance = Additional;
-                    }
-                    field(lvngDateLocked; lvngDateLocked)
-                    {
-                        ApplicationArea = All;
-                        Importance = Additional;
-                    }
-                    field(lvngDateClosed; lvngDateClosed)
-                    {
-                        ApplicationArea = All;
-                        Importance = Additional;
-                    }
-                    field(lvngDateFunded; lvngDateFunded)
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngDateSold; lvngDateSold)
-                    {
-                        ApplicationArea = All;
-                    }
-                }
                 group(lvngAddress)
                 {
                     Caption = 'Addresses';
@@ -154,6 +126,45 @@ page 14135104 "lvngLoanCard"
                         begin
                             AddressEdit(lvngLoanAddressTypeEnum::lvngProperty);
                         end;
+                    }
+                }
+                group(lvngDates)
+                {
+                    Caption = 'Dates';
+                    field(lvngApplicationDate; lvngApplicationDate)
+                    {
+                        ApplicationArea = All;
+                        Importance = Additional;
+                    }
+                    field(lvngDateLocked; lvngDateLocked)
+                    {
+                        ApplicationArea = All;
+                        Importance = Additional;
+                    }
+                    field(lvngDateClosed; lvngDateClosed)
+                    {
+                        ApplicationArea = All;
+                        Importance = Additional;
+                    }
+                    field(lvngDateFunded; lvngDateFunded)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngDateSold; lvngDateSold)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngCreationDate; lvngCreationDate)
+                    {
+                        Editable = false;
+                        ApplicationArea = All;
+                        Importance = Additional;
+                    }
+                    field(lvngModifiedDate; lvngModifiedDate)
+                    {
+                        Editable = false;
+                        ApplicationArea = All;
+                        Importance = Additional;
                     }
                 }
                 group(lvngDimensions)
@@ -210,13 +221,17 @@ page 14135104 "lvngLoanCard"
             group(lvng203K)
             {
                 Caption = '203K Information';
+
                 field(lvng203KContractorName; lvng203KContractorName)
                 {
                     ApplicationArea = All;
+                    Importance = Promoted;
+
                 }
                 field(lvng203KInspectorName; lvng203KInspectorName)
                 {
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
 
             }
@@ -230,11 +245,13 @@ page 14135104 "lvngLoanCard"
                 field(lvngLoanTerm; lvngLoanTermMonths)
                 {
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
 
                 field(lvngInterestRate; lvngInterestRate)
                 {
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
 
                 field(lvngConstructionInteresTRate; lvngConstrInterestRate)
@@ -256,14 +273,17 @@ page 14135104 "lvngLoanCard"
                 field(lvngFirstPaymentDue; lvngFirstPaymentDue)
                 {
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
                 field(lvngNextPaymentdate; lvngNextPaymentDate)
                 {
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
                 field(lvngFirstPaymentDueToInvestor; lvngFirstPaymentDueToInvestor)
                 {
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
             }
             group(lvngCommissions)
