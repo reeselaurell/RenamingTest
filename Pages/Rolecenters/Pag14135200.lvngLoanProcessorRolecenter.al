@@ -63,7 +63,13 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 ToolTip = 'Loan Vision Setup';
                 RunObject = Page lvngLoanVisionSetup;
                 ApplicationArea = Basic, Suite;
-
+            }
+            action(lvngLoanServicingSetup)
+            {
+                Caption = 'Loan Servicing Setup';
+                ToolTip = 'Loan Servicing Setup';
+                RunObject = Page lvngLoanServicingSetup;
+                ApplicationArea = Basic, Suite;
             }
         }
 
