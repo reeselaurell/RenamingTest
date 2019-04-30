@@ -26,29 +26,6 @@ page 14135102 lvngLoanFieldsConfiguration
                 {
                     ApplicationArea = All;
                 }
-
-
-
-            }
-        }
-        area(Factboxes)
-        {
-
-        }
-    }
-
-    actions
-    {
-        area(Processing)
-        {
-            action(ActionName)
-            {
-                ApplicationArea = All;
-
-                trigger OnAction();
-                begin
-
-                end;
             }
         }
     }
