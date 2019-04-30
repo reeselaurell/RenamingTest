@@ -7,11 +7,6 @@ tableextension 14135103 "lvngGLAccount" extends "G/L Account" //MyTargetTableId
             Caption = 'Reporting Account Name';
             DataClassification = CustomerContent;
         }
-        field(14135101; lvngReportingAccountType; enum lvngReportingAccountType)
-        {
-            Caption = 'Reporting Account Type';
-            DataClassification = CustomerContent;
-        }
         field(14135102; lvngLoanNoMandatory; Boolean)
         {
             Caption = 'Loan No. Mandatory';
@@ -22,6 +17,13 @@ tableextension 14135103 "lvngGLAccount" extends "G/L Account" //MyTargetTableId
             Caption = 'Linked Bank Account No.';
             DataClassification = CustomerContent;
             TableRelation = "Bank Account"."No.";
+        }
+        field(14135104; lvngReconciliationFieldNo; Integer)
+        {
+            Caption = 'Reconciliation Field No.';
+            DataClassification = CustomerContent;
+            TableRelation = lvngLoanFieldsConfiguration.lvngFieldNo where (lvngValueType = const (lvngDecimal));
+
         }
 
     }

@@ -8,15 +8,15 @@ pageextension 14135104 "lvngGLAccountCard" extends "G/L Account Card" //MyTarget
             {
                 Caption = 'Loan Vision';
 
-                field(lvngReportingAccountType; lvngReportingAccountType)
-                {
-                    ApplicationArea = All;
-                }
                 field(lvngReportingAccountName; lvngReportingAccountName)
                 {
                     ApplicationArea = All;
                 }
                 field(lvngLoanNoMandatory; lvngLoanNoMandatory)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngReconciliationFieldNo; lvngReconciliationFieldNo)
                 {
                     ApplicationArea = All;
                 }
