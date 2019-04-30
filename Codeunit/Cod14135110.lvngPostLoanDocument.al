@@ -29,7 +29,10 @@ codeunit 14135110 "lvngPostLoanDocument"
             lvngLoanDocument.lvngTransactionType::lvngSold:
                 lvngSourceCode := lvngLoanVisionSetup.lvngSoldSourceCode;
             lvngLoanDocument.lvngTransactionType::lvngServiced:
-                lvngSourceCode := lvngLoanVisionSetup.lvngServicedSourceCode;
+                begin
+                    GetLoanServicingSetup();
+                    lvngSourceCode := lvngLoanServicingSetup.lvngServicedSourceCode;
+                end;
         end;
         if lvngSourceCode = '' then
             Error(SourceCodeBlankLbl);
@@ -287,9 +290,20 @@ codeunit 14135110 "lvngPostLoanDocument"
         end;
     end;
 
+    local procedure GetLoanServicingSetup()
+    begin
+        if not lvngLoanVisionSetupRetrieved then begin
+            lvngLoanServicingSetup.Get();
+            lvngLoanServicingSetup.TestField(lvngServicedSourceCode);
+            lvngLoanServicingSetupRetrieved := true;
+        end;
+    end;
+
     var
         lvngLoanVisionSetup: Record lvngLoanVisionSetup;
+        lvngLoanServicingSetup: Record lvngLoanServicingSetup;
         lvngLoanVisionSetupRetrieved: Boolean;
+        lvngLoanServicingSetupRetrieved: Boolean;
         lvngLoanDocumentSave: Record lvngLoanDocument;
         lvngSourceCode: Code[20];
 }

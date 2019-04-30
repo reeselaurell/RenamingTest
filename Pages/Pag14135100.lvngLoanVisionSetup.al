@@ -36,14 +36,6 @@ page 14135100 "lvngLoanVisionSetup"
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngServicedReasonCode; lvngServicedReasonCode)
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngServicedVoidReasonCode; lvngServicedVoidReasonCode)
-                    {
-                        ApplicationArea = All;
-                    }
                 }
                 group(lvngSourceCodes)
                 {
@@ -53,10 +45,6 @@ page 14135100 "lvngLoanVisionSetup"
                         ApplicationArea = All;
                     }
                     field(lvngSoldSourceCode; lvngSoldSourceCode)
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngServicedSourceCode; lvngServicedSourceCode)
                     {
                         ApplicationArea = All;
                     }
@@ -157,14 +145,6 @@ page 14135100 "lvngLoanVisionSetup"
                     ApplicationArea = All;
                 }
                 field(lvngVoidSoldNoSeries; lvngVoidSoldNoSeries)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngServicedNoSeries; lvngServicedNoSeries)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoidServicedNoSeries; lvngVoidServicedNoSeries)
                 {
                     ApplicationArea = All;
                 }

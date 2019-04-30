@@ -117,9 +117,11 @@ table 14135132 "lvngServicingWorksheet"
     var
         lvngLoan: Record lvngLoan;
         lvngServicingManagement: Codeunit lvngServicingManagement;
+
     begin
         lvngLoan.Get(lvngLoanNo);
-        lvngServicingManagement.GetPrincipalAndInterest(lvngLoan, lvngLoan.lvngNextPaymentDate, lvngPrincipalAmount, lvngInterestAmount);
+        lvngServicingManagement.lvngGetPrincipalAndInterest(lvngLoan, lvngLoan.lvngNextPaymentDate, lvngPrincipalAmount, lvngInterestAmount);
+        lvngEscrowAmount := lvngServicingManagement.lvngGetTotalEscrowAmounts(lvngLoan);
 
     end;
 

@@ -37,6 +37,15 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 RunPageView = sorting (lvngDocumentNo) where (lvngTransactionType = const (lvngFunded));
                 ApplicationArea = Basic, Suite;
             }
+            action(lvngServicingWorksheet)
+            {
+                RunPageMode = Edit;
+                Caption = 'Servicing Worksheet';
+                ToolTip = 'Prepare Loans For Servicing';
+                Image = ProjectToolsProjectMaintenance;
+                RunObject = page lvngServicingWorksheet;
+                ApplicationArea = Basic, Suite;
+            }
             action(lvngSoldDocuments)
             {
                 RunPageMode = Edit;

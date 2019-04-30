@@ -25,13 +25,6 @@ table 14135100 "lvngLoanVisionSetup"
             TableRelation = "Reason Code";
         }
 
-        field(12; lvngServicedReasonCode; Code[10])
-        {
-            Caption = 'Serviced Reason Code';
-            DataClassification = CustomerContent;
-            TableRelation = "Reason Code";
-        }
-
         field(13; lvngSearchNameTemplate; Text[50])
         {
             DataClassification = CustomerContent;
@@ -49,12 +42,7 @@ table 14135100 "lvngLoanVisionSetup"
             Caption = 'Sold Void Reason Code';
             TableRelation = "Reason Code";
         }
-        field(16; lvngServicedVoidReasonCode; code[10])
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Serviced Void Reason Code';
-            TableRelation = "Reason Code";
-        }
+
 
         field(17; lvngFundedSourceCode; Code[20])
         {
@@ -66,12 +54,6 @@ table 14135100 "lvngLoanVisionSetup"
         {
             DataClassification = CustomerContent;
             Caption = 'Sold Source Code';
-            TableRelation = "Source Code".Code;
-        }
-        field(19; lvngServicedSourceCode; Code[20])
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Serviced Source Code';
             TableRelation = "Source Code".Code;
         }
 
@@ -87,12 +69,7 @@ table 14135100 "lvngLoanVisionSetup"
             DataClassification = CustomerContent;
             TableRelation = "No. Series".Code;
         }
-        field(52; lvngServicedNoSeries; Code[20])
-        {
-            Caption = 'Serviced No. Series';
-            DataClassification = CustomerContent;
-            TableRelation = "No. Series".Code;
-        }
+
         field(53; lvngVoidFundedNoSeries; Code[20])
         {
             Caption = 'Funded Void No. Series';
@@ -102,12 +79,6 @@ table 14135100 "lvngLoanVisionSetup"
         field(54; lvngVoidSoldNoSeries; Code[20])
         {
             Caption = 'Sold Void No. Series';
-            DataClassification = CustomerContent;
-            TableRelation = "No. Series".Code;
-        }
-        field(55; lvngVoidServicedNoSeries; Code[20])
-        {
-            Caption = 'Serviced Void No. Series';
             DataClassification = CustomerContent;
             TableRelation = "No. Series".Code;
         }
