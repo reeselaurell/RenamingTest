@@ -102,6 +102,18 @@ codeunit 14135104 lvngDimensionsManagement
         exit(5);
     end;
 
+    procedure LookupCostCenter(var lvngDimensionValueCode: Code[20])
+    var
+        DimensionValue: Record "Dimension Value";
+    begin
+        GetLoanVisionSetup();
+        lvngLoanVisionSetup.TestField(lvngCostCenterDimensionCode);
+        DimensionValue.reset;
+        DimensionValue.SetRange("Dimension Code", lvngLoanVisionSetup.lvngCostCenterDimensionCode);
+        if page.RunModal(0, DimensionValue) = Action::LookupOK then
+            lvngDimensionValueCode := DimensionValue.Code;
+    end;
+
     local procedure GetGLSetup()
     begin
         if not lvngGLSetupRetrieved then begin

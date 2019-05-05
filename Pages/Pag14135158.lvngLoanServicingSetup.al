@@ -16,15 +16,7 @@ page 14135158 "lvngLoanServicingSetup"
             group(General)
             {
                 Caption = 'General';
-                field(lvngPrincipalRedReasonCode; lvngPrincipalRedReasonCode)
-                {
-                    ApplicationArea = All;
-                }
 
-                field(lvngPrincipalRedGLAccountNo; lvngPrincipalRedGLAccountNo)
-                {
-                    ApplicationArea = All;
-                }
                 field(lvngServicedReasonCode; lvngServicedReasonCode)
                 {
                     ApplicationArea = All;
@@ -46,6 +38,77 @@ page 14135158 "lvngLoanServicingSetup"
                     ApplicationArea = All;
                 }
 
+                group(Interest)
+                {
+                    field(lvngInterestGLAccountNo; lvngInterestGLAccountNo)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngInterestGLAccSwitchCode; lvngInterestGLAccSwitchCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngInterestCostCenterOption; lvngInterestCostCenterOption)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngInterestCostCenter; lvngInterestCostCenter)
+                    {
+                        ApplicationArea = All;
+                    }
+                }
+
+                group(Principal)
+                {
+                    Caption = 'Principal';
+
+                    field(lvngPrincipalGLAccountNo; lvngPrincipalGLAccountNo)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngPrincipalGLAccSwitchCode; lvngPrincipalGLAccSwitchCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngPrincipalCostCenterOption; lvngPrincipalCostCenterOption)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngPrincipalCostCenter; lvngPrincipalCostCenter)
+                    {
+                        ApplicationArea = All;
+                    }
+
+                    field(lvngPrincipalRedGLAccountNo; lvngPrincipalRedGLAccountNo)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngPrincipalRedReasonCode; lvngPrincipalRedReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                }
+
+                group(Other)
+                {
+                    field(lvngAddEscrowGLAccountNo; lvngAddEscrowGLAccountNo)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngAdditionalEscrowReasonCode; lvngAdditionalEscrowReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngLatePaymentGLAccountNo; lvngLatePaymentGLAccountNo)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngLatePaymentReasonCode; lvngLatePaymentReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
+
+                }
 
             }
 

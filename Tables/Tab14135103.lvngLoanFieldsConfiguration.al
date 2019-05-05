@@ -14,7 +14,7 @@ table 14135103 "lvngLoanFieldsConfiguration"
             MinValue = 1;
         }
 
-        field(10; lvngFieldName; Text[50])
+        field(10; lvngFieldName; Text[100])
         {
             Caption = 'Field Name';
             DataClassification = CustomerContent;

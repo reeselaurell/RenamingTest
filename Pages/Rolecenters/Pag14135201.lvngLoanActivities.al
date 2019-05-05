@@ -16,7 +16,7 @@ page 14135201 "lvngLoanActivities"
                 ShowCaption = false;
                 field(lvngWarehouseLine1; lvngFundedDocumentsCount[1])
                 {
-
+                    Caption = 'Warehouse Line';
                     CaptionClass = GetWarehouseLineCaption(1);
                     ApplicationArea = Basic, Suite;
                     DrillDownPageId = lvngLoanJournalBatches;
@@ -35,7 +35,7 @@ page 14135201 "lvngLoanActivities"
                 }
                 field(lvngWarehouseLine2; lvngFundedDocumentsCount[2])
                 {
-
+                    Caption = 'Warehouse Line';
                     CaptionClass = GetWarehouseLineCaption(2);
                     ApplicationArea = Basic, Suite;
                     DrillDownPageId = lvngLoanJournalBatches;
@@ -53,7 +53,7 @@ page 14135201 "lvngLoanActivities"
                 }
                 field(lvngWarehouseLine3; lvngFundedDocumentsCount[3])
                 {
-
+                    Caption = 'Warehouse Line';
                     CaptionClass = GetWarehouseLineCaption(3);
                     ApplicationArea = Basic, Suite;
                     DrillDownPageId = lvngLoanJournalBatches;
@@ -71,7 +71,7 @@ page 14135201 "lvngLoanActivities"
                 }
                 field(lvngWarehouseLine4; lvngFundedDocumentsCount[4])
                 {
-
+                    Caption = 'Warehouse Line';
                     CaptionClass = GetWarehouseLineCaption(4);
                     ApplicationArea = Basic, Suite;
                     DrillDownPageId = lvngLoanJournalBatches;
@@ -89,7 +89,7 @@ page 14135201 "lvngLoanActivities"
                 }
                 field(lvngWarehouseLine5; lvngFundedDocumentsCount[5])
                 {
-
+                    Caption = 'Warehouse Line';
                     CaptionClass = GetWarehouseLineCaption(5);
                     ApplicationArea = Basic, Suite;
                     DrillDownPageId = lvngLoanJournalBatches;
@@ -107,7 +107,7 @@ page 14135201 "lvngLoanActivities"
                 }
                 field(lvngWarehouseLine6; lvngFundedDocumentsCount[6])
                 {
-
+                    Caption = 'Warehouse Line';
                     CaptionClass = GetWarehouseLineCaption(6);
                     ApplicationArea = Basic, Suite;
                     DrillDownPageId = lvngLoanJournalBatches;
@@ -125,7 +125,7 @@ page 14135201 "lvngLoanActivities"
                 }
                 field(lvngWarehouseLine7; lvngFundedDocumentsCount[7])
                 {
-
+                    Caption = 'Warehouse Line';
                     CaptionClass = GetWarehouseLineCaption(7);
                     ApplicationArea = Basic, Suite;
                     DrillDownPageId = lvngLoanJournalBatches;
@@ -143,7 +143,7 @@ page 14135201 "lvngLoanActivities"
                 }
                 field(lvngWarehouseLine8; lvngFundedDocumentsCount[8])
                 {
-
+                    Caption = 'Warehouse Line';
                     CaptionClass = GetWarehouseLineCaption(8);
                     ApplicationArea = Basic, Suite;
                     DrillDownPageId = lvngLoanJournalBatches;
