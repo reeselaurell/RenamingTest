@@ -183,41 +183,49 @@ table 14135113 "lvngLoanProcessingSchemaLine"
         field(1000; lvngDimension1Rule; enum lvngProcessingDimensionRule)
         {
             Caption = 'Dimension 1 Rule';
+            CaptionClass = GetRuleCaptionString(1);
             DataClassification = CustomerContent;
         }
         field(1001; lvngDimension2Rule; enum lvngProcessingDimensionRule)
         {
             Caption = 'Dimension 2 Rule';
+            CaptionClass = GetRuleCaptionString(2);
             DataClassification = CustomerContent;
         }
         field(1002; lvngDimension3Rule; enum lvngProcessingDimensionRule)
         {
             Caption = 'Dimension 3 Rule';
+            CaptionClass = GetRuleCaptionString(3);
             DataClassification = CustomerContent;
         }
         field(1003; lvngDimension4Rule; enum lvngProcessingDimensionRule)
         {
             Caption = 'Dimension 4 Rule';
+            CaptionClass = GetRuleCaptionString(4);
             DataClassification = CustomerContent;
         }
         field(1004; lvngDimension5Rule; enum lvngProcessingDimensionRule)
         {
             Caption = 'Dimension 5 Rule';
+            CaptionClass = GetRuleCaptionString(5);
             DataClassification = CustomerContent;
         }
         field(1005; lvngDimension6Rule; enum lvngProcessingDimensionRule)
         {
             Caption = 'Dimension 6 Rule';
+            CaptionClass = GetRuleCaptionString(6);
             DataClassification = CustomerContent;
         }
         field(1006; lvngDimension7Rule; enum lvngProcessingDimensionRule)
         {
             Caption = 'Dimension 7 Rule';
+            CaptionClass = GetRuleCaptionString(7);
             DataClassification = CustomerContent;
         }
         field(1007; lvngDimension8Rule; enum lvngProcessingDimensionRule)
         {
             Caption = 'Dimension 8 Rule';
+            CaptionClass = GetRuleCaptionString(8);
             DataClassification = CustomerContent;
         }
         field(1008; lvngBusinessUnitRule; enum lvngProcessingDimensionRule)
@@ -235,7 +243,30 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             Clustered = true;
         }
     }
+
+
+    local procedure GetRuleCaptionString(lvngIndex: Integer): Text
     var
+        lvngRuleLabel: Label '%1 Rule';
+
+    begin
+        if (lvngIndex in [1 .. 8]) then begin
+            if not lvngDimensionNamesRetrieved then begin
+                lvngDimensionsManagement.GetDimensionNames(DimensionNames);
+                lvngDimensionNamesRetrieved := true;
+            end;
+            exit(StrSubstNo(lvngRuleLabel, DimensionNames[lvngIndex]));
+        end;
+        exit('')
+    end;
+
+    var
+
         lvngExpressionList: page lvngExpressionList;
+        lvngDimensionsManagement: Codeunit lvngDimensionsManagement;
+        lvngDimensionNamesRetrieved: Boolean;
+        DimensionNames: array[8] of Text;
+
+
 
 }

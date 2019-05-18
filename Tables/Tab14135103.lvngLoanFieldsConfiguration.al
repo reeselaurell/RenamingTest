@@ -52,6 +52,11 @@ table 14135103 "lvngLoanFieldsConfiguration"
         }
     }
 
+    fieldgroups
+    {
+        fieldgroup(DropDown; lvngFieldNo, lvngFieldNAme, lvngValueType) { }
+    }
+
     trigger OnInsert()
     begin
         TestField(lvngFieldName);

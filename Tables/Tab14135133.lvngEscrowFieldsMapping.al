@@ -11,6 +11,14 @@ table 14135133 "lvngEscrowFieldsMapping"
             Caption = 'Field No.';
             TableRelation = lvngLoanFieldsConfiguration.lvngFieldNo where (lvngValueType = const (lvngDecimal));
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            var
+                lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+            begin
+                lvngLoanFieldsConfiguration.Get(lvngFieldNo);
+                lvngDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+            end;
         }
         field(10; lvngDescription; Text[100])
         {
@@ -49,27 +57,9 @@ table 14135133 "lvngEscrowFieldsMapping"
         }
     }
 
-    var
-        myInt: Integer;
-
-    trigger OnInsert()
-    begin
-
-    end;
-
-    trigger OnModify()
-    begin
-
-    end;
-
-    trigger OnDelete()
-    begin
-
-    end;
-
-    trigger OnRename()
-    begin
-
-    end;
+    fieldgroups
+    {
+        fieldgroup(DropDown; lvngFieldNo, lvngDescription, lvngMapToGLAccountNo, lvngSwitchCode) { }
+    }
 
 }
