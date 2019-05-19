@@ -177,43 +177,43 @@ page 14135104 "lvngLoanCard"
 
                     field(lvngGlobalDimension1Code; lvngGlobalDimension1Code)
                     {
-                        Visible = Dimension1Visible;
                         ApplicationArea = All;
+                        Visible = DimensionVisible1;
                     }
                     field(lvngGlobalDimension2Code; lvngGlobalDimension2Code)
                     {
-                        Visible = Dimension2Visible;
                         ApplicationArea = All;
+                        Visible = DimensionVisible2;
                     }
                     field(lvngShortcutDimension3Code; lvngShortcutDimension3Code)
                     {
-                        Visible = Dimension3Visible;
                         ApplicationArea = All;
+                        Visible = DimensionVisible3;
                     }
                     field(lvngShortcutDimension4Code; lvngShortcutDimension4Code)
                     {
-                        Visible = Dimension4Visible;
                         ApplicationArea = All;
+                        Visible = DimensionVisible4;
                     }
                     field(lvngShortcutDimension5Code; lvngShortcutDimension5Code)
                     {
-                        Visible = Dimension5Visible;
                         ApplicationArea = All;
+                        Visible = DimensionVisible5;
                     }
                     field(lvngShortcutDimension6Code; lvngShortcutDimension6Code)
                     {
-                        Visible = Dimension6Visible;
                         ApplicationArea = All;
+                        Visible = DimensionVisible6;
                     }
                     field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
                     {
-                        Visible = Dimension7Visible;
                         ApplicationArea = All;
+                        Visible = DimensionVisible7;
                     }
                     field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
                     {
-                        Visible = Dimension8Visible;
                         ApplicationArea = All;
+                        Visible = DimensionVisible8;
                     }
 
                 }
@@ -330,24 +330,19 @@ page 14135104 "lvngLoanCard"
     }
 
     var
-        GeneralLedgerSetup: Record "General Ledger Setup";
-        GeneralLedgerSetupRetrieved: Boolean;
-        Dimension1Visible: Boolean;
-        Dimension2Visible: Boolean;
-        Dimension3Visible: Boolean;
-        Dimension4Visible: Boolean;
-        Dimension5Visible: Boolean;
-        Dimension6Visible: Boolean;
-        Dimension7Visible: Boolean;
-        Dimension8Visible: Boolean;
         lvngLoanAddressTypeEnum: Enum lvngAddressType;
         lvngLoanAddressCard: Page lvngLoanAddressCard;
         lvngLoanAddress: Record lvngLoanAddress;
+        DimensionManagement: Codeunit DimensionManagement;
+        DimensionVisible1: Boolean;
+        DimensionVisible2: Boolean;
+        DimensionVisible3: Boolean;
+        DimensionVisible4: Boolean;
+        DimensionVisible5: Boolean;
+        DimensionVisible6: Boolean;
+        DimensionVisible7: Boolean;
+        DimensionVisible8: Boolean;
 
-    trigger OnOpenPage()
-    begin
-        VisibleDimensions();
-    end;
 
     local procedure AddressEdit(lvngAddressTypeEnum: Enum lvngAddressType)
     begin
@@ -366,24 +361,12 @@ page 14135104 "lvngLoanCard"
         CurrPage.Update(false);
     end;
 
-    local procedure VisibleDimensions()
+    trigger OnOpenPage()
     begin
-        GetGLSetup();
-        Dimension1Visible := GeneralLedgerSetup."Shortcut Dimension 1 Code" <> '';
-        Dimension2Visible := GeneralLedgerSetup."Shortcut Dimension 2 Code" <> '';
-        Dimension3Visible := GeneralLedgerSetup."Shortcut Dimension 3 Code" <> '';
-        Dimension4Visible := GeneralLedgerSetup."Shortcut Dimension 4 Code" <> '';
-        Dimension5Visible := GeneralLedgerSetup."Shortcut Dimension 5 Code" <> '';
-        Dimension6Visible := GeneralLedgerSetup."Shortcut Dimension 6 Code" <> '';
-        Dimension7Visible := GeneralLedgerSetup."Shortcut Dimension 7 Code" <> '';
-        Dimension8Visible := GeneralLedgerSetup."Shortcut Dimension 8 Code" <> '';
+        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6,
+        DimensionVisible7, DimensionVisible8);
     end;
 
-    local procedure GetGLSetup()
-    begin
-        if not GeneralLedgerSetupRetrieved then begin
-            GeneralLedgerSetup.get;
-            GeneralLedgerSetupRetrieved := true;
-        end;
-    end;
+
+
 }

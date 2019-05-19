@@ -179,42 +179,42 @@ page 14135103 "lvngLoanList"
                 field(lvngDimension1Code; lvngGlobalDimension1Code)
                 {
                     ApplicationArea = All;
-                    Visible = Dimension1Visible;
+                    Visible = DimensionVisible1;
                 }
                 field(lvngDimension2Code; lvngGlobalDimension2Code)
                 {
                     ApplicationArea = All;
-                    Visible = Dimension2Visible;
+                    Visible = DimensionVisible2;
                 }
                 field(lvngDimension3Code; lvngShortcutDimension3Code)
                 {
                     ApplicationArea = All;
-                    Visible = Dimension3Visible;
+                    Visible = DimensionVisible3;
                 }
                 field(lvngDimension4Code; lvngShortcutDimension4Code)
                 {
                     ApplicationArea = All;
-                    Visible = Dimension4Visible;
+                    Visible = DimensionVisible4;
                 }
                 field(lvngDimension5Code; lvngShortcutDimension5Code)
                 {
                     ApplicationArea = All;
-                    Visible = Dimension5Visible;
+                    Visible = DimensionVisible5;
                 }
                 field(lvngDimension6Code; lvngShortcutDimension6Code)
                 {
                     ApplicationArea = All;
-                    Visible = Dimension6Visible;
+                    Visible = DimensionVisible6;
                 }
                 field(lvngDimension7Code; lvngShortcutDimension7Code)
                 {
                     ApplicationArea = All;
-                    Visible = Dimension7Visible;
+                    Visible = DimensionVisible7;
                 }
                 field(lvngDimension8Code; lvngShortcutDimension8Code)
                 {
                     ApplicationArea = All;
-                    Visible = Dimension8Visible;
+                    Visible = DimensionVisible8;
                 }
 
                 field(lvngCreationDate; lvngCreationDate)
@@ -254,41 +254,22 @@ page 14135103 "lvngLoanList"
             }
         }
     }
+
     var
-        GeneralLedgerSetup: Record "General Ledger Setup";
-        GeneralLedgerSetupRetrieved: Boolean;
-        Dimension1Visible: Boolean;
-        Dimension2Visible: Boolean;
-        Dimension3Visible: Boolean;
-        Dimension4Visible: Boolean;
-        Dimension5Visible: Boolean;
-        Dimension6Visible: Boolean;
-        Dimension7Visible: Boolean;
-        Dimension8Visible: Boolean;
+        DimensionManagement: Codeunit DimensionManagement;
+        DimensionVisible1: Boolean;
+        DimensionVisible2: Boolean;
+        DimensionVisible3: Boolean;
+        DimensionVisible4: Boolean;
+        DimensionVisible5: Boolean;
+        DimensionVisible6: Boolean;
+        DimensionVisible7: Boolean;
+        DimensionVisible8: Boolean;
 
     trigger OnOpenPage()
     begin
-        VisibleDimensions();
+        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6,
+        DimensionVisible7, DimensionVisible8);
     end;
 
-    local procedure VisibleDimensions()
-    begin
-        GetGLSetup();
-        Dimension1Visible := GeneralLedgerSetup."Shortcut Dimension 1 Code" <> '';
-        Dimension2Visible := GeneralLedgerSetup."Shortcut Dimension 2 Code" <> '';
-        Dimension3Visible := GeneralLedgerSetup."Shortcut Dimension 3 Code" <> '';
-        Dimension4Visible := GeneralLedgerSetup."Shortcut Dimension 4 Code" <> '';
-        Dimension5Visible := GeneralLedgerSetup."Shortcut Dimension 5 Code" <> '';
-        Dimension6Visible := GeneralLedgerSetup."Shortcut Dimension 6 Code" <> '';
-        Dimension7Visible := GeneralLedgerSetup."Shortcut Dimension 7 Code" <> '';
-        Dimension8Visible := GeneralLedgerSetup."Shortcut Dimension 8 Code" <> '';
-    end;
-
-    local procedure GetGLSetup()
-    begin
-        if not GeneralLedgerSetupRetrieved then begin
-            GeneralLedgerSetup.get;
-            GeneralLedgerSetupRetrieved := true;
-        end;
-    end;
 }
