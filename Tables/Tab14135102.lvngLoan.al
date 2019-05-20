@@ -293,6 +293,17 @@ table 14135102 "lvngLoan"
             DataClassification = CustomerContent;
         }
 
+        field(502; lvngCommissionBps; Decimal)
+        {
+            Caption = 'Commission Bps';
+            DataClassification = CustomerContent;
+        }
+        field(503; lvngCommissionAmount; Decimal)
+        {
+            Caption = 'Commission Amount';
+            DataClassification = CustomerContent;
+        }
+
 
         field(600; lvngConstrInterestRate; Decimal)
         {

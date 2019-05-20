@@ -298,6 +298,14 @@ page 14135104 "lvngLoanCard"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngCommissionBps; lvngCommissionBps)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCommissionAmount; lvngCommissionAmount)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
         area(Factboxes)
