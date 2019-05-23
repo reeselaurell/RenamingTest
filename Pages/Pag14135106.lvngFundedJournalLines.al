@@ -135,7 +135,14 @@ page 14135106 "lvngFundedJournalLines"
                 {
                     ApplicationArea = All;
                 }
-
+                field(lvngCommissionBps; lvngCommissionBps)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCommissionAmount; lvngCommissionAmount)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngWarehouseLineCode; lvngWarehouseLineCode)
                 {
                     ApplicationArea = All;

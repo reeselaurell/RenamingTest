@@ -884,6 +884,46 @@ codeunit 14135106 "lvngLoanCardManagement"
                                         end;
                                 end;
                             end;
+                            //Commission Bps
+                            if lvngLoanUpdateSchema.lvngFieldNo = 502 then begin
+                                case lvngLoanUpdateSchema.lvngFieldUpdateOption of
+                                    lvngloanupdateschema.lvngFieldUpdateOption::lvngAlways:
+                                        begin
+                                            lvngLoan.lvngCommissionBps := lvngLoanJournalLine.lvngCommissionBps;
+                                        end;
+                                    lvngLoanUpdateSchema.lvngFieldUpdateOption::lvngIfDestinationBlank:
+                                        begin
+                                            if lvngloan.lvngCommissionBps = 0 then
+                                                lvngLoan.lvngCommissionBps := lvngLoanJournalLine.lvngCommissionBps;
+                                        end;
+                                    lvngLoanUpdateSchema.lvngFieldUpdateOption::lvngIfSourceNotBlank:
+                                        begin
+                                            if lvngLoanJournalLine.lvngCommissionBps <> 0 then begin
+                                                lvngLoan.lvngCommissionBps := lvngLoanJournalLine.lvngCommissionBps;
+                                            end;
+                                        end;
+                                end;
+                            end;
+                            //Commission Value
+                            if lvngLoanUpdateSchema.lvngFieldNo = 503 then begin
+                                case lvngLoanUpdateSchema.lvngFieldUpdateOption of
+                                    lvngloanupdateschema.lvngFieldUpdateOption::lvngAlways:
+                                        begin
+                                            lvngLoan.lvngCommissionAmount := lvngLoanJournalLine.lvngCommissionAmount;
+                                        end;
+                                    lvngLoanUpdateSchema.lvngFieldUpdateOption::lvngIfDestinationBlank:
+                                        begin
+                                            if lvngloan.lvngCommissionAmount = 0 then
+                                                lvngLoan.lvngCommissionAmount := lvngLoanJournalLine.lvngCommissionAmount;
+                                        end;
+                                    lvngLoanUpdateSchema.lvngFieldUpdateOption::lvngIfSourceNotBlank:
+                                        begin
+                                            if lvngLoanJournalLine.lvngCommissionAmount <> 0 then begin
+                                                lvngLoan.lvngCommissionAmount := lvngLoanJournalLine.lvngCommissionAmount;
+                                            end;
+                                        end;
+                                end;
+                            end;
                             //Construction Interest Rate
                             if lvngLoanUpdateSchema.lvngFieldNo = 600 then begin
                                 case lvngLoanUpdateSchema.lvngFieldUpdateOption of

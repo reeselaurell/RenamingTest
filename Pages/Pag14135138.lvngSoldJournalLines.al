@@ -152,7 +152,14 @@ page 14135138 "lvngSoldJournalLines"
                     ApplicationArea = All;
                     Visible = False;
                 }
-
+                field(lvngCommissionBps; lvngCommissionBps)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCommissionAmount; lvngCommissionAmount)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngWarehouseLineCode; lvngWarehouseLineCode)
                 {
                     ApplicationArea = All;

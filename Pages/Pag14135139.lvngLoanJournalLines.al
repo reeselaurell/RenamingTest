@@ -139,7 +139,14 @@ page 14135139 "lvngLoanJournalLines"
                 {
                     ApplicationArea = All;
                 }
-
+                field(lvngCommissionBps; lvngCommissionBps)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCommissionAmount; lvngCommissionAmount)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngWarehouseLineCode; lvngWarehouseLineCode)
                 {
                     ApplicationArea = All;
