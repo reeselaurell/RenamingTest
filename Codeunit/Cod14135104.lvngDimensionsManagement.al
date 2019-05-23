@@ -246,6 +246,28 @@ codeunit 14135104 lvngDimensionsManagement
         end;
     end;
 
+    procedure GetDimensionNo(DimensionCode: Code[20]): Integer
+    begin
+        GetGLSetup();
+        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+            exit(1);
+        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+            exit(2);
+        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+            exit(3);
+        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+            exit(4);
+        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+            exit(5);
+        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+            exit(6);
+        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+            exit(7);
+        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+            exit(8);
+        exit(-1);
+    end;
+
     var
         lvngLoanVisionSetup: Record lvngLoanVisionSetup;
         GLSetup: Record "General Ledger Setup";
