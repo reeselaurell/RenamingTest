@@ -28,7 +28,10 @@ codeunit 14135114 "lvngValidateLoanJournal"
         GetLoanVisionSetup();
         if lvngLoanJournalLine.lvngLoanNo = '' then
             lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, LoanNoEmptyLbl);
-
+        if lvngLoanJournalLine.lvngSearchName = '' then begin
+            lvngLoanJournalLine.lvngSearchName := StrSubstNo(lvngLoanVisionSetup.lvngSearchNameTemplate, lvngLoanJournalLine.lvngBorrowerFirstName, lvngLoanJournalLine.lvngBorrowerLastName, lvngLoanJournalLine.lvngBorrowerMiddleName);
+            lvngLoanJournalLine.Modify();
+        end;
         lvngJournalValidationRule.reset;
         lvngJournalValidationRule.SetRange(lvngJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
         if lvngJournalValidationRule.FindSet() then begin
