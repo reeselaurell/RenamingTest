@@ -1,1 +1,1 @@
-﻿{"Added":[],"Modified":[{"Id":14135113,"Kind":12,"Name":"lvngPostProcessingSchemaLines","PackagePath":"/src/Pages/Pag14135113.lvngPostProcessingSchemaLines.al"}],"Removed":[]}
+﻿{"Added":[],"Modified":[{"Id":14135106,"Kind":11,"Name":"lvngLoanCardManagement","PackagePath":"/src/Codeunit/Cod14135106.lvngLoanCardManagement.al"},{"Id":14135102,"Kind":10,"Name":"lvngLoan","PackagePath":"/src/Tables/Tab14135102.lvngLoan.al"}],"Removed":[]}

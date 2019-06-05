@@ -371,6 +371,19 @@ table 14135102 "lvngLoan"
         lvngModifiedDate := Today();
     end;
 
+    trigger OnDelete()
+    var
+        lvngLoanAddress: Record lvngLoanAddress;
+        lvngLoanValue: Record lvngLoanValue;
+    begin
+        lvngLoanAddress.reset;
+        lvngLoanAddress.SetRange(lvngLoanNo, lvngLoanNo);
+        lvngLoanAddress.DeleteAll(false);
+        lvngLoanValue.reset;
+        lvngLoanValue.SetRange(lvngLoanNo, lvngLoanNo);
+        lvngLoanValue.DeleteAll(false);
+    end;
+
     local procedure ValidateShortcutDimCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
     begin
         DimensionManagement.ValidateDimValueCode(FieldNumber, ShortcutDimCode);

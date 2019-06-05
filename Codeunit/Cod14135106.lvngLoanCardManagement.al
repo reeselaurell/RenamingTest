@@ -25,6 +25,7 @@ codeunit 14135106 "lvngLoanCardManagement"
             until lvngLoanUpdateSchema.Next() = 0;
         end;
         lvngLoanJournalLine.reset;
+        lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngJournalBatchCode);
         if lvngLoanJournalBatch.lvngLoanJournalType = lvngLoanJournalBatch.lvngLoanJournalType::lvngFunded then begin
             if lvngLoanVisionSetup.lvngFundedVoidReasonCode <> '' then begin
                 lvngLoanJournalLine.SetFilter(lvngReasonCode, '<>%1', lvngLoanVisionSetup.lvngFundedVoidReasonCode);
