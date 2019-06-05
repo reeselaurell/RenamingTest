@@ -262,7 +262,7 @@ page 14135139 "lvngLoanJournalLines"
                 trigger OnAction();
                 var
                     lvngLoanJournalImport: Codeunit lvngLoanJournalImport;
-                    lvngValidateFundedJournal: Codeunit lvngValidateFundedJournal;
+                    lvngValidateLoanJournal: Codeunit lvngValidateLoanJournal;
                     lvngLoanImportSchema: Record lvngLoanImportSchema;
                 begin
                     lvngLoanImportSchema.reset;
@@ -271,7 +271,7 @@ page 14135139 "lvngLoanJournalLines"
                         Clear(lvngLoanJournalImport);
                         lvngLoanJournalImport.ReadCSVStream(lvngLoanJournalBatchCode, lvngLoanImportSchema);
                         Commit();
-                        lvngValidateFundedJournal.ValidateFundedLines(lvngLoanJournalBatchCode);
+                        lvngValidateLoanJournal.ValidateLoanLines(lvngLoanJournalBatchCode);
                         CurrPage.Update(false);
                     end;
                 end;
