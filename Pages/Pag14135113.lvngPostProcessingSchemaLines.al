@@ -42,7 +42,7 @@ page 14135113 "lvngPostProcessingSchemaLines"
                                         lvngFromFieldNo := FieldRec."No.";
                                     end;
                                 end;
-                            lvngtype::lvngCopyLoanVariableValue, lvngtype::lvngCopyLoanJournalVariableValue:
+                            lvngtype::lvngCopyLoanVariableValue, lvngtype::lvngCopyLoanJournalVariableValue, lvngType::lvngDimensionMapping:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
                                         lvngFromFieldNo := lvngLoanFieldsConfiguration.lvngFieldNo;
