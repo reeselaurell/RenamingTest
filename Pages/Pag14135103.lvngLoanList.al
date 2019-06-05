@@ -24,6 +24,7 @@ page 14135103 "lvngLoanList"
                 field(lvngSearchName; lvngSearchName)
                 {
                     ApplicationArea = All;
+                    Width = 50;
                 }
 
                 field(lvngBorrowerFirstName; lvngBorrowerFirstName)

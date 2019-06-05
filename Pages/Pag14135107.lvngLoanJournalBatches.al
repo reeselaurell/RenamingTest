@@ -75,6 +75,7 @@ page 14135107 "lvngLoanJournalBatches"
                 Caption = 'Edit Journal';
                 Promoted = true;
                 PromotedIsBig = true;
+                PromotedCategory = Process;
                 ApplicationArea = All;
                 Image = Journal;
 
