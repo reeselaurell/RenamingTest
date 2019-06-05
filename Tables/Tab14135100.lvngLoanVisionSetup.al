@@ -43,7 +43,6 @@ table 14135100 "lvngLoanVisionSetup"
             TableRelation = "Reason Code";
         }
 
-
         field(17; lvngFundedSourceCode; Code[20])
         {
             DataClassification = CustomerContent;
@@ -116,7 +115,11 @@ table 14135100 "lvngLoanVisionSetup"
             DataClassification = CustomerContent;
             TableRelation = Dimension;
         }
-
+        field(305; lvngLoanOfficerNameTemplate; Text[50])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Loan Officer Name Template';
+        }
         field(400; lvngHierarchyLevels; Integer)
         {
             Caption = 'Hierarchy Levels';
