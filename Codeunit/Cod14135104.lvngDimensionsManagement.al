@@ -251,19 +251,19 @@ codeunit 14135104 lvngDimensionsManagement
         GetGLSetup();
         if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
             exit(1);
-        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+        if DimensionCode = GLSetup."Shortcut Dimension 2 Code" then
             exit(2);
-        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+        if DimensionCode = GLSetup."Shortcut Dimension 3 Code" then
             exit(3);
-        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+        if DimensionCode = GLSetup."Shortcut Dimension 4 Code" then
             exit(4);
-        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+        if DimensionCode = GLSetup."Shortcut Dimension 5 Code" then
             exit(5);
-        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+        if DimensionCode = GLSetup."Shortcut Dimension 6 Code" then
             exit(6);
-        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+        if DimensionCode = GLSetup."Shortcut Dimension 7 Code" then
             exit(7);
-        if DimensionCode = GLSetup."Shortcut Dimension 1 Code" then
+        if DimensionCode = GLSetup."Shortcut Dimension 8 Code" then
             exit(8);
         exit(-1);
     end;
