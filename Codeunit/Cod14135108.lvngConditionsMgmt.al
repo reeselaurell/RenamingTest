@@ -28,7 +28,7 @@ codeunit 14135108 "lvngConditionsMgmt"
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
                 lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp.lvngFieldName;
-                lvngExpressionValueBuffer.Type := lvngExpressionEngine.GetNetType(format(lvngLoanFieldsConfigurationTemp.lvngValueType));
+                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp.lvngValueType);
                 lvngExpressionValueBuffer.Insert();
             until lvngLoanFieldsConfigurationTemp.Next() = 0;
         end;
@@ -40,7 +40,7 @@ codeunit 14135108 "lvngConditionsMgmt"
             Clear(lvngExpressionValueBuffer);
             lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
             lvngExpressionValueBuffer.Name := lvngTableFields.FieldName;
-            lvngExpressionValueBuffer.Type := lvngExpressionEngine.GetNetType(lvngTableFields."Type Name");
+            lvngExpressionValueBuffer.Type := lvngTableFields."Type Name";
             lvngExpressionValueBuffer.Insert();
         until lvngTableFields.Next() = 0;
     end;
@@ -63,7 +63,7 @@ codeunit 14135108 "lvngConditionsMgmt"
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
                 lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp.lvngFieldName;
-                lvngExpressionValueBuffer.Type := lvngExpressionEngine.GetNetType(format(lvngLoanFieldsConfigurationTemp.lvngValueType));
+                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp.lvngValueType);
                 if lvngLoanValue.FindFirst() then begin
                     lvngExpressionValueBuffer.Value := lvngLoanValue.lvngFieldValue;
                 end else begin
@@ -97,7 +97,7 @@ codeunit 14135108 "lvngConditionsMgmt"
             lvngExpressionValueBuffer.Name := lvngTableFields.FieldName;
             lvngFieldReference := lvngRecordReference.Field(lvngTableFields."No.");
             lvngExpressionValueBuffer.Value := Delchr(Format(lvngFieldReference.Value()), '<>', ' ');
-            lvngExpressionValueBuffer.Type := lvngExpressionEngine.GetNetType(format(lvngFieldReference.Type()));
+            lvngExpressionValueBuffer.Type := format(lvngFieldReference.Type());
             if (lvngExpressionValueBuffer.Type = 'System.DateTime') and (lvngExpressionValueBuffer.Value = '') then
                 lvngExpressionValueBuffer.Value := format(DMY2Date(1, 1, 1974));
             if (lvngExpressionValueBuffer.Type = 'System.Boolean') then begin
@@ -124,7 +124,7 @@ codeunit 14135108 "lvngConditionsMgmt"
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
                 lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp.lvngFieldName;
-                lvngExpressionValueBuffer.Type := lvngExpressionEngine.GetNetType(format(lvngLoanFieldsConfigurationTemp.lvngValueType));
+                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp.lvngValueType);
                 lvngExpressionValueBuffer.Insert();
             until lvngLoanFieldsConfigurationTemp.Next() = 0;
         end;
@@ -137,7 +137,7 @@ codeunit 14135108 "lvngConditionsMgmt"
             Clear(lvngExpressionValueBuffer);
             lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
             lvngExpressionValueBuffer.Name := lvngTableFields.FieldName;
-            lvngExpressionValueBuffer.Type := lvngExpressionEngine.GetNetType(lvngTableFields."Type Name");
+            lvngExpressionValueBuffer.Type := lvngTableFields."Type Name";
             lvngExpressionValueBuffer.Insert();
         until lvngTableFields.Next() = 0;
     end;
@@ -162,7 +162,7 @@ codeunit 14135108 "lvngConditionsMgmt"
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
                 lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp.lvngFieldName;
-                lvngExpressionValueBuffer.Type := lvngExpressionEngine.GetNetType(format(lvngLoanFieldsConfigurationTemp.lvngValueType));
+                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp.lvngValueType);
                 if lvngLoanJournalValue.FindFirst() then begin
                     lvngExpressionValueBuffer.Value := lvngLoanJournalValue.lvngFieldValue;
                 end else begin
@@ -197,15 +197,16 @@ codeunit 14135108 "lvngConditionsMgmt"
             lvngExpressionValueBuffer.Name := lvngTableFields.FieldName;
             lvngFieldReference := lvngRecordReference.Field(lvngTableFields."No.");
             lvngExpressionValueBuffer.Value := Delchr(Format(lvngFieldReference.Value()), '<>', ' ');
-            lvngExpressionValueBuffer.Type := lvngExpressionEngine.GetNetType(format(lvngFieldReference.Type()));
-            if (lvngExpressionValueBuffer.Type = 'System.DateTime') and (lvngExpressionValueBuffer.Value = '') then
+            lvngExpressionValueBuffer.Type := format(lvngFieldReference.Type());
+            /*
+            if (lvngExpressionValueBuffer.Type = 'Date') and (lvngExpressionValueBuffer.Value = '') then
                 lvngExpressionValueBuffer.Value := format(DMY2Date(1, 1, 1974));
-            if (lvngExpressionValueBuffer.Type = 'System.Boolean') then begin
+            if (lvngExpressionValueBuffer.Type = 'Boolean') then begin
                 if (lvngExpressionValueBuffer.Value = 'No') then
                     lvngExpressionValueBuffer.Value := 'False';
                 if (lvngExpressionValueBuffer.Value = 'Yes') then
                     lvngExpressionValueBuffer.Value := 'True';
-            end;
+            end;*/
             lvngExpressionValueBuffer.Insert();
         until lvngTableFields.Next() = 0;
         lvngRecordReference.Close();

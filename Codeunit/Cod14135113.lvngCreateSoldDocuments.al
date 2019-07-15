@@ -345,19 +345,19 @@ codeunit 14135113 "lvngCreateSoldDocuments"
     begin
         if lvngConditionCode = '' then
             exit(true);
-        exit(lvngExpressionEngine.CheckCondition(lvngConditionCode, lvngExpressionValueBuffer, true));
+        exit(lvngExpressionEngine.CheckCondition(lvngConditionCode, lvngExpressionValueBuffer));
     end;
 
     local procedure GetFunctionValue(lvngFunctionCode: code[20]): Text
     begin
-        exit(lvngExpressionEngine.CalculateFormula(lvngFunctionCode, lvngExpressionValueBuffer, true));
+        exit(lvngExpressionEngine.CalculateFormula(lvngFunctionCode, lvngExpressionValueBuffer));
     end;
 
     local procedure GetSwitchValue(lvngSwitchCode: code[20]): Code[20]
     var
         lvngResult: Text;
     begin
-        if not lvngExpressionEngine.SwitchCase(lvngSwitchCode, lvngResult, lvngExpressionValueBuffer, true) then
+        if not lvngExpressionEngine.SwitchCase(lvngSwitchCode, lvngResult, lvngExpressionValueBuffer) then
             exit('');
         exit(copystr(lvngResult, 1, 20));
 
