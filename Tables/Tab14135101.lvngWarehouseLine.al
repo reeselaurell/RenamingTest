@@ -34,4 +34,17 @@ table 14135101 "lvngWarehouseLine"
         }
     }
 
+
+    fieldgroups
+    {
+        fieldgroup(DropDown; lvngCode, lvngDescription)
+        {
+
+        }
+        fieldgroup(Brick; lvngCode, lvngDescription)
+        {
+
+        }
+    }
+
 }

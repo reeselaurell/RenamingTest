@@ -61,6 +61,10 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                         begin
                             MapImportedDimension(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
                         end;
+                    lvngPostProcessingSchemaLine.lvngType::lvngAssignCustomValue:
+                        begin
+                            AssignCustomValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
+                        end;
                 end;
             until lvngPostProcessingSchemaLine.Next() = 0;
             AssignDimensions(lvngLoanJournalBatch, lvngLoanJournalLine);
@@ -174,6 +178,33 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                     lvngLoanJournalLine.lvngBusinessUnitCode := lvngDimensionHierarchy.lvngBusinessUnitCode;
                 lvngLoanJournalLine.Modify();
             end;
+        end;
+    end;
+
+    local procedure AssignCustomValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    var
+        lvngLoanJournalValue: Record lvngLoanJournalValue;
+        lvngRecRefTo: RecordRef;
+        lvngFieldRefTo: FieldRef;
+    begin
+        if lvngPostProcessingSchemaLine.lvngAssignTo = lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalField then begin
+            lvngRecRefTo.GetTable(lvngLoanJournalLine);
+            lvngFieldRefTo := lvngrecrefto.Field(lvngPostProcessingSchemaLine.lvngToFieldNo);
+            lvngFieldRefTo.Validate(lvngPostProcessingSchemaLine.lvngCustomValue);
+            lvngRecRefTo.SetTable(lvngLoanJournalLine);
+            lvngRecRefTo.Close();
+            lvngLoanJournalLine.Modify(true);
+        end else begin
+            if not lvngLoanJournalValue.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLineNo, lvngPostProcessingSchemaLine.lvngToFieldNo) then begin
+                Clear(lvngLoanJournalValue);
+                lvngLoanJournalValue.init;
+                lvngLoanJournalValue.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
+                lvngLoanJournalValue.lvngLineNo := lvngloanjournalline.lvngLineNo;
+                lvngLoanJournalValue.lvngFieldNo := lvngPostProcessingSchemaLine.lvngToFieldNo;
+                lvngLoanJournalValue.Insert(true);
+            end;
+            lvngLoanJournalValue.lvngFieldValue := copystr(lvngPostProcessingSchemaLine.lvngCustomValue, 1, MaxStrLen(lvngloanjournalvalue.lvngFieldValue));
+            lvngLoanJournalValue.Modify(true);
         end;
     end;
 

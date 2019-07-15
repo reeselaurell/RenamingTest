@@ -30,4 +30,8 @@ enum 14135109 "lvngPostProcessingType"
     {
         Caption = 'Dimension Mapping';
     }
+    value(7; lvngAssignCustomValue)
+    {
+        Caption = 'Assign Custom Value';
+    }
 }

@@ -72,6 +72,11 @@ table 14135112 "lvngPostProcessingSchemaLine"
                     lvngExpressionCode := lvngSelectedExpressionCode;
             end;
         }
+        field(18; lvngCustomValue; Text[250])
+        {
+            Caption = 'Custom Value';
+            DataClassification = CustomerContent;
+        }
 
     }
 

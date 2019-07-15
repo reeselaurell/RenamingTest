@@ -69,7 +69,10 @@ page 14135113 "lvngPostProcessingSchemaLines"
                 {
                     ApplicationArea = All;
                 }
-
+                field(lvngCustomValue; lvngCustomValue)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngPriority; lvngPriority)
                 {
                     ApplicationArea = All;
