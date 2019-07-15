@@ -22,7 +22,6 @@ report 14135100 "lvngPostLoanDocuments"
                 end else begin
                     FailedDocuments := FailedDocuments + 1;
                 end;
-
             end;
 
             trigger OnPostDataItem()

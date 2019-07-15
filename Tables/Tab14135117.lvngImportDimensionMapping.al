@@ -10,6 +10,7 @@ table 14135117 "lvngImportDimensionMapping"
         {
             Caption = 'Dimension Code';
             DataClassification = CustomerContent;
+            TableRelation = Dimension.Code;
         }
         field(2; lvngMappingValue; Code[50])
         {
