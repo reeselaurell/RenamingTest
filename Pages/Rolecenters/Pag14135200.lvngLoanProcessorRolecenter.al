@@ -9,33 +9,33 @@ page 14135200 "lvngLoanProcessorRolecenter"
         {
             part(lvngWarehouseLineActivities; lvngLoanActivities)
             {
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = All;
             }
         }
     }
 
     actions
     {
-        area(Creation)
+        area(Processing)
         {
             action(lvngLoansProcessing)
             {
-                RunPageMode = Create;
+                RunPageMode = Edit;
                 Caption = 'Loan Journal Batches';
                 ToolTip = 'Import and Process Loans Data';
-                Image = New;
+                Image = DataEntry;
                 RunObject = page lvngLoanJournalBatches;
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = All;
             }
             action(lvngFundedDocuments)
             {
                 RunPageMode = Edit;
                 Caption = 'Funded Documents';
                 ToolTip = 'Edit and Post Funded Documents';
-                Image = New;
+                Image = Documents;
                 RunObject = page lvngLoanDocumentsList;
                 RunPageView = sorting (lvngDocumentNo) where (lvngTransactionType = const (lvngFunded));
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = All;
             }
             action(lvngServicingWorksheet)
             {
@@ -44,17 +44,17 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 ToolTip = 'Prepare Loans For Servicing';
                 Image = ProjectToolsProjectMaintenance;
                 RunObject = page lvngServicingWorksheet;
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = All;
             }
             action(lvngSoldDocuments)
             {
                 RunPageMode = Edit;
                 Caption = 'Sold Documents';
                 ToolTip = 'Edit and Post Sold Documents';
-                Image = New;
+                Image = DocumentEdit;
                 RunObject = page lvngLoanDocumentsList;
                 RunPageView = sorting (lvngDocumentNo) where (lvngTransactionType = const (lvngSold));
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = All;
             }
 
             action(lvngLoanVisionSetup)
@@ -62,14 +62,14 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 Caption = 'Loan Vision Setup';
                 ToolTip = 'Loan Vision Setup';
                 RunObject = Page lvngLoanVisionSetup;
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = All;
             }
             action(lvngLoanServicingSetup)
             {
                 Caption = 'Loan Servicing Setup';
                 ToolTip = 'Loan Servicing Setup';
                 RunObject = Page lvngLoanServicingSetup;
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = All;
             }
         }
 
@@ -86,35 +86,43 @@ page 14135200 "lvngLoanProcessorRolecenter"
                     Caption = 'Warehouse Lines';
                     ToolTip = 'Warehouse Lines';
                     RunObject = Page lvngWarehouseLines;
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                 }
                 action(lvngLoanFieldsConfiguration)
                 {
                     Caption = 'Loan Fields Configuration';
                     ToolTip = 'Loan Fields Configuration';
                     RunObject = Page lvngLoanFieldsConfiguration;
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                 }
                 action(lvngDimensionHierarchy)
                 {
                     Caption = 'Dimension Hierarchy';
                     ToolTip = 'Setup Dimension Hierarchy';
                     RunObject = page lvngDimensionsHierarchy;
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
+                }
+
+                action(lvngImportSchema)
+                {
+                    Caption = 'Loan Journal Import Schemas';
+                    ToolTip = 'Configure Loan Journal Import Schemas';
+                    RunObject = page lvngLoanImportSchemaList;
+                    ApplicationArea = All;
                 }
                 action(lvngProcessingSchemas)
                 {
                     Caption = 'Processing Schemas';
                     ToolTip = 'Configrue Processing Schemas';
                     RunObject = page lvngLoanProcessingSchema;
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                 }
                 action(lvngEscrowFieldsMapping)
                 {
                     Caption = 'Escrow Fields Mapping';
                     ToolTip = 'Setup Servicing Escrow Fields Mapping';
                     RunObject = page lvngEscrowFieldsMapping;
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                 }
 
             }

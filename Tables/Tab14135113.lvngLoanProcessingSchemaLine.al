@@ -9,6 +9,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             Caption = 'Processing Code';
             DataClassification = CustomerContent;
             TableRelation = lvngLoanProcessingSchema;
+            NotBlank = true;
         }
         field(2; lvngLineNo; Integer)
         {

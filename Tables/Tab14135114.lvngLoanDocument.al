@@ -15,6 +15,7 @@ table 14135114 "lvngLoanDocument"
         {
             Caption = 'Document No.';
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
         field(10; lvngLoanNo; Code[20])
         {

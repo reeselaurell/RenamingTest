@@ -9,7 +9,9 @@ codeunit 14135106 "lvngLoanCardManagement"
         lvngLoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
         Window: Dialog;
         lvngProgressLbl: Label 'Processing #1########### of #2###########';
+        lvngProcessedLbl: Label '%1 of %2 Loans Processed';
         lvngCounter: Integer;
+        lvngProcessedCount: Integer;
 
     begin
         GetLoanVisionSetup();
@@ -52,10 +54,18 @@ codeunit 14135106 "lvngLoanCardManagement"
                         lvngloanjournalbatch.lvngLoanCardUpdateOption::lvngSchema:
                             UpdateLoanCard(lvngLoanJournalLine, lvngLoanUpdateSchemaTemp);
                     end;
+                    lvngProcessedCount := lvngProcessedCount + 1;
+                    lvngLoanJournalLine.Mark(true);
                 end;
             until lvngLoanJournalLine.Next() = 0;
-            if GuiAllowed() then
+
+            lvngLoanJournalLine.MarkedOnly(true);
+            lvngLoanJournalLine.DeleteAll(true);
+            if GuiAllowed() then begin
                 Window.Close();
+                Message(lvngProcessedLbl, lvngProcessedCount, lvngCounter);
+            end;
+
         end;
     end;
 

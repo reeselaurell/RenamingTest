@@ -10,6 +10,7 @@ table 14135105 lvngLoanJournalBatch
         {
             Caption = 'Code';
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
 
         field(10; lvngDescription; Text[250])

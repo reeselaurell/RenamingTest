@@ -11,6 +11,7 @@ table 14135112 "lvngPostProcessingSchemaLine"
             Caption = 'Loan Journal Batch Code';
             DataClassification = CustomerContent;
             TableRelation = lvngLoanJournalBatch;
+            NotBlank = true;
         }
         field(2; lvngLineNo; Integer)
         {
