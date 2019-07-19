@@ -5,6 +5,7 @@ page 14135102 lvngLoanFieldsConfiguration
     ApplicationArea = All;
     SourceTable = lvngLoanFieldsConfiguration;
     Caption = 'Loan Fields Configuration';
+    DelayedInsert = true;
 
     layout
     {

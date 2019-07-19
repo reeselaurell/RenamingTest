@@ -245,7 +245,7 @@ table 14135107 "lvngLoanJournalLine"
 
         field(106; lvngMonthlyPaymentAmount; Decimal)
         {
-            Caption = 'Monthly Payment Amount';
+            Caption = 'Monthly Payment Amount (P+I)';
             DataClassification = CustomerContent;
         }
         field(200; lvngBorrowerAddress; Text[50])

@@ -18,6 +18,15 @@ page 14135200 "lvngLoanProcessorRolecenter"
     {
         area(Processing)
         {
+            action(lvngLoanList)
+            {
+                ApplicationArea = All;
+                Caption = 'Loan List';
+                ToolTip = 'Loan List';
+                Image = Loaners;
+                RunObject = page lvngLoanList;
+                RunPageMode = View;
+            }
             action(lvngLoansProcessing)
             {
                 RunPageMode = Edit;
