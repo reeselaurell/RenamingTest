@@ -83,6 +83,12 @@ table 14135132 "lvngServicingWorksheet"
             Caption = 'Escrow Amount';
             DataClassification = CustomerContent;
         }
+
+        field(50; lvngEscrowDoesntMatch; Boolean)
+        {
+            Caption = 'Escrow totals doesn''t match';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
@@ -122,7 +128,23 @@ table 14135132 "lvngServicingWorksheet"
         lvngLoan.Get(lvngLoanNo);
         lvngServicingManagement.lvngGetPrincipalAndInterest(lvngLoan, lvngLoan.lvngNextPaymentDate, lvngPrincipalAmount, lvngInterestAmount);
         lvngEscrowAmount := lvngServicingManagement.lvngGetTotalEscrowAmounts(lvngLoan);
-
+        GetLoanServicingSetup();
+        if lvngLoanServicingSetup.lvngTestEscrowTotals then begin
+            if lvngEscrowAmount <> lvngLoan.lvngMonthlyEscrowAmount then
+                lvngEscrowDoesntMatch := true;
+        end;
     end;
+
+    local procedure GetLoanServicingSetup()
+    begin
+        if not lvngLoanServicingSetupRetrieved then begin
+            lvngLoanServicingSetupRetrieved := true;
+            lvngLoanServicingSetup.Get();
+        end;
+    end;
+
+    var
+        lvngLoanServicingSetup: Record lvngLoanServicingSetup;
+        lvngLoanServicingSetupRetrieved: Boolean;
 
 }

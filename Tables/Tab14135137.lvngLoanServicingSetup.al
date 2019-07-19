@@ -131,8 +131,11 @@ table 14135137 "lvngLoanServicingSetup"
             DataClassification = CustomerContent;
             TableRelation = "No. Series".Code;
         }
-
-
+        field(100; lvngTestEscrowTotals; Boolean)
+        {
+            Caption = 'Test Escrow Total Amount';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

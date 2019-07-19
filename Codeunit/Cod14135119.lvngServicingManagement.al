@@ -61,10 +61,12 @@ codeunit 14135119 "lvngServicingManagement"
                 lvngPrincipalAmount := lvngPreviousBalance;
             if (lvngInterestAmount = 0) and (lvngPrincipalAmount = 0) then
                 exit;
+            lvngInterestAmount := round(lvngInterestAmount, 0.01);
+            lvngPrincipalAmount := round(lvngPrincipalAmount, 0.01);
+            if (lvngInterestAmount + lvngPrincipalAmount) <> lvngLoan.lvngMonthlyPaymentAmount then begin
+                lvngPrincipalAmount := lvngLoan.lvngMonthlyPaymentAmount - lvngInterestAmount;
+            end;
             lvngCalculationDate := calcdate(StrSubstNo('<+%1M>', lvngLineNo), lvngStartDate);
-            if lvngCalculationDate > lvngNextPaymentDate then
-                exit;
-            lvngPreviousBalance := lvngPreviousBalance - lvngPrincipalAmount;
         end;
     end;
 
