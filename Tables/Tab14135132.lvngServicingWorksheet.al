@@ -84,9 +84,9 @@ table 14135132 "lvngServicingWorksheet"
             DataClassification = CustomerContent;
         }
 
-        field(50; lvngEscrowDoesntMatch; Boolean)
+        field(100; lvngErrorMessage; Text[250])
         {
-            Caption = 'Escrow totals doesn''t match';
+            Caption = 'Error Message';
             DataClassification = CustomerContent;
         }
     }
@@ -123,7 +123,6 @@ table 14135132 "lvngServicingWorksheet"
     var
         lvngLoan: Record lvngLoan;
         lvngServicingManagement: Codeunit lvngServicingManagement;
-
     begin
         lvngLoan.Get(lvngLoanNo);
         lvngServicingManagement.lvngGetPrincipalAndInterest(lvngLoan, lvngLoan.lvngNextPaymentDate, lvngPrincipalAmount, lvngInterestAmount);

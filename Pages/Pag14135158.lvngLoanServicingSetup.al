@@ -37,6 +37,10 @@ page 14135158 "lvngLoanServicingSetup"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngTestEscrowTotals; lvngTestEscrowTotals)
+                {
+                    ApplicationArea = All;
+                }
 
                 group(Interest)
                 {

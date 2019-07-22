@@ -77,7 +77,6 @@ codeunit 14135119 "lvngServicingManagement"
         lvngEscrowAmount: Decimal;
     begin
         lvngEscrowFieldsMapping.reset;
-        lvngEscrowFieldsMapping.SetFilter(lvngMapToGLAccountNo, '<>%1', '');
         if lvngEscrowFieldsMapping.FindSet() then begin
             repeat
                 if lvngLoanValue.Get(lvngLoan.lvngLoanNo, lvngEscrowFieldsMapping.lvngFieldNo) then begin
@@ -106,6 +105,17 @@ codeunit 14135119 "lvngServicingManagement"
         end;
     end;
 
+    procedure ValidateServicingWorksheet()
+    begin
+        lvngServicingWorksheet.Reset();
+        if lvngServicingWorksheet.FindSet() then begin
+            repeat
+                clear(lvngServicingWorksheet.lvngErrorMessage);
+
+            until lvngServicingWorksheet.Next() = 0;
+        end;
+    end;
+
     local procedure lvngGetLoanServicingSetup()
     begin
         if not lvngLoanServicingSetupRetrieved then begin
@@ -115,6 +125,7 @@ codeunit 14135119 "lvngServicingManagement"
     end;
 
     var
+        lvngServicingWorksheet: Record lvngServicingWorksheet;
         lvngLoanServicingSetup: Record lvngLoanServicingSetup;
         lvngLoanServicingSetupRetrieved: Boolean;
 
