@@ -855,6 +855,26 @@ codeunit 14135106 "lvngLoanCardManagement"
                                         end;
                                 end;
                             end;
+                            //Servicing Late Fee
+                            if lvngLoanUpdateSchema.lvngFieldNo = 107 then begin
+                                case lvngLoanUpdateSchema.lvngFieldUpdateOption of
+                                    lvngloanupdateschema.lvngFieldUpdateOption::lvngAlways:
+                                        begin
+                                            lvngLoan.lvngLateFee := lvngLoanJournalLine.lvngLateFee;
+                                        end;
+                                    lvngLoanUpdateSchema.lvngFieldUpdateOption::lvngIfDestinationBlank:
+                                        begin
+                                            if lvngloan.lvngLateFee = 0 then
+                                                lvngLoan.lvngLateFee := lvngLoanJournalLine.lvngLateFee;
+                                        end;
+                                    lvngLoanUpdateSchema.lvngFieldUpdateOption::lvngIfSourceNotBlank:
+                                        begin
+                                            if lvngLoanJournalLine.lvngLateFee <> 0 then begin
+                                                lvngLoan.lvngLateFee := lvngLoanJournalLine.lvngLateFee;
+                                            end;
+                                        end;
+                                end;
+                            end;
                             //Commission Base Amount
                             if lvngLoanUpdateSchema.lvngFieldNo = 500 then begin
                                 case lvngLoanUpdateSchema.lvngFieldUpdateOption of

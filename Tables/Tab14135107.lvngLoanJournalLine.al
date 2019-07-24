@@ -248,6 +248,11 @@ table 14135107 "lvngLoanJournalLine"
             Caption = 'Monthly Payment Amount (P+I)';
             DataClassification = CustomerContent;
         }
+        field(107; lvngLateFee; Decimal)
+        {
+            Caption = 'Servicing Late Fee';
+            DataClassification = CustomerContent;
+        }
         field(200; lvngBorrowerAddress; Text[50])
         {
             Caption = 'Borrower Address';

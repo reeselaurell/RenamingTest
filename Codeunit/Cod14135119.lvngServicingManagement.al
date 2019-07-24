@@ -5,7 +5,7 @@ codeunit 14135119 "lvngServicingManagement"
 
     end;
 
-    procedure lvngGetPrincipalAndInterest(lvngLoan: Record lvngLoan; var lvngNextPaymentDate: Date; var lvngPrincipalAmount: Decimal; var lvngInterestAmount: Decimal)
+    procedure GetPrincipalAndInterest(lvngLoan: Record lvngLoan; var lvngNextPaymentDate: Date; var lvngPrincipalAmount: Decimal; var lvngInterestAmount: Decimal)
     var
         GLEntry: Record "G/L Entry";
         lvngGLEntryBuffer: Record lvngGLEntryBuffer temporary;
@@ -24,7 +24,7 @@ codeunit 14135119 "lvngServicingManagement"
             lvngLoan.lvngFirstPaymentDue := CalcDate('<CM + 1D - 1M>', lvngLoan.lvngDateFunded);
         if CalcDate(StrSubstNo('<+%1M>', lvngLoan.lvngLoanTermMonths + 1), lvngLoan.lvngFirstPaymentDue) < lvngNextPaymentDate then
             exit;
-        lvngGetLoanServicingSetup();
+        GetLoanServicingSetup();
         lvngLoanServicingSetup.TestField(lvngPrincipalRedReasonCode);
         lvngLoanServicingSetup.TestField(lvngPrincipalRedGLAccountNo);
         GLEntry.reset;
@@ -70,7 +70,7 @@ codeunit 14135119 "lvngServicingManagement"
         end;
     end;
 
-    procedure lvngGetTotalEscrowAmounts(lvngLoan: Record lvngLoan): Decimal
+    procedure GetTotalEscrowAmounts(lvngLoan: Record lvngLoan): Decimal
     var
         lvngEscrowFieldsMapping: Record lvngEscrowFieldsMapping;
         lvngLoanValue: Record lvngLoanValue;
@@ -87,41 +87,70 @@ codeunit 14135119 "lvngServicingManagement"
         exit(lvngEscrowAmount);
     end;
 
-    procedure CreateBorrowerCustomers()
-    var
-        lvngServicingWorksheet: Record lvngServicingWorksheet;
-        lvngLoan: Record lvngLoan;
-        Customer: Record Customer;
-    begin
-        lvngServicingWorksheet.reset;
-        if lvngServicingWorksheet.FindSet() then begin
-            repeat
-                if lvngLoan.Get(lvngServicingWorksheet.lvngLoanNo) then begin
-                    if lvngLoan.lvngBorrowerCustomerNo = '' then begin
-
-                    end;
-                end;
-            until lvngServicingWorksheet.Next() = 0;
-        end;
-    end;
-
     procedure ValidateServicingWorksheet()
     begin
         lvngServicingWorksheet.Reset();
         if lvngServicingWorksheet.FindSet() then begin
             repeat
-                clear(lvngServicingWorksheet.lvngErrorMessage);
-
+                lvngServicingWorksheet.CalculateAmounts();
+                ValidateServicingLine(lvngServicingWorksheet);
+                lvngServicingWorksheet.Modify();
             until lvngServicingWorksheet.Next() = 0;
         end;
     end;
 
-    local procedure lvngGetLoanServicingSetup()
+    procedure ValidateServicingLine(var lvngServicingWorksheetParam: Record lvngServicingWorksheet)
+    var
+        lvngLoan: record lvngLoan;
+        Customer: Record Customer;
+        lvngEscrowsDoesntMatch: Label 'Total escrow amount doesn''t match';
+        lvngBorrowerCustomerMissing: Label 'Borrower Customer is empty or doesn''t exist';
+    begin
+        GetLoanServicingSetup();
+        lvngLoan.Get(lvngServicingWorksheetParam.lvngLoanNo);
+        clear(lvngServicingWorksheetParam.lvngErrorMessage);
+        if lvngLoanServicingSetup.lvngTestEscrowTotals then begin
+            if lvngLoan.lvngMonthlyEscrowAmount <> lvngServicingWorksheetParam.lvngEscrowAmount then begin
+                lvngServicingWorksheetParam.lvngErrorMessage := copystr(lvngEscrowsDoesntMatch, 1, MaxStrLen(lvngServicingWorksheetParam.lvngErrorMessage));
+            end;
+        end;
+        if lvngServicingWorksheetParam.lvngErrorMessage = '' then begin
+            if not Customer.Get(lvngLoan.lvngBorrowerCustomerNo) then begin
+                lvngServicingWorksheetParam.lvngErrorMessage := copystr(lvngBorrowerCustomerMissing, 1, MaxStrLen(lvngServicingWorksheetParam.lvngErrorMessage));
+            end;
+        end;
+    end;
+
+    local procedure GetLoanServicingSetup()
     begin
         if not lvngLoanServicingSetupRetrieved then begin
             lvngLoanServicingSetup.Get();
             lvngLoanServicingSetupRetrieved := true;
         end;
+    end;
+
+    procedure CreateBorrowerCustomers()
+    var
+        lvngLoan: Record lvngLoan;
+        Customer: Record Customer;
+        CustomerTemplate: Record "Customer Template";
+    begin
+        GetLoanServicingSetup();
+        lvngLoanServicingSetup.TestField(lvngBorrowerCustomerTemplate);
+        CustomerTemplate.Get(lvngLoanServicingSetup.lvngBorrowerCustomerTemplate);
+        lvngServicingWorksheet.reset;
+        lvngServicingWorksheet.FindSet();
+        repeat
+            lvngLoan.get(lvngServicingWorksheet.lvngLoanNo);
+            if lvngLoan.lvngBorrowerCustomerNo = '' then begin
+                Customer."No." := lvngLoan.lvngLoanNo;
+                Customer.Name := copystr(lvngloan.lvngSearchName, 1, MaxStrLen(Customer.Name));
+                Customer.CopyFromCustomerTemplate(CustomerTemplate);
+                Customer.Insert(true);
+                lvngLoan.lvngBorrowerCustomerNo := Customer."No.";
+                lvngLoan.Modify(true);
+            end;
+        until lvngServicingWorksheet.Next() = 0;
     end;
 
     var

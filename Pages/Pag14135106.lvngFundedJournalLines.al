@@ -125,6 +125,10 @@ page 14135106 "lvngFundedJournalLines"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngLateFee; lvngLateFee)
+                {
+                    ApplicationArea = All;
+                }
 
                 field(lvngCommissionDate; lvngCommissionDate)
                 {

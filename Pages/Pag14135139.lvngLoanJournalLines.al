@@ -129,6 +129,10 @@ page 14135139 "lvngLoanJournalLines"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngLateFee; lvngLateFee)
+                {
+                    ApplicationArea = All;
+                }
 
                 field(lvngCommissionDate; lvngCommissionDate)
                 {

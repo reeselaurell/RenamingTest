@@ -281,6 +281,12 @@ table 14135102 "lvngLoan"
             DataClassification = CustomerContent;
         }
 
+        field(107; lvngLateFee; Decimal)
+        {
+            Caption = 'Servicing Late Fee';
+            DataClassification = CustomerContent;
+        }
+
         field(500; lvngCommissionBaseAmount; Decimal)
         {
             Caption = 'Commission Base Amount';

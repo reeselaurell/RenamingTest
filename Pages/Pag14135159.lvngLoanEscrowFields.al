@@ -19,6 +19,7 @@ page 14135159 lvngLoanEscrowFields
                 }
                 field(lvngAmount; lvngAmount)
                 {
+                    Caption = 'Amount';
                     ApplicationArea = All;
                 }
             }

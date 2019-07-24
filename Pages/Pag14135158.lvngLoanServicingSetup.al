@@ -17,6 +17,10 @@ page 14135158 "lvngLoanServicingSetup"
             {
                 Caption = 'General';
 
+                field(lvngBorrowerCustomerTemplate; lvngBorrowerCustomerTemplate)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngServicedReasonCode; lvngServicedReasonCode)
                 {
                     ApplicationArea = All;
@@ -108,6 +112,10 @@ page 14135158 "lvngLoanServicingSetup"
                         ApplicationArea = All;
                     }
                     field(lvngLatePaymentReasonCode; lvngLatePaymentReasonCode)
+                    {
+                        ApplicationArea = All;
+                    }
+                    field(lvngLateFeeRule; lvngLateFeeRule)
                     {
                         ApplicationArea = All;
                     }

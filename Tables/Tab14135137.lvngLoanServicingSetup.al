@@ -131,6 +131,17 @@ table 14135137 "lvngLoanServicingSetup"
             DataClassification = CustomerContent;
             TableRelation = "No. Series".Code;
         }
+        field(56; lvngLateFeeRule; enum lvngServicingLateFeeRule)
+        {
+            Caption = 'Late Fee Rule';
+            DataClassification = CustomerContent;
+        }
+        field(60; lvngBorrowerCustomerTemplate; Code[20])
+        {
+            Caption = 'Borrower Customer Template';
+            DataClassification = CustomerContent;
+            TableRelation = "Customer Template".Code;
+        }
         field(100; lvngTestEscrowTotals; Boolean)
         {
             Caption = 'Test Escrow Total Amount';

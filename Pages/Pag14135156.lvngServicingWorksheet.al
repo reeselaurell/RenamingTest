@@ -12,17 +12,21 @@ page 14135156 "lvngServicingWorksheet"
         {
             repeater(lvngRepeater)
             {
+                FreezeColumn = lvngBorrowerName;
                 field(lvngLoanNo; lvngLoanNo)
                 {
                     ApplicationArea = All;
                     DrillDown = false;
+                    Style = Attention;
+                    StyleExpr = lvngErrorMessage <> '';
                 }
-                field(lvngCustomerNo; lvngCustomerNo)
+                field(lvngBorrowerName; lvngBorrowerName)
                 {
                     ApplicationArea = All;
                     DrillDown = false;
+
                 }
-                field(lvngBorrowerName; lvngBorrowerName)
+                field(lvngCustomerNo; lvngCustomerNo)
                 {
                     ApplicationArea = All;
                     DrillDown = false;
@@ -67,16 +71,17 @@ page 14135156 "lvngServicingWorksheet"
                     ApplicationArea = All;
                     Editable = false;
                 }
-                field(lvngErrorMessage; lvngErrorMessage)
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
                 field(lvngTotalAmount; lvngInterestAmount + lvngPrincipalAmount + lvngEscrowAmount)
                 {
                     ApplicationArea = All;
                     Editable = false;
                     Caption = 'Total Amount';
+                }
+
+                field(lvngErrorMessage; lvngErrorMessage)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
                 }
 
             }
@@ -114,7 +119,37 @@ page 14135156 "lvngServicingWorksheet"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = report lvngPrepareServicingDocuments;
+            }
+            action(lvngValidateLines)
+            {
+                Caption = 'Validate Lines';
+                ApplicationArea = All;
+                Image = Approve;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
 
+                trigger OnAction()
+                begin
+                    lvngServicingManagement.ValidateServicingWorksheet();
+                    Message(lvngValidationCompletedLbl);
+                end;
+            }
+            action(lvngCreateBorrowerCustomers)
+            {
+                Caption = 'Create Borrower Customers';
+                ApplicationArea = All;
+                Image = CustomerList;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                begin
+                    lvngServicingManagement.CreateBorrowerCustomers();
+                    lvngServicingManagement.ValidateServicingWorksheet();
+                    CurrPage.Update(false);
+                end;
             }
         }
     }
@@ -123,4 +158,8 @@ page 14135156 "lvngServicingWorksheet"
     begin
         CurrPage.lvngEscrows.Page.SetParams(lvngLoanNo);
     end;
+
+    var
+        lvngServicingManagement: Codeunit lvngServicingManagement;
+        lvngValidationCompletedLbl: Label 'Validation completed';
 }

@@ -15,6 +15,7 @@ table 14135132 "lvngServicingWorksheet"
             trigger OnValidate()
             begin
                 CalculateAmounts();
+                lvngServicingManagement.ValidateServicingLine(Rec);
             end;
         }
 
@@ -119,19 +120,13 @@ table 14135132 "lvngServicingWorksheet"
 
     end;
 
-    local procedure CalculateAmounts()
+    procedure CalculateAmounts()
     var
         lvngLoan: Record lvngLoan;
-        lvngServicingManagement: Codeunit lvngServicingManagement;
     begin
         lvngLoan.Get(lvngLoanNo);
-        lvngServicingManagement.lvngGetPrincipalAndInterest(lvngLoan, lvngLoan.lvngNextPaymentDate, lvngPrincipalAmount, lvngInterestAmount);
-        lvngEscrowAmount := lvngServicingManagement.lvngGetTotalEscrowAmounts(lvngLoan);
-        GetLoanServicingSetup();
-        if lvngLoanServicingSetup.lvngTestEscrowTotals then begin
-            if lvngEscrowAmount <> lvngLoan.lvngMonthlyEscrowAmount then
-                lvngEscrowDoesntMatch := true;
-        end;
+        lvngServicingManagement.GetPrincipalAndInterest(lvngLoan, lvngLoan.lvngNextPaymentDate, lvngPrincipalAmount, lvngInterestAmount);
+        lvngEscrowAmount := lvngServicingManagement.GetTotalEscrowAmounts(lvngLoan);
     end;
 
     local procedure GetLoanServicingSetup()
@@ -144,6 +139,7 @@ table 14135132 "lvngServicingWorksheet"
 
     var
         lvngLoanServicingSetup: Record lvngLoanServicingSetup;
+        lvngServicingManagement: Codeunit lvngServicingManagement;
         lvngLoanServicingSetupRetrieved: Boolean;
 
 }
