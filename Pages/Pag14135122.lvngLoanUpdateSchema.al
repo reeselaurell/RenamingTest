@@ -43,7 +43,7 @@ page 14135122 "lvngLoanUpdateSchema"
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsListPage: Page "Field List";
+                        FieldsListPage: Page "Fields Lookup";
                         FieldRec: Record Field;
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
@@ -169,7 +169,6 @@ page 14135122 "lvngLoanUpdateSchema"
 
     trigger OnAfterGetRecord()
     var
-        CaptionManagement: codeunit CaptionManagement;
         TableField: Record Field;
         lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
     begin

@@ -24,7 +24,7 @@ page 14135113 "lvngPostProcessingSchemaLines"
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsListPage: Page "Field List";
+                        FieldsListPage: Page "Fields Lookup";
                         FieldRec: Record Field;
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
@@ -90,7 +90,7 @@ page 14135113 "lvngPostProcessingSchemaLines"
                     ApplicationArea = All;
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsListPage: Page "Field List";
+                        FieldsListPage: Page "Fields Lookup";
                         FieldRec: Record Field;
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin

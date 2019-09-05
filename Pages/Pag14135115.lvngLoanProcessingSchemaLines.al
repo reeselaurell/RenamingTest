@@ -93,7 +93,7 @@ page 14135115 "lvngLoanProcessingSchemaLines"
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsListPage: Page "Field List";
+                        FieldsListPage: Page "Fields Lookup";
                         FieldRec: Record Field;
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin

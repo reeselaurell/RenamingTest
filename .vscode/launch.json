@@ -4,14 +4,15 @@
         {
             "type": "al",
             "request": "launch",
-            "name": "BC140",
-            "server": "http://localhost",
-            "serverInstance": "BC140",
+            "name": "BC150",
+            "server": "http://localhost:8080",
+            "port": 7049,
+            "serverInstance": "BC150",
             "authentication": "Windows",
-            "startupObjectId": 14135103,
-            "startupObjectType": "Page",
             "breakOnError": true,
             "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
             "schemaUpdateMode": "ForceSync"
         }
     ]

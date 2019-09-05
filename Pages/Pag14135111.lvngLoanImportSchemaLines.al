@@ -65,7 +65,7 @@ page 14135111 "lvngLoanImportSchemaLines"
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsListPage: Page "Field List";
+                        FieldsListPage: Page "Fields Lookup";
                         FieldRec: Record Field;
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
