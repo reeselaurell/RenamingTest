@@ -133,6 +133,13 @@ page 14135200 "lvngLoanProcessorRolecenter"
                     RunObject = page lvngEscrowFieldsMapping;
                     ApplicationArea = All;
                 }
+                action(lvngImportDimensionsMapping)
+                {
+                    Caption = 'Import Dimensions Mapping';
+                    ToolTip = 'Configure Import Dimensions Mapping';
+                    RunObject = page lvngImportDimensionMapping;
+                    ApplicationArea = all;
+                }
 
             }
         }
