@@ -61,6 +61,86 @@ page 14135139 "lvngLoanJournalLines"
                 {
                     ApplicationArea = All;
                 }
+                field(lvngBorrowerAddress; lvngBorrowerAddress)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngBorrowerAddress2; lvngBorrowerAddress2)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngBorrowerCity; lvngBorrowerCity)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngBorrowerState; lvngBorrowerState)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngBorrowerZIPCode; lvngBorrowerZIPCode)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCoBorrowerAddress; lvngCoBorrowerAddress)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCoBorrowerAddress2; lvngCoBorrowerAddress2)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCoBorrowerCity; lvngCoBorrowerCity)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCoBorrowerState; lvngCoBorrowerState)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCoBorrowerZIPCode; lvngCoBorrowerZIPCode)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngMailingAddress; lvngMailingAddress)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngMailingAddress2; lvngMailingAddress2)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngMailingCity; lvngMailingCity)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngMailingState; lvngMailingState)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngMailingZIPCode; lvngMailingZIPCode)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngPropertyAddress; lvngPropertyAddress)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngPropertyAddress2; lvngPropertyAddress2)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngPropertyCity; lvngPropertyCity)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngPropertyState; lvngPropertyState)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngPropertyZIPCode; lvngPropertyZIPCode)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvng203KContractorName; lvng203KContractorName)
                 {
                     ApplicationArea = All;
@@ -239,13 +319,13 @@ page 14135139 "lvngLoanJournalLines"
             {
                 Caption = 'Errors';
                 ApplicationArea = All;
-                SubPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
+                SubPageLink = lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode), lvngLineNo = field(lvngLineNo);
             }
             part(lvngValues; lvngLoanImportValuePart)
             {
                 Caption = 'Values';
                 ApplicationArea = All;
-                SubPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
+                SubPageLink = lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode), lvngLineNo = field(lvngLineNo);
             }
         }
     }
@@ -323,7 +403,7 @@ page 14135139 "lvngLoanJournalLines"
                 PromotedCategory = Process;
                 RunObject = page lvngLoanImportValueEdit;
                 RunPageMode = Edit;
-                RunPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
+                RunPageLink = lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode), lvngLineNo = field(lvngLineNo);
             }
 
             action(lvngShowErrorLinesOnly)

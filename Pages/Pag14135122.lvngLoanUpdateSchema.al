@@ -178,8 +178,8 @@ page 14135122 "lvngLoanUpdateSchema"
                 begin
                     TableField.SetRange("No.", lvngFieldNo);
                     TableField.setrange(TableNo, Database::lvngLoanJournalLine);
-                    TableField.FindFirst();
-                    lvngFieldDescription := TableField."Field Caption";
+                    if TableField.FindFirst() then
+                        lvngFieldDescription := TableField."Field Caption";
                     //lvngFieldDescription := CaptionManagement.GetTranslatedFieldCaption('', Database::lvngLoanJournalLine, lvngFieldNo);
                 end;
             lvngImportFieldType::lvngVariable:
