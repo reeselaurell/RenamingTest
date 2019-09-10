@@ -1,0 +1,10 @@
+﻿.dx-secondary-row {
+    display: none;
+}
+.red {
+    color: red;
+}
+.link {
+    text-decoration: underline;
+    cursor: pointer;
+}
