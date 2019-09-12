@@ -4,16 +4,17 @@ table 14135402 lvngBranchUserMapping
     {
         field(1; "User ID"; Code[50])
         {
-            DataClassification = CustomerContent;
+            Caption = 'User ID';
+            DataClassification = EndUserIdentifiableInformation;
+            NotBlank = true;
+            TableRelation = User."User Name";
+            ValidateTableRelation = false;
 
             trigger OnValidate()
+            var
+                UserSelection: Codeunit "User Selection";
             begin
-                UserMgmt.ValidateUserID("User ID");
-            end;
-
-            trigger OnLookup()
-            begin
-                UserMgmt.LookupUserID("User ID");
+                UserSelection.ValidateUserName("User ID");
             end;
         }
         field(2; Type; Enum lvngPortalLevel) { DataClassification = CustomerContent; }

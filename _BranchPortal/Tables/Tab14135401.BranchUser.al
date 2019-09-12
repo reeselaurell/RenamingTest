@@ -6,17 +6,17 @@ table 14135401 lvngBranchUser
     {
         field(1; "User ID"; Code[50])
         {
+            Caption = 'User ID';
+            DataClassification = EndUserIdentifiableInformation;
             NotBlank = true;
-            DataClassification = CustomerContent;
+            TableRelation = User."User Name";
+            ValidateTableRelation = false;
 
             trigger OnValidate()
+            var
+                UserSelection: Codeunit "User Selection";
             begin
-                UserMgmt.ValidateUserID("User ID");
-            end;
-
-            trigger OnLookup()
-            begin
-                UserMgmt.LookupUserID("User ID");
+                UserSelection.ValidateUserName("User ID");
             end;
         }
         field(10; "Super User"; Boolean)
@@ -38,11 +38,11 @@ table 14135401 lvngBranchUser
         }
         field(11; "E-Mail"; Text[100]) { DataClassification = CustomerContent; }
         field(12; "Regenerate Permissions"; Boolean) { DataClassification = CustomerContent; }
-        field(20; "Level 1 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where (Type = const ("Level 1")); }
-        field(21; "Level 2 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where (Type = const ("Level 2")); }
-        field(22; "Level 3 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where (Type = const ("Level 3")); }
-        field(23; "Level 4 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where (Type = const ("Level 4")); }
-        field(24; "Level 5 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where (Type = const ("Level 5")); }
+        field(20; "Level 1 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where(Type = const("Level 1")); }
+        field(21; "Level 2 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where(Type = const("Level 2")); }
+        field(22; "Level 3 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where(Type = const("Level 3")); }
+        field(23; "Level 4 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where(Type = const("Level 4")); }
+        field(24; "Level 5 Filter Prefix"; Code[10]) { DataClassification = CustomerContent; TableRelation = lvngPortalFilterPrefix."Prefix Code" where(Type = const("Level 5")); }
         field(100; "Show Loan Funding Report"; Boolean) { DataClassification = CustomerContent; }
         field(101; "Loan Level Report Schema Code"; Code[20]) { DataClassification = CustomerContent; }
         field(102; "Hide General Ledger"; Boolean) { DataClassification = CustomerContent; }
