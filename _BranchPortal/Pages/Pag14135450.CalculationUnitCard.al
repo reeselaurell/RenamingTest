@@ -70,7 +70,7 @@ page 14135450 lvngCalculationUnitCard
                                     "Expression Code" := NewCode;
                             end;
                         }
-                        part("Data Source"; lvngCalculationUnitLines) { ApplicationArea = All; SubPageLink = "Unit Code" = field (Code); }
+                        part("Data Source"; lvngCalculationUnitLines) { ApplicationArea = All; SubPageLink = "Unit Code" = field(Code); }
                     }
                 }
             }
