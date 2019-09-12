@@ -1,4 +1,4 @@
-codeunit 14135400 lvngBranchPortalManagement
+codeunit 14135120 lvngPerformanceManagement
 {
     SingleInstance = true;
 
@@ -259,9 +259,9 @@ codeunit 14135400 lvngBranchPortalManagement
     local procedure OnFillBuffer(ExpressionHeader: Record lvngExpressionHeader; ConsumerMetadata: Text; var ExpressionBuffer: Record lvngExpressionValueBuffer)
     var
         CalcUnitLine: Record lvngCalculationUnitLine;
-        BranchPortalMgmt: Codeunit lvngBranchPortalManagement;
+        PerformanceMgmt: Codeunit lvngPerformanceManagement;
     begin
-        if BranchPortalMgmt.GetCalcUnitConsumerId() = ExpressionHeader."Consumer Id" then begin
+        if PerformanceMgmt.GetCalcUnitConsumerId() = ExpressionHeader."Consumer Id" then begin
             CalcUnitLine.Reset();
             CalcUnitLine.SetRange("Unit Code", ConsumerMetadata);
             if CalcUnitLine.FindSet() then

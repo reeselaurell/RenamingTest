@@ -65,7 +65,7 @@ page 14135450 lvngCalculationUnitCard
                                 ExpressionList: Page lvngExpressionList;
                                 NewCode: Code[20];
                             begin
-                                NewCode := ExpressionList.SelectExpression(BranchPortalMgmt.GetCalcUnitConsumerId(), Code);
+                                NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetCalcUnitConsumerId());
                                 if NewCode <> '' then
                                     "Expression Code" := NewCode;
                             end;
@@ -84,6 +84,6 @@ page 14135450 lvngCalculationUnitCard
     }
 
     var
-        BranchPortalMgmt: Codeunit lvngBranchPortalManagement;
+        PerformanceMgmt: Codeunit lvngPerformanceManagement;
         Dummy: Text;
 }

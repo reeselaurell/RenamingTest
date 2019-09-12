@@ -24,7 +24,7 @@
   }],
   "screenshots": [],
   "platform": "15.0.0.0",
-  "target":"Cloud",
+  "target":"OnPrem",
   "idRanges": [
     {
       "from": 50000,

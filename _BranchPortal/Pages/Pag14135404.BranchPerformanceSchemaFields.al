@@ -1,7 +1,7 @@
 page 14135404 lvngBranchPerfSchemaFields
 {
     PageType = List;
-    Caption = 'Branch Performance Schema Fields';
+    Caption = 'Performance Schema Fields';
     SourceTable = lvngPerformanceSchemaLine;
     DelayedInsert = true;
     AutoSplitKey = true;
@@ -33,11 +33,11 @@ page 14135404 lvngBranchPerfSchemaFields
 
                 trigger OnAction()
                 var
-                    BranchPerfSchemaFieldCard: Page lvngBranchPerfSchemaFieldCard;
+                    PerfSchemaFieldCard: Page lvngBranchPerfSchemaFieldCard;
                 begin
-                    Clear(BranchPerfSchemaFieldCard);
-                    BranchPerfSchemaFieldCard.SetRecord(Rec);
-                    BranchPerfSchemaFieldCard.RunModal();
+                    Clear(PerfSchemaFieldCard);
+                    PerfSchemaFieldCard.SetRecord(Rec);
+                    PerfSchemaFieldCard.RunModal();
                 end;
             }
         }

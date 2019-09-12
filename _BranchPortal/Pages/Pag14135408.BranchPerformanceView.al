@@ -1,4 +1,4 @@
-page 14135408 lvngBranchPerformanceView
+page 14135408 lvngPerformanceView
 {
     PageType = Worksheet;
     Editable = false;
@@ -31,15 +31,7 @@ page 14135408 lvngBranchPerformanceView
         }
     }
 
-    actions
-    {
-        area(Processing)
-        {
-        }
-    }
-
     var
-        BranchPortalSetup: Record lvngBranchPortalSetup;
         RowSchema: Record lvngPerformanceSchema;
         ColSchema: Record lvngPeriodPerformanceLayout;
         GroupSchema: Record lvngPerformanceColumnGroup;
@@ -64,7 +56,6 @@ page 14135408 lvngBranchPerformanceView
     var
         PerformanceSchemaMapping: Record lvngBranchPerfSchemaMapping;
     begin
-        BranchPortalSetup.Get();
         if not PerformanceSchemaMapping.Get(UserId(), RowSchemaCode, ColSchemaCode, ColGroupSchemaCode) then
             PerformanceSchemaMapping.Get('', RowSchemaCode, ColSchemaCode, ColGroupSchemaCode);
         RowSchema.Get(RowSchemaCode);
@@ -132,7 +123,7 @@ page 14135408 lvngBranchPerformanceView
         StartDate: Date;
         EndDate: Date;
         Multiplier: Integer;
-        BranchPortalMgmt: Codeunit lvngBranchPortalManagement;
+        BranchPortalMgmt: Codeunit lvngPerformanceManagement;
         SystemFilter: Record lvngSystemCalculationFilter temporary;
     begin
         ColumnLayout.Reset();
@@ -148,18 +139,9 @@ page 14135408 lvngBranchPerformanceView
                         StartDate := CalcDate('<-CM>', AsOfDate);
                         if ColumnLayout."Period Offset" <> 0 then
                             StartDate := CalcDate(StrSubstNo('<%1M>', ColumnLayout."Period Offset"), StartDate);
-                        if BranchPortalSetup."Block Data To Date" <> 0D then
-                            if StartDate <= BranchPortalSetup."Block Data To Date" then
-                                StartDate := BranchPortalSetup."Block Data To Date" + 1;
                         EndDate := CalcDate('<CM>', StartDate);
-                        if (EndDate >= BranchPortalSetup."Block Data From Date") and (BranchPortalSetup."Block Data From Date" <> 0D) then begin
-                            TempColumnLayout.Priority := -999;
-                            TempColumnLayout."Date From" := 20010101D;
-                            TempColumnLayout."Date To" := 20010101D;
-                        end else begin
-                            TempColumnLayout."Date From" := StartDate;
-                            TempColumnLayout."Date To" := EndDate;
-                        end;
+                        TempColumnLayout."Date From" := StartDate;
+                        TempColumnLayout."Date To" := EndDate;
                         if TempColumnLayout."Dynamic Date Description" then
                             TempColumnLayout."Header Description" := Format(StartDate, 0, '<Month Text,3>-<Year4>');
                         TempColumnLayout.Modify();
@@ -169,17 +151,11 @@ page 14135408 lvngBranchPerformanceView
                         StartDate := CalcDate('<-CQ>', AsOfDate);
                         if ColumnLayout."Period Offset" <> 0 then begin
                             StartDate := CalcDate(StrSubstNo('<%1Q>', ColumnLayout."Period Offset"), StartDate);
-                            if BranchPortalSetup."Block Data To Date" <> 0D then
-                                if StartDate <= BranchPortalSetup."Block Data To Date" then
-                                    StartDate := BranchPortalSetup."Block Data To Date" + 1;
                             if Format(ColumnLayout."Period Length Formula") = '' then
                                 EndDate := CalcDate('<CQ>', AsOfDate)
                             else
                                 EndDate := CalcDate(ColumnLayout."Period Length Formula", StartDate);
                         end else begin
-                            if BranchPortalSetup."Block Data To Date" <> 0D then
-                                if StartDate <= BranchPortalSetup."Block Data To Date" then
-                                    StartDate := BranchPortalSetup."Block Data To Date" + 1;
                             if Format(ColumnLayout."Period Length Formula") = '' then
                                 EndDate := AsOfDate
                             else
@@ -196,16 +172,9 @@ page 14135408 lvngBranchPerformanceView
                         StartDate := CalcDate('<-CY>', AsOfDate);
                         if ColumnLayout."Period Offset" <> 0 then begin
                             StartDate := CalcDate(StrSubstNo('<%1Y>', ColumnLayout."Period Offset"), StartDate);
-                            if BranchPortalSetup."Block Data To Date" <> 0D then
-                                if StartDate <= BranchPortalSetup."Block Data To Date" then
-                                    StartDate := BranchPortalSetup."Block Data To Date" + 1;
                             EndDate := CalcDate('<CY>', StartDate);
-                        end else begin
-                            if BranchPortalSetup."Block Data To Date" <> 0D then
-                                if StartDate <= BranchPortalSetup."Block Data To Date" then
-                                    StartDate := BranchPortalSetup."Block Data To Date" + 1;
+                        end else
                             EndDate := AsOfDate;
-                        end;
                         TempColumnLayout."Date From" := StartDate;
                         TempColumnLayout."Date To" := EndDate;
                         if TempColumnLayout."Dynamic Date Description" then
@@ -275,9 +244,6 @@ page 14135408 lvngBranchPerformanceView
                 ColumnLayout."Period Type"::"Life to Date":
                     begin
                         StartDate := 00010101D;
-                        if BranchPortalSetup."Block Data To Date" <> 0D then
-                            if StartDate <= BranchPortalSetup."Block Data To Date" then
-                                StartDate := BranchPortalSetup."Block Data To Date" + 1;
                         EndDate := AsOfDate;
                         if Format(ColumnLayout."Period Length Formula") <> '' then
                             EndDate := CalcDate(ColumnLayout."Period Length Formula", EndDate);

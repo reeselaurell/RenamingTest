@@ -1,9 +1,9 @@
-page 14135403 lvngBranchPerformanceSchema
+page 14135160 lvngPerformanceSchema
 {
     PageType = List;
     SourceTable = lvngPerformanceSchema;
     UsageCategory = Administration;
-    Caption = 'Branch Performance Schema';
+    Caption = 'Performance Schema';
 
     layout
     {
@@ -30,8 +30,8 @@ page 14135403 lvngBranchPerformanceSchema
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = page lvngBranchPerfSchemaFields;
-                RunPageView = sorting ("Performance Schema Code", "Line No.") order(ascending);
-                RunPageLink = "Performance Schema Code" = field (Code);
+                RunPageView = sorting("Performance Schema Code", "Line No.") order(ascending);
+                RunPageLink = "Performance Schema Code" = field(Code);
             }
 
             action(CopyFrom)

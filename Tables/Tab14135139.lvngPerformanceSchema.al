@@ -1,6 +1,6 @@
-table 14135404 lvngPerformanceSchema
+table 14135139 lvngPerformanceSchema
 {
-    LookupPageId = lvngBranchPerformanceSchema;
+    LookupPageId = lvngPerformanceSchema;
 
     fields
     {
