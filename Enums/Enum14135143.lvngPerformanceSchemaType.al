@@ -6,8 +6,12 @@ enum 14135143 "lvngPerformanceSchemaType"
     {
         Caption = 'Period';
     }
-    value(1; lvngDimension)
+    value(1; lvngDimensionPredefined)
     {
-        Caption = 'Dimension';
+        Caption = 'Dimension Predefined';
+    }
+    value(2; lvngDimensionDynamic)
+    {
+        Caption = 'Dimension Dynamic';
     }
 }
