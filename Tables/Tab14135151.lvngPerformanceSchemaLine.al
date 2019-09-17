@@ -93,11 +93,41 @@ table 14135151 "lvngPerformanceSchemaLine"
             Caption = 'G/L Account Filter';
             DataClassification = CustomerContent;
         }
+        field(31; lvngHideIfZero; Boolean)
+        {
+            Caption = 'Hide if Zero';
+            DataClassification = CustomerContent;
+        }
         field(50; lvngDateFilter; Date)
         {
             Caption = 'Date Filter';
             FieldClass = FlowFilter;
         }
+        field(70; lvngDescriptionStyleCode; Code[20])
+        {
+            Caption = 'Description Style Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngPerfWorksheetStyling.lvngCode;
+        }
+        field(71; lvngColumn1StyleCode; Code[20])
+        {
+            Caption = 'Column 1 Style Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngPerfWorksheetStyling.lvngCode;
+        }
+        field(72; lvngColumn2StyleCode; Code[20])
+        {
+            Caption = 'Column 2 Style Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngPerfWorksheetStyling.lvngCode;
+        }
+        field(73; lvngColumn3StyleCode; Code[20])
+        {
+            Caption = 'Column 3 Style Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvngPerfWorksheetStyling.lvngCode;
+        }
+
     }
 
     keys

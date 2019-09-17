@@ -10,7 +10,12 @@ table 14135150 "lvngPerformanceSchema"
             Caption = 'Code';
             DataClassification = CustomerContent;
         }
-        field(2; lvngDescription; Text[250])
+        field(10; lvngPerformanceSchemaType; enum lvngPerformanceSchemaType)
+        {
+            Caption = 'Schema Type';
+            DataClassification = CustomerContent;
+        }
+        field(11; lvngDescription; Text[250])
         {
             Caption = 'Description';
             DataClassification = CustomerContent;
