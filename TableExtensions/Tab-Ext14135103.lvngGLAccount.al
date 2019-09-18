@@ -22,10 +22,15 @@ tableextension 14135103 "lvngGLAccount" extends "G/L Account" //MyTargetTableId
         {
             Caption = 'Reconciliation Field No.';
             DataClassification = CustomerContent;
-            TableRelation = lvngLoanFieldsConfiguration.lvngFieldNo where (lvngValueType = const (lvngDecimal));
+            TableRelation = lvngLoanFieldsConfiguration.lvngFieldNo where(lvngValueType = const(lvngDecimal));
 
         }
-
+        field(14135105; lvngReportGrouping; Option)
+        {
+            Caption = 'Report Grouping';
+            DataClassification = CustomerContent;
+            OptionMembers = " ",Loan;
+        }
     }
 
 }
