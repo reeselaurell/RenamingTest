@@ -28,6 +28,20 @@
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             "schemaUpdateMode": "ForceSync"
-        }
+        },
+        {
+            "type": "al",
+            "request": "launch",
+            "name": "Reese",
+            "server": "http://localhost:8080",
+            "port": 7049,
+            "serverInstance": "BC150",
+            "authentication": "Windows",
+            "breakOnError": true,
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
+        },
     ]
 }
