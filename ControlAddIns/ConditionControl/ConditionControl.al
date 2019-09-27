@@ -1,6 +1,6 @@
 controladdin ConditionControl
 {
-    Scripts = 'CommonResources/js/jquery-2.1.4.min.js',
+    Scripts = 'CommonResources/js/jquery.min.js',
         'ControlAddIns/ConditionControl/js/script.js',
         'ControlAddIns/ConditionControl/js/ConditionControl.js';
     StartupScript = 'ControlAddIns/ConditionControl/js/init.js';
