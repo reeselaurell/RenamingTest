@@ -11,97 +11,6 @@
       <rd:DataSourceID>605b57c4-9a9b-4e2c-9fa1-05a5f09add10</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="AccountNo">
-          <DataField>AccountNo</DataField>
-        </Field>
-        <Field Name="AccountName">
-          <DataField>AccountName</DataField>
-        </Field>
-        <Field Name="BegBalance">
-          <DataField>BegBalance</DataField>
-        </Field>
-        <Field Name="BegBalanceFormat">
-          <DataField>BegBalanceFormat</DataField>
-        </Field>
-        <Field Name="EndBalance">
-          <DataField>EndBalance</DataField>
-        </Field>
-        <Field Name="EndBalanceFormat">
-          <DataField>EndBalanceFormat</DataField>
-        </Field>
-        <Field Name="Grouping">
-          <DataField>Grouping</DataField>
-        </Field>
-        <Field Name="CompanyName">
-          <DataField>CompanyName</DataField>
-        </Field>
-        <Field Name="Filters">
-          <DataField>Filters</DataField>
-        </Field>
-        <Field Name="ReportName">
-          <DataField>ReportName</DataField>
-        </Field>
-        <Field Name="EntryNo">
-          <DataField>EntryNo</DataField>
-        </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
-        <Field Name="ExternalDocumentNo">
-          <DataField>ExternalDocumentNo</DataField>
-        </Field>
-        <Field Name="DocumentNo">
-          <DataField>DocumentNo</DataField>
-        </Field>
-        <Field Name="PostingDate">
-          <DataField>PostingDate</DataField>
-        </Field>
-        <Field Name="DebitAmount">
-          <DataField>DebitAmount</DataField>
-        </Field>
-        <Field Name="DebitAmountFormat">
-          <DataField>DebitAmountFormat</DataField>
-        </Field>
-        <Field Name="CreditAmount">
-          <DataField>CreditAmount</DataField>
-        </Field>
-        <Field Name="CreditAmountFormat">
-          <DataField>CreditAmountFormat</DataField>
-        </Field>
-        <Field Name="LoanNo">
-          <DataField>LoanNo</DataField>
-        </Field>
-        <Field Name="BorrowerName">
-          <DataField>BorrowerName</DataField>
-        </Field>
-        <Field Name="DateFunded">
-          <DataField>DateFunded</DataField>
-        </Field>
-        <Field Name="DateSold">
-          <DataField>DateSold</DataField>
-        </Field>
-        <Field Name="GlobalDimension1Code">
-          <DataField>GlobalDimension1Code</DataField>
-        </Field>
-        <Field Name="GlobalDimension2Code">
-          <DataField>GlobalDimension2Code</DataField>
-        </Field>
-        <Field Name="Dim1Caption">
-          <DataField>Dim1Caption</DataField>
-        </Field>
-        <Field Name="Dim2Caption">
-          <DataField>Dim2Caption</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -2340,12 +2249,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -2385,4 +2288,92 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="AccountNo">
+          <DataField>AccountNo</DataField>
+        </Field>
+        <Field Name="AccountName">
+          <DataField>AccountName</DataField>
+        </Field>
+        <Field Name="BegBalance">
+          <DataField>BegBalance</DataField>
+        </Field>
+        <Field Name="BegBalanceFormat">
+          <DataField>BegBalanceFormat</DataField>
+        </Field>
+        <Field Name="EndBalance">
+          <DataField>EndBalance</DataField>
+        </Field>
+        <Field Name="EndBalanceFormat">
+          <DataField>EndBalanceFormat</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="Filters">
+          <DataField>Filters</DataField>
+        </Field>
+        <Field Name="ReportName">
+          <DataField>ReportName</DataField>
+        </Field>
+        <Field Name="EntryNo">
+          <DataField>EntryNo</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="ExternalDocumentNo">
+          <DataField>ExternalDocumentNo</DataField>
+        </Field>
+        <Field Name="DocumentNo">
+          <DataField>DocumentNo</DataField>
+        </Field>
+        <Field Name="PostingDate">
+          <DataField>PostingDate</DataField>
+        </Field>
+        <Field Name="DebitAmount">
+          <DataField>DebitAmount</DataField>
+        </Field>
+        <Field Name="DebitAmountFormat">
+          <DataField>DebitAmountFormat</DataField>
+        </Field>
+        <Field Name="CreditAmount">
+          <DataField>CreditAmount</DataField>
+        </Field>
+        <Field Name="CreditAmountFormat">
+          <DataField>CreditAmountFormat</DataField>
+        </Field>
+        <Field Name="LoanNo">
+          <DataField>LoanNo</DataField>
+        </Field>
+        <Field Name="BorrowerName">
+          <DataField>BorrowerName</DataField>
+        </Field>
+        <Field Name="DateFunded">
+          <DataField>DateFunded</DataField>
+        </Field>
+        <Field Name="DateSold">
+          <DataField>DateSold</DataField>
+        </Field>
+        <Field Name="GlobalDimension1Code">
+          <DataField>GlobalDimension1Code</DataField>
+        </Field>
+        <Field Name="GlobalDimension2Code">
+          <DataField>GlobalDimension2Code</DataField>
+        </Field>
+        <Field Name="Dim1Caption">
+          <DataField>Dim1Caption</DataField>
+        </Field>
+        <Field Name="Dim2Caption">
+          <DataField>Dim2Caption</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

@@ -40,7 +40,7 @@ codeunit 14135100 "lvngGLEntryEventsSubscriber"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterCopyGenJnlLineFromInvPostBuffer', '', false, false)]
-    local procedure OnAfter(var GenJournalLine: Record "Gen. Journal Line"; InvoicePostBuffer: Record "Invoice Post. Buffer")
+    local procedure OnAfterCopyGenJnlLineFromInvPostBuffer(var GenJournalLine: Record "Gen. Journal Line"; InvoicePostBuffer: Record "Invoice Post. Buffer")
     begin
         GenJournalLine.lvngServicingType := InvoicePostBuffer.lvngServicingType;
         GenJournalLine.lvngLoanNo := InvoicePostBuffer.lvngLoanNo;

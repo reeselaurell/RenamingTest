@@ -27,10 +27,6 @@ report 14135182 lvngGLDetails
             {
 
             }
-            column(Grouping; lvngGLAccount.lvngReportGrouping = lvngGLAccount.lvngReportGrouping::Loan)
-            {
-
-            }
             column(CompanyName; CompanyInformation.Name)
             {
 
@@ -129,21 +125,8 @@ report 14135182 lvngGLDetails
                     EntryNo := 0;
                     PostingDate := "Posting Date";
                     DocumentNo := "Document No.";
-                    if lvngGLAccount.lvngReportGrouping = lvngGLAccount.lvngReportGrouping::" " then begin
-                        EntryNo := "Entry No.";
-                        GLDescription := Description;
-                    end else begin
-                        Clear(DocumentNo);
-                        DocumentNo := lvngLoanNo;
-                        if Loan.lvngDateFunded <> 0D then begin
-                            PostingDate := Loan.lvngDateFunded;
-                        end;
-                        if BorrowerName <> '' then begin
-                            GLDescription := BorrowerName;
-                        end else begin
-                            GLDescription := Description;
-                        end;
-                    end;
+                    EntryNo := "Entry No.";
+                    GLDescription := Description;
 
                     if ExcelExport then begin
                         NewRow;
@@ -371,7 +354,6 @@ report 14135182 lvngGLDetails
 
         trigger OnOpenPage()
         begin
-            // BranchPortalSetup.Get();
             GLSetup.Get();
             DimensionLookup.Reset();
             DimensionLookup.DeleteAll();
@@ -421,7 +403,6 @@ report 14135182 lvngGLDetails
         BegBalance: Decimal;
         EndBalance: Decimal;
         DateFilter: Text;
-        TextManagement: Codeunit "Filter Tokens";
         GLAccount: Record "G/L Account";
         BorrowerName: Text;
         Loan: Record lvngLoan;
