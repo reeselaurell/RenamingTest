@@ -1,4 +1,4 @@
-table 14135144 lvngPerformanceColumnGroup
+table 14135141 lvngPeriodPerfBandSchema
 {
     DataClassification = CustomerContent;
 
@@ -15,10 +15,10 @@ table 14135144 lvngPerformanceColumnGroup
 
     trigger OnDelete()
     var
-        ColumnGroupLine: Record lvngPerformanceColumnGroupLine;
+        BandLine: Record lvngPeriodPerfBandSchemaLine;
     begin
-        ColumnGroupLine.Reset();
-        ColumnGroupLine.SetRange("Group Code", Code);
-        ColumnGroupLine.DeleteAll();
+        BandLine.Reset();
+        BandLine.SetRange("Band Code", Code);
+        BandLine.DeleteAll();
     end;
 }

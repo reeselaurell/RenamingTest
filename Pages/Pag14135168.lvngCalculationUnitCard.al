@@ -1,4 +1,4 @@
-page 14135164 lvngCalculationUnitCard
+page 14135168 lvngCalculationUnitCard
 {
     PageType = Card;
     ApplicationArea = All;
@@ -18,24 +18,24 @@ page 14135164 lvngCalculationUnitCard
             }
             group(Constant)
             {
-                Visible = Type = Type::Constant;
+                Visible = Type = Type::lvngConstant;
 
                 field("Constant Value"; "Constant Value") { ApplicationArea = All; }
             }
             group(Lookup)
             {
-                Visible = (Type = Type::"Amount Lookup") or (Type = Type::"Count Lookup");
+                Visible = (Type = Type::lvngAmountLookup) or (Type = Type::lvngCountLookup);
 
                 field("Lookup Source"; "Lookup Source") { ApplicationArea = All; }
                 group("Loan Card")
                 {
-                    Visible = "Lookup Source" = "Lookup Source"::"Loan Card";
+                    Visible = "Lookup Source" = "Lookup Source"::lvngLoanCard;
 
                     field("Based On Date"; "Based On Date") { ApplicationArea = All; }
                 }
                 group("Ledger Entries")
                 {
-                    Visible = "Lookup Source" = "Lookup Source"::"Ledger Entries";
+                    Visible = "Lookup Source" = "Lookup Source"::lvngLedgerEntries;
 
                     field("Account No. Filter"; "Account No. Filter") { ApplicationArea = All; }
                     field("Amount Type"; "Amount Type") { ApplicationArea = All; }
@@ -43,7 +43,7 @@ page 14135164 lvngCalculationUnitCard
             }
             group(Expression)
             {
-                Visible = Type = Type::Expression;
+                Visible = Type = Type::lvngExpression;
 
                 grid(ExpressionCode)
                 {
@@ -76,7 +76,7 @@ page 14135164 lvngCalculationUnitCard
             }
             group("Provider Value")
             {
-                Visible = Type = Type::"Provider Value";
+                Visible = Type = Type::lvngProviderValue;
 
                 field("Provider Metadata"; "Provider Metadata") { ApplicationArea = All; }
             }

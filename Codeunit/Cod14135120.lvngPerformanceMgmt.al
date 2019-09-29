@@ -12,7 +12,7 @@ codeunit 14135120 lvngPerformanceMgmt
             Evaluate(CalcUnitConsumerId, '3def5809-ac44-44c2-a1bb-1b4ced82881d');
         exit(CalcUnitConsumerId);
     end;
-
+    /*
     procedure CalculatePeriod(var Buffer: Record lvngPerformanceValueBuffer; var ColGroupSchema: Record lvngPerformanceColumnGroup; var RowPerformanceSchema: Record lvngRowPerformanceSchema; var SystemFilter: Record lvngSystemCalculationFilter)
     var
         ColGroupLine: Record lvngPerformanceColumnGroupLine;
@@ -45,6 +45,7 @@ codeunit 14135120 lvngPerformanceMgmt
             ColumnNo := ColumnNo + 1;
         until ColGroupLine.Next() = 0;
     end;
+    */
 
     local procedure CalculateSingleValue(var CalculationUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
     begin
@@ -53,16 +54,16 @@ codeunit 14135120 lvngPerformanceMgmt
         if Path.IndexOf(CalculationUnit.Code) <> -1 then
             Error(CircularReferenceErr);
         case CalculationUnit.Type of
-            CalculationUnit.Type::Constant:
+            CalculationUnit.Type::lvngConstant:
                 Result := CalculationUnit."Constant Value";
-            CalculationUnit.Type::"Amount Lookup", CalculationUnit.Type::"Count Lookup":
+            CalculationUnit.Type::lvngAmountLookup, CalculationUnit.Type::lvngCountLookup:
                 begin
-                    if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::"Loan Card" then
+                    if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::lvngLoanCard then
                         Result := LookupLoanCard(CalculationUnit, SystemFilter)
                     else
                         Result := LookupGeneralLedger(CalculationUnit, SystemFilter);
                 end;
-            CalculationUnit.Type::Expression:
+            CalculationUnit.Type::lvngExpression:
                 begin
                     Path.Add(CalculationUnit.Code);
                     Result := CalculateExpression(CalculationUnit, SystemFilter, Cache, Path);
@@ -95,20 +96,20 @@ codeunit 14135120 lvngPerformanceMgmt
         if SystemFilter."Business Unit" <> '' then
             LoanAmountsByDimension.SetFilter(BusinessUnitFilter, SystemFilter."Business Unit");
         case CalculationUnit."Based On Date" of
-            CalculationUnit."Based On Date"::Application:
+            CalculationUnit."Based On Date"::lvngApplication:
                 LoanAmountsByDimension.SetRange(DateApplicationFilter, SystemFilter."Date From", SystemFilter."Date To");
-            CalculationUnit."Based On Date"::Closed:
+            CalculationUnit."Based On Date"::lvngClosed:
                 LoanAmountsByDimension.SetRange(DateClosedFilter, SystemFilter."Date From", SystemFilter."Date To");
-            CalculationUnit."Based On Date"::Funded:
+            CalculationUnit."Based On Date"::lvngFunded:
                 LoanAmountsByDimension.SetRange(DateFundedFilter, SystemFilter."Date From", SystemFilter."Date To");
-            CalculationUnit."Based On Date"::Locked:
+            CalculationUnit."Based On Date"::lvngLocked:
                 LoanAmountsByDimension.SetRange(DateLockedFilter, SystemFilter."Date From", SystemFilter."Date To");
-            CalculationUnit."Based On Date"::Sold:
+            CalculationUnit."Based On Date"::lvngSold:
                 LoanAmountsByDimension.SetRange(DateSoldFilter, SystemFilter."Date From", SystemFilter."Date To");
         end;
         LoanAmountsByDimension.Open();
         LoanAmountsByDimension.Read();
-        if CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup" then
+        if CalculationUnit.Type = CalculationUnit.Type::lvngAmountLookup then
             Result := LoanAmountsByDimension.LoanAmount
         else
             Result := LoanAmountsByDimension.LoanCount;
@@ -141,17 +142,17 @@ codeunit 14135120 lvngPerformanceMgmt
             GLEntry.SetFilter(lvngBusinessUnitCode, SystemFilter."Business Unit");
         GLEntry.SetRange(lvngPostingDate, SystemFilter."Date From", SystemFilter."Date To");
         case CalculationUnit."Amount Type" of
-            CalculationUnit."Amount Type"::"Net Amount":
+            CalculationUnit."Amount Type"::lvngNetAmount:
                 begin
                     GLEntry.CalcSums(lvngAmount);
                     Result := GLEntry.lvngAmount;
                 end;
-            CalculationUnit."Amount Type"::"Debit Amount":
+            CalculationUnit."Amount Type"::lvngDebitAmount:
                 begin
                     GLEntry.CalcSums(lvngDebitAmount);
                     Result := GLEntry.lvngDebitAmount;
                 end;
-            CalculationUnit."Amount Type"::"Credit Amount":
+            CalculationUnit."Amount Type"::lvngCreditAmount:
                 begin
                     GLEntry.CalcSums(lvngCreditAmount);
                     Result := GLEntry.lvngCreditAmount;

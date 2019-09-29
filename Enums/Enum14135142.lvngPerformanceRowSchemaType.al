@@ -1,4 +1,4 @@
-enum 14135142 lvngRowPerformanceSchemaType
+enum 14135142 lvngPerformanceRowSchemaType
 {
     Extensible = false;
 

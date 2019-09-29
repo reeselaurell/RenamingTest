@@ -57,7 +57,7 @@ table 14135148 lvngCalculationUnit
         CalcUnitLine.SetRange("Unit Code", Code);
         if CalcUnitLine.IsEmpty() then
             exit;
-        if Type = Type::Expression then
+        if Type = Type::lvngExpression then
             if not Confirm(DeleteLinesQst) then
                 exit;
         CalcUnitLine.DeleteAll();

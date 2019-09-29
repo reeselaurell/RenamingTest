@@ -40,9 +40,9 @@ page 14135160 lvngPerformanceWorksheet
     }
 
     var
-        RowSchema: Record lvngRowPerformanceSchema;
-        ColSchema: Record lvngPeriodPerformanceLayout;
-        GroupSchema: Record lvngPerformanceColumnGroup;
+        RowSchema: Record lvngPerformanceRowSchema;
+        ColSchema: Record lvngPerformanceColSchema;
+        BandSchema: Record lvngPeriodPerfBandSchema;
         Buffer: Record lvngPerformanceValueBuffer temporary;
         SchemaName: Text;
         Dim1Filter: Code[20];
@@ -64,8 +64,8 @@ page 14135160 lvngPerformanceWorksheet
     begin
         RowSchema.Get(RowSchemaCode);
         ColSchema.Get(ColSchemaCode);
-        GroupSchema.Get(ColGroupSchemaCode);
-        CalculateColumns();
+        BandSchema.Get(ColGroupSchemaCode);
+        //CalculateColumns();
     end;
 
     procedure SetParams(_ReportingType: Integer; _Filter: Code[20]; _ToDate: Date)
@@ -116,7 +116,7 @@ page 14135160 lvngPerformanceWorksheet
         ColSchemaCode := _ColSchemaCode;
         ColGroupSchemaCode := _ColGroupSchemaCode;
     end;
-
+    /*
     local procedure CalculateColumns()
     var
         ColumnLayout: Record lvngPeriodPerfLayoutColumn;
@@ -279,9 +279,10 @@ page 14135160 lvngPerformanceWorksheet
             SystemFilter."Shortcut Dimension 4" := Dim4Filter;
             SystemFilter."Business Unit" := BusinessUnitFilter;
             Clear(PerformanceMgmt);
-            PerformanceMgmt.CalculatePeriod(Buffer, GroupSchema, RowSchema, SystemFilter);
+            PerformanceMgmt.CalculatePeriod(Buffer, BandSchema, RowSchema, SystemFilter);
         until TempColumnLayout.Next() = 0;
     end;
+    */
 
     local procedure InitializeDataGrid()
     var

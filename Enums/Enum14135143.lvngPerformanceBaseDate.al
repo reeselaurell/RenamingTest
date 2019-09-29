@@ -2,9 +2,9 @@ enum 14135143 lvngPerformanceBaseDate
 {
     Extensible = false;
 
-    value(0; Funded) { }
-    value(1; Sold) { }
-    value(2; Locked) { }
-    value(3; Application) { }
-    value(4; Closed) { }
+    value(0; lvngFunded) { Caption = 'Funded'; }
+    value(1; lvngSold) { Caption = 'Sold'; }
+    value(2; lvngLocked) { Caption = 'Locked'; }
+    value(3; lvngApplication) { Caption = 'Application'; }
+    value(4; lvngClosed) { Caption = 'Closed'; }
 }

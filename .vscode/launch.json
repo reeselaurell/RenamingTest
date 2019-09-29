@@ -19,7 +19,7 @@
             "type": "al",
             "request": "launch",
             "name": "Mrak",
-            "server": "http://localhost:8082",
+            "server": "http://localhost:8090",
             "port": 7249,
             "serverInstance": "BC150",
             "authentication": "Windows",
@@ -27,7 +27,9 @@
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
-            "schemaUpdateMode": "ForceSync"
+            "schemaUpdateMode": "ForceSync",
+            "startupObjectType": "Report",
+            "startupObjectId": 14135105
         },
         {
             "type": "al",

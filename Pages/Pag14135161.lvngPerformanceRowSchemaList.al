@@ -1,9 +1,10 @@
-page 14135161 lvngPerformanceSchema
+page 14135161 lvngPerformanceRowSchemaList
 {
     PageType = List;
-    SourceTable = lvngRowPerformanceSchema;
+    SourceTable = lvngPerformanceRowSchema;
+    ApplicationArea = All;
     UsageCategory = Administration;
-    Caption = 'Performance Schema';
+    Caption = 'Performance Row Schema List';
 
     layout
     {
@@ -14,6 +15,7 @@ page 14135161 lvngPerformanceSchema
                 field(Code; Code) { ApplicationArea = All; }
                 field(Description; Description) { ApplicationArea = All; }
                 field("Schema Type"; "Schema Type") { ApplicationArea = All; }
+                field("Column Schema"; "Column Schema") { ApplicationArea = All; }
             }
         }
     }
@@ -29,9 +31,19 @@ page 14135161 lvngPerformanceSchema
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = page lvngPerformanceSchemaFields;
-                RunPageView = sorting("Performance Schema Code", "Line No.") order(ascending);
-                RunPageLink = "Performance Schema Code" = field(Code);
+
+                trigger OnAction()
+                var
+                    RowLine: Record lvngPerformanceRowSchemaLine;
+                    RowLines: Page lvngPerformanceRowSchemaLines;
+                begin
+                    Clear(RowLines);
+                    RowLines.SetColumnSchemaCode("Column Schema");
+                    RowLine.Reset();
+                    RowLine.SetRange("Schema Code", Code);
+                    RowLines.SetTableView(RowLine);
+                    RowLines.Run();
+                end;
             }
 
             action(CopyFrom)
@@ -45,17 +57,17 @@ page 14135161 lvngPerformanceSchema
 
                 trigger OnAction()
                 var
-                    FromRecord: Record lvngRowPerformanceSchema;
-                    FromRecordLine: Record lvngPerformanceSchemaLine;
-                    ToRecordLine: Record lvngPerformanceSchemaLine;
+                    FromRecord: Record lvngPerformanceRowSchema;
+                    FromRecordLine: Record lvngPerformanceRowSchemaLine;
+                    ToRecordLine: Record lvngPerformanceRowSchemaLine;
                 begin
                     if Page.RunModal(0, FromRecord) = Action::LookupOK then begin
                         FromRecordLine.Reset();
-                        FromRecordLine.SetRange("Performance Schema Code", FromRecord.Code);
+                        FromRecordLine.SetRange("Schema Code", FromRecord.Code);
                         FromRecordLine.FindSet();
                         repeat
                             ToRecordLine := FromRecordLine;
-                            ToRecordLine."Performance Schema Code" := Code;
+                            ToRecordLine."Schema Code" := Code;
                             ToRecordLine.Insert();
                         until FromRecordLine.Next() = 0;
                     end;

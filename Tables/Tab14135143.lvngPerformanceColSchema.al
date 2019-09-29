@@ -1,6 +1,7 @@
-table 14135142 lvngPeriodPerformanceLayout
+table 14135143 lvngPerformanceColSchema
 {
     DataClassification = CustomerContent;
+    LookupPageId = lvngPerformanceColSchemaList;
 
     fields
     {
@@ -12,13 +13,4 @@ table 14135142 lvngPeriodPerformanceLayout
     {
         key(PK; Code) { Clustered = true; }
     }
-
-    trigger OnDelete()
-    var
-        SchemaColumn: Record lvngPeriodPerfLayoutColumn;
-    begin
-        SchemaColumn.Reset();
-        SchemaColumn.SetRange("Layout Code", Code);
-        SchemaColumn.DeleteAll();
-    end;
 }

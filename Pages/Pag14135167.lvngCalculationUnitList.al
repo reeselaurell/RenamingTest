@@ -1,8 +1,8 @@
-page 14135165 lvngCalculationUnitList
+page 14135167 lvngCalculationUnitList
 {
     PageType = List;
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = Administration;
     SourceTable = lvngCalculationUnit;
     Caption = 'Calculation Units';
     CardPageId = lvngCalculationUnitCard;
