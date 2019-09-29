@@ -78,6 +78,22 @@ table 14135112 "lvngPostProcessingSchemaLine"
             Caption = 'Custom Value';
             DataClassification = CustomerContent;
         }
+        field(19; lvngFromCharacterNo; Integer)
+        {
+            Caption = 'From Character No.';
+            DataClassification = CustomerContent;
+            MinValue = 1;
+        }
+        field(20; lvngCharactersCount; Integer)
+        {
+            Caption = 'Characters Count';
+            DataClassification = CustomerContent;
+        }
+        field(21; lvngCopyFieldPart; Boolean)
+        {
+            Caption = 'Copy Field Part';
+            DataClassification = CustomerContent;
+        }
 
     }
 
