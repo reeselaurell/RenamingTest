@@ -244,13 +244,13 @@ page 14135138 "lvngSoldJournalLines"
             {
                 Caption = 'Errors';
                 ApplicationArea = All;
-                SubPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
+                SubPageLink = lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode), lvngLineNo = field(lvngLineNo);
             }
             part(lvngValues; lvngLoanImportValuePart)
             {
                 Caption = 'Values';
                 ApplicationArea = All;
-                SubPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
+                SubPageLink = lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode), lvngLineNo = field(lvngLineNo);
             }
         }
     }
@@ -346,9 +346,9 @@ page 14135138 "lvngSoldJournalLines"
                 Image = CreateForm;
                 trigger OnAction()
                 var
-                    lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+                    lvngLoanManagement: Codeunit lvngLoanManagement;
                 begin
-                    lvngLoanCardManagement.UpdateLoanCards(lvngLoanJournalBatchCode);
+                    lvngLoanManagement.UpdateLoans(lvngLoanJournalBatchCode);
                 end;
             }
 
@@ -361,7 +361,7 @@ page 14135138 "lvngSoldJournalLines"
                 PromotedCategory = Process;
                 RunObject = page lvngLoanImportValueEdit;
                 RunPageMode = Edit;
-                RunPageLink = lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode), lvngLineNo = field (lvngLineNo);
+                RunPageLink = lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode), lvngLineNo = field(lvngLineNo);
             }
 
             action(lvngShowErrorLinesOnly)

@@ -27,7 +27,7 @@ table 14135104 "lvngLoanValue"
 
             trigger OnValidate()
             begin
-                lvngLoanCardManagement.EvaluateLoanFieldsValue(Rec, false);
+                lvngLoanManagement.EvaluateLoanFieldsValue(Rec, false);
             end;
         }
         field(11; lvngDateValue; Date)
@@ -63,6 +63,6 @@ table 14135104 "lvngLoanValue"
     }
 
     var
-        lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
 
 }

@@ -1,4 +1,4 @@
-page 14135180 "lvngLoanNoPatchPatterns"
+page 14135180 "lvngLoanNoMatchPatterns"
 {
     Caption = 'Loan No. Match Patterns';
     PageType = List;

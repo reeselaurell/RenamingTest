@@ -420,9 +420,9 @@ page 14135106 "lvngFundedJournalLines"
                 Image = CreateForm;
                 trigger OnAction()
                 var
-                    lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+                    lvngLoanManagement: Codeunit lvngLoanManagement;
                 begin
-                    lvngLoanCardManagement.UpdateLoanCards(lvngLoanJournalBatchCode);
+                    lvngLoanManagement.UpdateLoans(lvngLoanJournalBatchCode);
                 end;
             }
 

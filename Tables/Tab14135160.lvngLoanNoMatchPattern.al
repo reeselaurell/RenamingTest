@@ -2,7 +2,7 @@ table 14135160 "lvngLoanNoMatchPattern"
 {
     DataClassification = CustomerContent;
     Caption = 'Loan No. Match Pattern';
-    LookupPageId = lvngLoanNoPatchPatterns;
+    LookupPageId = lvngLoanNoMatchPatterns;
 
     fields
     {

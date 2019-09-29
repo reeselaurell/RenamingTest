@@ -1,6 +1,18 @@
-codeunit 14135106 "lvngLoanCardManagement"
+codeunit 14135106 "lvngLoanManagement"
 {
-    procedure UpdateLoanCards(lvngJournalBatchCode: Code[20])
+    procedure LoanNumberBatch(lvngLoanNo: Code[20]; lvngLoanNoMatchPattern: Record lvngLoanNoMatchPattern): Boolean
+    begin
+        if lvngLoanNoMatchPattern.lvngMaxFieldLength > 0 then
+            if strlen(lvngLoanNo) > lvngLoanNoMatchPattern.lvngMaxFieldLength then
+                exit(false);
+        if lvngLoanNoMatchPattern.lvngMinFieldLength <> 0 then
+            if lvngLoanNoMatchPattern.lvngMinFieldLength > strlen(lvngLoanNo) then
+                exit(false);
+
+        exit(true);
+    end;
+
+    procedure UpdateLoans(lvngJournalBatchCode: Code[20])
     var
         lvngLoanJournalBatch: Record lvngLoanJournalBatch;
         lvngLoanJournalLine: Record lvngLoanJournalLine;
@@ -52,7 +64,7 @@ codeunit 14135106 "lvngLoanCardManagement"
                         lvngloanjournalbatch.lvngLoanCardUpdateOption::lvngAlways:
                             UpdateLoanCard(lvngLoanJournalLine);
                         lvngloanjournalbatch.lvngLoanCardUpdateOption::lvngSchema:
-                            UpdateLoanCard(lvngLoanJournalLine, lvngLoanUpdateSchemaTemp);
+                            UpdateLoan(lvngLoanJournalLine, lvngLoanUpdateSchemaTemp);
                     end;
                     lvngProcessedCount := lvngProcessedCount + 1;
                     lvngLoanJournalLine.Mark(true);
@@ -69,7 +81,7 @@ codeunit 14135106 "lvngLoanCardManagement"
         end;
     end;
 
-    procedure UpdateLoanCard(lvngLoanJournalLine: Record lvngLoanJournalLine; var lvngLoanUpdateSchema: record lvngLoanUpdateSchema)
+    procedure UpdateLoan(lvngLoanJournalLine: Record lvngLoanJournalLine; var lvngLoanUpdateSchema: record lvngLoanUpdateSchema)
     var
         lvngLoanJournalValue: record lvngLoanJournalValue;
         lvngLoanValue: Record lvngLoanValue;
