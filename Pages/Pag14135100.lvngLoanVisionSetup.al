@@ -161,6 +161,16 @@ page 14135100 "lvngLoanVisionSetup"
     {
         area(Processing)
         {
+            action(lvngLoanMatchingPatterns)
+            {
+                Caption = 'Loan No. Match Patterns';
+                Image = CheckRulesSyntax;
+                RunObject = page lvngLoanNoMatchPatterns;
+                RunPageMode = Edit;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+            }
         }
     }
 

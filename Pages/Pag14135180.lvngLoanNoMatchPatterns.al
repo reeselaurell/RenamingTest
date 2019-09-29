@@ -2,8 +2,6 @@ page 14135180 "lvngLoanNoMatchPatterns"
 {
     Caption = 'Loan No. Match Patterns';
     PageType = List;
-    ApplicationArea = All;
-    UsageCategory = Lists;
     SourceTable = lvngLoanNoMatchPattern;
 
     layout
