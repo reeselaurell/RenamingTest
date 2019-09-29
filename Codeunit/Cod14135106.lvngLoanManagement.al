@@ -8,7 +8,7 @@ codeunit 14135106 "lvngLoanManagement"
         if lvngLoanNoMatchPattern.lvngMinFieldLength <> 0 then
             if lvngLoanNoMatchPattern.lvngMinFieldLength > strlen(lvngLoanNo) then
                 exit(false);
-
+        //TODO: Issues with Regex not available in Codeunit 10. Requires implementation
         exit(true);
     end;
 
