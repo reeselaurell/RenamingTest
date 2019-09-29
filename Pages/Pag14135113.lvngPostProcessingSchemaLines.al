@@ -118,6 +118,18 @@ page 14135113 "lvngPostProcessingSchemaLines"
 
                     end;
                 }
+                field(lvngCopyFieldPart; lvngCopyFieldPart)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngFromCharacterNo; lvngFromCharacterNo)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCharactersCount; lvngCharactersCount)
+                {
+                    ApplicationArea = All;
+                }
                 field(lvngRoundExpression; lvngRoundExpression)
                 {
                     ApplicationArea = All;
