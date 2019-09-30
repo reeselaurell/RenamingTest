@@ -388,9 +388,9 @@ page 14135139 "lvngLoanJournalLines"
                 Image = CreateForm;
                 trigger OnAction()
                 var
-                    lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+                    lvngLoanManagement: Codeunit lvngLoanManagement;
                 begin
-                    lvngLoanCardManagement.UpdateLoanCards(lvngLoanJournalBatchCode);
+                    lvngLoanManagement.UpdateLoans(lvngLoanJournalBatchCode);
                 end;
             }
 

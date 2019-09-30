@@ -5,7 +5,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngLoanJournalLine: Record lvngLoanJournalLine;
         lvngLoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
         lvngValidateFundedJournal: Codeunit lvngValidateFundedJournal;
-        lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
         lvngLoanDocumentTemp: Record lvngLoanDocument temporary;
         lvngLoanDocumentLineTemp: Record lvngLoanDocumentLine temporary;
         lvngLoanDocument: Record lvngLoanDocument;
@@ -16,7 +16,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
     begin
         GetLoanVisionSetup();
         lvngValidateFundedJournal.ValidateFundedLines(lvngLoanJournalBatchCode);
-        lvngLoanCardManagement.UpdateLoanCards(lvngLoanJournalBatchCode);
+        lvngLoanManagement.UpdateLoans(lvngLoanJournalBatchCode);
         lvngLoanJournalLine.reset;
         lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode);
         lvngTotalEntries := lvngLoanJournalLine.Count();

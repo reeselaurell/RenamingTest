@@ -103,9 +103,9 @@ page 14135122 "lvngLoanUpdateSchema"
 
                 trigger OnAction()
                 var
-                    lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+                    lvngLoanManagement: Codeunit lvngLoanManagement;
                 begin
-                    lvngLoanCardManagement.CopyImportSchemaToUpdateSchema(lvngJournalBatchCode);
+                    lvngLoanManagement.CopyImportSchemaToUpdateSchema(lvngJournalBatchCode);
                     CurrPage.Update(false);
                 end;
             }
@@ -124,9 +124,9 @@ page 14135122 "lvngLoanUpdateSchema"
                     Caption = 'Always';
                     trigger OnAction()
                     var
-                        lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+                        lvngLoanManagement: Codeunit lvngLoanManagement;
                     begin
-                        lvngLoanCardManagement.ModifyFieldUpdateOption(lvngJournalBatchCode, lvngFieldUpdateOption::lvngAlways);
+                        lvngLoanManagement.ModifyFieldUpdateOption(lvngJournalBatchCode, lvngFieldUpdateOption::lvngAlways);
                         CurrPage.Update(false);
                     end;
                 }
@@ -138,9 +138,9 @@ page 14135122 "lvngLoanUpdateSchema"
                     Caption = 'If Destination Blank';
                     trigger OnAction()
                     var
-                        lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+                        lvngLoanManagement: Codeunit lvngLoanManagement;
                     begin
-                        lvngLoanCardManagement.ModifyFieldUpdateOption(lvngJournalBatchCode, lvngFieldUpdateOption::lvngIfDestinationBlank);
+                        lvngLoanManagement.ModifyFieldUpdateOption(lvngJournalBatchCode, lvngFieldUpdateOption::lvngIfDestinationBlank);
                         CurrPage.Update(false);
                     end;
                 }
@@ -152,9 +152,9 @@ page 14135122 "lvngLoanUpdateSchema"
                     Caption = 'If Source not Blank';
                     trigger OnAction()
                     var
-                        lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+                        lvngLoanManagement: Codeunit lvngLoanManagement;
                     begin
-                        lvngLoanCardManagement.ModifyFieldUpdateOption(lvngJournalBatchCode, lvngFieldUpdateOption::lvngIfSourceNotBlank);
+                        lvngLoanManagement.ModifyFieldUpdateOption(lvngJournalBatchCode, lvngFieldUpdateOption::lvngIfSourceNotBlank);
                         CurrPage.Update(false);
                     end;
                 }
@@ -170,7 +170,7 @@ page 14135122 "lvngLoanUpdateSchema"
     trigger OnAfterGetRecord()
     var
         TableField: Record Field;
-        lvngLoanCardManagement: Codeunit lvngLoanCardManagement;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
     begin
         Clear(lvngFieldDescription);
         case lvngImportFieldType of
@@ -183,7 +183,7 @@ page 14135122 "lvngLoanUpdateSchema"
                     //lvngFieldDescription := CaptionManagement.GetTranslatedFieldCaption('', Database::lvngLoanJournalLine, lvngFieldNo);
                 end;
             lvngImportFieldType::lvngVariable:
-                lvngFieldDescription := lvngLoanCardManagement.GetFieldName(lvngFieldNo);
+                lvngFieldDescription := lvngLoanManagement.GetFieldName(lvngFieldNo);
         end;
     end;
 

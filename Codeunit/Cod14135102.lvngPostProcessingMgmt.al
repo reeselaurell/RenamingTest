@@ -182,30 +182,8 @@ codeunit 14135102 "lvngPostProcessingMgmt"
     end;
 
     local procedure AssignCustomValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
-    var
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
-        lvngRecRefTo: RecordRef;
-        lvngFieldRefTo: FieldRef;
     begin
-        if lvngPostProcessingSchemaLine.lvngAssignTo = lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalField then begin
-            lvngRecRefTo.GetTable(lvngLoanJournalLine);
-            lvngFieldRefTo := lvngrecrefto.Field(lvngPostProcessingSchemaLine.lvngToFieldNo);
-            lvngFieldRefTo.Validate(lvngPostProcessingSchemaLine.lvngCustomValue);
-            lvngRecRefTo.SetTable(lvngLoanJournalLine);
-            lvngRecRefTo.Close();
-            lvngLoanJournalLine.Modify(true);
-        end else begin
-            if not lvngLoanJournalValue.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLineNo, lvngPostProcessingSchemaLine.lvngToFieldNo) then begin
-                Clear(lvngLoanJournalValue);
-                lvngLoanJournalValue.init;
-                lvngLoanJournalValue.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
-                lvngLoanJournalValue.lvngLineNo := lvngloanjournalline.lvngLineNo;
-                lvngLoanJournalValue.lvngFieldNo := lvngPostProcessingSchemaLine.lvngToFieldNo;
-                lvngLoanJournalValue.Insert(true);
-            end;
-            lvngLoanJournalValue.lvngFieldValue := copystr(lvngPostProcessingSchemaLine.lvngCustomValue, 1, MaxStrLen(lvngloanjournalvalue.lvngFieldValue));
-            lvngLoanJournalValue.Modify(true);
-        end;
+        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngPostProcessingSchemaLine.lvngCustomValue);
     end;
 
     local procedure MapImportedDimension(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
@@ -301,51 +279,14 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
         lvngExpressionEngine: Codeunit lvngExpressionEngine;
         lvngExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
-        lvngRecRefTo: RecordRef;
-        lvngFieldRefTo: FieldRef;
-        lvngResult: Text;
-        lvngDecimalFieldValue: Decimal;
+        lvngValue: Text;
         SwitchCaseErrorLbl: Label 'Switch Case %1 can not be resolved';
     begin
         lvngPostProcessingSchemaLine.TestField(lvngExpressionCode);
         lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
-        if not lvngExpressionEngine.SwitchCase(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngResult, lvngExpressionValueBuffer) then
+        if not lvngExpressionEngine.SwitchCase(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngValue, lvngExpressionValueBuffer) then
             Error(SwitchCaseErrorLbl, lvngPostProcessingSchemaLine.lvngExpressionCode);
-        case lvngPostProcessingSchemaLine.lvngAssignTo of
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalVariableField:
-                begin
-                    if not lvngLoanJournalValue.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLineNo, lvngPostProcessingSchemaLine.lvngToFieldNo) then begin
-                        Clear(lvngLoanJournalValue);
-                        lvngLoanJournalValue.init;
-                        lvngLoanJournalValue.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
-                        lvngLoanJournalValue.lvngLineNo := lvngloanjournalline.lvngLineNo;
-                        lvngLoanJournalValue.lvngFieldNo := lvngPostProcessingSchemaLine.lvngToFieldNo;
-                        lvngLoanJournalValue.Insert(true);
-                    end;
-                    lvngLoanJournalValue.lvngFieldValue := copystr(lvngResult, 1, MaxStrLen(lvngloanjournalvalue.lvngFieldValue));
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, lvngLoanJournalValue.lvngFieldValue) then begin
-                            lvngLoanJournalValue.lvngFieldValue := Format(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
-                    lvngLoanJournalValue.Modify(true);
-                end;
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalField:
-                begin
-                    lvngRecRefTo.GetTable(lvngLoanJournalLine);
-                    lvngFieldRefTo := lvngrecrefto.Field(lvngPostProcessingSchemaLine.lvngToFieldNo);
-                    lvngFieldRefTo.Validate(lvngResult);
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, format(lvngFieldRefTo.Value())) then begin
-                            lvngFieldRefTo.Validate(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
-                    lvngRecRefTo.SetTable(lvngLoanJournalLine);
-                    lvngRecRefTo.Close();
-                    lvngLoanJournalLine.Modify(true);
-                end;
-        end;
+        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
     end;
 
     local procedure CalculateExpression(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
@@ -353,60 +294,19 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
         lvngExpressionEngine: Codeunit lvngExpressionEngine;
         lvngExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
-        lvngRecRefTo: RecordRef;
-        lvngFieldRefTo: FieldRef;
-        lvngResult: Text;
-        lvngDecimalFieldValue: Decimal;
+        lvngValue: Text;
     begin
         lvngPostProcessingSchemaLine.TestField(lvngExpressionCode);
         lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
-        lvngResult := lvngExpressionEngine.CalculateFormula(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngExpressionValueBuffer);
-        case lvngPostProcessingSchemaLine.lvngAssignTo of
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalVariableField:
-                begin
-                    if not lvngLoanJournalValue.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLineNo, lvngPostProcessingSchemaLine.lvngToFieldNo) then begin
-                        Clear(lvngLoanJournalValue);
-                        lvngLoanJournalValue.init;
-                        lvngLoanJournalValue.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
-                        lvngLoanJournalValue.lvngLineNo := lvngloanjournalline.lvngLineNo;
-                        lvngLoanJournalValue.lvngFieldNo := lvngPostProcessingSchemaLine.lvngToFieldNo;
-                        lvngLoanJournalValue.Insert(true);
-                    end;
-                    lvngLoanJournalValue.lvngFieldValue := copystr(lvngResult, 1, MaxStrLen(lvngloanjournalvalue.lvngFieldValue));
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, lvngLoanJournalValue.lvngFieldValue) then begin
-                            lvngLoanJournalValue.lvngFieldValue := Format(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
-                    lvngLoanJournalValue.Modify(true);
-                end;
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalField:
-                begin
-                    lvngRecRefTo.GetTable(lvngLoanJournalLine);
-                    lvngFieldRefTo := lvngrecrefto.Field(lvngPostProcessingSchemaLine.lvngToFieldNo);
-                    lvngFieldRefTo.Validate(lvngResult);
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, format(lvngFieldRefTo.Value())) then begin
-                            lvngFieldRefTo.Validate(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
-                    lvngRecRefTo.SetTable(lvngLoanJournalLine);
-                    lvngRecRefTo.Close();
-                    lvngLoanJournalLine.Modify(true);
-                end;
-        end;
+        lvngValue := lvngExpressionEngine.CalculateFormula(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngExpressionValueBuffer);
+        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
     end;
 
     local procedure CopyLoanCardValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
     var
         lvngLoan: Record lvngLoan;
         lvngRecRef: RecordRef;
-        lvngRecRefTo: RecordRef;
-        lvngFieldRefTo: FieldRef;
         lvngFieldRef: FieldRef;
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
-        lvngDecimalFieldValue: Decimal;
         lvngValue: Text;
     begin
         lvngLoan.get(lvngLoanJournalLine.lvngLoanNo);
@@ -415,108 +315,56 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngValue := Format(lvngFieldRef.Value());
         if lvngPostProcessingSchemaLine.lvngCopyFieldPart then
             lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine.lvngFromCharacterNo, lvngPostProcessingSchemaLine.lvngCharactersCount);
-        case lvngPostProcessingSchemaLine.lvngAssignTo of
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalVariableField:
-                begin
-                    if not lvngLoanJournalValue.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLineNo, lvngPostProcessingSchemaLine.lvngToFieldNo) then begin
-                        Clear(lvngLoanJournalValue);
-                        lvngLoanJournalValue.init;
-                        lvngLoanJournalValue.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
-                        lvngLoanJournalValue.lvngLineNo := lvngloanjournalline.lvngLineNo;
-                        lvngLoanJournalValue.lvngFieldNo := lvngPostProcessingSchemaLine.lvngToFieldNo;
-                        lvngLoanJournalValue.Insert(true);
-                    end;
-                    lvngLoanJournalValue.lvngFieldValue := lvngValue;
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, lvngLoanJournalValue.lvngFieldValue) then begin
-                            lvngLoanJournalValue.lvngFieldValue := Format(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
-                    lvngLoanJournalValue.Modify(true);
-                end;
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalField:
-                begin
-                    lvngRecRefTo.GetTable(lvngLoanJournalLine);
-                    lvngFieldRefTo := lvngrecrefto.Field(lvngPostProcessingSchemaLine.lvngToFieldNo);
-                    lvngFieldRefTo.Validate(lvngValue);
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, format(lvngFieldRefTo.Value())) then begin
-                            lvngFieldRefTo.Validate(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
-                    lvngRecRefTo.SetTable(lvngLoanJournalLine);
-                    lvngRecRefTo.Close();
-                    lvngLoanJournalLine.Modify(true);
-                end;
-        end;
         lvngRecRef.Close();
+        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
     end;
 
     local procedure CopyLoanJournalValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
     var
         lvngRecRef: RecordRef;
-        lvngRecRefTo: RecordRef;
-        lvngFieldRefTo: FieldRef;
         lvngFieldRef: FieldRef;
-        lvngDecimalFieldValue: Decimal;
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
         lvngValue: Text;
     begin
         lvngRecRef.GetTable(lvngLoanJournalLine);
         lvngFieldRef := lvngRecRef.Field(lvngPostProcessingSchemaLine.lvngFromFieldNo);
-        lvngValue := Format(lvngFieldRef.Value());
+        lvngValue := lvngFieldRef.Value();
         if lvngPostProcessingSchemaLine.lvngCopyFieldPart then
             lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine.lvngFromCharacterNo, lvngPostProcessingSchemaLine.lvngCharactersCount);
-        case lvngPostProcessingSchemaLine.lvngAssignTo of
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalVariableField:
-                begin
-                    if not lvngLoanJournalValue.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLineNo, lvngPostProcessingSchemaLine.lvngToFieldNo) then begin
-                        Clear(lvngLoanJournalValue);
-                        lvngLoanJournalValue.init;
-                        lvngLoanJournalValue.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
-                        lvngLoanJournalValue.lvngLineNo := lvngloanjournalline.lvngLineNo;
-                        lvngLoanJournalValue.lvngFieldNo := lvngPostProcessingSchemaLine.lvngToFieldNo;
-                        lvngLoanJournalValue.Insert(true);
-                    end;
-                    lvngLoanJournalValue.lvngFieldValue := lvngValue;
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, lvngLoanJournalValue.lvngFieldValue) then begin
-                            lvngLoanJournalValue.lvngFieldValue := Format(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
-                    lvngLoanJournalValue.Modify(true);
-                end;
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalField:
-                begin
-                    lvngRecRefTo.GetTable(lvngLoanJournalLine);
-                    lvngFieldRefTo := lvngRecRefTo.Field(lvngPostProcessingSchemaLine.lvngToFieldNo);
-                    lvngFieldRefTo.Validate(lvngValue);
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, lvngValue) then begin
-                            lvngFieldRefTo.Validate(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
-                    lvngRecRefTo.SetTable(lvngLoanJournalLine);
-                    lvngRecRefTo.Close();
-                    lvngLoanJournalLine.Modify(true);
-                end;
-        end;
         lvngRecRef.Close();
+        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
     end;
 
     local procedure CopyLoanJournalVariableValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
     var
-        lvngRecRefTo: RecordRef;
-        lvngFieldRefTo: FieldRef;
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
         lvngLoanJournalValueFrom: record lvngLoanJournalValue;
-        lvngDecimalFieldValue: Decimal;
         lvngValue: Text;
     begin
         lvngLoanJournalValueFrom.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLineNo, lvngPostProcessingSchemaLine.lvngFromFieldNo);
         lvngValue := lvngLoanJournalValueFrom.lvngFieldValue;
         if lvngPostProcessingSchemaLine.lvngCopyFieldPart then
             lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine.lvngFromCharacterNo, lvngPostProcessingSchemaLine.lvngCharactersCount);
+        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
+    end;
+
+    local procedure CopyLoanVariableValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    var
+        lvngLoanValueFrom: record lvngLoanValue;
+        lvngValue: Text;
+    begin
+        lvngLoanValueFrom.Get(lvngLoanJournalLine.lvngLoanNo, lvngPostProcessingSchemaLine.lvngFromFieldNo);
+        lvngValue := lvngLoanValueFrom.lvngFieldValue;
+        if lvngPostProcessingSchemaLine.lvngCopyFieldPart then
+            lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine.lvngFromCharacterNo, lvngPostProcessingSchemaLine.lvngCharactersCount);
+        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
+    end;
+
+    local procedure AssignFieldValue(var lvngLoanJournalLine: Record lvngLoanJournalLine; lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; lvngValue: Text)
+    var
+        lvngRecRefTo: RecordRef;
+        lvngFieldRefTo: FieldRef;
+        lvngLoanJournalValue: Record lvngLoanJournalValue;
+        lvngDecimalValue: Decimal;
+    begin
         case lvngPostProcessingSchemaLine.lvngAssignTo of
             lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalVariableField:
                 begin
@@ -530,8 +378,8 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                     end;
                     lvngLoanJournalValue.lvngFieldValue := lvngValue;
                     if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, lvngLoanJournalValue.lvngFieldValue) then begin
-                            lvngLoanJournalValue.lvngFieldValue := Format(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
+                        if Evaluate(lvngDecimalValue, lvngLoanJournalValue.lvngFieldValue) then begin
+                            lvngLoanJournalValue.lvngFieldValue := Format(Round(lvngDecimalValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
                         end;
                     end;
                     lvngLoanJournalValue.Modify(true);
@@ -540,12 +388,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                 begin
                     lvngRecRefTo.GetTable(lvngLoanJournalLine);
                     lvngFieldRefTo := lvngRecRefTo.Field(lvngPostProcessingSchemaLine.lvngToFieldNo);
-                    lvngFieldRefTo.Validate(lvngValue);
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, format(lvngFieldRefTo.Value())) then begin
-                            lvngFieldRefTo.Validate(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
+                    AssignFieldRefValue(lvngFieldRefTo, lvngPostProcessingSchemaLine.lvngRoundExpression, lvngValue);
                     lvngRecRefTo.SetTable(lvngLoanJournalLine);
                     lvngRecRefTo.Close();
                     lvngLoanJournalLine.Modify(true);
@@ -553,51 +396,44 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         end;
     end;
 
-    local procedure CopyLoanVariableValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure AssignFieldRefValue(var lvngFieldRefTo: FieldRef; lvngRoundExpression: Decimal; lvngValue: Text)
     var
-        lvngRecRefTo: RecordRef;
-        lvngFieldRefTo: FieldRef;
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
-        lvngLoanValueFrom: record lvngLoanValue;
-        lvngDecimalFieldValue: Decimal;
-        lvngValue: Text;
+        lvngDateValue: Date;
+        lvngDecimalValue: Decimal;
+        lvngIntegerValue: Integer;
+        lvngBooleanValue: Boolean;
     begin
-        lvngLoanValueFrom.Get(lvngLoanJournalLine.lvngLoanNo, lvngPostProcessingSchemaLine.lvngFromFieldNo);
-        lvngValue := lvngLoanValueFrom.lvngFieldValue;
-        if lvngPostProcessingSchemaLine.lvngCopyFieldPart then
-            lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine.lvngFromCharacterNo, lvngPostProcessingSchemaLine.lvngCharactersCount);
-        case lvngPostProcessingSchemaLine.lvngAssignTo of
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalVariableField:
+        case lvngFieldRefTo.Type of
+            lvngFieldRefTo.Type::Boolean:
                 begin
-                    if not lvngLoanJournalValue.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLineNo, lvngPostProcessingSchemaLine.lvngToFieldNo) then begin
-                        Clear(lvngLoanJournalValue);
-                        lvngLoanJournalValue.init;
-                        lvngLoanJournalValue.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
-                        lvngLoanJournalValue.lvngLineNo := lvngloanjournalline.lvngLineNo;
-                        lvngLoanJournalValue.lvngFieldNo := lvngPostProcessingSchemaLine.lvngToFieldNo;
-                        lvngLoanJournalValue.Insert(true);
-                    end;
-                    lvngLoanJournalValue.lvngFieldValue := lvngValue;
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, lvngLoanJournalValue.lvngFieldValue) then begin
-                            lvngLoanJournalValue.lvngFieldValue := Format(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
-                    end;
-                    lvngLoanJournalValue.Modify(true);
+                    if not Evaluate(lvngBooleanValue, lvngValue) then
+                        lvngBooleanValue := false;
+                    lvngFieldRefTo.Validate(lvngBooleanValue);
                 end;
-            lvngPostProcessingSchemaLine.lvngAssignTo::lvngLoanJournalField:
+            lvngFieldRefTo.Type::Decimal:
                 begin
-                    lvngRecRefTo.GetTable(lvngLoanJournalLine);
-                    lvngFieldRefTo := lvngRecRefTo.Field(lvngPostProcessingSchemaLine.lvngToFieldNo);
-                    lvngFieldRefTo.Validate(lvngValue);
-                    if lvngPostProcessingSchemaLine.lvngRoundExpression <> 0 then begin
-                        if Evaluate(lvngDecimalFieldValue, format(lvngFieldRefTo.Value())) then begin
-                            lvngFieldRefTo.Validate(Round(lvngDecimalFieldValue, lvngPostProcessingSchemaLine.lvngRoundExpression));
-                        end;
+                    if not Evaluate(lvngDecimalValue, lvngValue) then
+                        lvngDecimalValue := 0;
+                    if lvngRoundExpression <> 0 then begin
+                        lvngFieldRefTo.Validate(Round(lvngDecimalValue, lvngRoundExpression));
+                    end else begin
+                        lvngFieldRefTo.Validate(lvngDecimalValue);
                     end;
-                    lvngRecRefTo.SetTable(lvngLoanJournalLine);
-                    lvngRecRefTo.Close();
-                    lvngLoanJournalLine.Modify(true);
+                end;
+            lvngFieldRefTo.Type::Integer:
+                begin
+                    if not Evaluate(lvngIntegerValue, lvngValue) then
+                        lvngIntegerValue := 0;
+                    lvngFieldRefTo.Validate(lvngIntegerValue);
+                end;
+            lvngFieldRefTo.Type::Date:
+                begin
+                    if not Evaluate(lvngDateValue, lvngValue) then
+                        lvngDateValue := 0D;
+                    lvngFieldRefTo.Validate(lvngDateValue);
+                end;
+            else begin
+                    lvngFieldRefTo.Validate(lvngValue);
                 end;
         end;
     end;
