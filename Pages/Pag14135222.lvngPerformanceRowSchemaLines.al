@@ -40,6 +40,8 @@ page 14135222 lvngPerformanceRowSchemaLines
                 field(Description; Description) { ApplicationArea = All; }
                 field("Calculation Unit Code"; "Calculation Unit Code") { ApplicationArea = All; LookupPageId = lvngCalculationUnitList; }
                 field("Number Format Code"; "Number Format Code") { ApplicationArea = All; LookupPageId = lvngNumberFormatList; }
+                field("Style Code"; "Style Code") { ApplicationArea = All; LookupPageId = lvngStyleList; }
+                field("Neg. Style Code"; "Neg. Style Code") { ApplicationArea = All; LookupPageId = lvngStyleList; }
             }
         }
     }

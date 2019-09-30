@@ -1,6 +1,7 @@
 table 14135222 lvngPeriodPerfBandSchema
 {
     DataClassification = CustomerContent;
+    LookupPageId = lvngPeriodPerfBandSchemaList;
 
     fields
     {
