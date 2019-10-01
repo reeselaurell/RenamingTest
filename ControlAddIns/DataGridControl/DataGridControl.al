@@ -1,7 +1,7 @@
 controladdin DataGridControl
 {
     Scripts = 'CommonResources/js/jquery.min.js',
-        'CommonResources/js/globalize.min.js',
+        //'CommonResources/js/globalize.min.js',
         'CommonResources/js/dx.all.js',
         'ControlAddIns/DataGridControl/js/jss.min.js',
         'ControlAddIns/DataGridControl/js/jszip.min.js',

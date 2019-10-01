@@ -12,6 +12,6 @@ table 14135551 lvngExpressionHeader
 
     keys
     {
-        key(PK; Code) { Clustered = true; }
+        key(PK; Code, "Consumer Id") { Clustered = true; }
     }
 }

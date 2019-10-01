@@ -1,8 +1,6 @@
 page 14135228 lvngCalculationUnitCard
 {
     PageType = Card;
-    ApplicationArea = All;
-    UsageCategory = Administration;
     SourceTable = lvngCalculationUnit;
     Caption = 'Calculation Unit';
 
@@ -65,7 +63,7 @@ page 14135228 lvngCalculationUnitCard
                                 ExpressionList: Page lvngExpressionList;
                                 NewCode: Code[20];
                             begin
-                                NewCode := ExpressionList.SelectExpression(Code);
+                                NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetCalcUnitConsumerId(), Code);
                                 if NewCode <> '' then
                                     "Expression Code" := NewCode;
                             end;
@@ -79,6 +77,18 @@ page 14135228 lvngCalculationUnitCard
                 Visible = Type = Type::lvngProviderValue;
 
                 field("Provider Metadata"; "Provider Metadata") { ApplicationArea = All; }
+            }
+            group(Filters)
+            {
+                field("Dimension 1 Filter"; "Dimension 1 Filter") { ApplicationArea = All; CaptionClass = '1,3,1'; }
+                field("Dimension 2 Filter"; "Dimension 2 Filter") { ApplicationArea = All; CaptionClass = '1,3,2'; }
+                field("Dimension 3 Filter"; "Dimension 3 Filter") { ApplicationArea = All; CaptionClass = '1,4,3'; }
+                field("Dimension 4 Filter"; "Dimension 4 Filter") { ApplicationArea = All; CaptionClass = '1,4,4'; }
+                field("Dimension 5 Filter"; "Dimension 5 Filter") { ApplicationArea = All; CaptionClass = '1,4,5'; }
+                field("Dimension 6 Filter"; "Dimension 6 Filter") { ApplicationArea = All; CaptionClass = '1,4,6'; }
+                field("Dimension 7 Filter"; "Dimension 7 Filter") { ApplicationArea = All; CaptionClass = '1,4,7'; }
+                field("Dimension 8 Filter"; "Dimension 8 Filter") { ApplicationArea = All; CaptionClass = '1,4,8'; }
+                field("Business Unit Filter"; "Business Unit Filter") { ApplicationArea = All; }
             }
         }
     }

@@ -12,6 +12,8 @@ page 14135226 lvngPerformanceColSchemaLines
             {
                 field("Column No."; "Column No.") { Editable = false; ApplicationArea = All; }
                 field(Description; Description) { ApplicationArea = All; }
+                field("Primary Caption"; "Primary Caption") { ApplicationArea = All; }
+                field("Secondary Caption"; "Secondary Caption") { ApplicationArea = All; }
             }
         }
     }

@@ -39,7 +39,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
                 lvngSelectedFunctionCode: Code[20];
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedFunctionCode := lvngExpressionList.SelectExpression('JOURNAL');
+                lvngSelectedFunctionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
                 if lvngSelectedFunctionCode <> '' then
                     lvngFunctionCode := lvngSelectedFunctionCode;
             end;
@@ -69,7 +69,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
                 lvngSelectedSwitchCode: Code[20];
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedSwitchCode := lvngExpressionList.SelectExpression('JOURNAL');
+                lvngSelectedSwitchCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
                 if lvngSelectedSwitchCode <> '' then
                     lvngAccountNoSwitchCode := lvngSelectedSwitchCode;
             end;
@@ -83,7 +83,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
                 lvngSelectedConditionCode: Code[20];
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedConditionCode := lvngExpressionList.SelectExpression('JOURNAL');
+                lvngSelectedConditionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
                 if lvngSelectedConditionCode <> '' then
                     lvngConditionCode := lvngSelectedConditionCode;
             end;
@@ -118,56 +118,56 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             Caption = 'Global Dimension 1 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (1));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(1));
         }
         field(81; lvngGlobalDimension2Code; Code[20])
         {
             Caption = 'Global Dimension 2 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (2));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(2));
         }
         field(82; lvngShortcutDimension3Code; Code[20])
         {
             Caption = 'Shortcut Dimension 3 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,3';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (3));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(3));
         }
         field(83; lvngShortcutDimension4Code; Code[20])
         {
             Caption = 'Shortcut Dimension 4 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,4';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (4));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(4));
         }
         field(84; lvngShortcutDimension5Code; Code[20])
         {
             Caption = 'Shortcut Dimension 5 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,5';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (5));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(5));
         }
         field(85; lvngShortcutDimension6Code; Code[20])
         {
             Caption = 'Shortcut Dimension 6 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,6';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (6));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(6));
         }
         field(86; lvngShortcutDimension7Code; Code[20])
         {
             Caption = 'Shortcut Dimension 7 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,7';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (7));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(7));
         }
         field(87; lvngShortcutDimension8Code; Code[20])
         {
             Caption = 'Shortcut Dimension 8 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,8';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (8));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(8));
         }
 
         field(88; lvngBusinessUnitCode; Code[10])
@@ -267,7 +267,5 @@ table 14135113 "lvngLoanProcessingSchemaLine"
         lvngDimensionsManagement: Codeunit lvngDimensionsManagement;
         lvngDimensionNamesRetrieved: Boolean;
         DimensionNames: array[8] of Text;
-
-
-
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
 }

@@ -5,7 +5,6 @@ page 14135227 lvngCalculationUnitList
     UsageCategory = Administration;
     SourceTable = lvngCalculationUnit;
     Caption = 'Calculation Units';
-    CardPageId = lvngCalculationUnitCard;
 
     layout
     {
@@ -16,6 +15,30 @@ page 14135227 lvngCalculationUnitList
                 field(Code; Code) { ApplicationArea = All; }
                 field(Description; Description) { ApplicationArea = All; }
                 field(Type; Type) { ApplicationArea = All; }
+            }
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(Details)
+            {
+                Caption = 'Details';
+                Image = FiledOverview;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                var
+                    CalculationUnitCard: Page lvngCalculationUnitCard;
+                begin
+                    Clear(CalculationUnitCard);
+                    CalculationUnitCard.SetRecord(Rec);
+                    CalculationUnitCard.RunModal();
+                end;
             }
         }
     }

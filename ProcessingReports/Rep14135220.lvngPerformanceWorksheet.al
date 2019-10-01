@@ -19,10 +19,10 @@ report 14135220 lvngPerformanceWorksheet
                 }
                 group(Dimensions)
                 {
-                    field(Dim1Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 1 Filter'; CaptionClass = '1,1,1'; }
-                    field(Dim2Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; CaptionClass = '1,1,2'; }
-                    field(Dim3Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 3 Filter'; CaptionClass = '1,2,3'; }
-                    field(Dim4Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 4 Filter'; CaptionClass = '1,2,4'; }
+                    field(Dim1Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 1 Filter'; CaptionClass = '1,3,1'; }
+                    field(Dim2Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; CaptionClass = '1,3,2'; }
+                    field(Dim3Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 3 Filter'; CaptionClass = '1,4,3'; }
+                    field(Dim4Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 4 Filter'; CaptionClass = '1,4,4'; }
                     field(BusinessUnitFilter; BusinessUnitFilter) { ApplicationArea = All; Caption = 'Business Unit Filter'; }
                 }
             }

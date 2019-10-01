@@ -120,18 +120,29 @@ page 14135550 lvngExpressionList
     var
         Engine: Codeunit lvngExpressionEngine;
         DestinationExistsQst: Label 'This expression already contains associated data.\If you choose to continue it will be completely overwritten.\Continue anyway?';
+        ProviderId: Guid;
         Metadata: Text;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        Rec."Consumer Id" := ProviderId;
+    end;
 
     [IntegrationEvent(false, false)]
     procedure FillBuffer(ExpressionHeader: Record lvngExpressionHeader; ConsumerMetadata: Text; var ExpressionBuffer: Record lvngExpressionValueBuffer)
     begin
     end;
 
-    procedure SelectExpression(ConsumerMetadata: Text): Code[20]
+    procedure SelectExpression(ConsumerId: Guid; ConsumerMetadata: Text): Code[20]
     var
         ExpressionList: Page lvngExpressionList;
+        ExpressionHeader: Record lvngExpressionHeader;
     begin
         Metadata := ConsumerMetadata;
+        ProviderId := ConsumerId;
+        ExpressionHeader.Reset();
+        ExpressionHeader.SetRange("Consumer Id", ConsumerId);
+        CurrPage.SetTableView(ExpressionHeader);
         CurrPage.LookupMode(true);
         if CurrPage.RunModal() = Action::LookupOK then
             exit(Code)

@@ -1,18 +1,26 @@
 codeunit 14135108 "lvngConditionsMgmt"
 {
+    procedure GetConditionsMgmtConsumerId(): Guid
+    var
+        g: Guid;
+    begin
+        Evaluate(g, '321a0cba-a28f-42d5-9254-cb477c494dcd');
+    end;
+
     [EventSubscriber(ObjectType::Page, Page::lvngExpressionList, 'FillBuffer', '', true, true)]
     procedure OnFillBuffer(ExpressionHeader: Record lvngExpressionHeader; ConsumerMetadata: Text; var ExpressionBuffer: Record lvngExpressionValueBuffer)
     begin
-        case ConsumerMetadata of
-            'JOURNAL':
-                begin
-                    FillJournalFields(ExpressionBuffer);
-                end;
-            'LOAN':
-                begin
-                    FillLoanFields(ExpressionBuffer);
-                end;
-        end;
+        if GetConditionsMgmtConsumerId() = ExpressionHeader."Consumer Id" then
+            case ConsumerMetadata of
+                'JOURNAL':
+                    begin
+                        FillJournalFields(ExpressionBuffer);
+                    end;
+                'LOAN':
+                    begin
+                        FillLoanFields(ExpressionBuffer);
+                    end;
+            end;
     end;
 
     local procedure FillLoanFields(var lvngExpressionValueBuffer: Record lvngExpressionValueBuffer)

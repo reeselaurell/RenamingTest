@@ -9,7 +9,7 @@ table 14135133 "lvngEscrowFieldsMapping"
         field(1; lvngFieldNo; Integer)
         {
             Caption = 'Field No.';
-            TableRelation = lvngLoanFieldsConfiguration.lvngFieldNo where (lvngValueType = const (lvngDecimal));
+            TableRelation = lvngLoanFieldsConfiguration.lvngFieldNo where(lvngValueType = const(lvngDecimal));
             DataClassification = CustomerContent;
 
             trigger OnValidate()
@@ -28,7 +28,7 @@ table 14135133 "lvngEscrowFieldsMapping"
         field(11; lvngMapToGLAccountNo; Code[20])
         {
             Caption = 'Map-to G/L Account No.';
-            TableRelation = "G/L Account"."No." where ("Account Type" = const (Posting));
+            TableRelation = "G/L Account"."No." where("Account Type" = const(Posting));
             DataClassification = CustomerContent;
         }
         field(12; lvngSwitchCode; Code[20])
@@ -42,7 +42,7 @@ table 14135133 "lvngEscrowFieldsMapping"
                 lvngExpressionList: Page lvngExpressionList;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression('LOAN');
+                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN');
                 if lvngSelectedExpressionCode <> '' then
                     lvngSwitchCode := lvngSelectedExpressionCode;
             end;
@@ -61,5 +61,8 @@ table 14135133 "lvngEscrowFieldsMapping"
     {
         fieldgroup(DropDown; lvngFieldNo, lvngDescription, lvngMapToGLAccountNo, lvngSwitchCode) { }
     }
+
+    var
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
 
 }

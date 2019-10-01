@@ -68,7 +68,7 @@ table 14135112 "lvngPostProcessingSchemaLine"
                 lvngSelectedExpressionCode: Code[20];
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression('JOURNAL');
+                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
                 if lvngSelectedExpressionCode <> '' then
                     lvngExpressionCode := lvngSelectedExpressionCode;
             end;

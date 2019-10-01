@@ -32,7 +32,7 @@ table 14135119 "lvngJournalValidationRule"
                 lvngSelectedConditionCode: Code[20];
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedConditionCode := lvngExpressionList.SelectExpression('JOURNAL');
+                lvngSelectedConditionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
                 if lvngSelectedConditionCode <> '' then
                     lvngConditionCode := lvngSelectedConditionCode;
             end;

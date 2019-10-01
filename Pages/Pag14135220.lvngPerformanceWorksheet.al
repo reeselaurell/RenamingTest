@@ -44,6 +44,7 @@ page 14135220 lvngPerformanceWorksheet
         ColSchema: Record lvngPerformanceColSchema;
         BandSchema: Record lvngPeriodPerfBandSchema;
         Buffer: Record lvngPerformanceValueBuffer temporary;
+        TempBandLine: Record lvngPeriodPerfBandSchemaLine temporary;
         SchemaName: Text;
         Dim1Filter: Code[20];
         Dim2Filter: Code[20];
@@ -57,70 +58,36 @@ page 14135220 lvngPerformanceWorksheet
         BusinessUnitVisible: Boolean;
         AsOfDate: Date;
         RowSchemaCode: Code[20];
-        ColSchemaCode: Code[20];
-        ColGroupSchemaCode: Code[20];
+        BandSchemaCode: Code[20];
 
     trigger OnOpenPage()
     begin
         RowSchema.Get(RowSchemaCode);
-        ColSchema.Get(ColSchemaCode);
-        BandSchema.Get(ColGroupSchemaCode);
-        //CalculateColumns();
+        ColSchema.Get(RowSchema."Column Schema");
+        BandSchema.Get(BandSchemaCode);
+        CalculateColumns();
     end;
 
-    procedure SetParams(_ReportingType: Integer; _Filter: Code[20]; _ToDate: Date)
+    procedure SetParams(RowSchema: Code[20]; BandSchema: Code[20]; ToDate: Date; Dim1Code: Code[20]; Dim2Code: Code[20]; Dim3Code: Code[20]; Dim4Code: Code[20]; BUCode: Code[20])
     begin
-        BusinessUnitFilter := '';
-        Dim1Filter := '';
-        Dim2Filter := '';
-        Dim3Filter := '';
-        Dim4Filter := '';
-        BusinessUnitVisible := false;
-        Dim1Visible := false;
-        Dim2Visible := false;
-        Dim3Visible := false;
-        Dim4Visible := false;
-        case _ReportingType of
-            0:
-                begin
-                    BusinessUnitFilter := _Filter;
-                    BusinessUnitVisible := true;
-                end;
-            1:
-                begin
-                    Dim1Filter := _Filter;
-                    Dim1Visible := true;
-                end;
-            2:
-                begin
-                    Dim2Filter := _Filter;
-                    Dim2Visible := true;
-                end;
-            3:
-                begin
-                    Dim3Filter := _Filter;
-                    Dim3Visible := true;
-                end;
-            4:
-                begin
-                    Dim4Filter := _Filter;
-                    Dim4Visible := true;
-                end;
-        end;
-        AsOfDate := _ToDate;
+        RowSchemaCode := RowSchema;
+        BandSchemaCode := BandSchema;
+        BusinessUnitFilter := BUCode;
+        Dim1Filter := Dim1Code;
+        Dim2Filter := Dim2Code;
+        Dim3Filter := Dim3Code;
+        Dim4Filter := Dim4Code;
+        BusinessUnitVisible := BUCode <> '';
+        Dim1Visible := Dim1Code <> '';
+        Dim2Visible := Dim2Code <> '';
+        Dim3Visible := Dim3Code <> '';
+        Dim4Visible := Dim4Code <> '';
+        AsOfDate := ToDate;
     end;
 
-    procedure SetSchemaCode(_RowSchemaCode: Code[20]; _ColSchemaCode: Code[20]; _ColGroupSchemaCode: Code[20])
-    begin
-        RowSchemaCode := _RowSchemaCode;
-        ColSchemaCode := _ColSchemaCode;
-        ColGroupSchemaCode := _ColGroupSchemaCode;
-    end;
-    /*
     local procedure CalculateColumns()
     var
-        ColumnLayout: Record lvngPeriodPerfLayoutColumn;
-        TempColumnLayout: Record lvngPeriodPerfLayoutColumn temporary;
+        BandLine: Record lvngPeriodPerfBandSchemaLine;
         AccountingPeriod: Record "Accounting Period";
         SystemFilter: Record lvngSystemCalculationFilter temporary;
         PerformanceMgmt: Codeunit lvngPerformanceMgmt;
@@ -128,91 +95,91 @@ page 14135220 lvngPerformanceWorksheet
         EndDate: Date;
         Multiplier: Integer;
     begin
-        ColumnLayout.Reset();
-        ColumnLayout.SetRange("Layout Code", ColSchema.Code);
-        ColumnLayout.FindSet();
+        BandLine.Reset();
+        BandLine.SetRange("Band Code", ColSchema.Code);
+        BandLine.FindSet();
         repeat
-            TempColumnLayout := ColumnLayout;
-            TempColumnLayout.Insert();
-            case ColumnLayout."Period Type" of
-                ColumnLayout."Period Type"::MTD:
+            TempBandLine := BandLine;
+            TempBandLine.Insert();
+            case BandLine."Period Type" of
+                BandLine."Period Type"::lvngMTD:
                     begin
                         StartDate := CalcDate('<-CM>', AsOfDate);
-                        if ColumnLayout."Period Offset" <> 0 then
-                            StartDate := CalcDate(StrSubstNo('<%1M>', ColumnLayout."Period Offset"), StartDate);
+                        if BandLine."Period Offset" <> 0 then
+                            StartDate := CalcDate(StrSubstNo('<%1M>', BandLine."Period Offset"), StartDate);
                         EndDate := CalcDate('<CM>', StartDate);
-                        TempColumnLayout."Date From" := StartDate;
-                        TempColumnLayout."Date To" := EndDate;
-                        if TempColumnLayout."Dynamic Date Description" then
-                            TempColumnLayout."Header Description" := Format(StartDate, 0, '<Month Text,3>-<Year4>');
-                        TempColumnLayout.Modify();
+                        TempBandLine."Date From" := StartDate;
+                        TempBandLine."Date To" := EndDate;
+                        if TempBandLine."Dynamic Date Description" then
+                            TempBandLine."Header Description" := Format(StartDate, 0, '<Month Text,3>-<Year4>');
+                        TempBandLine.Modify();
                     end;
-                ColumnLayout."Period Type"::QTD:
+                BandLine."Period Type"::lvngQTD:
                     begin
                         StartDate := CalcDate('<-CQ>', AsOfDate);
-                        if ColumnLayout."Period Offset" <> 0 then begin
-                            StartDate := CalcDate(StrSubstNo('<%1Q>', ColumnLayout."Period Offset"), StartDate);
-                            if Format(ColumnLayout."Period Length Formula") = '' then
+                        if BandLine."Period Offset" <> 0 then begin
+                            StartDate := CalcDate(StrSubstNo('<%1Q>', BandLine."Period Offset"), StartDate);
+                            if Format(BandLine."Period Length Formula") = '' then
                                 EndDate := CalcDate('<CQ>', AsOfDate)
                             else
-                                EndDate := CalcDate(ColumnLayout."Period Length Formula", StartDate);
+                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
                         end else begin
-                            if Format(ColumnLayout."Period Length Formula") = '' then
+                            if Format(BandLine."Period Length Formula") = '' then
                                 EndDate := AsOfDate
                             else
-                                EndDate := CalcDate(ColumnLayout."Period Length Formula", StartDate);
+                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
                         end;
-                        TempColumnLayout."Date From" := StartDate;
-                        TempColumnLayout."Date To" := EndDate;
-                        if TempColumnLayout."Dynamic Date Description" then
-                            TempColumnLayout."Header Description" := Format(StartDate, 0, 'Qtr. <Quarter>, <Year4>');
-                        TempColumnLayout.Modify();
+                        TempBandLine."Date From" := StartDate;
+                        TempBandLine."Date To" := EndDate;
+                        if TempBandLine."Dynamic Date Description" then
+                            TempBandLine."Header Description" := Format(StartDate, 0, 'Qtr. <Quarter>, <Year4>');
+                        TempBandLine.Modify();
                     end;
-                ColumnLayout."Period Type"::YTD:
+                BandLine."Period Type"::lvngYTD:
                     begin
                         StartDate := CalcDate('<-CY>', AsOfDate);
-                        if ColumnLayout."Period Offset" <> 0 then begin
-                            StartDate := CalcDate(StrSubstNo('<%1Y>', ColumnLayout."Period Offset"), StartDate);
+                        if BandLine."Period Offset" <> 0 then begin
+                            StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
                             EndDate := CalcDate('<CY>', StartDate);
                         end else
                             EndDate := AsOfDate;
-                        TempColumnLayout."Date From" := StartDate;
-                        TempColumnLayout."Date To" := EndDate;
-                        if TempColumnLayout."Dynamic Date Description" then
-                            TempColumnLayout."Header Description" := Format(StartDate, 0, 'Year <Year4>');
-                        TempColumnLayout.Modify();
+                        TempBandLine."Date From" := StartDate;
+                        TempBandLine."Date To" := EndDate;
+                        if TempBandLine."Dynamic Date Description" then
+                            TempBandLine."Header Description" := Format(StartDate, 0, 'Year <Year4>');
+                        TempBandLine.Modify();
                     end;
-                ColumnLayout."Period Type"::"Fiscal QTD":
+                BandLine."Period Type"::lvngFiscalQTD:
                     begin
                         AccountingPeriod.Reset();
                         AccountingPeriod.SetRange("Starting Date", 0D, AsOfDate);
                         AccountingPeriod.SetRange(lvngFiscalQuarter, true);
                         AccountingPeriod.FindLast();
                         StartDate := AccountingPeriod."Starting Date";
-                        if ColumnLayout."Period Offset" <> 0 then begin
-                            Multiplier := 3 * ColumnLayout."Period Offset";
+                        if BandLine."Period Offset" <> 0 then begin
+                            Multiplier := 3 * BandLine."Period Offset";
                             StartDate := CalcDate(StrSubstNo('<%1M>', Multiplier), StartDate);
-                            if Format(ColumnLayout."Period Length Formula") = '' then begin
+                            if Format(BandLine."Period Length Formula") = '' then begin
                                 AccountingPeriod.SetFilter("Starting Date", '>%1', StartDate);
                                 AccountingPeriod.FindFirst();
                                 EndDate := AccountingPeriod."Starting Date" - 1;
                             end else
-                                EndDate := CalcDate(ColumnLayout."Period Length Formula", StartDate);
+                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
                         end else
-                            if Format(ColumnLayout."Period Length Formula") = '' then
+                            if Format(BandLine."Period Length Formula") = '' then
                                 EndDate := AsOfDate
                             else
-                                EndDate := CalcDate(ColumnLayout."Period Length Formula", StartDate);
-                        TempColumnLayout."Date From" := StartDate;
-                        TempColumnLayout."Date To" := EndDate;
-                        if TempColumnLayout."Dynamic Date Description" then
-                            if TempColumnLayout."Header Description" = '' then
-                                TempColumnLayout."Header Description" := Format(StartDate, 0, '<Month,2>/<Day,2>/<Year4>') + ' to ' + Format(EndDate, 0, '<Month,2>/<Day,2>/<Year4>')
+                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                        TempBandLine."Date From" := StartDate;
+                        TempBandLine."Date To" := EndDate;
+                        if TempBandLine."Dynamic Date Description" then
+                            if TempBandLine."Header Description" = '' then
+                                TempBandLine."Header Description" := Format(StartDate, 0, '<Month,2>/<Day,2>/<Year4>') + ' to ' + Format(EndDate, 0, '<Month,2>/<Day,2>/<Year4>')
                             else
-                                TempColumnLayout."Header Description" := Format(StartDate, 0, TempColumnLayout."Header Description");
-                        TempColumnLayout.Modify();
+                                TempBandLine."Header Description" := Format(StartDate, 0, TempBandLine."Header Description");
+                        TempBandLine.Modify();
                     end;
-                ColumnLayout."Period Type"::"Fiscal YTD":
+                BandLine."Period Type"::lvngFiscalYTD:
                     begin
                         AccountingPeriod.Reset();
                         AccountingPeriod.SetRange("New Fiscal Year", true);
@@ -224,65 +191,64 @@ page 14135220 lvngPerformanceWorksheet
                             AccountingPeriod.FindFirst();
                             StartDate := AccountingPeriod."Starting Date";
                         end;
-                        if ColumnLayout."Period Offset" <> 0 then begin
-                            StartDate := CalcDate(StrSubstNo('<%1Y>', ColumnLayout."Period Offset"), StartDate);
-                            if Format(ColumnLayout."Period Length Formula") = '' then begin
+                        if BandLine."Period Offset" <> 0 then begin
+                            StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
+                            if Format(BandLine."Period Length Formula") = '' then begin
                                 EndDate := CalcDate('<-1Y>', AsOfDate);
                                 EndDate := CalcDate('<CM>', EndDate);
                             end else
-                                EndDate := CalcDate(ColumnLayout."Period Length Formula", StartDate);
+                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
                         end else
                             EndDate := AsOfDate;
-                        TempColumnLayout."Date From" := StartDate;
-                        TempColumnLayout."Date To" := EndDate;
-                        if TempColumnLayout."Dynamic Date Description" then
-                            if TempColumnLayout."Header Description" = '' then
-                                TempColumnLayout."Header Description" := Format(StartDate, 0, '<Year4>/<Month>') + ' to ' + Format(EndDate, 0, '<Year4>/<Month>')
+                        TempBandLine."Date From" := StartDate;
+                        TempBandLine."Date To" := EndDate;
+                        if TempBandLine."Dynamic Date Description" then
+                            if TempBandLine."Header Description" = '' then
+                                TempBandLine."Header Description" := Format(StartDate, 0, '<Year4>/<Month>') + ' to ' + Format(EndDate, 0, '<Year4>/<Month>')
                             else
-                                TempColumnLayout."Header Description" := Format(EndDate, 0, TempColumnLayout."Header Description");
-                        TempColumnLayout.Modify();
+                                TempBandLine."Header Description" := Format(EndDate, 0, TempBandLine."Header Description");
+                        TempBandLine.Modify();
                     end;
-                ColumnLayout."Period Type"::"Life to Date":
+                BandLine."Period Type"::lvngLifeToDate:
                     begin
                         StartDate := 00010101D;
                         EndDate := AsOfDate;
-                        if Format(ColumnLayout."Period Length Formula") <> '' then
-                            EndDate := CalcDate(ColumnLayout."Period Length Formula", EndDate);
+                        if Format(BandLine."Period Length Formula") <> '' then
+                            EndDate := CalcDate(BandLine."Period Length Formula", EndDate);
                         EndDate := CalcDate('<CM>', EndDate);
-                        if ColumnLayout."Header Description" <> '' then
-                            TempColumnLayout."Header Description" := ColumnLayout."Header Description" + ' ';
-                        TempColumnLayout."Header Description" := TempColumnLayout."Header Description" + Format(EndDate, 0, '<Month Text>/<Year4>');
-                        TempColumnLayout."Date From" := StartDate;
-                        TempColumnLayout."Date To" := EndDate;
-                        TempColumnLayout.Modify();
+                        if BandLine."Header Description" <> '' then
+                            TempBandLine."Header Description" := BandLine."Header Description" + ' ';
+                        TempBandLine."Header Description" := TempBandLine."Header Description" + Format(EndDate, 0, '<Month Text>/<Year4>');
+                        TempBandLine."Date From" := StartDate;
+                        TempBandLine."Date To" := EndDate;
+                        TempBandLine.Modify();
                     end;
-                ColumnLayout."Period Type"::"Custom Date Filter":
+                BandLine."Period Type"::lvngCustomDateFilter:
                     begin
-                        TempColumnLayout.TestField("Date From");
-                        TempColumnLayout.TestField("Date To");
-                        if TempColumnLayout."Header Description" = '' then
-                            TempColumnLayout."Header Description" := Format(TempColumnLayout."Date From") + '..' + Format(TempColumnLayout."Date To");
-                        TempColumnLayout.Modify();
+                        TempBandLine.TestField("Date From");
+                        TempBandLine.TestField("Date To");
+                        if TempBandLine."Header Description" = '' then
+                            TempBandLine."Header Description" := Format(TempBandLine."Date From") + '..' + Format(TempBandLine."Date To");
+                        TempBandLine.Modify();
                     end;
             end;
-        until ColumnLayout.Next() = 0;
+        until BandLine.Next() = 0;
 
-        TempColumnLayout.Reset();
-        TempColumnLayout.FindSet();
+        TempBandLine.Reset();
+        TempBandLine.FindSet();
         repeat
             Clear(SystemFilter);
-            SystemFilter."Date From" := TempColumnLayout."Date From";
-            SystemFilter."Date To" := TempColumnLayout."Date To";
+            SystemFilter."Date From" := TempBandLine."Date From";
+            SystemFilter."Date To" := TempBandLine."Date To";
             SystemFilter."Shortcut Dimension 1" := Dim1Filter;
             SystemFilter."Shortcut Dimension 2" := Dim2Filter;
             SystemFilter."Shortcut Dimension 3" := Dim3Filter;
             SystemFilter."Shortcut Dimension 4" := Dim4Filter;
             SystemFilter."Business Unit" := BusinessUnitFilter;
             Clear(PerformanceMgmt);
-            PerformanceMgmt.CalculatePeriod(Buffer, BandSchema, RowSchema, SystemFilter);
-        until TempColumnLayout.Next() = 0;
+            PerformanceMgmt.CalculatePeriod(Buffer, TempBandLine, RowSchema, ColSchema, SystemFilter);
+        until TempBandLine.Next() = 0;
     end;
-    */
 
     local procedure InitializeDataGrid()
     var
@@ -290,7 +256,7 @@ page 14135220 lvngPerformanceWorksheet
         Setting: JsonObject;
     begin
         SetupGridStyles();
-        Json.Add('dataSource', GetData());
+        //Json.Add('dataSource', GetData());
         Json.Add('columns', GetColumns());
         Setting.Add('enabled', false);
         Json.Add('paging', Setting);
@@ -311,18 +277,37 @@ page 14135220 lvngPerformanceWorksheet
         Error('Not Implemented');
     end;
 
-    local procedure GetColumns() Columns: JsonArray
+    local procedure GetColumns() GridColumns: JsonArray
     var
-        ColGroup: JsonObject;
+        ColLine: Record lvngPerformanceColSchemaLine;
+        PeriodBand: JsonObject;
+        BandColumns: JsonArray;
+        ColIdx: Integer;
     begin
-        ColGroup.Add('caption', '');
-        ColGroup.Add('columns', GetColumn('Name', 'Name', 'desc'));
-        Columns.Add(ColGroup);
-        Clear(ColGroup);
-
-
-
-        Error('Not Implemented');
+        //Name Column
+        Clear(PeriodBand);
+        Clear(BandColumns);
+        PeriodBand.Add('caption', '');
+        BandColumns.Add(GetColumn('Name', 'Name', 'desc'));
+        PeriodBand.Add('columns', BandColumns);
+        GridColumns.Add(PeriodBand);
+        //Period bands
+        TempBandLine.Reset();
+        TempBandLine.FindSet();
+        repeat
+            Clear(PeriodBand);
+            Clear(BandColumns);
+            PeriodBand.Add('caption', TempBandLine."Header Description");
+            ColLine.Reset();
+            ColLine.SetRange("Schema Code", RowSchema."Column Schema");
+            ColLine.FindFirst();
+            repeat
+                ColIdx += 1;
+                BandColumns.Add(GetColumn('v' + Format(ColIdx), ColLine."Primary Caption", ''));
+            until ColLine.Next() = 0;
+            PeriodBand.Add('columns', BandColumns);
+            GridColumns.Add(PeriodBand);
+        until TempBandLine.Next() = 0;
     end;
 
     local procedure GetColumn(DataField: Text; Caption: Text; CssClass: Text) Col: JsonObject
