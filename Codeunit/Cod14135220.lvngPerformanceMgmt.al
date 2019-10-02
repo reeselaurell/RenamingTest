@@ -4,13 +4,23 @@ codeunit 14135220 lvngPerformanceMgmt
 
     var
         CircularReferenceErr: Label 'Circular reference detected!';
-        CalcUnitConsumerId: Guid;
+        BandExpressionConsumerId: Guid;
+        RowExpressionConsumerId: Guid;
+        RowFieldFormatTxt: Label 'BAND%1COL%2';
+        BandCountTxt: Label '$BANDCOUNT';
+        ColCountTxt: Label '$COLCOUNT';
 
-    procedure GetCalcUnitConsumerId(): Guid
+    procedure GetBandExpressionConsumerId(): Guid
     begin
-        if IsNullGuid(CalcUnitConsumerId) then
-            Evaluate(CalcUnitConsumerId, '3def5809-ac44-44c2-a1bb-1b4ced82881d');
-        exit(CalcUnitConsumerId);
+        if IsNullGuid(BandExpressionConsumerId) then
+            Evaluate(BandExpressionConsumerId, '3def5809-ac44-44c2-a1bb-1b4ced82881d');
+        exit(BandExpressionConsumerId);
+    end;
+
+    procedure GetRowExpressionConsumerId(): Guid
+    begin
+        if IsNullGuid(RowExpressionConsumerId) then
+            Evaluate(RowExpressionConsumerId, '8085a41d-56df-4ce5-9122-d6a12698faa1');
     end;
 
     procedure CalculatePeriod(var Buffer: Record lvngPerformanceValueBuffer; var BandLine: Record lvngPeriodPerfBandSchemaLine; var RowSchema: Record lvngPerformanceRowSchema; var ColSchema: Record lvngPerformanceColSchema; var SystemFilter: Record lvngSystemCalculationFilter)
@@ -20,11 +30,7 @@ codeunit 14135220 lvngPerformanceMgmt
         CalculationUnit: Record lvngCalculationUnit;
         Cache: Dictionary of [Code[20], Decimal];
         Path: List of [Code[20]];
-        ColumnNo: Integer;
     begin
-        Buffer.Reset();
-        if Buffer.FindLast() then
-            ColumnNo := Buffer."Column No." + 1;
         ColLine.Reset();
         ColLine.SetRange("Schema Code", ColSchema.Code);
         ColLine.FindSet();
@@ -36,16 +42,64 @@ codeunit 14135220 lvngPerformanceMgmt
             repeat
                 CalculationUnit.Get(RowLine."Calculation Unit Code");
                 Clear(Buffer);
-                Buffer."Column No." := ColumnNo;
+                Buffer."Column No." := ColLine."Column No.";
                 Buffer."Row No." := RowLine."Line No.";
-                Buffer.Value := CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path);
+                Buffer."Band No." := BandLine."Line No.";
+                Buffer.Value := CalculateSingleBandValue(CalculationUnit, SystemFilter, Cache, Path);
                 Buffer.Insert();
             until RowLine.Next() = 0;
-            ColumnNo := ColumnNo + 1;
         until ColLine.Next() = 0;
     end;
 
-    local procedure CalculateSingleValue(var CalculationUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
+    local procedure CalculateSingleRowValue(RowNo: Integer; ExpressionCode: Code[20]; var Buffer: Record lvngPerformanceValueBuffer) Result: Decimal
+    var
+        ValueBuffer: Record lvngExpressionValueBuffer temporary;
+        ExpressionHeader: Record lvngExpressionHeader;
+        ExpressionEngine: Codeunit lvngExpressionEngine;
+        Number: Integer;
+        BandNo: Integer;
+    begin
+        //NO FORWARD REFERENCES AT THE MOMENT!!!
+        Buffer.Reset();
+        Buffer.SetRange("Row No.", RowNo);
+        if not Buffer.FindSet() then
+            exit(0);
+        repeat
+            Number += 1;
+            Clear(ValueBuffer);
+            ValueBuffer.Number := Number;
+            ValueBuffer.Name := StrSubstNo(RowFieldFormatTxt, Buffer."Band No.", Buffer."Column No.");
+            ValueBuffer.Type := 'System.Decimal';
+            ValueBuffer.Value := Format(Buffer.Value);
+            ValueBuffer.Insert();
+        until Buffer.Next() = 0;
+        //Insert band count
+        Buffer.Reset();
+        Buffer.SetRange("Row No.", RowNo);
+        Buffer.SetRange("Column No.", 1);
+        Clear(ValueBuffer);
+        ValueBuffer.Number := Number + 1;
+        ValueBuffer.Name := BandCountTxt;
+        ValueBuffer.Type := 'System.Decimal';
+        ValueBuffer.Value := Format(Buffer.Count());
+        ValueBuffer.Insert();
+        Buffer.FindFirst();
+        BandNo := Buffer."Band No.";
+        //Insert column count
+        Buffer.Reset();
+        Buffer.SetRange("Row No.", RowNo);
+        Buffer.SetRange("Band No.", BandNo);
+        Clear(ValueBuffer);
+        ValueBuffer.Number := Number + 2;
+        ValueBuffer.Name := ColCountTxt;
+        ValueBuffer.Type := 'System.Decimal';
+        ValueBuffer.Value := Format(Buffer.Count());
+        ValueBuffer.Insert();
+        ExpressionHeader.Get(ExpressionCode);
+        Evaluate(Result, ExpressionEngine.CalculateFormula(ExpressionHeader, ValueBuffer));
+    end;
+
+    local procedure CalculateSingleBandValue(var CalculationUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
     begin
         if Cache.Get(CalculationUnit.Code, Result) then
             exit;
@@ -64,7 +118,7 @@ codeunit 14135220 lvngPerformanceMgmt
             CalculationUnit.Type::lvngExpression:
                 begin
                     Path.Add(CalculationUnit.Code);
-                    Result := CalculateExpression(CalculationUnit, SystemFilter, Cache, Path);
+                    Result := CalculateBandExpression(CalculationUnit, SystemFilter, Cache, Path);
                     Path.RemoveAt(Path.Count() - 1);
                 end;
         end;
@@ -212,7 +266,7 @@ codeunit 14135220 lvngPerformanceMgmt
         end;
     end;
 
-    local procedure CalculateExpression(var BaseCalculationUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
+    local procedure CalculateBandExpression(var BaseCalculationUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
     var
         CalculationUnit: Record lvngCalculationUnit;
         CalculationLine: Record lvngCalculationUnitLine;
@@ -230,7 +284,7 @@ codeunit 14135220 lvngPerformanceMgmt
             ValueBuffer.Name := CalculationLine."Source Unit Code";
             ValueBuffer.Number := CalculationLine."Line no.";
             ValueBuffer.Type := 'System.Decimal';
-            ValueBuffer.Value := Format(CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path), 0, 9);
+            ValueBuffer.Value := Format(CalculateSingleBandValue(CalculationUnit, SystemFilter, Cache, Path), 0, 9);
             ValueBuffer.Insert();
         until CalculationLine.Next() = 0;
         ExpressionHeader.Get(BaseCalculationUnit."Expression Code");
@@ -243,7 +297,7 @@ codeunit 14135220 lvngPerformanceMgmt
         CalcUnitLine: Record lvngCalculationUnitLine;
         BranchPortalMgmt: Codeunit lvngPerformanceMgmt;
     begin
-        if BranchPortalMgmt.GetCalcUnitConsumerId() = ExpressionHeader."Consumer Id" then begin
+        if BranchPortalMgmt.GetBandExpressionConsumerId() = ExpressionHeader."Consumer Id" then begin
             CalcUnitLine.Reset();
             CalcUnitLine.SetRange("Unit Code", ConsumerMetadata);
             if CalcUnitLine.FindSet() then

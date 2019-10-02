@@ -63,7 +63,7 @@ page 14135228 lvngCalculationUnitCard
                                 ExpressionList: Page lvngExpressionList;
                                 NewCode: Code[20];
                             begin
-                                NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetCalcUnitConsumerId(), Code);
+                                NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetBandExpressionConsumerId(), Code);
                                 if NewCode <> '' then
                                     "Expression Code" := NewCode;
                             end;

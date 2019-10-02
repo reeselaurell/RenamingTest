@@ -93,6 +93,8 @@ page 14135220 lvngPerformanceWorksheet
         PerformanceMgmt: Codeunit lvngPerformanceMgmt;
         StartDate: Date;
         EndDate: Date;
+        TotalStartDate: Date;
+        TotalEndDate: Date;
         Multiplier: Integer;
     begin
         BandLine.Reset();
@@ -101,136 +103,160 @@ page 14135220 lvngPerformanceWorksheet
         repeat
             TempBandLine := BandLine;
             TempBandLine.Insert();
-            case BandLine."Period Type" of
-                BandLine."Period Type"::lvngMTD:
+            case BandLine."Band Type" of
+                BandLine."Band Type"::lvngNormal:
                     begin
-                        StartDate := CalcDate('<-CM>', AsOfDate);
-                        if BandLine."Period Offset" <> 0 then
-                            StartDate := CalcDate(StrSubstNo('<%1M>', BandLine."Period Offset"), StartDate);
-                        EndDate := CalcDate('<CM>', StartDate);
-                        TempBandLine."Date From" := StartDate;
-                        TempBandLine."Date To" := EndDate;
-                        if TempBandLine."Dynamic Date Description" then
-                            TempBandLine."Header Description" := Format(StartDate, 0, '<Month Text,3>-<Year4>');
-                        TempBandLine.Modify();
-                    end;
-                BandLine."Period Type"::lvngQTD:
-                    begin
-                        StartDate := CalcDate('<-CQ>', AsOfDate);
-                        if BandLine."Period Offset" <> 0 then begin
-                            StartDate := CalcDate(StrSubstNo('<%1Q>', BandLine."Period Offset"), StartDate);
-                            if Format(BandLine."Period Length Formula") = '' then
-                                EndDate := CalcDate('<CQ>', AsOfDate)
-                            else
-                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                        case BandLine."Period Type" of
+                            BandLine."Period Type"::lvngMTD:
+                                begin
+                                    StartDate := CalcDate('<-CM>', AsOfDate);
+                                    if BandLine."Period Offset" <> 0 then
+                                        StartDate := CalcDate(StrSubstNo('<%1M>', BandLine."Period Offset"), StartDate);
+                                    EndDate := CalcDate('<CM>', StartDate);
+                                    TempBandLine."Date From" := StartDate;
+                                    TempBandLine."Date To" := EndDate;
+                                    if TempBandLine."Dynamic Date Description" then
+                                        TempBandLine."Header Description" := Format(StartDate, 0, '<Month Text,3>-<Year4>');
+                                    TempBandLine.Modify();
+                                end;
+                            BandLine."Period Type"::lvngQTD:
+                                begin
+                                    StartDate := CalcDate('<-CQ>', AsOfDate);
+                                    if BandLine."Period Offset" <> 0 then begin
+                                        StartDate := CalcDate(StrSubstNo('<%1Q>', BandLine."Period Offset"), StartDate);
+                                        if Format(BandLine."Period Length Formula") = '' then
+                                            EndDate := CalcDate('<CQ>', AsOfDate)
+                                        else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    end else begin
+                                        if Format(BandLine."Period Length Formula") = '' then
+                                            EndDate := AsOfDate
+                                        else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    end;
+                                    TempBandLine."Date From" := StartDate;
+                                    TempBandLine."Date To" := EndDate;
+                                    if TempBandLine."Dynamic Date Description" then
+                                        TempBandLine."Header Description" := Format(StartDate, 0, 'Qtr. <Quarter>, <Year4>');
+                                    TempBandLine.Modify();
+                                end;
+                            BandLine."Period Type"::lvngYTD:
+                                begin
+                                    StartDate := CalcDate('<-CY>', AsOfDate);
+                                    if BandLine."Period Offset" <> 0 then begin
+                                        StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
+                                        EndDate := CalcDate('<CY>', StartDate);
+                                    end else
+                                        EndDate := AsOfDate;
+                                    TempBandLine."Date From" := StartDate;
+                                    TempBandLine."Date To" := EndDate;
+                                    if TempBandLine."Dynamic Date Description" then
+                                        TempBandLine."Header Description" := Format(StartDate, 0, 'Year <Year4>');
+                                    TempBandLine.Modify();
+                                end;
+                            BandLine."Period Type"::lvngFiscalQTD:
+                                begin
+                                    AccountingPeriod.Reset();
+                                    AccountingPeriod.SetRange("Starting Date", 0D, AsOfDate);
+                                    AccountingPeriod.SetRange(lvngFiscalQuarter, true);
+                                    AccountingPeriod.FindLast();
+                                    StartDate := AccountingPeriod."Starting Date";
+                                    if BandLine."Period Offset" <> 0 then begin
+                                        Multiplier := 3 * BandLine."Period Offset";
+                                        StartDate := CalcDate(StrSubstNo('<%1M>', Multiplier), StartDate);
+                                        if Format(BandLine."Period Length Formula") = '' then begin
+                                            AccountingPeriod.SetFilter("Starting Date", '>%1', StartDate);
+                                            AccountingPeriod.FindFirst();
+                                            EndDate := AccountingPeriod."Starting Date" - 1;
+                                        end else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    end else
+                                        if Format(BandLine."Period Length Formula") = '' then
+                                            EndDate := AsOfDate
+                                        else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    TempBandLine."Date From" := StartDate;
+                                    TempBandLine."Date To" := EndDate;
+                                    if TempBandLine."Dynamic Date Description" then
+                                        if TempBandLine."Header Description" = '' then
+                                            TempBandLine."Header Description" := Format(StartDate, 0, '<Month,2>/<Day,2>/<Year4>') + ' to ' + Format(EndDate, 0, '<Month,2>/<Day,2>/<Year4>')
+                                        else
+                                            TempBandLine."Header Description" := Format(StartDate, 0, TempBandLine."Header Description");
+                                    TempBandLine.Modify();
+                                end;
+                            BandLine."Period Type"::lvngFiscalYTD:
+                                begin
+                                    AccountingPeriod.Reset();
+                                    AccountingPeriod.SetRange("New Fiscal Year", true);
+                                    AccountingPeriod.SetRange("Starting Date", 0D, AsOfDate);
+                                    if AccountingPeriod.FindLast() then
+                                        StartDate := AccountingPeriod."Starting Date"
+                                    else begin
+                                        AccountingPeriod.Reset();
+                                        AccountingPeriod.FindFirst();
+                                        StartDate := AccountingPeriod."Starting Date";
+                                    end;
+                                    if BandLine."Period Offset" <> 0 then begin
+                                        StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
+                                        if Format(BandLine."Period Length Formula") = '' then begin
+                                            EndDate := CalcDate('<-1Y>', AsOfDate);
+                                            EndDate := CalcDate('<CM>', EndDate);
+                                        end else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    end else
+                                        EndDate := AsOfDate;
+                                    TempBandLine."Date From" := StartDate;
+                                    TempBandLine."Date To" := EndDate;
+                                    if TempBandLine."Dynamic Date Description" then
+                                        if TempBandLine."Header Description" = '' then
+                                            TempBandLine."Header Description" := Format(StartDate, 0, '<Year4>/<Month>') + ' to ' + Format(EndDate, 0, '<Year4>/<Month>')
+                                        else
+                                            TempBandLine."Header Description" := Format(EndDate, 0, TempBandLine."Header Description");
+                                    TempBandLine.Modify();
+                                end;
+                            BandLine."Period Type"::lvngLifeToDate:
+                                begin
+                                    StartDate := 00010101D;
+                                    EndDate := AsOfDate;
+                                    if Format(BandLine."Period Length Formula") <> '' then
+                                        EndDate := CalcDate(BandLine."Period Length Formula", EndDate);
+                                    EndDate := CalcDate('<CM>', EndDate);
+                                    if BandLine."Header Description" <> '' then
+                                        TempBandLine."Header Description" := BandLine."Header Description" + ' ';
+                                    TempBandLine."Header Description" := TempBandLine."Header Description" + Format(EndDate, 0, '<Month Text>/<Year4>');
+                                    TempBandLine."Date From" := StartDate;
+                                    TempBandLine."Date To" := EndDate;
+                                    TempBandLine.Modify();
+                                end;
+                            BandLine."Period Type"::lvngCustomDateFilter:
+                                begin
+                                    TempBandLine.TestField("Date From");
+                                    TempBandLine.TestField("Date To");
+                                    if TempBandLine."Header Description" = '' then
+                                        TempBandLine."Header Description" := Format(TempBandLine."Date From") + '..' + Format(TempBandLine."Date To");
+                                    TempBandLine.Modify();
+                                end;
+                        end;
+                        if (TotalStartDate = 0D) and (TotalEndDate = 0D) then begin
+                            TotalStartDate := TempBandLine."Date From";
+                            TotalEndDate := TempBandLine."Date To";
                         end else begin
-                            if Format(BandLine."Period Length Formula") = '' then
-                                EndDate := AsOfDate
-                            else
-                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                            if TempBandLine."Date From" < TotalStartDate then
+                                TotalStartDate := TempBandLine."Date From";
+                            if TempBandLine."Date To" > TotalEndDate then
+                                TotalEndDate := TempBandLine."Date To";
                         end;
-                        TempBandLine."Date From" := StartDate;
-                        TempBandLine."Date To" := EndDate;
-                        if TempBandLine."Dynamic Date Description" then
-                            TempBandLine."Header Description" := Format(StartDate, 0, 'Qtr. <Quarter>, <Year4>');
-                        TempBandLine.Modify();
                     end;
-                BandLine."Period Type"::lvngYTD:
+                BandLine."Band Type"::lvngTotals:
                     begin
-                        StartDate := CalcDate('<-CY>', AsOfDate);
-                        if BandLine."Period Offset" <> 0 then begin
-                            StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
-                            EndDate := CalcDate('<CY>', StartDate);
-                        end else
-                            EndDate := AsOfDate;
-                        TempBandLine."Date From" := StartDate;
-                        TempBandLine."Date To" := EndDate;
-                        if TempBandLine."Dynamic Date Description" then
-                            TempBandLine."Header Description" := Format(StartDate, 0, 'Year <Year4>');
-                        TempBandLine.Modify();
-                    end;
-                BandLine."Period Type"::lvngFiscalQTD:
-                    begin
-                        AccountingPeriod.Reset();
-                        AccountingPeriod.SetRange("Starting Date", 0D, AsOfDate);
-                        AccountingPeriod.SetRange(lvngFiscalQuarter, true);
-                        AccountingPeriod.FindLast();
-                        StartDate := AccountingPeriod."Starting Date";
-                        if BandLine."Period Offset" <> 0 then begin
-                            Multiplier := 3 * BandLine."Period Offset";
-                            StartDate := CalcDate(StrSubstNo('<%1M>', Multiplier), StartDate);
-                            if Format(BandLine."Period Length Formula") = '' then begin
-                                AccountingPeriod.SetFilter("Starting Date", '>%1', StartDate);
-                                AccountingPeriod.FindFirst();
-                                EndDate := AccountingPeriod."Starting Date" - 1;
-                            end else
-                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
-                        end else
-                            if Format(BandLine."Period Length Formula") = '' then
-                                EndDate := AsOfDate
-                            else
-                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
-                        TempBandLine."Date From" := StartDate;
-                        TempBandLine."Date To" := EndDate;
-                        if TempBandLine."Dynamic Date Description" then
-                            if TempBandLine."Header Description" = '' then
-                                TempBandLine."Header Description" := Format(StartDate, 0, '<Month,2>/<Day,2>/<Year4>') + ' to ' + Format(EndDate, 0, '<Month,2>/<Day,2>/<Year4>')
-                            else
-                                TempBandLine."Header Description" := Format(StartDate, 0, TempBandLine."Header Description");
-                        TempBandLine.Modify();
-                    end;
-                BandLine."Period Type"::lvngFiscalYTD:
-                    begin
-                        AccountingPeriod.Reset();
-                        AccountingPeriod.SetRange("New Fiscal Year", true);
-                        AccountingPeriod.SetRange("Starting Date", 0D, AsOfDate);
-                        if AccountingPeriod.FindLast() then
-                            StartDate := AccountingPeriod."Starting Date"
-                        else begin
-                            AccountingPeriod.Reset();
-                            AccountingPeriod.FindFirst();
-                            StartDate := AccountingPeriod."Starting Date";
-                        end;
-                        if BandLine."Period Offset" <> 0 then begin
-                            StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
-                            if Format(BandLine."Period Length Formula") = '' then begin
-                                EndDate := CalcDate('<-1Y>', AsOfDate);
-                                EndDate := CalcDate('<CM>', EndDate);
-                            end else
-                                EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
-                        end else
-                            EndDate := AsOfDate;
-                        TempBandLine."Date From" := StartDate;
-                        TempBandLine."Date To" := EndDate;
-                        if TempBandLine."Dynamic Date Description" then
-                            if TempBandLine."Header Description" = '' then
-                                TempBandLine."Header Description" := Format(StartDate, 0, '<Year4>/<Month>') + ' to ' + Format(EndDate, 0, '<Year4>/<Month>')
-                            else
-                                TempBandLine."Header Description" := Format(EndDate, 0, TempBandLine."Header Description");
-                        TempBandLine.Modify();
-                    end;
-                BandLine."Period Type"::lvngLifeToDate:
-                    begin
-                        StartDate := 00010101D;
-                        EndDate := AsOfDate;
-                        if Format(BandLine."Period Length Formula") <> '' then
-                            EndDate := CalcDate(BandLine."Period Length Formula", EndDate);
-                        EndDate := CalcDate('<CM>', EndDate);
-                        if BandLine."Header Description" <> '' then
-                            TempBandLine."Header Description" := BandLine."Header Description" + ' ';
-                        TempBandLine."Header Description" := TempBandLine."Header Description" + Format(EndDate, 0, '<Month Text>/<Year4>');
-                        TempBandLine."Date From" := StartDate;
-                        TempBandLine."Date To" := EndDate;
-                        TempBandLine.Modify();
-                    end;
-                BandLine."Period Type"::lvngCustomDateFilter:
-                    begin
-                        TempBandLine.TestField("Date From");
-                        TempBandLine.TestField("Date To");
+                        TempBandLine."Date From" := TotalStartDate;
+                        TempBandLine."Date To" := TotalEndDate;
                         if TempBandLine."Header Description" = '' then
                             TempBandLine."Header Description" := Format(TempBandLine."Date From") + '..' + Format(TempBandLine."Date To");
                         TempBandLine.Modify();
                     end;
+                BandLine."Band Type"::lvngFormula:
+                    Error('Not Implemented');
             end;
         until BandLine.Next() = 0;
 

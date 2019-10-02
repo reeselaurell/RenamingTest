@@ -37,10 +37,12 @@ page 14135221 lvngPerformanceRowSchemaList
                     RowLine: Record lvngPerformanceRowSchemaLine;
                     RowLines: Page lvngPerformanceRowSchemaLines;
                 begin
+                    TestField("Column Schema");
                     Clear(RowLines);
                     RowLines.SetColumnSchemaCode("Column Schema");
                     RowLine.Reset();
                     RowLine.SetRange("Schema Code", Code);
+                    RowLine.SetRange("Column No.", 1);
                     RowLines.SetTableView(RowLine);
                     RowLines.Run();
                 end;
