@@ -36,103 +36,29 @@ function GetCellType(colKind, rowKind) {
 function RenderGridCell(source, options) {
     if (options.data.CssClass)
         source.parent().addClass(options.data.CssClass);
-    if (options.data.IsSecondaryRow) {
-        source.parent.addClass('dx-secondary-row');
-    }
     source.attr('style', null);
     try {
         var value = options.value;
         var interactive = false;
-        var colKind = options.column.colKind;
-        var roundingOverride = -1;
-        var negOverride = null;
+        var cls = '';
         if (typeof value === 'object') {
             interactive = value.i;
-            if (typeof value.r !== 'undefined')
-                roundingOverride = value.r;
-            if (value.t && value.t >= 0) {
-                colKind = value.t;
-            }
-            negOverride = value.n;
+            cls = value.c;
             value = value.v;
         }
         var td = source;
-        if (options.column.cssClass)
-            td.addClass(options.column.cssClass);
         if (interactive)
             td.addClass('link');
-        var colName = GenerateColumnName(options.columnIndex);
-        var id = colName + options.data.rowId;
-        td.attr('id', id);
-        var cellType = GetCellType(colKind, options.data.Kind);
-        if (cellType == 'text')
-            td.html(value);
-        else {
-            var fmtOptions = { CellType: cellType, IfZero: options.data.IfZero, IfNegative: options.data.IfNegative };
-            if (roundingOverride == 1)
-                fmtOptions.Rounding = 'PointOne';
-            else if (options.data.Rounding)
-                fmtOptions.Rounding = options.data.Rounding;
-            else if (cellType == 'integer')
-                fmtOptions.Rounding = 'Round';
-            if (negOverride)
-                fmtOptions.IfNegative = negOverride;
-
-            td.html(FormatCellValue(fmtOptions, value));
-        }
+        if (cls)
+            td.addClass(cls);
+        td.attr('id', options.column.dataField + 'r' + options.data.rowId);
+        td.html(value);
     }
     catch (err) {
         alert(err);
     }
 }
-function RenderGridRow(source, options) {
-    try {
-        var tr = $('<tr></tr>');
-        tr.addClass('dx-row dx-data-row')
-        if (options.data.CssClass)
-            tr.addClass(options.data.CssClass);
-        if (options.data.IsSecondaryRow) {
-            tr.addClass('dx-secondary-row');
-        }
-        for (var i = 0; i < options.values.length; i++) {
-            var value = options.values[i];
-            var interactive = false;
-            var colKind = options.columns[i].colKind;
-            if (typeof value === 'object') {
-                interactive = value.i;
-                value = value.v;
-                if (value.t && value.t >= 0) {
-                    colKind = value.t;
-                }
-            }
-            var td = $('<td></td>');
-            if (options.columns[i].cssClass)
-                td.addClass(options.columns[i].cssClass);
-            if (interactive)
-                td.addClass('link');
-            var colName = GenerateColumnName(i);
-            var id = colName + options.data.rowId;
-            td.attr('id', id);
-            var cellType = GetCellType(colKind, options.data.Kind);
-            if (cellType == 'text')
-                td.html(value);
-            else {
-                var fmtOptions = { CellType: cellType, IfZero: options.data.IfZero, IfNegative: options.data.IfNegative };
-                if (options.data.Rounding)
-                    fmtOptions.Rounding = options.data.Rounding;
-                else if (cellType == 'integer')
-                    fmtOptions.Rounding = 'Round';
 
-                td.html(FormatCellValue(fmtOptions, value));
-            }
-            tr.append(td);
-        }
-        source.append(tr);
-    }
-    catch (err) {
-        alert(err);
-    }
-}
 function GenerateColumnName(idx) {
     return idx < GridColumnNames.length ? GridColumnNames[idx] : GenerateColumnName(Math.floor(idx / GridColumnNames.length) - 1) + GridColumnNames[idx % GridColumnNames.length];
 }
@@ -260,6 +186,8 @@ function FlattenDataObject(obj) {
     return result;
 }
 function CalculateFormulae(data) {
+    if (!data.dataSource)
+        return
     var cube = {};
     for (var i = 0; i < data.dataSource.length; i++) {
         cube['R' + data.dataSource[i].rowId] = FlattenDataObject(data.dataSource[i]);
@@ -329,25 +257,18 @@ function SetCellTemplate(column) {
 }
 
 /* Exposed methods */
-function InitializeDXGrid(json) {
+function InitializeDXGrid(data) {
     try {
         if (grid.isInitialized)
             grid.dxDataGrid('dispose');
-        var data = JSON.parse(json);
         currentGridData = data;
-        if (data.showToggleSecondaryDataButton) {
-            var btn = $('<div></div>');
-            buttons.append(btn);
-            btn.dxButton({ text: 'Toggle branch data', onClick: toggleSecondaryData });
-        }
-        CalculateFormulae(data);
-        //data.rowTemplate = RenderGridRow;
 
         data.onContentReady = function (e) {
             $('.dx-data-row td').click(function () {
                 var me = $(this)
                 if (me.hasClass('link')) {
                     var id = me.attr('id');
+                    ///TODO: Check field ids, they can be different now when Band/Column/Row schema is used
                     Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('CellClick', [DegenerateFieldName(/\D+/.exec(id)[0]), Number(/\d+/.exec(id)[0])]);
                 }
             });
@@ -363,7 +284,6 @@ function InitializeDXGrid(json) {
             }
         }
         CreateInfrastructure();
-        data.height = 670;
         data.scrolling = {
             useNative: true
         }
@@ -378,9 +298,8 @@ function InitializeDXGrid(json) {
     }
 }
 
-function SetupStyles(json) {
+function SetupStyles(data) {
     try {
-        var data = JSON.parse(json);
         jss.remove();
         for (s in data) {
             jss.set(s, data[s]);
@@ -397,10 +316,4 @@ function ExportToExcel() {
 
 function Print() {
     window.print();
-}
-
-var __SecondaryDataRowsVisible = false;
-function toggleSecondaryData() {
-    __SecondaryDataRowsVisible = !__SecondaryDataRowsVisible;
-    $('tr.dx-secondary-row').css('display', __SecondaryDataRowsVisible ? 'table-row' : 'none');
 }

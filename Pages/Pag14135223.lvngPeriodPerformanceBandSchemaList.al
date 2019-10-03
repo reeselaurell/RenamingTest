@@ -4,6 +4,7 @@ page 14135223 lvngPeriodPerfBandSchemaList
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = lvngPeriodPerfBandSchema;
+    Caption = 'Period Performance Band Schema List';
 
     layout
     {

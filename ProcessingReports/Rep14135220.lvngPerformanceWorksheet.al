@@ -7,22 +7,24 @@ report 14135220 lvngPerformanceWorksheet
 
     requestpage
     {
+        SaveValues = true;
+
         layout
         {
             area(Content)
             {
                 group(General)
                 {
-                    field(RowSchemaCode; RowSchemaCode) { Caption = 'Row Schema'; ApplicationArea = All; TableRelation = lvngPerformanceRowSchema; }
-                    field(BandSchemaCode; BandSchemaCode) { Caption = 'Band Schema'; ApplicationArea = All; TableRelation = lvngPeriodPerfBandSchema; }
-                    field(AsOfDate; AsOfDate) { Caption = 'As of Date'; ApplicationArea = All; }
+                    field(RowSchemaCode; RowSchemaCode) { Caption = 'Row Schema'; ApplicationArea = All; TableRelation = lvngPerformanceRowSchema; NotBlank = true; }
+                    field(BandSchemaCode; BandSchemaCode) { Caption = 'Band Schema'; ApplicationArea = All; TableRelation = lvngPeriodPerfBandSchema; NotBlank = true; }
+                    field(AsOfDate; AsOfDate) { Caption = 'As of Date'; ApplicationArea = All; NotBlank = true; }
                 }
                 group(Dimensions)
                 {
                     field(Dim1Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 1 Filter'; CaptionClass = '1,3,1'; }
-                    field(Dim2Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; CaptionClass = '1,3,2'; }
-                    field(Dim3Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 3 Filter'; CaptionClass = '1,4,3'; }
-                    field(Dim4Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 4 Filter'; CaptionClass = '1,4,4'; }
+                    field(Dim2Filter; Dim2Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; CaptionClass = '1,3,2'; }
+                    field(Dim3Filter; Dim3Filter) { ApplicationArea = All; Caption = 'Dimension 3 Filter'; CaptionClass = '1,4,3'; }
+                    field(Dim4Filter; Dim4Filter) { ApplicationArea = All; Caption = 'Dimension 4 Filter'; CaptionClass = '1,4,4'; }
                     field(BusinessUnitFilter; BusinessUnitFilter) { ApplicationArea = All; Caption = 'Business Unit Filter'; }
                 }
             }
@@ -33,7 +35,9 @@ report 14135220 lvngPerformanceWorksheet
     var
         PerformanceWorksheet: Page lvngPerformanceWorksheet;
     begin
-        //PerformanceWorksheet.SetParams(Dim1Filter, Dim2);
+        Clear(PerformanceWorksheet);
+        PerformanceWorksheet.SetParams(RowSchemaCode, BandSchemaCode, AsOfDate, Dim1Filter, Dim2Filter, Dim3Filter, Dim4Filter, BusinessUnitFilter);
+        PerformanceWorksheet.RunModal();
     end;
 
     var

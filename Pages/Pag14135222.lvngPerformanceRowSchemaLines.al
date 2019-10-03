@@ -16,6 +16,8 @@ page 14135222 lvngPerformanceRowSchemaLines
                 field("Line No."; "Line No.") { ApplicationArea = All; }
                 field(Description; Description) { ApplicationArea = All; }
                 field("Row Type"; "Row Type") { ApplicationArea = All; }
+                field("Row Style"; "Row Style") { ApplicationArea = All; }
+                field("Hide Zero Line"; "Hide Zero Line") { ApplicationArea = All; }
             }
             part(SubList; lvngPerfRowSchemaSubLines) { ApplicationArea = All; SubPageLink = "Schema Code" = field("Schema Code"), "Line No." = field("Line No."); }
         }

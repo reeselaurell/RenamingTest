@@ -53,7 +53,7 @@ codeunit 14135550 lvngExpressionEngine
         end;
         ExpressionLine.Reset();
         ExpressionLine.SetRange("Expression Code", ExpressionCode);
-        ExpressionLine.SetFilter("Line No.", '<>%1', 0);
+        ExpressionLine.SetFilter("Line No.", '>%1', 0);
         if not ExpressionLine.FindSet() then
             exit(false);
         LineNo := 1;
@@ -157,7 +157,7 @@ codeunit 14135550 lvngExpressionEngine
         Value := CalculateFormula(ExpressionHeader, ValueBuffer);
         CaseLine.Reset();
         CaseLine.SetRange("Expression Code", ExpressionHeader.Code);
-        CaseLine.SetFilter("Line No.", '<>%1', 0);
+        CaseLine.SetFilter("Line No.", '>%1', 0);
         if not CaseLine.FindSet() then
             exit(false);
         repeat
@@ -203,6 +203,11 @@ codeunit 14135550 lvngExpressionEngine
                 Error(WrongTypeErr);
             exit(CalculateFormula(ExpressionHeader, ValueBuffer));
         end;
+    end;
+
+    procedure Iif(ExpressionCode: Code[20]; var ValueBuffer: Record lvngExpressionValueBuffer): Text
+    begin
+        Error('Not Implemented');
     end;
 
     procedure CloneValueBuffer(var FromBuffer: Record lvngExpressionValueBuffer; var ToBuffer: Record lvngExpressionValueBuffer)
@@ -383,12 +388,17 @@ codeunit 14135550 lvngExpressionEngine
     end;
 
     procedure GetFormulaFromLines(var ExpressionHeader: Record lvngExpressionHeader) Formula: Text
+    begin
+        Formula := GetFormulaFromLines(ExpressionHeader, 0);
+    end;
+
+    procedure GetFormulaFromLines(var ExpressionHeader: Record lvngExpressionHeader; LineNo: Integer) Formula: Text
     var
         ExpressionLine: Record lvngExpressionLine;
     begin
         ExpressionLine.Reset();
         ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
-        ExpressionLine.SetRange("Line No.", 0);
+        ExpressionLine.SetRange("Line No.", LineNo);
         if not ExpressionLine.FindSet() then
             exit;
         repeat
@@ -397,13 +407,18 @@ codeunit 14135550 lvngExpressionEngine
     end;
 
     procedure SetFormulaToLines(var ExpressionHeader: Record lvngExpressionHeader; Formula: Text)
+    begin
+        SetFormulaToLines(ExpressionHeader, Formula, 0);
+    end;
+
+    procedure SetFormulaToLines(var ExpressionHeader: Record lvngExpressionHeader; Formula: Text; LineNo: Integer)
     var
         ExpressionLine: Record lvngExpressionLine;
         Idx: Integer;
     begin
         ExpressionLine.Reset();
         ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
-        ExpressionLine.SetRange("Line No.", 0);
+        ExpressionLine.SetRange("Line No.", LineNo);
         ExpressionLine.DeleteAll();
         Idx := 1;
         while Formula <> '' do begin
@@ -527,9 +542,9 @@ codeunit 14135550 lvngExpressionEngine
             ExpandTo := ExpandToNextOperand(Expression, OpIdx, 1);
             //Here we have a single expression to calculate
             Expression := CopyStr(Expression, 1, ExpandFrom - 1) + Format(EvaluateDecimalExpression(ResolveVariables(CopyStr(Expression, ExpandFrom, ExpandTo - ExpandFrom), ValueBuffer)), 0, 9) + CopyStr(Expression, ExpandTo);
-            OpIdx := IndexOfAny(Expression, '*/');
+            OpIdx := IndexOfAny(Expression, '+-');
         end;
-        exit(Expression);
+        exit(ResolveVariables(Expression, ValueBuffer));
     end;
 
     local procedure ExpandToNextOperand(Expression: Text; StartIndex: Integer; Direction: Integer): Integer

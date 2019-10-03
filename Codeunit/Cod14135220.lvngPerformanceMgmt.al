@@ -9,6 +9,7 @@ codeunit 14135220 lvngPerformanceMgmt
         RowFieldFormatTxt: Label 'BAND%1COL%2';
         BandCountTxt: Label '$BANDCOUNT';
         ColCountTxt: Label '$COLCOUNT';
+        UnsupportedExpressionTypeErr: Label 'Unsupported expression type %1';
 
     procedure GetBandExpressionConsumerId(): Guid
     begin
@@ -40,15 +41,37 @@ codeunit 14135220 lvngPerformanceMgmt
             RowLine.SetRange("Column No.", ColLine."Column No.");
             RowLine.FindSet();
             repeat
-                CalculationUnit.Get(RowLine."Calculation Unit Code");
                 Clear(Buffer);
                 Buffer."Column No." := ColLine."Column No.";
                 Buffer."Row No." := RowLine."Line No.";
                 Buffer."Band No." := BandLine."Line No.";
-                Buffer.Value := CalculateSingleBandValue(CalculationUnit, SystemFilter, Cache, Path);
+                if CalculationUnit.Get(RowLine."Calculation Unit Code") then begin
+                    Buffer.Value := CalculateSingleBandValue(CalculationUnit, SystemFilter, Cache, Path);
+                    Buffer.Interactive := IsClickableCell(BandLine, CalculationUnit);
+                end else
+                    Buffer.Value := 0;
+                if Buffer.Value >= 0 then
+                    if RowLine."Style Code" <> '' then
+                        Buffer."Style Code" := RowLine."Style Code";
+                if Buffer.Value < 0 then
+                    if RowLine."Neg. Style Code" <> '' then
+                        Buffer."Style Code" := RowLine."Neg. Style Code";
                 Buffer.Insert();
             until RowLine.Next() = 0;
         until ColLine.Next() = 0;
+    end;
+
+    local procedure IsClickableCell(var BandLine: Record lvngPeriodPerfBandSchemaLine; var CalculationUnit: Record lvngCalculationUnit): Boolean
+    begin
+        if (BandLine."Line No." = 0) or (BandLine."Band Type" <> BandLine."Band Type"::lvngNormal) then
+            exit(false);
+        if (CalculationUnit.Type = CalculationUnit.Type::lvngAmountLookup) or (CalculationUnit.Type = CalculationUnit.Type::lvngCountLookup) then begin
+            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::lvngLoanCard then
+                exit(true);
+            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::lvngLedgerEntries then
+                exit(CalculationUnit."Account No. Filter" <> '');
+        end;
+        exit(false);
     end;
 
     local procedure CalculateSingleRowValue(RowNo: Integer; ExpressionCode: Code[20]; var Buffer: Record lvngPerformanceValueBuffer) Result: Decimal
@@ -69,7 +92,7 @@ codeunit 14135220 lvngPerformanceMgmt
             Clear(ValueBuffer);
             ValueBuffer.Number := Number;
             ValueBuffer.Name := StrSubstNo(RowFieldFormatTxt, Buffer."Band No.", Buffer."Column No.");
-            ValueBuffer.Type := 'System.Decimal';
+            ValueBuffer.Type := 'Decimal';
             ValueBuffer.Value := Format(Buffer.Value);
             ValueBuffer.Insert();
         until Buffer.Next() = 0;
@@ -80,7 +103,7 @@ codeunit 14135220 lvngPerformanceMgmt
         Clear(ValueBuffer);
         ValueBuffer.Number := Number + 1;
         ValueBuffer.Name := BandCountTxt;
-        ValueBuffer.Type := 'System.Decimal';
+        ValueBuffer.Type := 'Decimal';
         ValueBuffer.Value := Format(Buffer.Count());
         ValueBuffer.Insert();
         Buffer.FindFirst();
@@ -92,7 +115,7 @@ codeunit 14135220 lvngPerformanceMgmt
         Clear(ValueBuffer);
         ValueBuffer.Number := Number + 2;
         ValueBuffer.Name := ColCountTxt;
-        ValueBuffer.Type := 'System.Decimal';
+        ValueBuffer.Type := 'Decimal';
         ValueBuffer.Value := Format(Buffer.Count());
         ValueBuffer.Insert();
         ExpressionHeader.Get(ExpressionCode);
@@ -103,7 +126,7 @@ codeunit 14135220 lvngPerformanceMgmt
     begin
         if Cache.Get(CalculationUnit.Code, Result) then
             exit;
-        if Path.IndexOf(CalculationUnit.Code) <> -1 then
+        if Path.IndexOf(CalculationUnit.Code) <> 0 then
             Error(CircularReferenceErr);
         case CalculationUnit.Type of
             CalculationUnit.Type::lvngConstant:
@@ -119,7 +142,7 @@ codeunit 14135220 lvngPerformanceMgmt
                 begin
                     Path.Add(CalculationUnit.Code);
                     Result := CalculateBandExpression(CalculationUnit, SystemFilter, Cache, Path);
-                    Path.RemoveAt(Path.Count() - 1);
+                    Path.RemoveAt(Path.Count());
                 end;
         end;
         Cache.Add(CalculationUnit.Code, Result);
@@ -273,6 +296,7 @@ codeunit 14135220 lvngPerformanceMgmt
         ValueBuffer: Record lvngExpressionValueBuffer temporary;
         ExpressionHeader: Record lvngExpressionHeader;
         ExpressionEngine: Codeunit lvngExpressionEngine;
+        String: Text;
     begin
         CalculationLine.Reset();
         CalculationLine.SetRange("Unit Code", BaseCalculationUnit.Code);
@@ -283,12 +307,24 @@ codeunit 14135220 lvngPerformanceMgmt
             Clear(ValueBuffer);
             ValueBuffer.Name := CalculationLine."Source Unit Code";
             ValueBuffer.Number := CalculationLine."Line no.";
-            ValueBuffer.Type := 'System.Decimal';
+            ValueBuffer.Type := 'Decimal';
             ValueBuffer.Value := Format(CalculateSingleBandValue(CalculationUnit, SystemFilter, Cache, Path), 0, 9);
             ValueBuffer.Insert();
         until CalculationLine.Next() = 0;
-        ExpressionHeader.Get(BaseCalculationUnit."Expression Code");
-        Evaluate(Result, ExpressionEngine.CalculateFormula(ExpressionHeader, ValueBuffer));
+        ExpressionHeader.Get(BaseCalculationUnit."Expression Code", GetBandExpressionConsumerId());
+        case ExpressionHeader.Type of
+            ExpressionHeader.Type::Formula:
+                Evaluate(Result, ExpressionEngine.CalculateFormula(ExpressionHeader, ValueBuffer));
+            ExpressionHeader.Type::Switch:
+                begin
+                    if ExpressionEngine.SwitchCase(ExpressionHeader, String, ValueBuffer) then
+                        Evaluate(Result, String)
+                    else
+                        Result := 0;
+                end
+            else
+                Error(UnsupportedExpressionTypeErr);
+        end;
     end;
 
     [EventSubscriber(ObjectType::Page, Page::lvngExpressionList, 'FillBuffer', '', false, false)]
@@ -305,7 +341,7 @@ codeunit 14135220 lvngPerformanceMgmt
                     Clear(ExpressionBuffer);
                     ExpressionBuffer.Name := CalcUnitLine."Source Unit Code";
                     ExpressionBuffer.Number := CalcUnitLine."Line no.";
-                    ExpressionBuffer.Type := 'System.Decimal';
+                    ExpressionBuffer.Type := 'Decimal';
                     ExpressionBuffer.Insert();
                 until CalcUnitLine.Next() = 0;
         end;

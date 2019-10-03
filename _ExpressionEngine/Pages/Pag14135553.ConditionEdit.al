@@ -27,7 +27,7 @@ page 14135553 lvngConditionEdit
                             Clear(TempValueBuffer);
                             TempValueBuffer.Number := Idx;
                             TempValueBuffer.Name := StrSubstNo(ConditionNoTxt, Idx);
-                            TempValueBuffer.Type := 'System.Boolean';
+                            TempValueBuffer.Type := 'Boolean';
                             TempValueBuffer.Insert();
                         end;
                         FormulaEdit.SetFieldList(TempValueBuffer);

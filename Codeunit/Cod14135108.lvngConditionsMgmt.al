@@ -106,9 +106,9 @@ codeunit 14135108 "lvngConditionsMgmt"
             lvngFieldReference := lvngRecordReference.Field(lvngTableFields."No.");
             lvngExpressionValueBuffer.Value := Delchr(Format(lvngFieldReference.Value()), '<>', ' ');
             lvngExpressionValueBuffer.Type := format(lvngFieldReference.Type());
-            if (lvngExpressionValueBuffer.Type = 'System.DateTime') and (lvngExpressionValueBuffer.Value = '') then
+            if (lvngExpressionValueBuffer.Type = 'DateTime') and (lvngExpressionValueBuffer.Value = '') then
                 lvngExpressionValueBuffer.Value := format(DMY2Date(1, 1, 1974));
-            if (lvngExpressionValueBuffer.Type = 'System.Boolean') then begin
+            if (lvngExpressionValueBuffer.Type = 'Boolean') then begin
                 if (lvngExpressionValueBuffer.Value = 'No') then
                     lvngExpressionValueBuffer.Value := 'False';
                 if (lvngExpressionValueBuffer.Value = 'Yes') then

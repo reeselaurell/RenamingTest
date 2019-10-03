@@ -6,21 +6,21 @@ page 14135220 lvngPerformanceWorksheet
     ModifyAllowed = false;
     DeleteAllowed = false;
     LinksAllowed = false;
+    Caption = 'Performance Worksheet';
 
     layout
     {
         area(Content)
         {
-            grid(Filters)
+            group(Filters)
             {
-                GridLayout = Rows;
 
                 field(SchemaName; SchemaName) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; }
                 field(Dim1Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
                 field(Dim2Filter; Dim2Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
                 field(Dim3Filter; Dim3Filter) { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
                 field(Dim4Filter; Dim4Filter) { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
-                field(BusinessUnitFilter; BusinessUnitFilter) { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; }
+                field(BusinessUnitFilter; BusinessUnitFilter) { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
             }
             usercontrol(DataGrid; DataGridControl)
             {
@@ -59,6 +59,9 @@ page 14135220 lvngPerformanceWorksheet
         AsOfDate: Date;
         RowSchemaCode: Code[20];
         BandSchemaCode: Code[20];
+        StylesInUse: Dictionary of [Code[20], Boolean];
+        UnsupportedBandTypeErr: Label 'Band type is not supported: %1';
+        FieldFormatTxt: Label 'b%1c%2';
 
     trigger OnOpenPage()
     begin
@@ -98,7 +101,7 @@ page 14135220 lvngPerformanceWorksheet
         Multiplier: Integer;
     begin
         BandLine.Reset();
-        BandLine.SetRange("Band Code", ColSchema.Code);
+        BandLine.SetRange("Band Code", BandSchema.Code);
         BandLine.FindSet();
         repeat
             TempBandLine := BandLine;
@@ -256,11 +259,16 @@ page 14135220 lvngPerformanceWorksheet
                         TempBandLine.Modify();
                     end;
                 BandLine."Band Type"::lvngFormula:
-                    Error('Not Implemented');
+                    begin
+                        Error('Not Implemented');
+                    end
+                else
+                    Error(UnsupportedBandTypeErr, BandLine);
             end;
         until BandLine.Next() = 0;
 
         TempBandLine.Reset();
+        TempBandLine.SetFilter("Band Type", '<>%1', TempBandLine."Band Type"::lvngFormula);
         TempBandLine.FindSet();
         repeat
             Clear(SystemFilter);
@@ -274,6 +282,12 @@ page 14135220 lvngPerformanceWorksheet
             Clear(PerformanceMgmt);
             PerformanceMgmt.CalculatePeriod(Buffer, TempBandLine, RowSchema, ColSchema, SystemFilter);
         until TempBandLine.Next() = 0;
+        TempBandLine.Reset();
+        TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngFormula);
+        if TempBandLine.FindSet() then
+            repeat
+                Error('Not Implemented');
+            until TempBandLine.Next() = 0;
     end;
 
     local procedure InitializeDataGrid()
@@ -281,15 +295,15 @@ page 14135220 lvngPerformanceWorksheet
         Json: JsonObject;
         Setting: JsonObject;
     begin
-        SetupGridStyles();
-        //Json.Add('dataSource', GetData());
         Json.Add('columns', GetColumns());
+        Json.Add('dataSource', GetData());
         Setting.Add('enabled', false);
         Json.Add('paging', Setting);
         Clear(Setting);
         Setting.Add('mode', 'none');
         Json.Add('sorting', Setting);
-        Json.Add('columnAuthoWidth', true);
+        Json.Add('columnAutoWidth', true);
+        SetupGridStyles();
         CurrPage.DataGrid.InitializeDXGrid(Json);
     end;
 
@@ -299,8 +313,83 @@ page 14135220 lvngPerformanceWorksheet
     end;
 
     local procedure GetData() DataSource: JsonArray
+    var
+        RowLine: Record lvngPerformanceRowSchemaLine;
+        ColLine: Record lvngPerformanceColSchemaLine;
+        RowData: JsonObject;
+        ValueData: JsonObject;
+        ShowLine: Boolean;
     begin
-        Error('Not Implemented');
+        RowLine.Reset();
+        RowLine.SetRange("Schema Code", RowSchema.Code);
+        RowLine.SetRange("Column No.", 1);
+        RowLine.FindSet();
+        repeat
+            case RowLine."Row Type" of
+                RowLine."Row Type"::lvngNormal:
+                    begin
+                        ShowLine := true;
+                        if RowLine."Hide Zero Line" then begin
+                            Buffer.Reset();
+                            Buffer.SetRange("Row No.", RowLine."Line No.");
+                            Buffer.SetFilter(Value, '<>%1', 0);
+                            if Buffer.IsEmpty then
+                                ShowLine := false;
+                        end;
+                        if ShowLine then begin
+                            Clear(RowData);
+                            RowData.Add('rowId', RowLine."Line No.");
+                            RowData.Add('Name', RowLine.Description);
+                            if RowLine."Row Style" <> '' then begin
+                                StylesInUse.Set(RowLine."Row Style", true);
+                                RowData.Add('CssClass', 'pw-' + LowerCase(RowLine."Row Style"));
+                            end;
+                            Buffer.Reset();
+                            Buffer.SetRange("Row No.", RowLine."Line No.");
+                            Buffer.FindSet();
+                            repeat
+                                if (not Buffer.Interactive) and (Buffer."Style Code" = '') then
+                                    RowData.Add(StrSubstNo(FieldFormatTxt, Buffer."Band No.", Buffer."Column No."), Buffer.Value)
+                                else begin
+                                    Clear(ValueData);
+                                    ValueData.Add('v', Buffer.Value);
+                                    if Buffer.Interactive then
+                                        ValueData.Add('i', Buffer.Interactive);
+                                    if Buffer."Style Code" <> '' then begin
+                                        StylesInUse.Set(Buffer."Style Code", true);
+                                        ValueData.Add('c', 'pw-' + LowerCase(Buffer."Style Code"));
+                                    end;
+                                    RowData.Add(StrSubstNo(FieldFormatTxt, Buffer."Band No.", Buffer."Column No."), ValueData);
+                                end;
+                            until Buffer.Next() = 0;
+                            DataSource.Add(RowData);
+                        end;
+                    end;
+                RowLine."Row Type"::lvngHeader:
+                    begin
+                        Clear(RowData);
+                        RowData.Add('rowId', RowLine."Line No.");
+                        RowData.Add('CssClass', 'secondary-header');
+                        TempBandLine.Reset();
+                        TempBandLine.FindSet();
+                        repeat
+                            ColLine.Reset();
+                            ColLine.SetRange("Schema Code", ColSchema.Code);
+                            ColLine.FindSet();
+                            repeat
+                                RowData.Add(StrSubstNo(FieldFormatTxt, TempBandLine."Line No.", ColLine."Column No."), ColLine."Secondary Caption");
+                            until ColLine.Next() = 0;
+                        until TempBandLine.Next() = 0;
+                        DataSource.Add(RowData);
+                    end;
+                RowLine."Row Type"::lvngEmpty:
+                    begin
+                        Clear(RowData);
+                        RowData.Add('rowId', RowLine."Line No.");
+                        DataSource.Add(RowData);
+                    end;
+            end;
+        until RowLine.Next() = 0;
     end;
 
     local procedure GetColumns() GridColumns: JsonArray
@@ -308,7 +397,6 @@ page 14135220 lvngPerformanceWorksheet
         ColLine: Record lvngPerformanceColSchemaLine;
         PeriodBand: JsonObject;
         BandColumns: JsonArray;
-        ColIdx: Integer;
     begin
         //Name Column
         Clear(PeriodBand);
@@ -328,8 +416,7 @@ page 14135220 lvngPerformanceWorksheet
             ColLine.SetRange("Schema Code", RowSchema."Column Schema");
             ColLine.FindFirst();
             repeat
-                ColIdx += 1;
-                BandColumns.Add(GetColumn('v' + Format(ColIdx), ColLine."Primary Caption", ''));
+                BandColumns.Add(GetColumn(StrSubstNo(FieldFormatTxt, TempBandLine."Line No.", ColLine."Column No."), ColLine."Primary Caption", ''));
             until ColLine.Next() = 0;
             PeriodBand.Add('columns', BandColumns);
             GridColumns.Add(PeriodBand);
@@ -348,6 +435,8 @@ page 14135220 lvngPerformanceWorksheet
     var
         Json: JsonObject;
         CssClass: JsonObject;
+        StyleCode: Code[20];
+        Style: Record lvngStyle;
     begin
         Clear(CssClass);
         CssClass.Add('font-weight', 'bold');
@@ -441,6 +530,35 @@ page 14135220 lvngPerformanceWorksheet
         Clear(CssClass);
         CssClass.Add('padding-left', '35px !important');
         Json.Add('.ident3 td:first-child', CssClass);
+        foreach StyleCode in StylesInUse.Keys do
+            if Style.Get(StyleCode) then begin
+                Clear(CssClass);
+                case Style.Bold of
+                    Style.Bold::lvngTrue:
+                        CssClass.Add('font-weight', 'bold');
+                    Style.Bold::lvngFalse:
+                        CssClass.Add('font-weight', 'normal');
+                end;
+                case Style.Italic of
+                    Style.Italic::lvngTrue:
+                        CssClass.Add('font-style', 'italic');
+                    Style.Italic::lvngFalse:
+                        CssClass.Add('font-style', 'normal');
+                end;
+                case Style.Underline of
+                    Style.Underline::lvngTrue:
+                        CssClass.Add('text-decoration', 'underline');
+                    Style.Underline::lvngFalse:
+                        CssClass.Add('text-decoration', 'none');
+                end;
+                if Style."Font Size" > 0 then
+                    CssClass.Add('font-size', StrSubstNo('%1px', Style."Font Size"));
+                if Style."Font Color" <> '' then
+                    CssClass.Add('color', Style."Font Color");
+                if Style."Background Color" <> '' then
+                    CssClass.Add('background-color', Style."Background Color");
+                Json.Add('.pw-' + LowerCase(StyleCode), CssClass);
+            end;
         CurrPage.DataGrid.SetupStyles(Json);
     end;
 }
