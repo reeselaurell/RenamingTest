@@ -14,25 +14,7 @@ function CreateInfrastructure() {
     grid = $('<div></div>');
     control.append(grid);
 }
-function GetCellType(colKind, rowKind) {
-    if (colKind == -1 || rowKind == 'Header')
-        return 'text';
-    if (colKind == 3)
-        return 'percentage';
-    if (rowKind == 'Count')
-        return 'integer';
-    else if (rowKind == 'Summary') {
-        switch (colKind) {
-            case 0: return 'decimal';
-            case 1: return 'integer';
-            case 2: return 'percentage';
-        }
-    }
-    if (colKind == 2) {
-        return 'bps';
-    }
-    return 'decimal';
-}
+
 function RenderGridCell(source, options) {
     if (options.data.CssClass)
         source.parent().addClass(options.data.CssClass);
@@ -57,10 +39,6 @@ function RenderGridCell(source, options) {
     catch (err) {
         alert(err);
     }
-}
-
-function GenerateColumnName(idx) {
-    return idx < GridColumnNames.length ? GridColumnNames[idx] : GenerateColumnName(Math.floor(idx / GridColumnNames.length) - 1) + GridColumnNames[idx % GridColumnNames.length];
 }
 
 function DegenerateFieldName(name) {
@@ -267,9 +245,10 @@ function InitializeDXGrid(data) {
             $('.dx-data-row td').click(function () {
                 var me = $(this)
                 if (me.hasClass('link')) {
-                    var id = me.attr('id');
-                    ///TODO: Check field ids, they can be different now when Band/Column/Row schema is used
-                    Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('CellClick', [DegenerateFieldName(/\D+/.exec(id)[0]), Number(/\d+/.exec(id)[0])]);
+                    var id = me.attr('id'); //bXXcXXrXX
+                    var args = /b(\d+)c(\d+)r(\d+)/.exec(id);
+                    args.shift();
+                    Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('CellClick', args);
                 }
             });
             if (data.fixRows) {

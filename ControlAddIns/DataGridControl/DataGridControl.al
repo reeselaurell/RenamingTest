@@ -15,7 +15,7 @@ controladdin DataGridControl
     RequestedHeight = 680;
 
     event AddInReady();
-    event CellClick(ColIndex: Integer; RowIndex: Integer);
+    event CellClick(BandIndex: Integer; ColIndex: Integer; RowIndex: Integer);
     procedure InitializeDXGrid(Json: JsonObject);
     procedure SetupStyles(Json: JsonObject);
     procedure ExportToExcel();

@@ -8,6 +8,7 @@ table 14135227 lvngPerformanceValueBuffer
         field(10; Value; Decimal) { }
         field(11; Interactive; Boolean) { }
         field(12; "Style Code"; Code[20]) { }
+        field(13; "Number Format Code"; Code[20]) { }
     }
 
     keys

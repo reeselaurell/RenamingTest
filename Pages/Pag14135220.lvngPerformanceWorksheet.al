@@ -15,12 +15,13 @@ page 14135220 lvngPerformanceWorksheet
             group(Filters)
             {
 
-                field(SchemaName; SchemaName) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; }
+                field(SchemaName; SchemaName) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
                 field(Dim1Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
                 field(Dim2Filter; Dim2Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
                 field(Dim3Filter; Dim3Filter) { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
                 field(Dim4Filter; Dim4Filter) { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
                 field(BusinessUnitFilter; BusinessUnitFilter) { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
+                field(AsOfDate; AsOfDate) { ApplicationArea = All; Caption = 'As Of Date'; Editable = false; }
             }
             usercontrol(DataGrid; DataGridControl)
             {
@@ -31,9 +32,42 @@ page 14135220 lvngPerformanceWorksheet
                     InitializeDataGrid();
                 end;
 
-                trigger CellClick(ColIndex: Integer; RowIndex: Integer)
+                trigger CellClick(BandIndex: Integer; ColIndex: Integer; RowIndex: Integer)
                 begin
-                    ProcessCellClick(ColIndex, RowIndex);
+                    ProcessCellClick(BandIndex, ColIndex, RowIndex);
+                end;
+            }
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(Export)
+            {
+                Caption = 'Excel Export';
+                Image = Excel;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                begin
+                    CurrPage.DataGrid.ExportToExcel();
+                end;
+            }
+            action(Print)
+            {
+                Caption = 'Print';
+                Image = Print;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Promoted = true;
+
+                trigger OnAction()
+                begin
+                    CurrPage.DataGrid.Print();
                 end;
             }
         }
@@ -62,12 +96,14 @@ page 14135220 lvngPerformanceWorksheet
         StylesInUse: Dictionary of [Code[20], Boolean];
         UnsupportedBandTypeErr: Label 'Band type is not supported: %1';
         FieldFormatTxt: Label 'b%1c%2';
+        SchemaNameFormatTxt: Label '%1 - %2';
 
     trigger OnOpenPage()
     begin
         RowSchema.Get(RowSchemaCode);
         ColSchema.Get(RowSchema."Column Schema");
         BandSchema.Get(BandSchemaCode);
+        SchemaName := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
         CalculateColumns();
     end;
 
@@ -307,9 +343,128 @@ page 14135220 lvngPerformanceWorksheet
         CurrPage.DataGrid.InitializeDXGrid(Json);
     end;
 
-    local procedure ProcessCellClick(ColIndex: Integer; RowIndex: Integer)
+    local procedure ProcessCellClick(BandIndex: Integer; ColIndex: Integer; RowIndex: Integer)
+    var
+        RowLine: Record lvngPerformanceRowSchemaLine;
+        CalcUnit: Record lvngCalculationUnit;
+        Loan: Record lvngLoan;
+        GLEntry: Record "G/L Entry";
+        LoanList: Page lvngLoanList;
+        GLEntries: Page lvngPerformanceGLEntries;
     begin
-        Error('Not Implemented');
+        TempBandLine.Get(BandSchema.Code, BandIndex);
+        if TempBandLine."Band Type" = TempBandLine."Band Type"::lvngNormal then begin
+            RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
+            CalcUnit.Get(RowLine."Calculation Unit Code");
+            case CalcUnit."Lookup Source" of
+                CalcUnit."Lookup Source"::lvngLoanCard:
+                    begin
+                        Loan.Reset();
+                        ApplyLoanFilter(Loan, CalcUnit, TempBandLine."Date From", TempBandLine."Date To");
+                        LoanList.SetTableView(Loan);
+                        LoanList.RunModal();
+                    end;
+                CalcUnit."Lookup Source"::lvngLedgerEntries:
+                    begin
+                        GLEntry.Reset();
+                        ApplyGLFilter(GLEntry, CalcUnit, TempBandLine."Date From", TempBandLine."Date To");
+                        GLEntries.SetTableView(GLEntry);
+                        GLEntries.RunModal();
+                    end;
+            end;
+        end;
+    end;
+
+    local procedure ApplyLoanFilter(var Loan: Record lvngLoan; var CalcUnit: Record lvngCalculationUnit; DateFrom: Date; DateTo: Date)
+    begin
+        Loan.FilterGroup(2);
+        if CalcUnit."Dimension 1 Filter" <> '' then
+            Loan.SetRange(lvngGlobalDimension1Code, CalcUnit."Dimension 1 Filter")
+        else
+            if Dim1Filter <> '' then
+                Loan.SetRange(lvngGlobalDimension1Code, Dim1Filter);
+        if CalcUnit."Dimension 2 Filter" <> '' then
+            Loan.SetRange(lvngGlobalDimension2Code, CalcUnit."Dimension 2 Filter")
+        else
+            if Dim2Filter <> '' then
+                Loan.SetRange(lvngGlobalDimension2Code, Dim2Filter);
+        if CalcUnit."Dimension 3 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
+        else
+            if Dim3Filter <> '' then
+                Loan.SetRange(lvngShortcutDimension3Code, Dim3Filter);
+        if CalcUnit."Dimension 4 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
+        else
+            if Dim4Filter <> '' then
+                Loan.SetRange(lvngShortcutDimension4Code, Dim4Filter);
+        if CalcUnit."Dimension 5 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter");
+        if CalcUnit."Dimension 6 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter");
+        if CalcUnit."Dimension 7 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter");
+        if CalcUnit."Dimension 8 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter");
+        if CalcUnit."Business Unit Filter" <> '' then
+            Loan.SetRange(lvngBusinessUnitCode, CalcUnit."Business Unit Filter")
+        else
+            if BusinessUnitFilter <> '' then
+                Loan.SetRange(lvngBusinessUnitCode, BusinessUnitFilter);
+        case CalcUnit."Based On Date" of
+            CalcUnit."Based On Date"::lvngApplication:
+                Loan.SetRange(lvngApplicationDate, DateFrom, DateTo);
+            CalcUnit."Based On Date"::lvngClosed:
+                Loan.SetRange(lvngDateClosed, DateFrom, DateTo);
+            CalcUnit."Based On Date"::lvngFunded:
+                Loan.SetRange(lvngDateFunded, DateFrom, DateTo);
+            CalcUnit."Based On Date"::lvngLocked:
+                Loan.SetRange(lvngDateLocked, DateFrom, DateTo);
+            CalcUnit."Based On Date"::lvngSold:
+                Loan.SetRange(lvngDateSold, DateFrom, DateTo);
+        end;
+        Loan.FilterGroup(0);
+    end;
+
+    local procedure ApplyGLFilter(var GLEntry: Record "G/L Entry"; var CalcUnit: Record lvngCalculationUnit; DateFrom: Date; DateTo: Date)
+    begin
+        GLEntry.FilterGroup(2);
+        GLEntry.SetFilter("G/L Account No.", CalcUnit."Account No. Filter");
+        if CalcUnit."Dimension 1 Filter" <> '' then
+            GLEntry.SetRange("Global Dimension 1 Code", CalcUnit."Dimension 1 Filter")
+        else
+            if Dim1Filter <> '' then
+                GLEntry.SetRange("Global Dimension 1 Code", Dim1Filter);
+        if CalcUnit."Dimension 2 Filter" <> '' then
+            GLEntry.SetRange("Global Dimension 2 Code", CalcUnit."Dimension 2 Filter")
+        else
+            if Dim2Filter <> '' then
+                GLEntry.SetRange("Global Dimension 2 Code", Dim2Filter);
+        if CalcUnit."Dimension 3 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
+        else
+            if Dim3Filter <> '' then
+                GLEntry.SetRange(lvngShortcutDimension3Code, Dim3Filter);
+        if CalcUnit."Dimension 4 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
+        else
+            if Dim4Filter <> '' then
+                GLEntry.SetRange(lvngShortcutDimension4Code, Dim4Filter);
+        if CalcUnit."Dimension 5 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter");
+        if CalcUnit."Dimension 6 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter");
+        if CalcUnit."Dimension 7 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter");
+        if CalcUnit."Dimension 8 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter");
+        if CalcUnit."Business Unit Filter" <> '' then
+            GLEntry.SetRange("Business Unit Code", CalcUnit."Business Unit Filter")
+        else
+            if BusinessUnitFilter <> '' then
+                GLEntry.SetRange("Business Unit Code", BusinessUnitFilter);
+        GLEntry.SetRange("Posting Date", DateFrom, DateTo);
+        GLEntry.FilterGroup(0);
     end;
 
     local procedure GetData() DataSource: JsonArray
@@ -349,10 +504,10 @@ page 14135220 lvngPerformanceWorksheet
                             Buffer.FindSet();
                             repeat
                                 if (not Buffer.Interactive) and (Buffer."Style Code" = '') then
-                                    RowData.Add(StrSubstNo(FieldFormatTxt, Buffer."Band No.", Buffer."Column No."), Buffer.Value)
+                                    RowData.Add(StrSubstNo(FieldFormatTxt, Buffer."Band No.", Buffer."Column No."), FormatValue(Buffer))
                                 else begin
                                     Clear(ValueData);
-                                    ValueData.Add('v', Buffer.Value);
+                                    ValueData.Add('v', FormatValue(Buffer));
                                     if Buffer.Interactive then
                                         ValueData.Add('i', Buffer.Interactive);
                                     if Buffer."Style Code" <> '' then begin
@@ -390,6 +545,54 @@ page 14135220 lvngPerformanceWorksheet
                     end;
             end;
         until RowLine.Next() = 0;
+    end;
+
+    local procedure FormatValue(var Buffer: Record lvngPerformanceValueBuffer) TextValue: Text
+    var
+        NumberFormat: Record lvngNumberFormat;
+        NumericValue: Decimal;
+    begin
+        if not NumberFormat.Get(Buffer."Number Format Code") then
+            Clear(NumberFormat);
+        NumericValue := Buffer.Value;
+        if NumericValue = 0 then
+            case NumberFormat."Blank Zero" of
+                NumberFormat."Blank Zero"::lvngZero:
+                    exit('0');
+                NumberFormat."Blank Zero"::lvngDash:
+                    exit('-');
+                NumberFormat."Blank Zero"::lvngBlank:
+                    exit('&nbsp;');
+            end;
+        if NumberFormat."Invert Sign" then
+            NumericValue := -NumericValue;
+        if (NumericValue < 0) and (NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::lvngSuppressSign) then
+            NumericValue := Abs(NumericValue);
+        case NumberFormat.Rounding of
+            NumberFormat.Rounding::lvngNone:
+                NumericValue := Round(NumericValue, 0.01);
+            NumberFormat.Rounding::lvngOne:
+                NumericValue := Round(NumericValue, 0.1);
+            NumberFormat.Rounding::lvngRound:
+                NumericValue := Round(NumericValue, 1);
+            NumberFormat.Rounding::lvngThousands:
+                NumericValue := Round(NumericValue, 1000);
+        end;
+        if NumberFormat."Suppress Thousand Separator" then
+            TextValue := Format(NumericValue, 0, 9)
+        else
+            TextValue := Format(NumericValue);
+        case NumberFormat."Value Type" of
+            NumberFormat."Value Type"::Currency:
+                TextValue := '$' + TextValue;
+            NumberFormat."Value Type"::Percentage:
+                TextValue := TextValue + '%';
+        end;
+        if NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::lvngParenthesis then
+            if NumericValue < 0 then
+                TextValue := '(' + TextValue + ')'
+            else
+                TextValue := '&nbsp;' + TextValue + '&nbsp;';
     end;
 
     local procedure GetColumns() GridColumns: JsonArray

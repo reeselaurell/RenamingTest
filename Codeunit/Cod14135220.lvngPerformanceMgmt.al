@@ -56,6 +56,7 @@ codeunit 14135220 lvngPerformanceMgmt
                 if Buffer.Value < 0 then
                     if RowLine."Neg. Style Code" <> '' then
                         Buffer."Style Code" := RowLine."Neg. Style Code";
+                Buffer."Number Format Code" := RowLine."Number Format Code";
                 Buffer.Insert();
             until RowLine.Next() = 0;
         until ColLine.Next() = 0;
