@@ -1,4 +1,4 @@
-page 14135220 lvngPerformanceWorksheet
+page 14135220 lvngPeriodPerformanceView
 {
     PageType = Worksheet;
     Editable = false;
@@ -6,7 +6,7 @@ page 14135220 lvngPerformanceWorksheet
     ModifyAllowed = false;
     DeleteAllowed = false;
     LinksAllowed = false;
-    Caption = 'Performance Worksheet';
+    Caption = 'Period Performance View';
 
     layout
     {
@@ -14,7 +14,6 @@ page 14135220 lvngPerformanceWorksheet
         {
             group(Filters)
             {
-
                 field(SchemaName; SchemaName) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
                 field(Dim1Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
                 field(Dim2Filter; Dim2Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
@@ -103,6 +102,8 @@ page 14135220 lvngPerformanceWorksheet
         RowSchema.Get(RowSchemaCode);
         ColSchema.Get(RowSchema."Column Schema");
         BandSchema.Get(BandSchemaCode);
+        if AsOfDate = 0D then
+            AsOfDate := Today;
         SchemaName := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
         CalculateColumns();
     end;
