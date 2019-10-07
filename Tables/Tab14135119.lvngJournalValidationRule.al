@@ -30,9 +30,10 @@ table 14135119 "lvngJournalValidationRule"
             trigger OnLookup()
             var
                 lvngSelectedConditionCode: Code[20];
+                ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedConditionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
+                lvngSelectedConditionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', ExpressionType::Condition);
                 if lvngSelectedConditionCode <> '' then
                     lvngConditionCode := lvngSelectedConditionCode;
             end;

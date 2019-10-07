@@ -133,7 +133,7 @@ page 14135550 lvngExpressionList
     begin
     end;
 
-    procedure SelectExpression(ConsumerId: Guid; ConsumerMetadata: Text): Code[20]
+    procedure SelectExpression(ConsumerId: Guid; ConsumerMetadata: Text; AllowedTypes: Enum lvngExpressionType): Code[20]
     var
         ExpressionList: Page lvngExpressionList;
         ExpressionHeader: Record lvngExpressionHeader;
@@ -142,11 +142,46 @@ page 14135550 lvngExpressionList
         ProviderId := ConsumerId;
         ExpressionHeader.Reset();
         ExpressionHeader.SetRange("Consumer Id", ConsumerId);
+        case AllowedTypes of
+            AllowedTypes::All: //No filter
+                ;
+            AllowedTypes::Condition, AllowedTypes::Formula, AllowedTypes::Switch: //Simple filter
+                ExpressionHeader.SetRange(Type, AllowedTypes)
+            else //Complex filter
+                ExpressionHeader.SetFilter(Type, GetExpressionFilter(AllowedTypes));
+        end;
         CurrPage.SetTableView(ExpressionHeader);
         CurrPage.LookupMode(true);
         if CurrPage.RunModal() = Action::LookupOK then
             exit(Code)
         else
             exit('');
+    end;
+
+    local procedure GetExpressionFilter(ExpressionType: Enum lvngExpressionType): Text
+    var
+        Idx: Integer;
+        Test: Integer;
+        Names: List of [Text];
+        Ordinals: List of [Integer];
+        Filter: Text;
+    begin
+        Filter := '';
+        if ExpressionType <> ExpressionType::All then begin
+            Test := ExpressionType.AsInteger();
+            Names := ExpressionType.Names;
+            Ordinals := ExpressionType.Ordinals;
+            for Idx := Ordinals.Count() downto 1 do begin
+                if Test > 0 then begin
+                    if Test div Ordinals.Get(Idx) > 0 then
+                        Filter += '|' + Names.Get(Idx);
+                    Test := Test mod Ordinals.Get(Idx);
+                end;
+            end;
+        end;
+        if Filter = '' then
+            exit('')
+        else
+            exit(DelChr(Filter, '<', '|'));
     end;
 }

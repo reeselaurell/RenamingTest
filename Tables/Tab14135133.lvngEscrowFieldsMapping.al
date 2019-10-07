@@ -40,9 +40,10 @@ table 14135133 "lvngEscrowFieldsMapping"
             var
                 lvngSelectedExpressionCode: Code[20];
                 lvngExpressionList: Page lvngExpressionList;
+                ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN');
+                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', ExpressionType::Switch);
                 if lvngSelectedExpressionCode <> '' then
                     lvngSwitchCode := lvngSelectedExpressionCode;
             end;

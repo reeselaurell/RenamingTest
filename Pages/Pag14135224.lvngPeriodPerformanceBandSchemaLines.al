@@ -19,6 +19,24 @@ page 14135224 lvngPeriodPerfBandSchemaLines
                 field("Dynamic Date Description"; "Dynamic Date Description") { ApplicationArea = All; }
                 field("Date From"; "Date From") { ApplicationArea = All; }
                 field("Date To"; "Date To") { ApplicationArea = All; }
+                field("Row Formula Code"; "Row Formula Code")
+                {
+                    ApplicationArea = All;
+                    AssistEdit = true;
+                    Editable = false;
+
+                    trigger OnAssistEdit()
+                    var
+                        ExpressionList: Page lvngExpressionList;
+                        PerformanceMgmt: Codeunit lvngPerformanceMgmt;
+                        ExpressiontType: Enum lvngExpressionType;
+                        NewCode: Code[20];
+                    begin
+                        NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetPeriodRowExpressionConsumerId(), "Schema Code", ExpressiontType::Formula + ExpressiontType::Switch);
+                        if NewCode <> '' then
+                            "Row Formula Code" := NewCode;
+                    end;
+                }
             }
         }
     }

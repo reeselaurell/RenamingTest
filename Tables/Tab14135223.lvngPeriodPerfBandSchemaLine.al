@@ -15,6 +15,7 @@ table 14135223 lvngPeriodPerfBandSchemaLine
         field(18; "Date From"; Date) { DataClassification = CustomerContent; }
         field(19; "Date To"; Date) { DataClassification = CustomerContent; }
         field(20; "Band Type"; Enum lvngPerformanceBandType) { DataClassification = CustomerContent; }
+        field(21; "Row Formula Code"; Code[20]) { DataClassification = CustomerContent; }
     }
 
     keys

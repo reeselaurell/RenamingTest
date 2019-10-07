@@ -108,7 +108,6 @@ page 14135235 lvngDimensionPerformanceView
         StylesInUse: Dictionary of [Code[20], Boolean];
         GridExportMode: Enum lvngGridExportMode;
         SchemaNameFormatTxt: Label '%1 - %2';
-        FieldFormatTxt: Label 'b%1c%2';
 
     trigger OnOpenPage()
     begin
@@ -196,8 +195,7 @@ page 14135235 lvngDimensionPerformanceView
             SystemFilter."Shortcut Dimension 4" := Dim4Filter;
             SystemFilter."Business Unit" := BusinessUnitFilter;
             ApplyColumnFilter(SystemFilter, TempBandLine."Dimension Filter");
-            Clear(PerformanceMgmt);
-            PerformanceMgmt.CalculatePeriod(Buffer, TempBandLine."Band No.", TempBandLine."Band Type", RowSchema, ColSchema, SystemFilter);
+            PerformanceMgmt.CalculatePerformanceBand(Buffer, TempBandLine."Band No.", TempBandLine."Band Type", RowSchema, ColSchema, SystemFilter);
         until TempBandLine.Next() = 0;
         TempBandLine.Reset();
         TempBandLine.SetRange("Schema Code", BandSchema.Code);
@@ -246,14 +244,13 @@ page 14135235 lvngDimensionPerformanceView
         Setting: JsonObject;
     begin
         Json.Add('columns', GetColumns());
-        Json.Add('dataSource', GetData());
+        Json.Add('dataSource', PerformanceMgmt.GetData(Buffer, StylesInUse, RowSchema.Code, ColSchema.Code));
         Setting.Add('enabled', false);
         Json.Add('paging', Setting);
         Clear(Setting);
         Setting.Add('mode', 'none');
         Json.Add('sorting', Setting);
         Json.Add('columnAutoWidth', true);
-        Clear(PerformanceMgmt);
         CurrPage.DataGrid.SetupStyles(PerformanceMgmt.GetGridStyles(StylesInUse.Keys()));
         CurrPage.DataGrid.InitializeDXGrid(Json);
     end;
@@ -280,7 +277,6 @@ page 14135235 lvngDimensionPerformanceView
             SystemFilter."Shortcut Dimension 4" := Dim4Filter;
             SystemFilter."Business Unit" := BusinessUnitFilter;
             ApplyColumnFilter(SystemFilter, TempBandLine."Dimension Filter");
-            Clear(PerformanceMgmt);
             case CalcUnit."Lookup Source" of
                 CalcUnit."Lookup Source"::lvngLoanCard:
                     begin
@@ -303,135 +299,6 @@ page 14135235 lvngDimensionPerformanceView
     local procedure ExportToExcel(Mode: Enum lvngGridExportMode)
     begin
         Error('Not Implemented');
-    end;
-
-    local procedure GetData() DataSource: JsonArray
-    var
-        RowLine: Record lvngPerformanceRowSchemaLine;
-        ColLine: Record lvngPerformanceColSchemaLine;
-        RowData: JsonObject;
-        ValueData: JsonObject;
-        ShowLine: Boolean;
-    begin
-        //TODO: Replace TempBandLine with Buffer
-        RowLine.Reset();
-        RowLine.SetRange("Schema Code", RowSchema.Code);
-        RowLine.SetRange("Column No.", 1);
-        RowLine.FindSet();
-        repeat
-            case RowLine."Row Type" of
-                RowLine."Row Type"::lvngNormal:
-                    begin
-                        ShowLine := true;
-                        if RowLine."Hide Zero Line" then begin
-                            Buffer.Reset();
-                            Buffer.SetRange("Row No.", RowLine."Line No.");
-                            Buffer.SetFilter(Value, '<>%1', 0);
-                            if Buffer.IsEmpty then
-                                ShowLine := false;
-                        end;
-                        if ShowLine then begin
-                            Clear(RowData);
-                            RowData.Add('rowId', RowLine."Line No.");
-                            RowData.Add('Name', RowLine.Description);
-                            if RowLine."Row Style" <> '' then begin
-                                StylesInUse.Set(RowLine."Row Style", true);
-                                RowData.Add('CssClass', 'pw-' + LowerCase(RowLine."Row Style"));
-                            end;
-                            Buffer.Reset();
-                            Buffer.SetRange("Row No.", RowLine."Line No.");
-                            Buffer.FindSet();
-                            repeat
-                                if (not Buffer.Interactive) and (Buffer."Style Code" = '') then
-                                    RowData.Add(StrSubstNo(FieldFormatTxt, Buffer."Band No.", Buffer."Column No."), FormatValue(Buffer))
-                                else begin
-                                    Clear(ValueData);
-                                    ValueData.Add('v', FormatValue(Buffer));
-                                    if Buffer.Interactive then
-                                        ValueData.Add('i', Buffer.Interactive);
-                                    if Buffer."Style Code" <> '' then begin
-                                        StylesInUse.Set(Buffer."Style Code", true);
-                                        ValueData.Add('c', 'pw-' + LowerCase(Buffer."Style Code"));
-                                    end;
-                                    RowData.Add(StrSubstNo(FieldFormatTxt, Buffer."Band No.", Buffer."Column No."), ValueData);
-                                end;
-                            until Buffer.Next() = 0;
-                            DataSource.Add(RowData);
-                        end;
-                    end;
-                RowLine."Row Type"::lvngHeader:
-                    begin
-                        Clear(RowData);
-                        RowData.Add('rowId', RowLine."Line No.");
-                        RowData.Add('CssClass', 'secondary-header');
-                        TempBandLine.Reset();
-                        TempBandLine.FindSet();
-                        repeat
-                            ColLine.Reset();
-                            ColLine.SetRange("Schema Code", ColSchema.Code);
-                            ColLine.FindSet();
-                            repeat
-                                RowData.Add(StrSubstNo(FieldFormatTxt, TempBandLine."Band No.", ColLine."Column No."), ColLine."Secondary Caption");
-                            until ColLine.Next() = 0;
-                        until TempBandLine.Next() = 0;
-                        DataSource.Add(RowData);
-                    end;
-                RowLine."Row Type"::lvngEmpty:
-                    begin
-                        Clear(RowData);
-                        RowData.Add('rowId', RowLine."Line No.");
-                        DataSource.Add(RowData);
-                    end;
-            end;
-        until RowLine.Next() = 0;
-    end;
-
-    local procedure FormatValue(var Buffer: Record lvngPerformanceValueBuffer) TextValue: Text
-    var
-        NumberFormat: Record lvngNumberFormat;
-        NumericValue: Decimal;
-    begin
-        if not NumberFormat.Get(Buffer."Number Format Code") then
-            Clear(NumberFormat);
-        NumericValue := Buffer.Value;
-        if NumericValue = 0 then
-            case NumberFormat."Blank Zero" of
-                NumberFormat."Blank Zero"::lvngZero:
-                    exit('0');
-                NumberFormat."Blank Zero"::lvngDash:
-                    exit('-');
-                NumberFormat."Blank Zero"::lvngBlank:
-                    exit('&nbsp;');
-            end;
-        if NumberFormat."Invert Sign" then
-            NumericValue := -NumericValue;
-        if (NumericValue < 0) and (NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::lvngSuppressSign) then
-            NumericValue := Abs(NumericValue);
-        case NumberFormat.Rounding of
-            NumberFormat.Rounding::lvngNone:
-                NumericValue := Round(NumericValue, 0.01);
-            NumberFormat.Rounding::lvngOne:
-                NumericValue := Round(NumericValue, 0.1);
-            NumberFormat.Rounding::lvngRound:
-                NumericValue := Round(NumericValue, 1);
-            NumberFormat.Rounding::lvngThousands:
-                NumericValue := Round(NumericValue, 1000);
-        end;
-        if NumberFormat."Suppress Thousand Separator" then
-            TextValue := Format(NumericValue, 0, 9)
-        else
-            TextValue := Format(NumericValue);
-        case NumberFormat."Value Type" of
-            NumberFormat."Value Type"::Currency:
-                TextValue := '$' + TextValue;
-            NumberFormat."Value Type"::Percentage:
-                TextValue := TextValue + '%';
-        end;
-        if NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::lvngParenthesis then
-            if NumericValue < 0 then
-                TextValue := '(' + TextValue + ')'
-            else
-                TextValue := '&nbsp;' + TextValue + '&nbsp;';
     end;
 
     local procedure GetColumns() GridColumns: JsonArray
@@ -460,7 +327,7 @@ page 14135235 lvngDimensionPerformanceView
             ColLine.SetRange("Schema Code", RowSchema."Column Schema");
             ColLine.FindFirst();
             repeat
-                BandColumns.Add(GetColumn(StrSubstNo(FieldFormatTxt, TempBandLine."Band No.", ColLine."Column No."), ColLine."Primary Caption", ''));
+                BandColumns.Add(GetColumn(StrSubstNo(PerformanceMgmt.GetFieldFormat(), TempBandLine."Band No.", ColLine."Column No."), ColLine."Primary Caption", ''));
             until ColLine.Next() = 0;
             DimensionBand.Add('columns', BandColumns);
             GridColumns.Add(DimensionBand);

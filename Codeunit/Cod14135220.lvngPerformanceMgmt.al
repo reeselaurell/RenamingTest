@@ -3,13 +3,20 @@ codeunit 14135220 lvngPerformanceMgmt
     SingleInstance = true;
 
     var
-        CircularReferenceErr: Label 'Circular reference detected!';
         BandExpressionConsumerId: Guid;
-        RowExpressionConsumerId: Guid;
+        PeriodRowExpressionConsumerId: Guid;
+        DimensionRowExpressionConsumerId: Guid;
+        CircularReferenceErr: Label 'Circular reference detected!';
         RowFieldFormatTxt: Label 'BAND%1COL%2';
         BandCountTxt: Label '$BANDCOUNT';
         ColCountTxt: Label '$COLCOUNT';
+        FieldFormatTxt: Label 'b%1c%2';
         UnsupportedExpressionTypeErr: Label 'Unsupported expression type %1';
+
+    procedure GetFieldFormat(): Text
+    begin
+        exit(FieldFormatTxt);
+    end;
 
     procedure GetBandExpressionConsumerId(): Guid
     begin
@@ -18,13 +25,19 @@ codeunit 14135220 lvngPerformanceMgmt
         exit(BandExpressionConsumerId);
     end;
 
-    procedure GetRowExpressionConsumerId(): Guid
+    procedure GetPeriodRowExpressionConsumerId(): Guid
     begin
-        if IsNullGuid(RowExpressionConsumerId) then
-            Evaluate(RowExpressionConsumerId, '8085a41d-56df-4ce5-9122-d6a12698faa1');
+        if IsNullGuid(PeriodRowExpressionConsumerId) then
+            Evaluate(PeriodRowExpressionConsumerId, 'f48eb3f6-14d0-4d99-8137-9ff950f223f9');
     end;
 
-    procedure CalculatePeriod(var Buffer: Record lvngPerformanceValueBuffer; BandNo: Integer; BandType: Enum lvngPerformanceBandType; var RowSchema: Record lvngPerformanceRowSchema; var ColSchema: Record lvngPerformanceColSchema; var SystemFilter: Record lvngSystemCalculationFilter)
+    procedure GetDimensionRowExpressionConsumerId(): Guid
+    begin
+        if IsNullGuid(DimensionRowExpressionConsumerId) then
+            Evaluate(DimensionRowExpressionConsumerId, '44398a3f-5733-4e2d-afb8-4aaaa378fc1c');
+    end;
+
+    procedure CalculatePerformanceBand(var Buffer: Record lvngPerformanceValueBuffer; BandNo: Integer; BandType: Enum lvngPerformanceBandType; var RowSchema: Record lvngPerformanceRowSchema; var ColSchema: Record lvngPerformanceColSchema; var SystemFilter: Record lvngSystemCalculationFilter)
     var
         RowLine: Record lvngPerformanceRowSchemaLine;
         ColLine: Record lvngPerformanceColSchemaLine;
@@ -177,6 +190,140 @@ codeunit 14135220 lvngPerformanceMgmt
                 GLEntry.SetRange("Business Unit Code", SystemFilter."Business Unit");
         GLEntry.SetFilter("Posting Date", SystemFilter."Date Filter");
         GLEntry.FilterGroup(0);
+    end;
+
+    procedure GetData(var Buffer: Record lvngPerformanceValueBuffer; var StylesInUse: Dictionary of [Code[20], Boolean]; RowSchemaCode: Code[20]; ColSchemaCode: Code[20]) DataSource: JsonArray
+    var
+        RowLine: Record lvngPerformanceRowSchemaLine;
+        ColLine: Record lvngPerformanceColSchemaLine;
+        RowData: JsonObject;
+        ValueData: JsonObject;
+        ShowLine: Boolean;
+        FirstRowNo: Integer;
+    begin
+        RowLine.Reset();
+        RowLine.SetRange("Schema Code", RowSchemaCode);
+        RowLine.SetRange("Column No.", 1);
+        RowLine.FindSet();
+        repeat
+            case RowLine."Row Type" of
+                RowLine."Row Type"::lvngNormal:
+                    begin
+                        ShowLine := true;
+                        if RowLine."Hide Zero Line" then begin
+                            Buffer.Reset();
+                            Buffer.SetRange("Row No.", RowLine."Line No.");
+                            Buffer.SetFilter(Value, '<>%1', 0);
+                            if Buffer.IsEmpty then
+                                ShowLine := false;
+                        end;
+                        if ShowLine then begin
+                            Clear(RowData);
+                            RowData.Add('rowId', RowLine."Line No.");
+                            RowData.Add('Name', RowLine.Description);
+                            if RowLine."Row Style" <> '' then begin
+                                StylesInUse.Set(RowLine."Row Style", true);
+                                RowData.Add('CssClass', 'pw-' + LowerCase(RowLine."Row Style"));
+                            end;
+                            Buffer.Reset();
+                            Buffer.SetRange("Row No.", RowLine."Line No.");
+                            Buffer.FindSet();
+                            repeat
+                                if (not Buffer.Interactive) and (Buffer."Style Code" = '') then
+                                    RowData.Add(StrSubstNo(FieldFormatTxt, Buffer."Band No.", Buffer."Column No."), FormatValue(Buffer))
+                                else begin
+                                    Clear(ValueData);
+                                    ValueData.Add('v', FormatValue(Buffer));
+                                    if Buffer.Interactive then
+                                        ValueData.Add('i', Buffer.Interactive);
+                                    if Buffer."Style Code" <> '' then begin
+                                        StylesInUse.Set(Buffer."Style Code", true);
+                                        ValueData.Add('c', 'pw-' + LowerCase(Buffer."Style Code"));
+                                    end;
+                                    RowData.Add(StrSubstNo(FieldFormatTxt, Buffer."Band No.", Buffer."Column No."), ValueData);
+                                end;
+                            until Buffer.Next() = 0;
+                            DataSource.Add(RowData);
+                        end;
+                    end;
+                RowLine."Row Type"::lvngHeader:
+                    begin
+                        Clear(RowData);
+                        RowData.Add('rowId', RowLine."Line No.");
+                        RowData.Add('CssClass', 'secondary-header');
+                        Buffer.Reset();
+                        Buffer.FindFirst();
+                        FirstRowNo := Buffer."Row No.";
+                        Buffer.Reset();
+                        Buffer.SetRange("Row No.", FirstRowNo);
+                        Buffer.SetRange("Column No.", 1);
+                        Buffer.FindSet();
+                        repeat
+                            ColLine.Reset();
+                            ColLine.SetRange("Schema Code", ColSchemaCode);
+                            ColLine.FindSet();
+                            repeat
+                                RowData.Add(StrSubstNo(FieldFormatTxt, Buffer."Band No.", ColLine."Column No."), ColLine."Secondary Caption");
+                            until ColLine.Next() = 0;
+                        until Buffer.Next() = 0;
+                        DataSource.Add(RowData);
+                    end;
+                RowLine."Row Type"::lvngEmpty:
+                    begin
+                        Clear(RowData);
+                        RowData.Add('rowId', RowLine."Line No.");
+                        DataSource.Add(RowData);
+                    end;
+            end;
+        until RowLine.Next() = 0;
+    end;
+
+    local procedure FormatValue(var Buffer: Record lvngPerformanceValueBuffer) TextValue: Text
+    var
+        NumberFormat: Record lvngNumberFormat;
+        NumericValue: Decimal;
+    begin
+        if not NumberFormat.Get(Buffer."Number Format Code") then
+            Clear(NumberFormat);
+        NumericValue := Buffer.Value;
+        if NumericValue = 0 then
+            case NumberFormat."Blank Zero" of
+                NumberFormat."Blank Zero"::lvngZero:
+                    exit('0');
+                NumberFormat."Blank Zero"::lvngDash:
+                    exit('-');
+                NumberFormat."Blank Zero"::lvngBlank:
+                    exit('&nbsp;');
+            end;
+        if NumberFormat."Invert Sign" then
+            NumericValue := -NumericValue;
+        if (NumericValue < 0) and (NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::lvngSuppressSign) then
+            NumericValue := Abs(NumericValue);
+        case NumberFormat.Rounding of
+            NumberFormat.Rounding::lvngNone:
+                NumericValue := Round(NumericValue, 0.01);
+            NumberFormat.Rounding::lvngOne:
+                NumericValue := Round(NumericValue, 0.1);
+            NumberFormat.Rounding::lvngRound:
+                NumericValue := Round(NumericValue, 1);
+            NumberFormat.Rounding::lvngThousands:
+                NumericValue := Round(NumericValue, 1000);
+        end;
+        if NumberFormat."Suppress Thousand Separator" then
+            TextValue := Format(NumericValue, 0, 9)
+        else
+            TextValue := Format(NumericValue);
+        case NumberFormat."Value Type" of
+            NumberFormat."Value Type"::Currency:
+                TextValue := '$' + TextValue;
+            NumberFormat."Value Type"::Percentage:
+                TextValue := TextValue + '%';
+        end;
+        if NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::lvngParenthesis then
+            if NumericValue < 0 then
+                TextValue := '(' + TextValue + ')'
+            else
+                TextValue := '&nbsp;' + TextValue + '&nbsp;';
     end;
 
     procedure GetGridStyles(StylesInUse: List of [Code[20]]) Json: JsonObject
@@ -389,6 +536,10 @@ codeunit 14135220 lvngPerformanceMgmt
                     Result := CalculateBandExpression(CalculationUnit, SystemFilter, Cache, Path);
                     Path.RemoveAt(Path.Count());
                 end;
+            CalculationUnit.Type::lvngProviderValue:
+                begin
+                    GetProviderValue(CalculationUnit."Provider Metadata", SystemFilter, Result);
+                end;
         end;
         Cache.Add(CalculationUnit.Code, Result);
     end;
@@ -572,23 +723,61 @@ codeunit 14135220 lvngPerformanceMgmt
         end;
     end;
 
+
+    [IntegrationEvent(false, false)]
+    procedure GetProviderValue(Metadata: Text; var SystemFilter: Record lvngSystemCalculationFilter; var Result: Decimal)
+    begin
+    end;
+
     [EventSubscriber(ObjectType::Page, Page::lvngExpressionList, 'FillBuffer', '', false, false)]
     local procedure OnFillBuffer(ExpressionHeader: Record lvngExpressionHeader; ConsumerMetadata: Text; var ExpressionBuffer: Record lvngExpressionValueBuffer)
     var
         CalcUnitLine: Record lvngCalculationUnitLine;
-        BranchPortalMgmt: Codeunit lvngPerformanceMgmt;
+        DimPerfBandSchemaLine: Record lvngDimPerfBandSchemaLine;
+        PeriodPerfBandSchemaLine: Record lvngPeriodPerfBandSchemaLine;
     begin
-        if BranchPortalMgmt.GetBandExpressionConsumerId() = ExpressionHeader."Consumer Id" then begin
-            CalcUnitLine.Reset();
-            CalcUnitLine.SetRange("Unit Code", ConsumerMetadata);
-            if CalcUnitLine.FindSet() then
-                repeat
-                    Clear(ExpressionBuffer);
-                    ExpressionBuffer.Name := CalcUnitLine."Source Unit Code";
-                    ExpressionBuffer.Number := CalcUnitLine."Line no.";
-                    ExpressionBuffer.Type := 'Decimal';
-                    ExpressionBuffer.Insert();
-                until CalcUnitLine.Next() = 0;
+        case ExpressionHeader."Consumer Id" of
+            GetBandExpressionConsumerId():
+                begin
+                    CalcUnitLine.Reset();
+                    CalcUnitLine.SetRange("Unit Code", ConsumerMetadata);
+                    if CalcUnitLine.FindSet() then
+                        repeat
+                            Clear(ExpressionBuffer);
+                            ExpressionBuffer.Name := CalcUnitLine."Source Unit Code";
+                            ExpressionBuffer.Number := CalcUnitLine."Line no.";
+                            ExpressionBuffer.Type := 'Decimal';
+                            ExpressionBuffer.Insert();
+                        until CalcUnitLine.Next() = 0;
+                end;
+            GetPeriodRowExpressionConsumerId():
+                begin
+                    PeriodPerfBandSchemaLine.Reset();
+                    PeriodPerfBandSchemaLine.SetRange("Schema Code", ConsumerMetadata);
+                    PeriodPerfBandSchemaLine.SetFilter("Band Type", '<>%1', PeriodPerfBandSchemaLine."Band Type"::lvngFormula);
+                    if PeriodPerfBandSchemaLine.FindSet() then
+                        repeat
+                            Clear(ExpressionBuffer);
+                            ExpressionBuffer.Name := 'BAND' + Format(PeriodPerfBandSchemaLine."Band No.");
+                            ExpressionBuffer.Number := PeriodPerfBandSchemaLine."Band no.";
+                            ExpressionBuffer.Type := 'Decimal';
+                            ExpressionBuffer.Insert();
+                        until PeriodPerfBandSchemaLine.Next() = 0;
+                end;
+            GetDimensionRowExpressionConsumerId():
+                begin
+                    DimPerfBandSchemaLine.Reset();
+                    DimPerfBandSchemaLine.SetRange("Schema Code", ConsumerMetadata);
+                    DimPerfBandSchemaLine.SetFilter("Band Type", '<>%1', DimPerfBandSchemaLine."Band Type"::lvngFormula);
+                    if DimPerfBandSchemaLine.FindSet() then
+                        repeat
+                            Clear(ExpressionBuffer);
+                            ExpressionBuffer.Name := 'BAND' + Format(DimPerfBandSchemaLine."Band No.");
+                            ExpressionBuffer.Number := DimPerfBandSchemaLine."Band no.";
+                            ExpressionBuffer.Type := 'Decimal';
+                            ExpressionBuffer.Insert();
+                        until PeriodPerfBandSchemaLine.Next() = 0;
+                end;
         end;
     end;
 }

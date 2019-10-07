@@ -2,7 +2,8 @@ enum 14135550 lvngExpressionType
 {
     Extensible = false;
 
-    value(0; Formula) { }
-    value(1; Condition) { }
-    value(2; Switch) { }
+    value(0; All) { }
+    value(1; Formula) { }
+    value(2; Condition) { }
+    value(4; Switch) { }
 }

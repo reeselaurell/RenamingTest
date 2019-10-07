@@ -37,9 +37,10 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             trigger OnLookup()
             var
                 lvngSelectedFunctionCode: Code[20];
+                ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedFunctionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
+                lvngSelectedFunctionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', ExpressionType::Formula);
                 if lvngSelectedFunctionCode <> '' then
                     lvngFunctionCode := lvngSelectedFunctionCode;
             end;
@@ -67,9 +68,10 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             trigger OnLookup()
             var
                 lvngSelectedSwitchCode: Code[20];
+                ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedSwitchCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
+                lvngSelectedSwitchCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', ExpressionType::Switch);
                 if lvngSelectedSwitchCode <> '' then
                     lvngAccountNoSwitchCode := lvngSelectedSwitchCode;
             end;
@@ -81,9 +83,10 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             trigger OnLookup()
             var
                 lvngSelectedConditionCode: Code[20];
+                ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedConditionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
+                lvngSelectedConditionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', ExpressionType::Condition);
                 if lvngSelectedConditionCode <> '' then
                     lvngConditionCode := lvngSelectedConditionCode;
             end;

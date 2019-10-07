@@ -66,9 +66,10 @@ table 14135112 "lvngPostProcessingSchemaLine"
             trigger OnLookup()
             var
                 lvngSelectedExpressionCode: Code[20];
+                ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL');
+                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', ExpressionType::Switch + ExpressionType::Formula);
                 if lvngSelectedExpressionCode <> '' then
                     lvngExpressionCode := lvngSelectedExpressionCode;
             end;
