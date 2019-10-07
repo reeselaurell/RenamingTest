@@ -140,6 +140,13 @@ page 14135200 "lvngLoanProcessorRolecenter"
                     RunObject = page lvngImportDimensionMapping;
                     ApplicationArea = all;
                 }
+                action(lvngFileImportSchemas)
+                {
+                    Caption = 'File Import Schemas';
+                    ToolTip = 'Configure File Import Schemas';
+                    RunObject = page lvngFileImportSchemas;
+                    ApplicationArea = All;
+                }
 
             }
         }
