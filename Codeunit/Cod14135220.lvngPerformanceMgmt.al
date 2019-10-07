@@ -24,7 +24,7 @@ codeunit 14135220 lvngPerformanceMgmt
             Evaluate(RowExpressionConsumerId, '8085a41d-56df-4ce5-9122-d6a12698faa1');
     end;
 
-    procedure CalculatePeriod(var Buffer: Record lvngPerformanceValueBuffer; var BandLine: Record lvngPeriodPerfBandSchemaLine; var RowSchema: Record lvngPerformanceRowSchema; var ColSchema: Record lvngPerformanceColSchema; var SystemFilter: Record lvngSystemCalculationFilter)
+    procedure CalculatePeriod(var Buffer: Record lvngPerformanceValueBuffer; BandNo: Integer; BandType: Enum lvngPerformanceBandType; var RowSchema: Record lvngPerformanceRowSchema; var ColSchema: Record lvngPerformanceColSchema; var SystemFilter: Record lvngSystemCalculationFilter)
     var
         RowLine: Record lvngPerformanceRowSchemaLine;
         ColLine: Record lvngPerformanceColSchemaLine;
@@ -44,10 +44,11 @@ codeunit 14135220 lvngPerformanceMgmt
                 Clear(Buffer);
                 Buffer."Column No." := ColLine."Column No.";
                 Buffer."Row No." := RowLine."Line No.";
-                Buffer."Band No." := BandLine."Line No.";
+                Buffer."Band No." := BandNo;
                 if CalculationUnit.Get(RowLine."Calculation Unit Code") then begin
                     Buffer.Value := CalculateSingleBandValue(CalculationUnit, SystemFilter, Cache, Path);
-                    Buffer.Interactive := IsClickableCell(BandLine, CalculationUnit);
+                    if (BandNo > 0) and (BandType = BandType::lvngNormal) then
+                        Buffer.Interactive := IsClickableCell(CalculationUnit);
                 end else
                     Buffer.Value := 0;
                 if Buffer.Value >= 0 then
@@ -62,10 +63,253 @@ codeunit 14135220 lvngPerformanceMgmt
         until ColLine.Next() = 0;
     end;
 
-    local procedure IsClickableCell(var BandLine: Record lvngPeriodPerfBandSchemaLine; var CalculationUnit: Record lvngCalculationUnit): Boolean
+    procedure ApplyLoanFilter(var Loan: Record lvngLoan; var CalcUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter)
     begin
-        if (BandLine."Line No." = 0) or (BandLine."Band Type" <> BandLine."Band Type"::lvngNormal) then
-            exit(false);
+        Loan.FilterGroup(2);
+        if CalcUnit."Dimension 1 Filter" <> '' then
+            Loan.SetRange(lvngGlobalDimension1Code, CalcUnit."Dimension 1 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 1" <> '' then
+                Loan.SetRange(lvngGlobalDimension1Code, SystemFilter."Shortcut Dimension 1");
+        if CalcUnit."Dimension 2 Filter" <> '' then
+            Loan.SetRange(lvngGlobalDimension2Code, CalcUnit."Dimension 2 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 2" <> '' then
+                Loan.SetRange(lvngGlobalDimension2Code, SystemFilter."Shortcut Dimension 2");
+        if CalcUnit."Dimension 3 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 3" <> '' then
+                Loan.SetRange(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
+        if CalcUnit."Dimension 4 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 4" <> '' then
+                Loan.SetRange(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
+        if CalcUnit."Dimension 5 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 5" <> '' then
+                Loan.SetRange(lvngShortcutDimension5Code, SystemFilter."Shortcut Dimension 5");
+        if CalcUnit."Dimension 6 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 6" <> '' then
+                Loan.SetRange(lvngShortcutDimension6Code, SystemFilter."Shortcut Dimension 6");
+        if CalcUnit."Dimension 7 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 7" <> '' then
+                Loan.SetRange(lvngShortcutDimension7Code, SystemFilter."Shortcut Dimension 7");
+        if CalcUnit."Dimension 8 Filter" <> '' then
+            Loan.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 8" <> '' then
+                Loan.SetRange(lvngShortcutDimension8Code, SystemFilter."Shortcut Dimension 8");
+        if CalcUnit."Business Unit Filter" <> '' then
+            Loan.SetRange(lvngBusinessUnitCode, CalcUnit."Business Unit Filter")
+        else
+            if SystemFilter."Business Unit" <> '' then
+                Loan.SetRange(lvngBusinessUnitCode, SystemFilter."Business Unit");
+        case CalcUnit."Based On Date" of
+            CalcUnit."Based On Date"::lvngApplication:
+                Loan.SetFilter(lvngApplicationDate, SystemFilter."Date Filter");
+            CalcUnit."Based On Date"::lvngClosed:
+                Loan.SetFilter(lvngDateClosed, SystemFilter."Date Filter");
+            CalcUnit."Based On Date"::lvngFunded:
+                Loan.SetFilter(lvngDateFunded, SystemFilter."Date Filter");
+            CalcUnit."Based On Date"::lvngLocked:
+                Loan.SetFilter(lvngDateLocked, SystemFilter."Date Filter");
+            CalcUnit."Based On Date"::lvngSold:
+                Loan.SetFilter(lvngDateSold, SystemFilter."Date Filter");
+        end;
+        Loan.FilterGroup(0);
+    end;
+
+    procedure ApplyGLFilter(var GLEntry: Record "G/L Entry"; var CalcUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter)
+    begin
+        GLEntry.FilterGroup(2);
+        GLEntry.SetFilter("G/L Account No.", CalcUnit."Account No. Filter");
+        if CalcUnit."Dimension 1 Filter" <> '' then
+            GLEntry.SetRange("Global Dimension 1 Code", CalcUnit."Dimension 1 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 1" <> '' then
+                GLEntry.SetRange("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
+        if CalcUnit."Dimension 2 Filter" <> '' then
+            GLEntry.SetRange("Global Dimension 2 Code", CalcUnit."Dimension 2 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 2" <> '' then
+                GLEntry.SetRange("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
+        if CalcUnit."Dimension 3 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 3" <> '' then
+                GLEntry.SetRange(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
+        if CalcUnit."Dimension 4 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 4" <> '' then
+                GLEntry.SetRange(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
+        if CalcUnit."Dimension 5 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 5" <> '' then
+                GLEntry.SetRange(lvngShortcutDimension5Code, SystemFilter."Shortcut Dimension 5");
+        if CalcUnit."Dimension 6 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 6" <> '' then
+                GLEntry.SetRange(lvngShortcutDimension6Code, SystemFilter."Shortcut Dimension 6");
+        if CalcUnit."Dimension 7 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 7" <> '' then
+                GLEntry.SetRange(lvngShortcutDimension7Code, SystemFilter."Shortcut Dimension 7");
+        if CalcUnit."Dimension 8 Filter" <> '' then
+            GLEntry.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 8" <> '' then
+                GLEntry.SetRange(lvngShortcutDimension8Code, SystemFilter."Shortcut Dimension 8");
+        if CalcUnit."Business Unit Filter" <> '' then
+            GLEntry.SetRange("Business Unit Code", CalcUnit."Business Unit Filter")
+        else
+            if SystemFilter."Business Unit" <> '' then
+                GLEntry.SetRange("Business Unit Code", SystemFilter."Business Unit");
+        GLEntry.SetFilter("Posting Date", SystemFilter."Date Filter");
+        GLEntry.FilterGroup(0);
+    end;
+
+    procedure GetGridStyles(StylesInUse: List of [Code[20]]) Json: JsonObject
+    var
+        CssClass: JsonObject;
+        StyleCode: Code[20];
+        Style: Record lvngStyle;
+    begin
+        Clear(CssClass);
+        CssClass.Add('font-weight', 'bold');
+        CssClass.Add('font-style', 'italic');
+        CssClass.Add('font-size', '14px');
+        CssClass.Add('text-decoration', 'underline');
+        CssClass.Add('text-align', 'center !important');
+        CssClass.Add('border-left', 'none !important');
+        CssClass.Add('border-right', 'none !important');
+        Json.Add('.dx-header-row td', CssClass);
+        Clear(CssClass);
+        CssClass.Add('text-align', 'center');
+        CssClass.Add('font-style', 'italic');
+        CssClass.Add('text-decoration', 'underline');
+        CssClass.Add('font-weight', 'bold');
+        CssClass.Add('color', '#959595');
+        Json.Add('tr.secondary-header', CssClass);
+        Clear(CssClass);
+        CssClass.Add('border', '1px solid #ddd');
+        Json.Add('tr.secondary-header td', CssClass);
+        Clear(CssClass);
+        CssClass.Add('font-size', '12px');
+        CssClass.Add('text-align', 'right');
+        Json.Add('.dx-data-row', CssClass);
+        Clear(CssClass);
+        CssClass.Add('font-weight', 'bold');
+        CssClass.Add('text-align', 'left');
+        CssClass.Add('border-right', '1px solid #808080');
+        CssClass.Add('white-space', 'nowrap');
+        Json.Add('td.desc', CssClass);
+        Clear(CssClass);
+        CssClass.Add('text-align', 'right');
+        Json.Add('.right', CssClass);
+        Clear(CssClass);
+        CssClass.Add('color', 'red');
+        Json.Add('.red', CssClass);
+        Clear(CssClass);
+        CssClass.Add('font-weight', 'bold');
+        Json.Add('.bold', CssClass);
+        Clear(CssClass);
+        CssClass.Add('font-style', 'italic');
+        Json.Add('.italic', CssClass);
+        Clear(CssClass);
+        CssClass.Add('font-size', '14px');
+        Json.Add('.big', CssClass);
+        Clear(CssClass);
+        CssClass.Add('color', 'blue');
+        Json.Add('.font-blue', CssClass);
+        Clear(CssClass);
+        CssClass.Add('background-color', '#CCFFCC');
+        Json.Add('.background-honeydew', CssClass);
+        Clear(CssClass);
+        CssClass.Add('background-color', '#99CCFF');
+        Json.Add('.background-columbia-blue', CssClass);
+        Clear(CssClass);
+        CssClass.Add('border-bottom', '1px solid #808080');
+        Json.Add('.border-bottom-thin td', CssClass);
+        Clear(CssClass);
+        CssClass.Add('border-bottom', '3px solid #808080');
+        Json.Add('.border-bottom-thick td', CssClass);
+        Clear(CssClass);
+        CssClass.Add('font-size', '2px');
+        CssClass.Add('line-height', '1');
+        Json.Add('td.third-size', CssClass);
+        Clear(CssClass);
+        CssClass.Add('font-size', '16px');
+        CssClass.Add('font-weight', 'bold');
+        CssClass.Add('font-style', 'italic');
+        CssClass.Add('border-top', '3px double #000');
+        CssClass.Add('border-bottom', '3px double #000');
+        CssClass.Add('background-color', '#C0C0C0');
+        Json.Add('.heading td', CssClass);
+        Clear(CssClass);
+        CssClass.Add('font-size', '12px');
+        CssClass.Add('font-weight', 'bold');
+        CssClass.Add('border-top', '1px solid #000');
+        CssClass.Add('border-bottom', 'solid #000');
+        Json.Add('.subtotals td', CssClass);
+        Clear(CssClass);
+        CssClass.Add('font-size', '12px');
+        CssClass.Add('font-weight', 'bold');
+        CssClass.Add('border-top', '1px solid #000');
+        CssClass.Add('border-bottom', 'double #000');
+        Json.Add('.totals td', CssClass);
+        Clear(CssClass);
+        CssClass.Add('padding-left', '15px !important');
+        Json.Add('.indent1 td:first-child', CssClass);
+        Clear(CssClass);
+        CssClass.Add('padding-left', '25px !important');
+        Json.Add('.indent2 td:first-child', CssClass);
+        Clear(CssClass);
+        CssClass.Add('padding-left', '35px !important');
+        Json.Add('.ident3 td:first-child', CssClass);
+        foreach StyleCode in StylesInUse do
+            if Style.Get(StyleCode) then begin
+                Clear(CssClass);
+                case Style.Bold of
+                    Style.Bold::lvngTrue:
+                        CssClass.Add('font-weight', 'bold');
+                    Style.Bold::lvngFalse:
+                        CssClass.Add('font-weight', 'normal');
+                end;
+                case Style.Italic of
+                    Style.Italic::lvngTrue:
+                        CssClass.Add('font-style', 'italic');
+                    Style.Italic::lvngFalse:
+                        CssClass.Add('font-style', 'normal');
+                end;
+                case Style.Underline of
+                    Style.Underline::lvngTrue:
+                        CssClass.Add('text-decoration', 'underline');
+                    Style.Underline::lvngFalse:
+                        CssClass.Add('text-decoration', 'none');
+                end;
+                if Style."Font Size" > 0 then
+                    CssClass.Add('font-size', StrSubstNo('%1px', Style."Font Size"));
+                if Style."Font Color" <> '' then
+                    CssClass.Add('color', Style."Font Color");
+                if Style."Background Color" <> '' then
+                    CssClass.Add('background-color', Style."Background Color");
+                Json.Add('.pw-' + LowerCase(StyleCode), CssClass);
+            end;
+    end;
+
+    local procedure IsClickableCell(var CalculationUnit: Record lvngCalculationUnit): Boolean
+    begin
         if (CalculationUnit.Type = CalculationUnit.Type::lvngAmountLookup) or (CalculationUnit.Type = CalculationUnit.Type::lvngCountLookup) then begin
             if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::lvngLoanCard then
                 exit(true);
@@ -200,15 +444,15 @@ codeunit 14135220 lvngPerformanceMgmt
                 LoanAmountsByDimension.SetFilter(BusinessUnitFilter, SystemFilter."Business Unit");
         case CalculationUnit."Based On Date" of
             CalculationUnit."Based On Date"::lvngApplication:
-                LoanAmountsByDimension.SetRange(DateApplicationFilter, SystemFilter."Date From", SystemFilter."Date To");
+                LoanAmountsByDimension.SetFilter(DateApplicationFilter, SystemFilter."Date Filter");
             CalculationUnit."Based On Date"::lvngClosed:
-                LoanAmountsByDimension.SetRange(DateClosedFilter, SystemFilter."Date From", SystemFilter."Date To");
+                LoanAmountsByDimension.SetFilter(DateClosedFilter, SystemFilter."Date Filter");
             CalculationUnit."Based On Date"::lvngFunded:
-                LoanAmountsByDimension.SetRange(DateFundedFilter, SystemFilter."Date From", SystemFilter."Date To");
+                LoanAmountsByDimension.SetFilter(DateFundedFilter, SystemFilter."Date Filter");
             CalculationUnit."Based On Date"::lvngLocked:
-                LoanAmountsByDimension.SetRange(DateLockedFilter, SystemFilter."Date From", SystemFilter."Date To");
+                LoanAmountsByDimension.SetFilter(DateLockedFilter, SystemFilter."Date Filter");
             CalculationUnit."Based On Date"::lvngSold:
-                LoanAmountsByDimension.SetRange(DateSoldFilter, SystemFilter."Date From", SystemFilter."Date To");
+                LoanAmountsByDimension.SetFilter(DateSoldFilter, SystemFilter."Date Filter");
         end;
         LoanAmountsByDimension.Open();
         LoanAmountsByDimension.Read();
@@ -270,7 +514,7 @@ codeunit 14135220 lvngPerformanceMgmt
         else
             if SystemFilter."Business Unit" <> '' then
                 GLEntry.SetFilter(lvngBusinessUnitCode, SystemFilter."Business Unit");
-        GLEntry.SetRange(lvngPostingDate, SystemFilter."Date From", SystemFilter."Date To");
+        GLEntry.SetFilter(lvngPostingDate, SystemFilter."Date Filter");
         case CalculationUnit."Amount Type" of
             CalculationUnit."Amount Type"::lvngNetAmount:
                 begin

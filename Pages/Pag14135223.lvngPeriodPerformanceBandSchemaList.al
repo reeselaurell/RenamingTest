@@ -29,7 +29,7 @@ page 14135223 lvngPeriodPerfBandSchemaList
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = page lvngPeriodPerfBandSchemaLines;
-                RunPageLink = "Band Code" = field(Code);
+                RunPageLink = "Schema Code" = field(Code);
             }
         }
     }

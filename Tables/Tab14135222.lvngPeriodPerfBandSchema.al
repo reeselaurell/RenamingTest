@@ -19,7 +19,7 @@ table 14135222 lvngPeriodPerfBandSchema
         BandLine: Record lvngPeriodPerfBandSchemaLine;
     begin
         BandLine.Reset();
-        BandLine.SetRange("Band Code", Code);
+        BandLine.SetRange("Schema Code", Code);
         BandLine.DeleteAll();
     end;
 }

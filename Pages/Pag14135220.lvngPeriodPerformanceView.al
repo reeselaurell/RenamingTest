@@ -43,7 +43,7 @@ page 14135220 lvngPeriodPerformanceView
     {
         area(Processing)
         {
-            action(Export)
+            action(ExcelExport)
             {
                 Caption = 'Excel Export';
                 Image = Excel;
@@ -53,20 +53,32 @@ page 14135220 lvngPeriodPerformanceView
 
                 trigger OnAction()
                 begin
-                    CurrPage.DataGrid.ExportToExcel();
+                    ExportToExcel(GridExportMode::lvngXlsx);
                 end;
             }
-            action(Print)
+            action(PdfExport)
             {
-                Caption = 'Print';
-                Image = Print;
+                Caption = 'Pdf Export';
+                Image = ExportFile;
+                Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
+
+                trigger OnAction()
+                begin
+                    ExportToExcel(GridExportMode::lvngPdf);
+                end;
+            }
+            action(HtmlExport)
+            {
+                Caption = 'Html Export';
+                PromotedCategory = Process;
+                PromotedIsBig = true;
                 Promoted = true;
 
                 trigger OnAction()
                 begin
-                    CurrPage.DataGrid.Print();
+                    ExportToExcel(GridExportMode::lvngHtml);
                 end;
             }
         }
@@ -78,6 +90,7 @@ page 14135220 lvngPeriodPerformanceView
         BandSchema: Record lvngPeriodPerfBandSchema;
         Buffer: Record lvngPerformanceValueBuffer temporary;
         TempBandLine: Record lvngPeriodPerfBandSchemaLine temporary;
+        PerformanceMgmt: Codeunit lvngPerformanceMgmt;
         SchemaName: Text;
         Dim1Filter: Code[20];
         Dim2Filter: Code[20];
@@ -93,6 +106,7 @@ page 14135220 lvngPeriodPerformanceView
         RowSchemaCode: Code[20];
         BandSchemaCode: Code[20];
         StylesInUse: Dictionary of [Code[20], Boolean];
+        GridExportMode: Enum lvngGridExportMode;
         UnsupportedBandTypeErr: Label 'Band type is not supported: %1';
         FieldFormatTxt: Label 'b%1c%2';
         SchemaNameFormatTxt: Label '%1 - %2';
@@ -130,17 +144,19 @@ page 14135220 lvngPeriodPerformanceView
         BandLine: Record lvngPeriodPerfBandSchemaLine;
         AccountingPeriod: Record "Accounting Period";
         SystemFilter: Record lvngSystemCalculationFilter temporary;
-        PerformanceMgmt: Codeunit lvngPerformanceMgmt;
         StartDate: Date;
         EndDate: Date;
         TotalStartDate: Date;
         TotalEndDate: Date;
         Multiplier: Integer;
     begin
+        TempBandLine.Reset();
+        TempBandLine.DeleteAll();
         BandLine.Reset();
-        BandLine.SetRange("Band Code", BandSchema.Code);
+        BandLine.SetRange("Schema Code", BandSchema.Code);
         BandLine.FindSet();
         repeat
+            Clear(TempBandLine);
             TempBandLine := BandLine;
             TempBandLine.Insert();
             case BandLine."Band Type" of
@@ -309,15 +325,14 @@ page 14135220 lvngPeriodPerformanceView
         TempBandLine.FindSet();
         repeat
             Clear(SystemFilter);
-            SystemFilter."Date From" := TempBandLine."Date From";
-            SystemFilter."Date To" := TempBandLine."Date To";
+            SystemFilter."Date Filter" := StrSubstNo('%1..%2', TempBandLine."Date From", TempBandLine."Date To");
             SystemFilter."Shortcut Dimension 1" := Dim1Filter;
             SystemFilter."Shortcut Dimension 2" := Dim2Filter;
             SystemFilter."Shortcut Dimension 3" := Dim3Filter;
             SystemFilter."Shortcut Dimension 4" := Dim4Filter;
             SystemFilter."Business Unit" := BusinessUnitFilter;
             Clear(PerformanceMgmt);
-            PerformanceMgmt.CalculatePeriod(Buffer, TempBandLine, RowSchema, ColSchema, SystemFilter);
+            PerformanceMgmt.CalculatePeriod(Buffer, TempBandLine."Band No.", TempBandLine."Band Type", RowSchema, ColSchema, SystemFilter);
         until TempBandLine.Next() = 0;
         TempBandLine.Reset();
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngFormula);
@@ -340,7 +355,8 @@ page 14135220 lvngPeriodPerformanceView
         Setting.Add('mode', 'none');
         Json.Add('sorting', Setting);
         Json.Add('columnAutoWidth', true);
-        SetupGridStyles();
+        Clear(PerformanceMgmt);
+        CurrPage.DataGrid.SetupStyles(PerformanceMgmt.GetGridStyles(StylesInUse.Keys()));
         CurrPage.DataGrid.InitializeDXGrid(Json);
     end;
 
@@ -349,6 +365,7 @@ page 14135220 lvngPeriodPerformanceView
         RowLine: Record lvngPerformanceRowSchemaLine;
         CalcUnit: Record lvngCalculationUnit;
         Loan: Record lvngLoan;
+        SystemFilter: Record lvngSystemCalculationFilter temporary;
         GLEntry: Record "G/L Entry";
         LoanList: Page lvngLoanList;
         GLEntries: Page lvngPerformanceGLEntries;
@@ -357,18 +374,26 @@ page 14135220 lvngPeriodPerformanceView
         if TempBandLine."Band Type" = TempBandLine."Band Type"::lvngNormal then begin
             RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
             CalcUnit.Get(RowLine."Calculation Unit Code");
+            Clear(SystemFilter);
+            SystemFilter."Date Filter" := StrSubstNo('%1..%2', TempBandLine."Date From", TempBandLine."Date To");
+            SystemFilter."Shortcut Dimension 1" := Dim1Filter;
+            SystemFilter."Shortcut Dimension 2" := Dim2Filter;
+            SystemFilter."Shortcut Dimension 3" := Dim3Filter;
+            SystemFilter."Shortcut Dimension 4" := Dim4Filter;
+            SystemFilter."Business Unit" := BusinessUnitFilter;
+            Clear(PerformanceMgmt);
             case CalcUnit."Lookup Source" of
                 CalcUnit."Lookup Source"::lvngLoanCard:
                     begin
                         Loan.Reset();
-                        ApplyLoanFilter(Loan, CalcUnit, TempBandLine."Date From", TempBandLine."Date To");
+                        PerformanceMgmt.ApplyLoanFilter(Loan, CalcUnit, SystemFilter);
                         LoanList.SetTableView(Loan);
                         LoanList.RunModal();
                     end;
                 CalcUnit."Lookup Source"::lvngLedgerEntries:
                     begin
                         GLEntry.Reset();
-                        ApplyGLFilter(GLEntry, CalcUnit, TempBandLine."Date From", TempBandLine."Date To");
+                        PerformanceMgmt.ApplyGLFilter(GLEntry, CalcUnit, SystemFilter);
                         GLEntries.SetTableView(GLEntry);
                         GLEntries.RunModal();
                     end;
@@ -376,96 +401,9 @@ page 14135220 lvngPeriodPerformanceView
         end;
     end;
 
-    local procedure ApplyLoanFilter(var Loan: Record lvngLoan; var CalcUnit: Record lvngCalculationUnit; DateFrom: Date; DateTo: Date)
+    local procedure ExportToExcel(Mode: Enum lvngGridExportMode)
     begin
-        Loan.FilterGroup(2);
-        if CalcUnit."Dimension 1 Filter" <> '' then
-            Loan.SetRange(lvngGlobalDimension1Code, CalcUnit."Dimension 1 Filter")
-        else
-            if Dim1Filter <> '' then
-                Loan.SetRange(lvngGlobalDimension1Code, Dim1Filter);
-        if CalcUnit."Dimension 2 Filter" <> '' then
-            Loan.SetRange(lvngGlobalDimension2Code, CalcUnit."Dimension 2 Filter")
-        else
-            if Dim2Filter <> '' then
-                Loan.SetRange(lvngGlobalDimension2Code, Dim2Filter);
-        if CalcUnit."Dimension 3 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
-        else
-            if Dim3Filter <> '' then
-                Loan.SetRange(lvngShortcutDimension3Code, Dim3Filter);
-        if CalcUnit."Dimension 4 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
-        else
-            if Dim4Filter <> '' then
-                Loan.SetRange(lvngShortcutDimension4Code, Dim4Filter);
-        if CalcUnit."Dimension 5 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter");
-        if CalcUnit."Dimension 6 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter");
-        if CalcUnit."Dimension 7 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter");
-        if CalcUnit."Dimension 8 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter");
-        if CalcUnit."Business Unit Filter" <> '' then
-            Loan.SetRange(lvngBusinessUnitCode, CalcUnit."Business Unit Filter")
-        else
-            if BusinessUnitFilter <> '' then
-                Loan.SetRange(lvngBusinessUnitCode, BusinessUnitFilter);
-        case CalcUnit."Based On Date" of
-            CalcUnit."Based On Date"::lvngApplication:
-                Loan.SetRange(lvngApplicationDate, DateFrom, DateTo);
-            CalcUnit."Based On Date"::lvngClosed:
-                Loan.SetRange(lvngDateClosed, DateFrom, DateTo);
-            CalcUnit."Based On Date"::lvngFunded:
-                Loan.SetRange(lvngDateFunded, DateFrom, DateTo);
-            CalcUnit."Based On Date"::lvngLocked:
-                Loan.SetRange(lvngDateLocked, DateFrom, DateTo);
-            CalcUnit."Based On Date"::lvngSold:
-                Loan.SetRange(lvngDateSold, DateFrom, DateTo);
-        end;
-        Loan.FilterGroup(0);
-    end;
-
-    local procedure ApplyGLFilter(var GLEntry: Record "G/L Entry"; var CalcUnit: Record lvngCalculationUnit; DateFrom: Date; DateTo: Date)
-    begin
-        GLEntry.FilterGroup(2);
-        GLEntry.SetFilter("G/L Account No.", CalcUnit."Account No. Filter");
-        if CalcUnit."Dimension 1 Filter" <> '' then
-            GLEntry.SetRange("Global Dimension 1 Code", CalcUnit."Dimension 1 Filter")
-        else
-            if Dim1Filter <> '' then
-                GLEntry.SetRange("Global Dimension 1 Code", Dim1Filter);
-        if CalcUnit."Dimension 2 Filter" <> '' then
-            GLEntry.SetRange("Global Dimension 2 Code", CalcUnit."Dimension 2 Filter")
-        else
-            if Dim2Filter <> '' then
-                GLEntry.SetRange("Global Dimension 2 Code", Dim2Filter);
-        if CalcUnit."Dimension 3 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
-        else
-            if Dim3Filter <> '' then
-                GLEntry.SetRange(lvngShortcutDimension3Code, Dim3Filter);
-        if CalcUnit."Dimension 4 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
-        else
-            if Dim4Filter <> '' then
-                GLEntry.SetRange(lvngShortcutDimension4Code, Dim4Filter);
-        if CalcUnit."Dimension 5 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter");
-        if CalcUnit."Dimension 6 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter");
-        if CalcUnit."Dimension 7 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter");
-        if CalcUnit."Dimension 8 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter");
-        if CalcUnit."Business Unit Filter" <> '' then
-            GLEntry.SetRange("Business Unit Code", CalcUnit."Business Unit Filter")
-        else
-            if BusinessUnitFilter <> '' then
-                GLEntry.SetRange("Business Unit Code", BusinessUnitFilter);
-        GLEntry.SetRange("Posting Date", DateFrom, DateTo);
-        GLEntry.FilterGroup(0);
+        Error('Not Implemented');
     end;
 
     local procedure GetData() DataSource: JsonArray
@@ -533,7 +471,7 @@ page 14135220 lvngPeriodPerformanceView
                             ColLine.SetRange("Schema Code", ColSchema.Code);
                             ColLine.FindSet();
                             repeat
-                                RowData.Add(StrSubstNo(FieldFormatTxt, TempBandLine."Line No.", ColLine."Column No."), ColLine."Secondary Caption");
+                                RowData.Add(StrSubstNo(FieldFormatTxt, TempBandLine."Band No.", ColLine."Column No."), ColLine."Secondary Caption");
                             until ColLine.Next() = 0;
                         until TempBandLine.Next() = 0;
                         DataSource.Add(RowData);
@@ -605,11 +543,13 @@ page 14135220 lvngPeriodPerformanceView
         //Name Column
         Clear(PeriodBand);
         Clear(BandColumns);
+        PeriodBand.Add('fixed', true);
+        PeriodBand.Add('fixedPosition', 'left');
         PeriodBand.Add('caption', '');
         BandColumns.Add(GetColumn('Name', 'Name', 'desc'));
         PeriodBand.Add('columns', BandColumns);
         GridColumns.Add(PeriodBand);
-        //Period bands
+        //Bands
         TempBandLine.Reset();
         TempBandLine.FindSet();
         repeat
@@ -620,7 +560,7 @@ page 14135220 lvngPeriodPerformanceView
             ColLine.SetRange("Schema Code", RowSchema."Column Schema");
             ColLine.FindFirst();
             repeat
-                BandColumns.Add(GetColumn(StrSubstNo(FieldFormatTxt, TempBandLine."Line No.", ColLine."Column No."), ColLine."Primary Caption", ''));
+                BandColumns.Add(GetColumn(StrSubstNo(FieldFormatTxt, TempBandLine."Band No.", ColLine."Column No."), ColLine."Primary Caption", ''));
             until ColLine.Next() = 0;
             PeriodBand.Add('columns', BandColumns);
             GridColumns.Add(PeriodBand);
@@ -633,136 +573,5 @@ page 14135220 lvngPeriodPerformanceView
         Col.Add('caption', Caption);
         if CssClass <> '' then
             Col.Add('cssClass', CssClass);
-    end;
-
-    local procedure SetupGridStyles()
-    var
-        Json: JsonObject;
-        CssClass: JsonObject;
-        StyleCode: Code[20];
-        Style: Record lvngStyle;
-    begin
-        Clear(CssClass);
-        CssClass.Add('font-weight', 'bold');
-        CssClass.Add('font-style', 'italic');
-        CssClass.Add('font-size', '14px');
-        CssClass.Add('text-decoration', 'underline');
-        CssClass.Add('text-align', 'center !important');
-        CssClass.Add('border-left', 'none !important');
-        CssClass.Add('border-right', 'none !important');
-        Json.Add('.dx-header-row td', CssClass);
-        Clear(CssClass);
-        CssClass.Add('text-align', 'center');
-        CssClass.Add('font-style', 'italic');
-        CssClass.Add('text-decoration', 'underline');
-        CssClass.Add('font-weight', 'bold');
-        CssClass.Add('color', '#959595');
-        Json.Add('tr.secondary-header', CssClass);
-        Clear(CssClass);
-        CssClass.Add('border', '1px solid #ddd');
-        Json.Add('tr.secondary-header td', CssClass);
-        Clear(CssClass);
-        CssClass.Add('font-size', '12px');
-        CssClass.Add('text-align', 'right');
-        Json.Add('.dx-data-row', CssClass);
-        Clear(CssClass);
-        CssClass.Add('font-weight', 'bold');
-        CssClass.Add('text-align', 'left');
-        CssClass.Add('border-right', '1px solid #808080');
-        CssClass.Add('white-space', 'nowrap');
-        Json.Add('td.desc', CssClass);
-        Clear(CssClass);
-        CssClass.Add('text-align', 'right');
-        Json.Add('.right', CssClass);
-        Clear(CssClass);
-        CssClass.Add('color', 'red');
-        Json.Add('.red', CssClass);
-        Clear(CssClass);
-        CssClass.Add('font-weight', 'bold');
-        Json.Add('.bold', CssClass);
-        Clear(CssClass);
-        CssClass.Add('font-style', 'italic');
-        Json.Add('.italic', CssClass);
-        Clear(CssClass);
-        CssClass.Add('font-size', '14px');
-        Json.Add('.big', CssClass);
-        Clear(CssClass);
-        CssClass.Add('color', 'blue');
-        Json.Add('.font-blue', CssClass);
-        Clear(CssClass);
-        CssClass.Add('background-color', '#CCFFCC');
-        Json.Add('.background-honeydew', CssClass);
-        Clear(CssClass);
-        CssClass.Add('background-color', '#99CCFF');
-        Json.Add('.background-columbia-blue', CssClass);
-        Clear(CssClass);
-        CssClass.Add('border-bottom', '1px solid #808080');
-        Json.Add('.border-bottom-thin td', CssClass);
-        Clear(CssClass);
-        CssClass.Add('border-bottom', '3px solid #808080');
-        Json.Add('.border-bottom-thick td', CssClass);
-        Clear(CssClass);
-        CssClass.Add('font-size', '2px');
-        CssClass.Add('line-height', '1');
-        Json.Add('td.third-size', CssClass);
-        Clear(CssClass);
-        CssClass.Add('font-size', '16px');
-        CssClass.Add('font-weight', 'bold');
-        CssClass.Add('font-style', 'italic');
-        CssClass.Add('border-top', '3px double #000');
-        CssClass.Add('border-bottom', '3px double #000');
-        CssClass.Add('background-color', '#C0C0C0');
-        Json.Add('.heading td', CssClass);
-        Clear(CssClass);
-        CssClass.Add('font-size', '12px');
-        CssClass.Add('font-weight', 'bold');
-        CssClass.Add('border-top', '1px solid #000');
-        CssClass.Add('border-bottom', 'solid #000');
-        Json.Add('.subtotals td', CssClass);
-        Clear(CssClass);
-        CssClass.Add('font-size', '12px');
-        CssClass.Add('font-weight', 'bold');
-        CssClass.Add('border-top', '1px solid #000');
-        CssClass.Add('border-bottom', 'double #000');
-        Json.Add('.totals td', CssClass);
-        Clear(CssClass);
-        CssClass.Add('padding-left', '15px !important');
-        Json.Add('.indent1 td:first-child', CssClass);
-        Clear(CssClass);
-        CssClass.Add('padding-left', '25px !important');
-        Json.Add('.indent2 td:first-child', CssClass);
-        Clear(CssClass);
-        CssClass.Add('padding-left', '35px !important');
-        Json.Add('.ident3 td:first-child', CssClass);
-        foreach StyleCode in StylesInUse.Keys do
-            if Style.Get(StyleCode) then begin
-                Clear(CssClass);
-                case Style.Bold of
-                    Style.Bold::lvngTrue:
-                        CssClass.Add('font-weight', 'bold');
-                    Style.Bold::lvngFalse:
-                        CssClass.Add('font-weight', 'normal');
-                end;
-                case Style.Italic of
-                    Style.Italic::lvngTrue:
-                        CssClass.Add('font-style', 'italic');
-                    Style.Italic::lvngFalse:
-                        CssClass.Add('font-style', 'normal');
-                end;
-                case Style.Underline of
-                    Style.Underline::lvngTrue:
-                        CssClass.Add('text-decoration', 'underline');
-                    Style.Underline::lvngFalse:
-                        CssClass.Add('text-decoration', 'none');
-                end;
-                if Style."Font Size" > 0 then
-                    CssClass.Add('font-size', StrSubstNo('%1px', Style."Font Size"));
-                if Style."Font Color" <> '' then
-                    CssClass.Add('color', Style."Font Color");
-                if Style."Background Color" <> '' then
-                    CssClass.Add('background-color', Style."Background Color");
-                Json.Add('.pw-' + LowerCase(StyleCode), CssClass);
-            end;
-        CurrPage.DataGrid.SetupStyles(Json);
     end;
 }

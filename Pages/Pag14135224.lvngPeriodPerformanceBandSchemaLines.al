@@ -10,7 +10,7 @@ page 14135224 lvngPeriodPerfBandSchemaLines
         {
             repeater(Group)
             {
-                field("Line No."; "Line No.") { ApplicationArea = All; Caption = 'Band No.'; }
+                field("Line No."; "Band No.") { ApplicationArea = All; Caption = 'Band No.'; }
                 field("Period Type"; "Period Type") { ApplicationArea = All; }
                 field("Period Offset"; "Period Offset") { ApplicationArea = All; }
                 field("Period Length Formula"; "Period Length Formula") { ApplicationArea = All; }

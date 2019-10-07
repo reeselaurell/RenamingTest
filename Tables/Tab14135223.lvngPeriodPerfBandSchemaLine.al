@@ -5,8 +5,8 @@ table 14135223 lvngPeriodPerfBandSchemaLine
 
     fields
     {
-        field(1; "Band Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngPeriodPerfBandSchema.Code; }
-        field(2; "Line No."; Integer) { DataClassification = CustomerContent; }
+        field(1; "Schema Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngPeriodPerfBandSchema.Code; }
+        field(2; "Band No."; Integer) { DataClassification = CustomerContent; }
         field(10; "Period Type"; Enum lvngPerformancePeriodType) { DataClassification = CustomerContent; }
         field(11; "Period Offset"; Integer) { DataClassification = CustomerContent; }
         field(12; "Period Length Formula"; DateFormula) { DataClassification = CustomerContent; }
@@ -19,6 +19,6 @@ table 14135223 lvngPeriodPerfBandSchemaLine
 
     keys
     {
-        key(PK; "Band Code", "Line No.") { Clustered = true; }
+        key(PK; "Schema Code", "Band No.") { Clustered = true; }
     }
 }
