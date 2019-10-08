@@ -4,7 +4,7 @@ page 14135236 lvngDimPerfBandSchemaList
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = lvngDimensionPerfBandSchema;
-    Caption = 'Dimension Performance Band List';
+    Caption = 'Dimension Performance Band Schema List';
 
     layout
     {
@@ -31,6 +31,28 @@ page 14135236 lvngDimPerfBandSchemaList
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
+                trigger OnAction()
+                var
+                    DimPerfBandSchemaLines: Page lvngDimPerfBandSchemaLines;
+                    DimPerfBandSchemaLine: Record lvngDimPerfBandSchemaLine;
+                begin
+                    DimPerfBandSchemaLine.Reset();
+                    DimPerfBandSchemaLine.SetRange("Schema Code", Code);
+                    Clear(DimPerfBandSchemaLines);
+                    DimPerfBandSchemaLines.SetParams("Dimension Code");
+                    DimPerfBandSchemaLines.SetTableView(DimPerfBandSchemaLine);
+                    DimPerfBandSchemaLines.RunModal();
+                end;
+            }
+            action(DynamicSchema)
+            {
+                Caption = 'Schema Lines';
+                Visible = "Dynamic Layout" = true;
+                Image = DimensionSets;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                RunObject = page lvngDynamicDimensionLinks;
             }
         }
     }

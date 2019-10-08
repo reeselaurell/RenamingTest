@@ -187,16 +187,11 @@ page 14135235 lvngDimensionPerformanceView
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngNormal);
         TempBandLine.FindSet();
         repeat
-            Clear(SystemFilter);
-            SystemFilter."Date Filter" := DateFilter;
-            SystemFilter."Shortcut Dimension 1" := Dim1Filter;
-            SystemFilter."Shortcut Dimension 2" := Dim2Filter;
-            SystemFilter."Shortcut Dimension 3" := Dim3Filter;
-            SystemFilter."Shortcut Dimension 4" := Dim4Filter;
-            SystemFilter."Business Unit" := BusinessUnitFilter;
+            InitializeSystemFilter(SystemFilter);
             ApplyColumnFilter(SystemFilter, TempBandLine."Dimension Filter");
-            PerformanceMgmt.CalculatePerformanceBand(Buffer, TempBandLine."Band No.", TempBandLine."Band Type", RowSchema, ColSchema, SystemFilter);
+            PerformanceMgmt.CalculatePerformanceBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter);
         until TempBandLine.Next() = 0;
+
         TempBandLine.Reset();
         TempBandLine.SetRange("Schema Code", BandSchema.Code);
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngTotals);
@@ -206,8 +201,24 @@ page 14135235 lvngDimensionPerformanceView
         TempBandLine.Reset();
         TempBandLine.SetRange("Schema Code", BandSchema.Code);
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngFormula);
-        if not TempBandLine.IsEmpty() then
-            Error('Not Implemented');
+        if TempBandLine.FindSet() then
+            repeat
+                InitializeSystemFilter(SystemFilter);
+                ApplyColumnFilter(SystemFilter, TempBandLine."Dimension Filter");
+                Error('Not Implemented');
+            //PerformanceMgmt.CalculateFormulaBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter, TempBandLine.);
+            until TempBandLine.Next() = 0;
+    end;
+
+    local procedure InitializeSystemFilter(var SystemFilter: Record lvngSystemCalculationFilter)
+    begin
+        Clear(SystemFilter);
+        SystemFilter."Date Filter" := DateFilter;
+        SystemFilter."Shortcut Dimension 1" := Dim1Filter;
+        SystemFilter."Shortcut Dimension 2" := Dim2Filter;
+        SystemFilter."Shortcut Dimension 3" := Dim3Filter;
+        SystemFilter."Shortcut Dimension 4" := Dim4Filter;
+        SystemFilter."Business Unit" := BusinessUnitFilter;
     end;
 
     local procedure ApplyColumnFilter(var SystemFilter: Record lvngSystemCalculationFilter; BandFilter: Text)
@@ -269,13 +280,7 @@ page 14135235 lvngDimensionPerformanceView
         if TempBandLine."Band Type" = TempBandLine."Band Type"::lvngNormal then begin
             RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
             CalcUnit.Get(RowLine."Calculation Unit Code");
-            Clear(SystemFilter);
-            SystemFilter."Date Filter" := DateFilter;
-            SystemFilter."Shortcut Dimension 1" := Dim1Filter;
-            SystemFilter."Shortcut Dimension 2" := Dim2Filter;
-            SystemFilter."Shortcut Dimension 3" := Dim3Filter;
-            SystemFilter."Shortcut Dimension 4" := Dim4Filter;
-            SystemFilter."Business Unit" := BusinessUnitFilter;
+            InitializeSystemFilter(SystemFilter);
             ApplyColumnFilter(SystemFilter, TempBandLine."Dimension Filter");
             case CalcUnit."Lookup Source" of
                 CalcUnit."Lookup Source"::lvngLoanCard:

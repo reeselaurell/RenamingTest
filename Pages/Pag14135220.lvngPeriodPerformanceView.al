@@ -159,7 +159,8 @@ page 14135220 lvngPeriodPerformanceView
             TempBandLine := BandLine;
             TempBandLine.Insert();
             case BandLine."Band Type" of
-                BandLine."Band Type"::lvngNormal:
+                BandLine."Band Type"::lvngNormal,
+                BandLine."Band Type"::lvngFormula:  //In case expression formula refers to not cached row formula value it will be calculated as Normal
                     begin
                         case BandLine."Period Type" of
                             BandLine."Period Type"::lvngMTD:
@@ -310,10 +311,6 @@ page 14135220 lvngPeriodPerformanceView
                             TempBandLine."Header Description" := Format(TempBandLine."Date From") + '..' + Format(TempBandLine."Date To");
                         TempBandLine.Modify();
                     end;
-                BandLine."Band Type"::lvngFormula:
-                    begin
-                        Error('Not Implemented');
-                    end
                 else
                     Error(UnsupportedBandTypeErr, BandLine);
             end;
@@ -323,22 +320,28 @@ page 14135220 lvngPeriodPerformanceView
         TempBandLine.SetFilter("Band Type", '<>%1', TempBandLine."Band Type"::lvngFormula);
         TempBandLine.FindSet();
         repeat
-            Clear(SystemFilter);
-            SystemFilter."Date Filter" := StrSubstNo('%1..%2', TempBandLine."Date From", TempBandLine."Date To");
-            SystemFilter."Shortcut Dimension 1" := Dim1Filter;
-            SystemFilter."Shortcut Dimension 2" := Dim2Filter;
-            SystemFilter."Shortcut Dimension 3" := Dim3Filter;
-            SystemFilter."Shortcut Dimension 4" := Dim4Filter;
-            SystemFilter."Business Unit" := BusinessUnitFilter;
-            PerformanceMgmt.CalculatePerformanceBand(Buffer, TempBandLine."Band No.", TempBandLine."Band Type", RowSchema, ColSchema, SystemFilter);
+            InitalizeSystemFilter(SystemFilter);
+            PerformanceMgmt.CalculatePerformanceBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter);
         until TempBandLine.Next() = 0;
 
         TempBandLine.Reset();
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngFormula);
         if TempBandLine.FindSet() then
             repeat
-                Error('Not Implemented');
+                InitalizeSystemFilter(SystemFilter);
+                PerformanceMgmt.CalculateFormulaBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter, TempBandLine."Row Formula Code");
             until TempBandLine.Next() = 0;
+    end;
+
+    local procedure InitalizeSystemFilter(var SystemFilter: Record lvngSystemCalculationFilter)
+    begin
+        Clear(SystemFilter);
+        SystemFilter."Date Filter" := StrSubstNo('%1..%2', TempBandLine."Date From", TempBandLine."Date To");
+        SystemFilter."Shortcut Dimension 1" := Dim1Filter;
+        SystemFilter."Shortcut Dimension 2" := Dim2Filter;
+        SystemFilter."Shortcut Dimension 3" := Dim3Filter;
+        SystemFilter."Shortcut Dimension 4" := Dim4Filter;
+        SystemFilter."Business Unit" := BusinessUnitFilter;
     end;
 
     local procedure InitializeDataGrid()
@@ -372,13 +375,7 @@ page 14135220 lvngPeriodPerformanceView
         if TempBandLine."Band Type" = TempBandLine."Band Type"::lvngNormal then begin
             RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
             CalcUnit.Get(RowLine."Calculation Unit Code");
-            Clear(SystemFilter);
-            SystemFilter."Date Filter" := StrSubstNo('%1..%2', TempBandLine."Date From", TempBandLine."Date To");
-            SystemFilter."Shortcut Dimension 1" := Dim1Filter;
-            SystemFilter."Shortcut Dimension 2" := Dim2Filter;
-            SystemFilter."Shortcut Dimension 3" := Dim3Filter;
-            SystemFilter."Shortcut Dimension 4" := Dim4Filter;
-            SystemFilter."Business Unit" := BusinessUnitFilter;
+            InitalizeSystemFilter(SystemFilter);
             case CalcUnit."Lookup Source" of
                 CalcUnit."Lookup Source"::lvngLoanCard:
                     begin

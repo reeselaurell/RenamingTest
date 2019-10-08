@@ -9,6 +9,7 @@ table 14135233 lvngDimPerfBandSchemaLine
         field(10; "Dimension Filter"; Code[20]) { DataClassification = CustomerContent; }
         field(11; "Header Description"; Text[100]) { DataClassification = CustomerContent; }
         field(12; "Band Type"; Enum lvngPerformanceBandType) { DataClassification = CustomerContent; }
+        field(13; "Row Formula Code"; Code[20]) { DataClassification = CustomerContent; }
     }
 
     keys
