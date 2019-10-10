@@ -468,7 +468,10 @@ report 14135182 lvngGLDetails
     trigger OnPostReport()
     begin
         if ExcelExport then begin
-            ExcelBuffer.CreateBookAndOpenExcel(TemporaryPath + '\Export.xlsx', 'Export', '', CompanyName, '');
+            ExcelBuffer.CreateNewBook('Export');
+            ExcelBuffer.WriteSheet('', CompanyName, '');
+            ExcelBuffer.CloseBook();
+            ExcelBuffer.OpenExcel();
         end;
     end;
 

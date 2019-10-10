@@ -39,6 +39,18 @@ page 14135239 lvngDimPerfBandSchemaLines
     var
         DimensionCode: Code[20];
 
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+        DimPerfSchemaLine: Record lvngDimPerfBandSchemaLine;
+    begin
+        DimPerfSchemaLine.Reset();
+        DimPerfSchemaLine.SetRange("Schema Code", "Schema Code");
+        if DimPerfSchemaLine.FindLast() then
+            "Band No." := DimPerfSchemaLine."Band No." + 10
+        else
+            "Band No." := 10;
+    end;
+
     procedure SetParams(DimCode: Code[20])
     begin
         DimensionCode := DimCode;

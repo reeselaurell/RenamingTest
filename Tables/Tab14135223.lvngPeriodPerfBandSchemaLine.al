@@ -6,7 +6,16 @@ table 14135223 lvngPeriodPerfBandSchemaLine
     fields
     {
         field(1; "Schema Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngPeriodPerfBandSchema.Code; }
-        field(2; "Band No."; Integer) { DataClassification = CustomerContent; }
+        field(2; "Band No."; Integer)
+        {
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "Band No." <= 0 then
+                    Error(ShouldBePositiveNumberErr, FieldCaption("Band No."));
+            end;
+        }
         field(10; "Period Type"; Enum lvngPerformancePeriodType) { DataClassification = CustomerContent; }
         field(11; "Period Offset"; Integer) { DataClassification = CustomerContent; }
         field(12; "Period Length Formula"; DateFormula) { DataClassification = CustomerContent; }
@@ -22,4 +31,7 @@ table 14135223 lvngPeriodPerfBandSchemaLine
     {
         key(PK; "Schema Code", "Band No.") { Clustered = true; }
     }
+
+    var
+        ShouldBePositiveNumberErr: Label '%1 should be positive number';
 }

@@ -40,4 +40,16 @@ page 14135224 lvngPeriodPerfBandSchemaLines
             }
         }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+        PeriodPerfSchemaLine: Record lvngPeriodPerfBandSchemaLine;
+    begin
+        PeriodPerfSchemaLine.Reset();
+        PeriodPerfSchemaLine.SetRange("Schema Code", "Schema Code");
+        if PeriodPerfSchemaLine.FindLast() then
+            "Band No." := PeriodPerfSchemaLine."Band No." + 10
+        else
+            "Band No." := 10;
+    end;
 }

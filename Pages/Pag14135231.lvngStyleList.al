@@ -50,6 +50,7 @@ page 14135231 lvngStyleList
                     end;
                 }
                 field("Font Size"; "Font Size") { ApplicationArea = All; }
+                field("Font Name"; "Font Name") { ApplicationArea = All; }
             }
         }
     }

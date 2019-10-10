@@ -5,7 +5,16 @@ table 14135221 lvngPerformanceRowSchemaLine
     fields
     {
         field(1; "Schema Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngPerformanceRowSchema.Code; }
-        field(2; "Line No."; Integer) { DataClassification = CustomerContent; }
+        field(2; "Line No."; Integer)
+        {
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "Line No." <= 0 then
+                    Error(ShouldBePositiveErr, FieldCaption("Line No."));
+            end;
+        }
         field(3; "Column No."; Integer) { DataClassification = CustomerContent; }
         field(10; Description; Text[100]) { DataClassification = CustomerContent; }
         field(11; "Row Type"; Enum lvngPerformanceRowType) { DataClassification = CustomerContent; }
@@ -24,6 +33,7 @@ table 14135221 lvngPerformanceRowSchemaLine
 
     var
         RenameIsNotAllowedErr: Label 'It is not allowed to rename Performance Row Schema Lines. Delete and create new instead.';
+        ShouldBePositiveErr: Label '%1 should be positive number';
 
     trigger OnDelete()
     var

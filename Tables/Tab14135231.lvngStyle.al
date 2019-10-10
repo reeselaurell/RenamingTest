@@ -13,6 +13,7 @@ table 14135231 lvngStyle
         field(14; "Background Color"; Text[100]) { DataClassification = CustomerContent; }
         field(15; "Font Color"; Text[100]) { DataClassification = CustomerContent; }
         field(16; "Font Size"; Integer) { DataClassification = CustomerContent; }
+        field(17; "Font Name"; Text[100]) { DataClassification = CustomerContent; }
     }
 
     keys
