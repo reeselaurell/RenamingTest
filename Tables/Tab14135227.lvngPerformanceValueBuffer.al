@@ -9,10 +9,12 @@ table 14135227 lvngPerformanceValueBuffer
         field(11; Interactive; Boolean) { }
         field(12; "Style Code"; Code[20]) { }
         field(13; "Number Format Code"; Code[20]) { }
+        field(14; "Calculation Unit Code"; Code[20]) { }
     }
 
     keys
     {
         key(PK; "Row No.", "Band No.", "Column No.") { Clustered = true; }
+        key(CalcUnit; "Calculation Unit Code") { }
     }
 }

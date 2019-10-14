@@ -182,7 +182,7 @@ page 14135552 lvngSwitchEdit
                     Returns := ConditionLine."Right Side";
                 end else begin
                     Predicate := Predicate + ConditionLine."Left Side";
-                    Predicate := Predicate + ConditionLine."Right Side";
+                    Returns := Returns + ConditionLine."Right Side";
                 end;
             until ConditionLine.Next() = 0;
             if Predicate <> '' then

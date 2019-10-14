@@ -206,8 +206,38 @@ codeunit 14135550 lvngExpressionEngine
     end;
 
     procedure Iif(ExpressionCode: Code[20]; var ValueBuffer: Record lvngExpressionValueBuffer): Text
+    var
+        ExpressionHeader: Record lvngExpressionHeader;
+        ExpressionLine: Record lvngExpressionLine;
+        LeftHand: Text;
+        RightHand: Text;
+        Return: Text;
+        Comparison: Enum lvngComparison;
+        Result: Boolean;
     begin
-        Error('Not Implemented');
+        ExpressionHeader.Get(ExpressionCode);
+        if ExpressionHeader.Type <> ExpressionHeader.Type::Iif then
+            Error(WrongTypeErr);
+        ExpressionLine.Reset();
+        ExpressionLine.SetRange("Expression Code", ExpressionCode);
+        ExpressionLine.SetRange("Line No.", 0);
+        ExpressionLine.FindSet();
+        repeat
+            LeftHand += ExpressionLine."Left Side";
+            RightHand += ExpressionLine."Right Side";
+            Comparison := ExpressionLine.Comparison;
+        until ExpressionLine.Next() = 0;
+        Result := ResolveCondition(LeftHand, Comparison, RightHand, ValueBuffer);
+        ExpressionLine.Reset();
+        ExpressionLine.SetRange("Expression Code", ExpressionCode);
+        if Result then
+            ExpressionLine.SetRange("Line No.", 1)
+        else
+            ExpressionLine.SetRange("Line No.", 2);
+        repeat
+            Return += ExpressionLine."Right Side";
+        until ExpressionLine.Next() = 0;
+        exit(CalculateOrReturnValue(Return, ValueBuffer));
     end;
 
     procedure CloneValueBuffer(var FromBuffer: Record lvngExpressionValueBuffer; var ToBuffer: Record lvngExpressionValueBuffer)
@@ -783,5 +813,50 @@ codeunit 14135550 lvngExpressionEngine
             end;
         end;
         exit(String);
+    end;
+
+
+    procedure FormatComparison(Comparison: Enum lvngComparison): Text
+    begin
+        case Comparison of
+            Comparison::Contains:
+                exit('like');
+            Comparison::Equal:
+                exit('eq');
+            Comparison::NotEqual:
+                exit('neq');
+            Comparison::Greater:
+                exit('gt');
+            Comparison::GreaterOrEqual:
+                exit('gte');
+            Comparison::Less:
+                exit('lt');
+            Comparison::LessOrEqual:
+                exit('lte');
+            Comparison::Within:
+                exit('in');
+        end;
+    end;
+
+    procedure ParseComparison(Comparison: Text) Result: Enum lvngComparison
+    begin
+        case Comparison of
+            'like':
+                Result := Result::Contains;
+            'eq':
+                Result := Result::Equal;
+            'neq':
+                Result := Result::NotEqual;
+            'gt':
+                Result := Result::Greater;
+            'gte':
+                Result := Result::GreaterOrEqual;
+            'lt':
+                Result := Result::Less;
+            'lte':
+                Result := Result::LessOrEqual;
+            'in':
+                Result := Result::Within;
+        end;
     end;
 }

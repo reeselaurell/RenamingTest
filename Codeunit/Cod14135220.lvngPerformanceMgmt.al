@@ -63,6 +63,7 @@ codeunit 14135220 lvngPerformanceMgmt
                 Buffer."Column No." := ColLine."Column No.";
                 Buffer."Row No." := RowLine."Line No.";
                 Buffer."Band No." := BandNo;
+                Buffer."Calculation Unit Code" := RowLine."Calculation Unit Code";
                 if CalculationUnit.Get(RowLine."Calculation Unit Code") then begin
                     Buffer.Value := CalculateSingleBandValue(CalculationUnit, SystemFilter, Cache, Path);
                     Buffer.Interactive := IsClickableCell(CalculationUnit);
@@ -88,18 +89,19 @@ codeunit 14135220 lvngPerformanceMgmt
         Cache: Dictionary of [Code[20], Decimal];
         Path: List of [Code[20]];
         CalculationType: Enum lvngCalculationUnitType;
-        Value: Decimal;
     begin
         ColLine.Reset();
         ColLine.SetRange("Schema Code", ColSchema.Code);
         ColLine.FindSet();
+        //The catch here is the following:
+        //First those cells which are legible for row formula are just calculated and pushed to cache
+        //Then regular Calculate PerformanceBand is called to calculate the rest of cells while already calculated will be taken from cache
         repeat
             RowLine.SetRange(SchemaCode, RowSchema.Code);
             RowLine.SetRange(ColumnNo, ColLine."Column No.");
             RowLine.Open();
-            while RowLine.Read() do begin
-                Value := CalculateSingleRowValue(RowLine.LineNo, ColLine."Column No.", RowLine.CalcUnitCode, RowFormulaCode, Buffer, Cache, Path);
-            end;
+            while RowLine.Read() do
+                CalculateSingleRowValue(RowLine.LineNo, ColLine."Column No.", RowLine.CalcUnitCode, RowFormulaCode, Buffer, Cache, Path);
             RowLine.Close();
         until ColLine.Next() = 0;
         CalculatePerformanceBand(Buffer, BandNo, RowSchema, ColSchema, SystemFilter, Cache, Path);

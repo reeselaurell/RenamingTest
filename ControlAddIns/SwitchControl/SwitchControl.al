@@ -12,6 +12,7 @@ controladdin SwitchControl
 
     event AddInReady();
     procedure LoadFields(Data: JsonArray);
+    procedure OptimizeForPredicate();
     procedure AppendLine(Predicate: Text; Returns: Text);
     procedure DumpLines();
     event SwitchDataError(Data: Text);

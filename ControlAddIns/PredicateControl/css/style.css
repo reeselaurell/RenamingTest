@@ -1,0 +1,153 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+.clear {clear:both; float:none !important;display:block;overflow:hidden;visibility:hidden;width:0px;height:0px;}
+body.wrapper {
+    font-family: "Segoe UI", "Segoe WP", Segoe, device-segoe, Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12pt;
+    padding: 16px;
+}
+.bold {
+    font-weight: bold;
+}
+#controlAddIn {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", "Segoe WP", Segoe, device-segoe, Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12pt;
+    overflow: visible;
+}
+input {
+    font-family: "Segoe UI", "Segoe WP", Segoe, device-segoe, Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 12pt;
+}
+input.ctl, div.combobox {
+    border-color: #ABADB3;
+    border-width: 1px;
+    border-style: solid;
+    transition-property: all;
+    transition-delay: 0.2s;
+    transition-duration: 0.5s;
+    height: 19px;
+    width: 146px;
+}
+input.ctl, label {
+    display: block;
+    padding: 0 2px;
+    line-height: 21px;
+    box-sizing: content-box;
+    height: 23px;
+}
+label {
+    line-height: 23px;
+}
+button {
+    line-height: 19px;
+    padding: 2px 8px;
+    display: block;
+}
+input.ctl:hover, div.combobox:hover {
+    border-bottom-color: #CBDCEA;
+    border-top-color: #4682B4;
+    border-left-color: #88AECF;
+    border-right-color: #88AECF;
+    border-radius: 2px;
+}
+input.ctl:active, input.ctl:focus, div.combobox:focus {
+    border-bottom-color: #CBC8DE;
+    border-top-color: #483D8B;
+    border-left-color: #CBC8DE;
+    border-right-color: #CBC8DE;
+    border-radius: 2px;
+}
+input::-ms-clear {
+    display: none;
+}
+div.predicate-control {
+    min-width: 550px;
+    padding: 8px 0;
+}
+div.predicate-control label {
+    float: left;
+    width: 92px;
+}
+div.predicate-control div.left {
+    margin: 0 390px 0 0;
+    width: auto;
+}
+div.predicate-control div.right {
+    float: right;
+    width: 275px;
+}
+div.predicate-control div.comparison {
+    width: 88px;
+    margin-right: 8px;
+    float: right;
+}
+div.combobox {
+    position: relative;
+    padding: 2px;
+}
+div.combobox div.button {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuM4zml1AAAAApSURBVBhXYwCC/yACCwCLgwh0BXAxGAOmAJ2PIoAiAQM4JWAASYKBAQB/kRTsyFSGnQAAAABJRU5ErkJggg==) no-repeat #E0EEFC center center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 16px;
+    border-left: 1px solid #CBC8DE;
+}
+div.combobox div.button-overlay {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuM4zml1AAAAAqSURBVBhXY0hISPjPgAWAxUEEugK4GIwBU4DORxFAkYABnBIwgCrBwAAAJhgsjJIq9/AAAAAASUVORK5CYII=) no-repeat #fff center center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 16px;
+    border-left: 1px solid #fff;
+    transition-property: "opacity";
+    transition-duration: 0.5s;
+}
+div.combobox div.button-overlay:hover {
+    opacity: 0;
+}
+div.combobox div.text {
+    margin-right: 17px;
+    width: auto;
+}
+div.combobox input {
+    padding: 0;
+    display: block;
+    width: 100%;
+    margin-right: 20px;
+    border: 0;
+}
+div.combobox ul {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    min-width: 100%;
+    top: 26px;
+    left: -1px;
+    background: #fff;
+    border: 1px solid #A4A4A4;
+    max-height: 156px;
+    overflow: auto;
+    z-index: 10000;
+    display: none;
+    list-style-type: none;
+    box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 6px;
+}
+div.combobox ul li {
+    margin: 0;
+    padding: 4px;
+    cursor: default;
+    white-space: nowrap;
+}
+div.combobox ul li.selected {
+    background-color: #CDE6F7;
+}
+div.combobox.dd ul {
+    display: block;
+}

@@ -24,6 +24,7 @@ table 14135221 lvngPerformanceRowSchemaLine
         field(15; "Neg. Style Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngStyle.Code; }
         field(16; "Hide Zero Line"; Boolean) { DataClassification = CustomerContent; }
         field(17; "Row Style"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngStyle.Code; }
+        field(50; "Data Row Index"; Integer) { DataClassification = CustomerContent; Description = 'For use in excel export'; }
     }
 
     keys

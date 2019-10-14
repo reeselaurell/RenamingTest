@@ -334,15 +334,13 @@ function DumpLines() {
         try
         {
             var ctl = $(this);
-            var c = {};
-            tmp = ctl.find('.field');
             var c = { leftHand: ctl.data('left'), rightHand: ctl.data('right'), comparison: ctl.find('.comparison').data('item') };
             if (!c.leftHand)
                 return doPost = ThrowConditionDataError(cd, 'You must specify left hand expression');
             if (!c.rightHand)
                 return doPost = ThrowConditionDataError(cd, 'You must specify right hand expression');
             if (!c.comparison)
-                return doPost(cd, 'You must specify expression comparison method');
+                return doPost = ThrowConditionDataError(cd, 'You must specify expression comparison method');
             cd.push(c);
         }
         catch(e)
@@ -369,7 +367,8 @@ function ApplyFormula(id, left, formula) {
 }
 
 function RestoreFormula(id, left) {
-    $('#' + id).find(left ? '.left input' : '.right input').val(ctl.data(left ? 'left' : 'right'));
+    var ctl = $('#' + id);
+    ctl.find(left ? '.left input' : '.right input').val(ctl.data(left ? 'left' : 'right'));
 }
 
 function ThrowConditionDataError(cd, e) {

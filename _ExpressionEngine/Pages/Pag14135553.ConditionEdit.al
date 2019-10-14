@@ -56,7 +56,6 @@ page 14135553 lvngConditionEdit
                         Message(Data);
                     end;
 
-
                     trigger ReportLines(Data: JsonArray)
                     var
                         ConditionLine: Record lvngExpressionLine;
@@ -97,7 +96,7 @@ page 14135553 lvngConditionEdit
                                     ConditionLine."Right Side" := CopyStr(Right, 1, 250);
                                     Right := DelStr(Right, 1, 250);
                                 end;
-                                ConditionLine.Comparison := ParseComparison(Comparison);
+                                ConditionLine.Comparison := Engine.ParseComparison(Comparison);
                                 ConditionLine.Insert();
                                 SplitNo := SplitNo + 1;
                             end;
@@ -206,54 +205,10 @@ page 14135553 lvngConditionEdit
                     Left := Left + ConditionLine."Left Side";
                     Right := Right + ConditionLine."Right Side";
                 end;
-                Cond := FormatComparison(ConditionLine.Comparison);
+                Cond := Engine.FormatComparison(ConditionLine.Comparison);
             until ConditionLine.Next() = 0;
             if Left <> '' then
                 CurrPage.ConditionControl.AppendLine(Left, Cond, Right);
-        end;
-    end;
-
-    local procedure FormatComparison(Comparison: Enum lvngComparison): Text
-    begin
-        case Comparison of
-            Comparison::Contains:
-                exit('like');
-            Comparison::Equal:
-                exit('eq');
-            Comparison::NotEqual:
-                exit('neq');
-            Comparison::Greater:
-                exit('gt');
-            Comparison::GreaterOrEqual:
-                exit('gte');
-            Comparison::Less:
-                exit('lt');
-            Comparison::LessOrEqual:
-                exit('lte');
-            Comparison::Within:
-                exit('in');
-        end;
-    end;
-
-    local procedure ParseComparison(Comparison: Text): Enum lvngComparison
-    begin
-        case Comparison of
-            'like':
-                exit(ConditionLine.Comparison::Contains);
-            'eq':
-                exit(ConditionLine.Comparison::Equal);
-            'neq':
-                exit(ConditionLine.Comparison::NotEqual);
-            'gt':
-                exit(ConditionLine.Comparison::Greater);
-            'gte':
-                exit(ConditionLine.Comparison::GreaterOrEqual);
-            'lt':
-                exit(ConditionLine.Comparison::Less);
-            'lte':
-                exit(ConditionLine.Comparison::LessOrEqual);
-            'in':
-                exit(ConditionLine.Comparison::Within);
         end;
     end;
 }

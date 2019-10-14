@@ -1,25 +1,65 @@
 ﻿var control = undefined;
-var condition_template = undefined;
-var condition_host = undefined;
-var condition_count = 0;
+var predicate = undefined;
 var is_loading_data = false;
 var field_list = [];
 
-function AppendCondition() {
-    var clone = condition_template.clone(true).off();
-    clone.attr('id', 'condition_' + condition_count++);
-    clone.data('case', '');
-    clone.data('returns', '');
-    condition_host.append(clone);
-    clone.find('button').click(function () {
-        $(this).closest('.condition-control').remove();
-        condition_count--;
-    });
-    InitControls(clone);
-    clone.find('.case').change(function () {
+function Initialize(){
+    predicate.data('left', '');
+    predicate.data('right', '');
+    InitControls(predicate);
+    InitPredicate();
+}
+
+function InitPredicate() {
+    predicate.find('.left').change(function () {
         if (!is_loading_data) {
             var me = $(this);
-            var ctl = me.closest('.condition-control');
+            var data = me.data('item');
+            var cancel = true;
+            var newVal = '';
+            if (typeof data === 'string') {
+                if (data == '')
+                    newVal = '""';
+                else if (!isNaN(data) || data.indexOf('[') != -1)
+                    newVal = data;
+                else
+                    newVal = '"' + data + '"';
+                cancel = false;
+            }
+            else {
+                switch (data.type) {
+                    case 's':
+                        newVal = prompt('Please, specify a constant value:', TrimChar(predicate.data('left'), '"'));
+                        if (newVal != null) {
+                            cancel = false;
+                            if (newVal == '' || isNaN(newVal))
+                                newVal = '"' + newVal + '"';
+                        }
+                        break;
+                    case 'f':
+                        Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('EditFormula', [true, predicate.data('left')]);
+                        break;
+                    case 'v':
+                        cancel = false;
+                        newVal = '[' + data.n + ']';
+                        break;
+                }
+            }
+            if (cancel)
+                me.find('input').val(predicate.data('left'));
+            else {
+                me.find('input').val(newVal);
+                predicate.data('left', newVal);
+            }
+        }
+    });
+    predicate.find('.left input').blur(function () {
+        var me = $(this);
+        me.val(predicate.data('left'));
+    });
+    predicate.find('.right').change(function () {
+        if (!is_loading_data) {
+            var me = $(this);
             var data = me.data('item');
             var cancel = true;
             var newVal = '';
@@ -27,7 +67,7 @@ function AppendCondition() {
                 if (data == '') {
                     newVal = '""';
                 }
-                else if (!isNaN(data) || IsWrappedTo(data, '(', ')') || IsWrappedTo(data, '"', '"')) {
+                else if (!isNaN(data) || data.indexOf('[') != -1 || IsWrappedTo(data, '(', ')') || IsWrappedTo(data, '"', '"')) {
                     newVal = data;
                 }
                 else {
@@ -37,8 +77,16 @@ function AppendCondition() {
             }
             else {
                 switch (data.type) {
+                    case 's':
+                        newVal = prompt('Please, specify a constant value:', TrimChar(predicate.data('right'), '"'));
+                        if (newVal != null) {
+                            cancel = false;
+                            if (newVal == '' || isNaN(newVal))
+                                newVal = '"' + newVal + '"';
+                        }
+                        break;
                     case 'r':
-                        var rng = ctl.data('case').split('..');
+                        var rng = predicate.data('right').split('..');
                         rng[0] = TrimChar(rng[0], '(', ')');
                         if (rng.length > 1)
                             rng[1] = TrimChar(rng[1], '(', ')');
@@ -53,94 +101,40 @@ function AppendCondition() {
                             }
                         }
                         break;
-                    case 's':
-                        newVal = prompt('Please, specify a constant value:', TrimChar(ctl.data('case'), '"'));
-                        if (newVal != null) {
-                            cancel = false;
-                            if (newVal == '' || isNaN(newVal))
-                                newVal = '"' + newVal + '"';
-                        }
-                        break;
                     case 'c':
-                        newVal = prompt('Please, specify pipe (\'|\') separated values:', TrimChar(ctl.data('case'), '(', ')'));
+                        newVal = prompt('Please, specify pipe (\'|\') separated values:', TrimChar(predicate.data('right'), '(', ')'));
                         if (newVal != null) {
                             cancel = false;
                             newVal = '(' + newVal + ')';
                         }
                         break;
-                }
-            }
-            if (cancel) {
-                me.find('input').val(ctl.data('case'));
-            }
-            else {
-                me.find('input').val(newVal);
-                ctl.data('case', newVal);
-            }
-        }
-    });
-    clone.find('.case input').blur(function () {
-        var me = $(this);
-        var ctl = me.closest('.condition-control');
-        me.val(ctl.data('case'));
-    });
-    clone.find('.returns').change(function () {
-        if (!is_loading_data) {
-            var me = $(this);
-            var ctl = me.closest('.condition-control');
-            var data = me.data('item');
-            var cancel = true;
-            var newVal = '';
-            if (typeof data === 'string') {
-                if (data == '') {
-                    newVal = '""';
-                }
-                else if (!isNaN(data) || data.indexOf('[') != -1 || IsWrappedTo(data, '"', '"')) {
-                    newVal = data;
-                }
-                else {
-                    newVal = '"' + data + '"';
-                }
-                cancel = false;
-            }
-            else {
-                switch (data.type) {
                     case 'v':
                         cancel = false;
                         newVal = '[' + data.n + ']';
                         break;
-                    case 's':
-                        newVal = prompt('Please, specify a constant value:', TrimChar(ctl.data('returns'), '"'));
-                        if (newVal != null) {
-                            cancel = false;
-                            if (newVal == '' || isNaN(newVal))
-                                newVal = '"' + newVal + '"';
-                        }
-                        break;
                     case 'f':
-                        Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('EditFormula', [ctl.attr('id'), ctl.data('returns')]);
+                        Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('EditFormula', [false, predicate.data('right')]);
                         break;
                 }
             }
             if (cancel) {
-                me.find('input').val(ctl.data('returns'));
+                me.find('input').val(predicate.data('right'));
             }
             else {
                 me.find('input').val(newVal);
-                ctl.data('returns', newVal);
+                predicate.data('right', newVal);
             }
         }
     });
-    clone.find('.returns input').blur(function () {
+    predicate.find('.right input').blur(function () {
         var me = $(this);
-        var ctl = me.closest('.condition-control');
-        me.val(ctl.data('returns'));
+        me.val(predicate.data('right'));
     });
-    clone.find('input').change(function (e) {
+    predicate.find('input').change(function (e) {
         e.stopPropagation();
     });
-    return clone;
 }
+
 function InitControls(dom) {
     InitCombobox(dom);
 }
@@ -255,118 +249,14 @@ function InitCombobox(dom) {
     });
 }
 
-/* Exposed methods */
-function LoadFields(data) {
-    try {
-        //field_list.push({ n: name, type: 'v' });
-        field_list = data;
-        field_list.sort(function (a, b) { return a.n < b.n ? -1 : a.n > b.n ? 1 : 0; });
-        var ul = condition_template.find('.returns ul');
-        ul.find('li:first-child').data('object', { type: 's' })
-        ul.find('li:nth-child(2)').data('object', { type: 'f' });
-        for (var i = 0; i < field_list.length; i++) {
-            var li = $('<li></li>');
-            li.data('object', field_list[i]);
-            li.text(field_list[i].n);
-            ul.append(li);
-        }
-        ul = condition_template.find('.case ul');
-        ul.find('li:first-child').data('object', { type: 's' });
-        ul.find('li:nth-child(2)').data('object', { type: 'r' });
-        ul.find('li:nth-child(3)').data('object', { type: 'c' });
-    }
-    catch (e) {
-        alert(e);
-    }
-}
-
-function OptimizeForPredicate() {
-    condition_template.find('button').css('display', 'none');
-    condition_template.find('.case > .button, .case > .button-overlay').css('display', 'none');
-    condition_template.find('.case input').attr('disabled', 'disabled');
-    condition_template.find('.returns').css('margin-right', 0);
-    $('#new-condition').css('display', 'none');
-}
-
-function AppendLine(predicate, returns) {
-    try {
-        is_loading_data = true;
-        var cc = AppendCondition();
-        if (predicate) {
-            var pType = GetRecordType(predicate);
-            SetComboboxValue(cc.find('.case'), function (obj) {
-                return obj.type == pType;
-            }, predicate);
-        }
-        cc.data('case', predicate);
-        if (returns) {
-            var rType = GetRecordType(returns);
-            var val = rType != 'v' ? '' : returns.slice(1, returns.length - 1);
-            SetComboboxValue(cc.find('.returns'), function (obj) {
-                if (obj.type == 'v')
-                    return obj.n == val;
-                else
-                    return obj.type == rType;
-            }, returns);
-        }
-        cc.data('returns', returns);
-    }
-    catch (e) {
-        alert(e);
-    }
-    finally {
-        is_loading_data = false;
-    }
-}
-function DumpLines() {
-    var cd = [];
-    var doPost = true;
-    condition_host.find('div.condition-control').each(function () {
-        try
-        {
-            var ctl = $(this);
-            var c = { predicate: ctl.data('case'), returns: ctl.data('returns') };
-            if (!c.returns)
-                return doPost = ThrowConditionDataError(cd, 'You must specify a return value');
-            if (!c.predicate)
-                return doPost = ThrowConditionDataError(cd, 'You must specify case predicate');
-            cd.push(c);
-        }
-        catch(e)
-        {
-            alert(e);
-        }
-    });
-
-    if (doPost)
-        PostConditionData(cd);
-    return doPost;
-}
-
-function ApplyFormula(id, cancel, formula) {
-    var ctl = $('#' + id);
-    if (cancel)
-        ctl.find('.returns input').val(ctl.data('returns'));
-    else {
-        ctl.find('.returns input').val(formula);
-        ctl.data('returns', formula);
-    }
-}
-
-function ApplyConstant(id, constant) {
-    $('#' + id).data('constant', constant);
-}
-
-/* Helper functions */
-
-function ThrowConditionDataError(cd, e) {
-    var err = 'Switch case #' + (cd.length + 1) + ': ' + e;
-    window.setTimeout(function () { Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('SwitchDataError', [err]); }, 10);
+function ThrowPredicateDataError(e) {
+    window.setTimeout(function () { Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('PredicateDataError', [e]); }, 10);
     return false;
 }
-function PostConditionData(cd) {
+
+function PostPredicate(leftHand, comparison, rightHand) {
     window.setTimeout(function () {
-        Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('ReportLines', [cd]);
+        Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('PredicateResponse', [leftHand, comparison, rightHand]);
     }, 10);
 }
 
@@ -390,6 +280,7 @@ function SetComboboxValue(cb, comparer, text) {
     if (text)
         cb.find('input').val(text);
 }
+
 function TrimChar(s, cStart, cEnd) {
     if (!s)
         return s;
@@ -401,6 +292,7 @@ function TrimChar(s, cStart, cEnd) {
         s = s.slice(0, s.length - 1);
     return s;
 }
+
 function GetRecordType(rec) {
     if (!isNaN(rec) || IsWrappedTo(rec, '"'))
         return 's';
@@ -411,10 +303,115 @@ function GetRecordType(rec) {
         return 'v';
     return 'f';
 }
+
 function IsWrappedTo(s, wStart, wEnd) {
     if (!s)
         return false;
     if (typeof wEnd === 'undefined')
         wEnd = wStart;
     return s[0] == wStart && s[s.length - 1] == wEnd;
+}
+
+/* Exposed methods */
+function LoadFields(data) {
+    try
+    {
+        field_list = data;
+        field_list.sort(function (a, b) { return a.n < b.n ? -1 : a.n > b.n ? 1 : 0; });
+        var ull = predicate.find('.left ul');
+        ull.find('li:first-child').data('object', { type: 's' });
+        ull.find('li:nth-child(2)').data('object', { type: 'f' });
+        var ulr = predicate.find('.right ul');
+        ulr.find('li:first-child').data('object', { type: 's' });
+        ulr.find('li:nth-child(2)').data('object', { type: 'r' });
+        ulr.find('li:nth-child(3)').data('object', { type: 'c' });
+        ulr.find('li:nth-child(4)').data('object', { type: 'f' });
+        for (var i = 0; i < field_list.length; i++) {
+            var li = $('<li></li>');
+            li.data('object', field_list[i]);
+            li.text(field_list[i].n);
+            ull.append(li);
+            ulr.append(li.clone(true));
+        }
+    }
+    catch (e)
+    {
+        alert(e);
+    }
+}
+
+function SetPredicate(leftHand, comparison, rightHand) {
+    try {
+        is_loading_data = true;
+        if (leftHand) {
+            var lType = GetRecordType(leftHand);
+            var val = lType != 'v' ? '' : leftHand.slice(1, leftHand.length - 1);
+            SetComboboxValue(predicate.find('.left'), function (obj) {
+                if (obj.type == 'v')
+                    return obj.n == val;
+                else
+                    return obj.type == lType;
+            }, leftHand);
+        }
+        predicate.data('left', leftHand);
+        if (rightHand) {
+            var rType = GetRecordType(rightHand);
+            var val = rType != 'v' ? '' : rightHand.slice(1, rightHand.length - 1);
+            SetComboboxValue(predicate.find('.right'), function (obj) {
+                if (obj.type == 'v')
+                    return obj.n == val;
+                else
+                    return obj.type == rType;
+            }, rightHand);
+        }
+        predicate.data('right', rightHand);
+        SetComboboxValue(predicate.find('.comparison'), comparison);
+    }
+    catch (e) {
+        alert(e);
+    }
+    finally {
+        is_loading_data = false;
+    }
+}
+
+function RequestPredicate() {
+    var doPost = true;
+    var leftHand = '';
+    var rightHand = '';
+    var comparison = '';
+    try
+    {
+        leftHand = predicate.data('left');
+        rightHand = predicate.data('right');
+        comparison = predicate.find('.comparison').data('item');
+        if (!leftHand)
+            doPost = ThrowPredicateDataError('You must specify left hand expression');
+        if (!rightHand)
+            doPost = ThrowPredicateDataError('You must specify right hand expression');
+        if (!comparison)
+            doPost = ThrowPredicateDataError('You must specify expression comparison method');
+    }
+    catch(e)
+    {
+        alert(e);
+    }
+    if (doPost)
+        PostPredicate(leftHand, comparison, rightHand);
+    return doPost;
+}
+
+function ApplyFormula(left, formula) {
+    if (left) {
+        predicate.find('.left input').val(formula);
+        predicate.data('left', formula);
+    }
+    else {
+        predicate.find('.right input').val(formula);
+        predicate.data('right', formula);
+    }
+}
+
+function RestoreFormula(left) {
+    predicate.find(left ? '.left input' : '.right input').val(predicate.data(left ? 'left' : 'right'));
 }

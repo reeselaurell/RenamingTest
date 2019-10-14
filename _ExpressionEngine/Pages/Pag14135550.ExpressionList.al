@@ -38,6 +38,7 @@ page 14135550 lvngExpressionList
                     FormulaEdit: Page lvngFormulaEdit;
                     SwitchEdit: Page lvngSwitchEdit;
                     ConditionEdit: Page lvngConditionEdit;
+                    IifEdit: Page lvngIifEdit;
                 begin
                     FillBuffer(Rec, Metadata, TempCondBuffer);
                     case Type of
@@ -72,6 +73,17 @@ page 14135550 lvngExpressionList
                                 ConditionEdit.LookupMode(true);
                                 ConditionEdit.SetFieldList(TempCondBuffer);
                                 ConditionEdit.RunModal();
+                            end;
+                        Type::Iif:
+                            begin
+                                Clear(IifEdit);
+                                ConditionHeader.Reset();
+                                ConditionHeader := Rec;
+                                ConditionHeader.SetRecFilter();
+                                IifEdit.SetTableView(ConditionHeader);
+                                IifEdit.LookupMode(true);
+                                IifEdit.SetFieldList(TempCondBuffer);
+                                IifEdit.RunModal();
                             end;
                     end;
                 end;
@@ -126,6 +138,7 @@ page 14135550 lvngExpressionList
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
         Rec."Consumer Id" := ProviderId;
+        Rec.Mark(true);
     end;
 
     [IntegrationEvent(false, false)]
@@ -145,10 +158,16 @@ page 14135550 lvngExpressionList
         case AllowedTypes of
             AllowedTypes::All: //No filter
                 ;
-            AllowedTypes::Condition, AllowedTypes::Formula, AllowedTypes::Switch: //Simple filter
-                ExpressionHeader.SetRange(Type, AllowedTypes)
-            else //Complex filter
-                ExpressionHeader.SetFilter(Type, GetExpressionFilter(AllowedTypes));
+            AllowedTypes::Condition, AllowedTypes::Formula, AllowedTypes::Switch, AllowedTypes::Iif: //Simple filter
+                ExpressionHeader.SetRange(Type, AllowedTypes);
+        //TODO: Set Complex filter when filtering on enums is fixed
+        //    else //Complex filter
+        //ExpressionHeader.SetFilter(Type, GetExpressionFilter(AllowedTypes));
+        //SetExpressionFilter(ExpressionHeader, AllowedTypes);
+        //begin
+        //    ExpressionHeader.SetFilter(Type, '%1|%2', AllowedTypes::Condition, AllowedTypes::Formula);
+        //    Message(ExpressionHeader.GetFilter(Type));
+        //end;
         end;
         CurrPage.SetTableView(ExpressionHeader);
         CurrPage.LookupMode(true);
@@ -157,31 +176,58 @@ page 14135550 lvngExpressionList
         else
             exit('');
     end;
-
+    /*
     local procedure GetExpressionFilter(ExpressionType: Enum lvngExpressionType): Text
     var
         Idx: Integer;
         Test: Integer;
-        Names: List of [Text];
         Ordinals: List of [Integer];
         Filter: Text;
+        Val: Integer;
     begin
         Filter := '';
         if ExpressionType <> ExpressionType::All then begin
             Test := ExpressionType.AsInteger();
-            Names := ExpressionType.Names;
             Ordinals := ExpressionType.Ordinals;
             for Idx := Ordinals.Count() downto 1 do begin
                 if Test > 0 then begin
-                    if Test div Ordinals.Get(Idx) > 0 then
-                        Filter += '|' + Names.Get(Idx);
-                    Test := Test mod Ordinals.Get(Idx);
+                    Val := Ordinals.Get(Idx);
+                    if Test div Val > 0 then
+                        Filter := '''' + ExpressionType.Names().Get(Idx) + '''|' + Filter;
+                    Test := Test mod Val;
                 end;
             end;
         end;
         if Filter = '' then
             exit('')
         else
-            exit(DelChr(Filter, '<', '|'));
+            exit(DelChr(Filter, '>', '|'));
     end;
+
+    local procedure SetExpressionFilter(var ExpressionHeader: Record lvngExpressionHeader; ExpressionType: Enum lvngExpressionType)
+    var
+        Ordinals: List of [Integer];
+        Allowed: List of [Integer];
+        Test: Integer;
+        Val: Integer;
+        Idx: Integer;
+    begin
+        //Workaround (for some reason pipe filter on enums is not supported, at least for now)
+        if ExpressionHeader.FindSet() then begin
+            Test := ExpressionType.AsInteger();
+            Ordinals := ExpressionType.Ordinals;
+            for Idx := Ordinals.Count() downto 2 do begin //First is 0
+                Val := Ordinals.Get(Idx);
+                if Test >= Val then
+                    Allowed.Add(Val);
+                Test := Test mod Val;
+            end;
+            repeat
+                if Allowed.IndexOf(ExpressionHeader.Type.AsInteger()) <> 0 then
+                    ExpressionHeader.Mark(true);
+            until ExpressionHeader.Next() = 0;
+        end;
+        ExpressionHeader.MarkedOnly(true);
+    end;
+    */
 }
