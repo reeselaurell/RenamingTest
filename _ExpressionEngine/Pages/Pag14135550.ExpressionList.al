@@ -2,8 +2,6 @@ page 14135550 lvngExpressionList
 {
     PageType = List;
     SourceTable = lvngExpressionHeader;
-    UsageCategory = Lists;
-    ApplicationArea = All;
     Caption = 'Expression List';
 
     layout
@@ -146,7 +144,7 @@ page 14135550 lvngExpressionList
     begin
     end;
 
-    procedure SelectExpression(ConsumerId: Guid; ConsumerMetadata: Text; AllowedTypes: Enum lvngExpressionType): Code[20]
+    procedure SelectExpression(ConsumerId: Guid; ConsumerMetadata: Text; SelectedRecord: Code[20]; AllowedTypes: Enum lvngExpressionType): Code[20]
     var
         ExpressionList: Page lvngExpressionList;
         ExpressionHeader: Record lvngExpressionHeader;
@@ -170,6 +168,9 @@ page 14135550 lvngExpressionList
         //end;
         end;
         CurrPage.SetTableView(ExpressionHeader);
+        if SelectedRecord <> '' then
+            if ExpressionHeader.Get(SelectedRecord, ConsumerId) then
+                CurrPage.SetRecord(ExpressionHeader);
         CurrPage.LookupMode(true);
         if CurrPage.RunModal() = Action::LookupOK then
             exit(Code)

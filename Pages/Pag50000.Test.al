@@ -1,9 +1,28 @@
 page 50000 Test
 {
-    PageType = Card;
+    PageType = List;
     ApplicationArea = All;
     UsageCategory = Administration;
+    SourceTable = lvngExpressionLine;
 
+    layout
+    {
+        area(Content)
+        {
+            repeater(Group)
+            {
+                field("Expression Code"; "Expression Code") { ApplicationArea = All; }
+                field("Consumer Id"; "Consumer Id") { ApplicationArea = All; }
+                field("Line No."; "Line No.") { ApplicationArea = All; }
+                field("Split No."; "Split No.") { ApplicationArea = All; }
+                field("Left Side"; "Left Side") { ApplicationArea = All; }
+                field(Comparison; Comparison) { ApplicationArea = All; }
+                field("Right Side"; "Right Side") { ApplicationArea = All; }
+            }
+        }
+    }
+
+    /*
     layout
     {
         area(Content)
@@ -43,4 +62,5 @@ page 50000 Test
     var
         FieldIdx: Integer;
         FieldName: Text;
+    */
 }

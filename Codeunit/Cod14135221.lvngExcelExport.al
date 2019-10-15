@@ -17,24 +17,73 @@ codeunit 14135221 lvngExcelExport
         ws - Write String
     */
     var
+        ExcelExportSetup: Record lvngExcelExportSetup;
         IsInitialized: Boolean;
+        ExportMode: Enum lvngGridExportMode;
         ExcelData: JsonObject;
         Script: JsonArray;
         Instruction: JsonObject;
         Params: JsonObject;
         NotInitializedErr: Label 'Excel Export is not initialized';
         CharactersTxt: Label 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        ExcelFileTxt: Label 'Excel Files (*.xlsx)|*.xlsx';
+        PdfFileTxt: Label 'PDF Files (*.psf)|*.pdf';
+        HtmlFileTxt: Label 'HTML Files (*.html)|*.html';
+        AllFileTxt: Label 'All Files (*.*)|*.*';
 
     procedure Init(Caller: Text; Mode: Enum lvngGridExportMode)
     begin
+        ExcelExportSetup.Get();
+        ExportMode := Mode;
         Clear(ExcelData);
         ExcelData.Add('format', 'ExcelForwardWriter');
         ExcelData.Add('version', '1.0');
         ExcelData.Add('client', Caller);
-        ExcelData.Add('target', Mode);
+        ExcelData.Add('target', Format(Mode));
         ExcelData.Add('generated', CurrentDateTime());
         Clear(Script);
         ExcelData.Add('script', Script);
+    end;
+
+    procedure Download(FileName: Text)
+    var
+        TempBlob: Codeunit "Temp Blob";
+        IStream: InStream;
+        Client: HttpClient;
+        RequestContent: HttpContent;
+        ContentHeaders: HttpHeaders;
+        ResponseMsg: HttpResponseMessage;
+        Input: Text;
+        ErrorMsg: Text;
+    begin
+        ExcelData.WriteTo(Input);
+        RequestContent.WriteFrom(Input);
+        RequestContent.GetHeaders(ContentHeaders);
+        ContentHeaders.Remove('Content-Type');
+        ContentHeaders.Add('Content-Type', 'application/json');
+        Client.Post(ExcelExportSetup."Base Url" + '?code=' + ExcelExportSetup."Access Key", RequestContent, ResponseMsg);
+        if ResponseMsg.HttpStatusCode <> 200 then begin
+            ResponseMsg.Content().ReadAs(ErrorMsg);
+            Error(ErrorMsg);
+        end;
+        TempBlob.CreateInStream(IStream);
+        ResponseMsg.Content().ReadAs(IStream);
+        DownloadFromStream(IStream, '', '', GetDownloadFileFilter(), FileName);
+    end;
+
+    local procedure GetDownloadFileFilter() Result: Text
+    begin
+        case ExportMode of
+            ExportMode::lvngXlsx:
+                Result := ExcelFileTxt;
+            ExportMode::lvngPdf:
+                Result := PdfFileTxt;
+            ExportMode::lvngHtml:
+                Result := HtmlFileTxt;
+        end;
+        if Result <> '' then
+            Result += '|';
+        Result += AllFileTxt;
     end;
 
     procedure AlignRow(Horizontal: Enum lvngCellHorizontalAlignment; Vertical: Enum lvngCellVerticalAlignment; Indent: Integer; Rotation: Integer; ShrinkToFit: Enum lvngDefaultBoolean; WrapText: Enum lvngDefaultBoolean)
@@ -285,8 +334,6 @@ codeunit 14135221 lvngExcelExport
         RangeEnd: Text;
     begin
         case (Comparison) of
-            Comparison::Contains:
-                exit(StrSubstNo('ISNUMBER(MATCH(%1,{%2},0))', LeftHand, RightHand.Replace('|', ',')));
             Comparison::Equal:
                 exit(LeftHand + '=' + RightHand);
             Comparison::Greater:
@@ -299,11 +346,17 @@ codeunit 14135221 lvngExcelExport
                 exit(LeftHand + '<=' + RightHand);
             Comparison::NotEqual:
                 exit(LeftHand + '<>' + RightHand);
-            Comparison::Within:
+            Comparison::Within,
+            Comparison::Contains:
                 begin
-                    Split := RightHand.Split('..');
-                    exit(StrSubstNo('(%1>=%2)AND(%1<=%2)', LeftHand, Split.Get(1), Split.Get(2)));
+                    if RightHand.IndexOf('..') <> 0 then begin
+                        Split := DelChr(RightHand, '<>', '()').Split('..');
+                        exit(StrSubstNo('(%1>=%2)AND(%1<=%2)', LeftHand, Split.Get(1), Split.Get(2)));
+                    end else
+                        exit(StrSubstNo('ISNUMBER(MATCH(%1,{%2},0))', LeftHand, DelChr(RightHand, '<>', '()').Replace('|', ',')));
                 end;
         end;
     end;
+
+
 }

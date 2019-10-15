@@ -72,6 +72,7 @@ page 14135553 lvngConditionEdit
                     begin
                         ConditionLine.Reset();
                         ConditionLine.SetRange("Expression Code", Code);
+                        ConditionLine.SetRange("Consumer Id", "Consumer Id");
                         ConditionLine.DeleteAll();
                         LineNo := 1;
                         foreach Item in Data do begin
@@ -86,6 +87,7 @@ page 14135553 lvngConditionEdit
                             while (Left <> '') and (Right <> '') do begin
                                 Clear(ConditionLine);
                                 ConditionLine."Expression Code" := Code;
+                                ConditionLine."Consumer Id" := "Consumer Id";
                                 ConditionLine."Line No." := LineNo;
                                 ConditionLine."Split No." := SplitNo;
                                 if Left <> '' then begin
@@ -138,7 +140,6 @@ page 14135553 lvngConditionEdit
     }
 
     var
-        TempConditionLine: Record lvngExpressionLine temporary;
         ConditionValueBuffer: Record lvngExpressionValueBuffer temporary;
         ConditionLine: Record lvngExpressionLine;
         Engine: Codeunit lvngExpressionEngine;
@@ -152,8 +153,6 @@ page 14135553 lvngConditionEdit
     begin
         if not Ready then
             if CloseAction = Action::LookupOK then begin
-                TempConditionLine.Reset();
-                TempConditionLine.DeleteAll();
                 CurrPage.ConditionControl.DumpLines();
                 exit(false);
             end;
@@ -191,6 +190,7 @@ page 14135553 lvngConditionEdit
         ConditionValue := Engine.GetFormulaFromLines(Rec);
         ConditionLine.Reset();
         ConditionLine.SetRange("Expression Code", Code);
+        ConditionLine.SetRange("Consumer Id", "Consumer Id");
         ConditionLine.SetFilter("Line No.", '<>%1', 0);
         PrevNo := 0;
         if ConditionLine.FindSet() then begin

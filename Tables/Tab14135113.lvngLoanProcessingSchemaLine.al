@@ -40,7 +40,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
                 ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedFunctionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', ExpressionType::Formula);
+                lvngSelectedFunctionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', lvngFunctionCode, ExpressionType::Formula);
                 if lvngSelectedFunctionCode <> '' then
                     lvngFunctionCode := lvngSelectedFunctionCode;
             end;
@@ -71,7 +71,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
                 ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedSwitchCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', ExpressionType::Switch);
+                lvngSelectedSwitchCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', lvngAccountNoSwitchCode, ExpressionType::Switch);
                 if lvngSelectedSwitchCode <> '' then
                     lvngAccountNoSwitchCode := lvngSelectedSwitchCode;
             end;
@@ -86,7 +86,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
                 ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedConditionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', ExpressionType::Condition);
+                lvngSelectedConditionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', lvngConditionCode, ExpressionType::Condition);
                 if lvngSelectedConditionCode <> '' then
                     lvngConditionCode := lvngSelectedConditionCode;
             end;

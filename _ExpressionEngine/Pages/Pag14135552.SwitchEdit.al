@@ -62,6 +62,7 @@ page 14135552 lvngSwitchEdit
                     begin
                         ConditionLine.Reset();
                         ConditionLine.SetRange("Expression Code", Code);
+                        ConditionLine.SetRange("Consumer Id", "Consumer Id");
                         ConditionLine.DeleteAll();
                         LineNo := 1;
                         foreach Item in Data do begin
@@ -74,6 +75,7 @@ page 14135552 lvngSwitchEdit
                             while (Predicate <> '') and (Returns <> '') do begin
                                 Clear(ConditionLine);
                                 ConditionLine."Expression Code" := Code;
+                                ConditionLine."Consumer Id" := "Consumer Id";
                                 ConditionLine."Line No." := LineNo;
                                 ConditionLine."Split No." := SplitNo;
                                 if Predicate <> '' then begin
@@ -115,7 +117,6 @@ page 14135552 lvngSwitchEdit
     }
 
     var
-        TempConditionLine: Record lvngExpressionLine temporary;
         ConditionValueBuffer: Record lvngExpressionValueBuffer temporary;
         Engine: Codeunit lvngExpressionEngine;
         ValueEmptyErr: Label 'Switch value cannot be empty';
@@ -131,8 +132,6 @@ page 14135552 lvngSwitchEdit
                     Message(ValueEmptyErr);
                     exit(false);
                 end;
-                TempConditionLine.Reset();
-                TempConditionLine.DeleteAll();
                 CurrPage.SwitchControl.DumpLines();
                 exit(false);
             end;
@@ -170,6 +169,7 @@ page 14135552 lvngSwitchEdit
         SwitchValue := Engine.GetFormulaFromLines(Rec);
         ConditionLine.Reset();
         ConditionLine.SetRange("Expression Code", Code);
+        ConditionLine.SetRange("Consumer Id", "Consumer Id");
         ConditionLine.SetFilter("Line No.", '<>%1', 0);
         PrevNo := 0;
         if ConditionLine.FindSet() then begin

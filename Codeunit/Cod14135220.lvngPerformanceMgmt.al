@@ -753,9 +753,11 @@ codeunit 14135220 lvngPerformanceMgmt
                         Evaluate(Result, String)
                     else
                         Result := 0;
-                end
+                end;
+            ExpressionHeader.Type::Iif:
+                Evaluate(Result, ExpressionEngine.Iif(ExpressionHeader, ValueBuffer))
             else
-                Error(UnsupportedExpressionTypeErr);
+                Error(UnsupportedExpressionTypeErr, ExpressionHeader.Type);
         end;
     end;
 

@@ -14,4 +14,14 @@ table 14135551 lvngExpressionHeader
     {
         key(PK; Code, "Consumer Id") { Clustered = true; }
     }
+
+    trigger OnDelete()
+    var
+        ExpressionLine: Record lvngExpressionLine;
+    begin
+        ExpressionLine.Reset();
+        ExpressionLine.SetRange("Expression Code", Code);
+        ExpressionLine.SetRange("Consumer Id", "Consumer Id");
+        ExpressionLine.DeleteAll(true);
+    end;
 }

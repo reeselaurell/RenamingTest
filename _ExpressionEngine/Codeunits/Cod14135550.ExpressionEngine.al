@@ -6,28 +6,12 @@ codeunit 14135550 lvngExpressionEngine
         UnrecognizedFieldErr: Label 'Unrecognized field name: %1';
         UnrecognizedTypeErr: Label 'Unrecognized value type: %1';
 
-    procedure CheckCondition(ConditionCode: Code[20]; var ValueBuffer: Record lvngExpressionValueBuffer): Boolean
-    var
-        ExpressionHeader: Record lvngExpressionHeader;
-    begin
-        ExpressionHeader.Get(ConditionCode);
-        exit(CheckCondition(ExpressionHeader, ValueBuffer));
-    end;
-
     procedure CheckCondition(var ExpressionHeader: Record lvngExpressionHeader; var ValueBuffer: Record lvngExpressionValueBuffer): Boolean
-    var
-        Expression: Text;
-    begin
-        if ExpressionHeader.Type <> ExpressionHeader.Type::Condition then
-            Error(WrongTypeErr);
-        Expression := GetFormulaFromLines(ExpressionHeader);
-        exit(CheckCondition(Expression, ExpressionHeader.Code, ValueBuffer));
-    end;
-
-    local procedure CheckCondition(Expression: Text; ExpressionCode: Code[20]; var ValueBuffer: Record lvngExpressionValueBuffer): Boolean
     var
         ExpressionLine: Record lvngExpressionLine;
         TempValueBuffer: Record lvngExpressionValueBuffer temporary;
+        Expression: Text;
+        LowerExpression: Text;
         ExpressionType: Option "And","Or",Complex;
         LineNo: Integer;
         PrevNo: Integer;
@@ -35,8 +19,10 @@ codeunit 14135550 lvngExpressionEngine
         RightHand: Text;
         Result: Boolean;
         Comparison: Enum lvngComparison;
-        LowerExpression: Text;
     begin
+        if ExpressionHeader.Type <> ExpressionHeader.Type::Condition then
+            Error(WrongTypeErr);
+        Expression := GetFormulaFromLines(ExpressionHeader);
         if Expression = '' then begin
             Expression := 'and';
             ExpressionType := ExpressionType::"And";
@@ -52,7 +38,8 @@ codeunit 14135550 lvngExpressionEngine
             end;
         end;
         ExpressionLine.Reset();
-        ExpressionLine.SetRange("Expression Code", ExpressionCode);
+        ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
+        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
         ExpressionLine.SetFilter("Line No.", '>%1', 0);
         if not ExpressionLine.FindSet() then
             exit(false);
@@ -115,15 +102,7 @@ codeunit 14135550 lvngExpressionEngine
         exit(Result);
     end;
 
-    procedure CalculateFormula(FormulaCode: Code[20]; var ValueBuffer: Record lvngExpressionValueBuffer): Text
-    var
-        ExpressionHeader: Record lvngExpressionHeader;
-    begin
-        ExpressionHeader.Get(FormulaCode);
-        exit(CalculateFormula(ExpressionHeader, ValueBuffer));
-    end;
-
-    procedure CalculateFormula(ExpressionHeader: Record lvngExpressionHeader; var ValueBuffer: Record lvngExpressionValueBuffer): Text
+    procedure CalculateFormula(var ExpressionHeader: Record lvngExpressionHeader; var ValueBuffer: Record lvngExpressionValueBuffer): Text
     var
         Formula: Text;
     begin
@@ -135,15 +114,7 @@ codeunit 14135550 lvngExpressionEngine
         exit(CalculateValue(Formula, ValueBuffer));
     end;
 
-    procedure SwitchCase(SwitchCode: Code[20]; var Result: Text; var ValueBuffer: Record lvngExpressionValueBuffer): Boolean
-    var
-        ExpressionHeader: Record lvngExpressionHeader;
-    begin
-        ExpressionHeader.Get(SwitchCode);
-        exit(SwitchCase(ExpressionHeader, Result, ValueBuffer));
-    end;
-
-    procedure SwitchCase(ExpressionHeader: Record lvngExpressionHeader; var Result: Text; var ValueBuffer: Record lvngExpressionValueBuffer): Boolean
+    procedure SwitchCase(var ExpressionHeader: Record lvngExpressionHeader; var Result: Text; var ValueBuffer: Record lvngExpressionValueBuffer): Boolean
     var
         CaseLine: Record lvngExpressionLine;
         Value: Text;
@@ -157,6 +128,7 @@ codeunit 14135550 lvngExpressionEngine
         Value := CalculateFormula(ExpressionHeader, ValueBuffer);
         CaseLine.Reset();
         CaseLine.SetRange("Expression Code", ExpressionHeader.Code);
+        CaseLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
         CaseLine.SetFilter("Line No.", '>%1', 0);
         if not CaseLine.FindSet() then
             exit(false);
@@ -182,32 +154,25 @@ codeunit 14135550 lvngExpressionEngine
             exit(false);
     end;
 
-    procedure Iif(ConditionCode: Code[20]; TrueFormula: Code[20]; FalseFormula: Code[20]; var ValueBuffer: Record lvngExpressionValueBuffer): Text
+    procedure Iif(var ConditionHeader: Record lvngExpressionHeader; var TrueFormulaHeader: Record lvngExpressionHeader; var FalseFormulaHeader: Record lvngExpressionHeader; var ValueBuffer: Record lvngExpressionValueBuffer): Text
     var
-        ExpressionHeader: Record lvngExpressionHeader;
         FieldList: Dictionary of [Text, Boolean];
-        Expression: Text;
     begin
-        ExpressionHeader.Get(ConditionCode);
-        if ExpressionHeader.Type <> ExpressionHeader.Type::Condition then
+        if ConditionHeader.Type <> ConditionHeader.Type::Condition then
             Error(WrongTypeErr);
-        Expression := GetFormulaFromLines(ExpressionHeader);
-        if CheckCondition(Expression, ExpressionHeader.Code, ValueBuffer) then begin
-            ExpressionHeader.Get(TrueFormula);
-            if ExpressionHeader.Type <> ExpressionHeader.Type::Formula then
+        if CheckCondition(ConditionHeader, ValueBuffer) then begin
+            if TrueFormulaHeader.Type <> TrueFormulaHeader.Type::Formula then
                 Error(WrongTypeErr);
-            exit(CalculateFormula(ExpressionHeader, ValueBuffer));
+            exit(CalculateFormula(TrueFormulaHeader, ValueBuffer));
         end else begin
-            ExpressionHeader.Get(FalseFormula);
-            if ExpressionHeader.Type <> ExpressionHeader.Type::Formula then
+            if FalseFormulaHeader.Type <> FalseFormulaHeader.Type::Formula then
                 Error(WrongTypeErr);
-            exit(CalculateFormula(ExpressionHeader, ValueBuffer));
+            exit(CalculateFormula(FalseFormulaHeader, ValueBuffer));
         end;
     end;
 
-    procedure Iif(ExpressionCode: Code[20]; var ValueBuffer: Record lvngExpressionValueBuffer): Text
+    procedure Iif(var ExpressionHeader: Record lvngExpressionHeader; var ValueBuffer: Record lvngExpressionValueBuffer): Text
     var
-        ExpressionHeader: Record lvngExpressionHeader;
         ExpressionLine: Record lvngExpressionLine;
         LeftHand: Text;
         RightHand: Text;
@@ -215,11 +180,11 @@ codeunit 14135550 lvngExpressionEngine
         Comparison: Enum lvngComparison;
         Result: Boolean;
     begin
-        ExpressionHeader.Get(ExpressionCode);
         if ExpressionHeader.Type <> ExpressionHeader.Type::Iif then
             Error(WrongTypeErr);
         ExpressionLine.Reset();
-        ExpressionLine.SetRange("Expression Code", ExpressionCode);
+        ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
+        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
         ExpressionLine.SetRange("Line No.", 0);
         ExpressionLine.FindSet();
         repeat
@@ -229,7 +194,8 @@ codeunit 14135550 lvngExpressionEngine
         until ExpressionLine.Next() = 0;
         Result := ResolveCondition(LeftHand, Comparison, RightHand, ValueBuffer);
         ExpressionLine.Reset();
-        ExpressionLine.SetRange("Expression Code", ExpressionCode);
+        ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
+        ExpressionHeader.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
         if Result then
             ExpressionLine.SetRange("Line No.", 1)
         else
@@ -428,6 +394,7 @@ codeunit 14135550 lvngExpressionEngine
     begin
         ExpressionLine.Reset();
         ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
+        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
         ExpressionLine.SetRange("Line No.", LineNo);
         if not ExpressionLine.FindSet() then
             exit;
@@ -448,12 +415,14 @@ codeunit 14135550 lvngExpressionEngine
     begin
         ExpressionLine.Reset();
         ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
+        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
         ExpressionLine.SetRange("Line No.", LineNo);
         ExpressionLine.DeleteAll();
         Idx := 1;
         while Formula <> '' do begin
             Clear(ExpressionLine);
             ExpressionLine."Expression Code" := ExpressionHeader.Code;
+            ExpressionLine."Consumer Id" := ExpressionHeader."Consumer Id";
             ExpressionLine."Line No." := 0;
             ExpressionLine."Split No." := Idx;
             ExpressionLine."Left Side" := CopyStr(Formula, 1, 250);

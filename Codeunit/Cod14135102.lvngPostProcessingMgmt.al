@@ -279,12 +279,14 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
         lvngExpressionEngine: Codeunit lvngExpressionEngine;
         lvngExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
+        ExpressionHeader: Record lvngExpressionHeader;
         lvngValue: Text;
         SwitchCaseErrorLbl: Label 'Switch Case %1 can not be resolved';
     begin
         lvngPostProcessingSchemaLine.TestField(lvngExpressionCode);
         lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
-        if not lvngExpressionEngine.SwitchCase(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngValue, lvngExpressionValueBuffer) then
+        ExpressionHeader.Get(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngConditionsMgmt.GetConditionsMgmtConsumerId());
+        if not lvngExpressionEngine.SwitchCase(ExpressionHeader, lvngValue, lvngExpressionValueBuffer) then
             Error(SwitchCaseErrorLbl, lvngPostProcessingSchemaLine.lvngExpressionCode);
         AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
     end;
@@ -294,11 +296,13 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
         lvngExpressionEngine: Codeunit lvngExpressionEngine;
         lvngExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
+        ExpressionHeader: Record lvngExpressionHeader;
         lvngValue: Text;
     begin
         lvngPostProcessingSchemaLine.TestField(lvngExpressionCode);
         lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
-        lvngValue := lvngExpressionEngine.CalculateFormula(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngExpressionValueBuffer);
+        ExpressionHeader.Get(lvngPostProcessingSchemaLine.lvngExpressionCode, lvngConditionsMgmt.GetConditionsMgmtConsumerId());
+        lvngValue := lvngExpressionEngine.CalculateFormula(ExpressionHeader, lvngExpressionValueBuffer);
         AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
     end;
 

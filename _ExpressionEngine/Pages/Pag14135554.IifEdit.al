@@ -32,12 +32,14 @@ page 14135554 lvngIifEdit
                         SplitNo: Integer;
                     begin
                         ExpressionLine.SetRange("Expression Code", Code);
+                        ExpressionLine.SetRange("Consumer Id", "Consumer Id");
                         ExpressionLine.SetRange("Line No.", 0);
                         ExpressionLine.DeleteAll();
                         SplitNo := 1;
                         while (Left <> '') and (Right <> '') do begin
                             Clear(ExpressionLine);
                             ExpressionLine."Expression Code" := Code;
+                            ExpressionLine."Consumer Id" := "Consumer Id";
                             ExpressionLine."Line No." := 0;
                             ExpressionLine."Split No." := SplitNo;
                             SplitNo += 1;
@@ -105,6 +107,7 @@ page 14135554 lvngIifEdit
                     begin
                         ConditionLine.Reset();
                         ConditionLine.SetRange("Expression Code", Code);
+                        ConditionLine.SetRange("Consumer Id", "Consumer Id");
                         ConditionLine.SetFilter("Line No.", '<>0');
                         ConditionLine.DeleteAll();
                         for LineNo := 1 to 2 do
@@ -116,6 +119,7 @@ page 14135554 lvngIifEdit
                                 while Returns <> '' do begin
                                     Clear(ConditionLine);
                                     ConditionLine."Expression Code" := Code;
+                                    ConditionLine."Consumer Id" := "Consumer Id";
                                     ConditionLine."Line No." := LineNo;
                                     ConditionLine."Split No." := SplitNo;
                                     if SplitNo = 1 then

@@ -47,9 +47,12 @@ codeunit 14135114 "lvngValidateLoanJournal"
     local procedure ValidateConditionLine(var lvngExpressionValueBuffer: Record lvngExpressionValueBuffer; lvngConditionCode: Code[20]): Boolean
     var
         lvngExpressionEngine: Codeunit lvngExpressionEngine;
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        ExpressionHeader: Record lvngExpressionHeader;
     begin
         GetLoanVisionSetup();
-        exit(lvngExpressionEngine.CheckCondition(lvngConditionCode, lvngExpressionValueBuffer));
+        ExpressionHeader.Get(lvngConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
+        exit(lvngExpressionEngine.CheckCondition(ExpressionHeader, lvngExpressionValueBuffer));
     end;
 
     local procedure GetLoanVisionSetup()

@@ -64,7 +64,7 @@ page 14135228 lvngCalculationUnitCard
                                 ExpressiontType: Enum lvngExpressionType;
                                 NewCode: Code[20];
                             begin
-                                NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetBandExpressionConsumerId(), Code, ExpressiontType::Formula + ExpressiontType::Switch);
+                                NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetBandExpressionConsumerId(), Code, "Expression Code", ExpressiontType::Formula + ExpressiontType::Switch + ExpressiontType::Iif);
                                 if NewCode <> '' then
                                     "Expression Code" := NewCode;
                             end;

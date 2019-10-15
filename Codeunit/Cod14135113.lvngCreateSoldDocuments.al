@@ -342,25 +342,35 @@ codeunit 14135113 "lvngCreateSoldDocuments"
     end;
 
     local procedure CheckCondition(lvngConditionCode: code[20]): Boolean
+    var
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        ExpressionHeader: Record lvngExpressionHeader;
     begin
         if lvngConditionCode = '' then
             exit(true);
-        exit(lvngExpressionEngine.CheckCondition(lvngConditionCode, lvngExpressionValueBuffer));
+        ExpressionHeader.Get(lvngConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
+        exit(lvngExpressionEngine.CheckCondition(ExpressionHeader, lvngExpressionValueBuffer));
     end;
 
     local procedure GetFunctionValue(lvngFunctionCode: code[20]): Text
+    var
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        ExpressionHeader: Record lvngExpressionHeader;
     begin
-        exit(lvngExpressionEngine.CalculateFormula(lvngFunctionCode, lvngExpressionValueBuffer));
+        ExpressionHeader.Get(lvngFunctionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
+        exit(lvngExpressionEngine.CalculateFormula(ExpressionHeader, lvngExpressionValueBuffer));
     end;
 
     local procedure GetSwitchValue(lvngSwitchCode: code[20]): Code[20]
     var
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        ExpressionHeader: Record lvngExpressionHeader;
         lvngResult: Text;
     begin
-        if not lvngExpressionEngine.SwitchCase(lvngSwitchCode, lvngResult, lvngExpressionValueBuffer) then
+        ExpressionHeader.Get(lvngSwitchCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
+        if not lvngExpressionEngine.SwitchCase(ExpressionHeader, lvngResult, lvngExpressionValueBuffer) then
             exit('');
         exit(copystr(lvngResult, 1, 20));
-
     end;
 
     local procedure GetLoanVisionSetup()

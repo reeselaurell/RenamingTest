@@ -547,7 +547,7 @@ page 14135220 lvngPeriodPerformanceView
                         BandIdx := 0;
                         repeat
                             RowLine.Reset();
-                            RowLine.SetRange("Schema Code", RowSchema."Column Schema");
+                            RowLine.SetRange("Schema Code", TempRowLine."Schema Code");
                             RowLine.SetRange("Line No.", TempRowLine."Line No.");
                             RowLine.FindSet();
                             repeat
@@ -562,29 +562,22 @@ page 14135220 lvngPeriodPerformanceView
                                 else
                                     if (CalcUnit.Type <> CalcUnit.Type::lvngExpression) and (TempBandLine."Band Type" = TempBandLine."Band Type"::lvngFormula) then begin
                                         //Apply row formula
-                                        ExpressionHeader.Get(TempBandLine."Row Formula Code");
+                                        ExpressionHeader.Get(TempBandLine."Row Formula Code", PerformanceMgmt.GetPeriodRowExpressionConsumerId());
                                         ExcelExport.WriteFormula('=' + TranslateRowFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), TempRowLine."Data Row Index", RowLine."Column No." - 1, DataRowStartIdx, DataColStartIdx, ColumnCount));
                                     end else begin
                                         if CalcUnit.Type = CalcUnit.Type::lvngExpression then begin
                                             //Apply column formula
-                                            ExpressionHeader.Get(CalcUnit."Expression Code");
+                                            ExpressionHeader.Get(CalcUnit."Expression Code", PerformanceMgmt.GetBandExpressionConsumerId());
                                             case ExpressionHeader.Type of
                                                 ExpressionHeader.Type::Formula:
-                                                    begin
-                                                        ExcelExport.WriteFormula('=' + TranslateColFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount));
-                                                    end;
+                                                    ExcelExport.WriteFormula('=' + TranslateColFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount));
                                                 ExpressionHeader.Type::Switch:
-                                                    begin
-                                                        ExcelExport.WriteFormula('=IFS(' + TranslateColSwitch(TranslateColFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount), ExpressionHeader.Code) + ')');
-                                                        Error('Not Implemented');
-                                                    end;
+                                                    ExcelExport.WriteFormula('=IFS(' + TranslateColSwitch(TranslateColFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount), ExpressionHeader, DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount) + ')');
                                                 ExpressionHeader.Type::Iif:
-                                                    begin
-                                                        ExcelExport.WriteFormula(StrSubstNo('=IF(%1,%2,%3)',
-                                                            TranslateColPredicate(ExpressionHeader.Code, DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount),
-                                                            TranslateColFormula(GetFormulaFromIif(ExpressionHeader.Code, true), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount),
-                                                            TranslateColFormula(GetFormulaFromIif(ExpressionHeader.Code, false), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount)));
-                                                    end
+                                                    ExcelExport.WriteFormula(StrSubstNo('=IF(%1,%2,%3)',
+                                                        TranslateColPredicate(ExpressionHeader, DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount),
+                                                        TranslateColFormula(GetFormulaFromIif(ExpressionHeader, true), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount),
+                                                        TranslateColFormula(GetFormulaFromIif(ExpressionHeader, false), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount)))
                                                 else
                                                     Error(UnsupportedFormulaTypeErr);
                                             end
@@ -601,20 +594,33 @@ page 14135220 lvngPeriodPerformanceView
                     end;
                 RowLine."Row Type"::lvngHeader:
                     begin
-                        Error('Not Implemented');
+                        ExcelExport.NewRow(RowLine."Line No.");
+                        ExcelExport.StyleRow(DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, -1, '', '', '');
+                        ExcelExport.AlignRow(CellHorizontalAlignment::lvngCenter, CellVerticalAlignment::lvngDefault, -1, 0, DefaultBoolean::lvngFalse, DefaultBoolean::lvngFalse);
+                        ExcelExport.SkipCells(1);
+                        for Idx := 1 to TempBandLine.Count do begin
+                            ColLine.Reset();
+                            ColLine.SetRange("Schema Code", RowSchema."Column Schema");
+                            ColLine.FindSet();
+                            repeat
+                                ExcelExport.WriteString(ColLine."Secondary Caption");
+                            until ColLine.Next() = 0;
+                        end;
                     end;
                 RowLine."Row Type"::lvngEmpty:
                     begin
-                        Error('Not Implemented');
+                        ExcelExport.NewRow(RowLine."Line No.");
                     end;
             end;
         until RowLine.Next() = 0;
 
 
+
+
         Error('Not Implemented');
     end;
 
-    local procedure TranslateColPredicate(ExpressionCode: Code[20]; DataRowOffset: Integer; DataColOffset: Integer; BandIdx: Integer; BandSize: Integer): Text
+    local procedure TranslateColPredicate(var ExpressionHeader: Record lvngExpressionHeader; DataRowOffset: Integer; DataColOffset: Integer; BandIdx: Integer; BandSize: Integer): Text
     var
         ExpressionLine: Record lvngExpressionLine;
         LeftHand: Text;
@@ -623,7 +629,8 @@ page 14135220 lvngPeriodPerformanceView
         ExcelExport: Codeunit lvngExcelExport;
     begin
         ExpressionLine.Reset();
-        ExpressionLine.SetRange("Expression Code", ExpressionCode);
+        ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
+        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
         ExpressionLine.SetRange("Line No.", 0);
         ExpressionLine.FindSet();
         repeat
@@ -634,17 +641,55 @@ page 14135220 lvngPeriodPerformanceView
         exit(ExcelExport.FormatComparison(TranslateColFormula(LeftHand, DataRowOffset, DataColOffset, BandIdx, BandSize), Comparison, TranslateColFormula(RightHand, DataRowOffset, DataColOffset, BandIdx, BandSize)));
     end;
 
-    local procedure TranslateColSwitch(SwitchOn: Text; ExpressionCode: Code[20]) Result: Text;
+    local procedure TranslateColSwitch(SwitchOn: Text; var ExpressionHeader: Record lvngExpressionHeader; DataRowOffset: Integer; DataColOffset: Integer; BandIdx: Integer; BandSize: Integer) Result: Text;
+    var
+        CaseLine: Record lvngExpressionLine;
+        ExcelExport: Codeunit lvngExcelExport;
+        PrevNo: Integer;
+        Predicate: Text;
+        Returns: Text;
     begin
-        Error('Not Implemented');
+        CaseLine.Reset();
+        CaseLine.SetRange("Expression Code", ExpressionHeader.Code);
+        CaseLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
+        CaseLine.SetFilter("Line No.", '<>%1', 0);
+        PrevNo := 0;
+        if CaseLine.FindSet() then begin
+            repeat
+                if PrevNo <> CaseLine."Line No." then begin
+                    if Predicate <> '' then begin
+                        if Predicate.IndexOf('(') = 1 then
+                            Result += ExcelExport.FormatComparison(SwitchOn, CaseLine.Comparison::Within, Predicate)
+                        else
+                            Result += ExcelExport.FormatComparison(SwitchOn, CaseLine.Comparison::Equal, Predicate);
+                        Result += ',' + TranslateColFormula(Returns, DataRowOffset, DataColOffset, BandIdx, BandSize) + ',';
+                    end;
+                    PrevNo := CaseLine."Line No.";
+                    Predicate := CaseLine."Left Side";
+                    Returns := CaseLine."Right Side";
+                end else begin
+                    Predicate := Predicate + CaseLine."Left Side";
+                    Returns := Returns + CaseLine."Right Side";
+                end;
+            until CaseLine.Next() = 0;
+            if Predicate <> '' then begin
+                if Predicate.IndexOf('(') = 1 then
+                    Result += ExcelExport.FormatComparison(SwitchOn, CaseLine.Comparison::Within, Predicate)
+                else
+                    Result += ExcelExport.FormatComparison(SwitchOn, CaseLine.Comparison::Equal, Predicate);
+                Result += ',' + TranslateColFormula(Returns, DataRowOffset, DataColOffset, BandIdx, BandSize) + ',';
+            end;
+        end;
+        Result := DelChr(Result, '>', ',');
     end;
 
-    local procedure GetFormulaFromIif(ExpressionCode: Code[20]; Predicate: Boolean) Result: Text
+    local procedure GetFormulaFromIif(var ExpressionHeader: Record lvngExpressionHeader; Predicate: Boolean) Result: Text
     var
         ExpressionLine: Record lvngExpressionLine;
     begin
         ExpressionLine.Reset();
-        ExpressionLine.SetRange("Expression Code", ExpressionCode);
+        ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
+        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
         if Predicate then
             ExpressionLine.SetRange("Line No.", 1)
         else

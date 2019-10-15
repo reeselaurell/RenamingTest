@@ -43,7 +43,7 @@ table 14135133 "lvngEscrowFieldsMapping"
                 ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', ExpressionType::Switch);
+                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', lvngSwitchCode, ExpressionType::Switch);
                 if lvngSelectedExpressionCode <> '' then
                     lvngSwitchCode := lvngSelectedExpressionCode;
             end;
