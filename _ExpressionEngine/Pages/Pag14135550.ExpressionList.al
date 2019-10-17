@@ -11,6 +11,7 @@ page 14135550 lvngExpressionList
             repeater(Group)
             {
                 field(Code; Code) { ApplicationArea = All; }
+                field("Consumer Id"; "Consumer Id") { ApplicationArea = All; }
                 field(Type; Type) { ApplicationArea = All; }
                 field(Description; Description) { ApplicationArea = All; }
             }

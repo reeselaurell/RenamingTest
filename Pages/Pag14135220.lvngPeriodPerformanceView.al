@@ -425,6 +425,7 @@ page 14135220 lvngPeriodPerformanceView
         DataColStartIdx: Integer;
         DataRowStartIdx: Integer;
         BandIdx: Integer;
+        OutputFileName: Text;
     begin
         //Skip empty lines and calculate excel row indexes (zero based)
         Clear(RowIndexLookup);
@@ -521,8 +522,8 @@ page 14135220 lvngPeriodPerformanceView
         ExcelExport.StyleRow(DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, -1, '', '', '');
         ExcelExport.AlignRow(CellHorizontalAlignment::lvngCenter, CellVerticalAlignment::lvngDefault, -1, 0, DefaultBoolean::lvngDefault, DefaultBoolean::lvngDefault);
         ExcelExport.WriteString(NameTxt);
-        DataRowStartIdx := 1; //Skip Name column
-        DataColStartIdx := -RowId div 10; //Skip header columns
+        DataColStartIdx := 1; //Skip Name column
+        DataRowStartIdx := -RowId div 10 - 1; //Skip header columns, - 1 for zero-based
         for Idx := 1 to TempBandLine.Count do begin
             ColLine.Reset();
             ColLine.SetRange("Schema Code", RowSchema."Column Schema");
@@ -612,12 +613,17 @@ page 14135220 lvngPeriodPerformanceView
                         ExcelExport.NewRow(RowLine."Line No.");
                     end;
             end;
-        until RowLine.Next() = 0;
-
-
-
-
-        Error('Not Implemented');
+        until TempRowLine.Next() = 0;
+        ExcelExport.AutoFit(false, true);
+        case Mode of
+            Mode::lvngXlsx:
+                OutputFileName := 'Period Performance.xlsx';
+            Mode::lvngPdf:
+                OutputFileName := 'Period Performance.pdf';
+            Mode::lvngHtml:
+                OutputFileName := 'Period Performance.html';
+        end;
+        ExcelExport.Download(OutputFileName);
     end;
 
     local procedure TranslateColPredicate(var ExpressionHeader: Record lvngExpressionHeader; DataRowOffset: Integer; DataColOffset: Integer; BandIdx: Integer; BandSize: Integer): Text

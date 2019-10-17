@@ -28,12 +28,14 @@ codeunit 14135220 lvngPerformanceMgmt
     begin
         if IsNullGuid(PeriodRowExpressionConsumerId) then
             Evaluate(PeriodRowExpressionConsumerId, 'f48eb3f6-14d0-4d99-8137-9ff950f223f9');
+        exit(PeriodRowExpressionConsumerId)
     end;
 
     procedure GetDimensionRowExpressionConsumerId(): Guid
     begin
         if IsNullGuid(DimensionRowExpressionConsumerId) then
             Evaluate(DimensionRowExpressionConsumerId, '44398a3f-5733-4e2d-afb8-4aaaa378fc1c');
+        exit(DimensionRowExpressionConsumerId);
     end;
 
     procedure CalculatePerformanceBand(var Buffer: Record lvngPerformanceValueBuffer; BandNo: Integer; var RowSchema: Record lvngPerformanceRowSchema; var ColSchema: Record lvngPerformanceColSchema; var SystemFilter: Record lvngSystemCalculationFilter)

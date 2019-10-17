@@ -2,7 +2,10 @@ codeunit 14135221 lvngExcelExport
 {
     /*
         Script instructions:
+        af - Auto Fit
         ar - Align Row
+        ac - Align Column
+        ax - Align Cell
         br - Begin Range
         fx - Format Cell
         mr - Merge Range
@@ -86,11 +89,11 @@ codeunit 14135221 lvngExcelExport
         Result += AllFileTxt;
     end;
 
-    procedure AlignRow(Horizontal: Enum lvngCellHorizontalAlignment; Vertical: Enum lvngCellVerticalAlignment; Indent: Integer; Rotation: Integer; ShrinkToFit: Enum lvngDefaultBoolean; WrapText: Enum lvngDefaultBoolean)
+    local procedure SetAlignment(TargetFunction: Text; Horizontal: Enum lvngCellHorizontalAlignment; Vertical: Enum lvngCellVerticalAlignment; Indent: Integer; Rotation: Integer; ShrinkToFit: Enum lvngDefaultBoolean; WrapText: Enum lvngDefaultBoolean)
     begin
         Clear(Instruction);
         Clear(Params);
-        Instruction.Add('n', 'ar');
+        Instruction.Add('n', TargetFunction);
         Instruction.Add('p', Params);
         Script.Add(Instruction);
         if Horizontal <> Horizontal::lvngDefault then
@@ -105,6 +108,21 @@ codeunit 14135221 lvngExcelExport
             Params.Add('s', ShrinkToFit = ShrinkToFit::lvngTrue);
         if WrapText <> WrapText::lvngDefault then
             Params.Add('w', WrapText = WrapText::lvngTrue);
+    end;
+
+    procedure AlignRow(Horizontal: Enum lvngCellHorizontalAlignment; Vertical: Enum lvngCellVerticalAlignment; Indent: Integer; Rotation: Integer; ShrinkToFit: Enum lvngDefaultBoolean; WrapText: Enum lvngDefaultBoolean)
+    begin
+        SetAlignment('ar', Horizontal, Vertical, Indent, Rotation, ShrinkToFit, WrapText);
+    end;
+
+    procedure AlignColumn(Horizontal: Enum lvngCellHorizontalAlignment; Vertical: Enum lvngCellVerticalAlignment; Indent: Integer; Rotation: Integer; ShrinkToFit: Enum lvngDefaultBoolean; WrapText: Enum lvngDefaultBoolean)
+    begin
+        SetAlignment('ac', Horizontal, Vertical, Indent, Rotation, ShrinkToFit, WrapText);
+    end;
+
+    procedure AlignCell(Horizontal: Enum lvngCellHorizontalAlignment; Vertical: Enum lvngCellVerticalAlignment; Indent: Integer; Rotation: Integer; ShrinkToFit: Enum lvngDefaultBoolean; WrapText: Enum lvngDefaultBoolean)
+    begin
+        SetAlignment('ax', Horizontal, Vertical, Indent, Rotation, ShrinkToFit, WrapText);
     end;
 
     local procedure SetStyle(TargetFunction: Text; Bold: Enum lvngDefaultBoolean; Italic: Enum lvngDefaultBoolean; Underline: Enum lvngDefaultBoolean; FontSize: Decimal; FontName: Text; ForeColor: Text; BackColor: Text)
@@ -245,7 +263,7 @@ codeunit 14135221 lvngExcelExport
             Clear(Params);
             Instruction.Add('n', 'fx');
             Instruction.Add('p', Params);
-            Params.Add('f', GetExcelFormatString(NumberFormat));
+            Params.Add('v', GetExcelFormatString(NumberFormat));
             Script.Add(Instruction);
         end;
     end;
@@ -256,7 +274,7 @@ codeunit 14135221 lvngExcelExport
         Clear(Params);
         Instruction.Add('n', 'nr');
         Instruction.Add('p', Params);
-        Params.Add('i', RowId);
+        Params.Add('v', RowId);
         Script.Add(Instruction);
     end;
 
@@ -266,7 +284,7 @@ codeunit 14135221 lvngExcelExport
         Clear(Params);
         Instruction.Add('n', 'sk');
         Instruction.Add('p', Params);
-        Params.Add('c', Count);
+        Params.Add('v', Count);
         Script.Add(Instruction);
     end;
 
@@ -283,7 +301,18 @@ codeunit 14135221 lvngExcelExport
         Clear(Params);
         Instruction.Add('n', 'mr');
         Instruction.Add('p', Params);
-        Params.Add('c', Center);
+        Params.Add('v', Center);
+        Script.Add(Instruction);
+    end;
+
+    procedure AutoFit(Rows: Boolean; Columns: Boolean)
+    begin
+        Clear(Instruction);
+        Clear(Params);
+        Instruction.Add('n', 'af');
+        Instruction.Add('p', Params);
+        Params.Add('r', Rows);
+        Params.Add('c', Columns);
         Script.Add(Instruction);
     end;
 
@@ -313,7 +342,7 @@ codeunit 14135221 lvngExcelExport
         Clear(Params);
         Instruction.Add('n', 'wf');
         Instruction.Add('p', Params);
-        Params.Add('f', Formula);
+        Params.Add('v', Formula);
         Script.Add(Instruction);
     end;
 

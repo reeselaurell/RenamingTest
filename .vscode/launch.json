@@ -30,8 +30,8 @@
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             "schemaUpdateMode": "ForceSync",
-            "startupObjectType": "Report",
-            "startupObjectId": 14135220
+            "startupObjectType": "Page",
+            "startupObjectId": 14135550//14135220
         },
         {
             "type": "al",
