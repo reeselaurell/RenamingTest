@@ -126,7 +126,7 @@ codeunit 14135116 "lvngPurchFileImportManagement"
             lvngGenJnlImportBuffer.Insert(true);
             lvngFileImportJnlLineTemp.reset;
             lvngFileImportJnlLineTemp.SetRange(lvngCode, lvngFileImportSchema.lvngCode);
-            lvngFileImportJnlLineTemp.SetFilter(lvngImportFieldType, '<>%1', lvngFileImportJnlLine.lvngImportFieldType::lvngDummy);
+            lvngFileImportJnlLineTemp.SetFilter(lvngPurchaseImportFieldType, '<>%1', lvngFileImportJnlLine.lvngPurchaseImportFieldType::lvngDummy);
             lvngFileImportJnlLineTemp.FindSet();
             repeat
                 lvngValue := CSVBufferTemp.GetValue(lvngStartLine, lvngFileImportJnlLineTemp.lvngColumnNo);
