@@ -35,7 +35,7 @@ codeunit 14135116 "lvngPurchFileImportManagement"
                 PurchaseLine.Description := lvngGenJnlImportBuffer.lvngDescription;
             end;
             PurchaseLine.Validate(Quantity, 1);
-            PurchaseLine.Validate("Unit Cost", lvngGenJnlImportBuffer.lvngAmount);
+            PurchaseLine.Validate("Direct Unit Cost", lvngGenJnlImportBuffer.lvngAmount);
             if lvngGenJnlImportBuffer.lvngReasonCode <> '' then begin
                 PurchaseLine.Validate(lvngReasonCode, lvngGenJnlImportBuffer.lvngReasonCode);
             end;
@@ -126,13 +126,13 @@ codeunit 14135116 "lvngPurchFileImportManagement"
             lvngGenJnlImportBuffer.Insert(true);
             lvngFileImportJnlLineTemp.reset;
             lvngFileImportJnlLineTemp.SetRange(lvngCode, lvngFileImportSchema.lvngCode);
-            lvngFileImportJnlLineTemp.SetFilter(lvngImportFieldType, '<>%1', lvngFileImportJnlLine.lvngImportFieldType::lvngDummy);
+            lvngFileImportJnlLineTemp.SetFilter(lvngPurchaseImportFieldType, '<>%1', lvngFileImportJnlLine.lvngPurchaseImportFieldType::lvngDummy);
             lvngFileImportJnlLineTemp.FindSet();
             repeat
                 lvngValue := CSVBufferTemp.GetValue(lvngStartLine, lvngFileImportJnlLineTemp.lvngColumnNo);
                 if lvngValue <> '' then begin
-                    case lvngFileImportJnlLineTemp.lvngImportFieldType of
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngAccountNo:
+                    case lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType of
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngAccountNo:
                             begin
                                 lvngGenJnlImportBuffer.lvngAccountValue := copystr(lvngValue, 1, maxstrlen(lvngGenJnlImportBuffer.lvngAccountValue));
                                 if lvngFileImportJnlLineTemp.lvngDimensionSplit then begin
@@ -164,51 +164,51 @@ codeunit 14135116 "lvngPurchFileImportManagement"
                                     END;
                                 end;
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngAmount:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngAmount:
                             begin
                                 Evaluate(lvngGenJnlImportBuffer.lvngAmount, lvngValue);
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDescription:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDescription:
                             begin
                                 lvngGenJnlImportBuffer.lvngDescription := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngDescription));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension1Code:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension1Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngGlobalDimension1Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngGlobalDimension1Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension2Code:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension2Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngGlobalDimension2Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngGlobalDimension2Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension3Code:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension3Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension3Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension3Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension4Code:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension4Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension4Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension4Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension5Code:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension5Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension5Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension5Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension6Code:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension6Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension6Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension6Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension7Code:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension7Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension7Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension7Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension8Code:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension8Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension8Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension8Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngLoanNo:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngLoanNo:
                             begin
                                 lvngGenJnlImportBuffer.lvngLoanNo := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngLoanNo));
                             end;
-                        lvngFileImportJnlLineTemp.lvngImportFieldType::lvngReasonCode:
+                        lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngReasonCode:
                             begin
                                 lvngGenJnlImportBuffer.lvngReasonCode := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngReasonCode));
                             end;
@@ -455,35 +455,35 @@ codeunit 14135116 "lvngPurchFileImportManagement"
     begin
         if lvngLoan.Get(lvngGenJnlImportBuffer.lvngLoanNo) then begin
             lvngFileImportJnlLineTemp.reset;
-            lvngFileImportJnlLineTemp.SetRange(lvngImportFieldType, lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension1Code);
+            lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension1Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngLoan.lvngGlobalDimension1Code;
 
-            lvngFileImportJnlLineTemp.SetRange(lvngImportFieldType, lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension2Code);
+            lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension2Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngLoan.lvngGlobalDimension2Code;
 
-            lvngFileImportJnlLineTemp.SetRange(lvngImportFieldType, lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension3Code);
+            lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension3Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngLoan.lvngShortcutDimension3Code;
 
-            lvngFileImportJnlLineTemp.SetRange(lvngImportFieldType, lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension4Code);
+            lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension4Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngLoan.lvngShortcutDimension4Code;
 
-            lvngFileImportJnlLineTemp.SetRange(lvngImportFieldType, lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension5Code);
+            lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension5Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension5Code := lvngLoan.lvngShortcutDimension5Code;
 
-            lvngFileImportJnlLineTemp.SetRange(lvngImportFieldType, lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension6Code);
+            lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension6Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension6Code := lvngLoan.lvngShortcutDimension6Code;
 
-            lvngFileImportJnlLineTemp.SetRange(lvngImportFieldType, lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension7Code);
+            lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension7Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension7Code := lvngLoan.lvngShortcutDimension7Code;
 
-            lvngFileImportJnlLineTemp.SetRange(lvngImportFieldType, lvngFileImportJnlLineTemp.lvngImportFieldType::lvngDimension8Code);
+            lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension8Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension8Code := lvngLoan.lvngShortcutDimension8Code;
         end;
