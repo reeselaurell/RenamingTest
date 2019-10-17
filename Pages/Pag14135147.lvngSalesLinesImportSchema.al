@@ -179,7 +179,8 @@ page 14135147 "lvngSalesLinesImportSchema"
             part(lvngSalesImportSchemaLines; lvngSalesImportSchemaLines)
             {
                 Caption = 'Columns Mapping';
-                SubPageLink = lvngCode = field (lvngCode);
+                SubPageLink = lvngCode = field(lvngCode);
+                ApplicationArea = All;
             }
         }
     }

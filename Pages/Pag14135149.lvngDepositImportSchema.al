@@ -219,7 +219,8 @@ page 14135149 "lvngDepositImportSchema"
             part(lvngDepositImportSchemaLines; lvngDepositImportSchemaLines)
             {
                 Caption = 'Columns Mapping';
-                SubPageLink = lvngCode = field (lvngCode);
+                SubPageLink = lvngCode = field(lvngCode);
+                ApplicationArea = All;
             }
         }
     }

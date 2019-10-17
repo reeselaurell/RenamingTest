@@ -256,7 +256,8 @@ page 14135141 "lvngGenJnlImportSchema"
             part(lvngGenJnlImportSchemaLines; lvngGenJnlImportSchemaLines)
             {
                 Caption = 'Columns Mapping';
-                SubPageLink = lvngCode = field (lvngCode);
+                SubPageLink = lvngCode = field(lvngCode);
+                ApplicationArea = All;
             }
         }
     }
