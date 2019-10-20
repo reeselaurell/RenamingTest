@@ -31,7 +31,25 @@ page 14135239 lvngDimPerfBandSchemaLines
                 }
                 field("Header Description"; "Header Description") { ApplicationArea = All; }
                 field("Band Type"; "Band Type") { ApplicationArea = All; }
-                field("Row Formula Code"; "Row Formula Code") { ApplicationArea = All; }
+                field("Row Formula Code"; "Row Formula Code")
+                {
+                    ApplicationArea = All;
+                    AssistEdit = true;
+                    Editable = false;
+
+                    trigger OnAssistEdit()
+                    var
+                        ExpressionList: Page lvngExpressionList;
+                        PerformanceMgmt: Codeunit lvngPerformanceMgmt;
+                        ExpressiontType: Enum lvngExpressionType;
+                        NewCode: Code[20];
+                    begin
+                        NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetDimensionRowExpressionConsumerId(), "Schema Code", "Row Formula Code", ExpressiontType::Formula);
+                        if NewCode <> '' then
+                            "Row Formula Code" := NewCode;
+                    end;
+                }
+
             }
         }
     }

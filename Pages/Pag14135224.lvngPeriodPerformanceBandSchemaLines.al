@@ -32,7 +32,7 @@ page 14135224 lvngPeriodPerfBandSchemaLines
                         ExpressiontType: Enum lvngExpressionType;
                         NewCode: Code[20];
                     begin
-                        NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetPeriodRowExpressionConsumerId(), "Schema Code", "Row Formula Code", ExpressiontType::Formula + ExpressiontType::Switch);
+                        NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetPeriodRowExpressionConsumerId(), "Schema Code", "Row Formula Code", ExpressiontType::Formula);
                         if NewCode <> '' then
                             "Row Formula Code" := NewCode;
                     end;

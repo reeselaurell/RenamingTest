@@ -213,7 +213,7 @@ codeunit 14135221 lvngExcelExport
             NumberFormat.Rounding::lvngOne:
                 Positive := '.0';
             NumberFormat.Rounding::lvngNone:
-                Positive := '.########';
+                Positive := '.0##########';
             NumberFormat.Rounding::lvngThousands:
                 Positive := ',';
         end;
@@ -275,6 +275,23 @@ codeunit 14135221 lvngExcelExport
         Instruction.Add('n', 'nr');
         Instruction.Add('p', Params);
         Params.Add('v', RowId);
+        Script.Add(Instruction);
+    end;
+
+    procedure NewSheet()
+    begin
+        Clear(Instruction);
+        Instruction.Add('n', 'ns');
+        Script.Add(Instruction);
+    end;
+
+    procedure RenameSheet(NewName: Text)
+    begin
+        Clear(Instruction);
+        Clear(Params);
+        Instruction.Add('n', 'rs');
+        Instruction.Add('p', Params);
+        Params.Add('v', NewName);
         Script.Add(Instruction);
     end;
 

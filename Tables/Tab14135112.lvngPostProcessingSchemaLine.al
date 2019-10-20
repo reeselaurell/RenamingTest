@@ -69,7 +69,7 @@ table 14135112 "lvngPostProcessingSchemaLine"
                 ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(lvngExpressionList);
-                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetConditionsMgmtConsumerId(), lvngExpressionCode, 'JOURNAL', ExpressionType::Switch + ExpressionType::Formula);
+                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetConditionsMgmtConsumerId(), lvngExpressionCode, 'JOURNAL', ExpressionType::Switch);
                 if lvngSelectedExpressionCode <> '' then
                     lvngExpressionCode := lvngSelectedExpressionCode;
             end;

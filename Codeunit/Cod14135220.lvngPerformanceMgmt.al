@@ -11,6 +11,7 @@ codeunit 14135220 lvngPerformanceMgmt
         ColCountTxt: Label '$COLCOUNT';
         FieldFormatTxt: Label 'b%1c%2';
         UnsupportedExpressionTypeErr: Label 'Unsupported expression type %1';
+        UnsupportedBandTypeErr: Label 'Band type is not supported: %1';
 
     procedure GetFieldFormat(): Text
     begin
@@ -763,6 +764,246 @@ codeunit 14135220 lvngPerformanceMgmt
         end;
     end;
 
+    procedure ApplyPeriodBandFilter(var SystemFilter: Record lvngSystemCalculationFilter; var BaseFilter: Record lvngSystemCalculationFilter; var BandLineInfo: Record lvngPerformanceBandLineInfo)
+    begin
+        Clear(SystemFilter);
+        SystemFilter := BaseFilter;
+        SystemFilter."Date Filter" := StrSubstNo('%1..%2', BandLineInfo."Date From", BandLineInfo."Date To");
+    end;
+
+    procedure ApplyDimensionBandFilter(var SystemFilter: Record lvngSystemCalculationFilter; var BandSchema: Record lvngDimensionPerfBandSchema; var BandLine: Record lvngDimPerfBandSchemaLine)
+    var
+        DimensionValue: Record "Dimension Value";
+    begin
+        DimensionValue.Reset();
+        DimensionValue.SetRange("Dimension Code", BandSchema."Dimension Code");
+        DimensionValue.SetFilter(Code, BandLine."Dimension Filter");
+        DimensionValue.FindFirst();
+        case DimensionValue."Global Dimension No." of
+            1:
+                SystemFilter."Shortcut Dimension 1" := BandLine."Dimension Filter";
+            2:
+                SystemFilter."Shortcut Dimension 2" := BandLine."Dimension Filter";
+            3:
+                SystemFilter."Shortcut Dimension 3" := BandLine."Dimension Filter";
+            4:
+                SystemFilter."Shortcut Dimension 4" := BandLine."Dimension Filter";
+            5:
+                SystemFilter."Shortcut Dimension 5" := BandLine."Dimension Filter";
+            6:
+                SystemFilter."Shortcut Dimension 6" := BandLine."Dimension Filter";
+            7:
+                SystemFilter."Shortcut Dimension 7" := BandLine."Dimension Filter";
+            8:
+                SystemFilter."Shortcut Dimension 8" := BandLine."Dimension Filter";
+        end;
+    end;
+
+    procedure CalculatePeriodsData(var RowSchema: Record lvngPerformanceRowSchema; var BandSchema: Record lvngPeriodPerfBandSchema; var BaseFilter: Record lvngSystemCalculationFilter; var BandInfoBuffer: Record lvngPerformanceBandLineInfo; var ValueBuffer: Record lvngPerformanceValueBuffer)
+    var
+        ColSchema: Record lvngPerformanceColSchema;
+        BandLine: Record lvngPeriodPerfBandSchemaLine;
+        AccountingPeriod: Record "Accounting Period";
+        SystemFilter: Record lvngSystemCalculationFilter temporary;
+        StartDate: Date;
+        EndDate: Date;
+        TotalStartDate: Date;
+        TotalEndDate: Date;
+        Multiplier: Integer;
+        Idx: Integer;
+    begin
+        ColSchema.Get(RowSchema."Column Schema");
+        BandInfoBuffer.Reset();
+        BandInfoBuffer.DeleteAll();
+        Idx := 0;
+        BandLine.Reset();
+        BandLine.SetRange("Schema Code", BandSchema.Code);
+        BandLine.FindSet();
+        repeat
+            Clear(BandInfoBuffer);
+            BandInfoBuffer."Band No." := BandLine."Band No.";
+            BandInfoBuffer."Band Type" := BandLine."Band Type";
+            BandInfoBuffer."Row Formula Code" := BandLine."Row Formula Code";
+            BandInfoBuffer."Header Description" := BandLine."Header Description";
+            BandInfoBuffer."Band Index" := Idx;
+            BandInfoBuffer.Insert();
+            Idx += 1;
+            case BandLine."Band Type" of
+                BandLine."Band Type"::lvngNormal,
+                BandLine."Band Type"::lvngFormula:  //In case expression formula refers to not cached row formula value it will be calculated as Normal
+                    begin
+                        case BandLine."Period Type" of
+                            BandLine."Period Type"::lvngMTD:
+                                begin
+                                    StartDate := CalcDate('<-CM>', BaseFilter."As Of Date");
+                                    if BandLine."Period Offset" <> 0 then
+                                        StartDate := CalcDate(StrSubstNo('<%1M>', BandLine."Period Offset"), StartDate);
+                                    EndDate := CalcDate('<CM>', StartDate);
+                                    BandInfoBuffer."Date From" := StartDate;
+                                    BandInfoBuffer."Date To" := EndDate;
+                                    if BandLine."Dynamic Date Description" then
+                                        BandInfoBuffer."Header Description" := Format(StartDate, 0, '<Month Text,3>-<Year4>');
+                                    BandInfoBuffer.Modify();
+                                end;
+                            BandLine."Period Type"::lvngQTD:
+                                begin
+                                    StartDate := CalcDate('<-CQ>', BaseFilter."As Of Date");
+                                    if BandLine."Period Offset" <> 0 then begin
+                                        StartDate := CalcDate(StrSubstNo('<%1Q>', BandLine."Period Offset"), StartDate);
+                                        if Format(BandLine."Period Length Formula") = '' then
+                                            EndDate := CalcDate('<CQ>', BaseFilter."As Of Date")
+                                        else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    end else begin
+                                        if Format(BandLine."Period Length Formula") = '' then
+                                            EndDate := BaseFilter."As Of Date"
+                                        else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    end;
+                                    BandInfoBuffer."Date From" := StartDate;
+                                    BandInfoBuffer."Date To" := EndDate;
+                                    if BandLine."Dynamic Date Description" then
+                                        BandInfoBuffer."Header Description" := Format(StartDate, 0, 'Qtr. <Quarter>, <Year4>');
+                                    BandInfoBuffer.Modify();
+                                end;
+                            BandLine."Period Type"::lvngYTD:
+                                begin
+                                    StartDate := CalcDate('<-CY>', BaseFilter."As Of Date");
+                                    if BandLine."Period Offset" <> 0 then begin
+                                        StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
+                                        EndDate := CalcDate('<CY>', StartDate);
+                                    end else
+                                        EndDate := BaseFilter."As Of Date";
+                                    BandInfoBuffer."Date From" := StartDate;
+                                    BandInfoBuffer."Date To" := EndDate;
+                                    if BandLine."Dynamic Date Description" then
+                                        BandInfoBuffer."Header Description" := Format(StartDate, 0, 'Year <Year4>');
+                                    BandInfoBuffer.Modify();
+                                end;
+                            BandLine."Period Type"::lvngFiscalQTD:
+                                begin
+                                    AccountingPeriod.Reset();
+                                    AccountingPeriod.SetRange("Starting Date", 0D, BaseFilter."As Of Date");
+                                    AccountingPeriod.SetRange(lvngFiscalQuarter, true);
+                                    AccountingPeriod.FindLast();
+                                    StartDate := AccountingPeriod."Starting Date";
+                                    if BandLine."Period Offset" <> 0 then begin
+                                        Multiplier := 3 * BandLine."Period Offset";
+                                        StartDate := CalcDate(StrSubstNo('<%1M>', Multiplier), StartDate);
+                                        if Format(BandLine."Period Length Formula") = '' then begin
+                                            AccountingPeriod.SetFilter("Starting Date", '>%1', StartDate);
+                                            AccountingPeriod.FindFirst();
+                                            EndDate := AccountingPeriod."Starting Date" - 1;
+                                        end else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    end else
+                                        if Format(BandLine."Period Length Formula") = '' then
+                                            EndDate := BaseFilter."As Of Date"
+                                        else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    BandInfoBuffer."Date From" := StartDate;
+                                    BandInfoBuffer."Date To" := EndDate;
+                                    if BandLine."Dynamic Date Description" then
+                                        if BandInfoBuffer."Header Description" = '' then
+                                            BandInfoBuffer."Header Description" := Format(StartDate, 0, '<Month,2>/<Day,2>/<Year4>') + ' to ' + Format(EndDate, 0, '<Month,2>/<Day,2>/<Year4>')
+                                        else
+                                            BandInfoBuffer."Header Description" := Format(StartDate, 0, BandInfoBuffer."Header Description");
+                                    BandInfoBuffer.Modify();
+                                end;
+                            BandLine."Period Type"::lvngFiscalYTD:
+                                begin
+                                    AccountingPeriod.Reset();
+                                    AccountingPeriod.SetRange("New Fiscal Year", true);
+                                    AccountingPeriod.SetRange("Starting Date", 0D, BaseFilter."As Of Date");
+                                    if AccountingPeriod.FindLast() then
+                                        StartDate := AccountingPeriod."Starting Date"
+                                    else begin
+                                        AccountingPeriod.Reset();
+                                        AccountingPeriod.FindFirst();
+                                        StartDate := AccountingPeriod."Starting Date";
+                                    end;
+                                    if BandLine."Period Offset" <> 0 then begin
+                                        StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
+                                        if Format(BandLine."Period Length Formula") = '' then begin
+                                            EndDate := CalcDate('<-1Y>', BaseFilter."As Of Date");
+                                            EndDate := CalcDate('<CM>', EndDate);
+                                        end else
+                                            EndDate := CalcDate(BandLine."Period Length Formula", StartDate);
+                                    end else
+                                        EndDate := BaseFilter."As Of Date";
+                                    BandInfoBuffer."Date From" := StartDate;
+                                    BandInfoBuffer."Date To" := EndDate;
+                                    if BandLine."Dynamic Date Description" then
+                                        if BandInfoBuffer."Header Description" = '' then
+                                            BandInfoBuffer."Header Description" := Format(StartDate, 0, '<Year4>/<Month>') + ' to ' + Format(EndDate, 0, '<Year4>/<Month>')
+                                        else
+                                            BandInfoBuffer."Header Description" := Format(EndDate, 0, BandInfoBuffer."Header Description");
+                                    BandInfoBuffer.Modify();
+                                end;
+                            BandLine."Period Type"::lvngLifeToDate:
+                                begin
+                                    StartDate := 00010101D;
+                                    EndDate := BaseFilter."As Of Date";
+                                    if Format(BandLine."Period Length Formula") <> '' then
+                                        EndDate := CalcDate(BandLine."Period Length Formula", EndDate);
+                                    EndDate := CalcDate('<CM>', EndDate);
+                                    if BandLine."Header Description" <> '' then
+                                        BandInfoBuffer."Header Description" := BandLine."Header Description" + ' ';
+                                    BandInfoBuffer."Header Description" := BandInfoBuffer."Header Description" + Format(EndDate, 0, '<Month Text>/<Year4>');
+                                    BandInfoBuffer."Date From" := StartDate;
+                                    BandInfoBuffer."Date To" := EndDate;
+                                    BandInfoBuffer.Modify();
+                                end;
+                            BandLine."Period Type"::lvngCustomDateFilter:
+                                begin
+                                    BandLine.TestField("Date From");
+                                    BandLine.TestField("Date To");
+                                    BandInfoBuffer."Date From" := BandLine."Date From";
+                                    BandInfoBuffer."Date To" := BandLine."Date To";
+                                    if BandInfoBuffer."Header Description" = '' then
+                                        BandInfoBuffer."Header Description" := Format(BandLine."Date From") + '..' + Format(BandLine."Date To");
+                                    BandInfoBuffer.Modify();
+                                end;
+                        end;
+                        if (TotalStartDate = 0D) and (TotalEndDate = 0D) then begin
+                            TotalStartDate := BandInfoBuffer."Date From";
+                            TotalEndDate := BandInfoBuffer."Date To";
+                        end else begin
+                            if BandInfoBuffer."Date From" < TotalStartDate then
+                                TotalStartDate := BandInfoBuffer."Date From";
+                            if BandInfoBuffer."Date To" > TotalEndDate then
+                                TotalEndDate := BandInfoBuffer."Date To";
+                        end;
+                    end;
+                BandLine."Band Type"::lvngTotals:
+                    begin
+                        BandInfoBuffer."Date From" := TotalStartDate;
+                        BandInfoBuffer."Date To" := TotalEndDate;
+                        if BandInfoBuffer."Header Description" = '' then
+                            BandInfoBuffer."Header Description" := Format(BandInfoBuffer."Date From") + '..' + Format(BandInfoBuffer."Date To");
+                        BandInfoBuffer.Modify();
+                    end;
+                else
+                    Error(UnsupportedBandTypeErr, BandLine);
+            end;
+        until BandLine.Next() = 0;
+
+        BandInfoBuffer.Reset();
+        BandInfoBuffer.SetFilter("Band Type", '<>%1', BandInfoBuffer."Band Type"::lvngFormula);
+        BandInfoBuffer.FindSet();
+        repeat
+            ApplyPeriodBandFilter(SystemFilter, BaseFilter, BandInfoBuffer);
+            CalculatePerformanceBand(ValueBuffer, BandInfoBuffer."Band No.", RowSchema, ColSchema, SystemFilter);
+        until BandInfoBuffer.Next() = 0;
+
+        BandInfoBuffer.Reset();
+        BandInfoBuffer.SetRange("Band Type", BandInfoBuffer."Band Type"::lvngFormula);
+        if BandInfoBuffer.FindSet() then
+            repeat
+                ApplyPeriodBandFilter(SystemFilter, BaseFilter, BandInfoBuffer);
+                CalculateFormulaBand(ValueBuffer, BandInfoBuffer."Band No.", RowSchema, ColSchema, SystemFilter, BandInfoBuffer."Row Formula Code");
+            until BandInfoBuffer.Next() = 0;
+    end;
 
     [IntegrationEvent(false, false)]
     procedure GetProviderValue(Metadata: Text; var SystemFilter: Record lvngSystemCalculationFilter; var Result: Decimal)

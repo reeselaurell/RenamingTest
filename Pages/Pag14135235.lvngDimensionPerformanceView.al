@@ -91,6 +91,12 @@ page 14135235 lvngDimensionPerformanceView
         TempBandLine: Record lvngDimPerfBandSchemaLine temporary;
         Buffer: Record lvngPerformanceValueBuffer temporary;
         PerformanceMgmt: Codeunit lvngPerformanceMgmt;
+        PerformanceDataExport: Codeunit lvngPerformanceDataExport;
+        BandIndexLookup: Dictionary of [Integer, Integer];
+        StylesInUse: Dictionary of [Code[20], Boolean];
+        GridExportMode: Enum lvngGridExportMode;
+        RowSchemaCode: Code[20];
+        BandSchemaCode: Code[20];
         SchemaName: Text;
         Dim1Filter: Code[20];
         Dim2Filter: Code[20];
@@ -103,11 +109,8 @@ page 14135235 lvngDimensionPerformanceView
         Dim4Visible: Boolean;
         BusinessUnitVisible: Boolean;
         DateFilter: Text;
-        RowSchemaCode: Code[20];
-        BandSchemaCode: Code[20];
-        StylesInUse: Dictionary of [Code[20], Boolean];
-        GridExportMode: Enum lvngGridExportMode;
         SchemaNameFormatTxt: Label '%1 - %2';
+        NoDimensionPerformanceTotalsErr: Label 'Totals row is not supported by dimension performance view. Use row formula instead';
 
     trigger OnOpenPage()
     begin
@@ -145,6 +148,7 @@ page 14135235 lvngDimensionPerformanceView
     begin
         TempBandLine.Reset();
         TempBandLine.DeleteAll();
+        Clear(BandIndexLookup);
         if BandSchema."Dynamic Layout" then begin
             DynamicBandLink.Reset();
             DynamicBandLink.SetRange("Dimension Code", BandSchema."Dimension Code");
@@ -164,6 +168,7 @@ page 14135235 lvngDimensionPerformanceView
                 Clear(TempBandLine);
                 TempBandLine."Schema Code" := BandSchema.Code;
                 TempBandLine."Band No." := LineNo;
+                BandIndexLookup.Add(LineNo, LineNo - 1);
                 DimensionValue.Get(BandSchema."Dimension Code", DynamicBandLink."Dimension Value Code");
                 TempBandLine."Header Description" := DimensionValue.Name;
                 TempBandLine."Dimension Filter" := DimensionValue.Code;
@@ -175,9 +180,12 @@ page 14135235 lvngDimensionPerformanceView
             BandLine.Reset();
             BandLine.SetRange("Schema Code", BandSchema.Code);
             BandLine.FindSet();
+            LineNo := 0;
             repeat
                 Clear(TempBandLine);
                 TempBandLine := BandLine;
+                BandIndexLookup.Add(TempBandLine."Band No.", LineNo);
+                LineNo += 1;
                 TempBandLine.Insert();
             until BandLine.Next() = 0;
         end;
@@ -188,15 +196,15 @@ page 14135235 lvngDimensionPerformanceView
         TempBandLine.FindSet();
         repeat
             InitializeSystemFilter(SystemFilter);
-            ApplyColumnFilter(SystemFilter, TempBandLine."Dimension Filter");
+            PerformanceMgmt.ApplyDimensionBandFilter(SystemFilter, BandSchema, TempBandLine);
             PerformanceMgmt.CalculatePerformanceBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter);
         until TempBandLine.Next() = 0;
 
         TempBandLine.Reset();
         TempBandLine.SetRange("Schema Code", BandSchema.Code);
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngTotals);
-        if not TempBandLine.IsEmpty() then
-            Error('Not Implemented');
+        if TempBandLine.FindSet() then
+            Error(NoDimensionPerformanceTotalsErr);
 
         TempBandLine.Reset();
         TempBandLine.SetRange("Schema Code", BandSchema.Code);
@@ -204,9 +212,8 @@ page 14135235 lvngDimensionPerformanceView
         if TempBandLine.FindSet() then
             repeat
                 InitializeSystemFilter(SystemFilter);
-                ApplyColumnFilter(SystemFilter, TempBandLine."Dimension Filter");
-                Error('Not Implemented');
-            //PerformanceMgmt.CalculateFormulaBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter, TempBandLine.);
+                PerformanceMgmt.ApplyDimensionBandFilter(SystemFilter, BandSchema, TempBandLine);
+                PerformanceMgmt.CalculateFormulaBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter, TempBandLine."Row Formula Code");
             until TempBandLine.Next() = 0;
     end;
 
@@ -219,34 +226,6 @@ page 14135235 lvngDimensionPerformanceView
         SystemFilter."Shortcut Dimension 3" := Dim3Filter;
         SystemFilter."Shortcut Dimension 4" := Dim4Filter;
         SystemFilter."Business Unit" := BusinessUnitFilter;
-    end;
-
-    local procedure ApplyColumnFilter(var SystemFilter: Record lvngSystemCalculationFilter; BandFilter: Text)
-    var
-        DimensionValue: Record "Dimension Value";
-    begin
-        DimensionValue.Reset();
-        DimensionValue.SetRange("Dimension Code", BandSchema."Dimension Code");
-        DimensionValue.SetFilter(Code, BandFilter);
-        DimensionValue.FindFirst();
-        case DimensionValue."Global Dimension No." of
-            1:
-                SystemFilter."Shortcut Dimension 1" := BandFilter;
-            2:
-                SystemFilter."Shortcut Dimension 2" := BandFilter;
-            3:
-                SystemFilter."Shortcut Dimension 3" := BandFilter;
-            4:
-                SystemFilter."Shortcut Dimension 4" := BandFilter;
-            5:
-                SystemFilter."Shortcut Dimension 5" := BandFilter;
-            6:
-                SystemFilter."Shortcut Dimension 6" := BandFilter;
-            7:
-                SystemFilter."Shortcut Dimension 7" := BandFilter;
-            8:
-                SystemFilter."Shortcut Dimension 8" := BandFilter;
-        end;
     end;
 
     local procedure InitializeDataGrid()
@@ -281,7 +260,7 @@ page 14135235 lvngDimensionPerformanceView
             RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
             CalcUnit.Get(RowLine."Calculation Unit Code");
             InitializeSystemFilter(SystemFilter);
-            ApplyColumnFilter(SystemFilter, TempBandLine."Dimension Filter");
+            PerformanceMgmt.ApplyDimensionBandFilter(SystemFilter, BandSchema, TempBandLine);
             case CalcUnit."Lookup Source" of
                 CalcUnit."Lookup Source"::lvngLoanCard:
                     begin
@@ -301,9 +280,32 @@ page 14135235 lvngDimensionPerformanceView
         end;
     end;
 
-    local procedure ExportToExcel(Mode: Enum lvngGridExportMode)
+    local procedure ExportToExcel(GridExportMode: Enum lvngGridExportMode)
+    var
+        HeaderData: Record lvngSystemCalculationFilter temporary;
+        BandInfo: Record lvngPerformanceBandLineInfo temporary;
+        PerformanceDataExport: Codeunit lvngPerformanceDataExport;
+        ExcelExport: Codeunit lvngExcelExport;
     begin
-        Error('Not Implemented');
+        Clear(HeaderData);
+        HeaderData.Description := SchemaName;
+        HeaderData."Shortcut Dimension 1" := Dim1Filter;
+        HeaderData."Shortcut Dimension 2" := Dim2Filter;
+        HeaderData."Shortcut Dimension 3" := Dim3Filter;
+        HeaderData."Shortcut Dimension 4" := Dim4Filter;
+        HeaderData."Business Unit" := BusinessUnitFilter;
+        TempBandLine.Reset();
+        repeat
+            Clear(BandInfo);
+            BandInfo."Band No." := TempBandLine."Band No.";
+            BandInfo."Band Type" := TempBandLine."Band Type";
+            BandInfo."Header Description" := TempBandLine."Header Description";
+            BandInfo."Row Formula Code" := TempBandLine."Row Formula Code";
+            BandInfo.Insert();
+        until TempBandLine.Next() = 0;
+        ExcelExport.Init('PerformanceWorksheet', GridExportMode);
+        PerformanceDataExport.ExportToExcel(ExcelExport, RowSchema, Buffer, HeaderData, BandInfo);
+        ExcelExport.Download(PerformanceDataExport.GetExportFileName(GridExportMode, RowSchema."Schema Type"));
     end;
 
     local procedure GetColumns() GridColumns: JsonArray

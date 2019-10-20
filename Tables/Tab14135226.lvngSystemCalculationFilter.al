@@ -5,6 +5,7 @@ table 14135226 lvngSystemCalculationFilter
     fields
     {
         field(1; "Primary Key"; Integer) { DataClassification = CustomerContent; }
+        field(5; Description; Text[250]) { DataClassification = CustomerContent; }
         field(10; "Business Unit"; Text[250]) { DataClassification = CustomerContent; }
         field(11; "Shortcut Dimension 1"; Text[250]) { DataClassification = CustomerContent; }
         field(12; "Shortcut Dimension 2"; Text[250]) { DataClassification = CustomerContent; }
@@ -14,7 +15,8 @@ table 14135226 lvngSystemCalculationFilter
         field(16; "Shortcut Dimension 6"; Text[250]) { DataClassification = CustomerContent; }
         field(17; "Shortcut Dimension 7"; Text[250]) { DataClassification = CustomerContent; }
         field(18; "Shortcut Dimension 8"; Text[250]) { DataClassification = CustomerContent; }
-        field(19; "Date Filter"; Text[50]) { DataClassification = CustomerContent; }
+        field(19; "As Of Date"; Date) { DataClassification = CustomerContent; }
+        field(20; "Date Filter"; Text[50]) { DataClassification = CustomerContent; }
     }
 
     keys

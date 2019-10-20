@@ -11,7 +11,6 @@ page 14135550 lvngExpressionList
             repeater(Group)
             {
                 field(Code; Code) { ApplicationArea = All; }
-                field("Consumer Id"; "Consumer Id") { ApplicationArea = All; }
                 field(Type; Type) { ApplicationArea = All; }
                 field(Description; Description) { ApplicationArea = All; }
             }
@@ -133,11 +132,12 @@ page 14135550 lvngExpressionList
         DestinationExistsQst: Label 'This expression already contains associated data.\If you choose to continue it will be completely overwritten.\Continue anyway?';
         ProviderId: Guid;
         Metadata: Text;
+        DefaultType: Enum lvngExpressionType;
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
         Rec."Consumer Id" := ProviderId;
-        Rec.Mark(true);
+        Rec.Type := DefaultType;
     end;
 
     [IntegrationEvent(false, false)]
@@ -145,20 +145,19 @@ page 14135550 lvngExpressionList
     begin
     end;
 
-    procedure SelectExpression(ConsumerId: Guid; ConsumerMetadata: Text; SelectedRecord: Code[20]; AllowedTypes: Enum lvngExpressionType): Code[20]
+    procedure SelectExpression(ConsumerId: Guid; ConsumerMetadata: Text; SelectedRecord: Code[20]; PreferredType: Enum lvngExpressionType): Code[20]
     var
         ExpressionList: Page lvngExpressionList;
         ExpressionHeader: Record lvngExpressionHeader;
     begin
         Metadata := ConsumerMetadata;
         ProviderId := ConsumerId;
+        DefaultType := PreferredType;
         ExpressionHeader.Reset();
         ExpressionHeader.SetRange("Consumer Id", ConsumerId);
-        case AllowedTypes of
-            AllowedTypes::All: //No filter
-                ;
-            AllowedTypes::Condition, AllowedTypes::Formula, AllowedTypes::Switch, AllowedTypes::Iif: //Simple filter
-                ExpressionHeader.SetRange(Type, AllowedTypes);
+        //case AllowedTypes of
+        //    AllowedTypes::Condition, AllowedTypes::Formula, AllowedTypes::Switch, AllowedTypes::Iif: //Simple filter
+        //        ExpressionHeader.SetRange(Type, AllowedTypes);
         //TODO: Set Complex filter when filtering on enums is fixed
         //    else //Complex filter
         //ExpressionHeader.SetFilter(Type, GetExpressionFilter(AllowedTypes));
@@ -167,7 +166,7 @@ page 14135550 lvngExpressionList
         //    ExpressionHeader.SetFilter(Type, '%1|%2', AllowedTypes::Condition, AllowedTypes::Formula);
         //    Message(ExpressionHeader.GetFilter(Type));
         //end;
-        end;
+        //end;
         CurrPage.SetTableView(ExpressionHeader);
         if SelectedRecord <> '' then
             if ExpressionHeader.Get(SelectedRecord, ConsumerId) then

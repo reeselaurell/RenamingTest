@@ -39,31 +39,31 @@ report 14135220 lvngPerformanceWorksheet
                         var
                             PeriodBand: Record lvngPeriodPerfBandSchema;
                             DimensionBand: Record lvngDimensionPerfBandSchema;
-                            PeriodList: Page lvngPeriodPerfBandSchemaList;
-                            DimensionList: Page lvngDimPerfBandSchemaList;
+                            PeriodSchemaList: Page lvngPeriodPerfBandSchemaList;
+                            DimensionSchemaList: Page lvngDimPerfBandSchemaList;
                         begin
                             if not RowSchema.Get(RowSchemaCode) then
                                 exit(false);
                             if RowSchema."Schema Type" = RowSchema."Schema Type"::lvngPeriod then begin
-                                Clear(PeriodList);
+                                Clear(PeriodSchemaList);
                                 if PeriodBand.Get(BandSchemaCode) then
-                                    PeriodList.SetRecord(PeriodBand);
-                                PeriodList.LookupMode(true);
-                                if PeriodList.RunModal() = Action::LookupOK then begin
-                                    PeriodList.GetRecord(PeriodBand);
+                                    PeriodSchemaList.SetRecord(PeriodBand);
+                                PeriodSchemaList.LookupMode(true);
+                                if PeriodSchemaList.RunModal() = Action::LookupOK then begin
+                                    PeriodSchemaList.GetRecord(PeriodBand);
                                     Text := PeriodBand.Code;
                                     exit(true);
                                 end;
                             end else begin
-                                Clear(DimensionList);
+                                Clear(DimensionSchemaList);
                                 DimensionBand.Reset();
                                 DimensionBand.SetRange("Dynamic Layout", RowSchema."Schema Type" = RowSchema."Schema Type"::lvngDimensionDynamic);
-                                DimensionList.SetTableView(DimensionBand);
+                                DimensionSchemaList.SetTableView(DimensionBand);
                                 if DimensionBand.Get(BandSchemaCode, RowSchema."Schema Type" = RowSchema."Schema Type"::lvngDimensionDynamic) then
-                                    DimensionList.SetRecord(DimensionBand);
-                                DimensionList.LookupMode(true);
-                                if DimensionList.RunModal() = Action::LookupOK then begin
-                                    DimensionList.GetRecord(DimensionBand);
+                                    DimensionSchemaList.SetRecord(DimensionBand);
+                                DimensionSchemaList.LookupMode(true);
+                                if DimensionSchemaList.RunModal() = Action::LookupOK then begin
+                                    DimensionSchemaList.GetRecord(DimensionBand);
                                     Text := DimensionBand.Code;
                                     exit(true);
                                 end;
