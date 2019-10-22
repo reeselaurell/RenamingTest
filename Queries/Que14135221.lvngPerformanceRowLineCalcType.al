@@ -11,7 +11,7 @@ query 14135221 lvngPerformanceRowLiteralLine
             column(LineNo; "Line No.") { }
             dataitem(CalculationUnit; lvngCalculationUnit)
             {
-                DataItemLink = Code = RowLine."Schema Code";
+                DataItemLink = Code = RowLine."Calculation Unit Code";
                 DataItemTableFilter = Type = filter(<> lvngExpression);
 
                 column(CalcUnitCode; Code) { }

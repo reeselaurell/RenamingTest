@@ -3,13 +3,6 @@ var predicate = undefined;
 var is_loading_data = false;
 var field_list = [];
 
-function Initialize(){
-    predicate.data('left', '');
-    predicate.data('right', '');
-    InitControls(predicate);
-    InitPredicate();
-}
-
 function InitPredicate() {
     predicate.find('.left').change(function () {
         if (!is_loading_data) {
@@ -343,6 +336,8 @@ function LoadFields(data) {
 function SetPredicate(leftHand, comparison, rightHand) {
     try {
         is_loading_data = true;
+        InitControls(predicate);
+        InitPredicate();
         if (leftHand) {
             var lType = GetRecordType(leftHand);
             var val = lType != 'v' ? '' : leftHand.slice(1, leftHand.length - 1);

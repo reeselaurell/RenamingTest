@@ -24,6 +24,7 @@ page 14135225 lvngPerformanceColSchemaList
         {
             action(SchemaLines)
             {
+                ApplicationArea = All;
                 Caption = 'Schema Lines';
                 Image = EntriesList;
                 Promoted = true;

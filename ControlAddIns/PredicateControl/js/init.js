@@ -5,5 +5,4 @@ control = $('#controlAddIn');
 var dom = $('<div></div>').append($.parseHTML(PredicateControl));
 predicate = dom.find('#predicate');
 control.append(predicate);
-Initialize();
 Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('AddInReady');

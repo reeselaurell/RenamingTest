@@ -23,6 +23,7 @@ page 14135223 lvngPeriodPerfBandSchemaList
         {
             action(SchemaLines)
             {
+                ApplicationArea = All;
                 Caption = 'Schema Lines';
                 Image = EntriesList;
                 Promoted = true;

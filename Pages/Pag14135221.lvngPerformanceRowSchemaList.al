@@ -27,6 +27,7 @@ page 14135221 lvngPerformanceRowSchemaList
             action(SchemaLines)
             {
                 Caption = 'Schema Lines';
+                ApplicationArea = All;
                 Image = EntriesList;
                 Promoted = true;
                 PromotedCategory = Process;

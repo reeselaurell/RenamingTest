@@ -25,6 +25,7 @@ page 14135227 lvngCalculationUnitList
         {
             action(Details)
             {
+                ApplicationArea = All;
                 Caption = 'Details';
                 Image = FiledOverview;
                 Promoted = true;

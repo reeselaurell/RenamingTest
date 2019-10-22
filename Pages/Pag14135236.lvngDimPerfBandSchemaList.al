@@ -25,12 +25,14 @@ page 14135236 lvngDimPerfBandSchemaList
         {
             action(PredefinedSchema)
             {
+                ApplicationArea = All;
                 Caption = 'Schema Lines';
                 Visible = "Dynamic Layout" = false;
                 Image = Column;
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
+
                 trigger OnAction()
                 var
                     DimPerfBandSchemaLines: Page lvngDimPerfBandSchemaLines;
@@ -46,6 +48,7 @@ page 14135236 lvngDimPerfBandSchemaList
             }
             action(DynamicSchema)
             {
+                ApplicationArea = All;
                 Caption = 'Schema Lines';
                 Visible = "Dynamic Layout" = true;
                 Image = DimensionSets;

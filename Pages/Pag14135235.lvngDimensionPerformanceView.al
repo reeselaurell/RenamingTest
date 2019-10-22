@@ -45,6 +45,7 @@ page 14135235 lvngDimensionPerformanceView
         {
             action(ExcelExport)
             {
+                ApplicationArea = All;
                 Caption = 'Excel Export';
                 Image = Excel;
                 Promoted = true;
@@ -58,6 +59,7 @@ page 14135235 lvngDimensionPerformanceView
             }
             action(PdfExport)
             {
+                ApplicationArea = All;
                 Caption = 'Pdf Export';
                 Image = ExportFile;
                 Promoted = true;
@@ -71,6 +73,7 @@ page 14135235 lvngDimensionPerformanceView
             }
             action(HtmlExport)
             {
+                ApplicationArea = All;
                 Caption = 'Html Export';
                 PromotedCategory = Process;
                 PromotedIsBig = true;
@@ -86,8 +89,8 @@ page 14135235 lvngDimensionPerformanceView
 
     var
         RowSchema: Record lvngPerformanceRowSchema;
-        ColSchema: Record lvngPerformanceColSchema;
         BandSchema: Record lvngDimensionPerfBandSchema;
+        ColSchema: Record lvngPerformanceColSchema;
         TempBandLine: Record lvngDimPerfBandSchemaLine temporary;
         Buffer: Record lvngPerformanceValueBuffer temporary;
         PerformanceMgmt: Codeunit lvngPerformanceMgmt;
@@ -95,8 +98,6 @@ page 14135235 lvngDimensionPerformanceView
         BandIndexLookup: Dictionary of [Integer, Integer];
         StylesInUse: Dictionary of [Code[20], Boolean];
         GridExportMode: Enum lvngGridExportMode;
-        RowSchemaCode: Code[20];
-        BandSchemaCode: Code[20];
         SchemaName: Text;
         Dim1Filter: Code[20];
         Dim2Filter: Code[20];
@@ -114,17 +115,15 @@ page 14135235 lvngDimensionPerformanceView
 
     trigger OnOpenPage()
     begin
-        RowSchema.Get(RowSchemaCode);
         ColSchema.Get(RowSchema."Column Schema");
-        BandSchema.Get(BandSchemaCode);
         SchemaName := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
         CalculateColumns();
     end;
 
-    procedure SetParams(RowSchema: Code[20]; BandSchema: Code[20]; DateRange: Text; Dim1Code: Code[20]; Dim2Code: Code[20]; Dim3Code: Code[20]; Dim4Code: Code[20]; BUCode: Code[20])
+    procedure SetParams(RowSchemaCode: Code[20]; BandSchemaCode: Code[20]; DateRange: Text; Dim1Code: Code[20]; Dim2Code: Code[20]; Dim3Code: Code[20]; Dim4Code: Code[20]; BUCode: Code[20])
     begin
-        RowSchemaCode := RowSchema;
-        BandSchemaCode := BandSchema;
+        RowSchema.Get(RowSchemaCode);
+        BandSchema.Get(BandSchemaCode);
         BusinessUnitFilter := BUCode;
         Dim1Filter := Dim1Code;
         Dim2Filter := Dim2Code;
@@ -213,7 +212,7 @@ page 14135235 lvngDimensionPerformanceView
             repeat
                 InitializeSystemFilter(SystemFilter);
                 PerformanceMgmt.ApplyDimensionBandFilter(SystemFilter, BandSchema, TempBandLine);
-                PerformanceMgmt.CalculateFormulaBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter, TempBandLine."Row Formula Code");
+                PerformanceMgmt.CalculateFormulaBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter, TempBandLine."Row Formula Code", PerformanceMgmt.GetDimensionRowExpressionConsumerId());
             until TempBandLine.Next() = 0;
     end;
 
@@ -234,7 +233,7 @@ page 14135235 lvngDimensionPerformanceView
         Setting: JsonObject;
     begin
         Json.Add('columns', GetColumns());
-        Json.Add('dataSource', PerformanceMgmt.GetData(Buffer, StylesInUse, RowSchema.Code, ColSchema.Code));
+        Json.Add('dataSource', PerformanceMgmt.GetData(Buffer, StylesInUse, RowSchema.Code, RowSchema."Column Schema"));
         Setting.Add('enabled', false);
         Json.Add('paging', Setting);
         Clear(Setting);

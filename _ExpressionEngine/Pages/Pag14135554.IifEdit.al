@@ -230,9 +230,8 @@ page 14135554 lvngIifEdit
                 Right := Right + ExpressionLine."Right Side";
                 Cond := Engine.FormatComparison(ExpressionLine.Comparison);
             until ExpressionLine.Next() = 0;
-            if Left <> '' then
-                CurrPage.PredicateControl.SetPredicate(Left, Cond, Right);
         end;
+        CurrPage.PredicateControl.SetPredicate(Left, Cond, Right);
     end;
 
     local procedure LoadResults()

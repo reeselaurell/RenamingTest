@@ -15,7 +15,7 @@ table 14135228 lvngCalculationUnit
         //For "Lookup Source"::"Loan Card"
         field(31; "Based On Date"; Enum lvngPerformanceBaseDate) { DataClassification = CustomerContent; }
         //For "Lookup Source"::"Ledger Entries"
-        field(32; "Account No. Filter"; Text[250]) { DataClassification = CustomerContent; TableRelation = "G/L Account"."No."; }
+        field(32; "Account No. Filter"; Text[250]) { DataClassification = CustomerContent; TableRelation = "G/L Account"."No."; ValidateTableRelation = false; }
         field(33; "Amount Type"; Enum lvngPerformanceAmountType) { DataClassification = CustomerContent; }
         //For Type::Expression
         field(40; "Expression Code"; Code[20]) { DataClassification = CustomerContent; }

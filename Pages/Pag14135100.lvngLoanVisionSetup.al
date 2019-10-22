@@ -164,6 +164,7 @@ page 14135100 "lvngLoanVisionSetup"
             action(lvngLoanMatchingPatterns)
             {
                 Caption = 'Loan No. Match Patterns';
+                ApplicationArea = All;
                 Image = CheckRulesSyntax;
                 RunObject = page lvngLoanNoMatchPatterns;
                 RunPageMode = Edit;
