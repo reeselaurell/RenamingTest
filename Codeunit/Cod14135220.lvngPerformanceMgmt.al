@@ -68,7 +68,7 @@ codeunit 14135220 lvngPerformanceMgmt
                 Buffer."Band No." := BandNo;
                 Buffer."Calculation Unit Code" := RowLine."Calculation Unit Code";
                 if CalculationUnit.Get(RowLine."Calculation Unit Code") then begin
-                    Buffer.Value := CalculateSingleBandValue(CalculationUnit, SystemFilter, Cache, Path);
+                    Buffer.Value := CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path);
                     Buffer.Interactive := IsClickableCell(CalculationUnit);
                 end else
                     Buffer.Value := 0;
@@ -313,13 +313,16 @@ codeunit 14135220 lvngPerformanceMgmt
     end;
 
     local procedure FormatValue(var Buffer: Record lvngPerformanceValueBuffer) TextValue: Text
+    begin
+        exit(FormatValue(Buffer.Value, Buffer."Number Format Code"))
+    end;
+
+    procedure FormatValue(NumericValue: Decimal; FormatCode: Code[20]) TextValue: Text
     var
         NumberFormat: Record lvngNumberFormat;
-        NumericValue: Decimal;
     begin
-        if not NumberFormat.Get(Buffer."Number Format Code") then
+        if not NumberFormat.Get(FormatCode) then
             Clear(NumberFormat);
-        NumericValue := Buffer.Value;
         if NumericValue = 0 then
             case NumberFormat."Blank Zero" of
                 NumberFormat."Blank Zero"::lvngZero:
@@ -553,7 +556,7 @@ codeunit 14135220 lvngPerformanceMgmt
         Cache.Add(CalculationUnitCode, Result);
     end;
 
-    local procedure CalculateSingleBandValue(var CalculationUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
+    procedure CalculateSingleValue(var CalculationUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
     begin
         if Cache.Get(CalculationUnit.Code, Result) then
             exit;
@@ -743,7 +746,7 @@ codeunit 14135220 lvngPerformanceMgmt
             ValueBuffer.Name := CalculationLine."Source Unit Code";
             ValueBuffer.Number := CalculationLine."Line no.";
             ValueBuffer.Type := 'Decimal';
-            ValueBuffer.Value := Format(CalculateSingleBandValue(CalculationUnit, SystemFilter, Cache, Path), 0, 9);
+            ValueBuffer.Value := Format(CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path), 0, 9);
             ValueBuffer.Insert();
         until CalculationLine.Next() = 0;
         ExpressionHeader.Get(BaseCalculationUnit."Expression Code", GetBandExpressionConsumerId());
