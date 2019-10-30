@@ -107,11 +107,19 @@ page 14135220 lvngPeriodPerformanceView
         Dim4Visible: Boolean;
         BusinessUnitVisible: Boolean;
         AsOfDate: Date;
+        BlockDataFromDate: Date;
+        BlockDataToDate: Date;
         SchemaNameFormatTxt: Label '%1 - %2';
 
     trigger OnOpenPage()
     begin
         CalculateColumns();
+    end;
+
+    procedure SetDateLimits(FromDate: Date; ToDate: Date)
+    begin
+        BlockDataFromDate := FromDate;
+        BlockDataToDate := ToDate;
     end;
 
     procedure SetParams(RowSchemaCode: Code[20]; BandSchemaCode: Code[20]; ToDate: Date; Dim1Code: Code[20]; Dim2Code: Code[20]; Dim3Code: Code[20]; Dim4Code: Code[20]; BUCode: Code[20])
@@ -152,6 +160,8 @@ page 14135220 lvngPeriodPerformanceView
         SystemFilter."Shortcut Dimension 4" := Dim4Filter;
         SystemFilter."Business Unit" := BusinessUnitFilter;
         SystemFilter."As Of Date" := AsOfDate;
+        SystemFilter."Block Data From Date" := BlockDataFromDate;
+        SystemFilter."Block Data To Date" := BlockDataToDate;
     end;
 
     local procedure InitializeDataGrid()

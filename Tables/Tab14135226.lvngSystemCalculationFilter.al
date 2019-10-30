@@ -17,6 +17,8 @@ table 14135226 lvngSystemCalculationFilter
         field(19; "Business Unit"; Text[250]) { DataClassification = CustomerContent; }
         field(20; "As Of Date"; Date) { DataClassification = CustomerContent; }
         field(21; "Date Filter"; Text[50]) { DataClassification = CustomerContent; }
+        field(22; "Block Data From Date"; Date) { DataClassification = CustomerContent; }
+        field(23; "Block Data To Date"; Date) { DataClassification = CustomerContent; }
     }
 
     keys

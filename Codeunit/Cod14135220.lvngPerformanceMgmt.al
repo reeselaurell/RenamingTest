@@ -521,9 +521,9 @@ codeunit 14135220 lvngPerformanceMgmt
         if not Buffer.FindSet() then
             exit(0);
         repeat
-            Number += 1;
             Clear(ValueBuffer);
             ValueBuffer.Number := Buffer."Band No.";
+            Number := Buffer."Band No.";
             ValueBuffer.Name := 'BAND' + Format(Buffer."Band No.");
             ValueBuffer.Type := 'Decimal';
             ValueBuffer.Value := Format(Buffer.Value);
@@ -829,8 +829,6 @@ codeunit 14135220 lvngPerformanceMgmt
             BandInfoBuffer."Row Formula Code" := BandLine."Row Formula Code";
             BandInfoBuffer."Header Description" := BandLine."Header Description";
             BandInfoBuffer."Band Index" := Idx;
-            BandInfoBuffer.Insert();
-            Idx += 1;
             case BandLine."Band Type" of
                 BandLine."Band Type"::lvngNormal,
                 BandLine."Band Type"::lvngFormula:  //In case expression formula refers to not cached row formula value it will be calculated as Normal
@@ -846,7 +844,6 @@ codeunit 14135220 lvngPerformanceMgmt
                                     BandInfoBuffer."Date To" := EndDate;
                                     if BandLine."Dynamic Date Description" then
                                         BandInfoBuffer."Header Description" := Format(StartDate, 0, '<Month Text,3>-<Year4>');
-                                    BandInfoBuffer.Modify();
                                 end;
                             BandLine."Period Type"::lvngQTD:
                                 begin
@@ -867,7 +864,6 @@ codeunit 14135220 lvngPerformanceMgmt
                                     BandInfoBuffer."Date To" := EndDate;
                                     if BandLine."Dynamic Date Description" then
                                         BandInfoBuffer."Header Description" := Format(StartDate, 0, 'Qtr. <Quarter>, <Year4>');
-                                    BandInfoBuffer.Modify();
                                 end;
                             BandLine."Period Type"::lvngYTD:
                                 begin
@@ -881,7 +877,6 @@ codeunit 14135220 lvngPerformanceMgmt
                                     BandInfoBuffer."Date To" := EndDate;
                                     if BandLine."Dynamic Date Description" then
                                         BandInfoBuffer."Header Description" := Format(StartDate, 0, 'Year <Year4>');
-                                    BandInfoBuffer.Modify();
                                 end;
                             BandLine."Period Type"::lvngFiscalQTD:
                                 begin
@@ -911,7 +906,6 @@ codeunit 14135220 lvngPerformanceMgmt
                                             BandInfoBuffer."Header Description" := Format(StartDate, 0, '<Month,2>/<Day,2>/<Year4>') + ' to ' + Format(EndDate, 0, '<Month,2>/<Day,2>/<Year4>')
                                         else
                                             BandInfoBuffer."Header Description" := Format(StartDate, 0, BandInfoBuffer."Header Description");
-                                    BandInfoBuffer.Modify();
                                 end;
                             BandLine."Period Type"::lvngFiscalYTD:
                                 begin
@@ -941,7 +935,6 @@ codeunit 14135220 lvngPerformanceMgmt
                                             BandInfoBuffer."Header Description" := Format(StartDate, 0, '<Year4>/<Month>') + ' to ' + Format(EndDate, 0, '<Year4>/<Month>')
                                         else
                                             BandInfoBuffer."Header Description" := Format(EndDate, 0, BandInfoBuffer."Header Description");
-                                    BandInfoBuffer.Modify();
                                 end;
                             BandLine."Period Type"::lvngLifeToDate:
                                 begin
@@ -955,7 +948,6 @@ codeunit 14135220 lvngPerformanceMgmt
                                     BandInfoBuffer."Header Description" := BandInfoBuffer."Header Description" + Format(EndDate, 0, '<Month Text>/<Year4>');
                                     BandInfoBuffer."Date From" := StartDate;
                                     BandInfoBuffer."Date To" := EndDate;
-                                    BandInfoBuffer.Modify();
                                 end;
                             BandLine."Period Type"::lvngCustomDateFilter:
                                 begin
@@ -965,7 +957,6 @@ codeunit 14135220 lvngPerformanceMgmt
                                     BandInfoBuffer."Date To" := BandLine."Date To";
                                     if BandInfoBuffer."Header Description" = '' then
                                         BandInfoBuffer."Header Description" := Format(BandLine."Date From") + '..' + Format(BandLine."Date To");
-                                    BandInfoBuffer.Modify();
                                 end;
                         end;
                         if (TotalStartDate = 0D) and (TotalEndDate = 0D) then begin
@@ -984,10 +975,19 @@ codeunit 14135220 lvngPerformanceMgmt
                         BandInfoBuffer."Date To" := TotalEndDate;
                         if BandInfoBuffer."Header Description" = '' then
                             BandInfoBuffer."Header Description" := Format(BandInfoBuffer."Date From") + '..' + Format(BandInfoBuffer."Date To");
-                        BandInfoBuffer.Modify();
                     end;
                 else
                     Error(UnsupportedBandTypeErr, BandLine);
+            end;
+            if BaseFilter."Block Data To Date" <> 0D then
+                if BandInfoBuffer."Date From" <= BaseFilter."Block Data To Date" then
+                    BandInfoBuffer."Date From" := BaseFilter."Block Data To Date" + 1;
+            if BaseFilter."Block Data From Date" <> 0D then
+                if BandInfoBuffer."Date To" >= BaseFilter."Block Data From Date" then
+                    BandInfoBuffer."Date To" := BaseFilter."Block Data To Date" - 1;
+            if BandInfoBuffer."Date From" <= BandInfoBuffer."Date To" then begin
+                BandInfoBuffer.Insert();
+                Idx += 1;
             end;
         until BandLine.Next() = 0;
 
