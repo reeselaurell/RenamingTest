@@ -139,7 +139,7 @@ table 14135102 "lvngLoan"
             Caption = 'Global Dimension 1 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (1));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(1));
 
             trigger OnValidate()
             begin
@@ -151,7 +151,7 @@ table 14135102 "lvngLoan"
             Caption = 'Global Dimension 2 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (2));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(2));
 
             trigger OnValidate()
             begin
@@ -163,7 +163,7 @@ table 14135102 "lvngLoan"
             Caption = 'Shortcut Dimension 3 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,3';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (3));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(3));
 
             trigger OnValidate()
             begin
@@ -175,7 +175,7 @@ table 14135102 "lvngLoan"
             Caption = 'Shortcut Dimension 4 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,4';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (4));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(4));
 
             trigger OnValidate()
             begin
@@ -187,7 +187,7 @@ table 14135102 "lvngLoan"
             Caption = 'Shortcut Dimension 5 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,5';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (5));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(5));
 
             trigger OnValidate()
             begin
@@ -199,7 +199,7 @@ table 14135102 "lvngLoan"
             Caption = 'Shortcut Dimension 6 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,6';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (6));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(6));
 
             trigger OnValidate()
             begin
@@ -211,7 +211,7 @@ table 14135102 "lvngLoan"
             Caption = 'Shortcut Dimension 7 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,7';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (7));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(7));
 
             trigger OnValidate()
             begin
@@ -223,7 +223,7 @@ table 14135102 "lvngLoan"
             Caption = 'Shortcut Dimension 8 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,8';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (8));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(8));
 
             trigger OnValidate()
             begin
@@ -351,8 +351,18 @@ table 14135102 "lvngLoan"
         {
 
         }
+        key(CommissionDate; lvngCommissionDate)
+        {
 
+        }
+        key(FundedDate; lvngDateFunded)
+        {
 
+        }
+        key(SoldDate; lvngDateSold)
+        {
+
+        }
     }
 
     fieldgroups
