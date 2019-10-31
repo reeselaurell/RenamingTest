@@ -126,7 +126,7 @@ function LoadFields(data) {
 }
 function LoadFormula(f)
 {
-    formula.text(f);
+    formula.val(f);
 }
 
 function PrepareFormulaData() {
@@ -135,13 +135,13 @@ function PrepareFormulaData() {
 
 /* Helper functions */
 function PostFormulaData() {
-    window.setTimeout(function () { Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('FormulaDataReady', [formula.text()]); }, 10);
+    window.setTimeout(function () { Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('FormulaDataReady', [formula.val()]); }, 10);
 }
 function ValidateFormula() {
-    Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('VerifyFormula', [formula.text()]);
+    Microsoft.Dynamics.NAV.InvokeExtensibilityMethod('VerifyFormula', [formula.val()]);
 }
 function AddFormulaPart(p) {
-    var val = formula.text();
+    var val = formula.val();
     var sel = formula.getSelection();
     if (sel.start > 0 && val[sel.start - 1] != ' ')
         p = ' ' + p;
