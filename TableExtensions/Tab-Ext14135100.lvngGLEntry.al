@@ -97,6 +97,11 @@ tableextension 14135100 "lvngGLEntry" extends "G/L Entry" //MyTargetTableId
         }
     }
 
+    keys
+    {
+        key(LoanNo; lvngLoanNo) { }
+    }
+
     var
         GLSetup: Record "General Ledger Setup";
         GLSetupRead: Boolean;

@@ -25,4 +25,12 @@ table 14135226 lvngSystemCalculationFilter
     {
         key(PK; "Primary Key") { Clustered = true; }
     }
+
+    var
+        InvalidOperationErr: Label 'System Calculation Filter table is not designed to store values';
+
+    trigger OnInsert()
+    begin
+        Error(InvalidOperationErr);
+    end;
 }

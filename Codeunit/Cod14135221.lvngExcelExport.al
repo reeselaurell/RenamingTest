@@ -15,8 +15,10 @@ codeunit 14135221 lvngExcelExport
         sn - Style Cell only when value is negative
         sr - Style Row
         sx - Style Cell
-        wd - Write Decimal
+        wb - Write Boolean
+        wd - Write Date
         wf - Write Formula
+        wn - Write Number
         ws - Write String
     */
     var
@@ -343,11 +345,31 @@ codeunit 14135221 lvngExcelExport
         Script.Add(Instruction);
     end;
 
-    procedure WriteDecimal(Value: Decimal)
+    procedure WriteNumber(Value: Decimal)
+    begin
+        Clear(Instruction);
+        Clear(Params);
+        Instruction.Add('n', 'wn');
+        Instruction.Add('p', Params);
+        Params.Add('v', Value);
+        Script.Add(Instruction);
+    end;
+
+    procedure WriteDate(Value: Date)
     begin
         Clear(Instruction);
         Clear(Params);
         Instruction.Add('n', 'wd');
+        Instruction.Add('p', Params);
+        Params.Add('v', Value);
+        Script.Add(Instruction);
+    end;
+
+    procedure WriteBoolean(Value: Boolean)
+    begin
+        Clear(Instruction);
+        Clear(Params);
+        Instruction.Add('n', 'wb');
         Instruction.Add('p', Params);
         Params.Add('v', Value);
         Script.Add(Instruction);

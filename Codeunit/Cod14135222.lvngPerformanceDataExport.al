@@ -163,7 +163,7 @@ codeunit 14135222 lvngPerformanceDataExport
                                 if RowLine."Number Format Code" <> '' then
                                     ExcelExport.FormatCell(RowLine."Number Format Code");
                                 if not CalcUnit.Get(RowLine."Calculation Unit Code") then
-                                    ExcelExport.WriteDecimal(0)
+                                    ExcelExport.WriteNumber(0)
                                 else
                                     if (CalcUnit.Type <> CalcUnit.Type::lvngExpression) and (BandInfo."Band Type" = BandInfo."Band Type"::lvngFormula) then begin
                                         //Apply row formula
@@ -188,9 +188,9 @@ codeunit 14135222 lvngPerformanceDataExport
                                             end
                                         end else begin
                                             if Buffer.Get(TempRowLine."Line No.", BandInfo."Band No.", RowLine."Column No.") then
-                                                ExcelExport.WriteDecimal(Buffer.Value)
+                                                ExcelExport.WriteNumber(Buffer.Value)
                                             else
-                                                ExcelExport.WriteDecimal(0);
+                                                ExcelExport.WriteNumber(0);
                                         end;
                                     end;
                             until RowLine.Next() = 0;
