@@ -1,16 +1,12 @@
 ﻿/* Global Variables */
 var control;
 var grid;
-var buttons;
 var GridColumnNames = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var currentGridData;
 
 /* Internal functions */
 function CreateInfrastructure() {
     control.empty();
-    buttons = $('<div></div>');
-    buttons.addClass('toolbar');
-    control.append(buttons);
     grid = $('<div></div>');
     control.append(grid);
 }
@@ -266,6 +262,7 @@ function InitializeDXGrid(data) {
         data.scrolling = {
             useNative: true
         }
+        data.height = 680;
         for (var i = 0; i < data.columns.length; i++) {
             SetCellTemplate(data.columns[i]);
         }

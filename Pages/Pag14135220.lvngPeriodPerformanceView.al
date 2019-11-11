@@ -1,6 +1,6 @@
 page 14135220 lvngPeriodPerformanceView
 {
-    PageType = Worksheet;
+    PageType = Card;
     Editable = false;
     InsertAllowed = false;
     ModifyAllowed = false;

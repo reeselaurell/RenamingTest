@@ -1,6 +1,6 @@
 page 14135235 lvngDimensionPerformanceView
 {
-    PageType = Worksheet;
+    PageType = Card;
     Editable = false;
     InsertAllowed = false;
     ModifyAllowed = false;
