@@ -83,45 +83,31 @@ report 14135220 lvngPerformanceWorksheet
 
                         trigger OnValidate()
                         var
-                            Idx: Integer;
-                            FromDate: Text;
-                            ToDate: Text;
+                            FilterTokens: Codeunit "Filter Tokens";
                         begin
                             RowSchema.Get(RowSchemaCode);
                             if RowSchema."Schema Type" = RowSchema."Schema Type"::lvngPeriod then begin
                                 Evaluate(AsOfDate, DateFilter);
                                 DateFilter := Format(AsOfDate);
                             end else begin
-                                Idx := StrPos(DateFilter, '..');
-                                if Idx = 0 then begin
-                                    Evaluate(AsOfDate, DateFilter);
-                                    DateFilter := '..' + Format(AsOfDate);
-                                end else begin
-                                    FromDate := CopyStr(DateFilter, 1, Idx - 1);
-                                    ToDate := CopyStr(DateFilter, Idx + 2);
-                                    if FromDate <> '' then begin
-                                        Evaluate(AsOfDate, FromDate);
-                                        FromDate := Format(AsOfDate);
-                                    end;
-                                    if ToDate <> '' then begin
-                                        Evaluate(AsOfDate, ToDate);
-                                        ToDate := Format(AsOfDate);
-                                    end;
-                                    DateFilter := FromDate + '..' + ToDate;
-                                end;
+                                if Evaluate(AsOfDate, DateFilter) then
+                                    DateFilter := '..' + Format(AsOfDate)
+                                else
+                                    FilterTokens.MakeDateFilter(DateFilter);
                             end;
                         end;
                     }
+                    field(ClosingDates; SystemFilter."Omit Closing Dates") { ApplicationArea = All; Importance = Additional; Caption = 'Omit Closing Dates'; }
                 }
                 group(Dimensions)
                 {
                     Caption = 'Dimension Filters';
 
-                    field(Dim1Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 1 Filter'; CaptionClass = '1,3,1'; }
-                    field(Dim2Filter; Dim2Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; CaptionClass = '1,3,2'; }
-                    field(Dim3Filter; Dim3Filter) { ApplicationArea = All; Caption = 'Dimension 3 Filter'; CaptionClass = '1,4,3'; }
-                    field(Dim4Filter; Dim4Filter) { ApplicationArea = All; Caption = 'Dimension 4 Filter'; CaptionClass = '1,4,4'; }
-                    field(BusinessUnitFilter; BusinessUnitFilter) { ApplicationArea = All; Caption = 'Business Unit Filter'; }
+                    field(Dim1Filter; SystemFilter."Shortcut Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; CaptionClass = '1,3,1'; }
+                    field(Dim2Filter; SystemFilter."Shortcut Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; CaptionClass = '1,3,2'; }
+                    field(Dim3Filter; SystemFilter."Shortcut Dimension 3") { ApplicationArea = All; Caption = 'Dimension 3 Filter'; CaptionClass = '1,4,3'; }
+                    field(Dim4Filter; SystemFilter."Shortcut Dimension 4") { ApplicationArea = All; Caption = 'Dimension 4 Filter'; CaptionClass = '1,4,4'; }
+                    field(BusinessUnitFilter; SystemFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; }
                 }
             }
         }
@@ -129,14 +115,10 @@ report 14135220 lvngPerformanceWorksheet
 
     var
         RowSchema: Record lvngPerformanceRowSchema;
+        SystemFilter: Record lvngSystemCalculationFilter temporary;
         DateFilter: Text;
         RowSchemaCode: Code[20];
         BandSchemaCode: Code[20];
-        Dim1Filter: Code[20];
-        Dim2Filter: Code[20];
-        Dim3Filter: Code[20];
-        Dim4Filter: Code[20];
-        BusinessUnitFilter: Code[20];
         AsOfDate: Date;
 
     trigger OnPostReport()
@@ -147,12 +129,13 @@ report 14135220 lvngPerformanceWorksheet
         RowSchema.Get(RowSchemaCode);
         if RowSchema."Schema Type" = RowSchema."Schema Type"::lvngPeriod then begin
             Clear(PeriodPerformanceView);
-            Evaluate(AsOfDate, DateFilter);
-            PeriodPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, AsOfDate, Dim1Filter, Dim2Filter, Dim3Filter, Dim4Filter, BusinessUnitFilter);
+            Evaluate(SystemFilter."As Of Date", DateFilter);
+            PeriodPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, SystemFilter);
             PeriodPerformanceView.RunModal();
         end else begin
             Clear(DimensionPerformanceView);
-            DimensionPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, DateFilter, Dim1Filter, Dim2Filter, Dim3Filter, Dim4Filter, BusinessUnitFilter);
+            SystemFilter."Date Filter" := DateFilter;
+            DimensionPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, SystemFilter);
             DimensionPerformanceView.RunModal();
         end;
     end;

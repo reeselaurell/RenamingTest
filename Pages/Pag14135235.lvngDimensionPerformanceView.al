@@ -14,12 +14,12 @@ page 14135235 lvngDimensionPerformanceView
         {
             group(Filters)
             {
-                field(SchemaName; SchemaName) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
-                field(Dim1Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
-                field(Dim2Filter; Dim2Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
-                field(Dim3Filter; Dim3Filter) { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
-                field(Dim4Filter; Dim4Filter) { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
-                field(BusinessUnitFilter; BusinessUnitFilter) { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
+                field(SchemaName; SystemFilter.Description) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
+                field(Dim1Filter; SystemFilter."Shortcut Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
+                field(Dim2Filter; SystemFilter."Shortcut Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
+                field(Dim3Filter; SystemFilter."Shortcut Dimension 3") { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
+                field(Dim4Filter; SystemFilter."Shortcut Dimension 4") { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
+                field(BusinessUnitFilter; SystemFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
                 field(DateFilter; DateFilter) { ApplicationArea = All; Caption = 'Date Filter'; Editable = false; }
             }
             usercontrol(DataGrid; DataGridControl)
@@ -93,17 +93,12 @@ page 14135235 lvngDimensionPerformanceView
         ColSchema: Record lvngPerformanceColSchema;
         TempBandLine: Record lvngDimPerfBandSchemaLine temporary;
         Buffer: Record lvngPerformanceValueBuffer temporary;
+        SystemFilter: Record lvngSystemCalculationFilter temporary;
         PerformanceMgmt: Codeunit lvngPerformanceMgmt;
         PerformanceDataExport: Codeunit lvngPerformanceDataExport;
         BandIndexLookup: Dictionary of [Integer, Integer];
         StylesInUse: Dictionary of [Code[20], Boolean];
         GridExportMode: Enum lvngGridExportMode;
-        SchemaName: Text;
-        Dim1Filter: Code[20];
-        Dim2Filter: Code[20];
-        Dim3Filter: Code[20];
-        Dim4Filter: Code[20];
-        BusinessUnitFilter: Code[20];
         Dim1Visible: Boolean;
         Dim2Visible: Boolean;
         Dim3Visible: Boolean;
@@ -116,25 +111,20 @@ page 14135235 lvngDimensionPerformanceView
     trigger OnOpenPage()
     begin
         ColSchema.Get(RowSchema."Column Schema");
-        SchemaName := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
         CalculateColumns();
     end;
 
-    procedure SetParams(RowSchemaCode: Code[20]; BandSchemaCode: Code[20]; DateRange: Text; Dim1Code: Code[20]; Dim2Code: Code[20]; Dim3Code: Code[20]; Dim4Code: Code[20]; BUCode: Code[20])
+    procedure SetParams(RowSchemaCode: Code[20]; BandSchemaCode: Code[20]; var Filter: Record lvngSystemCalculationFilter)
     begin
         RowSchema.Get(RowSchemaCode);
         BandSchema.Get(BandSchemaCode);
-        BusinessUnitFilter := BUCode;
-        Dim1Filter := Dim1Code;
-        Dim2Filter := Dim2Code;
-        Dim3Filter := Dim3Code;
-        Dim4Filter := Dim4Code;
-        BusinessUnitVisible := BUCode <> '';
-        Dim1Visible := Dim1Code <> '';
-        Dim2Visible := Dim2Code <> '';
-        Dim3Visible := Dim3Code <> '';
-        Dim4Visible := Dim4Code <> '';
-        DateFilter := DateRange;
+        SystemFilter := Filter;
+        SystemFilter.Description := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
+        BusinessUnitVisible := SystemFilter."Business Unit" <> '';
+        Dim1Visible := SystemFilter."Shortcut Dimension 1" <> '';
+        Dim2Visible := SystemFilter."Shortcut Dimension 2" <> '';
+        Dim3Visible := SystemFilter."Shortcut Dimension 3" <> '';
+        Dim4Visible := SystemFilter."Shortcut Dimension 4" <> '';
     end;
 
     local procedure CalculateColumns()
@@ -142,7 +132,7 @@ page 14135235 lvngDimensionPerformanceView
         DynamicBandLink: Record lvngDynamicBandLink;
         BandLine: Record lvngDimPerfBandSchemaLine;
         DimensionValue: Record "Dimension Value";
-        SystemFilter: Record lvngSystemCalculationFilter temporary;
+        BandFilter: Record lvngSystemCalculationFilter temporary;
         LineNo: Integer;
     begin
         TempBandLine.Reset();
@@ -151,16 +141,16 @@ page 14135235 lvngDimensionPerformanceView
         if BandSchema."Dynamic Layout" then begin
             DynamicBandLink.Reset();
             DynamicBandLink.SetRange("Dimension Code", BandSchema."Dimension Code");
-            if Dim1Filter <> '' then
-                DynamicBandLink.SetRange("Global Dimension 1 Code", Dim1Filter);
-            if Dim2Filter <> '' then
-                DynamicBandLink.SetRange("Global Dimension 2 Code", Dim2Filter);
-            if Dim3Filter <> '' then
-                DynamicBandLink.SetRange("Shortcut Dimension 3 Code", Dim3Filter);
-            if Dim4Filter <> '' then
-                DynamicBandLink.SetRange("Shortcut Dimension 4 Code", Dim4Filter);
-            if BusinessUnitFilter <> '' then
-                DynamicBandLink.SetRange("Business Unit Code", BusinessUnitFilter);
+            if SystemFilter."Shortcut Dimension 1" <> '' then
+                DynamicBandLink.SetRange("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
+            if SystemFilter."Shortcut Dimension 2" <> '' then
+                DynamicBandLink.SetRange("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
+            if SystemFilter."Shortcut Dimension 3" <> '' then
+                DynamicBandLink.SetRange("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
+            if SystemFilter."Shortcut Dimension 4" <> '' then
+                DynamicBandLink.SetRange("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
+            if SystemFilter."Business Unit" <> '' then
+                DynamicBandLink.SetRange("Business Unit Code", SystemFilter."Business Unit");
             DynamicBandLink.FindSet();
             LineNo := 1;
             repeat
@@ -194,9 +184,9 @@ page 14135235 lvngDimensionPerformanceView
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngNormal);
         TempBandLine.FindSet();
         repeat
-            InitializeSystemFilter(SystemFilter);
-            PerformanceMgmt.ApplyDimensionBandFilter(SystemFilter, BandSchema, TempBandLine);
-            PerformanceMgmt.CalculatePerformanceBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter);
+            BandFilter := SystemFilter;
+            PerformanceMgmt.ApplyDimensionBandFilter(BandFilter, BandSchema, TempBandLine);
+            PerformanceMgmt.CalculatePerformanceBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, BandFilter);
         until TempBandLine.Next() = 0;
 
         TempBandLine.Reset();
@@ -210,21 +200,10 @@ page 14135235 lvngDimensionPerformanceView
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngFormula);
         if TempBandLine.FindSet() then
             repeat
-                InitializeSystemFilter(SystemFilter);
-                PerformanceMgmt.ApplyDimensionBandFilter(SystemFilter, BandSchema, TempBandLine);
-                PerformanceMgmt.CalculateFormulaBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, SystemFilter, TempBandLine."Row Formula Code", PerformanceMgmt.GetDimensionRowExpressionConsumerId());
+                BandFilter := SystemFilter;
+                PerformanceMgmt.ApplyDimensionBandFilter(BandFilter, BandSchema, TempBandLine);
+                PerformanceMgmt.CalculateFormulaBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, BandFilter, TempBandLine."Row Formula Code", PerformanceMgmt.GetDimensionRowExpressionConsumerId());
             until TempBandLine.Next() = 0;
-    end;
-
-    local procedure InitializeSystemFilter(var SystemFilter: Record lvngSystemCalculationFilter)
-    begin
-        Clear(SystemFilter);
-        SystemFilter."Date Filter" := DateFilter;
-        SystemFilter."Shortcut Dimension 1" := Dim1Filter;
-        SystemFilter."Shortcut Dimension 2" := Dim2Filter;
-        SystemFilter."Shortcut Dimension 3" := Dim3Filter;
-        SystemFilter."Shortcut Dimension 4" := Dim4Filter;
-        SystemFilter."Business Unit" := BusinessUnitFilter;
     end;
 
     local procedure InitializeDataGrid()
@@ -249,7 +228,7 @@ page 14135235 lvngDimensionPerformanceView
         RowLine: Record lvngPerformanceRowSchemaLine;
         CalcUnit: Record lvngCalculationUnit;
         Loan: Record lvngLoan;
-        SystemFilter: Record lvngSystemCalculationFilter temporary;
+        BandFilter: Record lvngSystemCalculationFilter temporary;
         GLEntry: Record "G/L Entry";
         LoanList: Page lvngLoanList;
         GLEntries: Page lvngPerformanceGLEntries;
@@ -258,20 +237,20 @@ page 14135235 lvngDimensionPerformanceView
         if TempBandLine."Band Type" = TempBandLine."Band Type"::lvngNormal then begin
             RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
             CalcUnit.Get(RowLine."Calculation Unit Code");
-            InitializeSystemFilter(SystemFilter);
-            PerformanceMgmt.ApplyDimensionBandFilter(SystemFilter, BandSchema, TempBandLine);
+            BandFilter := SystemFilter;
+            PerformanceMgmt.ApplyDimensionBandFilter(BandFilter, BandSchema, TempBandLine);
             case CalcUnit."Lookup Source" of
                 CalcUnit."Lookup Source"::lvngLoanCard:
                     begin
                         Loan.Reset();
-                        PerformanceMgmt.ApplyLoanFilter(Loan, CalcUnit, SystemFilter);
+                        PerformanceMgmt.ApplyLoanFilter(Loan, CalcUnit, BandFilter);
                         LoanList.SetTableView(Loan);
                         LoanList.RunModal();
                     end;
                 CalcUnit."Lookup Source"::lvngLedgerEntries:
                     begin
                         GLEntry.Reset();
-                        PerformanceMgmt.ApplyGLFilter(GLEntry, CalcUnit, SystemFilter);
+                        PerformanceMgmt.ApplyGLFilter(GLEntry, CalcUnit, BandFilter);
                         GLEntries.SetTableView(GLEntry);
                         GLEntries.RunModal();
                     end;
@@ -287,12 +266,12 @@ page 14135235 lvngDimensionPerformanceView
         ExcelExport: Codeunit lvngExcelExport;
     begin
         Clear(HeaderData);
-        HeaderData.Description := SchemaName;
-        HeaderData."Shortcut Dimension 1" := Dim1Filter;
-        HeaderData."Shortcut Dimension 2" := Dim2Filter;
-        HeaderData."Shortcut Dimension 3" := Dim3Filter;
-        HeaderData."Shortcut Dimension 4" := Dim4Filter;
-        HeaderData."Business Unit" := BusinessUnitFilter;
+        HeaderData.Description := SystemFilter.Description;
+        HeaderData."Shortcut Dimension 1" := SystemFilter."Shortcut Dimension 1";
+        HeaderData."Shortcut Dimension 2" := SystemFilter."Shortcut Dimension 2";
+        HeaderData."Shortcut Dimension 3" := SystemFilter."Shortcut Dimension 3";
+        HeaderData."Shortcut Dimension 4" := SystemFilter."Shortcut Dimension 4";
+        HeaderData."Business Unit" := SystemFilter."Business Unit";
         TempBandLine.Reset();
         repeat
             Clear(BandInfo);

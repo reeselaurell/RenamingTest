@@ -19,6 +19,7 @@ table 14135226 lvngSystemCalculationFilter
         field(21; "Date Filter"; Text[50]) { DataClassification = CustomerContent; }
         field(22; "Block Data From Date"; Date) { DataClassification = CustomerContent; }
         field(23; "Block Data To Date"; Date) { DataClassification = CustomerContent; }
+        field(24; "Omit Closing Dates"; Boolean) { DataClassification = CustomerContent; }
     }
 
     keys
@@ -32,5 +33,23 @@ table 14135226 lvngSystemCalculationFilter
     trigger OnInsert()
     begin
         Error(InvalidOperationErr);
+    end;
+
+    procedure GetGLPostingDateFilter() DateFilter: Text
+    var
+        AccountingPeriod: Record "Accounting Period";
+    begin
+        if "Date Filter" = '' then
+            exit;
+        DateFilter := "Date Filter";
+        if "Omit Closing Dates" then begin
+            AccountingPeriod.Reset();
+            AccountingPeriod.SetFilter("Starting Date", "Date Filter");
+            AccountingPeriod.SetRange(Closed, true);
+            if AccountingPeriod.FindSet() then
+                repeat
+                    DateFilter += StrSubstNo('&<>%1', ClosingDate(AccountingPeriod."Starting Date"));
+                until AccountingPeriod.Next() = 0;
+        end;
     end;
 }

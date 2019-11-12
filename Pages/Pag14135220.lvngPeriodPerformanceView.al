@@ -14,13 +14,13 @@ page 14135220 lvngPeriodPerformanceView
         {
             group(Filters)
             {
-                field(SchemaName; SchemaName) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
-                field(Dim1Filter; Dim1Filter) { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
-                field(Dim2Filter; Dim2Filter) { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
-                field(Dim3Filter; Dim3Filter) { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
-                field(Dim4Filter; Dim4Filter) { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
-                field(BusinessUnitFilter; BusinessUnitFilter) { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
-                field(AsOfDate; AsOfDate) { ApplicationArea = All; Caption = 'As Of Date'; Editable = false; }
+                field(SchemaName; SystemFilter.Description) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
+                field(Dim1Filter; SystemFilter."Shortcut Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
+                field(Dim2Filter; SystemFilter."Shortcut Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
+                field(Dim3Filter; SystemFilter."Shortcut Dimension 3") { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
+                field(Dim4Filter; SystemFilter."Shortcut Dimension 4") { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
+                field(BusinessUnitFilter; SystemFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
+                field(AsOfDate; SystemFilter."As Of Date") { ApplicationArea = All; Caption = 'As Of Date'; Editable = false; }
             }
             usercontrol(DataGrid; DataGridControl)
             {
@@ -93,75 +93,34 @@ page 14135220 lvngPeriodPerformanceView
         ColSchema: Record lvngPerformanceColSchema;
         BandInfoBuffer: Record lvngPerformanceBandLineInfo temporary;
         ValueBuffer: Record lvngPerformanceValueBuffer temporary;
+        SystemFilter: Record lvngSystemCalculationFilter temporary;
         PerformanceMgmt: Codeunit lvngPerformanceMgmt;
         GridExportMode: Enum lvngGridExportMode;
-        SchemaName: Text;
-        Dim1Filter: Code[20];
-        Dim2Filter: Code[20];
-        Dim3Filter: Code[20];
-        Dim4Filter: Code[20];
-        BusinessUnitFilter: Code[20];
         Dim1Visible: Boolean;
         Dim2Visible: Boolean;
         Dim3Visible: Boolean;
         Dim4Visible: Boolean;
         BusinessUnitVisible: Boolean;
-        AsOfDate: Date;
-        BlockDataFromDate: Date;
-        BlockDataToDate: Date;
         SchemaNameFormatTxt: Label '%1 - %2';
 
     trigger OnOpenPage()
     begin
-        CalculateColumns();
+        PerformanceMgmt.CalculatePeriodsData(RowSchema, BandSchema, SystemFilter, BandInfoBuffer, ValueBuffer);
     end;
 
-    procedure SetDateLimits(FromDate: Date; ToDate: Date)
-    begin
-        BlockDataFromDate := FromDate;
-        BlockDataToDate := ToDate;
-    end;
-
-    procedure SetParams(RowSchemaCode: Code[20]; BandSchemaCode: Code[20]; ToDate: Date; Dim1Code: Code[20]; Dim2Code: Code[20]; Dim3Code: Code[20]; Dim4Code: Code[20]; BUCode: Code[20])
+    procedure SetParams(RowSchemaCode: Code[20]; BandSchemaCode: Code[20]; var Filter: Record lvngSystemCalculationFilter)
     begin
         RowSchema.Get(RowSchemaCode);
         BandSchema.Get(BandSchemaCode);
-        BusinessUnitFilter := BUCode;
-        Dim1Filter := Dim1Code;
-        Dim2Filter := Dim2Code;
-        Dim3Filter := Dim3Code;
-        Dim4Filter := Dim4Code;
-        BusinessUnitVisible := BUCode <> '';
-        Dim1Visible := Dim1Code <> '';
-        Dim2Visible := Dim2Code <> '';
-        Dim3Visible := Dim3Code <> '';
-        Dim4Visible := Dim4Code <> '';
-        AsOfDate := ToDate;
-    end;
-
-    local procedure CalculateColumns()
-    var
-        BaseFilter: Record lvngSystemCalculationFilter;
-    begin
-        if AsOfDate = 0D then
-            AsOfDate := Today;
-        SchemaName := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
-        InitalizeSystemFilter(BaseFilter);
-        PerformanceMgmt.CalculatePeriodsData(RowSchema, BandSchema, BaseFilter, BandInfoBuffer, ValueBuffer);
-    end;
-
-    local procedure InitalizeSystemFilter(var SystemFilter: Record lvngSystemCalculationFilter)
-    begin
-        Clear(SystemFilter);
-        SystemFilter.Description := SchemaName;
-        SystemFilter."Shortcut Dimension 1" := Dim1Filter;
-        SystemFilter."Shortcut Dimension 2" := Dim2Filter;
-        SystemFilter."Shortcut Dimension 3" := Dim3Filter;
-        SystemFilter."Shortcut Dimension 4" := Dim4Filter;
-        SystemFilter."Business Unit" := BusinessUnitFilter;
-        SystemFilter."As Of Date" := AsOfDate;
-        SystemFilter."Block Data From Date" := BlockDataFromDate;
-        SystemFilter."Block Data To Date" := BlockDataToDate;
+        SystemFilter := Filter;
+        if SystemFilter."As Of Date" = 0D then
+            SystemFilter."As Of Date" := Today;
+        SystemFilter.Description := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
+        BusinessUnitVisible := SystemFilter."Business Unit" <> '';
+        Dim1Visible := SystemFilter."Shortcut Dimension 1" <> '';
+        Dim2Visible := SystemFilter."Shortcut Dimension 2" <> '';
+        Dim3Visible := SystemFilter."Shortcut Dimension 3" <> '';
+        Dim4Visible := SystemFilter."Shortcut Dimension 4" <> '';
     end;
 
     local procedure InitializeDataGrid()
@@ -187,7 +146,6 @@ page 14135220 lvngPeriodPerformanceView
         RowLine: Record lvngPerformanceRowSchemaLine;
         CalcUnit: Record lvngCalculationUnit;
         Loan: Record lvngLoan;
-        SystemFilter: Record lvngSystemCalculationFilter temporary;
         GLEntry: Record "G/L Entry";
         BandLine: Record lvngPeriodPerfBandSchemaLine;
         LoanList: Page lvngLoanList;
@@ -197,7 +155,6 @@ page 14135220 lvngPeriodPerformanceView
         if BandLine."Band Type" = BandLine."Band Type"::lvngNormal then begin
             RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
             CalcUnit.Get(RowLine."Calculation Unit Code");
-            InitalizeSystemFilter(SystemFilter);
             case CalcUnit."Lookup Source" of
                 CalcUnit."Lookup Source"::lvngLoanCard:
                     begin
@@ -224,12 +181,12 @@ page 14135220 lvngPeriodPerformanceView
         ExcelExport: Codeunit lvngExcelExport;
     begin
         Clear(HeaderData);
-        HeaderData.Description := SchemaName;
-        HeaderData."Shortcut Dimension 1" := Dim1Filter;
-        HeaderData."Shortcut Dimension 2" := Dim2Filter;
-        HeaderData."Shortcut Dimension 3" := Dim3Filter;
-        HeaderData."Shortcut Dimension 4" := Dim4Filter;
-        HeaderData."Business Unit" := BusinessUnitFilter;
+        HeaderData.Description := SystemFilter.Description;
+        HeaderData."Shortcut Dimension 1" := SystemFilter."Shortcut Dimension 1";
+        HeaderData."Shortcut Dimension 2" := SystemFilter."Shortcut Dimension 2";
+        HeaderData."Shortcut Dimension 3" := SystemFilter."Shortcut Dimension 3";
+        HeaderData."Shortcut Dimension 4" := SystemFilter."Shortcut Dimension 4";
+        HeaderData."Business Unit" := SystemFilter."Business Unit";
         ExcelExport.Init('PerformanceWorksheet', GridExportMode);
         PerformanceDataExport.ExportToExcel(ExcelExport, RowSchema, ValueBuffer, HeaderData, BandInfoBuffer);
         ExcelExport.Download(PerformanceDataExport.GetExportFileName(GridExportMode, RowSchema."Schema Type"));

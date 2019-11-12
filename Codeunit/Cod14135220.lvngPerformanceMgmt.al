@@ -222,7 +222,7 @@ codeunit 14135220 lvngPerformanceMgmt
         else
             if SystemFilter."Business Unit" <> '' then
                 GLEntry.SetRange("Business Unit Code", SystemFilter."Business Unit");
-        GLEntry.SetFilter("Posting Date", SystemFilter."Date Filter");
+        GLEntry.SetFilter("Posting Date", SystemFilter.GetGLPostingDateFilter());
         GLEntry.FilterGroup(0);
     end;
 
@@ -707,7 +707,7 @@ codeunit 14135220 lvngPerformanceMgmt
         else
             if SystemFilter."Business Unit" <> '' then
                 GLEntry.SetFilter(lvngBusinessUnitCode, SystemFilter."Business Unit");
-        GLEntry.SetFilter(lvngPostingDate, SystemFilter."Date Filter");
+        GLEntry.SetFilter(lvngPostingDate, SystemFilter.GetGLPostingDateFilter());
         case CalculationUnit."Amount Type" of
             CalculationUnit."Amount Type"::lvngNetAmount:
                 begin
