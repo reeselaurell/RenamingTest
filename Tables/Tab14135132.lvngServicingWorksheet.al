@@ -24,7 +24,7 @@ table 14135132 "lvngServicingWorksheet"
             Caption = 'Customer No.';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan.lvngBorrowerCustomerNo where (lvngLoanNo = field (lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."Borrower Customer No" where("Loan No." = field(lvngLoanNo)));
 
         }
         field(11; lvngDateFunded; Date)
@@ -32,42 +32,42 @@ table 14135132 "lvngServicingWorksheet"
             Caption = 'Date Funded';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan.lvngDateFunded where (lvngLoanNo = field (lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."Date Funded" where("Loan No." = field(lvngLoanNo)));
         }
         field(12; lvngDateSold; Date)
         {
             Caption = 'Date Sold';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan.lvngDateSold where (lvngLoanNo = field (lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."Date Sold" where("Loan No." = field(lvngLoanNo)));
         }
         field(13; lvngFirstPaymentDue; Date)
         {
             Caption = 'First Payment Due';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan.lvngFirstPaymentDue where (lvngLoanNo = field (lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."First Payment Due" where("Loan No." = field(lvngLoanNo)));
         }
         field(14; lvngFirstPaymentDueToInvestor; Date)
         {
             Caption = 'First Payment Due to Investor';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan.lvngFirstPaymentDueToInvestor where (lvngLoanNo = field (lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."First Payment Due To Investor" where("Loan No." = field(lvngLoanNo)));
         }
         field(15; lvngNextPaymentDate; Date)
         {
             Caption = 'Next Payment Date';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan.lvngNextPaymentDate where (lvngLoanNo = field (lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."Next Payment Date" where("Loan No." = field(lvngLoanNo)));
         }
         field(16; lvngBorrowerName; Text[100])
         {
             Caption = 'Borrower Name';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan.lvngSearchName where (lvngLoanNo = field (lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."Search Name" where("Loan No." = field(lvngLoanNo)));
         }
         field(20; lvngInterestAmount; Decimal)
         {
@@ -125,7 +125,7 @@ table 14135132 "lvngServicingWorksheet"
         lvngLoan: Record lvngLoan;
     begin
         lvngLoan.Get(lvngLoanNo);
-        lvngServicingManagement.GetPrincipalAndInterest(lvngLoan, lvngLoan.lvngNextPaymentDate, lvngPrincipalAmount, lvngInterestAmount);
+        lvngServicingManagement.GetPrincipalAndInterest(lvngLoan, lvngLoan."Next Payment Date", lvngPrincipalAmount, lvngInterestAmount);
         lvngEscrowAmount := lvngServicingManagement.GetTotalEscrowAmounts(lvngLoan);
     end;
 

@@ -411,15 +411,15 @@ codeunit 14135116 "lvngPurchFileImportManagement"
         lvngLoan: Record lvngLoan;
     begin
         if lvngLoan.Get(lvngGenJnlImportBuffer.lvngLoanNo) then begin
-            lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngLoan.lvngGlobalDimension1Code;
-            lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngLoan.lvngGlobalDimension2Code;
-            lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngLoan.lvngShortcutDimension3Code;
-            lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngLoan.lvngShortcutDimension4Code;
-            lvngGenJnlImportBuffer.lvngShortcutDimension5Code := lvngLoan.lvngShortcutDimension5Code;
-            lvngGenJnlImportBuffer.lvngShortcutDimension6Code := lvngLoan.lvngShortcutDimension6Code;
-            lvngGenJnlImportBuffer.lvngShortcutDimension7Code := lvngLoan.lvngShortcutDimension7Code;
-            lvngGenJnlImportBuffer.lvngShortcutDimension8Code := lvngLoan.lvngShortcutDimension8Code;
-            lvngGenJnlImportBuffer.lvngBusinessUnitCode := lvngLoan.lvngBusinessUnitCode;
+            lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngLoan."Global Dimension 1 Code";
+            lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngLoan."Global Dimension 2 Code";
+            lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngLoan."Shortcut Dimension 3 Code";
+            lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngLoan."Shortcut Dimension 4 Code";
+            lvngGenJnlImportBuffer.lvngShortcutDimension5Code := lvngLoan."Shortcut Dimension 5 Code";
+            lvngGenJnlImportBuffer.lvngShortcutDimension6Code := lvngLoan."Shortcut Dimension 6 Code";
+            lvngGenJnlImportBuffer.lvngShortcutDimension7Code := lvngLoan."Shortcut Dimension 7 Code";
+            lvngGenJnlImportBuffer.lvngShortcutDimension8Code := lvngLoan."Shortcut Dimension 8 Code";
+            lvngGenJnlImportBuffer.lvngBusinessUnitCode := lvngLoan."Business Unit Code";
         end;
     end;
 
@@ -429,23 +429,23 @@ codeunit 14135116 "lvngPurchFileImportManagement"
     begin
         if lvngLoan.Get(lvngGenJnlImportBuffer.lvngLoanNo) then begin
             if lvngGenJnlImportBuffer.lvngGlobalDimension1Value = '' then
-                lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngLoan.lvngGlobalDimension1Code;
+                lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngLoan."Global Dimension 1 Code";
             if lvngGenJnlImportBuffer.lvngGlobalDimension2Value = '' then
-                lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngLoan.lvngGlobalDimension2Code;
+                lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngLoan."Global Dimension 2 Code";
             if lvngGenJnlImportBuffer.lvngShortcutDimension3Value = '' then
-                lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngLoan.lvngShortcutDimension3Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngLoan."Shortcut Dimension 3 Code";
             if lvngGenJnlImportBuffer.lvngShortcutDimension4Value = '' then
-                lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngLoan.lvngShortcutDimension4Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngLoan."Shortcut Dimension 4 Code";
             if lvngGenJnlImportBuffer.lvngShortcutDimension5Value = '' then
-                lvngGenJnlImportBuffer.lvngShortcutDimension5Code := lvngLoan.lvngShortcutDimension5Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension5Code := lvngLoan."Shortcut Dimension 5 Code";
             if lvngGenJnlImportBuffer.lvngShortcutDimension6Value = '' then
-                lvngGenJnlImportBuffer.lvngShortcutDimension6Code := lvngLoan.lvngShortcutDimension6Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension6Code := lvngLoan."Shortcut Dimension 6 Code";
             if lvngGenJnlImportBuffer.lvngShortcutDimension7Value = '' then
-                lvngGenJnlImportBuffer.lvngShortcutDimension7Code := lvngLoan.lvngShortcutDimension7Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension7Code := lvngLoan."Shortcut Dimension 7 Code";
             if lvngGenJnlImportBuffer.lvngShortcutDimension8Value = '' then
-                lvngGenJnlImportBuffer.lvngShortcutDimension8Code := lvngLoan.lvngShortcutDimension8Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension8Code := lvngLoan."Shortcut Dimension 8 Code";
             if lvngGenJnlImportBuffer.lvngBusinessUnitCode = '' then
-                lvngGenJnlImportBuffer.lvngBusinessUnitCode := lvngLoan.lvngBusinessUnitCode;
+                lvngGenJnlImportBuffer.lvngBusinessUnitCode := lvngLoan."Business Unit Code";
         end;
     end;
 
@@ -457,35 +457,35 @@ codeunit 14135116 "lvngPurchFileImportManagement"
             lvngFileImportJnlLineTemp.reset;
             lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension1Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
-                lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngLoan.lvngGlobalDimension1Code;
+                lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngLoan."Global Dimension 1 Code";
 
             lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension2Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
-                lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngLoan.lvngGlobalDimension2Code;
+                lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngLoan."Global Dimension 2 Code";
 
             lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension3Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
-                lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngLoan.lvngShortcutDimension3Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngLoan."Shortcut Dimension 3 Code";
 
             lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension4Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
-                lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngLoan.lvngShortcutDimension4Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngLoan."Shortcut Dimension 4 Code";
 
             lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension5Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
-                lvngGenJnlImportBuffer.lvngShortcutDimension5Code := lvngLoan.lvngShortcutDimension5Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension5Code := lvngLoan."Shortcut Dimension 5 Code";
 
             lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension6Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
-                lvngGenJnlImportBuffer.lvngShortcutDimension6Code := lvngLoan.lvngShortcutDimension6Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension6Code := lvngLoan."Shortcut Dimension 6 Code";
 
             lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension7Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
-                lvngGenJnlImportBuffer.lvngShortcutDimension7Code := lvngLoan.lvngShortcutDimension7Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension7Code := lvngLoan."Shortcut Dimension 7 Code";
 
             lvngFileImportJnlLineTemp.SetRange(lvngPurchaseImportFieldType, lvngFileImportJnlLineTemp.lvngPurchaseImportFieldType::lvngDimension8Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
-                lvngGenJnlImportBuffer.lvngShortcutDimension8Code := lvngLoan.lvngShortcutDimension8Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension8Code := lvngLoan."Shortcut Dimension 8 Code";
         end;
     end;
 

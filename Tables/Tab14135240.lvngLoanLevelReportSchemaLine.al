@@ -31,7 +31,7 @@ table 14135240 lvngLoanLevelReportSchemaLine
                         begin
                             LoanFieldsConfiguration.Reset();
                             if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then
-                                Validate("Value Field No.", LoanFieldsConfiguration.lvngFieldNo);
+                                Validate("Value Field No.", LoanFieldsConfiguration."Field No.");
                         end;
                 end;
             end;

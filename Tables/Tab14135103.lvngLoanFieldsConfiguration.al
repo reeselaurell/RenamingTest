@@ -1,4 +1,4 @@
-table 14135103 "lvngLoanFieldsConfiguration"
+table 14135103 lvngLoanFieldsConfiguration
 {
     DataClassification = CustomerContent;
     Caption = 'Loan Fields Configuration';
@@ -6,67 +6,49 @@ table 14135103 "lvngLoanFieldsConfiguration"
 
     fields
     {
-        field(1; lvngFieldNo; Integer)
+        field(1; "Field No."; Integer) { DataClassification = CustomerContent; NotBlank = true; MinValue = 1; }
+        field(10; "Field Name"; Text[100])
         {
-            Caption = 'Field No.';
-            DataClassification = CustomerContent;
-            NotBlank = true;
-            MinValue = 1;
-        }
-
-        field(10; lvngFieldName; Text[100])
-        {
-            Caption = 'Field Name';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
             var
                 DataTypeManagement: codeunit "Data Type Management";
-                lvngLoanFieldsConfigurationTableRef: RecordRef;
-                lvngLoanFieldsConfigurationFieldRef: FieldRef;
+                TableReference: RecordRef;
+                FieldReference: FieldRef;
             begin
-                lvngLoanFieldsConfigurationTableRef.Open(Database::lvngLoan);
-                if DataTypeManagement.FindFieldByName(lvngLoanFieldsConfigurationTableRef, lvngLoanFieldsConfigurationFieldRef, lvngFieldName) then begin
-                    lvngLoanFieldsConfigurationTableRef.Close();
-                    Error(lvngReservedFieldErrorLbl);
+                TableReference.Open(Database::lvngLoan);
+                if DataTypeManagement.FindFieldByName(TableReference, FieldReference, "Field Name") then begin
+                    TableReference.Close();
+                    Error(ReservedFieldErrorLbl);
                 end;
+                TableReference.Close();
             end;
         }
-
-        field(11; lvngValueType; Enum lvngLoanFieldValueType)
-        {
-            Caption = 'Value Type';
-            DataClassification = CustomerContent;
-        }
+        field(11; "Value Type"; Enum lvngLoanFieldValueType) { DataClassification = CustomerContent; }
     }
 
     keys
     {
-        key(PK; lvngFieldNo)
-        {
-            Clustered = true;
-        }
-        key(lvngFieldName; lvngFieldName)
-        {
-            Unique = true;
-        }
+        key(PK; "Field No.") { Clustered = true; }
+        key(lvngFieldName; "Field Name") { Unique = true; }
     }
 
     fieldgroups
     {
-        fieldgroup(DropDown; lvngFieldNo, lvngFieldNAme, lvngValueType) { }
+        fieldgroup(DropDown; "Field No.", "Field Name", "Value Type") { }
     }
 
     trigger OnInsert()
     begin
-        TestField(lvngFieldName);
+        TestField("Field Name");
     end;
 
     trigger OnModify()
     begin
-        TestField(lvngFieldName);
+        TestField("Field Name");
     end;
 
     var
-        lvngReservedFieldErrorLbl: Label 'Reserved field name can not be used';
+        ReservedFieldErrorLbl: Label 'Reserved field name can not be used';
 }

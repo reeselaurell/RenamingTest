@@ -45,7 +45,7 @@ page 14135113 "lvngPostProcessingSchemaLines"
                             lvngtype::lvngCopyLoanVariableValue, lvngtype::lvngCopyLoanJournalVariableValue, lvngType::lvngDimensionMapping:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
-                                        lvngFromFieldNo := lvngLoanFieldsConfiguration.lvngFieldNo;
+                                        lvngFromFieldNo := lvngLoanFieldsConfiguration."Field No.";
                                     end;
                                 end;
                             lvngtype::lvngCopyLoanJournalValue:
@@ -111,7 +111,7 @@ page 14135113 "lvngPostProcessingSchemaLines"
                             lvngAssignTo::lvngLoanJournalVariableField:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
-                                        lvngToFieldNo := lvngLoanFieldsConfiguration.lvngFieldNo;
+                                        lvngToFieldNo := lvngLoanFieldsConfiguration."Field No.";
                                     end;
                                 end;
                         end;

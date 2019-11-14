@@ -99,15 +99,15 @@ codeunit 14135102 "lvngPostProcessingMgmt"
             lvngloanjournalbatch.lvngDimensionImportRule::lvngCopyAllFromLoan:
                 begin
                     if lvngloan.Get(lvngLoanJournalLine.lvngLoanNo) then begin
-                        lvngLoanJournalLine.lvngGlobalDimension1Code := lvngloan.lvngGlobalDimension1Code;
-                        lvngLoanJournalLine.lvngGlobalDimension2Code := lvngloan.lvngGlobalDimension2Code;
-                        lvngLoanJournalLine.lvngShortcutDimension3Code := lvngloan.lvngShortcutDimension3Code;
-                        lvngLoanJournalLine.lvngShortcutDimension4Code := lvngloan.lvngShortcutDimension4Code;
-                        lvngLoanJournalLine.lvngShortcutDimension5Code := lvngloan.lvngShortcutDimension5Code;
-                        lvngLoanJournalLine.lvngShortcutDimension6Code := lvngloan.lvngShortcutDimension6Code;
-                        lvngLoanJournalLine.lvngShortcutDimension7Code := lvngloan.lvngShortcutDimension7Code;
-                        lvngLoanJournalLine.lvngShortcutDimension8Code := lvngloan.lvngShortcutDimension8Code;
-                        lvngLoanJournalLine.lvngBusinessUnitCode := lvngLoan.lvngBusinessUnitCode;
+                        lvngLoanJournalLine.lvngGlobalDimension1Code := lvngloan."Global Dimension 1 Code";
+                        lvngLoanJournalLine.lvngGlobalDimension2Code := lvngloan."Global Dimension 2 Code";
+                        lvngLoanJournalLine.lvngShortcutDimension3Code := lvngloan."Shortcut Dimension 3 Code";
+                        lvngLoanJournalLine.lvngShortcutDimension4Code := lvngloan."Shortcut Dimension 4 Code";
+                        lvngLoanJournalLine.lvngShortcutDimension5Code := lvngloan."Shortcut Dimension 5 Code";
+                        lvngLoanJournalLine.lvngShortcutDimension6Code := lvngloan."Shortcut Dimension 6 Code";
+                        lvngLoanJournalLine.lvngShortcutDimension7Code := lvngloan."Shortcut Dimension 7 Code";
+                        lvngLoanJournalLine.lvngShortcutDimension8Code := lvngloan."Shortcut Dimension 8 Code";
+                        lvngLoanJournalLine.lvngBusinessUnitCode := lvngLoan."Business Unit Code";
                         lvngLoanJournalLine.Modify();
                     end;
                 end;
@@ -115,23 +115,23 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                 begin
                     if lvngloan.Get(lvngLoanJournalLine.lvngLoanNo) then begin
                         if lvngLoanJournalLine.lvngGlobalDimension1Code = '' then
-                            lvngLoanJournalLine.lvngGlobalDimension1Code := lvngloan.lvngGlobalDimension1Code;
+                            lvngLoanJournalLine.lvngGlobalDimension1Code := lvngloan."Global Dimension 1 Code";
                         if lvngLoanJournalLine.lvngGlobalDimension2Code = '' then
-                            lvngLoanJournalLine.lvngGlobalDimension2Code := lvngloan.lvngGlobalDimension2Code;
+                            lvngLoanJournalLine.lvngGlobalDimension2Code := lvngloan."Global Dimension 2 Code";
                         if lvngLoanJournalLine.lvngShortcutDimension3Code = '' then
-                            lvngLoanJournalLine.lvngShortcutDimension3Code := lvngloan.lvngShortcutDimension3Code;
+                            lvngLoanJournalLine.lvngShortcutDimension3Code := lvngloan."Shortcut Dimension 3 Code";
                         if lvngLoanJournalLine.lvngShortcutDimension4Code = '' then
-                            lvngLoanJournalLine.lvngShortcutDimension4Code := lvngloan.lvngShortcutDimension4Code;
+                            lvngLoanJournalLine.lvngShortcutDimension4Code := lvngloan."Shortcut Dimension 4 Code";
                         if lvngLoanJournalLine.lvngShortcutDimension5Code = '' then
-                            lvngLoanJournalLine.lvngShortcutDimension5Code := lvngloan.lvngShortcutDimension5Code;
+                            lvngLoanJournalLine.lvngShortcutDimension5Code := lvngloan."Shortcut Dimension 5 Code";
                         if lvngLoanJournalLine.lvngShortcutDimension6Code = '' then
-                            lvngLoanJournalLine.lvngShortcutDimension6Code := lvngloan.lvngShortcutDimension6Code;
+                            lvngLoanJournalLine.lvngShortcutDimension6Code := lvngloan."Shortcut Dimension 6 Code";
                         if lvngLoanJournalLine.lvngShortcutDimension7Code = '' then
-                            lvngLoanJournalLine.lvngShortcutDimension7Code := lvngloan.lvngShortcutDimension7Code;
+                            lvngLoanJournalLine.lvngShortcutDimension7Code := lvngloan."Shortcut Dimension 7 Code";
                         if lvngLoanJournalLine.lvngShortcutDimension8Code = '' then
-                            lvngLoanJournalLine.lvngShortcutDimension8Code := lvngloan.lvngShortcutDimension8Code;
+                            lvngLoanJournalLine.lvngShortcutDimension8Code := lvngloan."Shortcut Dimension 8 Code";
                         if lvngLoanJournalLine.lvngBusinessUnitCode = '' then
-                            lvngLoanJournalLine.lvngBusinessUnitCode := lvngLoan.lvngBusinessUnitCode;
+                            lvngLoanJournalLine.lvngBusinessUnitCode := lvngLoan."Business Unit Code";
                         lvngLoanJournalLine.Modify();
                     end;
                 end;
@@ -356,7 +356,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngValue: Text;
     begin
         lvngLoanValueFrom.Get(lvngLoanJournalLine.lvngLoanNo, lvngPostProcessingSchemaLine.lvngFromFieldNo);
-        lvngValue := lvngLoanValueFrom.lvngFieldValue;
+        lvngValue := lvngLoanValueFrom."Field Value";
         if lvngPostProcessingSchemaLine.lvngCopyFieldPart then
             lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine.lvngFromCharacterNo, lvngPostProcessingSchemaLine.lvngCharactersCount);
         AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);

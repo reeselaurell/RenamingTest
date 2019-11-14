@@ -6,19 +6,19 @@ codeunit 14135104 lvngDimensionsManagement
     begin
         GetGLSetup();
         GetLoanVisionSetup();
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 1 then
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel1);
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 2 then begin
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel2);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 1 then
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 1");
+        if lvngLoanVisionSetup."Hierarchy Levels" = 2 then begin
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 2");
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 3 then begin
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel3);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 3 then begin
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 3");
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 4 then begin
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel4);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 4 then begin
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 4");
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 5 then begin
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel5);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 5 then begin
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 5");
         end;
         case DimensionNo of
             1:
@@ -40,19 +40,19 @@ codeunit 14135104 lvngDimensionsManagement
     begin
         GetGLSetup();
         GetLoanVisionSetup();
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 1 then
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel1);
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 2 then begin
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel2);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 1 then
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 1");
+        if lvngLoanVisionSetup."Hierarchy Levels" = 2 then begin
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 2");
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 3 then begin
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel3);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 3 then begin
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 3");
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 4 then begin
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel4);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 4 then begin
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 4");
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 5 then begin
-            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel5);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 5 then begin
+            DimensionNo := GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 5");
         end;
         exit(DimensionNo);
     end;
@@ -60,30 +60,30 @@ codeunit 14135104 lvngDimensionsManagement
     procedure GetHierarchyDimensionsUsage(var DimensionUsed: array[5] of boolean)
     begin
         GetLoanVisionSetup();
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 1 then begin
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel1)] := true;
+        if lvngLoanVisionSetup."Hierarchy Levels" = 1 then begin
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 1")] := true;
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 2 then begin
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel1)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel2)] := true;
+        if lvngLoanVisionSetup."Hierarchy Levels" = 2 then begin
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 1")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 2")] := true;
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 3 then begin
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel1)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel2)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel3)] := true;
+        if lvngLoanVisionSetup."Hierarchy Levels" = 3 then begin
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 1")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 2")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 3")] := true;
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 4 then begin
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel1)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel2)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel3)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel4)] := true;
+        if lvngLoanVisionSetup."Hierarchy Levels" = 4 then begin
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 1")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 2")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 3")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 4")] := true;
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 5 then begin
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel1)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel2)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel3)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel4)] := true;
-            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup.lvngLevel5)] := true;
+        if lvngLoanVisionSetup."Hierarchy Levels" = 5 then begin
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 1")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 2")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 3")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 4")] := true;
+            DimensionUsed[GetHierarchyDimensionNo(lvngLoanVisionSetup."Level 5")] := true;
         end;
     end;
 
@@ -107,9 +107,9 @@ codeunit 14135104 lvngDimensionsManagement
         DimensionValue: Record "Dimension Value";
     begin
         GetLoanVisionSetup();
-        lvngLoanVisionSetup.TestField(lvngCostCenterDimensionCode);
+        lvngLoanVisionSetup.TestField("Cost Center Dimension Code");
         DimensionValue.reset;
-        DimensionValue.SetRange("Dimension Code", lvngLoanVisionSetup.lvngCostCenterDimensionCode);
+        DimensionValue.SetRange("Dimension Code", lvngLoanVisionSetup."Cost Center Dimension Code");
         if page.RunModal(0, DimensionValue) = Action::LookupOK then
             lvngDimensionValueCode := DimensionValue.Code;
     end;
@@ -204,14 +204,14 @@ codeunit 14135104 lvngDimensionsManagement
 
     procedure FillDimensionsFromTable(lvngLoan: Record lvngLoan; var DimensionCodes: array[8] of Code[20])
     begin
-        DimensionCodes[1] := lvngLoan.lvngGlobalDimension1Code;
-        DimensionCodes[2] := lvngLoan.lvngGlobalDimension2Code;
-        DimensionCodes[3] := lvngLoan.lvngShortcutDimension3Code;
-        DimensionCodes[4] := lvngLoan.lvngShortcutDimension4Code;
-        DimensionCodes[5] := lvngLoan.lvngShortcutDimension5Code;
-        DimensionCodes[6] := lvngLoan.lvngShortcutDimension6Code;
-        DimensionCodes[7] := lvngLoan.lvngShortcutDimension7Code;
-        DimensionCodes[8] := lvngLoan.lvngShortcutDimension8Code;
+        DimensionCodes[1] := lvngLoan."Global Dimension 1 Code";
+        DimensionCodes[2] := lvngLoan."Global Dimension 2 Code";
+        DimensionCodes[3] := lvngLoan."Shortcut Dimension 3 Code";
+        DimensionCodes[4] := lvngLoan."Shortcut Dimension 4 Code";
+        DimensionCodes[5] := lvngLoan."Shortcut Dimension 5 Code";
+        DimensionCodes[6] := lvngLoan."Shortcut Dimension 6 Code";
+        DimensionCodes[7] := lvngLoan."Shortcut Dimension 7 Code";
+        DimensionCodes[8] := lvngLoan."Shortcut Dimension 8 Code";
     end;
 
     procedure GetDimensionNames(var DimensionNames: array[8] of Text)

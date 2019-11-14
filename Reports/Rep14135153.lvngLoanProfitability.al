@@ -7,29 +7,29 @@ report 14135153 "lvngLoanProfitability"
     {
         dataitem(lvngLoan; lvngLoan)
         {
-            RequestFilterFields = lvngLoanNo;
-            DataItemTableView = sorting(lvngLoanNo);
-            column(lvngLoanNo; lvngLoanNo)
+            RequestFilterFields = "Loan No.";
+            DataItemTableView = sorting("Loan No.");
+            column(lvngLoanNo; "Loan No.")
             {
 
             }
-            column(lvngBorrowerFirstName; lvngBorrowerFirstName)
+            column(lvngBorrowerFirstName; "Borrower First Name")
             {
 
             }
-            column(lvngBorrowerMiddleName; lvngBorrowerMiddleName)
+            column(lvngBorrowerMiddleName; "Borrower Middle Name")
             {
 
             }
-            column(lvngBorrowerLastName; lvngBorrowerLastName)
+            column(lvngBorrowerLastName; "Borrower Last Name")
             {
 
             }
-            column(lvngDateFunded; lvngDateFunded)
+            column(lvngDateFunded; "Date Funded")
             {
 
             }
-            column(lvngWarehouseLineCode; lvngWarehouseLineCode)
+            column(lvngWarehouseLineCode; "Warehouse Line Code")
             {
 
             }
@@ -37,11 +37,11 @@ report 14135153 "lvngLoanProfitability"
             {
 
             }
-            column(lvngInterestRate; lvngInterestRate)
+            column(lvngInterestRate; "Interest Rate")
             {
 
             }
-            column(lvngDateSold; lvngDateSold)
+            column(lvngDateSold; "Date Sold")
             {
 
             }
@@ -49,7 +49,7 @@ report 14135153 "lvngLoanProfitability"
             {
 
             }
-            column(lvngLoanAmount; lvngLoanAmount)
+            column(lvngLoanAmount; "Loan Amount")
             {
 
             }
@@ -120,11 +120,11 @@ report 14135153 "lvngLoanProfitability"
             begin
                 Clear(LoanType);
                 Clear(LoanOfficerName);
-                if DefaultDimension.Get(Database::lvngLoan, lvngLoanNo, LoanVisionSetup.lvngLoanTypeDimensionCode) then begin
+                if DefaultDimension.Get(Database::lvngLoan, "Loan No.", LoanVisionSetup."Loan Type Dimension Code") then begin
                     LoanType := DefaultDimension."Dimension Value Code";
                 end;
-                if DefaultDimension.Get(Database::lvngLoan, lvngLoanNo, LoanVisionSetup.lvngLoanOfficerDimensionCode) then begin
-                    if DimensionValue.Get(LoanVisionSetup.lvngLoanOfficerDimensionCode, DefaultDimension."Dimension Value Code") then begin
+                if DefaultDimension.Get(Database::lvngLoan, "Loan No.", LoanVisionSetup."Loan Officer Dimension Code") then begin
+                    if DimensionValue.Get(LoanVisionSetup."Loan Officer Dimension Code", DefaultDimension."Dimension Value Code") then begin
                         LoanOfficerName := DimensionValue.Name;
                         if LoanOfficerName = '' then begin
                             LoanOfficerName := DimensionValue.Code;
@@ -132,10 +132,10 @@ report 14135153 "lvngLoanProfitability"
                     end;
                 end;
                 Clear(InvestorName);
-                if Customer.Get(lvngInvestorCustomerNo) then begin
+                if Customer.Get("Investor Customer No.") then begin
                     InvestorName := Customer.Name;
                 end;
-                GLEntriesByDimension.SetRange(LoanNoFilter, lvngLoan.lvngLoanNo);
+                GLEntriesByDimension.SetRange(LoanNoFilter, lvngLoan."Loan No.");
             end;
         }
     }
@@ -243,7 +243,7 @@ report 14135153 "lvngLoanProfitability"
     begin
         CompanyInformation.Get();
         LoanVisionSetup.Get();
-        LoanVisionSetup.TestField(lvngLoanTypeDimensionCode);
+        LoanVisionSetup.TestField("Loan Type Dimension Code");
         PeriodEnd := PeriodEnd1;
         if (Dimension1Filter <> '') or
         (Dimension2Filter <> '') or

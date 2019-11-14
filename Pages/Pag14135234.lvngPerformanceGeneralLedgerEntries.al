@@ -41,7 +41,7 @@ page 14135234 lvngPerformanceGLEntries
                 field("Source Type"; "Source Type") { ApplicationArea = All; }
                 field(lvngSourceName; lvngSourceName) { ApplicationArea = All; Caption = 'Source Name'; }
                 field(lvngWarehouseLineCode; lvngWarehouseLineCode) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(InvestorCustomerNumber; Loan.lvngInvestorCustomerNo) { ApplicationArea = All; Caption = 'Investor Customer No.'; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(InvestorCustomerNumber; Loan."Investor Customer No.") { ApplicationArea = All; Caption = 'Investor Customer No.'; Lookup = false; DrillDown = false; AssistEdit = false; }
 
             }
         }
@@ -91,8 +91,8 @@ page 14135234 lvngPerformanceGLEntries
         if not Loan.Get(lvngLoanNo) then
             Clear(Loan)
         else
-            if Loan.lvngInvestorCustomerNo <> '' then
-                if Customer.Get(Loan.lvngInvestorCustomerNo) then
+            if Loan."Investor Customer No." <> '' then
+                if Customer.Get(Loan."Investor Customer No.") then
                     InvestorName := Customer.Name;
     end;
 

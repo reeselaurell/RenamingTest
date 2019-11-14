@@ -57,8 +57,8 @@ page 14135111 "lvngLoanImportSchemaLines"
                             lvngFieldType::lvngVariable:
                                 begin
                                     lvngLoanFieldsConfiguration.Get(lvngFieldNo);
-                                    lvngName := lvngLoanFieldsConfiguration.lvngFieldName;
-                                    lvngValueType := lvngLoanFieldsConfiguration.lvngValueType;
+                                    lvngName := lvngLoanFieldsConfiguration."Field Name";
+                                    lvngValueType := lvngLoanFieldsConfiguration."Value Type";
                                 end;
                         end;
                     end;
@@ -105,9 +105,9 @@ page 14135111 "lvngLoanImportSchemaLines"
                             lvngFieldType::lvngVariable:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
-                                        lvngFieldNo := lvngLoanFieldsConfiguration.lvngFieldNo;
-                                        lvngName := lvngLoanFieldsConfiguration.lvngFieldName;
-                                        lvngValueType := lvngLoanFieldsConfiguration.lvngValueType;
+                                        lvngFieldNo := lvngLoanFieldsConfiguration."Field No.";
+                                        lvngName := lvngLoanFieldsConfiguration."Field Name";
+                                        lvngValueType := lvngLoanFieldsConfiguration."Value Type";
                                     end;
                                 end;
 

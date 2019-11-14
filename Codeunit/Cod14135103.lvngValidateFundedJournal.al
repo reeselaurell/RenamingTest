@@ -46,8 +46,8 @@ codeunit 14135103 "lvngValidateFundedJournal"
         GetLoanVisionSetup();
         if lvngLoanJournalLine.lvngLoanNo = '' then
             lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, LoanNoEmptyLbl);
-        if (lvngLoanVisionSetup.lvngFundedVoidReasonCode <> '') and
-            (lvngLoanVisionSetup.lvngFundedVoidReasonCode = lvngLoanJournalLine.lvngReasonCode) then begin
+        if (lvngLoanVisionSetup."Funded Void Reason Code" <> '') and
+            (lvngLoanVisionSetup."Funded Void Reason Code" = lvngLoanJournalLine.lvngReasonCode) then begin
             lvngLoanDocument.reset;
             lvngLoanDocument.SetRange(lvngVoid, true);
             lvngLoanDocument.SetRange(lvngLoanNo, lvngLoanJournalLine.lvngLoanNo);
@@ -90,7 +90,7 @@ codeunit 14135103 "lvngValidateFundedJournal"
             lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, FundedDateBlankLbl);
         if lvngLoanJournalLine.lvngSearchName = '' then begin
             GetLoanVisionSetup();
-            lvngLoanJournalLine.lvngSearchName := StrSubstNo(lvngLoanVisionSetup.lvngSearchNameTemplate, lvngLoanJournalLine.lvngBorrowerFirstName, lvngLoanJournalLine.lvngBorrowerLastName, lvngLoanJournalLine.lvngBorrowerMiddleName);
+            lvngLoanJournalLine.lvngSearchName := StrSubstNo(lvngLoanVisionSetup."Search Name Template", lvngLoanJournalLine.lvngBorrowerFirstName, lvngLoanJournalLine.lvngBorrowerLastName, lvngLoanJournalLine.lvngBorrowerMiddleName);
             if DelChr(lvngLoanJournalLine.lvngSearchName, '=', ', ') = '' then
                 lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, SearchNameBlankLbl) else
                 lvngLoanJournalLine.Modify();

@@ -114,61 +114,61 @@ codeunit 14135220 lvngPerformanceMgmt
     begin
         Loan.FilterGroup(2);
         if CalcUnit."Dimension 1 Filter" <> '' then
-            Loan.SetRange(lvngGlobalDimension1Code, CalcUnit."Dimension 1 Filter")
+            Loan.SetRange("Global Dimension 1 Code", CalcUnit."Dimension 1 Filter")
         else
             if SystemFilter."Shortcut Dimension 1" <> '' then
-                Loan.SetRange(lvngGlobalDimension1Code, SystemFilter."Shortcut Dimension 1");
+                Loan.SetRange("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
         if CalcUnit."Dimension 2 Filter" <> '' then
-            Loan.SetRange(lvngGlobalDimension2Code, CalcUnit."Dimension 2 Filter")
+            Loan.SetRange("Global Dimension 2 Code", CalcUnit."Dimension 2 Filter")
         else
             if SystemFilter."Shortcut Dimension 2" <> '' then
-                Loan.SetRange(lvngGlobalDimension2Code, SystemFilter."Shortcut Dimension 2");
+                Loan.SetRange("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
         if CalcUnit."Dimension 3 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
+            Loan.SetRange("Shortcut Dimension 3 Code", CalcUnit."Dimension 3 Filter")
         else
             if SystemFilter."Shortcut Dimension 3" <> '' then
-                Loan.SetRange(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
+                Loan.SetRange("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
         if CalcUnit."Dimension 4 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
+            Loan.SetRange("Shortcut Dimension 4 Code", CalcUnit."Dimension 4 Filter")
         else
             if SystemFilter."Shortcut Dimension 4" <> '' then
-                Loan.SetRange(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
+                Loan.SetRange("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
         if CalcUnit."Dimension 5 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter")
+            Loan.SetRange("Shortcut Dimension 5 Code", CalcUnit."Dimension 5 Filter")
         else
             if SystemFilter."Shortcut Dimension 5" <> '' then
-                Loan.SetRange(lvngShortcutDimension5Code, SystemFilter."Shortcut Dimension 5");
+                Loan.SetRange("Shortcut Dimension 5 Code", SystemFilter."Shortcut Dimension 5");
         if CalcUnit."Dimension 6 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter")
+            Loan.SetRange("Shortcut Dimension 6 Code", CalcUnit."Dimension 6 Filter")
         else
             if SystemFilter."Shortcut Dimension 6" <> '' then
-                Loan.SetRange(lvngShortcutDimension6Code, SystemFilter."Shortcut Dimension 6");
+                Loan.SetRange("Shortcut Dimension 6 Code", SystemFilter."Shortcut Dimension 6");
         if CalcUnit."Dimension 7 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter")
+            Loan.SetRange("Shortcut Dimension 7 Code", CalcUnit."Dimension 7 Filter")
         else
             if SystemFilter."Shortcut Dimension 7" <> '' then
-                Loan.SetRange(lvngShortcutDimension7Code, SystemFilter."Shortcut Dimension 7");
+                Loan.SetRange("Shortcut Dimension 7 Code", SystemFilter."Shortcut Dimension 7");
         if CalcUnit."Dimension 8 Filter" <> '' then
-            Loan.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter")
+            Loan.SetRange("Shortcut Dimension 8 Code", CalcUnit."Dimension 8 Filter")
         else
             if SystemFilter."Shortcut Dimension 8" <> '' then
-                Loan.SetRange(lvngShortcutDimension8Code, SystemFilter."Shortcut Dimension 8");
+                Loan.SetRange("Shortcut Dimension 8 Code", SystemFilter."Shortcut Dimension 8");
         if CalcUnit."Business Unit Filter" <> '' then
-            Loan.SetRange(lvngBusinessUnitCode, CalcUnit."Business Unit Filter")
+            Loan.SetRange("Business Unit Code", CalcUnit."Business Unit Filter")
         else
             if SystemFilter."Business Unit" <> '' then
-                Loan.SetRange(lvngBusinessUnitCode, SystemFilter."Business Unit");
+                Loan.SetRange("Business Unit Code", SystemFilter."Business Unit");
         case CalcUnit."Based On Date" of
             CalcUnit."Based On Date"::lvngApplication:
-                Loan.SetFilter(lvngApplicationDate, SystemFilter."Date Filter");
+                Loan.SetFilter("Application Date", SystemFilter."Date Filter");
             CalcUnit."Based On Date"::lvngClosed:
-                Loan.SetFilter(lvngDateClosed, SystemFilter."Date Filter");
+                Loan.SetFilter("Date Closed", SystemFilter."Date Filter");
             CalcUnit."Based On Date"::lvngFunded:
-                Loan.SetFilter(lvngDateFunded, SystemFilter."Date Filter");
+                Loan.SetFilter("Date Funded", SystemFilter."Date Filter");
             CalcUnit."Based On Date"::lvngLocked:
-                Loan.SetFilter(lvngDateLocked, SystemFilter."Date Filter");
+                Loan.SetFilter("Date Locked", SystemFilter."Date Filter");
             CalcUnit."Based On Date"::lvngSold:
-                Loan.SetFilter(lvngDateSold, SystemFilter."Date Filter");
+                Loan.SetFilter("Date Sold", SystemFilter."Date Filter");
         end;
         Loan.FilterGroup(0);
     end;

@@ -198,7 +198,7 @@ page 14135246 lvngLoanValuesView
                     RowBuffer.ID := RowNo;
                     RowNo += 1;
                     Loan.Get(GLLoansPerPeriod.LoanNo);
-                    RowBuffer.Name := Loan.lvngLoanNo;
+                    RowBuffer.Name := Loan."Loan No.";
                     RowBuffer.Value := Format(GLLoansPerPeriod.PostingDate);
                     CalculateRowData(Loan);
                     RowBuffer.Insert();
@@ -207,29 +207,29 @@ page 14135246 lvngLoanValuesView
         end else begin
             Loan.Reset();
             if SystemFilter."Shortcut Dimension 1" <> '' then
-                Loan.SetFilter(lvngGlobalDimension1Code, SystemFilter."Shortcut Dimension 1");
+                Loan.SetFilter("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
             if SystemFilter."Shortcut Dimension 2" <> '' then
-                Loan.SetFilter(lvngGlobalDimension2Code, SystemFilter."Shortcut Dimension 2");
+                Loan.SetFilter("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
             if SystemFilter."Shortcut Dimension 3" <> '' then
-                Loan.SetFilter(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
+                Loan.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
             if SystemFilter."Shortcut Dimension 4" <> '' then
-                Loan.SetFilter(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
+                Loan.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
             if SystemFilter."Business Unit" <> '' then
-                Loan.SetFilter(lvngBusinessUnitCode, SystemFilter."Business Unit");
+                Loan.SetFilter("Business Unit Code", SystemFilter."Business Unit");
             if BasedOn = BasedOn::lvngSold then
-                Loan.SetFilter(lvngDateSold, SystemFilter."Date Filter")
+                Loan.SetFilter("Date Sold", SystemFilter."Date Filter")
             else
-                Loan.SetFilter(lvngDateFunded, SystemFilter."Date Filter");
+                Loan.SetFilter("Date Funded", SystemFilter."Date Filter");
             if Loan.FindSet() then
                 repeat
                     Clear(RowBuffer);
                     RowBuffer.ID := RowNo;
                     RowNo += 1;
-                    RowBuffer.Name := Loan.lvngLoanNo;
+                    RowBuffer.Name := Loan."Loan No.";
                     if BasedOn = BasedOn::lvngSold then
-                        RowBuffer.Value := Format(Loan.lvngDateSold)
+                        RowBuffer.Value := Format(Loan."Date Sold")
                     else
-                        RowBuffer.Value := Format(loan.lvngDateFunded);
+                        RowBuffer.Value := Format(loan."Date Funded");
                     CalculateRowData(Loan);
                     RowBuffer.Insert();
                 until Loan.Next() = 0;
@@ -247,14 +247,14 @@ page 14135246 lvngLoanValuesView
         CalculatedValue: Text;
         CurrentTotal: Decimal;
     begin
-        if DefaultDimension.Get(Database::lvngLoan, Loan.lvngLoanNo, LoanVisionSetup.lvngLoanOfficerDimensionCode) then
+        if DefaultDimension.Get(Database::lvngLoan, Loan."Loan No.", LoanVisionSetup."Loan Officer Dimension Code") then
             if DimensionValue.Get(DefaultDimension."Dimension Code", DefaultDimension."Dimension Value Code") then
                 RowBuffer."Value Long" := DimensionValue.Name;
         TempGLEntry.Reset();
         TempGLEntry.DeleteAll();
         GLEntry.Reset();
         GLEntry.SetCurrentKey(lvngLoanNo);
-        GLEntry.SetRange(lvngLoanNo, Loan.lvngLoanNo);
+        GLEntry.SetRange(lvngLoanNo, Loan."Loan No.");
         if SystemFilter."Shortcut Dimension 1" <> '' then
             GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
         if SystemFilter."Shortcut Dimension 2" <> '' then
@@ -345,38 +345,38 @@ page 14135246 lvngLoanValuesView
                 end;
             LoanLevelReportSchemaLine.Type::lvngVariableField:
                 begin
-                    if LoanValue.Get(Loan.lvngLoanNo, LoanLevelReportSchemaLine."Value Field No.") then begin
-                        LoanFieldsConfiguration.Get(LoanValue.lvngFieldNo);
-                        case LoanFieldsConfiguration.lvngValueType of
-                            LoanFieldsConfiguration.lvngValueType::lvngBoolean:
+                    if LoanValue.Get(Loan."Loan No.", LoanLevelReportSchemaLine."Value Field No.") then begin
+                        LoanFieldsConfiguration.Get(LoanValue."Field No.");
+                        case LoanFieldsConfiguration."Value Type" of
+                            LoanFieldsConfiguration."Value Type"::lvngBoolean:
                                 begin
                                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngText;
-                                    if LoanValue.lvngBooleanValue then
+                                    if LoanValue."Boolean Value" then
                                         ValueBuffer."Raw Value" := YesTxt
                                     else
                                         ValueBuffer."Raw Value" := NoTxt;
                                 end;
-                            LoanFieldsConfiguration.lvngValueType::lvngDate:
+                            LoanFieldsConfiguration."Value Type"::lvngDate:
                                 begin
                                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngDate;
-                                    ValueBuffer."Date Value" := LoanValue.lvngDateValue;
+                                    ValueBuffer."Date Value" := LoanValue."Date Value";
                                     ValueBuffer."Raw Value" := Format(ValueBuffer."Date Value");
                                 end;
-                            LoanFieldsConfiguration.lvngValueType::lvngDecimal:
+                            LoanFieldsConfiguration."Value Type"::lvngDecimal:
                                 begin
                                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngNumber;
-                                    ValueBuffer."Numeric Value" := LoanValue.lvngDecimalValue;
+                                    ValueBuffer."Numeric Value" := LoanValue."Decimal Value";
                                     ValueBuffer."Raw Value" := Format(ValueBuffer."Numeric Value");
                                 end;
-                            LoanFieldsConfiguration.lvngValueType::lvngInteger:
+                            LoanFieldsConfiguration."Value Type"::lvngInteger:
                                 begin
                                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngNumber;
-                                    ValueBuffer."Numeric Value" := LoanValue.lvngIntegerValue;
+                                    ValueBuffer."Numeric Value" := LoanValue."Integer Value";
                                     ValueBuffer."Raw Value" := Format(ValueBuffer."Numeric Value");
                                 end
                             else begin
                                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngText;
-                                    ValueBuffer."Raw Value" := LoanValue.lvngFieldValue;
+                                    ValueBuffer."Raw Value" := LoanValue."Field Value";
                                 end;
                         end;
                     end;

@@ -13,17 +13,17 @@ page 14135102 lvngLoanFieldsConfiguration
         {
             repeater(Group)
             {
-                field(FieldsNo; lvngFieldNo)
+                field(FieldsNo; "Field No.")
                 {
                     ApplicationArea = All;
                 }
 
-                field(FieldName; lvngFieldName)
+                field(FieldName; "Field Name")
                 {
                     ApplicationArea = All;
                 }
 
-                field(ValueType; lvngValueType)
+                field(ValueType; "Value Type")
                 {
                     ApplicationArea = All;
                 }

@@ -31,7 +31,7 @@ page 14135159 lvngLoanEscrowFields
     begin
         Clear(lvngAmount);
         if lvngLoanValue.Get(lvngLoanNo, lvngFieldNo) then
-            lvngAmount := lvngLoanValue.lvngDecimalValue;
+            lvngAmount := lvngLoanValue."Decimal Value";
     end;
 
     var

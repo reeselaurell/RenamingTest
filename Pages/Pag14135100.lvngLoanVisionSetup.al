@@ -1,4 +1,4 @@
-page 14135100 "lvngLoanVisionSetup"
+page 14135100 lvngLoanVisionSetup
 {
 
     PageType = Card;
@@ -16,56 +16,30 @@ page 14135100 "lvngLoanVisionSetup"
             group(General)
             {
                 Caption = 'General';
+
                 group(lvngReasonCodes)
                 {
                     Caption = 'Reason Codes';
-                    field(lvngFundedReasonCode; lvngFundedReasonCode)
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngFundedVoidReasonCode; lvngFundedVoidReasonCode)
-                    {
-                        ApplicationArea = All;
-                    }
 
-                    field(lvngSoldReasonCode; lvngSoldReasonCode)
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngSoldVoidReasonCode; lvngSoldVoidReasonCode)
-                    {
-                        ApplicationArea = All;
-                    }
+                    field(lvngFundedReasonCode; "Funded Reason Code") { ApplicationArea = All; }
+                    field(lvngFundedVoidReasonCode; "Funded Void Reason Code") { ApplicationArea = All; }
+                    field(lvngSoldReasonCode; "Sold Reason Code") { ApplicationArea = All; }
+                    field(lvngSoldVoidReasonCode; "Sold Void Reason Code") { ApplicationArea = All; }
                 }
                 group(lvngSourceCodes)
                 {
                     Caption = 'Source Codes';
-                    field(lvngFundedSourceCode; lvngFundedSourceCode)
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngSoldSourceCode; lvngSoldSourceCode)
-                    {
-                        ApplicationArea = All;
-                    }
+
+                    field(lvngFundedSourceCode; "Funded Source Code") { ApplicationArea = All; }
+                    field(lvngSoldSourceCode; "Sold Source Code") { ApplicationArea = All; }
                 }
                 group(lvngMisc)
                 {
-                    Caption = 'Misc.';
-                    field(lvngSearchNameTemplate; lvngSearchNameTemplate)
-                    {
-                        ApplicationArea = All;
-                        ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name';
-                    }
-                    field(lvngLoanOfficerNameTemplate; lvngLoanOfficerNameTemplate)
-                    {
-                        ApplicationArea = All;
-                        ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name';
-                    }
-                    field(MaintenanceMode; lvngMaintenanceMode)
-                    {
-                        ApplicationArea = All;
-                    }
+                    Caption = 'Miscellaneous';
+
+                    field(lvngSearchNameTemplate; "Search Name Template") { ApplicationArea = All; ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name'; }
+                    field(lvngLoanOfficerNameTemplate; "Loan Officer Name Template") { ApplicationArea = All; ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name'; }
+                    field(MaintenanceMode; "Maintenance Mode") { ApplicationArea = All; }
                 }
             }
             group(Dimensions)
@@ -73,89 +47,35 @@ page 14135100 "lvngLoanVisionSetup"
                 group(GeneralDimensions)
                 {
                     Caption = 'General';
-                    field(CostCenter; lvngCostCenterDimensionCode)
-                    {
-                        ApplicationArea = All;
-                    }
 
-                    field(PropertyStateCode; lvngPropertyStateDimensionCode)
-                    {
-                        ApplicationArea = All;
-                    }
-
-                    field(LoanTypeCode; lvngLoanTypeDimensionCode)
-                    {
-                        ApplicationArea = All;
-                    }
-
-                    field(LoanOfficerCode; lvngLoanOfficerDimensionCode)
-                    {
-                        ApplicationArea = All;
-                    }
-
-                    field(LoanPurposeCode; lvngLoanPurposeDimensionCode)
-                    {
-                        ApplicationArea = All;
-                    }
+                    field(CostCenter; "Cost Center Dimension Code") { ApplicationArea = All; }
+                    field(PropertyStateCode; "Property State Dimension Code") { ApplicationArea = All; }
+                    field(LoanTypeCode; "Loan Type Dimension Code") { ApplicationArea = All; }
+                    field(LoanOfficerCode; "Loan Officer Dimension Code") { ApplicationArea = All; }
+                    field(LoanPurposeCode; "Loan Purpose Dimension Code") { ApplicationArea = All; }
                 }
                 group(HierarchyLevelsGroup)
                 {
                     Caption = 'Hierarchy Levels';
 
-                    field(HierarchyLevels; lvngHierarchyLevels)
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(HierarchyLevel1; lvngLevel1)
-                    {
-                        Editable = lvngHierarchyLevels > 0;
-                        ApplicationArea = All;
-                    }
-                    field(HierarchyLevel2; lvngLevel2)
-                    {
-                        Editable = lvngHierarchyLevels > 1;
-                        ApplicationArea = All;
-                    }
-                    field(HierarchyLevel3; lvngLevel3)
-                    {
-                        Editable = lvngHierarchyLevels > 2;
-                        ApplicationArea = All;
-                    }
-                    field(HierarchyLevel4; lvngLevel4)
-                    {
-                        Editable = lvngHierarchyLevels > 3;
-                        ApplicationArea = All;
-                    }
-                    field(HierarchyLevel5; lvngLevel5)
-                    {
-                        Editable = lvngHierarchyLevels > 4;
-                        ApplicationArea = All;
-                    }
+                    field(HierarchyLevels; "Hierarchy Levels") { ApplicationArea = All; }
+                    field(HierarchyLevel1; "Level 1") { Editable = "Hierarchy Levels" > 0; ApplicationArea = All; }
+                    field(HierarchyLevel2; "Level 2") { Editable = "Hierarchy Levels" > 1; ApplicationArea = All; }
+                    field(HierarchyLevel3; "Level 3") { Editable = "Hierarchy Levels" > 2; ApplicationArea = All; }
+                    field(HierarchyLevel4; "Level 4") { Editable = "Hierarchy Levels" > 3; ApplicationArea = All; }
+                    field(HierarchyLevel5; "Level 5") { Editable = "Hierarchy Levels" > 4; ApplicationArea = All; }
                 }
             }
             group(lvngNoSeries)
             {
                 Caption = 'No. Series';
-                field(lvngFundedNoSeries; lvngFundedNoSeries)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoidFundedNoSeries; lvngVoidFundedNoSeries)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngSoldNoSeries; lvngSoldNoSeries)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoidSoldNoSeries; lvngVoidSoldNoSeries)
-                {
-                    ApplicationArea = All;
-                }
+
+                field(lvngFundedNoSeries; "Funded No. Series") { ApplicationArea = All; }
+                field(lvngVoidFundedNoSeries; "Void Funded No. Series") { ApplicationArea = All; }
+                field(lvngSoldNoSeries; "Sold No. Series") { ApplicationArea = All; }
+                field(lvngVoidSoldNoSeries; "Void Sold No. Series") { ApplicationArea = All; }
             }
         }
-        //You might want to add fields here
-
     }
     actions
     {
@@ -177,16 +97,10 @@ page 14135100 "lvngLoanVisionSetup"
 
     trigger OnOpenPage()
     begin
-        InsertIfNotExists();
-    end;
-
-    local procedure InsertIfNotExists()
-    begin
-        reset;
-        if not get then begin
+        Reset();
+        if not Get() then begin
             Init();
             Insert();
         end;
     end;
-
 }

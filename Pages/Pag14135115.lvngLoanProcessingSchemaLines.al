@@ -86,7 +86,7 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                             lvngProcessingSourceType::lvngLoanJournalVariableValue:
                                 begin
                                     lvngLoanFieldsConfiguration.Get(lvngFieldNo);
-                                    lvngDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+                                    lvngDescription := lvngLoanFieldsConfiguration."Field Name";
                                 end;
                         end;
                     end;
@@ -115,8 +115,8 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                             lvngProcessingSourceType::lvngLoanJournalVariableValue:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
-                                        lvngFieldNo := lvngLoanFieldsConfiguration.lvngFieldNo;
-                                        lvngDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+                                        lvngFieldNo := lvngLoanFieldsConfiguration."Field No.";
+                                        lvngDescription := lvngLoanFieldsConfiguration."Field Name";
                                     end;
                                 end;
                         end;

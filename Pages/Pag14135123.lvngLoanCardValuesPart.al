@@ -11,7 +11,7 @@ page 14135123 "lvngLoanCardValuesPart"
         {
             repeater(lvngRepeater)
             {
-                field(lvngFieldNo; lvngFieldNo)
+                field(lvngFieldNo; "Field No.")
                 {
                     ApplicationArea = All;
                 }
@@ -21,26 +21,26 @@ page 14135123 "lvngLoanCardValuesPart"
                     Editable = false;
                     Caption = 'Field Name';
                 }
-                field(lvngFieldValue; lvngFieldValue)
+                field(lvngFieldValue; "Field Value")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBooleanValue; lvngBooleanValue)
-                {
-                    ApplicationArea = All;
-                    Visible = false;
-                }
-                field(lvngDateValue; lvngDateValue)
+                field(lvngBooleanValue; "Boolean Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngDecimalValue; lvngDecimalValue)
+                field(lvngDateValue; "Date Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngIntegerValue; lvngIntegerValue)
+                field(lvngDecimalValue; "Decimal Value")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+                field(lvngIntegerValue; "Integer Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
@@ -65,8 +65,8 @@ page 14135123 "lvngLoanCardValuesPart"
     trigger OnAfterGetRecord()
     begin
         Clear(lvngFieldName);
-        if lvngLoanFieldsConfigurationTemp.Get(lvngFieldNo) then begin
-            lvngFieldName := lvngLoanFieldsConfigurationTemp.lvngFieldName;
+        if lvngLoanFieldsConfigurationTemp.Get("Field No.") then begin
+            lvngFieldName := lvngLoanFieldsConfigurationTemp."Field Name";
         end;
     end;
 

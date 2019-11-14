@@ -37,7 +37,7 @@ pageextension 14135103 "lvngDimensionValue" extends "Dimension Values" //MyTarge
         lvngLoanVisionSetup: Record lvngLoanVisionSetup;
     begin
         lvngLoanVisionSetup.Get();
-        if lvngLoanVisionSetup.lvngLoanOfficerDimensionCode = Rec."Dimension Code" then begin
+        if lvngLoanVisionSetup."Loan Officer Dimension Code" = Rec."Dimension Code" then begin
             LoanOfficerFieldsVisible := true;
         end;
     end;

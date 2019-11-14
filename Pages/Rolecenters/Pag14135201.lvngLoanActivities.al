@@ -194,13 +194,13 @@ page 14135201 "lvngLoanActivities"
         Clear(lvngFundedDocumentsCount);
         Clear(lvngFundedDocumentsWarehouseLineCaptions);
         lvngWarehouseLine.reset;
-        lvngWarehouseLine.SetRange(lvngShowInRolecenter, true);
+        lvngWarehouseLine.SetRange("Show In Rolecenter", true);
         if lvngWarehouseLine.FindSet() then begin
             repeat
                 lvngIndex := lvngIndex + 1;
-                lvngFundedDocumentsWarehouseLineCaptions[lvngIndex] := lvngWarehouseLine.lvngDescription;
-                lvngFundedDocumentsWarehouseLineCodes[lvngIndex] := lvngWarehouseLine.lvngCode;
-                SetRange(lvngWarehouseLineCodeFilter, lvngWarehouseLine.lvngCode);
+                lvngFundedDocumentsWarehouseLineCaptions[lvngIndex] := lvngWarehouseLine.Description;
+                lvngFundedDocumentsWarehouseLineCodes[lvngIndex] := lvngWarehouseLine.Code;
+                SetRange(lvngWarehouseLineCodeFilter, lvngWarehouseLine.Code);
                 CalcFields(lvngFundedDocuments);
                 lvngFundedDocumentsCount[lvngIndex] := lvngFundedDocuments;
                 case lvngIndex of

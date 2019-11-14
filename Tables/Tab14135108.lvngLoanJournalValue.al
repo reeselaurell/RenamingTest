@@ -14,7 +14,7 @@ table 14135108 "lvngLoanJournalValue"
         {
             Caption = 'Line No.';
             DataClassification = CustomerContent;
-            TableRelation = lvngLoanJournalLine.lvngLineNo where (lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode));
+            TableRelation = lvngLoanJournalLine.lvngLineNo where(lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode));
         }
 
         field(3; lvngFieldNo; Integer)
@@ -36,7 +36,7 @@ table 14135108 "lvngLoanJournalValue"
             Caption = 'Field Name';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoanFieldsConfiguration.lvngFieldName where (lvngFieldNo = field (lvngFieldNo)));
+            CalcFormula = lookup (lvngLoanFieldsConfiguration."Field Name" where("Field No." = field(lvngFieldNo)));
         }
 
     }

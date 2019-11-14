@@ -30,9 +30,9 @@ tableextension 14135102 "lvngDimensionValue" extends "Dimension Value" //MyTarge
     trigger OnInsert()
     begin
         lvngGetLoanVisionSetup();
-        if lvngLoanVisionSetup.lvngLoanOfficerDimensionCode = "Dimension Code" then begin
-            if lvngLoanVisionSetup.lvngLoanOfficerNameTemplate <> '' then begin
-                Name := CopyStr(strsubstno(lvngloanvisionsetup.lvngLoanOfficerNameTemplate, lvngFirstName, lvngLastName, lvngMiddleName), 1, MaxStrLen(Name));
+        if lvngLoanVisionSetup."Loan Officer Dimension Code" = "Dimension Code" then begin
+            if lvngLoanVisionSetup."Loan Officer Name Template" <> '' then begin
+                Name := CopyStr(strsubstno(lvngloanvisionsetup."Loan Officer Name Template", lvngFirstName, lvngLastName, lvngMiddleName), 1, MaxStrLen(Name));
             end;
         end;
     end;
@@ -40,9 +40,9 @@ tableextension 14135102 "lvngDimensionValue" extends "Dimension Value" //MyTarge
     trigger OnModify()
     begin
         lvngGetLoanVisionSetup();
-        if lvngLoanVisionSetup.lvngLoanOfficerDimensionCode = "Dimension Code" then begin
-            if lvngLoanVisionSetup.lvngLoanOfficerNameTemplate <> '' then begin
-                Name := CopyStr(strsubstno(lvngloanvisionsetup.lvngLoanOfficerNameTemplate, lvngFirstName, lvngLastName, lvngMiddleName), 1, MaxStrLen(Name));
+        if lvngLoanVisionSetup."Loan Officer Dimension Code" = "Dimension Code" then begin
+            if lvngLoanVisionSetup."Loan Officer Name Template" <> '' then begin
+                Name := CopyStr(strsubstno(lvngloanvisionsetup."Loan Officer Name Template", lvngFirstName, lvngLastName, lvngMiddleName), 1, MaxStrLen(Name));
             end;
         end;
 

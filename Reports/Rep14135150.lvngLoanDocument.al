@@ -64,9 +64,9 @@ report 14135150 "lvngLoanDocument"
 
             dataitem(lvngLoanDocumentLine; lvngLoanDocumentLine)
             {
-                DataItemTableView = sorting (lvngTransactionType, lvngDocumentNo, lvngLineNo);
+                DataItemTableView = sorting(lvngTransactionType, lvngDocumentNo, lvngLineNo);
                 DataItemLinkReference = lvngLoanDocument;
-                DataItemLink = lvngTransactionType = field (lvngTransactionType), lvngDocumentNo = field (lvngDocumentNo);
+                DataItemLink = lvngTransactionType = field(lvngTransactionType), lvngDocumentNo = field(lvngDocumentNo);
                 column(lvngAccountNo; lvngAccountNo)
                 {
 
@@ -102,7 +102,7 @@ report 14135150 "lvngLoanDocument"
                     Clear(DimensionValues);
                     Clear(DocumentLineCostCenter);
                     lvngDimensionsManagement.FillDimensionsFromTable(lvngLoanDocumentLine, DimensionValues);
-                    DocumentLineCostCenter := GetDimensionValueName(lvngLoanVisionSetup.lvngCostCenterDimensionCode);
+                    DocumentLineCostCenter := GetDimensionValueName(lvngLoanVisionSetup."Cost Center Dimension Code");
                     ServicingType := Format(lvngServicingType);
                 end;
             }
@@ -115,12 +115,12 @@ report 14135150 "lvngLoanDocument"
                 Clear(DimensionValues);
                 lvngLoan.Get(lvngLoanDocument.lvngLoanNo);
                 PropertyAddress := lvngLoan.GetLoanAddress(lvngLoanAddressTypeEnum::lvngProperty);
-                BorrowerName := StrSubstNo(lvngLoanVisionSetup.lvngSearchNameTemplate, lvngLoan.lvngBorrowerFirstName, lvngloan.lvngBorrowerLastName, lvngLoan.lvngBorrowerMiddleName);
+                BorrowerName := StrSubstNo(lvngLoanVisionSetup."Search Name Template", lvngLoan."Borrower First Name", lvngloan."Borrower Last Name", lvngLoan."Borrower Middle Name");
                 lvngDimensionsManagement.FillDimensionsFromTable(lvngLoan, DimensionValues);
-                CostCenter := GetDimensionValueName(lvngLoanVisionSetup.lvngCostCenterDimensionCode);
-                LoanType := GetDimensionValueName(lvngLoanVisionSetup.lvngLoanTypeDimensionCode);
-                State := GetDimensionValueName(lvngLoanVisionSetup.lvngPropertyStateDimensionCode);
-                LoanOfficer := GetDimensionValueName(lvngLoanVisionSetup.lvngLoanOfficerDimensionCode);
+                CostCenter := GetDimensionValueName(lvngLoanVisionSetup."Cost Center Dimension Code");
+                LoanType := GetDimensionValueName(lvngLoanVisionSetup."Loan Type Dimension Code");
+                State := GetDimensionValueName(lvngLoanVisionSetup."Property State Dimension Code");
+                LoanOfficer := GetDimensionValueName(lvngLoanVisionSetup."Loan Officer Dimension Code");
                 DocumentType := Format(lvngDocumentType);
 
 
@@ -160,7 +160,7 @@ report 14135150 "lvngLoanDocument"
     begin
         GeneralLedgerSetup.Get();
         lvngLoanVisionSetup.Get();
-        lvngLoanVisionSetup.TestField(lvngSearchNameTemplate);
+        lvngLoanVisionSetup.TestField("Search Name Template");
     end;
 
     local procedure GetDimensionValueName(DimensionCode: Code[20]): Text

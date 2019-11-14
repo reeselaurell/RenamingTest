@@ -16,19 +16,19 @@ codeunit 14135119 "lvngServicingManagement"
         lvngStartDate: Date;
         lvngCalculationDate: Date;
     begin
-        if lvngLoan.lvngDateFunded = 0D then
+        if lvngLoan."Date Funded" = 0D then
             exit;
-        if lvngLoan.lvngLoanTermMonths = 0 then
+        if lvngLoan."Loan Term (Months)" = 0 then
             exit;
-        if lvngLoan.lvngFirstPaymentDue = 0D then
-            lvngLoan.lvngFirstPaymentDue := CalcDate('<CM + 1D - 1M>', lvngLoan.lvngDateFunded);
-        if CalcDate(StrSubstNo('<+%1M>', lvngLoan.lvngLoanTermMonths + 1), lvngLoan.lvngFirstPaymentDue) < lvngNextPaymentDate then
+        if lvngLoan."First Payment Due" = 0D then
+            lvngLoan."First Payment Due" := CalcDate('<CM + 1D - 1M>', lvngLoan."Date Funded");
+        if CalcDate(StrSubstNo('<+%1M>', lvngLoan."Loan Term (Months)" + 1), lvngLoan."First Payment Due") < lvngNextPaymentDate then
             exit;
         GetLoanServicingSetup();
         lvngLoanServicingSetup.TestField(lvngPrincipalRedReasonCode);
         lvngLoanServicingSetup.TestField(lvngPrincipalRedGLAccountNo);
         GLEntry.reset;
-        GLEntry.SetRange(lvngLoanNo, lvngLoan.lvngLoanNo);
+        GLEntry.SetRange(lvngLoanNo, lvngLoan."Loan No.");
         GLEntry.SetRange("Reason Code", lvngLoanServicingSetup.lvngPrincipalRedReasonCode);
         GLEntry.SetRange("G/L Account No.", lvngLoanServicingSetup.lvngPrincipalRedGLAccountNo);
         if GLEntry.FindSet() then begin
@@ -40,12 +40,12 @@ codeunit 14135119 "lvngServicingManagement"
                 lvngGLEntryBuffer.Insert();
             until GLEntry.Next() = 0;
         end;
-        lvngInterestPerMonth := lvngLoan.lvngInterestRate / 12 / 100;
-        lvngMonthlyPayment := lvngInterestPerMonth * lvngLoan.lvngLoanAmount * Power(1 + lvngInterestPerMonth, lvngloan.lvngLoanTermMonths) / (Power(1 + lvngInterestPerMonth, lvngLoan.lvngLoanTermMonths) - 1);
-        lvngStartDate := lvngLoan.lvngFirstPaymentDue;
-        lvngPreviousBalance := lvngLoan.lvngLoanAmount;
+        lvngInterestPerMonth := lvngLoan."Interest Rate" / 12 / 100;
+        lvngMonthlyPayment := lvngInterestPerMonth * lvngLoan."Loan Amount" * Power(1 + lvngInterestPerMonth, lvngloan."Loan Term (Months)") / (Power(1 + lvngInterestPerMonth, lvngLoan."Loan Term (Months)") - 1);
+        lvngStartDate := lvngLoan."First Payment Due";
+        lvngPreviousBalance := lvngLoan."Loan Amount";
         lvngCalculationDate := lvngStartDate;
-        for lvngLineNo := 1 to lvngLoan.lvngLoanTermMonths do begin
+        for lvngLineNo := 1 to lvngLoan."Loan Term (Months)" do begin
             lvngGLEntryBuffer.reset;
             lvngGLEntryBuffer.SetRange(lvngPostingDate, CalcDate('<-1M + 1D>', lvngCalculationDate), lvngCalculationDate);
             if lvngGLEntryBuffer.FindSet() then begin
@@ -63,8 +63,8 @@ codeunit 14135119 "lvngServicingManagement"
                 exit;
             lvngInterestAmount := round(lvngInterestAmount, 0.01);
             lvngPrincipalAmount := round(lvngPrincipalAmount, 0.01);
-            if (lvngInterestAmount + lvngPrincipalAmount) <> lvngLoan.lvngMonthlyPaymentAmount then begin
-                lvngPrincipalAmount := lvngLoan.lvngMonthlyPaymentAmount - lvngInterestAmount;
+            if (lvngInterestAmount + lvngPrincipalAmount) <> lvngLoan."Monthly Payment Amount" then begin
+                lvngPrincipalAmount := lvngLoan."Monthly Payment Amount" - lvngInterestAmount;
             end;
             lvngCalculationDate := calcdate(StrSubstNo('<+%1M>', lvngLineNo), lvngStartDate);
         end;
@@ -79,8 +79,8 @@ codeunit 14135119 "lvngServicingManagement"
         lvngEscrowFieldsMapping.reset;
         if lvngEscrowFieldsMapping.FindSet() then begin
             repeat
-                if lvngLoanValue.Get(lvngLoan.lvngLoanNo, lvngEscrowFieldsMapping.lvngFieldNo) then begin
-                    lvngEscrowAmount := lvngEscrowAmount + lvngLoanValue.lvngDecimalValue;
+                if lvngLoanValue.Get(lvngLoan."Loan No.", lvngEscrowFieldsMapping.lvngFieldNo) then begin
+                    lvngEscrowAmount := lvngEscrowAmount + lvngLoanValue."Decimal Value";
                 end;
             until lvngEscrowFieldsMapping.Next() = 0;
         end;
@@ -110,12 +110,12 @@ codeunit 14135119 "lvngServicingManagement"
         lvngLoan.Get(lvngServicingWorksheetParam.lvngLoanNo);
         clear(lvngServicingWorksheetParam.lvngErrorMessage);
         if lvngLoanServicingSetup.lvngTestEscrowTotals then begin
-            if lvngLoan.lvngMonthlyEscrowAmount <> lvngServicingWorksheetParam.lvngEscrowAmount then begin
+            if lvngLoan."Monthly Escrow Amount" <> lvngServicingWorksheetParam.lvngEscrowAmount then begin
                 lvngServicingWorksheetParam.lvngErrorMessage := copystr(lvngEscrowsDoesntMatch, 1, MaxStrLen(lvngServicingWorksheetParam.lvngErrorMessage));
             end;
         end;
         if lvngServicingWorksheetParam.lvngErrorMessage = '' then begin
-            if not Customer.Get(lvngLoan.lvngBorrowerCustomerNo) then begin
+            if not Customer.Get(lvngLoan."Borrower Customer No") then begin
                 lvngServicingWorksheetParam.lvngErrorMessage := copystr(lvngBorrowerCustomerMissing, 1, MaxStrLen(lvngServicingWorksheetParam.lvngErrorMessage));
             end;
         end;
@@ -142,12 +142,12 @@ codeunit 14135119 "lvngServicingManagement"
         lvngServicingWorksheet.FindSet();
         repeat
             lvngLoan.get(lvngServicingWorksheet.lvngLoanNo);
-            if lvngLoan.lvngBorrowerCustomerNo = '' then begin
-                Customer."No." := lvngLoan.lvngLoanNo;
-                Customer.Name := copystr(lvngloan.lvngSearchName, 1, MaxStrLen(Customer.Name));
+            if lvngLoan."Borrower Customer No" = '' then begin
+                Customer."No." := lvngLoan."Loan No.";
+                Customer.Name := copystr(lvngloan."Search Name", 1, MaxStrLen(Customer.Name));
                 Customer.CopyFromCustomerTemplate(CustomerTemplate);
                 Customer.Insert(true);
-                lvngLoan.lvngBorrowerCustomerNo := Customer."No.";
+                lvngLoan."Borrower Customer No" := Customer."No.";
                 lvngLoan.Modify(true);
             end;
         until lvngServicingWorksheet.Next() = 0;

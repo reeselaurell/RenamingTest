@@ -13,10 +13,10 @@ query 14135222 lvngGLEntryLoansPerPeriod
             filter(BUFilter; "Business Unit Code") { }
             dataitem(lvngLoan; lvngLoan)
             {
-                DataItemLink = lvngLoanNo = G_L_Entry.lvngLoanNo;
+                DataItemLink = "Loan No." = G_L_Entry.lvngLoanNo;
                 SqlJoinType = InnerJoin;
 
-                column(LoanNo; lvngLoanNo) { }
+                column(LoanNo; "Loan No.") { }
             }
             column(PostingDate; "Posting Date") { }
             column(Count) { Method = Count; }

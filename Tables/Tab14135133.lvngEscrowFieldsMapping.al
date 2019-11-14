@@ -9,7 +9,7 @@ table 14135133 "lvngEscrowFieldsMapping"
         field(1; lvngFieldNo; Integer)
         {
             Caption = 'Field No.';
-            TableRelation = lvngLoanFieldsConfiguration.lvngFieldNo where(lvngValueType = const(lvngDecimal));
+            TableRelation = lvngLoanFieldsConfiguration."Field No." where("Value Type" = const(lvngDecimal));
             DataClassification = CustomerContent;
 
             trigger OnValidate()
@@ -17,7 +17,7 @@ table 14135133 "lvngEscrowFieldsMapping"
                 lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
             begin
                 lvngLoanFieldsConfiguration.Get(lvngFieldNo);
-                lvngDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+                lvngDescription := lvngLoanFieldsConfiguration."Field Name";
             end;
         }
         field(10; lvngDescription; Text[100])

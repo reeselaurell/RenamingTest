@@ -12,17 +12,17 @@ page 14135101 "lvngWarehouseLines"
         {
             repeater(Group)
             {
-                field(Code; lvngCode)
+                field(Code; Code)
                 {
                     ApplicationArea = All;
                 }
 
-                field(Description; lvngDescription)
+                field(Description; Description)
                 {
                     ApplicationArea = All;
                 }
 
-                field(ShowInRoleCenter; lvngShowInRolecenter)
+                field(ShowInRoleCenter; "Show In Rolecenter")
                 {
                     ApplicationArea = All;
                 }

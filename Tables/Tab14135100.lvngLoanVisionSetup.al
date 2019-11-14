@@ -5,171 +5,36 @@ table 14135100 "lvngLoanVisionSetup"
 
     fields
     {
-        field(1; lvngPrimaryKey; Code[10])
-        {
-            Caption = 'Primary Key';
-            DataClassification = CustomerContent;
-        }
-
-        field(10; lvngFundedReasonCode; Code[10])
-        {
-            Caption = 'Funded Reason Code';
-            DataClassification = CustomerContent;
-            TableRelation = "Reason Code";
-        }
-
-        field(11; lvngSoldReasonCode; Code[10])
-        {
-            Caption = 'Sold Reason Code';
-            DataClassification = CustomerContent;
-            TableRelation = "Reason Code";
-        }
-
-        field(13; lvngSearchNameTemplate; Text[50])
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Search Name Template';
-        }
-        field(14; lvngFundedVoidReasonCode; code[10])
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Funded Void Reason Code';
-            TableRelation = "Reason Code";
-        }
-        field(15; lvngSoldVoidReasonCode; Code[10])
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Sold Void Reason Code';
-            TableRelation = "Reason Code";
-        }
-
-        field(17; lvngFundedSourceCode; Code[20])
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Funded Source Code';
-            TableRelation = "Source Code".Code;
-        }
-        field(18; lvngSoldSourceCode; Code[20])
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Sold Source Code';
-            TableRelation = "Source Code".Code;
-        }
-
-        field(50; lvngFundedNoSeries; Code[20])
-        {
-            Caption = 'Funded No. Series';
-            DataClassification = CustomerContent;
-            TableRelation = "No. Series".Code;
-        }
-        field(51; lvngSoldNoSeries; Code[20])
-        {
-            Caption = 'Sold No. Series';
-            DataClassification = CustomerContent;
-            TableRelation = "No. Series".Code;
-        }
-
-        field(53; lvngVoidFundedNoSeries; Code[20])
-        {
-            Caption = 'Funded Void No. Series';
-            DataClassification = CustomerContent;
-            TableRelation = "No. Series".Code;
-        }
-        field(54; lvngVoidSoldNoSeries; Code[20])
-        {
-            Caption = 'Sold Void No. Series';
-            DataClassification = CustomerContent;
-            TableRelation = "No. Series".Code;
-        }
-        field(300; lvngLoanOfficerDimensionCode; Code[20])
-        {
-            Caption = 'Loan Officer Dimension Code';
-            DataClassification = CustomerContent;
-            TableRelation = Dimension;
-        }
-
-        field(301; lvngPropertyStateDimensionCode; Code[20])
-        {
-            Caption = 'Property State Dimension Code';
-            DataClassification = CustomerContent;
-            TableRelation = Dimension;
-        }
-
-        field(302; lvngLoanTypeDimensionCode; Code[20])
-        {
-            Caption = 'Loan Type Dimension Code';
-            DataClassification = CustomerContent;
-            TableRelation = Dimension;
-        }
-
-        field(303; lvngCostCenterDimensionCode; Code[20])
-        {
-            Caption = 'Cost Center Dimension Code';
-            DataClassification = CustomerContent;
-            TableRelation = Dimension;
-        }
-
-        field(304; lvngLoanPurposeDimensionCode; Code[20])
-        {
-            Caption = 'Loan Purpose Dimension Code';
-            DataClassification = CustomerContent;
-            TableRelation = Dimension;
-        }
-        field(305; lvngLoanOfficerNameTemplate; Text[50])
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Loan Officer Name Template';
-        }
-        field(400; lvngHierarchyLevels; Integer)
-        {
-            Caption = 'Hierarchy Levels';
-            DataClassification = CustomerContent;
-        }
-
-        field(401; lvngLevel1; enum lvngHierarchyLevels)
-        {
-            Caption = 'Level 1';
-            DataClassification = CustomerContent;
-        }
-
-        field(402; lvngLevel2; enum lvngHierarchyLevels)
-        {
-            Caption = 'Level 2';
-            DataClassification = CustomerContent;
-        }
-
-        field(403; lvngLevel3; enum lvngHierarchyLevels)
-        {
-            Caption = 'Level 3';
-            DataClassification = CustomerContent;
-        }
-
-        field(404; lvngLevel4; enum lvngHierarchyLevels)
-        {
-            Caption = 'Level 4';
-            DataClassification = CustomerContent;
-        }
-
-        field(405; lvngLevel5; enum lvngHierarchyLevels)
-        {
-            Caption = 'Level 5';
-            DataClassification = CustomerContent;
-        }
-
-        field(90000; lvngMaintenanceMode; Boolean)
-        {
-            Caption = 'Maintenance Mode';
-            DataClassification = CustomerContent;
-        }
-
+        field(1; "Primary Key"; Code[10]) { DataClassification = CustomerContent; }
+        field(10; "Funded Reason Code"; Code[10]) { DataClassification = CustomerContent; TableRelation = "Reason Code"; }
+        field(11; "Sold Reason Code"; Code[10]) { DataClassification = CustomerContent; TableRelation = "Reason Code"; }
+        field(13; "Search Name Template"; Text[50]) { DataClassification = CustomerContent; }
+        field(14; "Funded Void Reason Code"; code[10]) { DataClassification = CustomerContent; TableRelation = "Reason Code"; }
+        field(15; "Sold Void Reason Code"; Code[10]) { DataClassification = CustomerContent; TableRelation = "Reason Code"; }
+        field(17; "Funded Source Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = "Source Code".Code; }
+        field(18; "Sold Source Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = "Source Code".Code; }
+        field(50; "Funded No. Series"; Code[20]) { DataClassification = CustomerContent; TableRelation = "No. Series".Code; }
+        field(51; "Sold No. Series"; Code[20]) { DataClassification = CustomerContent; TableRelation = "No. Series".Code; }
+        field(53; "Void Funded No. Series"; Code[20]) { Caption = 'Funded Void No. Series'; DataClassification = CustomerContent; TableRelation = "No. Series".Code; }
+        field(54; "Void Sold No. Series"; Code[20]) { Caption = 'Sold Void No. Series'; DataClassification = CustomerContent; TableRelation = "No. Series".Code; }
+        field(300; "Loan Officer Dimension Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = Dimension; }
+        field(301; "Property State Dimension Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = Dimension; }
+        field(302; "Loan Type Dimension Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = Dimension; }
+        field(303; "Cost Center Dimension Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = Dimension; }
+        field(304; "Loan Purpose Dimension Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = Dimension; }
+        field(305; "Loan Officer Name Template"; Text[50]) { DataClassification = CustomerContent; }
+        field(400; "Hierarchy Levels"; Integer) { DataClassification = CustomerContent; }
+        field(401; "Level 1"; enum lvngHierarchyLevels) { DataClassification = CustomerContent; }
+        field(402; "Level 2"; enum lvngHierarchyLevels) { DataClassification = CustomerContent; }
+        field(403; "Level 3"; enum lvngHierarchyLevels) { DataClassification = CustomerContent; }
+        field(404; "Level 4"; enum lvngHierarchyLevels) { DataClassification = CustomerContent; }
+        field(405; "Level 5"; enum lvngHierarchyLevels) { DataClassification = CustomerContent; }
+        field(90000; "Maintenance Mode"; Boolean) { DataClassification = CustomerContent; }
     }
 
     keys
     {
-        key(PK; lvngPrimaryKey)
-        {
-            Clustered = true;
-        }
+        key(PK; "Primary Key") { Clustered = true; }
     }
 
 }

@@ -59,7 +59,7 @@ table 14135114 "lvngLoanDocument"
             Caption = 'Global Dimension 1 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (1));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(1));
 
             trigger OnValidate()
             begin
@@ -71,7 +71,7 @@ table 14135114 "lvngLoanDocument"
             Caption = 'Global Dimension 2 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (2));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(2));
             trigger OnValidate()
             begin
                 DimensionManagement.ValidateShortcutDimValues(2, lvngGlobalDimension2Code, lvngDimensionSetID);
@@ -82,7 +82,7 @@ table 14135114 "lvngLoanDocument"
             Caption = 'Shortcut Dimension 3 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,3';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (3));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(3));
             trigger OnValidate()
             begin
                 DimensionManagement.ValidateShortcutDimValues(3, lvngShortcutDimension3Code, lvngDimensionSetID);
@@ -93,7 +93,7 @@ table 14135114 "lvngLoanDocument"
             Caption = 'Shortcut Dimension 4 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,4';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (4));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(4));
             trigger OnValidate()
             begin
                 DimensionManagement.ValidateShortcutDimValues(4, lvngShortcutDimension4Code, lvngDimensionSetID);
@@ -104,7 +104,7 @@ table 14135114 "lvngLoanDocument"
             Caption = 'Shortcut Dimension 5 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,5';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (5));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(5));
             trigger OnValidate()
             begin
                 DimensionManagement.ValidateShortcutDimValues(5, lvngShortcutDimension5Code, lvngDimensionSetID);
@@ -115,7 +115,7 @@ table 14135114 "lvngLoanDocument"
             Caption = 'Shortcut Dimension 6 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,6';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (6));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(6));
             trigger OnValidate()
             begin
                 DimensionManagement.ValidateShortcutDimValues(6, lvngShortcutDimension6Code, lvngDimensionSetID);
@@ -126,7 +126,7 @@ table 14135114 "lvngLoanDocument"
             Caption = 'Shortcut Dimension 7 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,7';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (7));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(7));
             trigger OnValidate()
             begin
                 DimensionManagement.ValidateShortcutDimValues(7, lvngShortcutDimension7Code, lvngDimensionSetID);
@@ -137,7 +137,7 @@ table 14135114 "lvngLoanDocument"
             Caption = 'Shortcut Dimension 8 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,8';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (8));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = CONST(8));
             trigger OnValidate()
             begin
                 DimensionManagement.ValidateShortcutDimValues(8, lvngShortcutDimension8Code, lvngDimensionSetID);
@@ -161,7 +161,7 @@ table 14135114 "lvngLoanDocument"
         {
             Caption = 'Warehouse Line Code';
             DataClassification = CustomerContent;
-            TableRelation = lvngWarehouseLine.lvngCode;
+            TableRelation = lvngWarehouseLine.Code;
         }
 
         field(1000; lvngVoidDocumentNo; Code[20])
@@ -173,7 +173,7 @@ table 14135114 "lvngLoanDocument"
         {
             Caption = 'Borrower Search Name';
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan.lvngSearchName where (lvngLoanNo = field (lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."Search Name" where("Loan No." = field(lvngLoanNo)));
             Editable = false;
         }
 

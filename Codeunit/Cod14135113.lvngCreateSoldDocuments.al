@@ -68,9 +68,9 @@ codeunit 14135113 "lvngCreateSoldDocuments"
         lvngDocumentAmount: Decimal;
     begin
         GetLoanVisionSetup();
-        if lvngLoanVisionSetup.lvngSoldVoidReasonCode <> '' then begin
-            if (lvngLoanVisionSetup.lvngSoldVoidReasonCode = lvngLoanJournalLine.lvngReasonCode) then begin
-                lvngLoanVisionSetup.TestField(lvngVoidSoldNoSeries);
+        if lvngLoanVisionSetup."Sold Void Reason Code" <> '' then begin
+            if (lvngLoanVisionSetup."Sold Void Reason Code" = lvngLoanJournalLine.lvngReasonCode) then begin
+                lvngLoanVisionSetup.TestField("Void Sold No. Series");
                 lvngLoanSoldDocument.reset;
                 lvngLoanSoldDocument.SetRange(lvngLoanNo, lvngLoanJournalLine.lvngLoanNo);
                 lvngLoanSoldDocument.SetRange(lvngVoid, false);
@@ -80,7 +80,7 @@ codeunit 14135113 "lvngCreateSoldDocuments"
                 lvngLoanDocument.TransferFields(lvngLoanSoldDocument);
                 lvngLoanDocument.lvngTransactionType := lvngLoanDocument.lvngTransactionType::lvngSold;
                 if not lvngPreview then begin
-                    lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup.lvngVoidSoldNoSeries, TODAY, true, false);
+                    lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup."Void Sold No. Series", TODAY, true, false);
                 end else begin
                     lvngLoanDocument.lvngDocumentNo := TempDocumentLbl;
                 end;
@@ -118,7 +118,7 @@ codeunit 14135113 "lvngCreateSoldDocuments"
         if not lvngPreview then begin
             if lvngLoanProcessingSchema.lvngNoSeries <> '' then
                 lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanProcessingSchema.lvngNoSeries, TODAY, true, false) else
-                lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup.lvngSoldNoSeries, TODAY, true, false);
+                lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup."Sold No. Series", TODAY, true, false);
         end else begin
             lvngLoanDocument.lvngDocumentNo := TempDocumentLbl;
         end;

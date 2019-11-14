@@ -8,7 +8,7 @@ codeunit 14135111 "lvngLoanVoidDocument"
         ConfirmationDialogLbl: Label 'Do you want to create Void document for %1?';
     begin
         GetLoanVisionSetup();
-        lvngLoanVisionSetup.TestField(lvngVoidFundedNoSeries);
+        lvngLoanVisionSetup.TestField("Void Funded No. Series");
         if ShowConfirmation then begin
             if not Confirm(ConfirmationDialogLbl, false, lvngLoanFundedDocument.lvngDocumentNo) then
                 exit;
@@ -16,7 +16,7 @@ codeunit 14135111 "lvngLoanVoidDocument"
         Clear(lvngLoanDocument);
         lvngLoanDocument.TransferFields(lvngLoanFundedDocument);
         lvngLoanDocument.lvngTransactionType := lvngLoanDocument.lvngTransactionType::lvngFunded;
-        lvngLoanDocument.lvngDocumentNo := NoSeriesMgmt.DoGetNextNo(lvngLoanVisionSetup.lvngVoidFundedNoSeries, TODAY, true, true);
+        lvngLoanDocument.lvngDocumentNo := NoSeriesMgmt.DoGetNextNo(lvngLoanVisionSetup."Void Funded No. Series", TODAY, true, true);
         if lvngLoanFundedDocument.lvngDocumentType = lvngLoanFundedDocument.lvngDocumentType::lvngCreditMemo then
             lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice else
             lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
@@ -31,7 +31,7 @@ codeunit 14135111 "lvngLoanVoidDocument"
                 lvngLoanDocumentLine.TransferFields(lvngLoanFundedDocumentLine);
                 lvngLoanDocumentLine.lvngTransactionType := lvngLoanDocument.lvngTransactionType;
                 lvngLoanDocumentLine.lvngDocumentNo := lvngLoanDocument.lvngDocumentNo;
-                lvngLoanDocumentLine.lvngReasonCode := lvngLoanVisionSetup.lvngFundedVoidReasonCode;
+                lvngLoanDocumentLine.lvngReasonCode := lvngLoanVisionSetup."Funded Void Reason Code";
                 lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
                 lvngLoanDocumentLine.Insert();
             until lvngLoanFundedDocumentLine.Next() = 0;
@@ -46,7 +46,7 @@ codeunit 14135111 "lvngLoanVoidDocument"
         ConfirmationDialogLbl: Label 'Do you want to create Void document for %1?';
     begin
         GetLoanVisionSetup();
-        lvngLoanVisionSetup.TestField(lvngVoidFundedNoSeries);
+        lvngLoanVisionSetup.TestField("Void Funded No. Series");
         if ShowConfirmation then begin
             if not Confirm(ConfirmationDialogLbl, false, lvngLoanSoldDocument.lvngDocumentNo) then
                 exit;
@@ -54,7 +54,7 @@ codeunit 14135111 "lvngLoanVoidDocument"
         Clear(lvngLoanDocument);
         lvngLoanDocument.TransferFields(lvngLoanSoldDocument);
         lvngLoanDocument.lvngTransactionType := lvngLoanDocument.lvngTransactionType::lvngFunded;
-        lvngLoanDocument.lvngDocumentNo := NoSeriesMgmt.DoGetNextNo(lvngLoanVisionSetup.lvngVoidFundedNoSeries, TODAY, true, true);
+        lvngLoanDocument.lvngDocumentNo := NoSeriesMgmt.DoGetNextNo(lvngLoanVisionSetup."Void Funded No. Series", TODAY, true, true);
         if lvngLoanSoldDocument.lvngDocumentType = lvngLoanSoldDocument.lvngDocumentType::lvngCreditMemo then
             lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice else
             lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
@@ -69,7 +69,7 @@ codeunit 14135111 "lvngLoanVoidDocument"
                 lvngLoanDocumentLine.TransferFields(lvngLoanSoldDocumentLine);
                 lvngLoanDocumentLine.lvngTransactionType := lvngLoanDocument.lvngTransactionType;
                 lvngLoanDocumentLine.lvngDocumentNo := lvngLoanDocument.lvngDocumentNo;
-                lvngLoanDocumentLine.lvngReasonCode := lvngLoanVisionSetup.lvngFundedVoidReasonCode;
+                lvngLoanDocumentLine.lvngReasonCode := lvngLoanVisionSetup."Funded Void Reason Code";
                 lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
                 lvngLoanDocumentLine.Insert();
             until lvngLoanSoldDocumentLine.Next() = 0;

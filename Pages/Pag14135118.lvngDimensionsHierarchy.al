@@ -75,25 +75,25 @@ page 14135118 "lvngDimensionsHierarchy"
     var
     begin
         lvngLoanVisionSetup.Get();
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 1 then
+        if lvngLoanVisionSetup."Hierarchy Levels" = 1 then
             exit;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 2 then begin
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel1);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 2 then begin
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 1");
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 3 then begin
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel2);
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel1);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 3 then begin
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 2");
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 1");
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 4 then begin
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel3);
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel2);
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel1);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 4 then begin
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 3");
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 2");
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 1");
         end;
-        if lvngLoanVisionSetup.lvngHierarchyLevels = 5 then begin
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel4);
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel3);
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel2);
-            CheckDimensionsVisibility(lvngLoanVisionSetup.lvngLevel1);
+        if lvngLoanVisionSetup."Hierarchy Levels" = 5 then begin
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 4");
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 3");
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 2");
+            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 1");
         end;
     end;
 

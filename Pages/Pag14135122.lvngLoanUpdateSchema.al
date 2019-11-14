@@ -36,7 +36,7 @@ page 14135122 "lvngLoanUpdateSchema"
                             lvngImportFieldType::lvngVariable:
                                 begin
                                     lvngLoanFieldsConfiguration.Get(lvngFieldNo);
-                                    lvngFieldDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+                                    lvngFieldDescription := lvngLoanFieldsConfiguration."Field Name";
                                 end;
                         end;
                     end;
@@ -65,8 +65,8 @@ page 14135122 "lvngLoanUpdateSchema"
                             lvngImportFieldType::lvngVariable:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
-                                        lvngFieldNo := lvngLoanFieldsConfiguration.lvngFieldNo;
-                                        lvngFieldDescription := lvngLoanFieldsConfiguration.lvngFieldName;
+                                        lvngFieldNo := lvngLoanFieldsConfiguration."Field No.";
+                                        lvngFieldDescription := lvngLoanFieldsConfiguration."Field Name";
                                     end;
                                 end;
                         end;

@@ -35,8 +35,8 @@ codeunit 14135108 "lvngConditionsMgmt"
                 lvngFieldSequenceNo := lvngFieldSequenceNo + 1;
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
-                lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp.lvngFieldName;
-                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp.lvngValueType);
+                lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp."Field Name";
+                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp."Value Type");
                 lvngExpressionValueBuffer.Insert();
             until lvngLoanFieldsConfigurationTemp.Next() = 0;
         end;
@@ -67,24 +67,24 @@ codeunit 14135108 "lvngConditionsMgmt"
             repeat
                 lvngFieldSequenceNo := lvngFieldSequenceNo + 1;
                 lvngLoanValue.reset;
-                lvngLoanValue.SetRange(lvngLoanNo, lvngLoan.lvngLoanNo);
+                lvngLoanValue.SetRange("Loan No.", lvngLoan."Loan No.");
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
-                lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp.lvngFieldName;
-                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp.lvngValueType);
+                lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp."Field Name";
+                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp."Value Type");
                 if lvngLoanValue.FindFirst() then begin
-                    lvngExpressionValueBuffer.Value := lvngLoanValue.lvngFieldValue;
+                    lvngExpressionValueBuffer.Value := lvngLoanValue."Field Value";
                 end else begin
-                    case lvngLoanFieldsConfigurationTemp.lvngValueType of
-                        lvngLoanFieldsConfigurationTemp.lvngValueType::lvngBoolean:
+                    case lvngLoanFieldsConfigurationTemp."Value Type" of
+                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngBoolean:
                             begin
                                 lvngExpressionValueBuffer.Value := 'False';
                             end;
-                        lvngLoanFieldsConfigurationTemp.lvngValueType::lvngDecimal:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngDecimal:
                             begin
                                 lvngExpressionValueBuffer.Value := '0.00';
                             end;
-                        lvngLoanFieldsConfigurationTemp.lvngValueType::lvngInteger:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngInteger:
                             begin
                                 lvngExpressionValueBuffer.Value := '0';
                             end;
@@ -131,8 +131,8 @@ codeunit 14135108 "lvngConditionsMgmt"
                 lvngFieldSequenceNo := lvngFieldSequenceNo + 1;
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
-                lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp.lvngFieldName;
-                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp.lvngValueType);
+                lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp."Field Name";
+                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp."Value Type");
                 lvngExpressionValueBuffer.Insert();
             until lvngLoanFieldsConfigurationTemp.Next() = 0;
         end;
@@ -166,24 +166,24 @@ codeunit 14135108 "lvngConditionsMgmt"
                 lvngLoanJournalValue.reset;
                 lvngLoanJournalValue.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
                 lvngLoanJournalValue.SetRange(lvngLineNo, lvngLoanJournalLine.lvngLineNo);
-                lvngLoanJournalValue.SetRange(lvngFieldNo, lvngLoanFieldsConfigurationTemp.lvngFieldNo);
+                lvngLoanJournalValue.SetRange(lvngFieldNo, lvngLoanFieldsConfigurationTemp."Field No.");
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
-                lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp.lvngFieldName;
-                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp.lvngValueType);
+                lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp."Field Name";
+                lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp."Value Type");
                 if lvngLoanJournalValue.FindFirst() then begin
                     lvngExpressionValueBuffer.Value := lvngLoanJournalValue.lvngFieldValue;
                 end else begin
-                    case lvngLoanFieldsConfigurationTemp.lvngValueType of
-                        lvngLoanFieldsConfigurationTemp.lvngValueType::lvngBoolean:
+                    case lvngLoanFieldsConfigurationTemp."Value Type" of
+                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngBoolean:
                             begin
                                 lvngExpressionValueBuffer.Value := 'False';
                             end;
-                        lvngLoanFieldsConfigurationTemp.lvngValueType::lvngDecimal:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngDecimal:
                             begin
                                 lvngExpressionValueBuffer.Value := '0.00';
                             end;
-                        lvngLoanFieldsConfigurationTemp.lvngValueType::lvngInteger:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngInteger:
                             begin
                                 lvngExpressionValueBuffer.Value := '0';
                             end;

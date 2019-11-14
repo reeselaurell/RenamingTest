@@ -97,11 +97,11 @@ report 14135182 lvngGLDetails
                 {
 
                 }
-                column(Dim1Caption; Loan.FieldCaption(lvngGlobalDimension1Code))
+                column(Dim1Caption; Loan.FieldCaption("Global Dimension 1 Code"))
                 {
 
                 }
-                column(Dim2Caption; Loan.FieldCaption(lvngGlobalDimension2Code))
+                column(Dim2Caption; Loan.FieldCaption("Global Dimension 2 Code"))
                 {
 
                 }
@@ -116,9 +116,9 @@ report 14135182 lvngGLDetails
                     Loan.SecurityFiltering(SecurityFiltering::Ignored);
                     Clear(LoanFound);
                     if Loan.Get(lvngLoanNo) then begin
-                        BorrowerName := Loan.lvngBorrowerFirstName + ' ' + Loan.lvngBorrowerMiddleName + ' ' + Loan.lvngBorrowerLastName;
-                        DateFunded := Loan.lvngDateFunded;
-                        DateSold := Loan.lvngDateSold;
+                        BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
+                        DateFunded := Loan."Date Funded";
+                        DateSold := Loan."Date Sold";
                         LoanFound := true;
                     end;
 
@@ -145,11 +145,11 @@ report 14135182 lvngGLDetails
                         ExportTextColumn(ColumnNo, lvngLoanNo, false);
                         ColumnNo := ColumnNo + 1;
                         if LoanFound then begin
-                            ExportTextColumn(ColumnNo, Loan.lvngBorrowerFirstName + ' ' + Loan.lvngBorrowerMiddleName + ' ' + Loan.lvngBorrowerLastName, false);
+                            ExportTextColumn(ColumnNo, Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name", false);
                             ColumnNo := ColumnNo + 1;
-                            ExportDateColumn(ColumnNo, Loan.lvngDateFunded);
+                            ExportDateColumn(ColumnNo, Loan."Date Funded");
                             ColumnNo := ColumnNo + 1;
-                            ExportDateColumn(ColumnNo, Loan.lvngDateSold);
+                            ExportDateColumn(ColumnNo, Loan."Date Sold");
                         end else begin
                             ColumnNo := ColumnNo + 2;
                         end;
@@ -455,9 +455,9 @@ report 14135182 lvngGLDetails
             ColumnNo := ColumnNo + 1;
             ExportTextColumn(ColumnNo, 'Date Sold', true);
             ColumnNo := ColumnNo + 1;
-            ExportTextColumn(ColumnNo, 'Trans. ' + Loan.FieldCaption(lvngGlobalDimension1Code), true);
+            ExportTextColumn(ColumnNo, 'Trans. ' + Loan.FieldCaption("Global Dimension 1 Code"), true);
             ColumnNo := ColumnNo + 1;
-            ExportTextColumn(ColumnNo, 'Trans. ' + Loan.FieldCaption(lvngGlobalDimension2Code), true);
+            ExportTextColumn(ColumnNo, 'Trans. ' + Loan.FieldCaption("Global Dimension 2 Code"), true);
             ColumnNo := ColumnNo + 1;
             ExportTextColumn(ColumnNo, 'Debit Amount', true);
             ColumnNo := ColumnNo + 1;

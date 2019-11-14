@@ -108,7 +108,7 @@ page 14135156 "lvngServicingWorksheet"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = page lvngLoanCard;
-                RunPageLink = lvngLoanNo = field (lvngLoanNo);
+                RunPageLink = "Loan No." = field(lvngLoanNo);
             }
             action(lvngRetrieveLoansForServicing)
             {

@@ -25,9 +25,9 @@ codeunit 14135110 "lvngPostLoanDocument"
         GetLoanVisionSetup();
         case lvngLoanDocument.lvngTransactionType of
             lvngLoanDocument.lvngTransactionType::lvngFunded:
-                lvngSourceCode := lvngLoanVisionSetup.lvngFundedSourceCode;
+                lvngSourceCode := lvngLoanVisionSetup."Funded Source Code";
             lvngLoanDocument.lvngTransactionType::lvngSold:
-                lvngSourceCode := lvngLoanVisionSetup.lvngSoldSourceCode;
+                lvngSourceCode := lvngLoanVisionSetup."Sold Source Code";
             lvngLoanDocument.lvngTransactionType::lvngServiced:
                 begin
                     GetLoanServicingSetup();
@@ -284,8 +284,8 @@ codeunit 14135110 "lvngPostLoanDocument"
     begin
         if not lvngLoanVisionSetupRetrieved then begin
             lvngLoanVisionSetup.Get();
-            lvngLoanVisionSetup.TestField(lvngFundedSourceCode);
-            lvngLoanVisionSetup.TestField(lvngSoldSourceCode);
+            lvngLoanVisionSetup.TestField("Funded Source Code");
+            lvngLoanVisionSetup.TestField("Sold Source Code");
             lvngLoanVisionSetupRetrieved := true;
         end;
     end;
