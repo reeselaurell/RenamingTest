@@ -15,19 +15,19 @@ page 14135149 "lvngDepositImportSchema"
                 {
                     Caption = 'Accounts Management';
 
-                    field(lvngGenJnlAccountType; lvngGenJnlAccountType)
+                    field(lvngGenJnlAccountType; "Gen. Jnl. Account Type")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngAccountMappingType; lvngAccountMappingType)
+                    field(lvngAccountMappingType; "Account Mapping Type")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngDefaultAccountNo; lvngDefaultAccountNo)
+                    field(lvngDefaultAccountNo; "Default Account No.")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngSubsGLWithBankAcc; lvngSubsGLWithBankAcc)
+                    field(lvngSubsGLWithBankAcc; "Subs. G/L With Bank Acc.")
                     {
                         ApplicationArea = All;
                     }
@@ -35,27 +35,27 @@ page 14135149 "lvngDepositImportSchema"
                 group(lvngDocumentNo)
                 {
                     Caption = 'Document No. Management';
-                    field(lvngDepositDocumentType; lvngDepositDocumentType)
+                    field(lvngDepositDocumentType; "Deposit Document Type")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngDocumentTypeOption; lvngDocumentTypeOption)
+                    field(lvngDocumentTypeOption; "Document Type Option")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngDocumentNoSeries; lvngDocumentNoSeries)
+                    field(lvngDocumentNoSeries; "Document No. Series")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngDocumentNoFilling; lvngDocumentNoFilling)
+                    field(lvngDocumentNoFilling; "Document No. Filling")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngDocumentNoPrefix; lvngDocumentNoPrefix)
+                    field(lvngDocumentNoPrefix; "Document No. Prefix")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngUseSingleDocumentNo; lvngUseSingleDocumentNo)
+                    field(lvngUseSingleDocumentNo; "Use Single Document No.")
                     {
                         ApplicationArea = All;
                     }
@@ -63,19 +63,19 @@ page 14135149 "lvngDepositImportSchema"
                 group(lvngMisc)
                 {
                     Caption = 'Misc.';
-                    field(lvngReasonCode; lvngReasonCode)
+                    field(lvngReasonCode; "Reason Code")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngLoanNoValidationRule; lvngLoanNoValidationRule)
+                    field(lvngLoanNoValidationRule; "Loan No. Validation Rule")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngAppliesToDocType; lvngAppliesToDocType)
+                    field(lvngAppliesToDocType; "Applies-To Doc. Type")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngReverseAmountSign; lvngReverseAmountSign)
+                    field(lvngReverseAmountSign; "Reverse Amount Sign")
                     {
                         ApplicationArea = All;
                     }
@@ -85,132 +85,132 @@ page 14135149 "lvngDepositImportSchema"
             {
                 Caption = 'Dimensions';
 
-                field(lvngDimensionValidationRule; lvngDimensionValidationRule)
+                field(lvngDimensionValidationRule; "Dimension Validation Rule")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngUseDimensionHierarchy; lvngUseDimensionHierarchy)
+                field(lvngUseDimensionHierarchy; "Use Dimension Hierarchy")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDimension1MappingType; lvngDimension1MappingType)
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible1;
-                }
-                field(lvngDimension1Mandatory; lvngDimension1Mandatory)
+                field(lvngDimension1MappingType; "Dimension 1 Mapping Type")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible1;
                 }
-                field(lvngDefaultDimension1Code; lvngDefaultDimension1Code)
+                field(lvngDimension1Mandatory; "Dimension 1 Mandatory")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible1;
+                }
+                field(lvngDefaultDimension1Code; "Default Dimension 1 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible1;
                 }
 
-                field(lvngDimension2MappingType; lvngDimension2MappingType)
+                field(lvngDimension2MappingType; "Dimension 2 Mapping Type")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible2;
                 }
-                field(lvngDimension2Mandatory; lvngDimension2Mandatory)
+                field(lvngDimension2Mandatory; "Dimension 2 Mandatory")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible2;
                 }
-                field(lvngDefaultDimension2Code; lvngDefaultDimension2Code)
+                field(lvngDefaultDimension2Code; "Default Dimension 2 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible2;
                 }
 
-                field(lvngDimension3MappingType; lvngDimension3MappingType)
+                field(lvngDimension3MappingType; "Dimension 3 Mapping Type")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible3;
                 }
-                field(lvngDimension3Mandatory; lvngDimension3Mandatory)
+                field(lvngDimension3Mandatory; "Dimension 3 Mandatory")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible3;
                 }
-                field(lvngDefaultDimension3Code; lvngDefaultDimension3Code)
+                field(lvngDefaultDimension3Code; "Default Dimension 3 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible3;
                 }
-                field(lvngDimension4MappingType; lvngDimension4MappingType)
+                field(lvngDimension4MappingType; "Dimension 4 Mapping Type")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible4;
                 }
-                field(lvngDimension4Mandatory; lvngDimension4Mandatory)
+                field(lvngDimension4Mandatory; "Dimension 4 Mandatory")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible4;
                 }
-                field(lvngDefaultDimension4Code; lvngDefaultDimension4Code)
+                field(lvngDefaultDimension4Code; "Default Dimension 4 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible4;
                 }
-                field(lvngDimension5MappingType; lvngDimension5MappingType)
+                field(lvngDimension5MappingType; "Dimension 5 Mapping Type")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible5;
                 }
-                field(lvngDimension5Mandatory; lvngDimension5Mandatory)
+                field(lvngDimension5Mandatory; "Dimension 5 Mandatory")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible5;
                 }
-                field(lvngDefaultDimension5Code; lvngDefaultDimension5Code)
+                field(lvngDefaultDimension5Code; "Default Dimension 5 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible5;
                 }
-                field(lvngDimension6MappingType; lvngDimension6MappingType)
+                field(lvngDimension6MappingType; "Dimension 6 Mapping Type")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible6;
                 }
-                field(lvngDimension6Mandatory; lvngDimension6Mandatory)
+                field(lvngDimension6Mandatory; "Dimension 6 Mandatory")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible6;
                 }
-                field(lvngDefaultDimension6Code; lvngDefaultDimension6Code)
+                field(lvngDefaultDimension6Code; "Default Dimension 6 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible6;
                 }
-                field(lvngDimension7MappingType; lvngDimension7MappingType)
+                field(lvngDimension7MappingType; "Dimension 7 Mapping Type")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible7;
                 }
-                field(lvngDimension7Mandatory; lvngDimension7Mandatory)
+                field(lvngDimension7Mandatory; "Dimension 7 Mandatory")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible7;
                 }
-                field(lvngDefaultDimension7Code; lvngDefaultDimension7Code)
+                field(lvngDefaultDimension7Code; "Default Dimension 7 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible7;
                 }
-                field(lvngDimension8MappingType; lvngDimension8MappingType)
+                field(lvngDimension8MappingType; "Dimension 8 Mapping Type")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible8;
                 }
-                field(lvngDimension8Mandatory; lvngDimension8Mandatory)
+                field(lvngDimension8Mandatory; "Dimension 8 Mandatory")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible8;
                 }
-                field(lvngDefaultDimension8Code; lvngDefaultDimension8Code)
+                field(lvngDefaultDimension8Code; "Default Dimension 8 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible8;
@@ -219,7 +219,7 @@ page 14135149 "lvngDepositImportSchema"
             part(lvngDepositImportSchemaLines; lvngDepositImportSchemaLines)
             {
                 Caption = 'Columns Mapping';
-                SubPageLink = lvngCode = field(lvngCode);
+                SubPageLink = Code = field(Code);
                 ApplicationArea = All;
             }
         }

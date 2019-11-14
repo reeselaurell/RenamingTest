@@ -3,8 +3,8 @@ codeunit 14135107 lvngLoanJournalErrorMgmt
     procedure ClearJournalLineErrors(lvngLoanJournalLine: Record lvngLoanJournalLine)
     begin
         lvngLoanImportErrorLine.reset;
-        lvngLoanImportErrorLine.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
-        lvngLoanImportErrorLine.SetRange(lvngLineNo, lvngLoanJournalLine.lvngLineNo);
+        lvngLoanImportErrorLine.SetRange("Loan Journal Batch Code", lvngLoanJournalLine."Loan Journal Batch Code");
+        lvngLoanImportErrorLine.SetRange("Line No.", lvngLoanJournalLine."Line No.");
         lvngLoanImportErrorLine.DeleteAll();
     end;
 
@@ -14,24 +14,24 @@ codeunit 14135107 lvngLoanJournalErrorMgmt
     begin
         lvngErrorLineNo := 100;
         lvngLoanImportErrorLine.reset;
-        lvngLoanImportErrorLine.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
-        lvngLoanImportErrorLine.SetRange(lvngLineNo, lvngLoanJournalLine.lvngLineNo);
+        lvngLoanImportErrorLine.SetRange("Loan Journal Batch Code", lvngLoanJournalLine."Loan Journal Batch Code");
+        lvngLoanImportErrorLine.SetRange("Line No.", lvngLoanJournalLine."Line No.");
         if lvngLoanImportErrorLine.FindLast() then
-            lvngErrorLineNo := lvngLoanImportErrorLine.lvngErrorLineNo + 100;
+            lvngErrorLineNo := lvngLoanImportErrorLine."Error Line No." + 100;
         Clear(lvngLoanImportErrorLine);
         lvngLoanImportErrorLine.Init();
-        lvngLoanImportErrorLine.lvngLoanJournalBatchCode := lvngLoanJournalLine.lvngLoanJournalBatchCode;
-        lvngLoanImportErrorLine.lvngLineNo := lvngLoanJournalLine.lvngLineNo;
-        lvngLoanImportErrorLine.lvngErrorLineNo := lvngErrorLineNo;
-        lvngLoanImportErrorLine.lvngDescription := CopyStr(lvngErrorText, 1, MaxStrLen(lvngLoanImportErrorLine.lvngDescription));
+        lvngLoanImportErrorLine."Loan Journal Batch Code" := lvngLoanJournalLine."Loan Journal Batch Code";
+        lvngLoanImportErrorLine."Line No." := lvngLoanJournalLine."Line No.";
+        lvngLoanImportErrorLine."Error Line No." := lvngErrorLineNo;
+        lvngLoanImportErrorLine.Description := CopyStr(lvngErrorText, 1, MaxStrLen(lvngLoanImportErrorLine.Description));
         lvngLoanImportErrorLine.Insert;
     end;
 
     procedure HasError(lvngLoanJournalLine: Record lvngLoanJournalLine): Boolean
     begin
         lvngLoanImportErrorLine.reset;
-        lvngLoanImportErrorLine.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
-        lvngLoanImportErrorLine.SetRange(lvngLineNo, lvngLoanJournalLine.lvngLineNo);
+        lvngLoanImportErrorLine.SetRange("Loan Journal Batch Code", lvngLoanJournalLine."Loan Journal Batch Code");
+        lvngLoanImportErrorLine.SetRange("Line No.", lvngLoanJournalLine."Line No.");
         if lvngLoanImportErrorLine.IsEmpty() then
             exit(false);
         exit(true);

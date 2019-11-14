@@ -12,15 +12,15 @@ page 14135117 lvngImportDimensionMapping
         {
             repeater(lvngRepeater)
             {
-                field(lvngDimensionCode; lvngDimensionCode)
+                field(lvngDimensionCode; "Dimension Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMappingValue; lvngMappingValue)
+                field(lvngMappingValue; "Mapping Value")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDimensionValueCode; lvngDimensionValueCode)
+                field(lvngDimensionValueCode; "Dimension Value Code")
                 {
                     ApplicationArea = All;
                 }

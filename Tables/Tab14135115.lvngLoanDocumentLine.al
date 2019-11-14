@@ -4,188 +4,114 @@ table 14135115 "lvngLoanDocumentLine"
     Caption = 'Loan Document Line';
     fields
     {
-        field(1; lvngTransactionType; enum lvngTransactionType)
+        field(1; "Transaction Type"; enum lvngTransactionType) { Caption = 'Document Type'; DataClassification = CustomerContent; }
+        field(2; "Document No."; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngLoanDocument."Document No." where("Transaction Type" = field("Transaction Type")); }
+        field(3; "Line No."; Integer) { DataClassification = CustomerContent; }
+        field(10; "Account Type"; enum lvngAccountType) { DataClassification = CustomerContent; }
+        field(11; "Account No."; Code[20]) { DataClassification = CustomerContent; TableRelation = if ("Account Type" = const("G/L Account")) "G/L Account"."No." where("Account Type" = const(Posting), Blocked = const(false)) else if ("Account Type" = const("Bank Account")) "Bank Account" where(Blocked = const(false)); }
+        field(12; "Reason Code"; Code[10]) { DataClassification = CustomerContent; TableRelation = "Reason Code"; }
+        field(13; Description; Text[50]) { DataClassification = CustomerContent; }
+        field(14; Amount; Decimal) { DataClassification = CustomerContent; }
+        field(80; "Global Dimension 1 Code"; Code[20])
         {
-            Caption = 'Document Type';
-            DataClassification = CustomerContent;
-        }
-        field(2; lvngDocumentNo; Code[20])
-        {
-            Caption = 'Document No.';
-            DataClassification = CustomerContent;
-            TableRelation = lvngLoanDocument.lvngDocumentNo where (lvngTransactionType = field (lvngTransactionType));
-        }
-        field(3; lvngLineNo; Integer)
-        {
-            Caption = 'Line No.';
-            DataClassification = CustomerContent;
-        }
-        field(10; lvngAccountType; enum lvngAccountType)
-        {
-            Caption = 'Account Type';
-            DataClassification = CustomerContent;
-        }
-        field(11; lvngAccountNo; Code[20])
-        {
-            Caption = 'Account No.';
-            DataClassification = CustomerContent;
-            TableRelation = if (lvngAccountType = const (lvngGLAccount)) "G/L Account"."No." where ("Account Type" = const (Posting), Blocked = const (false)) else
-            if (lvngAccountType = const (lvngBankAccount)) "Bank Account" where (Blocked = const (false));
-        }
-        field(12; lvngReasonCode; Code[10])
-        {
-            Caption = 'Reason Code';
-            DataClassification = CustomerContent;
-            TableRelation = "Reason Code";
-        }
-        field(13; lvngDescription; Text[50])
-        {
-            Caption = 'Description';
-            DataClassification = CustomerContent;
-        }
-        field(14; lvngAmount; Decimal)
-        {
-            Caption = 'Amount';
-            DataClassification = CustomerContent;
-        }
-
-        field(80; lvngGlobalDimension1Code; Code[20])
-        {
-            Caption = 'Global Dimension 1 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (1));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1));
 
             trigger OnValidate()
             begin
-                DimensionManagement.ValidateShortcutDimValues(1, lvngGlobalDimension1Code, lvngDimensionSetID);
+                DimensionManagement.ValidateShortcutDimValues(1, "Global Dimension 1 Code", "Dimension Set ID");
             end;
         }
-        field(81; lvngGlobalDimension2Code; Code[20])
+        field(81; "Global Dimension 2 Code"; Code[20])
         {
-            Caption = 'Global Dimension 2 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (2));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2));
+
             trigger OnValidate()
             begin
-                DimensionManagement.ValidateShortcutDimValues(2, lvngGlobalDimension2Code, lvngDimensionSetID);
+                DimensionManagement.ValidateShortcutDimValues(2, "Global Dimension 2 Code", "Dimension Set ID");
             end;
         }
-        field(82; lvngShortcutDimension3Code; Code[20])
+        field(82; "Shortcut Dimension 3 Code"; Code[20])
         {
-            Caption = 'Shortcut Dimension 3 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,3';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (3));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3));
+
             trigger OnValidate()
             begin
-                DimensionManagement.ValidateShortcutDimValues(3, lvngShortcutDimension3Code, lvngDimensionSetID);
+                DimensionManagement.ValidateShortcutDimValues(3, "Shortcut Dimension 3 Code", "Dimension Set ID");
             end;
         }
-        field(83; lvngShortcutDimension4Code; Code[20])
+        field(83; "Shortcut Dimension 4 Code"; Code[20])
         {
-            Caption = 'Shortcut Dimension 4 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,4';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (4));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4));
+
             trigger OnValidate()
             begin
-                DimensionManagement.ValidateShortcutDimValues(4, lvngShortcutDimension4Code, lvngDimensionSetID);
+                DimensionManagement.ValidateShortcutDimValues(4, "Shortcut Dimension 4 Code", "Dimension Set ID");
             end;
         }
-        field(84; lvngShortcutDimension5Code; Code[20])
+        field(84; "Shortcut Dimension 5 Code"; Code[20])
         {
-            Caption = 'Shortcut Dimension 5 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,5';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (5));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(5));
+
             trigger OnValidate()
             begin
-                DimensionManagement.ValidateShortcutDimValues(5, lvngShortcutDimension5Code, lvngDimensionSetID);
+                DimensionManagement.ValidateShortcutDimValues(5, "Shortcut Dimension 5 Code", "Dimension Set ID");
             end;
         }
-        field(85; lvngShortcutDimension6Code; Code[20])
+        field(85; "Shortcut Dimension 6 Code"; Code[20])
         {
-            Caption = 'Shortcut Dimension 6 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,6';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (6));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6));
+
             trigger OnValidate()
             begin
-                DimensionManagement.ValidateShortcutDimValues(6, lvngShortcutDimension6Code, lvngDimensionSetID);
+                DimensionManagement.ValidateShortcutDimValues(6, "Shortcut Dimension 6 Code", "Dimension Set ID");
             end;
         }
-        field(86; lvngShortcutDimension7Code; Code[20])
+        field(86; "Shortcut Dimension 7 Code"; Code[20])
         {
-            Caption = 'Shortcut Dimension 7 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,7';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (7));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7));
+
             trigger OnValidate()
             begin
-                DimensionManagement.ValidateShortcutDimValues(7, lvngShortcutDimension7Code, lvngDimensionSetID);
+                DimensionManagement.ValidateShortcutDimValues(7, "Shortcut Dimension 7 Code", "Dimension Set ID");
             end;
         }
-        field(87; lvngShortcutDimension8Code; Code[20])
+        field(87; "Shortcut Dimension 8 Code"; Code[20])
         {
-            Caption = 'Shortcut Dimension 8 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,8';
-            TableRelation = "Dimension Value".Code where ("Global Dimension No." = CONST (8));
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8));
+
             trigger OnValidate()
             begin
-                DimensionManagement.ValidateShortcutDimValues(8, lvngShortcutDimension8Code, lvngDimensionSetID);
+                DimensionManagement.ValidateShortcutDimValues(8, "Shortcut Dimension 8 Code", "Dimension Set ID");
             end;
         }
-
-        field(88; lvngBusinessUnitCode; Code[10])
-        {
-            Caption = 'Business Unit Code';
-            DataClassification = CustomerContent;
-            TableRelation = "Business Unit";
-        }
-
-        field(89; lvngDimensionSetID; Integer)
-        {
-            Caption = 'Dimension Set ID';
-            DataClassification = CustomerContent;
-        }
-        field(200; lvngServicingType; enum lvngServicingType)
-        {
-            Caption = 'Servicing Type';
-            DataClassification = CustomerContent;
-        }
-        field(1000; lvngProcessingSchemaCode; code[20])
-        {
-            Caption = 'Processing Schema Code';
-            DataClassification = CustomerContent;
-            TableRelation = lvngLoanProcessingSchema.lvngCode;
-        }
-        field(1001; lvngProcessingSchemaLineNo; Integer)
-        {
-            Caption = 'Processing Schema Line No.';
-            DataClassification = CustomerContent;
-            TableRelation = lvngLoanProcessingSchemaline.lvngLineNo where (lvngProcessingCode = field (lvngProcessingSchemaCode));
-        }
-        field(1002; lvngBalancingEntry; boolean)
-        {
-            Caption = 'Balancing Entry';
-            DataClassification = CustomerContent;
-        }
-        field(1003; lvngTagCode; Code[10])
-        {
-            Caption = 'Tag Code';
-            DataClassification = CustomerContent;
-        }
+        field(88; "Business Unit Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = "Business Unit"; }
+        field(89; "Dimension Set ID"; Integer) { DataClassification = CustomerContent; }
+        field(200; "Servicing Type"; enum lvngServicingType) { DataClassification = CustomerContent; }
+        field(1000; "Processing Schema Code"; code[20]) { DataClassification = CustomerContent; TableRelation = lvngLoanProcessingSchema.Code; }
+        field(1001; "Processing Schema Line No."; Integer) { DataClassification = CustomerContent; TableRelation = lvngLoanProcessingSchemaline."Line No." where("Processing Code" = field("Processing Schema Code")); }
+        field(1002; "Balancing Entry"; boolean) { DataClassification = CustomerContent; }
+        field(1003; "Tag Code"; Code[10]) { DataClassification = CustomerContent; }
     }
 
     keys
     {
-        key(PK; lvngTransactionType, lvngDocumentNo, lvngLineNo)
-        {
-            Clustered = true;
-        }
+        key(PK; "Transaction Type", "Document No.", "Line No.") { Clustered = true; }
     }
 
     var
@@ -193,14 +119,14 @@ table 14135115 "lvngLoanDocumentLine"
 
     procedure GenerateDimensionSetId()
     begin
-        DimensionManagement.ValidateShortcutDimValues(1, lvngGlobalDimension1Code, lvngDimensionSetID);
-        DimensionManagement.ValidateShortcutDimValues(2, lvngGlobalDimension2Code, lvngDimensionSetID);
-        DimensionManagement.ValidateShortcutDimValues(3, lvngShortcutDimension3Code, lvngDimensionSetID);
-        DimensionManagement.ValidateShortcutDimValues(4, lvngShortcutDimension4Code, lvngDimensionSetID);
-        DimensionManagement.ValidateShortcutDimValues(5, lvngShortcutDimension5Code, lvngDimensionSetID);
-        DimensionManagement.ValidateShortcutDimValues(6, lvngShortcutDimension6Code, lvngDimensionSetID);
-        DimensionManagement.ValidateShortcutDimValues(7, lvngShortcutDimension7Code, lvngDimensionSetID);
-        DimensionManagement.ValidateShortcutDimValues(8, lvngShortcutDimension8Code, lvngDimensionSetID);
+        DimensionManagement.ValidateShortcutDimValues(1, "Global Dimension 1 Code", "Dimension Set ID");
+        DimensionManagement.ValidateShortcutDimValues(2, "Global Dimension 2 Code", "Dimension Set ID");
+        DimensionManagement.ValidateShortcutDimValues(3, "Shortcut Dimension 3 Code", "Dimension Set ID");
+        DimensionManagement.ValidateShortcutDimValues(4, "Shortcut Dimension 4 Code", "Dimension Set ID");
+        DimensionManagement.ValidateShortcutDimValues(5, "Shortcut Dimension 5 Code", "Dimension Set ID");
+        DimensionManagement.ValidateShortcutDimValues(6, "Shortcut Dimension 6 Code", "Dimension Set ID");
+        DimensionManagement.ValidateShortcutDimValues(7, "Shortcut Dimension 7 Code", "Dimension Set ID");
+        DimensionManagement.ValidateShortcutDimValues(8, "Shortcut Dimension 8 Code", "Dimension Set ID");
     end;
 
 }

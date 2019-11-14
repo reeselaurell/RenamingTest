@@ -28,7 +28,7 @@ codeunit 14135119 "lvngServicingManagement"
         lvngLoanServicingSetup.TestField(lvngPrincipalRedReasonCode);
         lvngLoanServicingSetup.TestField(lvngPrincipalRedGLAccountNo);
         GLEntry.reset;
-        GLEntry.SetRange(lvngLoanNo, lvngLoan."Loan No.");
+        GLEntry.SetRange(lvngLoanNo, lvngLoan."No.");
         GLEntry.SetRange("Reason Code", lvngLoanServicingSetup.lvngPrincipalRedReasonCode);
         GLEntry.SetRange("G/L Account No.", lvngLoanServicingSetup.lvngPrincipalRedGLAccountNo);
         if GLEntry.FindSet() then begin
@@ -79,7 +79,7 @@ codeunit 14135119 "lvngServicingManagement"
         lvngEscrowFieldsMapping.reset;
         if lvngEscrowFieldsMapping.FindSet() then begin
             repeat
-                if lvngLoanValue.Get(lvngLoan."Loan No.", lvngEscrowFieldsMapping.lvngFieldNo) then begin
+                if lvngLoanValue.Get(lvngLoan."No.", lvngEscrowFieldsMapping.lvngFieldNo) then begin
                     lvngEscrowAmount := lvngEscrowAmount + lvngLoanValue."Decimal Value";
                 end;
             until lvngEscrowFieldsMapping.Next() = 0;
@@ -143,7 +143,7 @@ codeunit 14135119 "lvngServicingManagement"
         repeat
             lvngLoan.get(lvngServicingWorksheet.lvngLoanNo);
             if lvngLoan."Borrower Customer No" = '' then begin
-                Customer."No." := lvngLoan."Loan No.";
+                Customer."No." := lvngLoan."No.";
                 Customer.Name := copystr(lvngloan."Search Name", 1, MaxStrLen(Customer.Name));
                 Customer.CopyFromCustomerTemplate(CustomerTemplate);
                 Customer.Insert(true);
@@ -174,21 +174,21 @@ codeunit 14135119 "lvngServicingManagement"
                 lvngLineNo := 1000;
                 Clear(lvngLoanDocument);
                 lvngLoanDocument.Init();
-                lvngLoanDocument.validate(lvngTransactionType, lvngLoanDocument.lvngTransactionType::lvngServiced);
-                lvngLoanDocument.validate(lvngDocumentType, lvngLoanDocument.lvngDocumentType::lvngInvoice);
-                lvngLoanDocument.validate(lvngDocumentNo, NoSeriesManagement.DoGetNextNo(lvngLoanServicingSetup.lvngServicedNoSeries, TODAY, true, false));
-                lvngLoanDocument.validate(lvngCustomerNo, lvngServicingWorksheet.lvngCustomerNo);
-                lvngLoanDocument.validate(lvngLoanNo, lvngServicingWorksheet.lvngLoanNo);
-                lvngLoanDocument.validate(lvngPostingDate, lvngServicingWorksheet.lvngNextPaymentDate);
-                lvngLoanDocument.Validate(lvngReasonCode, lvngLoanServicingSetup.lvngServicedReasonCode);
+                lvngLoanDocument.validate("Transaction Type", lvngLoanDocument."Transaction Type"::lvngServiced);
+                lvngLoanDocument.validate("Document Type", lvngLoanDocument."Document Type"::lvngInvoice);
+                lvngLoanDocument.validate("Document No.", NoSeriesManagement.DoGetNextNo(lvngLoanServicingSetup.lvngServicedNoSeries, TODAY, true, false));
+                lvngLoanDocument.validate("Customer No.", lvngServicingWorksheet.lvngCustomerNo);
+                lvngLoanDocument.validate("Loan No.", lvngServicingWorksheet.lvngLoanNo);
+                lvngLoanDocument.validate("Posting Date", lvngServicingWorksheet.lvngNextPaymentDate);
+                lvngLoanDocument.Validate("Reason Code", lvngLoanServicingSetup.lvngServicedReasonCode);
                 lvngLoanDocument.Insert(true);
                 Clear(lvngLoanDocumentLine);
-                lvngLoanDocumentLine.validate(lvngTransactionType, lvngLoanDocument.lvngTransactionType);
-                lvngLoanDocumentLine.validate(lvngDocumentNo, lvngLoanDocument.lvngDocumentNo);
-                lvngLoanDocumentLine.Validate(lvngAccountType, lvngLoanDocumentLine.lvngAccountType::lvngGLAccount);
-                lvngLoanDocumentLine.lvngLineNo := lvngLineNo;
-                lvngLoanDocumentLine.lvngAmount := lvngServicingWorksheet.lvngInterestAmount;
-                lvngLoanDocumentLine.lvngServicingType := lvngLoanDocumentLine.lvngServicingType::lvngInterest;
+                lvngLoanDocumentLine.validate("Transaction Type", lvngLoanDocument."Transaction Type");
+                lvngLoanDocumentLine.validate("Document No.", lvngLoanDocument."Document No.");
+                lvngLoanDocumentLine.Validate("Account Type", lvngLoanDocumentLine."Account Type"::"G/L Account");
+                lvngLoanDocumentLine."Line No." := lvngLineNo;
+                lvngLoanDocumentLine.Amount := lvngServicingWorksheet.lvngInterestAmount;
+                lvngLoanDocumentLine."Servicing Type" := lvngLoanDocumentLine."Servicing Type"::lvngInterest;
                 lvngLoanDocumentLine.Insert(true);
                 lvngLineNo := lvngLineNo + 1000;
             end;

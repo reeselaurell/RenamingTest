@@ -5,55 +5,18 @@ table 14135106 "lvngLoanAddress"
 
     fields
     {
-        field(1; lvngLoanNo; Code[20])
-        {
-            Caption = 'Loan No.';
-            DataClassification = CustomerContent;
-            TableRelation = lvngLoan;
-        }
-        field(2; lvngAddressType; Enum lvngAddressType)
-        {
-            Caption = 'Address Type';
-            DataClassification = CustomerContent;
-        }
-        field(10; lvngAddress; Text[50])
-        {
-            Caption = 'Address';
-            DataClassification = CustomerContent;
-        }
-        field(11; lvngAddress2; Text[50])
-        {
-            Caption = 'Address 2';
-            DataClassification = CustomerContent;
-        }
-        field(12; lvngCity; Text[30])
-        {
-            Caption = 'City';
-            DataClassification = CustomerContent;
-
-        }
-        field(13; lvngState; Text[30])
-        {
-            Caption = 'State';
-            DataClassification = CustomerContent;
-        }
-
-        field(14; lvngZIPCode; Code[20])
-        {
-            Caption = 'ZIP Code';
-            DataClassification = CustomerContent;
-        }
-
-
-
+        field(1; "Loan No."; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngLoan; }
+        field(2; "Address Type"; Enum lvngAddressType) { DataClassification = CustomerContent; }
+        field(10; Address; Text[50]) { DataClassification = CustomerContent; }
+        field(11; "Address 2"; Text[50]) { DataClassification = CustomerContent; }
+        field(12; City; Text[30]) { DataClassification = CustomerContent; }
+        field(13; State; Text[30]) { DataClassification = CustomerContent; }
+        field(14; "ZIP Code"; Code[20]) { DataClassification = CustomerContent; }
     }
 
     keys
     {
-        key(PK; lvngLoanNo, lvngAddressType)
-        {
-            Clustered = true;
-        }
+        key(PK; "Loan No.", "Address Type") { Clustered = true; }
     }
 
 }

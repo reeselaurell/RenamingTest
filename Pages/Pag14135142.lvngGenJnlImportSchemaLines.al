@@ -10,27 +10,27 @@ page 14135142 "lvngGenJnlImportSchemaLines"
         {
             repeater(lvngRepeater)
             {
-                field(lvngColumnNo; lvngColumnNo)
+                field(lvngColumnNo; "Column No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngImportFieldType; lvngImportFieldType)
+                field(lvngImportFieldType; "Import Field Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescriptionSequence; lvngDescriptionSequence)
+                field(lvngDescriptionSequence; "Description Sequence")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDimensionSplit; lvngDimensionSplit)
+                field(lvngDimensionSplit; "Dimension Split")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDimensionSplitCharacter; lvngDimensionSplitCharacter)
+                field(lvngDimensionSplitCharacter; "Dimension Split Character")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngSplitDimensionNo; lvngSplitDimensionNo)
+                field(lvngSplitDimensionNo; "Split Dimension No.")
                 {
                     ApplicationArea = All;
                 }

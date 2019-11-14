@@ -6,112 +6,41 @@ table 14135112 "lvngPostProcessingSchemaLine"
 
     fields
     {
-        field(1; lvngJournalBatchCode; Code[20])
+        field(1; "Journal Batch Code"; Code[20]) { Caption = 'Loan Journal Batch Code'; DataClassification = CustomerContent; TableRelation = lvngLoanJournalBatch; NotBlank = true; }
+        field(2; "Line No."; Integer) { DataClassification = CustomerContent; AutoIncrement = true; }
+        field(10; Priority; Integer) { DataClassification = CustomerContent; }
+        field(11; Type; enum lvngPostProcessingType) { DataClassification = CustomerContent; }
+        field(12; Description; Text[50]) { DataClassification = CustomerContent; }
+        field(13; "Assign To"; Enum lvngPostProcessingAssignTo) { DataClassification = CustomerContent; }
+        field(14; "Rounding Expression"; Decimal) { DataClassification = CustomerContent; DecimalPlaces = 5 : 5; }
+        field(15; "From Field No."; Integer) { DataClassification = CustomerContent; }
+        field(16; "To Field No."; Integer) { DataClassification = CustomerContent; }
+        field(17; "Expression Code"; Code[20])
         {
-            Caption = 'Loan Journal Batch Code';
-            DataClassification = CustomerContent;
-            TableRelation = lvngLoanJournalBatch;
-            NotBlank = true;
-        }
-        field(2; lvngLineNo; Integer)
-        {
-            Caption = 'Line No.';
-            DataClassification = CustomerContent;
-            AutoIncrement = true;
-        }
-        field(10; lvngPriority; Integer)
-        {
-            Caption = 'Priority';
-            DataClassification = CustomerContent;
-        }
-        field(11; lvngType; enum lvngPostProcessingType)
-        {
-            Caption = 'Type';
-            DataClassification = CustomerContent;
-        }
-        field(12; lvngDescription; Text[50])
-        {
-            Caption = 'Description';
-            DataClassification = CustomerContent;
-        }
-
-        field(13; lvngAssignTo; Enum lvngPostProcessingAssignTo)
-        {
-            Caption = 'Assign To';
-            DataClassification = CustomerContent;
-        }
-
-        field(14; lvngRoundExpression; Decimal)
-        {
-            Caption = 'Rounding Expression';
-            DataClassification = CustomerContent;
-            DecimalPlaces = 5 : 5;
-        }
-        field(15; lvngFromFieldNo; Integer)
-        {
-            Caption = 'From Field No.';
             DataClassification = CustomerContent;
 
-        }
-        field(16; lvngToFieldNo; Integer)
-        {
-            Caption = 'To Field No.';
-            DataClassification = CustomerContent;
-        }
-
-        field(17; lvngExpressionCode; Code[20])
-        {
-            Caption = 'Expression Code';
-            DataClassification = CustomerContent;
             trigger OnLookup()
             var
-                lvngSelectedExpressionCode: Code[20];
+                ConditionsMgmt: Codeunit lvngConditionsMgmt;
+                ExpressionList: page lvngExpressionList;
+                SelectedExpressionCode: Code[20];
                 ExpressionType: Enum lvngExpressionType;
             begin
-                Clear(lvngExpressionList);
-                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(lvngConditionsMgmt.GetConditionsMgmtConsumerId(), lvngExpressionCode, 'JOURNAL', ExpressionType::Switch);
-                if lvngSelectedExpressionCode <> '' then
-                    lvngExpressionCode := lvngSelectedExpressionCode;
+                Clear(ExpressionList);
+                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), "Expression Code", 'JOURNAL', ExpressionType::Switch);
+                if SelectedExpressionCode <> '' then
+                    "Expression Code" := SelectedExpressionCode;
             end;
         }
-        field(18; lvngCustomValue; Text[250])
-        {
-            Caption = 'Custom Value';
-            DataClassification = CustomerContent;
-        }
-        field(19; lvngFromCharacterNo; Integer)
-        {
-            Caption = 'From Character No.';
-            DataClassification = CustomerContent;
-            MinValue = 1;
-        }
-        field(20; lvngCharactersCount; Integer)
-        {
-            Caption = 'Characters Count';
-            DataClassification = CustomerContent;
-        }
-        field(21; lvngCopyFieldPart; Boolean)
-        {
-            Caption = 'Copy Field Part';
-            DataClassification = CustomerContent;
-        }
-
+        field(18; "Custom Value"; Text[250]) { DataClassification = CustomerContent; }
+        field(19; "From Character No."; Integer) { DataClassification = CustomerContent; MinValue = 1; }
+        field(20; "Characters Count"; Integer) { DataClassification = CustomerContent; }
+        field(21; "Copy Field Part"; Boolean) { DataClassification = CustomerContent; }
     }
 
     keys
     {
-        key(PK; lvngJournalBatchCode, lvngLineNo)
-        {
-            Clustered = true;
-        }
-        key(lvngPriorityKey; lvngPriority)
-        {
-
-        }
+        key(PK; "Journal Batch Code", "Line No.") { Clustered = true; }
+        key(lvngPriorityKey; Priority) { }
     }
-
-    var
-        lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
-        lvngExpressionList: page lvngExpressionList;
-
 }

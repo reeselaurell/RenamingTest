@@ -198,7 +198,7 @@ page 14135246 lvngLoanValuesView
                     RowBuffer.ID := RowNo;
                     RowNo += 1;
                     Loan.Get(GLLoansPerPeriod.LoanNo);
-                    RowBuffer.Name := Loan."Loan No.";
+                    RowBuffer.Name := Loan."No.";
                     RowBuffer.Value := Format(GLLoansPerPeriod.PostingDate);
                     CalculateRowData(Loan);
                     RowBuffer.Insert();
@@ -225,7 +225,7 @@ page 14135246 lvngLoanValuesView
                     Clear(RowBuffer);
                     RowBuffer.ID := RowNo;
                     RowNo += 1;
-                    RowBuffer.Name := Loan."Loan No.";
+                    RowBuffer.Name := Loan."No.";
                     if BasedOn = BasedOn::lvngSold then
                         RowBuffer.Value := Format(Loan."Date Sold")
                     else
@@ -247,14 +247,14 @@ page 14135246 lvngLoanValuesView
         CalculatedValue: Text;
         CurrentTotal: Decimal;
     begin
-        if DefaultDimension.Get(Database::lvngLoan, Loan."Loan No.", LoanVisionSetup."Loan Officer Dimension Code") then
+        if DefaultDimension.Get(Database::lvngLoan, Loan."No.", LoanVisionSetup."Loan Officer Dimension Code") then
             if DimensionValue.Get(DefaultDimension."Dimension Code", DefaultDimension."Dimension Value Code") then
                 RowBuffer."Value Long" := DimensionValue.Name;
         TempGLEntry.Reset();
         TempGLEntry.DeleteAll();
         GLEntry.Reset();
         GLEntry.SetCurrentKey(lvngLoanNo);
-        GLEntry.SetRange(lvngLoanNo, Loan."Loan No.");
+        GLEntry.SetRange(lvngLoanNo, Loan."No.");
         if SystemFilter."Shortcut Dimension 1" <> '' then
             GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
         if SystemFilter."Shortcut Dimension 2" <> '' then
@@ -345,7 +345,7 @@ page 14135246 lvngLoanValuesView
                 end;
             LoanLevelReportSchemaLine.Type::lvngVariableField:
                 begin
-                    if LoanValue.Get(Loan."Loan No.", LoanLevelReportSchemaLine."Value Field No.") then begin
+                    if LoanValue.Get(Loan."No.", LoanLevelReportSchemaLine."Value Field No.") then begin
                         LoanFieldsConfiguration.Get(LoanValue."Field No.");
                         case LoanFieldsConfiguration."Value Type" of
                             LoanFieldsConfiguration."Value Type"::lvngBoolean:

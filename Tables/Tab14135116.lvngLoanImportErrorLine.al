@@ -5,37 +5,15 @@ table 14135116 lvngLoanImportErrorLine
 
     fields
     {
-        field(1; lvngLoanJournalBatchCode; Code[20])
-        {
-            Caption = 'Batch Code';
-            DataClassification = CustomerContent;
-            TableRelation = lvngLoanJournalBatch;
-        }
-        field(2; lvngLineNo; Integer)
-        {
-            Caption = 'Line No.';
-            DataClassification = CustomerContent;
-            TableRelation = lvngLoanJournalLine.lvngLineNo where (lvngLoanJournalBatchCode = field (lvngLoanJournalBatchCode));
-        }
-        field(3; lvngErrorLineNo; Integer)
-        {
-            Caption = 'Error Line No.';
-            DataClassification = CustomerContent;
-        }
-        field(10; lvngDescription; text[250])
-        {
-            Caption = 'Description';
-            DataClassification = CustomerContent;
-        }
-
+        field(1; "Loan Journal Batch Code"; Code[20]) { Caption = 'Batch Code'; DataClassification = CustomerContent; TableRelation = lvngLoanJournalBatch; }
+        field(2; "Line No."; Integer) { DataClassification = CustomerContent; TableRelation = lvngLoanJournalLine."Line No." where("Loan Journal Batch Code" = field("Loan Journal Batch Code")); }
+        field(3; "Error Line No."; Integer) { DataClassification = CustomerContent; }
+        field(10; Description; text[250]) { DataClassification = CustomerContent; }
     }
 
     keys
     {
-        key(PK; lvngLoanJournalBatchCode, lvngLineNo, lvngErrorLineNo)
-        {
-            Clustered = true;
-        }
+        key(PK; "Loan Journal Batch Code", "Line No.", "Error Line No.") { Clustered = true; }
     }
 
 }

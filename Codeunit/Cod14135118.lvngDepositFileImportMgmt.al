@@ -75,13 +75,13 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
     procedure ManualFileImport(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError): Boolean
     begin
         lvngFileImportSchema.reset;
-        lvngFileImportSchema.SetRange(lvngFileImportType, lvngFileImportSchema.lvngFileImportType::lvngDepositLines);
+        lvngFileImportSchema.SetRange("File Import Type", lvngFileImportSchema."File Import Type"::lvngDepositLines);
         if page.RunModal(0, lvngFileImportSchema) = Action::LookupOK then begin
             lvngGenJnlImportBuffer.reset;
             lvngGenJnlImportBuffer.DeleteAll();
-            lvngFileImportSchema.Get(lvngFileImportSchema.lvngCode);
+            lvngFileImportSchema.Get(lvngFileImportSchema.Code);
             lvngFileImportJnlLine.Reset();
-            lvngFileImportJnlLine.SetRange(lvngCode, lvngFileImportSchema.lvngCode);
+            lvngFileImportJnlLine.SetRange(Code, lvngFileImportSchema.Code);
             lvngFileImportJnlLine.FindSet();
             repeat
                 Clear(lvngFileImportJnlLineTemp);
@@ -101,13 +101,13 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
         TabChar: Char;
     begin
         TabChar := 9;
-        if lvngFileImportSchema.lvngFieldSeparator = '<TAB>' then
-            lvngFileImportSchema.lvngFieldSeparator := Format(TabChar);
+        if lvngFileImportSchema."Field Separator" = '<TAB>' then
+            lvngFileImportSchema."Field Separator" := Format(TabChar);
         lvngImportToStream := UploadIntoStream(lvngOpenFileLabel, '', '', lvngFileName, lvngImportStream);
         if lvngImportToStream then begin
-            CSVBufferTemp.LoadDataFromStream(lvngImportStream, lvngFileImportSchema.lvngFieldSeparator);
+            CSVBufferTemp.LoadDataFromStream(lvngImportStream, lvngFileImportSchema."Field Separator");
             CSVBufferTemp.ResetFilters();
-            CSVBufferTemp.SetRange("Line No.", 0, lvngFileImportSchema.lvngSkipRows);
+            CSVBufferTemp.SetRange("Line No.", 0, lvngFileImportSchema."Skip Rows");
             CSVBufferTemp.DeleteAll();
         end else begin
             Error(lvngErrorReadingToStreamLabel);
@@ -134,24 +134,24 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
             lvngGenJnlImportBuffer.lvngLineNo := lvngStartLine;
             lvngGenJnlImportBuffer.Insert(true);
             lvngFileImportJnlLineTemp.reset;
-            lvngFileImportJnlLineTemp.SetRange(lvngCode, lvngFileImportSchema.lvngCode);
-            lvngFileImportJnlLineTemp.SetFilter(lvngDepositImportFieldType, '<>%1', lvngFileImportJnlLine.lvngDepositImportFieldType::lvngDummy);
+            lvngFileImportJnlLineTemp.SetRange(Code, lvngFileImportSchema.Code);
+            lvngFileImportJnlLineTemp.SetFilter("Deposit Import Field Type", '<>%1', lvngFileImportJnlLine."Deposit Import Field Type"::lvngDummy);
             lvngFileImportJnlLineTemp.FindSet();
             repeat
-                lvngValue := CSVBufferTemp.GetValue(lvngStartLine, lvngFileImportJnlLineTemp.lvngColumnNo);
+                lvngValue := CSVBufferTemp.GetValue(lvngStartLine, lvngFileImportJnlLineTemp."Column No.");
                 if lvngValue <> '' then begin
-                    case lvngFileImportJnlLineTemp.lvngDepositImportFieldType of
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngAccountNo:
+                    case lvngFileImportJnlLineTemp."Deposit Import Field Type" of
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngAccountNo:
                             begin
                                 lvngGenJnlImportBuffer.lvngAccountValue := copystr(lvngValue, 1, maxstrlen(lvngGenJnlImportBuffer.lvngAccountValue));
-                                if lvngFileImportJnlLineTemp.lvngDimensionSplit then begin
-                                    IF lvngFileImportJnlLineTemp.lvngDimensionSplitCharacter <> '' THEN BEGIN
-                                        Pos := STRPOS(lvngValue, lvngFileImportJnlLineTemp.lvngDimensionSplitCharacter);
+                                if lvngFileImportJnlLineTemp."Dimension Split" then begin
+                                    IF lvngFileImportJnlLineTemp."Dimension Split Character" <> '' THEN BEGIN
+                                        Pos := STRPOS(lvngValue, lvngFileImportJnlLineTemp."Dimension Split Character");
                                         IF Pos <> 0 THEN BEGIN
                                             lvngValue2 := COPYSTR(lvngValue, Pos + 1);
                                             lvngValue := COPYSTR(lvngValue, 1, Pos - 1);
                                             lvngGenJnlImportBuffer.lvngAccountValue := copystr(lvngValue, 1, maxstrlen(lvngGenJnlImportBuffer.lvngAccountValue));
-                                            case lvngFileImportJnlLineTemp.lvngSplitDimensionNo of
+                                            case lvngFileImportJnlLineTemp."Split Dimension No." of
                                                 1:
                                                     lvngGenJnlImportBuffer.lvngGlobalDimension1Value := lvngValue2;
                                                 2:
@@ -173,83 +173,83 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
                                     END;
                                 end;
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngAccountType:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngAccountType:
                             begin
                                 evaluate(lvngGenJnlImportBuffer.lvngAccountType, lvngValue);
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngAmount:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngAmount:
                             begin
                                 Evaluate(lvngGenJnlImportBuffer.lvngAmount, lvngValue);
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngAppliesToDocNo:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngAppliesToDocNo:
                             begin
                                 lvngGenJnlImportBuffer.lvngAppliesToDocNo := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngAppliesToDocNo));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngAppliesToDocType:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngAppliesToDocType:
                             begin
                                 Evaluate(lvngGenJnlImportBuffer.lvngAppliesToDocType, lvngValue);
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngBusinessUnitCode:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngBusinessUnitCode:
                             begin
                                 lvngGenJnlImportBuffer.lvngBusinessUnitCode := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngBusinessUnitCode));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDescription:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDescription:
                             begin
                                 lvngGenJnlImportBuffer.lvngDescription := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngDescription));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension1Code:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension1Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngGlobalDimension1Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngGlobalDimension1Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension2Code:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension2Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngGlobalDimension2Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngGlobalDimension2Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension3Code:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension3Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension3Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension3Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension4Code:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension4Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension4Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension4Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension5Code:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension5Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension5Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension5Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension6Code:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension6Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension6Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension6Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension7Code:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension7Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension7Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension7Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension8Code:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension8Code:
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension8Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension8Value));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDocumentDate:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDocumentDate:
                             begin
                                 evaluate(lvngGenJnlImportBuffer.lvngDocumentDate, lvngValue);
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDocumentNo:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDocumentNo:
                             begin
                                 lvngGenJnlImportBuffer.lvngDocumentNo := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngDocumentNo));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDocumentType:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDocumentType:
                             begin
                                 evaluate(lvngGenJnlImportBuffer.lvngDocumentType, lvngValue);
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngLoanNo:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngLoanNo:
                             begin
                                 lvngGenJnlImportBuffer.lvngLoanNo := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngLoanNo));
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngPostingDate:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngPostingDate:
                             begin
                                 evaluate(lvngGenJnlImportBuffer.lvngPostingDate, lvngValue);
                             end;
-                        lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngReasonCode:
+                        lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngReasonCode:
                             begin
                                 lvngGenJnlImportBuffer.lvngReasonCode := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngReasonCode));
                             end;
@@ -284,15 +284,15 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
         if lvngGenJnlImportBuffer.FindSet() then begin
             repeat
                 //Amount
-                if lvngFileImportSchema.lvngReverseAmountSign then begin
+                if lvngFileImportSchema."Reverse Amount Sign" then begin
                     lvngGenJnlImportBuffer.lvngAmount := -lvngGenJnlImportBuffer.lvngAmount;
                 end;
                 //Document Type
-                if lvngFileImportSchema.lvngDocumentTypeOption = lvngFileImportSchema.lvngDocumentTypeOption::lvngPredefined then begin
-                    if lvngFileImportSchema.lvngDepositDocumentType = lvngFileImportSchema.lvngDepositDocumentType::Payment then
-                        lvngGenJnlImportBuffer.lvngDocumentType := lvngFileImportSchema.lvngDocumentType::Payment;
-                    if lvngFileImportSchema.lvngDepositDocumentType = lvngFileImportSchema.lvngDepositDocumentType::Refund then
-                        lvngGenJnlImportBuffer.lvngDocumentType := lvngFileImportSchema.lvngDocumentType::Refund;
+                if lvngFileImportSchema."Document Type Option" = lvngFileImportSchema."Document Type Option"::lvngPredefined then begin
+                    if lvngFileImportSchema."Deposit Document Type" = lvngFileImportSchema."Deposit Document Type"::Payment then
+                        lvngGenJnlImportBuffer.lvngDocumentType := lvngFileImportSchema."Document Type"::Payment;
+                    if lvngFileImportSchema."Deposit Document Type" = lvngFileImportSchema."Deposit Document Type"::Refund then
+                        lvngGenJnlImportBuffer.lvngDocumentType := lvngFileImportSchema."Document Type"::Refund;
                 end;
 
                 //Posting Date
@@ -304,14 +304,14 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
 
                 //Account Type and Account No.
                 FindAccountNo(lvngGenJnlImportBuffer.lvngAccountType, lvngGenJnlImportBuffer.lvngAccountValue, lvngGenJnlImportBuffer.lvngAccountNo);
-                if lvngFileImportSchema.lvngDefaultAccountNo <> '' then begin
-                    lvngGenJnlImportBuffer.lvngAccountType := lvngFileImportSchema.lvngGenJnlAccountType;
-                    lvngGenJnlImportBuffer.lvngAccountNo := lvngFileImportSchema.lvngDefaultAccountNo;
+                if lvngFileImportSchema."Default Account No." <> '' then begin
+                    lvngGenJnlImportBuffer.lvngAccountType := lvngFileImportSchema."Gen. Jnl. Account Type";
+                    lvngGenJnlImportBuffer.lvngAccountNo := lvngFileImportSchema."Default Account No.";
                 end;
                 if lvngGenJnlImportBuffer.lvngAccountNo = '' then begin
                     AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, StrSubstNo(lvngAccountNoBlankOrMissingLbl, lvngGenJnlImportBuffer.lvngAccountType, lvngGenJnlImportBuffer.lvngAccountValue));
                 end else begin
-                    if lvngFileImportSchema.lvngSubsGLWithBankAcc then begin
+                    if lvngFileImportSchema."Subs. G/L With Bank Acc." then begin
                         if GLAccount.Get(lvngGenJnlImportBuffer.lvngAccountNo) then begin
                             lvngGenJnlImportBuffer.lvngAccountType := lvngGenJnlImportBuffer.lvngAccountType::"Bank Account";
                             lvngGenJnlImportBuffer.lvngAccountNo := GLAccount.lvngLinkedBankAccountNo;
@@ -326,13 +326,13 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
                         AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, StrSubstNo(lvngLoanNoNotFoundLbl, lvngGenJnlImportBuffer.lvngLoanNo));
                     end;
                     if lvngGenJnlImportBuffer.lvngLoanNo <> '' then begin
-                        if lvngFileImportSchema.lvngDimensionValidationRule = lvngFileImportSchema.lvngDimensionValidationRule::lvngAllLoanDimensions then begin
+                        if lvngFileImportSchema."Dimension Validation Rule" = lvngFileImportSchema."Dimension Validation Rule"::lvngAllLoanDimensions then begin
                             AssignLoanDimensions(lvngGenJnlImportBuffer);
                         end;
-                        if lvngFileImportSchema.lvngDimensionValidationRule = lvngFileImportSchema.lvngDimensionValidationRule::lvngEmptyDimensions then begin
+                        if lvngFileImportSchema."Dimension Validation Rule" = lvngFileImportSchema."Dimension Validation Rule"::lvngEmptyDimensions then begin
                             AssignEmptyLoanDimensions(lvngGenJnlImportBuffer);
                         end;
-                        if lvngFileImportSchema.lvngDimensionValidationRule = lvngFileImportSchema.lvngDimensionValidationRule::lvngLoanAndExcludeImportedDimensions then begin
+                        if lvngFileImportSchema."Dimension Validation Rule" = lvngFileImportSchema."Dimension Validation Rule"::lvngLoanAndExcludeImportedDimensions then begin
                             AssignNotImportedLoanDimensions(lvngGenJnlImportBuffer);
                         end;
                     end;
@@ -340,19 +340,19 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
 
                 //Dimensions
                 AssignDimensions(lvngGenJnlImportBuffer);
-                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension1Mandatory, 1, lvngGenJnlImportBuffer.lvngGlobalDimension1Code, lvngImportBufferError);
-                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension2Mandatory, 2, lvngGenJnlImportBuffer.lvngGlobalDimension2Code, lvngImportBufferError);
-                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension3Mandatory, 3, lvngGenJnlImportBuffer.lvngShortcutDimension3Code, lvngImportBufferError);
-                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension4Mandatory, 4, lvngGenJnlImportBuffer.lvngShortcutDimension4Code, lvngImportBufferError);
-                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension5Mandatory, 5, lvngGenJnlImportBuffer.lvngShortcutDimension5Code, lvngImportBufferError);
-                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension6Mandatory, 6, lvngGenJnlImportBuffer.lvngShortcutDimension6Code, lvngImportBufferError);
-                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension7Mandatory, 7, lvngGenJnlImportBuffer.lvngShortcutDimension7Code, lvngImportBufferError);
-                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema.lvngDimension8Mandatory, 8, lvngGenJnlImportBuffer.lvngShortcutDimension8Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema."Dimension 1 Mandatory", 1, lvngGenJnlImportBuffer.lvngGlobalDimension1Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema."Dimension 2 Mandatory", 2, lvngGenJnlImportBuffer.lvngGlobalDimension2Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema."Dimension 3 Mandatory", 3, lvngGenJnlImportBuffer.lvngShortcutDimension3Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema."Dimension 4 Mandatory", 4, lvngGenJnlImportBuffer.lvngShortcutDimension4Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema."Dimension 5 Mandatory", 5, lvngGenJnlImportBuffer.lvngShortcutDimension5Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema."Dimension 6 Mandatory", 6, lvngGenJnlImportBuffer.lvngShortcutDimension6Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema."Dimension 7 Mandatory", 7, lvngGenJnlImportBuffer.lvngShortcutDimension7Code, lvngImportBufferError);
+                ValidateDimension(lvngGenJnlImportBuffer.lvngLineNo, lvngFileImportSchema."Dimension 8 Mandatory", 8, lvngGenJnlImportBuffer.lvngShortcutDimension8Code, lvngImportBufferError);
 
 
                 //Reason Code
                 if lvngGenJnlImportBuffer.lvngReasonCode = '' then begin
-                    lvngGenJnlImportBuffer.lvngReasonCode := lvngFileImportSchema.lvngReasonCode;
+                    lvngGenJnlImportBuffer.lvngReasonCode := lvngFileImportSchema."Reason Code";
                 end;
                 if lvngGenJnlImportBuffer.lvngReasonCode <> '' then begin
                     if not CheckReasonCode(lvngGenJnlImportBuffer) then begin
@@ -361,24 +361,24 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
                 end;
 
                 //Document No.
-                if lvngFileImportSchema.lvngDocumentNoFilling = lvngFileImportSchema.lvngDocumentNoFilling::lvngSamesAsLoanNo then begin
+                if lvngFileImportSchema."Document No. Filling" = lvngFileImportSchema."Document No. Filling"::lvngSamesAsLoanNo then begin
                     lvngGenJnlImportBuffer.lvngDocumentNo := lvngGenJnlImportBuffer.lvngLoanNo;
                 end;
 
-                if lvngFileImportSchema.lvngDocumentNoFilling = lvngFileImportSchema.lvngDocumentNoFilling::lvngDefinedInFile then begin
+                if lvngFileImportSchema."Document No. Filling" = lvngFileImportSchema."Document No. Filling"::lvngDefinedInFile then begin
                     if lvngGenJnlImportBuffer.lvngDocumentNo <> '' then begin
-                        if lvngFileImportSchema.lvngDocumentNoPrefix <> '' then begin
-                            lvngGenJnlImportBuffer.lvngDocumentNo := lvngFileImportSchema.lvngDocumentNoPrefix + lvngGenJnlImportBuffer.lvngDocumentNo;
+                        if lvngFileImportSchema."Document No. Prefix" <> '' then begin
+                            lvngGenJnlImportBuffer.lvngDocumentNo := lvngFileImportSchema."Document No. Prefix" + lvngGenJnlImportBuffer.lvngDocumentNo;
                         end;
                     end;
                 end;
 
-                if lvngFileImportSchema.lvngDocumentNoFilling = lvngFileImportSchema.lvngDocumentNoFilling::lvngFromSchemaNoSeries then begin
-                    if lvngFileImportSchema.lvngUseSingleDocumentNo then begin
+                if lvngFileImportSchema."Document No. Filling" = lvngFileImportSchema."Document No. Filling"::lvngFromSchemaNoSeries then begin
+                    if lvngFileImportSchema."Use Single Document No." then begin
                         if DocumentNo = '' then
-                            DocumentNo := NoSeriesMgmt.GetNextNo(lvngFileImportSchema.lvngDocumentNoSeries, today, true);
+                            DocumentNo := NoSeriesMgmt.GetNextNo(lvngFileImportSchema."Document No. Series", today, true);
                     end else begin
-                        DocumentNo := NoSeriesMgmt.GetNextNo(lvngFileImportSchema.lvngDocumentNoSeries, today, true);
+                        DocumentNo := NoSeriesMgmt.GetNextNo(lvngFileImportSchema."Document No. Series", today, true);
                     end;
                     lvngGenJnlImportBuffer.lvngDocumentNo := DocumentNo;
                 end;
@@ -420,14 +420,14 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
         lvngDimensionHierarchy: Record lvngDimensionHierarchy;
         DimensionCode: Code[20];
     begin
-        SearchDimension(1, lvngFileImportSchema.lvngDimension1MappingType, lvngGenJnlImportBuffer.lvngGlobalDimension1Value, lvngGenJnlImportBuffer.lvngGlobalDimension1Code);
-        SearchDimension(2, lvngFileImportSchema.lvngDimension2MappingType, lvngGenJnlImportBuffer.lvngGlobalDimension2Value, lvngGenJnlImportBuffer.lvngGlobalDimension2Code);
-        SearchDimension(3, lvngFileImportSchema.lvngDimension3MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension3Value, lvngGenJnlImportBuffer.lvngShortcutDimension3Code);
-        SearchDimension(4, lvngFileImportSchema.lvngDimension4MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension4Value, lvngGenJnlImportBuffer.lvngShortcutDimension4Code);
-        SearchDimension(5, lvngFileImportSchema.lvngDimension5MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension5Value, lvngGenJnlImportBuffer.lvngShortcutDimension5Code);
-        SearchDimension(6, lvngFileImportSchema.lvngDimension6MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension6Value, lvngGenJnlImportBuffer.lvngShortcutDimension6Code);
-        SearchDimension(7, lvngFileImportSchema.lvngDimension7MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension7Value, lvngGenJnlImportBuffer.lvngShortcutDimension7Code);
-        SearchDimension(8, lvngFileImportSchema.lvngDimension8MappingType, lvngGenJnlImportBuffer.lvngShortcutDimension8Value, lvngGenJnlImportBuffer.lvngShortcutDimension8Code);
+        SearchDimension(1, lvngFileImportSchema."Dimension 1 Mapping Type", lvngGenJnlImportBuffer.lvngGlobalDimension1Value, lvngGenJnlImportBuffer.lvngGlobalDimension1Code);
+        SearchDimension(2, lvngFileImportSchema."Dimension 2 Mapping Type", lvngGenJnlImportBuffer.lvngGlobalDimension2Value, lvngGenJnlImportBuffer.lvngGlobalDimension2Code);
+        SearchDimension(3, lvngFileImportSchema."Dimension 3 Mapping Type", lvngGenJnlImportBuffer.lvngShortcutDimension3Value, lvngGenJnlImportBuffer.lvngShortcutDimension3Code);
+        SearchDimension(4, lvngFileImportSchema."Dimension 4 Mapping Type", lvngGenJnlImportBuffer.lvngShortcutDimension4Value, lvngGenJnlImportBuffer.lvngShortcutDimension4Code);
+        SearchDimension(5, lvngFileImportSchema."Dimension 5 Mapping Type", lvngGenJnlImportBuffer.lvngShortcutDimension5Value, lvngGenJnlImportBuffer.lvngShortcutDimension5Code);
+        SearchDimension(6, lvngFileImportSchema."Dimension 6 Mapping Type", lvngGenJnlImportBuffer.lvngShortcutDimension6Value, lvngGenJnlImportBuffer.lvngShortcutDimension6Code);
+        SearchDimension(7, lvngFileImportSchema."Dimension 7 Mapping Type", lvngGenJnlImportBuffer.lvngShortcutDimension7Value, lvngGenJnlImportBuffer.lvngShortcutDimension7Code);
+        SearchDimension(8, lvngFileImportSchema."Dimension 8 Mapping Type", lvngGenJnlImportBuffer.lvngShortcutDimension8Value, lvngGenJnlImportBuffer.lvngShortcutDimension8Code);
         case MainDimensionNo of
             1:
                 DimensionCode := lvngGenJnlImportBuffer.lvngGlobalDimension1Code;
@@ -440,19 +440,19 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
         end;
         lvngDimensionHierarchy.reset;
         lvngDimensionHierarchy.Ascending(false);
-        lvngDimensionHierarchy.SetFilter(lvngDate, '..%1', lvngGenJnlImportBuffer.lvngPostingDate);
-        lvngDimensionHierarchy.SetRange(lvngCode, DimensionCode);
+        lvngDimensionHierarchy.SetFilter(Date, '..%1', lvngGenJnlImportBuffer.lvngPostingDate);
+        lvngDimensionHierarchy.SetRange(Code, DimensionCode);
         if lvngDimensionHierarchy.FindFirst() then begin
             if HierarchyDimensionsUsage[1] then
-                lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngDimensionHierarchy.lvngGlobalDimension1Code;
+                lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngDimensionHierarchy."Global Dimension 1 Code";
             if HierarchyDimensionsUsage[2] then
-                lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngDimensionHierarchy.lvngGlobalDimension2Code;
+                lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngDimensionHierarchy."Global Dimension 2 Code";
             if HierarchyDimensionsUsage[3] then
-                lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngDimensionHierarchy.lvngShortcutDimension3Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngDimensionHierarchy."Shortcut Dimension 3 Code";
             if HierarchyDimensionsUsage[4] then
-                lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngDimensionHierarchy.lvngShortcutDimension4Code;
+                lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngDimensionHierarchy."Shortcut Dimension 4 Code";
             if HierarchyDimensionsUsage[5] then
-                lvngGenJnlImportBuffer.lvngBusinessUnitCode := lvngDimensionHierarchy.lvngBusinessUnitCode;
+                lvngGenJnlImportBuffer.lvngBusinessUnitCode := lvngDimensionHierarchy."Business Unit Code";
         end;
     end;
 
@@ -544,35 +544,35 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
     begin
         if lvngLoan.Get(lvngGenJnlImportBuffer.lvngLoanNo) then begin
             lvngFileImportJnlLineTemp.reset;
-            lvngFileImportJnlLineTemp.SetRange(lvngDepositImportFieldType, lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension1Code);
+            lvngFileImportJnlLineTemp.SetRange("Deposit Import Field Type", lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension1Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngLoan."Global Dimension 1 Code";
 
-            lvngFileImportJnlLineTemp.SetRange(lvngDepositImportFieldType, lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension2Code);
+            lvngFileImportJnlLineTemp.SetRange("Deposit Import Field Type", lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension2Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngLoan."Global Dimension 2 Code";
 
-            lvngFileImportJnlLineTemp.SetRange(lvngDepositImportFieldType, lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension3Code);
+            lvngFileImportJnlLineTemp.SetRange("Deposit Import Field Type", lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension3Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngLoan."Shortcut Dimension 3 Code";
 
-            lvngFileImportJnlLineTemp.SetRange(lvngDepositImportFieldType, lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension4Code);
+            lvngFileImportJnlLineTemp.SetRange("Deposit Import Field Type", lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension4Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngLoan."Shortcut Dimension 4 Code";
 
-            lvngFileImportJnlLineTemp.SetRange(lvngDepositImportFieldType, lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension5Code);
+            lvngFileImportJnlLineTemp.SetRange("Deposit Import Field Type", lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension5Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension5Code := lvngLoan."Shortcut Dimension 5 Code";
 
-            lvngFileImportJnlLineTemp.SetRange(lvngDepositImportFieldType, lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension6Code);
+            lvngFileImportJnlLineTemp.SetRange("Deposit Import Field Type", lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension6Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension6Code := lvngLoan."Shortcut Dimension 6 Code";
 
-            lvngFileImportJnlLineTemp.SetRange(lvngDepositImportFieldType, lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension7Code);
+            lvngFileImportJnlLineTemp.SetRange("Deposit Import Field Type", lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension7Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension7Code := lvngLoan."Shortcut Dimension 7 Code";
 
-            lvngFileImportJnlLineTemp.SetRange(lvngDepositImportFieldType, lvngFileImportJnlLineTemp.lvngDepositImportFieldType::lvngDimension8Code);
+            lvngFileImportJnlLineTemp.SetRange("Deposit Import Field Type", lvngFileImportJnlLineTemp."Deposit Import Field Type"::lvngDimension8Code);
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension8Code := lvngLoan."Shortcut Dimension 8 Code";
         end;
@@ -582,15 +582,15 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
     var
         lvngLoan: Record lvngLoan;
     begin
-        case lvngFileImportSchema.lvngLoanNoValidationRule of
-            lvngFileImportSchema.lvngLoanNoValidationRule::lvngBlankIfNotFound:
+        case lvngFileImportSchema."Loan No. Validation Rule" of
+            lvngFileImportSchema."Loan No. Validation Rule"::lvngBlankIfNotFound:
                 begin
                     if not lvngLoan.Get(lvngLoanNo) then begin
                         Clear(lvngLoanNo);
                         exit(true);
                     end;
                 end;
-            lvngFileImportSchema.lvngLoanNoValidationRule::lvngValidate:
+            lvngFileImportSchema."Loan No. Validation Rule"::lvngValidate:
                 begin
                     if not lvngloan.Get(lvngLoanNo) then
                         exit(false);
@@ -609,8 +609,8 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
         ICPartner: Record "IC Partner";
     begin
         //Account Type and Account No.
-        case lvngFileImportSchema.lvngAccountMappingType of
-            lvngFileImportSchema.lvngAccountMappingType::lvngName:
+        case lvngFileImportSchema."Account Mapping Type" of
+            lvngFileImportSchema."Account Mapping Type"::lvngName:
                 begin
                     case lvngGenJnlAccountType of
                         lvngGenJnlAccountType::"G/L Account":
@@ -664,7 +664,7 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
                             end;
                     end;
                 end;
-            lvngFileImportSchema.lvngAccountMappingType::lvngNo:
+            lvngFileImportSchema."Account Mapping Type"::lvngNo:
                 begin
                     case lvngGenJnlAccountType of
                         lvngGenJnlAccountType::"G/L Account":
@@ -718,7 +718,7 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
                             end;
                     end;
                 end;
-            lvngFileImportSchema.lvngAccountMappingType::lvngNo2:
+            lvngFileImportSchema."Account Mapping Type"::lvngNo2:
                 begin
                     case lvngGenJnlAccountType of
                         lvngGenJnlAccountType::"G/L Account":
@@ -732,7 +732,7 @@ codeunit 14135118 "lvngDepositFileImportMgmt"
                             end;
                     end;
                 end;
-            lvngFileImportSchema.lvngAccountMappingType::lvngSearchName:
+            lvngFileImportSchema."Account Mapping Type"::lvngSearchName:
                 begin
                     case lvngGenJnlAccountType of
                         lvngGenJnlAccountType::"G/L Account":

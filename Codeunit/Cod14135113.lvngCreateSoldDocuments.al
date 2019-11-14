@@ -18,7 +18,7 @@ codeunit 14135113 "lvngCreateSoldDocuments"
         lvngValidateSoldJournal.ValidateSoldLines(lvngLoanJournalBatchCode);
         lvngLoanManagement.UpdateLoans(lvngLoanJournalBatchCode);
         lvngLoanJournalLine.reset;
-        lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode);
+        lvngLoanJournalLine.SetRange("Loan Journal Batch Code");
         lvngTotalEntries := lvngLoanJournalLine.Count();
         if lvngLoanJournalLine.FindSet() then begin
             repeat
@@ -69,46 +69,46 @@ codeunit 14135113 "lvngCreateSoldDocuments"
     begin
         GetLoanVisionSetup();
         if lvngLoanVisionSetup."Sold Void Reason Code" <> '' then begin
-            if (lvngLoanVisionSetup."Sold Void Reason Code" = lvngLoanJournalLine.lvngReasonCode) then begin
+            if (lvngLoanVisionSetup."Sold Void Reason Code" = lvngLoanJournalLine."Reason Code") then begin
                 lvngLoanVisionSetup.TestField("Void Sold No. Series");
                 lvngLoanSoldDocument.reset;
-                lvngLoanSoldDocument.SetRange(lvngLoanNo, lvngLoanJournalLine.lvngLoanNo);
-                lvngLoanSoldDocument.SetRange(lvngVoid, false);
+                lvngLoanSoldDocument.SetRange("Loan No.", lvngLoanJournalLine."Loan No.");
+                lvngLoanSoldDocument.SetRange(Void, false);
                 lvngLoanSoldDocument.FindLast();
                 Clear(lvngLoanDocument);
                 lvngLoanDocument.init;
                 lvngLoanDocument.TransferFields(lvngLoanSoldDocument);
-                lvngLoanDocument.lvngTransactionType := lvngLoanDocument.lvngTransactionType::lvngSold;
+                lvngLoanDocument."Transaction Type" := lvngLoanDocument."Transaction Type"::lvngSold;
                 if not lvngPreview then begin
-                    lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup."Void Sold No. Series", TODAY, true, false);
+                    lvngLoanDocument."Document No." := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup."Void Sold No. Series", TODAY, true, false);
                 end else begin
-                    lvngLoanDocument.lvngDocumentNo := TempDocumentLbl;
+                    lvngLoanDocument."Document No." := TempDocumentLbl;
                 end;
-                if lvngLoanDocument.lvngDocumentType = lvngLoanDocument.lvngDocumentType::lvngCreditMemo then
-                    lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice else
-                    lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
+                if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::lvngCreditMemo then
+                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice else
+                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
 
-                lvngLoanDocument.lvngVoid := true;
-                lvngLoanDocument.lvngVoidDocumentNo := lvngLoanSoldDocument.lvngDocumentNo;
-                lvngLoanDocument.lvngWarehouseLineCode := lvngLoanSoldDocument.lvngWarehouseLineCode;
+                lvngLoanDocument.Void := true;
+                lvngLoanDocument."Void Document No." := lvngLoanSoldDocument."Document No.";
+                lvngLoanDocument."Warehouse Line Code" := lvngLoanSoldDocument."Warehouse Line Code";
                 lvngLoanDocument.Insert();
                 lvngLoanSoldDocumentLine.reset;
-                lvngLoanSoldDocumentLine.SetRange(lvngDocumentNo, lvngLoanSoldDocument.lvngDocumentNo);
+                lvngLoanSoldDocumentLine.SetRange("Document No.", lvngLoanSoldDocument."Document No.");
                 lvngLoanSoldDocumentLine.FindSet();
                 repeat
                     Clear(lvngLoanDocumentLine);
                     lvngLoanDocumentLine.TransferFields(lvngLoanSoldDocumentLine);
-                    lvngLoanDocumentLine.lvngTransactionType := lvngLoanDocument.lvngTransactionType;
-                    lvngLoanDocumentLine.lvngDocumentNo := lvngLoanDocument.lvngDocumentNo;
-                    lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
+                    lvngLoanDocumentLine."Transaction Type" := lvngLoanDocument."Transaction Type";
+                    lvngLoanDocumentLine."Document No." := lvngLoanDocument."Document No.";
+                    lvngLoanDocumentLine.Amount := -lvngLoanDocumentLine.Amount;
                     lvngLoanDocumentLine.Insert();
                 until lvngLoanSoldDocumentLine.Next() = 0;
                 exit;
             end;
         end;
-        lvngLoanJournalLine.TestField(lvngProcessingSchemaCode);
-        lvngLoanProcessingSchema.Get(lvngLoanJournalLine.lvngProcessingSchemaCode);
-        lvngLoanJournalBatch.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode);
+        lvngLoanJournalLine.TestField("Processing Schema Code");
+        lvngLoanProcessingSchema.Get(lvngLoanJournalLine."Processing Schema Code");
+        lvngLoanJournalBatch.Get(lvngLoanJournalLine."Loan Journal Batch Code");
         lvngExpressionValueBuffer.reset;
         lvngExpressionValueBuffer.DeleteAll();
         lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
@@ -116,33 +116,33 @@ codeunit 14135113 "lvngCreateSoldDocuments"
         clear(lvngLoanDocument);
         lvngLoanDocument.init;
         if not lvngPreview then begin
-            if lvngLoanProcessingSchema.lvngNoSeries <> '' then
-                lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanProcessingSchema.lvngNoSeries, TODAY, true, false) else
-                lvngLoanDocument.lvngDocumentNo := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup."Sold No. Series", TODAY, true, false);
+            if lvngLoanProcessingSchema."No. Series" <> '' then
+                lvngLoanDocument."Document No." := NoSeriesManagement.DoGetNextNo(lvngLoanProcessingSchema."No. Series", TODAY, true, false) else
+                lvngLoanDocument."Document No." := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup."Sold No. Series", TODAY, true, false);
         end else begin
-            lvngLoanDocument.lvngDocumentNo := TempDocumentLbl;
+            lvngLoanDocument."Document No." := TempDocumentLbl;
         end;
         lvngLoanDocument.Insert(true);
-        lvngLoanDocument.lvngCustomerNo := lvngLoanJournalLine.lvngInvestorCustomerNo;
-        lvngLoanDocument.lvngLoanNo := lvngLoanJournalLine.lvngLoanNo;
-        lvngLoanDocument.lvngPostingDate := lvngLoanJournalLine.lvngDateSold;
-        lvngLoanDocument.lvngWarehouseLineCode := lvngLoanJournalLine.lvngWarehouseLineCode;
-        AssignDimensions(lvngLoanDocument.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngGlobalDimension1Code, lvngLoanJournalLine.lvngGlobalDimension1Code, lvngLoanProcessingSchema.lvngDimension1Rule);
-        AssignDimensions(lvngLoanDocument.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngGlobalDimension2Code, lvngLoanJournalLine.lvngGlobalDimension2Code, lvngLoanProcessingSchema.lvngDimension2Rule);
-        AssignDimensions(lvngLoanDocument.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngShortcutDimension3Code, lvngLoanJournalLine.lvngShortcutDimension3Code, lvngLoanProcessingSchema.lvngDimension3Rule);
-        AssignDimensions(lvngLoanDocument.lvngShortcutDimension4Code, lvngLoanProcessingSchema.lvngShortcutDimension4Code, lvngLoanJournalLine.lvngShortcutDimension4Code, lvngLoanProcessingSchema.lvngDimension4Rule);
-        AssignDimensions(lvngLoanDocument.lvngShortcutDimension5Code, lvngLoanProcessingSchema.lvngShortcutDimension5Code, lvngLoanJournalLine.lvngShortcutDimension5Code, lvngLoanProcessingSchema.lvngDimension5Rule);
-        AssignDimensions(lvngLoanDocument.lvngShortcutDimension6Code, lvngLoanProcessingSchema.lvngShortcutDimension6Code, lvngLoanJournalLine.lvngShortcutDimension6Code, lvngLoanProcessingSchema.lvngDimension6Rule);
-        AssignDimensions(lvngLoanDocument.lvngShortcutDimension7Code, lvngLoanProcessingSchema.lvngShortcutDimension7Code, lvngLoanJournalLine.lvngShortcutDimension7Code, lvngLoanProcessingSchema.lvngDimension7Rule);
-        AssignDimensions(lvngLoanDocument.lvngShortcutDimension8Code, lvngLoanProcessingSchema.lvngShortcutDimension8Code, lvngLoanJournalLine.lvngShortcutDimension8Code, lvngLoanProcessingSchema.lvngDimension8Rule);
-        AssignDimensions(lvngLoanDocument.lvngBusinessUnitCode, lvngLoanProcessingSchema.lvngBusinessUnitCode, lvngLoanJournalLine.lvngBusinessUnitCode, lvngLoanProcessingSchema.lvngBusinessUnitRule);
+        lvngLoanDocument."Customer No." := lvngLoanJournalLine."Investor Customer No.";
+        lvngLoanDocument."Loan No." := lvngLoanJournalLine."Loan No.";
+        lvngLoanDocument."Posting Date" := lvngLoanJournalLine."Date Sold";
+        lvngLoanDocument."Warehouse Line Code" := lvngLoanJournalLine."Warehouse Line Code";
+        AssignDimensions(lvngLoanDocument."Global Dimension 1 Code", lvngLoanProcessingSchema."Global Dimension 1 Code", lvngLoanJournalLine."Global Dimension 1 Code", lvngLoanProcessingSchema."Dimension 1 Rule");
+        AssignDimensions(lvngLoanDocument."Global Dimension 2 Code", lvngLoanProcessingSchema."Global Dimension 2 Code", lvngLoanJournalLine."Global Dimension 2 Code", lvngLoanProcessingSchema."Dimension 2 Rule");
+        AssignDimensions(lvngLoanDocument."Shortcut Dimension 3 Code", lvngLoanProcessingSchema."Shortcut Dimension 3 Code", lvngLoanJournalLine."Shortcut Dimension 3 Code", lvngLoanProcessingSchema."Dimension 3 Rule");
+        AssignDimensions(lvngLoanDocument."Shortcut Dimension 4 Code", lvngLoanProcessingSchema."Shortcut Dimension 4 Code", lvngLoanJournalLine."Shortcut Dimension 4 Code", lvngLoanProcessingSchema."Dimension 4 Rule");
+        AssignDimensions(lvngLoanDocument."Shortcut Dimension 5 Code", lvngLoanProcessingSchema."Shortcut Dimension 5 Code", lvngLoanJournalLine."Shortcut Dimension 5 Code", lvngLoanProcessingSchema."Dimension 5 Rule");
+        AssignDimensions(lvngLoanDocument."Shortcut Dimension 6 Code", lvngLoanProcessingSchema."Shortcut Dimension 6 Code", lvngLoanJournalLine."Shortcut Dimension 6 Code", lvngLoanProcessingSchema."Dimension 6 Rule");
+        AssignDimensions(lvngLoanDocument."Shortcut Dimension 7 Code", lvngLoanProcessingSchema."Shortcut Dimension 7 Code", lvngLoanJournalLine."Shortcut Dimension 7 Code", lvngLoanProcessingSchema."Dimension 7 Rule");
+        AssignDimensions(lvngLoanDocument."Shortcut Dimension 8 Code", lvngLoanProcessingSchema."Shortcut Dimension 8 Code", lvngLoanJournalLine."Shortcut Dimension 8 Code", lvngLoanProcessingSchema."Dimension 8 Rule");
+        AssignDimensions(lvngLoanDocument."Business Unit Code", lvngLoanProcessingSchema."Business Unit Code", lvngLoanJournalLine."Business Unit Code", lvngLoanProcessingSchema."Business Unit Rule");
         lvngLoanDocument.GenerateDimensionSetId();
         lvngLoanDocument.Modify(true);
-        if lvngLoanProcessingSchema.lvngUseGlobalSchemaCode <> '' then begin
+        if lvngLoanProcessingSchema."Use Global Schema Code" <> '' then begin
             lvngLoanProcessingSchemaLine.reset;
-            lvngLoanProcessingSchemaLine.SetRange(lvngBalancingEntry, false);
-            lvngLoanProcessingSchemaLine.Setfilter(lvngProcessingSourceType, '<>%1', lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngTag);
-            lvngLoanProcessingSchemaLine.SetRange(lvngProcessingCode, lvngLoanProcessingSchema.lvngUseGlobalSchemaCode);
+            lvngLoanProcessingSchemaLine.SetRange("Balancing Entry", false);
+            lvngLoanProcessingSchemaLine.Setfilter("Processing Source Type", '<>%1', lvngLoanProcessingSchemaLine."Processing Source Type"::lvngTag);
+            lvngLoanProcessingSchemaLine.SetRange("Processing Code", lvngLoanProcessingSchema."Use Global Schema Code");
             if lvngLoanProcessingSchemaLine.FindSet() then begin
                 repeat
                     CreateDocumentLine(lvngLoanDocumentLine, lvngLoanDocument, lvngLoanProcessingSchemaLine, lvngLoanJournalLine, lvngLineNo);
@@ -150,9 +150,9 @@ codeunit 14135113 "lvngCreateSoldDocuments"
             end;
         end;
         lvngLoanProcessingSchemaLine.reset;
-        lvngLoanProcessingSchemaLine.SetRange(lvngProcessingCode, lvngLoanProcessingSchema.lvngCode);
-        lvngLoanProcessingSchemaLine.SetRange(lvngBalancingEntry, false);
-        lvngLoanProcessingSchemaLine.Setfilter(lvngProcessingSourceType, '<>%1', lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngTag);
+        lvngLoanProcessingSchemaLine.SetRange("Processing Code", lvngLoanProcessingSchema.Code);
+        lvngLoanProcessingSchemaLine.SetRange("Balancing Entry", false);
+        lvngLoanProcessingSchemaLine.Setfilter("Processing Source Type", '<>%1', lvngLoanProcessingSchemaLine."Processing Source Type"::lvngTag);
         if lvngLoanProcessingSchemaLine.FindSet() then begin
             repeat
                 CreateDocumentLine(lvngLoanDocumentLine, lvngLoanDocument, lvngLoanProcessingSchemaLine, lvngLoanJournalLine, lvngLineNo);
@@ -168,10 +168,10 @@ codeunit 14135113 "lvngCreateSoldDocuments"
                 lvngLoanDocumentLineTemp.Insert();
             until lvngLoanDocumentLine.Next() = 0;
         end;
-        if lvngLoanProcessingSchema.lvngUseGlobalSchemaCode <> '' then begin
+        if lvngLoanProcessingSchema."Use Global Schema Code" <> '' then begin
             lvngLoanProcessingSchemaLine.reset;
-            lvngLoanProcessingSchemaLine.SetRange(lvngBalancingEntry, true);
-            lvngLoanProcessingSchemaLine.SetRange(lvngProcessingCode, lvngLoanProcessingSchema.lvngUseGlobalSchemaCode);
+            lvngLoanProcessingSchemaLine.SetRange("Balancing Entry", true);
+            lvngLoanProcessingSchemaLine.SetRange("Processing Code", lvngLoanProcessingSchema."Use Global Schema Code");
             if lvngLoanProcessingSchemaLine.FindSet() then begin
                 repeat
                     CreateDocumentLine(lvngLoanDocumentLine, lvngLoanDocument, lvngLoanProcessingSchemaLine, lvngLoanJournalLine, lvngLineNo);
@@ -179,60 +179,60 @@ codeunit 14135113 "lvngCreateSoldDocuments"
             end;
         end;
         lvngLoanProcessingSchemaLine.reset;
-        lvngLoanProcessingSchemaLine.SetRange(lvngProcessingCode, lvngLoanProcessingSchema.lvngCode);
-        lvngLoanProcessingSchemaLine.SetRange(lvngBalancingEntry, true);
+        lvngLoanProcessingSchemaLine.SetRange("Processing Code", lvngLoanProcessingSchema.Code);
+        lvngLoanProcessingSchemaLine.SetRange("Balancing Entry", true);
         if lvngLoanProcessingSchemaLine.FindSet() then begin
             repeat
                 CreateDocumentLine(lvngLoanDocumentLine, lvngLoanDocument, lvngLoanProcessingSchemaLine, lvngLoanJournalLine, lvngLineNo);
             until lvngLoanProcessingSchemaLine.Next() = 0;
         end;
         lvngLoanDocumentLine.reset;
-        lvngLoanDocumentLine.SetRange(lvngAmount, 0);
+        lvngLoanDocumentLine.SetRange(Amount, 0);
         lvngLoanDocumentLine.DeleteAll();
         lvngLoanDocumentLine.reset;
-        lvngLoanDocumentLine.SetRange(lvngBalancingEntry, false);
+        lvngLoanDocumentLine.SetRange("Balancing Entry", false);
         if lvngLoanDocumentLine.FindSet() then begin
             repeat
-                lvngDocumentAmount := lvngDocumentAmount + lvngLoanDocumentLine.lvngAmount;
+                lvngDocumentAmount := lvngDocumentAmount + lvngLoanDocumentLine.Amount;
             until lvngLoanDocumentLine.Next() = 0;
         end;
         //Option here
-        case lvngLoanProcessingSchema.lvngDocumentTypeOption of
-            lvngloanprocessingschema.lvngDocumentTypeOption::lvngInvoice:
+        case lvngLoanProcessingSchema."Document Type Option" of
+            lvngloanprocessingschema."Document Type Option"::lvngInvoice:
                 begin
-                    lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice;
+                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice;
                 end;
-            lvngloanprocessingschema.lvngDocumentTypeOption::lvngCreditMemo:
+            lvngloanprocessingschema."Document Type Option"::lvngCreditMemo:
                 begin
-                    lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
+                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
                 end;
-            lvngloanprocessingschema.lvngDocumentTypeOption::lvngAmountBased:
+            lvngloanprocessingschema."Document Type Option"::lvngAmountBased:
                 begin
                     IF lvngDocumentAmount > 0 THEN BEGIN
-                        lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice;
+                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice;
                     END ELSE BEGIN
-                        lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
+                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
                         lvngLoanDocumentLine.reset;
-                        lvngLoanDocumentLine.SetRange(lvngBalancingEntry, false);
+                        lvngLoanDocumentLine.SetRange("Balancing Entry", false);
                         if lvngLoanDocumentLine.FindSet() then begin
                             repeat
-                                lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
+                                lvngLoanDocumentLine.Amount := -lvngLoanDocumentLine.Amount;
                                 lvngLoanDocumentLine.Modify();
                             until lvngLoanDocumentLine.Next() = 0;
                         end;
                     END;
                 end;
-            lvngloanprocessingschema.lvngDocumentTypeOption::lvngAmountBasedReversed:
+            lvngloanprocessingschema."Document Type Option"::lvngAmountBasedReversed:
                 begin
                     IF lvngDocumentAmount > 0 THEN BEGIN
-                        lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngCreditMemo;
+                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
                     END ELSE BEGIN
-                        lvngLoanDocument.lvngDocumentType := lvngLoanDocument.lvngDocumentType::lvngInvoice;
+                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice;
                         lvngLoanDocumentLine.reset;
-                        lvngLoanDocumentLine.SetRange(lvngBalancingEntry, false);
+                        lvngLoanDocumentLine.SetRange("Balancing Entry", false);
                         if lvngLoanDocumentLine.FindSet() then begin
                             repeat
-                                lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
+                                lvngLoanDocumentLine.Amount := -lvngLoanDocumentLine.Amount;
                                 lvngLoanDocumentLine.Modify();
                             until lvngLoanDocumentLine.Next() = 0;
                         end;
@@ -250,78 +250,78 @@ codeunit 14135113 "lvngCreateSoldDocuments"
         lvngAccountNo: Code[20];
         lvngDecimalValue: Decimal;
     begin
-        if CheckCondition(lvngLoanProcessingSchemaLine.lvngConditionCode) then begin
+        if CheckCondition(lvngLoanProcessingSchemaLine."Condition Code") then begin
             Clear(lvngLoanDocumentLine);
             lvngLoanDocumentLine.init;
-            lvngLoanDocumentLine.lvngDocumentNo := lvngLoanDocument.lvngDocumentNo;
-            lvngLoanDocumentLine.lvngTransactionType := lvngLoanDocument.lvngTransactionType;
-            lvngLoanDocumentLine.lvngLineNo := lvngLineNo;
-            lvngLoanDocumentLine.lvngProcessingSchemaCode := lvngLoanProcessingSchemaLine.lvngProcessingCode;
-            lvngloandocumentline.lvngProcessingSchemaLineNo := lvngLoanProcessingSchemaLine.lvngLineNo;
-            lvngLoanDocumentLine.lvngBalancingEntry := lvngLoanProcessingSchemaLine.lvngBalancingEntry;
-            lvngLoanDocumentLine.lvngTagCode := lvngLoanProcessingSchemaLine.lvngTagCode;
-            lvngLoanDocumentLine.lvngServicingType := lvngLoanProcessingSchemaLine.lvngServicingType;
+            lvngLoanDocumentLine."Document No." := lvngLoanDocument."Document No.";
+            lvngLoanDocumentLine."Transaction Type" := lvngLoanDocument."Transaction Type";
+            lvngLoanDocumentLine."Line No." := lvngLineNo;
+            lvngLoanDocumentLine."Processing Schema Code" := lvngLoanProcessingSchemaLine."Processing Code";
+            lvngloandocumentline."Processing Schema Line No." := lvngLoanProcessingSchemaLine."Line No.";
+            lvngLoanDocumentLine."Balancing Entry" := lvngLoanProcessingSchemaLine."Balancing Entry";
+            lvngLoanDocumentLine."Tag Code" := lvngLoanProcessingSchemaLine."Tag Code";
+            lvngLoanDocumentLine."Servicing Type" := lvngLoanProcessingSchemaLine."Servicing Type";
             lvngLineNo := lvngLineNo + 10000;
             lvngLoanDocumentLine.Insert();
-            if lvngLoanProcessingSchemaLine.lvngOverrideReasonCode <> '' then begin
-                lvngLoanDocumentLine.lvngReasonCode := lvngLoanProcessingSchemaLine.lvngOverrideReasonCode;
+            if lvngLoanProcessingSchemaLine."Override Reason Code" <> '' then begin
+                lvngLoanDocumentLine."Reason Code" := lvngLoanProcessingSchemaLine."Override Reason Code";
             end else begin
-                lvngLoanDocumentLine.lvngReasonCode := lvngLoanJournalLine.lvngReasonCode;
+                lvngLoanDocumentLine."Reason Code" := lvngLoanJournalLine."Reason Code";
             end;
-            lvngLoanDocumentLine.lvngDescription := CopyStr(lvngLoanProcessingSchemaLine.lvngDescription, 1, MaxStrLen(lvngLoanDocumentLine.lvngDescription));
-            lvngLoanDocumentLine.lvngAccountType := lvngLoanProcessingSchemaLine.lvngAccountType;
-            lvngLoanDocumentLine.lvngAccountNo := lvngLoanProcessingSchemaLine.lvngAccountNo;
-            if lvngLoanProcessingSchemaLine.lvngAccountNoSwitchCode <> '' then begin
-                lvngAccountNo := GetSwitchValue(lvngLoanProcessingSchemaLine.lvngAccountNoSwitchCode);
+            lvngLoanDocumentLine.Description := CopyStr(lvngLoanProcessingSchemaLine.Description, 1, MaxStrLen(lvngLoanDocumentLine.Description));
+            lvngLoanDocumentLine."Account Type" := lvngLoanProcessingSchemaLine."Account Type";
+            lvngLoanDocumentLine."Account No." := lvngLoanProcessingSchemaLine."Account No.";
+            if lvngLoanProcessingSchemaLine."Account No. Switch Code" <> '' then begin
+                lvngAccountNo := GetSwitchValue(lvngLoanProcessingSchemaLine."Account No. Switch Code");
                 if lvngAccountNo <> '' then
-                    lvngLoanDocumentLine.lvngAccountNo := lvngAccountNo;
+                    lvngLoanDocumentLine."Account No." := lvngAccountNo;
             end;
-            case lvngLoanProcessingSchemaLine.lvngProcessingSourceType of
-                lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngFunction:
+            case lvngLoanProcessingSchemaLine."Processing Source Type" of
+                lvngLoanProcessingSchemaLine."Processing Source Type"::lvngFunction:
                     begin
-                        if Evaluate(lvngDecimalValue, GetFunctionValue(lvngLoanProcessingSchemaLine.lvngFunctionCode)) then
-                            lvngLoanDocumentLine.lvngAmount := lvngDecimalValue;
+                        if Evaluate(lvngDecimalValue, GetFunctionValue(lvngLoanProcessingSchemaLine."Function Code")) then
+                            lvngLoanDocumentLine.Amount := lvngDecimalValue;
                     end;
-                lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngLoanJournalValue:
+                lvngLoanProcessingSchemaLine."Processing Source Type"::lvngLoanJournalValue:
                     begin
                         lvngRecRef.GetTable(lvngLoanJournalLine);
-                        lvngFieldRef := lvngRecRef.Field(lvngLoanProcessingSchemaLine.lvngFieldNo);
-                        lvngLoanDocumentLine.lvngAmount := lvngFieldRef.Value();
+                        lvngFieldRef := lvngRecRef.Field(lvngLoanProcessingSchemaLine."Field No.");
+                        lvngLoanDocumentLine.Amount := lvngFieldRef.Value();
                         lvngRecRef.Close();
                     end;
-                lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngLoanJournalVariableValue:
+                lvngLoanProcessingSchemaLine."Processing Source Type"::lvngLoanJournalVariableValue:
                     begin
-                        if lvngLoanJournalValue.Get(lvngLoanJournalLine.lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLineNo, lvngLoanProcessingSchemaLine.lvngFieldNo) then begin
-                            if Evaluate(lvngDecimalValue, lvngLoanJournalValue.lvngFieldValue) then
-                                lvngLoanDocumentLine.lvngAmount := lvngDecimalValue;
+                        if lvngLoanJournalValue.Get(lvngLoanJournalLine."Loan Journal Batch Code", lvngLoanJournalLine."Line No.", lvngLoanProcessingSchemaLine."Field No.") then begin
+                            if Evaluate(lvngDecimalValue, lvngLoanJournalValue."Field Value") then
+                                lvngLoanDocumentLine.Amount := lvngDecimalValue;
                         end;
                     end;
-                lvngLoanProcessingSchemaLine.lvngProcessingSourceType::lvngTag:
+                lvngLoanProcessingSchemaLine."Processing Source Type"::lvngTag:
                     begin
                         Clear(lvngDecimalValue);
-                        lvngLoanProcessingSchemaLine.TestField(lvngBalancingEntry);
+                        lvngLoanProcessingSchemaLine.TestField("Balancing Entry");
                         lvngLoanDocumentLineTemp.reset;
-                        lvngLoanDocumentLineTemp.SetRange(lvngTagCode, lvngLoanProcessingSchemaLine.lvngTagCode);
+                        lvngLoanDocumentLineTemp.SetRange("Tag Code", lvngLoanProcessingSchemaLine."Tag Code");
                         if lvngLoanDocumentLineTemp.FindSet() then begin
                             repeat
-                                lvngDecimalValue := lvngDecimalValue + lvngLoanDocumentLineTemp.lvngAmount;
+                                lvngDecimalValue := lvngDecimalValue + lvngLoanDocumentLineTemp.Amount;
                             until lvngLoanDocumentLineTemp.Next() = 0;
                         end;
-                        lvngLoanDocumentLine.lvngAmount := lvngDecimalValue;
+                        lvngLoanDocumentLine.Amount := lvngDecimalValue;
                     end;
             end;
-            if lvngLoanProcessingSchemaLine.lvngReverseSign then
-                lvngLoanDocumentLine.lvngAmount := -lvngLoanDocumentLine.lvngAmount;
+            if lvngLoanProcessingSchemaLine."Reverse Sign" then
+                lvngLoanDocumentLine.Amount := -lvngLoanDocumentLine.Amount;
 
-            AssignDimensions(lvngLoanDocumentLine.lvngGlobalDimension1Code, lvngLoanProcessingSchemaLine.lvngGlobalDimension1Code, lvngLoanJournalLine.lvngGlobalDimension1Code, lvngLoanProcessingSchemaLine.lvngDimension1Rule);
-            AssignDimensions(lvngLoanDocumentLine.lvngGlobalDimension2Code, lvngLoanProcessingSchemaLine.lvngGlobalDimension2Code, lvngLoanJournalLine.lvngGlobalDimension2Code, lvngLoanProcessingSchemaLine.lvngDimension2Rule);
-            AssignDimensions(lvngLoanDocumentLine.lvngShortcutDimension3Code, lvngLoanProcessingSchemaLine.lvngShortcutDimension3Code, lvngLoanJournalLine.lvngShortcutDimension3Code, lvngLoanProcessingSchemaLine.lvngDimension3Rule);
-            AssignDimensions(lvngLoanDocumentLine.lvngShortcutDimension4Code, lvngLoanProcessingSchemaLine.lvngShortcutDimension4Code, lvngLoanJournalLine.lvngShortcutDimension4Code, lvngLoanProcessingSchemaLine.lvngDimension4Rule);
-            AssignDimensions(lvngLoanDocumentLine.lvngShortcutDimension5Code, lvngLoanProcessingSchemaLine.lvngShortcutDimension5Code, lvngLoanJournalLine.lvngShortcutDimension5Code, lvngLoanProcessingSchemaLine.lvngDimension5Rule);
-            AssignDimensions(lvngLoanDocumentLine.lvngShortcutDimension6Code, lvngLoanProcessingSchemaLine.lvngShortcutDimension6Code, lvngLoanJournalLine.lvngShortcutDimension6Code, lvngLoanProcessingSchemaLine.lvngDimension6Rule);
-            AssignDimensions(lvngLoanDocumentLine.lvngShortcutDimension7Code, lvngLoanProcessingSchemaLine.lvngShortcutDimension7Code, lvngLoanJournalLine.lvngShortcutDimension7Code, lvngLoanProcessingSchemaLine.lvngDimension7Rule);
-            AssignDimensions(lvngLoanDocumentLine.lvngShortcutDimension8Code, lvngLoanProcessingSchemaLine.lvngShortcutDimension8Code, lvngLoanJournalLine.lvngShortcutDimension8Code, lvngLoanProcessingSchemaLine.lvngDimension8Rule);
-            AssignDimensions(lvngLoanDocumentLine.lvngBusinessUnitCode, lvngLoanProcessingSchemaLine.lvngBusinessUnitCode, lvngLoanJournalLine.lvngBusinessUnitCode, lvngLoanProcessingSchemaLine.lvngBusinessUnitRule);
+            AssignDimensions(lvngLoanDocumentLine."Global Dimension 1 Code", lvngLoanProcessingSchemaLine."Global Dimension 1 Code", lvngLoanJournalLine."Global Dimension 1 Code", lvngLoanProcessingSchemaLine."Dimension 1 Rule");
+            AssignDimensions(lvngLoanDocumentLine."Global Dimension 2 Code", lvngLoanProcessingSchemaLine."Global Dimension 2 Code", lvngLoanJournalLine."Global Dimension 2 Code", lvngLoanProcessingSchemaLine."Dimension 2 Rule");
+            AssignDimensions(lvngLoanDocumentLine."Shortcut Dimension 3 Code", lvngLoanProcessingSchemaLine."Shortcut Dimension 3 Code", lvngLoanJournalLine."Shortcut Dimension 3 Code", lvngLoanProcessingSchemaLine."Dimension 3 Rule");
+            AssignDimensions(lvngLoanDocumentLine."Shortcut Dimension 4 Code", lvngLoanProcessingSchemaLine."Shortcut Dimension 4 Code", lvngLoanJournalLine."Shortcut Dimension 4 Code", lvngLoanProcessingSchemaLine."Dimension 4 Rule");
+            AssignDimensions(lvngLoanDocumentLine."Shortcut Dimension 5 Code", lvngLoanProcessingSchemaLine."Shortcut Dimension 5 Code", lvngLoanJournalLine."Shortcut Dimension 5 Code", lvngLoanProcessingSchemaLine."Dimension 5 Rule");
+            AssignDimensions(lvngLoanDocumentLine."Shortcut Dimension 6 Code", lvngLoanProcessingSchemaLine."Shortcut Dimension 6 Code", lvngLoanJournalLine."Shortcut Dimension 6 Code", lvngLoanProcessingSchemaLine."Dimension 6 Rule");
+            AssignDimensions(lvngLoanDocumentLine."Shortcut Dimension 7 Code", lvngLoanProcessingSchemaLine."Shortcut Dimension 7 Code", lvngLoanJournalLine."Shortcut Dimension 7 Code", lvngLoanProcessingSchemaLine."Dimension 7 Rule");
+            AssignDimensions(lvngLoanDocumentLine."Shortcut Dimension 8 Code", lvngLoanProcessingSchemaLine."Shortcut Dimension 8 Code", lvngLoanJournalLine."Shortcut Dimension 8 Code", lvngLoanProcessingSchemaLine."Dimension 8 Rule");
+            AssignDimensions(lvngLoanDocumentLine."Business Unit Code", lvngLoanProcessingSchemaLine."Business Unit Code", lvngLoanJournalLine."Business Unit Code", lvngLoanProcessingSchemaLine."Business Unit Rule");
             lvngLoanDocumentLine.GenerateDimensionSetId();
             lvngLoanDocumentLine.Modify();
         end;

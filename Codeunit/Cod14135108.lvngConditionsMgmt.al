@@ -67,7 +67,7 @@ codeunit 14135108 "lvngConditionsMgmt"
             repeat
                 lvngFieldSequenceNo := lvngFieldSequenceNo + 1;
                 lvngLoanValue.reset;
-                lvngLoanValue.SetRange("Loan No.", lvngLoan."Loan No.");
+                lvngLoanValue.SetRange("Loan No.", lvngLoan."No.");
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
                 lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp."Field Name";
@@ -164,15 +164,15 @@ codeunit 14135108 "lvngConditionsMgmt"
             repeat
                 lvngFieldSequenceNo := lvngFieldSequenceNo + 1;
                 lvngLoanJournalValue.reset;
-                lvngLoanJournalValue.SetRange(lvngLoanJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
-                lvngLoanJournalValue.SetRange(lvngLineNo, lvngLoanJournalLine.lvngLineNo);
-                lvngLoanJournalValue.SetRange(lvngFieldNo, lvngLoanFieldsConfigurationTemp."Field No.");
+                lvngLoanJournalValue.SetRange("Loan Journal Batch Code", lvngLoanJournalLine."Loan Journal Batch Code");
+                lvngLoanJournalValue.SetRange("Line No.", lvngLoanJournalLine."Line No.");
+                lvngLoanJournalValue.SetRange("Field No.", lvngLoanFieldsConfigurationTemp."Field No.");
                 Clear(lvngExpressionValueBuffer);
                 lvngExpressionValueBuffer.Number := lvngFieldSequenceNo;
                 lvngExpressionValueBuffer.Name := lvngLoanFieldsConfigurationTemp."Field Name";
                 lvngExpressionValueBuffer.Type := format(lvngLoanFieldsConfigurationTemp."Value Type");
                 if lvngLoanJournalValue.FindFirst() then begin
-                    lvngExpressionValueBuffer.Value := lvngLoanJournalValue.lvngFieldValue;
+                    lvngExpressionValueBuffer.Value := lvngLoanJournalValue."Field Value";
                 end else begin
                     case lvngLoanFieldsConfigurationTemp."Value Type" of
                         lvngLoanFieldsConfigurationTemp."Value Type"::lvngBoolean:

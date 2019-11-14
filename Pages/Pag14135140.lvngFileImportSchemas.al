@@ -12,24 +12,24 @@ page 14135140 "lvngFileImportSchemas"
         {
             repeater(lvngRepeater)
             {
-                field(lvngCode; lvngCode)
+                field(lvngCode; Code)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFileImportType; lvngFileImportType)
+                field(lvngFileImportType; "File Import Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFieldSeparator; lvngFieldSeparator)
+                field(lvngFieldSeparator; "Field Separator")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Use <TAB> for Tab or any other symbol';
                 }
-                field(lvngSkipRows; lvngSkipRows)
+                field(lvngSkipRows; "Skip Rows")
                 {
                     ApplicationArea = All;
                 }
@@ -58,23 +58,23 @@ page 14135140 "lvngFileImportSchemas"
                     lvngSalesLinesImportSchema: Page lvngSalesLinesImportSchema;
                     lvngDepositImportSchema: Page lvngDepositImportSchema;
                 begin
-                    case lvngFileImportType of
-                        lvngfileimportType::lvngGeneralJournal:
+                    case "File Import Type" of
+                        "File Import Type"::lvngGeneralJournal:
                             begin
                                 lvngGenJnlImportSchema.SetRecord(Rec);
                                 lvngGenJnlImportSchema.Run();
                             end;
-                        lvngFileImportType::lvngPurchaseLine:
+                        "File Import Type"::lvngPurchaseLine:
                             begin
                                 lvngPurchaseLinesImportSchema.SetRecord(Rec);
                                 lvngPurchaseLinesImportSchema.Run();
                             end;
-                        lvngFileImportType::lvngSalesLine:
+                        "File Import Type"::lvngSalesLine:
                             begin
                                 lvngSalesLinesImportSchema.SetRecord(Rec);
                                 lvngSalesLinesImportSchema.Run();
                             end;
-                        lvngFileImportType::lvngDepositLines:
+                        "File Import Type"::lvngDepositLines:
                             begin
                                 lvngDepositImportSchema.SetRecord(Rec);
                                 lvngDepositImportSchema.Run();

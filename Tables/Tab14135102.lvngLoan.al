@@ -3,11 +3,11 @@ table 14135102 lvngLoan
     DataClassification = CustomerContent;
     LookupPageId = lvngLoanList;
     DrillDownPageId = lvngLoanList;
-    DataCaptionFields = "Loan No.", "Search Name";
+    DataCaptionFields = "No.", "Search Name";
 
     fields
     {
-        field(1; "Loan No."; Code[20]) { DataClassification = CustomerContent; NotBlank = true; }
+        field(1; "No."; Code[20]) { DataClassification = CustomerContent; NotBlank = true; Caption = 'Loan No.'; }
         field(10; "Search Name"; Code[100]) { DataClassification = CustomerContent; }
         field(11; "Borrower First Name"; Text[30]) { DataClassification = CustomerContent; }
         field(12; "Borrower Last Name"; Text[30]) { DataClassification = CustomerContent; }
@@ -137,7 +137,7 @@ table 14135102 lvngLoan
 
     keys
     {
-        key(PK; "Loan No.") { Clustered = true; }
+        key(PK; "No.") { Clustered = true; }
         key(SearchName; "Search Name") { }
         key(CommissionDate; "Commission Date") { }
         key(FundedDate; "Date Funded") { }
@@ -146,8 +146,8 @@ table 14135102 lvngLoan
 
     fieldgroups
     {
-        fieldgroup(DropDown; "Loan No.", "Search Name") { }
-        fieldgroup(Brick; "Loan No.", "Search Name", "Loan Amount") { }
+        fieldgroup(DropDown; "No.", "Search Name") { }
+        fieldgroup(Brick; "No.", "Search Name", "Loan Amount") { }
     }
 
     trigger OnInsert()
@@ -167,10 +167,10 @@ table 14135102 lvngLoan
         LoanValue: Record lvngLoanValue;
     begin
         LoanAddress.Reset();
-        LoanAddress.SetRange(lvngLoanNo, "Loan No.");
+        LoanAddress.SetRange("Loan No.", "No.");
         LoanAddress.DeleteAll(false);
         LoanValue.Reset();
-        LoanValue.SetRange("Loan No.", "Loan No.");
+        LoanValue.SetRange("Loan No.", "No.");
         LoanValue.DeleteAll(false);
     end;
 
@@ -179,7 +179,7 @@ table 14135102 lvngLoan
         DimensionManagement: Codeunit DimensionManagement;
     begin
         DimensionManagement.ValidateDimValueCode(FieldNumber, ShortcutDimCode);
-        DimensionManagement.SaveDefaultDim(Database::lvngLoan, "Loan No.", FieldNumber, ShortcutDimCode);
+        DimensionManagement.SaveDefaultDim(Database::lvngLoan, "No.", FieldNumber, ShortcutDimCode);
         Modify();
     end;
 
@@ -189,8 +189,8 @@ table 14135102 lvngLoan
         AddressFormat: Label '%1 %2, %3 %4 %5';
         FormattedAddress: Text;
     begin
-        if LoanAddress.Get("Loan No.", AddressType) then begin
-            FormattedAddress := strsubstno(AddressFormat, LoanAddress.lvngAddress, LoanAddress.lvngAddress2, LoanAddress.lvngCity, LoanAddress.lvngState, LoanAddress.lvngZIPCode);
+        if LoanAddress.Get("No.", AddressType) then begin
+            FormattedAddress := strsubstno(AddressFormat, LoanAddress.Address, LoanAddress."Address 2", LoanAddress.City, LoanAddress.State, LoanAddress."ZIP Code");
             if DelChr(FormattedAddress, '=', ' ,') = '' then
                 exit('')
             else

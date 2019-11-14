@@ -7,11 +7,11 @@ report 14135102 "lvngVoidPostedSoldDocuments"
     {
         dataitem(lvngLoanSoldDocument; lvngLoanSoldDocument)
         {
-            RequestFilterFields = lvngPostingDate, lvngDocumentType, lvngDocumentNo, lvngLoanNo;
+            RequestFilterFields = "Posting Date", "Document Type", "Document No.", "Loan No.";
 
             trigger OnPreDataItem()
             begin
-                lvngLoanSoldDocument.setrange(lvngVoid, false);
+                lvngLoanSoldDocument.setrange(Void, false);
                 if not Confirm(DocumentsVoidCountLbl, false, Count()) then
                     CurrReport.Break();
             end;

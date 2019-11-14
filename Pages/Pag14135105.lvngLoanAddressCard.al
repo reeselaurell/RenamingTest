@@ -10,27 +10,27 @@ page 14135105 "lvngLoanAddressCard"
         {
             group(General)
             {
-                field(lvngAddressType; lvngAddressType)
+                field(lvngAddressType; "Address Type")
                 {
                     Editable = false;
                 }
-                field(lvngAddress; lvngAddress)
+                field(lvngAddress; Address)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngAddress2; lvngAddress2)
+                field(lvngAddress2; "Address 2")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCity; lvngCity)
+                field(lvngCity; City)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngZIPCode; lvngZIPCode)
+                field(lvngZIPCode; "ZIP Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngState; lvngState)
+                field(lvngState; State)
                 {
                     ApplicationArea = All;
                 }

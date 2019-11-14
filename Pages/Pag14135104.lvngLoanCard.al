@@ -11,7 +11,7 @@ page 14135104 "lvngLoanCard"
             group(lvngGeneral)
             {
                 Caption = 'General';
-                field(lvngLoanNo; "Loan No.")
+                field(lvngLoanNo; "No.")
                 {
                     ApplicationArea = All;
                 }
@@ -314,7 +314,7 @@ page 14135104 "lvngLoanCard"
             {
                 Caption = 'Values';
                 ApplicationArea = All;
-                SubPageLink = "Loan No." = field("Loan No.");
+                SubPageLink = "Loan No." = field("No.");
             }
         }
     }
@@ -332,7 +332,7 @@ page 14135104 "lvngLoanCard"
                 PromotedCategory = Process;
                 RunObject = page lvngLoanCardValuesEdit;
                 RunPageMode = Edit;
-                RunPageLink = "Loan No." = field("Loan No.");
+                RunPageLink = "Loan No." = field("No.");
             }
         }
     }
@@ -354,15 +354,15 @@ page 14135104 "lvngLoanCard"
 
     local procedure AddressEdit(lvngAddressTypeEnum: Enum lvngAddressType)
     begin
-        if not lvngLoanAddress.Get("Loan No.", lvngAddressTypeEnum) then begin
+        if not lvngLoanAddress.Get("No.", lvngAddressTypeEnum) then begin
             Clear(lvngLoanAddress);
             lvngLoanAddress.Init();
-            lvngLoanAddress.lvngAddressType := lvngAddressTypeEnum;
-            lvngLoanAddress.lvngLoanNo := "Loan No.";
+            lvngLoanAddress."Address Type" := lvngAddressTypeEnum;
+            lvngLoanAddress."Loan No." := "No.";
             lvngLoanAddress.Insert(true);
             Commit();
         end;
-        lvngLoanAddress.Get("Loan No.", lvngAddressTypeEnum);
+        lvngLoanAddress.Get("No.", lvngAddressTypeEnum);
         Clear(lvngLoanAddressCard);
         lvngLoanAddressCard.SetRecord(lvngLoanAddress);
         lvngLoanAddressCard.RunModal();

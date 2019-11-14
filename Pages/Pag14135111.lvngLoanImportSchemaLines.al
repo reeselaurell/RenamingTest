@@ -10,15 +10,15 @@ page 14135111 "lvngLoanImportSchemaLines"
         {
             repeater(Group)
             {
-                field(lvngLineNo; lvngLineNo)
+                field(lvngLineNo; "Line No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFieldType; lvngFieldType)
+                field(lvngFieldType; "Field Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFieldNo; lvngFieldNo)
+                field(lvngFieldNo; "Field No.")
                 {
                     ApplicationArea = All;
 
@@ -27,38 +27,38 @@ page 14135111 "lvngLoanImportSchemaLines"
                         FieldRec: Record Field;
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
-                        case lvngFieldType of
-                            lvngFieldType::lvngTable:
+                        case "Field Type" of
+                            "Field Type"::lvngTable:
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
-                                    FieldRec.SetRange("No.", lvngFieldNo);
+                                    FieldRec.SetRange("No.", "Field No.");
                                     FieldRec.FindFirst();
-                                    lvngName := FieldRec."Field Caption";
+                                    "Field Name" := FieldRec."Field Caption";
                                     case FieldRec.Type of
                                         Fieldrec.Type::Integer:
                                             begin
-                                                lvngValueType := lvngValueType::lvngInteger;
+                                                "Value Type" := "Value Type"::lvngInteger;
                                             end;
                                         FieldRec.Type::Boolean:
                                             begin
-                                                lvngValueType := lvngValueType::lvngBoolean;
+                                                "Value Type" := "Value Type"::lvngBoolean;
                                             end;
                                         FieldRec.Type::Decimal:
                                             begin
-                                                lvngValueType := lvngValueType::lvngDecimal;
+                                                "Value Type" := "Value Type"::lvngDecimal;
                                             end;
                                         FieldRec.Type::Date:
                                             begin
-                                                lvngValueType := lvngValueType::lvngDate;
+                                                "Value Type" := "Value Type"::lvngDate;
                                             end;
                                     end;
                                 end;
-                            lvngFieldType::lvngVariable:
+                            "Field Type"::lvngVariable:
                                 begin
-                                    lvngLoanFieldsConfiguration.Get(lvngFieldNo);
-                                    lvngName := lvngLoanFieldsConfiguration."Field Name";
-                                    lvngValueType := lvngLoanFieldsConfiguration."Value Type";
+                                    lvngLoanFieldsConfiguration.Get("Field No.");
+                                    "Field Name" := lvngLoanFieldsConfiguration."Field Name";
+                                    "Value Type" := lvngLoanFieldsConfiguration."Value Type";
                                 end;
                         end;
                     end;
@@ -69,8 +69,8 @@ page 14135111 "lvngLoanImportSchemaLines"
                         FieldRec: Record Field;
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
-                        case lvngFieldType of
-                            lvngFieldType::lvngTable:
+                        case "Field Type" of
+                            "Field Type"::lvngTable:
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -80,69 +80,69 @@ page 14135111 "lvngLoanImportSchemaLines"
                                     FieldsListPage.LookupMode(true);
                                     if FieldsListPage.RunModal() = Action::LookupOK then begin
                                         FieldsListPage.GetRecord(FieldRec);
-                                        lvngFieldNo := FieldRec."No.";
-                                        lvngName := FieldRec."Field Caption";
+                                        "Field No." := FieldRec."No.";
+                                        "Field Name" := FieldRec."Field Caption";
                                         case FieldRec.Type of
                                             Fieldrec.Type::Integer:
                                                 begin
-                                                    lvngValueType := lvngValueType::lvngInteger;
+                                                    "Value Type" := "Value Type"::lvngInteger;
                                                 end;
                                             FieldRec.Type::Boolean:
                                                 begin
-                                                    lvngValueType := lvngValueType::lvngBoolean;
+                                                    "Value Type" := "Value Type"::lvngBoolean;
                                                 end;
                                             FieldRec.Type::Decimal:
                                                 begin
-                                                    lvngValueType := lvngValueType::lvngDecimal;
+                                                    "Value Type" := "Value Type"::lvngDecimal;
                                                 end;
                                             FieldRec.Type::Date:
                                                 begin
-                                                    lvngValueType := lvngValueType::lvngDate;
+                                                    "Value Type" := "Value Type"::lvngDate;
                                                 end;
                                         end;
                                     end;
                                 end;
-                            lvngFieldType::lvngVariable:
+                            "Field Type"::lvngVariable:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
-                                        lvngFieldNo := lvngLoanFieldsConfiguration."Field No.";
-                                        lvngName := lvngLoanFieldsConfiguration."Field Name";
-                                        lvngValueType := lvngLoanFieldsConfiguration."Value Type";
+                                        "Field No." := lvngLoanFieldsConfiguration."Field No.";
+                                        "Field Name" := lvngLoanFieldsConfiguration."Field Name";
+                                        "Value Type" := lvngLoanFieldsConfiguration."Value Type";
                                     end;
                                 end;
 
                         end;
                     end;
                 }
-                field(lvngName; lvngName)
+                field(lvngName; "Field Name")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFieldSize; lvngFieldSize)
+                field(lvngFieldSize; "Field Size")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngNumbericalFormatting; lvngNumbericalFormatting)
+                field(lvngNumbericalFormatting; "Numerical Formatting")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngValueType; lvngValueType)
+                field(lvngValueType; "Value Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPaddingSide; lvngPaddingSide)
+                field(lvngPaddingSide; "Padding Side")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPaddingCharacter; lvngPaddingCharacter)
+                field(lvngPaddingCharacter; "Padding Character")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngTrimOption; lvngTrimOption)
+                field(lvngTrimOption; Trimming)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBooleanFormat; lvngBooleanFormat)
+                field(lvngBooleanFormat; "Boolean Format")
                 {
                     ApplicationArea = All;
                 }

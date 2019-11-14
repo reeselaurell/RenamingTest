@@ -12,48 +12,48 @@ page 14135107 "lvngLoanJournalBatches"
         {
             repeater(Group)
             {
-                field(lvngCode; lvngCode)
+                field(lvngCode; Code)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngLoanJournalType; lvngLoanJournalType)
+                field(lvngLoanJournalType; "Loan Journal Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDimensionImportRule; lvngDimensionImportRule)
+                field(lvngDimensionImportRule; "Dimension Import Rule")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMapDimensionsUsingHierachy; lvngMapDimensionsUsingHierachy)
+                field(lvngMapDimensionsUsingHierachy; "Map Dimensions Using Hierachy")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDimensionHierarchyDate; lvngDimensionHierarchyDate)
+                field(lvngDimensionHierarchyDate; "Dimension Hierarchy Date")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngDefaultTitleCustomerNo; lvngDefaultTitleCustomerNo)
+                field(lvngDefaultTitleCustomerNo; "Default Title Customer No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDefaultInvestorCustomerNo; lvngDefaultInvestorCustomerNo)
+                field(lvngDefaultInvestorCustomerNo; "Default Investor Customer No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDefaultReasonCode; lvngDefaultReasonCode)
+                field(lvngDefaultReasonCode; "Default Reason Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDefProcessingSchemaCode; lvngDefProcessingSchemaCode)
+                field(lvngDefProcessingSchemaCode; "Def. Processing Schema Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngLoanCardUpdateOption; lvngLoanCardUpdateOption)
+                field(lvngLoanCardUpdateOption; "Loan Card Update Option")
                 {
                     ApplicationArea = All;
                 }
@@ -86,28 +86,28 @@ page 14135107 "lvngLoanJournalBatches"
                     lvngLoanJournalLinesPage: Page lvngLoanJournalLines;
                     lvngLoanJournalLine: Record lvngLoanJournalLine;
                 begin
-                    case lvngLoanJournalType of
-                        lvngLoanJournalType::lvngFunded:
+                    case "Loan Journal Type" of
+                        "Loan Journal Type"::lvngFunded:
                             begin
                                 Clear(lvngFundedJournalLinesPage);
                                 lvngLoanJournalLine.Reset();
-                                lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngCode);
+                                lvngLoanJournalLine.SetRange("Loan Journal Batch Code", Code);
                                 lvngFundedJournalLinesPage.SetTableView(lvngLoanJournalLine);
                                 lvngFundedJournalLinesPage.Run();
                             end;
-                        lvngLoanJournalType::lvngSold:
+                        "Loan Journal Type"::lvngSold:
                             begin
                                 Clear(lvngSoldJournalLinesPage);
                                 lvngLoanJournalLine.Reset();
-                                lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngCode);
+                                lvngLoanJournalLine.SetRange("Loan Journal Batch Code", Code);
                                 lvngSoldJournalLinesPage.SetTableView(lvngLoanJournalLine);
                                 lvngSoldJournalLinesPage.Run();
                             end;
-                        lvngLoanJournalType::lvngLoan:
+                        "Loan Journal Type"::lvngLoan:
                             begin
                                 Clear(lvngLoanJournalLinesPage);
                                 lvngLoanJournalLine.Reset();
-                                lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngCode);
+                                lvngLoanJournalLine.SetRange("Loan Journal Batch Code", Code);
                                 lvngLoanJournalLinesPage.SetTableView(lvngLoanJournalLine);
                                 lvngLoanJournalLinesPage.Run();
                             end;
@@ -120,7 +120,7 @@ page 14135107 "lvngLoanJournalBatches"
                 Caption = 'Post Processing Lines';
                 RunObject = page lvngPostProcessingSchemaLines;
                 RunPageMode = Edit;
-                RunPageLink = lvngJournalBatchCode = field (lvngCode);
+                RunPageLink = "Journal Batch Code" = field(Code);
                 Promoted = true;
                 PromotedIsBig = true;
                 Image = EditLines;
@@ -133,7 +133,7 @@ page 14135107 "lvngLoanJournalBatches"
                 Caption = 'Validation Rules';
                 RunObject = page lvngJournalValidationRules;
                 RunPageMode = Edit;
-                RunPageLink = lvngJournalBatchCode = field (lvngCode);
+                RunPageLink = "Journal Batch Code" = field(Code);
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
@@ -146,7 +146,7 @@ page 14135107 "lvngLoanJournalBatches"
                 Caption = 'Loan Card Update Schema';
                 RunObject = page lvngLoanUpdateSchema;
                 RunPageMode = Edit;
-                RunPageLink = lvngJournalBatchCode = field (lvngCode);
+                RunPageLink = "Journal Batch Code" = field(Code);
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;

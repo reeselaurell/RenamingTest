@@ -11,73 +11,73 @@ page 14135106 "lvngFundedJournalLines"
         {
             repeater(lvngGrid)
             {
-                field(lvngLoanNo; lvngLoanNo)
+                field(lvngLoanNo; "Loan No.")
                 {
                     ApplicationArea = All;
                     Style = Unfavorable;
-                    StyleExpr = lvngErrorExists;
+                    StyleExpr = "Error Exists";
                 }
 
-                field(lvngTitleCustomerNo; lvngTitleCustomerNo)
+                field(lvngTitleCustomerNo; "Title Customer No.")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngSearchName; lvngSearchName)
+                field(lvngSearchName; "Search Name")
                 {
                     Width = 50;
                     ApplicationArea = All;
                 }
-                field(lvngBorrowerFirstName; lvngBorrowerFirstName)
+                field(lvngBorrowerFirstName; "Borrower First Name")
                 {
                     Width = 30;
                     ApplicationArea = All;
                 }
 
-                field(lvngMiddleName; lvngBorrowerMiddleName)
+                field(lvngMiddleName; "Borrower Middle Name")
                 {
                     Width = 10;
                     ApplicationArea = All;
                 }
 
-                field(lvngBorrowerLastName; lvngBorrowerLastName)
+                field(lvngBorrowerLastName; "Borrower Last Name")
                 {
                     Width = 30;
                     ApplicationArea = All;
                 }
-                field(lvngCoBorrowerFirstName; lvngCoBorrowerFirstName)
+                field(lvngCoBorrowerFirstName; "Co-Borrower First Name")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCoBorrowerMiddleName; lvngCoBorrowerMiddleName)
+                field(lvngCoBorrowerMiddleName; "Co-Borrower Middle Name")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCoBorrowerLastName; lvngCoBorrowerLastName)
+                field(lvngCoBorrowerLastName; "Co-Borrower Last Name")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBorrowerAddress; lvngBorrowerAddress)
+                field(lvngBorrowerAddress; "Borrower Address")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBorrowerAddress2; lvngBorrowerAddress2)
+                field(lvngBorrowerAddress2; "Borrower Address 2")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBorrowerCity; lvngBorrowerCity)
+                field(lvngBorrowerCity; "Borrower City")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBorrowerState; lvngBorrowerState)
+                field(lvngBorrowerState; "Borrower State")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBorrowerZIPCode; lvngBorrowerZIPCode)
+                field(lvngBorrowerZIPCode; "Borrower ZIP Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCoBorrowerAddress; lvngCoBorrowerAddress)
+                field(lvngCoBorrowerAddress; "Co-Borrower Address")
                 {
                     ApplicationArea = All;
                 }
@@ -85,226 +85,226 @@ page 14135106 "lvngFundedJournalLines"
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCoBorrowerCity; lvngCoBorrowerCity)
+                field(lvngCoBorrowerCity; "Co-Borrower City")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCoBorrowerState; lvngCoBorrowerState)
+                field(lvngCoBorrowerState; "Co-Borrower State")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCoBorrowerZIPCode; lvngCoBorrowerZIPCode)
+                field(lvngCoBorrowerZIPCode; "Co-Borrower ZIP Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMailingAddress; lvngMailingAddress)
+                field(lvngMailingAddress; "Mailing Address")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMailingAddress2; lvngMailingAddress2)
+                field(lvngMailingAddress2; "Mailing Address 2")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMailingCity; lvngMailingCity)
+                field(lvngMailingCity; "Mailing City")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMailingState; lvngMailingState)
+                field(lvngMailingState; "Mailing State")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMailingZIPCode; lvngMailingZIPCode)
+                field(lvngMailingZIPCode; "Mailing ZIP Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPropertyAddress; lvngPropertyAddress)
+                field(lvngPropertyAddress; "Property Address")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPropertyAddress2; lvngPropertyAddress2)
+                field(lvngPropertyAddress2; "Property Address 2")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPropertyCity; lvngPropertyCity)
+                field(lvngPropertyCity; "Property City")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPropertyState; lvngPropertyState)
+                field(lvngPropertyState; "Property State")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPropertyZIPCode; lvngPropertyZIPCode)
+                field(lvngPropertyZIPCode; "Property ZIP Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvng203KContractorName; lvng203KContractorName)
+                field(lvng203KContractorName; "203K Contractor Name")
                 {
                     ApplicationArea = All;
                 }
-                field(lvng203KInspectorName; lvng203KInspectorName)
+                field(lvng203KInspectorName; "203K Inspector Name")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngLoanAmount; lvngLoanAmount)
-                {
-                    ApplicationArea = All;
-                }
-
-
-                field(lvngApplicationDate; lvngApplicationDate)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngDateLocked; lvngDateLocked)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngDateClosed; lvngDateClosed)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngDateFunded; lvngDateFunded)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngLoanTerm; lvngLoanTermMonths)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngInterestRate; lvngInterestRate)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngConstructionInteresTRate; lvngConstrInterestRate)
+                field(lvngLoanAmount; "Loan Amount")
                 {
                     ApplicationArea = All;
                 }
 
 
-                field(lvngMonthlyEscrowAmount; lvngMonthlyEscrowAmount)
+                field(lvngApplicationDate; "Application Date")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngMonthlyPaymentAmount; lvngMonthlyPaymentAmount)
+                field(lvngDateLocked; "Date Locked")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngFirstPaymentDue; lvngFirstPaymentDue)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngNextPaymentdate; lvngNextPaymentDate)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngLateFee; lvngLateFee)
+                field(lvngDateClosed; "Date Closed")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngCommissionDate; lvngCommissionDate)
+                field(lvngDateFunded; "Date Funded")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngCommissionBaseAmount; lvngCommissionBaseAmount)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngCommissionBps; lvngCommissionBps)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngCommissionAmount; lvngCommissionAmount)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngWarehouseLineCode; lvngWarehouseLineCode)
+                field(lvngLoanTerm; "Loan Term (Months)")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngBusinessUnitCode; lvngBusinessUnitCode)
+                field(lvngInterestRate; "Interest Rate")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngDimension1Code; lvngGlobalDimension1Code)
+                field(lvngConstructionInteresTRate; "Constr. Interest Rate")
+                {
+                    ApplicationArea = All;
+                }
+
+
+                field(lvngMonthlyEscrowAmount; "Monthly Escrow Amount")
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngMonthlyPaymentAmount; "Monthly Payment Amount")
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngFirstPaymentDue; "First Payment Due")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngNextPaymentdate; "Next Payment Date")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngLateFee; "Late Fee")
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngCommissionDate; "Commission Date")
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngCommissionBaseAmount; "Commission Base Amount")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCommissionBps; "Commission Bps")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngCommissionAmount; "Commission Amount")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngWarehouseLineCode; "Warehouse Line Code")
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngBusinessUnitCode; "Business Unit Code")
+                {
+                    ApplicationArea = All;
+                }
+
+                field(lvngDimension1Code; "Global Dimension 1 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible1;
                 }
-                field(lvngDimension2Code; lvngGlobalDimension2Code)
+                field(lvngDimension2Code; "Global Dimension 2 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible2;
                 }
-                field(lvngDimension3Code; lvngShortcutDimension3Code)
+                field(lvngDimension3Code; "Shortcut Dimension 3 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible3;
                 }
-                field(lvngDimension4Code; lvngShortcutDimension4Code)
+                field(lvngDimension4Code; "Shortcut Dimension 4 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible4;
                 }
-                field(lvngDimension5Code; lvngShortcutDimension5Code)
+                field(lvngDimension5Code; "Shortcut Dimension 5 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible5;
                 }
-                field(lvngDimension6Code; lvngShortcutDimension6Code)
+                field(lvngDimension6Code; "Shortcut Dimension 6 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible6;
                 }
-                field(lvngDimension7Code; lvngShortcutDimension7Code)
+                field(lvngDimension7Code; "Shortcut Dimension 7 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible7;
                 }
-                field(lvngDimension8Code; lvngShortcutDimension8Code)
+                field(lvngDimension8Code; "Shortcut Dimension 8 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible8;
                 }
-                field(lvngLineNo; lvngLineNo)
+                field(lvngLineNo; "Line No.")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngProcessingSchemaCode; lvngProcessingSchemaCode)
+                field(lvngProcessingSchemaCode; "Processing Schema Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngReasonCode; lvngReasonCode)
+                field(lvngReasonCode; "Reason Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCalculatedDocumentAmount; lvngCalculatedDocumentAmount)
+                field(lvngCalculatedDocumentAmount; "Calculated Document Amount")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBlocked; lvngBlocked)
-                {
-                    Visible = false;
-                    ApplicationArea = All;
-                }
-                field(lvngFirstPaymentDueToInvestor; lvngFirstPaymentDueToInvestor)
+                field(lvngBlocked; Blocked)
                 {
                     Visible = false;
                     ApplicationArea = All;
                 }
-                field(lvngDateSold; lvngDateSold)
+                field(lvngFirstPaymentDueToInvestor; "First Payment Due To Investor")
+                {
+                    Visible = false;
+                    ApplicationArea = All;
+                }
+                field(lvngDateSold; "Date Sold")
                 {
                     Visible = false;
                     ApplicationArea = All;
@@ -318,13 +318,13 @@ page 14135106 "lvngFundedJournalLines"
             {
                 Caption = 'Errors';
                 ApplicationArea = All;
-                SubPageLink = lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode), lvngLineNo = field(lvngLineNo);
+                SubPageLink = "Loan Journal Batch Code" = field("Loan Journal Batch Code"), "Line No." = field("Line No.");
             }
             part(lvngValues; lvngLoanImportValuePart)
             {
                 Caption = 'Values';
                 ApplicationArea = All;
-                SubPageLink = lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode), lvngLineNo = field(lvngLineNo);
+                SubPageLink = "Loan Journal Batch Code" = field("Loan Journal Batch Code"), "Line No." = field("Line No.");
             }
         }
     }
@@ -349,12 +349,12 @@ page 14135106 "lvngFundedJournalLines"
                     lvngLoanImportSchema: Record lvngLoanImportSchema;
                 begin
                     lvngLoanImportSchema.reset;
-                    lvngLoanImportSchema.SetRange(lvngLoanJournalBatchType, lvngLoanImportSchema.lvngLoanJournalBatchType::lvngFunded);
+                    lvngLoanImportSchema.SetRange("Loan Journal Batch Type", lvngLoanImportSchema."Loan Journal Batch Type"::lvngFunded);
                     if Page.RunModal(0, lvngLoanImportSchema) = Action::LookupOk then begin
                         Clear(lvngLoanJournalImport);
-                        lvngLoanJournalImport.ReadCSVStream(lvngLoanJournalBatchCode, lvngLoanImportSchema);
+                        lvngLoanJournalImport.ReadCSVStream("Loan Journal Batch Code", lvngLoanImportSchema);
                         Commit();
-                        lvngValidateFundedJournal.ValidateFundedLines(lvngLoanJournalBatchCode);
+                        lvngValidateFundedJournal.ValidateFundedLines("Loan Journal Batch Code");
                         CurrPage.Update(false);
                     end;
                 end;
@@ -372,7 +372,7 @@ page 14135106 "lvngFundedJournalLines"
                 var
                     lvngValidateFundedJournal: Codeunit lvngValidateFundedJournal;
                 begin
-                    lvngValidateFundedJournal.ValidateFundedLines(lvngLoanJournalBatchCode);
+                    lvngValidateFundedJournal.ValidateFundedLines("Loan Journal Batch Code");
                     CurrPage.Update(false);
                 end;
             }
@@ -407,7 +407,7 @@ page 14135106 "lvngFundedJournalLines"
                 var
                     lvngCreateFundedDocuments: Codeunit lvngCreateFundedDocuments;
                 begin
-                    lvngCreateFundedDocuments.CreateDocuments(lvngLoanJournalBatchCode);
+                    lvngCreateFundedDocuments.CreateDocuments("Loan Journal Batch Code");
                 end;
             }
             action(lvngCreateLoanCards)
@@ -422,7 +422,7 @@ page 14135106 "lvngFundedJournalLines"
                 var
                     lvngLoanManagement: Codeunit lvngLoanManagement;
                 begin
-                    lvngLoanManagement.UpdateLoans(lvngLoanJournalBatchCode);
+                    lvngLoanManagement.UpdateLoans("Loan Journal Batch Code");
                 end;
             }
 
@@ -435,7 +435,7 @@ page 14135106 "lvngFundedJournalLines"
                 PromotedCategory = Process;
                 RunObject = page lvngLoanImportValueEdit;
                 RunPageMode = Edit;
-                RunPageLink = lvngLoanJournalBatchCode = field(lvngLoanJournalBatchCode), lvngLineNo = field(lvngLineNo);
+                RunPageLink = "Loan Journal Batch Code" = field("Loan Journal Batch Code"), "Line No." = field("Line No.");
             }
 
             action(lvngShowErrorLinesOnly)
@@ -448,7 +448,7 @@ page 14135106 "lvngFundedJournalLines"
 
                 trigger OnAction()
                 begin
-                    SetRange(lvngErrorExists, true);
+                    SetRange("Error Exists", true);
                     CurrPage.Update(false);
                 end;
             }
@@ -463,7 +463,7 @@ page 14135106 "lvngFundedJournalLines"
 
                 trigger OnAction()
                 begin
-                    SetRange(lvngErrorExists);
+                    SetRange("Error Exists");
                     CurrPage.Update(false);
                 end;
             }
@@ -471,7 +471,7 @@ page 14135106 "lvngFundedJournalLines"
     }
     trigger OnAfterGetRecord()
     begin
-        CalcFields(lvngErrorExists);
+        CalcFields("Error Exists");
     end;
 
     trigger OnOpenPage()

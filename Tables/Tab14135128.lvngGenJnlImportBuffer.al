@@ -247,10 +247,4 @@ table 14135128 "lvngGenJnlImportBuffer"
             Clustered = true;
         }
     }
-
-    procedure A()
-    begin
-
-    end;
-
 }

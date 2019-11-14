@@ -28,8 +28,8 @@ page 14135201 "lvngLoanActivities"
                         lvngLoanDocument: Record lvngLoanDocument;
                     begin
                         lvngLoanDocument.reset;
-                        lvngLoanDocument.SetRange(lvngWarehouseLineCode, lvngFundedDocumentsWarehouseLineCodes[1]);
-                        lvngLoanDocument.SetRange(lvngTransactionType, lvngLoanDocument.lvngTransactionType::lvngFunded);
+                        lvngLoanDocument.SetRange("Warehouse Line Code", lvngFundedDocumentsWarehouseLineCodes[1]);
+                        lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
                         page.Run(0, lvngLoanDocument);
                     end;
                 }
@@ -46,8 +46,8 @@ page 14135201 "lvngLoanActivities"
                         lvngLoanDocument: Record lvngLoanDocument;
                     begin
                         lvngLoanDocument.reset;
-                        lvngLoanDocument.SetRange(lvngWarehouseLineCode, lvngFundedDocumentsWarehouseLineCodes[2]);
-                        lvngLoanDocument.SetRange(lvngTransactionType, lvngLoanDocument.lvngTransactionType::lvngFunded);
+                        lvngLoanDocument.SetRange("Warehouse Line Code", lvngFundedDocumentsWarehouseLineCodes[2]);
+                        lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
                         page.Run(0, lvngLoanDocument);
                     end;
                 }
@@ -64,8 +64,8 @@ page 14135201 "lvngLoanActivities"
                         lvngLoanDocument: Record lvngLoanDocument;
                     begin
                         lvngLoanDocument.reset;
-                        lvngLoanDocument.SetRange(lvngWarehouseLineCode, lvngFundedDocumentsWarehouseLineCodes[3]);
-                        lvngLoanDocument.SetRange(lvngTransactionType, lvngLoanDocument.lvngTransactionType::lvngFunded);
+                        lvngLoanDocument.SetRange("Warehouse Line Code", lvngFundedDocumentsWarehouseLineCodes[3]);
+                        lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
                         page.Run(0, lvngLoanDocument);
                     end;
                 }
@@ -82,8 +82,8 @@ page 14135201 "lvngLoanActivities"
                         lvngLoanDocument: Record lvngLoanDocument;
                     begin
                         lvngLoanDocument.reset;
-                        lvngLoanDocument.SetRange(lvngWarehouseLineCode, lvngFundedDocumentsWarehouseLineCodes[4]);
-                        lvngLoanDocument.SetRange(lvngTransactionType, lvngLoanDocument.lvngTransactionType::lvngFunded);
+                        lvngLoanDocument.SetRange("Warehouse Line Code", lvngFundedDocumentsWarehouseLineCodes[4]);
+                        lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
                         page.Run(0, lvngLoanDocument);
                     end;
                 }
@@ -100,8 +100,8 @@ page 14135201 "lvngLoanActivities"
                         lvngLoanDocument: Record lvngLoanDocument;
                     begin
                         lvngLoanDocument.reset;
-                        lvngLoanDocument.SetRange(lvngWarehouseLineCode, lvngFundedDocumentsWarehouseLineCodes[5]);
-                        lvngLoanDocument.SetRange(lvngTransactionType, lvngLoanDocument.lvngTransactionType::lvngFunded);
+                        lvngLoanDocument.SetRange("Warehouse Line Code", lvngFundedDocumentsWarehouseLineCodes[5]);
+                        lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
                         page.Run(0, lvngLoanDocument);
                     end;
                 }
@@ -118,8 +118,8 @@ page 14135201 "lvngLoanActivities"
                         lvngLoanDocument: Record lvngLoanDocument;
                     begin
                         lvngLoanDocument.reset;
-                        lvngLoanDocument.SetRange(lvngWarehouseLineCode, lvngFundedDocumentsWarehouseLineCodes[6]);
-                        lvngLoanDocument.SetRange(lvngTransactionType, lvngLoanDocument.lvngTransactionType::lvngFunded);
+                        lvngLoanDocument.SetRange("Warehouse Line Code", lvngFundedDocumentsWarehouseLineCodes[6]);
+                        lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
                         page.Run(0, lvngLoanDocument);
                     end;
                 }
@@ -136,8 +136,8 @@ page 14135201 "lvngLoanActivities"
                         lvngLoanDocument: Record lvngLoanDocument;
                     begin
                         lvngLoanDocument.reset;
-                        lvngLoanDocument.SetRange(lvngWarehouseLineCode, lvngFundedDocumentsWarehouseLineCodes[7]);
-                        lvngLoanDocument.SetRange(lvngTransactionType, lvngLoanDocument.lvngTransactionType::lvngFunded);
+                        lvngLoanDocument.SetRange("Warehouse Line Code", lvngFundedDocumentsWarehouseLineCodes[7]);
+                        lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
                         page.Run(0, lvngLoanDocument);
                     end;
                 }
@@ -154,8 +154,8 @@ page 14135201 "lvngLoanActivities"
                         lvngLoanDocument: Record lvngLoanDocument;
                     begin
                         lvngLoanDocument.reset;
-                        lvngLoanDocument.SetRange(lvngWarehouseLineCode, lvngFundedDocumentsWarehouseLineCodes[8]);
-                        lvngLoanDocument.SetRange(lvngTransactionType, lvngLoanDocument.lvngTransactionType::lvngFunded);
+                        lvngLoanDocument.SetRange("Warehouse Line Code", lvngFundedDocumentsWarehouseLineCodes[8]);
+                        lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
                         page.Run(0, lvngLoanDocument);
                     end;
                 }

@@ -14,75 +14,75 @@ page 14135135 "lvngPostedSoldDocSubpage"
         {
             repeater(lvngRepeater)
             {
-                field(lvngAccountType; lvngAccountType)
+                field(lvngAccountType; "Account Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngAccountNo; lvngAccountNo)
+                field(lvngAccountNo; "Account No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBalancingEntry; lvngBalancingEntry)
+                field(lvngBalancingEntry; "Balancing Entry")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngAmount; lvngAmount)
+                field(lvngAmount; Amount)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngReasonCode; lvngReasonCode)
+                field(lvngReasonCode; "Reason Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngGlobalDimension1Code; lvngGlobalDimension1Code)
+                field(lvngGlobalDimension1Code; "Global Dimension 1 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible1;
                 }
-                field(lvngGlobalDimension2Code; lvngGlobalDimension2Code)
+                field(lvngGlobalDimension2Code; "Global Dimension 2 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible2;
                 }
-                field(lvngShortcutDimension3Code; lvngShortcutDimension3Code)
+                field(lvngShortcutDimension3Code; "Shortcut Dimension 3 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible3;
                 }
-                field(lvngShortcutDimension4Code; lvngShortcutDimension4Code)
+                field(lvngShortcutDimension4Code; "Shortcut Dimension 4 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible4;
                 }
-                field(lvngShortcutDimension5Code; lvngShortcutDimension5Code)
+                field(lvngShortcutDimension5Code; "Shortcut Dimension 5 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible5;
                 }
-                field(lvngShortcutDimension6Code; lvngShortcutDimension6Code)
+                field(lvngShortcutDimension6Code; "Shortcut Dimension 6 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible6;
                 }
-                field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
+                field(lvngShortcutDimension7Code; "Shortcut Dimension 7 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible7;
                 }
-                field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
+                field(lvngShortcutDimension8Code; "Shortcut Dimension 8 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible8;
                 }
-                field(lvngBusinessUnitCode; lvngBusinessUnitCode)
+                field(lvngBusinessUnitCode; "Business Unit Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngServicingType; lvngServicingType)
+                field(lvngServicingType; "Servicing Type")
                 {
                     ApplicationArea = All;
                 }

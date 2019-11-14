@@ -12,115 +12,115 @@ page 14135114 "lvngLoanProcessingSchema"
         {
             repeater(lvngRepeater)
             {
-                field(lvngCode; lvngCode)
+                field(lvngCode; Code)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngNoSeries; lvngNoSeries)
+                field(lvngNoSeries; "No. Series")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDocumentTypeOption; lvngDocumentTypeOption)
+                field(lvngDocumentTypeOption; "Document Type Option")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngGlobalSchema; lvngGlobalSchema)
+                field(lvngGlobalSchema; "Global Schema")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngUseGlobalSchemaCode; lvngUseGlobalSchemaCode)
+                field(lvngUseGlobalSchemaCode; "Use Global Schema Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDimension1Rule; lvngDimension1Rule)
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible1;
-                }
-                field(lvngDimension2Rule; lvngDimension2Rule)
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible2;
-                }
-                field(lvngDimension3Rule; lvngDimension3Rule)
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible3;
-                }
-                field(lvngDimension4Rule; lvngDimension4Rule)
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible4;
-                }
-                field(lvngDimension5Rule; lvngDimension5Rule)
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible5;
-                }
-                field(lvngDimension6Rule; lvngDimension6Rule)
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible6;
-                }
-                field(lvngDimension7Rule; lvngDimension7Rule)
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible7;
-                }
-                field(lvngDimension8Rule; lvngDimension8Rule)
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible8;
-                }
-                field(lvngBusinessUnitRule; lvngBusinessUnitRule)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngGlobalDimension1Code; lvngGlobalDimension1Code)
+                field(lvngDimension1Rule; "Dimension 1 Rule")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible1;
                 }
-                field(lvngGlobalDimension2Code; lvngGlobalDimension2Code)
+                field(lvngDimension2Rule; "Dimension 2 Rule")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible2;
                 }
-                field(lvngShortcutDimension3Code; lvngShortcutDimension3Code)
+                field(lvngDimension3Rule; "Dimension 3 Rule")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible3;
                 }
-                field(lvngShortcutDimension4Code; lvngShortcutDimension4Code)
+                field(lvngDimension4Rule; "Dimension 4 Rule")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible4;
                 }
-                field(lvngShortcutDimension5Code; lvngShortcutDimension5Code)
+                field(lvngDimension5Rule; "Dimension 5 Rule")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible5;
                 }
-                field(lvngShortcutDimension6Code; lvngShortcutDimension6Code)
+                field(lvngDimension6Rule; "Dimension 6 Rule")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible6;
                 }
-                field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
+                field(lvngDimension7Rule; "Dimension 7 Rule")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible7;
                 }
-                field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
+                field(lvngDimension8Rule; "Dimension 8 Rule")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible8;
                 }
-                field(lvngBusinessUnitCode; lvngBusinessUnitCode)
+                field(lvngBusinessUnitRule; "Business Unit Rule")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngGlobalDimension1Code; "Global Dimension 1 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible1;
+                }
+                field(lvngGlobalDimension2Code; "Global Dimension 2 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible2;
+                }
+                field(lvngShortcutDimension3Code; "Shortcut Dimension 3 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible3;
+                }
+                field(lvngShortcutDimension4Code; "Shortcut Dimension 4 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible4;
+                }
+                field(lvngShortcutDimension5Code; "Shortcut Dimension 5 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible5;
+                }
+                field(lvngShortcutDimension6Code; "Shortcut Dimension 6 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible6;
+                }
+                field(lvngShortcutDimension7Code; "Shortcut Dimension 7 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible7;
+                }
+                field(lvngShortcutDimension8Code; "Shortcut Dimension 8 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible8;
+                }
+                field(lvngBusinessUnitCode; "Business Unit Code")
                 {
                     ApplicationArea = All;
                 }
@@ -142,7 +142,7 @@ page 14135114 "lvngLoanProcessingSchema"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = page lvngLoanProcessingSchemaLines;
-                RunPageLink = lvngProcessingCode = field (lvngCode);
+                RunPageLink = "Processing Code" = field(Code);
             }
         }
     }

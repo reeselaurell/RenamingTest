@@ -10,19 +10,19 @@ page 14135119 "lvngJournalValidationRules"
         {
             repeater(lvngRepeater)
             {
-                field(lvngLineNo; lvngLineNo)
+                field(lvngLineNo; "Line No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngConditionCode; lvngConditionCode)
+                field(lvngConditionCode; "Condition Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngErrorMessage; lvngErrorMessage)
+                field(lvngErrorMessage; "Error Message")
                 {
                     ApplicationArea = All;
                 }

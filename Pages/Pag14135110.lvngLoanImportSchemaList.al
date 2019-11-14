@@ -12,23 +12,23 @@ page 14135110 "lvngLoanImportSchemaList"
         {
             repeater(Group)
             {
-                field(lvngCode; lvngCode)
+                field(lvngCode; Code)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngLoanJournalBatchType; lvngLoanJournalBatchType)
+                field(lvngLoanJournalBatchType; "Loan Journal Batch Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFieldSeparatorCharacter; lvngFieldSeparatorCharacter)
+                field(lvngFieldSeparatorCharacter; "Field Separator Character")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngSkipLines; lvngSkipLines)
+                field(lvngSkipLines; "Skip Lines")
                 {
                     ApplicationArea = All;
                 }
@@ -51,7 +51,7 @@ page 14135110 "lvngLoanImportSchemaList"
                 ApplicationArea = All;
                 RunObject = page lvngLoanImportSchemaLines;
                 RunPageMode = Edit;
-                RunPageLink = lvngCode = field (lvngCode);
+                RunPageLink = Code = field(Code);
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;

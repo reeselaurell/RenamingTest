@@ -10,15 +10,15 @@ page 14135113 "lvngPostProcessingSchemaLines"
         {
             repeater(lvngRepeater)
             {
-                field(lvngLineNo; lvngLineNo)
+                field(lvngLineNo; "Line No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngType; lvngType)
+                field(lvngType; Type)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFromFieldNo; lvngFromFieldNo)
+                field(lvngFromFieldNo; "From Field No.")
                 {
                     ApplicationArea = All;
 
@@ -28,8 +28,8 @@ page 14135113 "lvngPostProcessingSchemaLines"
                         FieldRec: Record Field;
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
-                        case lvngType of
-                            lvngtype::lvngCopyLoanCardValue:
+                        case Type of
+                            Type::lvngCopyLoanCardValue:
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoan);
@@ -39,16 +39,16 @@ page 14135113 "lvngPostProcessingSchemaLines"
                                     FieldsListPage.LookupMode(true);
                                     if FieldsListPage.RunModal() = Action::LookupOK then begin
                                         FieldsListPage.GetRecord(FieldRec);
-                                        lvngFromFieldNo := FieldRec."No.";
+                                        "From Field No." := FieldRec."No.";
                                     end;
                                 end;
-                            lvngtype::lvngCopyLoanVariableValue, lvngtype::lvngCopyLoanJournalVariableValue, lvngType::lvngDimensionMapping:
+                            Type::lvngCopyLoanVariableValue, Type::lvngCopyLoanJournalVariableValue, Type::lvngDimensionMapping:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
-                                        lvngFromFieldNo := lvngLoanFieldsConfiguration."Field No.";
+                                        "From Field No." := lvngLoanFieldsConfiguration."Field No.";
                                     end;
                                 end;
-                            lvngtype::lvngCopyLoanJournalValue:
+                            Type::lvngCopyLoanJournalValue:
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -58,34 +58,34 @@ page 14135113 "lvngPostProcessingSchemaLines"
                                     FieldsListPage.LookupMode(true);
                                     if FieldsListPage.RunModal() = Action::LookupOK then begin
                                         FieldsListPage.GetRecord(FieldRec);
-                                        lvngFromFieldNo := FieldRec."No.";
+                                        "From Field No." := FieldRec."No.";
                                     end;
                                 end;
                         end;
                     end;
                 }
 
-                field(lvngExpressionCode; lvngExpressionCode)
+                field(lvngExpressionCode; "Expression Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCustomValue; lvngCustomValue)
+                field(lvngCustomValue; "Custom Value")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPriority; lvngPriority)
+                field(lvngPriority; Priority)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngAssignTo; lvngAssignTo)
+                field(lvngAssignTo; "Assign To")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngToFieldNo; lvngToFieldNo)
+                field(lvngToFieldNo; "To Field No.")
                 {
                     ApplicationArea = All;
                     trigger OnLookup(var Text: Text): Boolean
@@ -94,8 +94,8 @@ page 14135113 "lvngPostProcessingSchemaLines"
                         FieldRec: Record Field;
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
-                        case lvngAssignTo of
-                            lvngAssignTo::lvngLoanJournalField:
+                        case "Assign To" of
+                            "Assign To"::lvngLoanJournalField:
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -105,32 +105,32 @@ page 14135113 "lvngPostProcessingSchemaLines"
                                     FieldsListPage.LookupMode(true);
                                     if FieldsListPage.RunModal() = Action::LookupOK then begin
                                         FieldsListPage.GetRecord(FieldRec);
-                                        lvngToFieldNo := FieldRec."No.";
+                                        "To Field No." := FieldRec."No.";
                                     end;
                                 end;
-                            lvngAssignTo::lvngLoanJournalVariableField:
+                            "Assign To"::lvngLoanJournalVariableField:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
-                                        lvngToFieldNo := lvngLoanFieldsConfiguration."Field No.";
+                                        "To Field No." := lvngLoanFieldsConfiguration."Field No.";
                                     end;
                                 end;
                         end;
 
                     end;
                 }
-                field(lvngCopyFieldPart; lvngCopyFieldPart)
+                field(lvngCopyFieldPart; "Copy Field Part")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFromCharacterNo; lvngFromCharacterNo)
+                field(lvngFromCharacterNo; "From Character No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngCharactersCount; lvngCharactersCount)
+                field(lvngCharactersCount; "Characters Count")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngRoundExpression; lvngRoundExpression)
+                field(lvngRoundExpression; "Rounding Expression")
                 {
                     ApplicationArea = All;
                 }

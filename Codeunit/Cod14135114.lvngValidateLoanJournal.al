@@ -10,7 +10,7 @@ codeunit 14135114 "lvngValidateLoanJournal"
         lvngLoanJournalLine: Record lvngLoanJournalLine;
     begin
         lvngLoanJournalLine.reset;
-        lvngLoanJournalLine.SetRange(lvngLoanJournalBatchCode, lvngJournalBatchCode);
+        lvngLoanJournalLine.SetRange("Loan Journal Batch Code", lvngJournalBatchCode);
         lvngLoanJournalLine.FindSet();
         repeat
             lvngLoanJournalErrorMgmt.ClearJournalLineErrors(lvngLoanJournalLine);
@@ -26,19 +26,19 @@ codeunit 14135114 "lvngValidateLoanJournal"
         LoanNoEmptyLbl: Label 'Loan No. can not be blank';
     begin
         GetLoanVisionSetup();
-        if lvngLoanJournalLine.lvngLoanNo = '' then
+        if lvngLoanJournalLine."Loan No." = '' then
             lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, LoanNoEmptyLbl);
-        if lvngLoanJournalLine.lvngSearchName = '' then begin
-            lvngLoanJournalLine.lvngSearchName := StrSubstNo(lvngLoanVisionSetup."Search Name Template", lvngLoanJournalLine.lvngBorrowerFirstName, lvngLoanJournalLine.lvngBorrowerLastName, lvngLoanJournalLine.lvngBorrowerMiddleName);
+        if lvngLoanJournalLine."Search Name" = '' then begin
+            lvngLoanJournalLine."Search Name" := StrSubstNo(lvngLoanVisionSetup."Search Name Template", lvngLoanJournalLine."Borrower First Name", lvngLoanJournalLine."Borrower Last Name", lvngLoanJournalLine."Borrower Middle Name");
             lvngLoanJournalLine.Modify();
         end;
         lvngJournalValidationRule.reset;
-        lvngJournalValidationRule.SetRange(lvngJournalBatchCode, lvngLoanJournalLine.lvngLoanJournalBatchCode);
+        lvngJournalValidationRule.SetRange("Journal Batch Code", lvngLoanJournalLine."Loan Journal Batch Code");
         if lvngJournalValidationRule.FindSet() then begin
             lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
             repeat
-                if not ValidateConditionLine(lvngExpressionValueBuffer, lvngJournalValidationRule.lvngConditionCode) then begin
-                    lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, lvngJournalValidationRule.lvngErrorMessage);
+                if not ValidateConditionLine(lvngExpressionValueBuffer, lvngJournalValidationRule."Condition Code") then begin
+                    lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, lvngJournalValidationRule."Error Message");
                 end;
             until lvngJournalValidationRule.Next() = 0;
         end;

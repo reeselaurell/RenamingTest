@@ -4,80 +4,22 @@ table 14135110 "lvngLoanImportSchemaLine"
     Caption = 'Loan Import Schema Line';
     fields
     {
-        field(1; lvngCode; Code[20])
-        {
-            Caption = 'Code';
-            DataClassification = CustomerContent;
-        }
-        field(2; lvngLineNo; Integer)
-        {
-            Caption = 'Line No.';
-            DataClassification = CustomerContent;
-        }
-        field(5; lvngName; Text[50])
-        {
-            Caption = 'Field Name';
-            DataClassification = CustomerContent;
-        }
-        field(10; lvngFieldType; enum lvngImportFieldType)
-        {
-            Caption = 'Field Type';
-            DataClassification = CustomerContent;
-        }
-        field(11; lvngFieldNo; Integer)
-        {
-            Caption = 'Field No.';
-            DataClassification = CustomerContent;
-        }
-        field(12; lvngTrimOption; enum lvngTrimOption)
-        {
-            Caption = 'Trim';
-            DataClassification = CustomerContent;
-        }
-        field(13; lvngFieldSize; Integer)
-        {
-            Caption = 'Field Size';
-            DataClassification = CustomerContent;
-        }
-        field(14; lvngPaddingCharacter; Text[1])
-        {
-            Caption = 'Padding Character';
-            DataClassification = CustomerContent;
-        }
-
-        field(15; lvngPaddingSide; Enum lvngPaddingSide)
-        {
-            Caption = 'Padding Side';
-            DataClassification = CustomerContent;
-        }
-
-        field(16; lvngBooleanFormat; enum lvngBooleanFormat)
-        {
-            Caption = 'Boolean Format';
-            DataClassification = CustomerContent;
-        }
-
-        field(17; lvngNumbericalFormatting; enum lvngNumericalFormatting)
-        {
-            Caption = 'Numerical Formatting';
-            DataClassification = CustomerContent;
-        }
-        field(18; lvngValueType; enum lvngLoanFieldValueType)
-        {
-            Caption = 'Value Type';
-            DataClassification = CustomerContent;
-        }
-
+        field(1; Code; Code[20]) { DataClassification = CustomerContent; }
+        field(2; "Line No."; Integer) { DataClassification = CustomerContent; }
+        field(5; "Field Name"; Text[50]) { DataClassification = CustomerContent; }
+        field(10; "Field Type"; enum lvngImportFieldType) { DataClassification = CustomerContent; }
+        field(11; "Field No."; Integer) { DataClassification = CustomerContent; }
+        field(12; Trimming; enum lvngTrimOption) { Caption = 'Trim'; DataClassification = CustomerContent; }
+        field(13; "Field Size"; Integer) { DataClassification = CustomerContent; }
+        field(14; "Padding Character"; Text[1]) { DataClassification = CustomerContent; }
+        field(15; "Padding Side"; Enum lvngPaddingSide) { DataClassification = CustomerContent; }
+        field(16; "Boolean Format"; enum lvngBooleanFormat) { DataClassification = CustomerContent; }
+        field(17; "Numerical Formatting"; enum lvngNumericalFormatting) { DataClassification = CustomerContent; }
+        field(18; "Value Type"; enum lvngLoanFieldValueType) { DataClassification = CustomerContent; }
     }
 
     keys
     {
-        key(PK; lvngCode, lvngLineNo)
-        {
-            Clustered = true;
-        }
-
-
+        key(PK; Code, "Line No.") { Clustered = true; }
     }
-
 }

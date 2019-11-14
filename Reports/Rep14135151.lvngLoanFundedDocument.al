@@ -8,21 +8,21 @@ report 14135151 "lvngLoanFundedDocument"
     {
         dataitem(lvngLoanFundedDocument; lvngLoanFundedDocument)
         {
-            RequestFilterFields = lvngDocumentNo;
+            RequestFilterFields = "Document No.";
 
             column(DocumentType; DocumentType)
             {
 
             }
-            column(lvngDocumentNo; lvngDocumentNo)
+            column(lvngDocumentNo; "Document No.")
             {
 
             }
-            column(lvngCustomerNo; lvngCustomerNo)
+            column(lvngCustomerNo; "Customer No.")
             {
 
             }
-            column(lvngLoanNo; lvngLoanNo)
+            column(lvngLoanNo; "Loan No.")
             {
 
             }
@@ -30,11 +30,11 @@ report 14135151 "lvngLoanFundedDocument"
             {
 
             }
-            column(lvngPostingDate; lvngPostingDate)
+            column(lvngPostingDate; "Posting Date")
             {
 
             }
-            column(lvngVoid; lvngVoid)
+            column(lvngVoid; Void)
             {
 
             }
@@ -42,7 +42,7 @@ report 14135151 "lvngLoanFundedDocument"
             {
 
             }
-            column(lvngVoidDocumentNo; lvngVoidDocumentNo)
+            column(lvngVoidDocumentNo; "Void Document No.")
             {
             }
             column(CostCenter; CostCenter)
@@ -64,26 +64,26 @@ report 14135151 "lvngLoanFundedDocument"
 
             dataitem(lvngLoanFundedDocumentLine; lvngLoanFundedDocumentLine)
             {
-                DataItemTableView = sorting(lvngDocumentNo, lvngLineNo);
+                DataItemTableView = sorting("Document No.", "Line No.");
                 DataItemLinkReference = lvngLoanFundedDocument;
-                DataItemLink = lvngDocumentNo = field(lvngDocumentNo);
-                column(lvngAccountNo; lvngAccountNo)
+                DataItemLink = "Document No." = field("Document No.");
+                column(lvngAccountNo; "Account No.")
                 {
 
                 }
-                column(lvngDescription; lvngDescription)
+                column(lvngDescription; Description)
                 {
 
                 }
-                column(lvngAmount; lvngAmount)
+                column(lvngAmount; Amount)
                 {
 
                 }
-                column(lvngBalancingEntry; lvngBalancingEntry)
+                column(lvngBalancingEntry; "Balancing Entry")
                 {
 
                 }
-                column(lvngLineNo; lvngLineNo)
+                column(lvngLineNo; "Line No.")
                 {
 
                 }
@@ -103,7 +103,7 @@ report 14135151 "lvngLoanFundedDocument"
                     Clear(DocumentLineCostCenter);
                     lvngDimensionsManagement.FillDimensionsFromTable(lvngLoanFundedDocumentLine, DimensionValues);
                     DocumentLineCostCenter := GetDimensionValueName(lvngLoanVisionSetup."Cost Center Dimension Code");
-                    ServicingType := Format(lvngServicingType);
+                    ServicingType := Format("Servicing Type");
                 end;
             }
             trigger OnAfterGetRecord()
@@ -113,7 +113,7 @@ report 14135151 "lvngLoanFundedDocument"
                 Clear(LoanType);
                 Clear(State);
                 Clear(DimensionValues);
-                lvngLoan.Get(lvngLoanFundedDocument.lvngLoanNo);
+                lvngLoan.Get(lvngLoanFundedDocument."Loan No.");
                 PropertyAddress := lvngLoan.GetLoanAddress(lvngLoanAddressTypeEnum::lvngProperty);
                 BorrowerName := StrSubstNo(lvngLoanVisionSetup."Search Name Template", lvngLoan."Borrower First Name", lvngloan."Borrower Last Name", lvngLoan."Borrower Middle Name");
                 lvngDimensionsManagement.FillDimensionsFromTable(lvngLoan, DimensionValues);
@@ -121,7 +121,7 @@ report 14135151 "lvngLoanFundedDocument"
                 LoanType := GetDimensionValueName(lvngLoanVisionSetup."Loan Type Dimension Code");
                 State := GetDimensionValueName(lvngLoanVisionSetup."Property State Dimension Code");
                 LoanOfficer := GetDimensionValueName(lvngLoanVisionSetup."Loan Officer Dimension Code");
-                DocumentType := Format(lvngDocumentType);
+                DocumentType := Format("Document Type");
 
 
             end;

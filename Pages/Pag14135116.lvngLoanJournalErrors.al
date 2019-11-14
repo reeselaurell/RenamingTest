@@ -11,7 +11,7 @@ page 14135116 "lvngLoanJournalErrors"
         {
             repeater(lvngRepeater)
             {
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }

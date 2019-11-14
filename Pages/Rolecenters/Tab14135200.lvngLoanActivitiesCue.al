@@ -14,19 +14,19 @@ table 14135200 "lvngLoanActivitiesCue"
         field(10; lvngFundedDocuments; Integer)
         {
             FieldClass = FlowField;
-            CalcFormula = count (lvngLoanDocument where (lvngWarehouseLineCode = field (lvngWarehouseLineCodeFilter), lvngTransactionType = const (lvngFunded)));
+            CalcFormula = count (lvngLoanDocument where("Warehouse Line Code" = field(lvngWarehouseLineCodeFilter), "Transaction Type" = const(lvngFunded)));
             Editable = false;
         }
         field(11; lvngSoldDocuments; Integer)
         {
             FieldClass = FlowField;
-            CalcFormula = count (lvngLoanDocument where (lvngCustomerNo = field (lvngCustomerNoFilter), lvngTransactionType = const (lvngSold)));
+            CalcFormula = count (lvngLoanDocument where("Customer No." = field(lvngCustomerNoFilter), "Transaction Type" = const(lvngSold)));
             Editable = false;
         }
         field(12; lvngServicedDocuments; Integer)
         {
             FieldClass = FlowField;
-            CalcFormula = count (lvngLoanDocument where (lvngTransactionType = const (lvngServiced)));
+            CalcFormula = count (lvngLoanDocument where("Transaction Type" = const(lvngServiced)));
             Editable = false;
         }
         field(100; lvngWarehouseLineCodeFilter; Code[50])

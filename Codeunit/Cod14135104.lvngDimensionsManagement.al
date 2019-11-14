@@ -132,74 +132,74 @@ codeunit 14135104 lvngDimensionsManagement
 
     procedure FillDimensionsFromTable(lvngLoanDocument: Record lvngLoanDocument; var DimensionCodes: array[8] of Code[20])
     begin
-        DimensionCodes[1] := lvngLoanDocument.lvngGlobalDimension1Code;
-        DimensionCodes[2] := lvngLoanDocument.lvngGlobalDimension2Code;
-        DimensionCodes[3] := lvngLoanDocument.lvngShortcutDimension3Code;
-        DimensionCodes[4] := lvngLoanDocument.lvngShortcutDimension4Code;
-        DimensionCodes[5] := lvngLoanDocument.lvngShortcutDimension5Code;
-        DimensionCodes[6] := lvngLoanDocument.lvngShortcutDimension6Code;
-        DimensionCodes[7] := lvngLoanDocument.lvngShortcutDimension7Code;
-        DimensionCodes[8] := lvngLoanDocument.lvngShortcutDimension8Code;
+        DimensionCodes[1] := lvngLoanDocument."Global Dimension 1 Code";
+        DimensionCodes[2] := lvngLoanDocument."Global Dimension 2 Code";
+        DimensionCodes[3] := lvngLoanDocument."Shortcut Dimension 3 Code";
+        DimensionCodes[4] := lvngLoanDocument."Shortcut Dimension 4 Code";
+        DimensionCodes[5] := lvngLoanDocument."Shortcut Dimension 5 Code";
+        DimensionCodes[6] := lvngLoanDocument."Shortcut Dimension 6 Code";
+        DimensionCodes[7] := lvngLoanDocument."Shortcut Dimension 7 Code";
+        DimensionCodes[8] := lvngLoanDocument."Shortcut Dimension 8 Code";
     end;
 
     procedure FillDimensionsFromTable(lvngLoanDocumentLine: Record lvngLoanDocumentLine; var DimensionCodes: array[8] of Code[20])
     begin
-        DimensionCodes[1] := lvngLoanDocumentLine.lvngGlobalDimension1Code;
-        DimensionCodes[2] := lvngLoanDocumentLine.lvngGlobalDimension2Code;
-        DimensionCodes[3] := lvngLoanDocumentLine.lvngShortcutDimension3Code;
-        DimensionCodes[4] := lvngLoanDocumentLine.lvngShortcutDimension4Code;
-        DimensionCodes[5] := lvngLoanDocumentLine.lvngShortcutDimension5Code;
-        DimensionCodes[6] := lvngLoanDocumentLine.lvngShortcutDimension6Code;
-        DimensionCodes[7] := lvngLoanDocumentLine.lvngShortcutDimension7Code;
-        DimensionCodes[8] := lvngLoanDocumentLine.lvngShortcutDimension8Code;
+        DimensionCodes[1] := lvngLoanDocumentLine."Global Dimension 1 Code";
+        DimensionCodes[2] := lvngLoanDocumentLine."Global Dimension 2 Code";
+        DimensionCodes[3] := lvngLoanDocumentLine."Shortcut Dimension 3 Code";
+        DimensionCodes[4] := lvngLoanDocumentLine."Shortcut Dimension 4 Code";
+        DimensionCodes[5] := lvngLoanDocumentLine."Shortcut Dimension 5 Code";
+        DimensionCodes[6] := lvngLoanDocumentLine."Shortcut Dimension 6 Code";
+        DimensionCodes[7] := lvngLoanDocumentLine."Shortcut Dimension 7 Code";
+        DimensionCodes[8] := lvngLoanDocumentLine."Shortcut Dimension 8 Code";
     end;
 
     procedure FillDimensionsFromTable(lvngLoanFundedDocument: Record lvngLoanFundedDocument; var DimensionCodes: array[8] of Code[20])
     begin
-        DimensionCodes[1] := lvngLoanFundedDocument.lvngGlobalDimension1Code;
-        DimensionCodes[2] := lvngLoanFundedDocument.lvngGlobalDimension2Code;
-        DimensionCodes[3] := lvngLoanFundedDocument.lvngShortcutDimension3Code;
-        DimensionCodes[4] := lvngLoanFundedDocument.lvngShortcutDimension4Code;
-        DimensionCodes[5] := lvngLoanFundedDocument.lvngShortcutDimension5Code;
-        DimensionCodes[6] := lvngLoanFundedDocument.lvngShortcutDimension6Code;
-        DimensionCodes[7] := lvngLoanFundedDocument.lvngShortcutDimension7Code;
-        DimensionCodes[8] := lvngLoanFundedDocument.lvngShortcutDimension8Code;
+        DimensionCodes[1] := lvngLoanFundedDocument."Global Dimension 1 Code";
+        DimensionCodes[2] := lvngLoanFundedDocument."Global Dimension 2 Code";
+        DimensionCodes[3] := lvngLoanFundedDocument."Shortcut Dimension 3 Code";
+        DimensionCodes[4] := lvngLoanFundedDocument."Shortcut Dimension 4 Code";
+        DimensionCodes[5] := lvngLoanFundedDocument."Shortcut Dimension 5 Code";
+        DimensionCodes[6] := lvngLoanFundedDocument."Shortcut Dimension 6 Code";
+        DimensionCodes[7] := lvngLoanFundedDocument."Shortcut Dimension 7 Code";
+        DimensionCodes[8] := lvngLoanFundedDocument."Shortcut Dimension 8 Code";
     end;
 
     procedure FillDimensionsFromTable(lvngLoanFundedDocumentLine: Record lvngLoanFundedDocumentLine; var DimensionCodes: array[8] of Code[20])
     begin
-        DimensionCodes[1] := lvngLoanFundedDocumentLine.lvngGlobalDimension1Code;
-        DimensionCodes[2] := lvngLoanFundedDocumentLine.lvngGlobalDimension2Code;
-        DimensionCodes[3] := lvngLoanFundedDocumentLine.lvngShortcutDimension3Code;
-        DimensionCodes[4] := lvngLoanFundedDocumentLine.lvngShortcutDimension4Code;
-        DimensionCodes[5] := lvngLoanFundedDocumentLine.lvngShortcutDimension5Code;
-        DimensionCodes[6] := lvngLoanFundedDocumentLine.lvngShortcutDimension6Code;
-        DimensionCodes[7] := lvngLoanFundedDocumentLine.lvngShortcutDimension7Code;
-        DimensionCodes[8] := lvngLoanFundedDocumentLine.lvngShortcutDimension8Code;
+        DimensionCodes[1] := lvngLoanFundedDocumentLine."Global Dimension 1 Code";
+        DimensionCodes[2] := lvngLoanFundedDocumentLine."Global Dimension 2 Code";
+        DimensionCodes[3] := lvngLoanFundedDocumentLine."Shortcut Dimension 3 Code";
+        DimensionCodes[4] := lvngLoanFundedDocumentLine."Shortcut Dimension 4 Code";
+        DimensionCodes[5] := lvngLoanFundedDocumentLine."Shortcut Dimension 5 Code";
+        DimensionCodes[6] := lvngLoanFundedDocumentLine."Shortcut Dimension 6 Code";
+        DimensionCodes[7] := lvngLoanFundedDocumentLine."Shortcut Dimension 7 Code";
+        DimensionCodes[8] := lvngLoanFundedDocumentLine."Shortcut Dimension 8 Code";
     end;
 
     procedure FillDimensionsFromTable(lvngLoanSoldDocument: Record lvngLoanSoldDocument; var DimensionCodes: array[8] of Code[20])
     begin
-        DimensionCodes[1] := lvngLoanSoldDocument.lvngGlobalDimension1Code;
-        DimensionCodes[2] := lvngLoanSoldDocument.lvngGlobalDimension2Code;
-        DimensionCodes[3] := lvngLoanSoldDocument.lvngShortcutDimension3Code;
-        DimensionCodes[4] := lvngLoanSoldDocument.lvngShortcutDimension4Code;
-        DimensionCodes[5] := lvngLoanSoldDocument.lvngShortcutDimension5Code;
-        DimensionCodes[6] := lvngLoanSoldDocument.lvngShortcutDimension6Code;
-        DimensionCodes[7] := lvngLoanSoldDocument.lvngShortcutDimension7Code;
-        DimensionCodes[8] := lvngLoanSoldDocument.lvngShortcutDimension8Code;
+        DimensionCodes[1] := lvngLoanSoldDocument."Global Dimension 1 Code";
+        DimensionCodes[2] := lvngLoanSoldDocument."Global Dimension 2 Code";
+        DimensionCodes[3] := lvngLoanSoldDocument."Shortcut Dimension 3 Code";
+        DimensionCodes[4] := lvngLoanSoldDocument."Shortcut Dimension 4 Code";
+        DimensionCodes[5] := lvngLoanSoldDocument."Shortcut Dimension 5 Code";
+        DimensionCodes[6] := lvngLoanSoldDocument."Shortcut Dimension 6 Code";
+        DimensionCodes[7] := lvngLoanSoldDocument."Shortcut Dimension 7 Code";
+        DimensionCodes[8] := lvngLoanSoldDocument."Shortcut Dimension 8 Code";
     end;
 
     procedure FillDimensionsFromTable(lvngLoanSoldDocumentLine: Record lvngLoanSoldDocumentLine; var DimensionCodes: array[8] of Code[20])
     begin
-        DimensionCodes[1] := lvngLoanSoldDocumentLine.lvngGlobalDimension1Code;
-        DimensionCodes[2] := lvngLoanSoldDocumentLine.lvngGlobalDimension2Code;
-        DimensionCodes[3] := lvngLoanSoldDocumentLine.lvngShortcutDimension3Code;
-        DimensionCodes[4] := lvngLoanSoldDocumentLine.lvngShortcutDimension4Code;
-        DimensionCodes[5] := lvngLoanSoldDocumentLine.lvngShortcutDimension5Code;
-        DimensionCodes[6] := lvngLoanSoldDocumentLine.lvngShortcutDimension6Code;
-        DimensionCodes[7] := lvngLoanSoldDocumentLine.lvngShortcutDimension7Code;
-        DimensionCodes[8] := lvngLoanSoldDocumentLine.lvngShortcutDimension8Code;
+        DimensionCodes[1] := lvngLoanSoldDocumentLine."Global Dimension 1 Code";
+        DimensionCodes[2] := lvngLoanSoldDocumentLine."Global Dimension 2 Code";
+        DimensionCodes[3] := lvngLoanSoldDocumentLine."Shortcut Dimension 3 Code";
+        DimensionCodes[4] := lvngLoanSoldDocumentLine."Shortcut Dimension 4 Code";
+        DimensionCodes[5] := lvngLoanSoldDocumentLine."Shortcut Dimension 5 Code";
+        DimensionCodes[6] := lvngLoanSoldDocumentLine."Shortcut Dimension 6 Code";
+        DimensionCodes[7] := lvngLoanSoldDocumentLine."Shortcut Dimension 7 Code";
+        DimensionCodes[8] := lvngLoanSoldDocumentLine."Shortcut Dimension 8 Code";
     end;
 
     procedure FillDimensionsFromTable(lvngLoan: Record lvngLoan; var DimensionCodes: array[8] of Code[20])

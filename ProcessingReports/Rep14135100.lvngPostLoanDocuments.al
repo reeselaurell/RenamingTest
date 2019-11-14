@@ -7,7 +7,7 @@ report 14135100 "lvngPostLoanDocuments"
     {
         dataitem(lvngLoanDocument; lvngLoanDocument)
         {
-            RequestFilterFields = lvngTransactionType, lvngPostingDate, lvngDocumentType, lvngDocumentNo, lvngLoanNo;
+            RequestFilterFields = "Transaction Type", "Posting Date", "Document Type", "Document No.", "Loan No.";
             trigger OnPreDataItem()
             begin
                 if not Confirm(DocumentsPostingCountLbl, false, Count()) then

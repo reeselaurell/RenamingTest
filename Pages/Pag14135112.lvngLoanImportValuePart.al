@@ -12,15 +12,15 @@ page 14135112 "lvngLoanImportValuePart"
         {
             repeater(lvngValues)
             {
-                field(lvngFieldNo; lvngFieldNo)
+                field(lvngFieldNo; "Field No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFieldName; lvngFieldName)
+                field(lvngFieldName; "Field Name")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngFieldValue; lvngFieldValue)
+                field(lvngFieldValue; "Field Value")
                 {
                     ApplicationArea = All;
                 }

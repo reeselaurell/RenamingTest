@@ -16,7 +16,7 @@ page 14135103 "lvngLoanList"
         {
             repeater(Group)
             {
-                field(lvngLoanNo; "Loan No.")
+                field(lvngLoanNo; "No.")
                 {
                     ApplicationArea = All;
                 }
@@ -251,7 +251,7 @@ page 14135103 "lvngLoanList"
                 PromotedCategory = Process;
                 RunObject = page lvngLoanCardValuesEdit;
                 RunPageMode = Edit;
-                RunPageLink = "Loan No." = field("Loan No.");
+                RunPageLink = "Loan No." = field("No.");
             }
         }
     }

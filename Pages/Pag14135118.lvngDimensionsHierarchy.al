@@ -12,7 +12,7 @@ page 14135118 "lvngDimensionsHierarchy"
         {
             repeater(lvngRepeater)
             {
-                field(lvngCode; lvngCode)
+                field(lvngCode; Code)
                 {
                     ApplicationArea = All;
                     trigger OnLookup(var Text: Text): Boolean
@@ -25,43 +25,43 @@ page 14135118 "lvngDimensionsHierarchy"
                         if DimensionCode = '' then begin
                             BusinessUnit.reset;
                             if page.RunModal(0, BusinessUnit) = Action::LookupOK then begin
-                                lvngCode := BusinessUnit.Code;
+                                Code := BusinessUnit.Code;
                             end;
                         end else begin
                             DimensionValue.reset;
                             DimensionValue.SetRange("Dimension Code", DimensionCode);
                             if page.RunModal(0, DimensionValue) = Action::LookupOK then begin
-                                lvngCode := DimensionValue.Code;
+                                Code := DimensionValue.Code;
                             end;
                         end;
                     end;
                 }
-                field(lvngDate; lvngDate)
+                field(lvngDate; Date)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngShortcutDimension4Code; lvngShortcutDimension4Code)
+                field(lvngShortcutDimension4Code; "Shortcut Dimension 4 Code")
                 {
                     Visible = Dimension4Visible;
                     ApplicationArea = All;
                 }
-                field(lvngShortcutDimension3Code; lvngShortcutDimension3Code)
+                field(lvngShortcutDimension3Code; "Shortcut Dimension 3 Code")
                 {
                     Visible = Dimension3Visible;
                     ApplicationArea = All;
                 }
-                field(lvngGlobalDimension2Code; lvngGlobalDimension2Code)
+                field(lvngGlobalDimension2Code; "Global Dimension 2 Code")
                 {
                     Visible = Dimension2Visible;
                     ApplicationArea = All;
                 }
-                field(lvngGlobalDimension1Code; lvngGlobalDimension1Code)
+                field(lvngGlobalDimension1Code; "Global Dimension 1 Code")
                 {
                     Visible = Dimension1Visible;
                     ApplicationArea = All;
                 }
 
-                field(lvngBusinessUnitCode; lvngBusinessUnitCode)
+                field(lvngBusinessUnitCode; "Business Unit Code")
                 {
                     Visible = BusinessUnitVisible;
                     ApplicationArea = All;

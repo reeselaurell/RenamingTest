@@ -68,14 +68,14 @@ tableextension 14135100 "lvngGLEntry" extends "G/L Entry" //MyTargetTableId
             Caption = 'Warehouse Line Code';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Warehouse Line Code" where("Loan No." = field(lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."Warehouse Line Code" where("No." = field(lvngLoanNo)));
         }
         field(14135151; lvngBorrowerSearchName; Code[100])
         {
             Caption = 'Borrower Search Name';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Search Name" where("Loan No." = field(lvngLoanNo)));
+            CalcFormula = lookup (lvngLoan."Search Name" where("No." = field(lvngLoanNo)));
         }
         field(14135220; lvngGlobalDimension1Name; Text[50]) { Caption = 'Global Dimension 1 Name'; CaptionClass = GetDimensionName(1); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(1), Code = field("Global Dimension 1 Code"))); }
         field(14135221; lvngGlobalDimension2Name; Text[50]) { Caption = 'Global Dimension 2 Name'; CaptionClass = GetDimensionName(2); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(2), Code = field("Global Dimension 2 Code"))); }
