@@ -131,7 +131,7 @@ codeunit 14135101 "lvngLoanJournalImport"
         end;
 
         case lvngLoanImportSchemaLine."Value Type" of
-            lvngLoanImportSchemaLine."Value Type"::lvngBoolean:
+            lvngLoanImportSchemaLine."Value Type"::Boolean:
                 begin
                     Clear(lvngBooleanField);
                     case lvngLoanImportSchemaLine."Boolean Format" of
@@ -187,7 +187,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                         lvngLoanJournalValue."Field Value" := 'False';
                     lvngLoanJournalValue.Insert(true)
                 end;
-            lvngLoanImportSchemaLine."Value Type"::lvngDate:
+            lvngLoanImportSchemaLine."Value Type"::Date:
                 begin
                     clear(lvngDateField);
                     if not Evaluate(lvngDateField, lvngValue) then
@@ -200,7 +200,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                     lvngLoanJournalValue."Field Value" := Format(lvngDateField);
                     lvngLoanJournalValue.Insert(true)
                 end;
-            lvngLoanImportSchemaLine."Value Type"::lvngDecimal:
+            lvngLoanImportSchemaLine."Value Type"::Decimal:
                 begin
                     Clear(lvngDecimalField);
                     if not Evaluate(lvngDecimalField, lvngValue) then
@@ -219,7 +219,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                     lvngLoanJournalValue."Field Value" := Format(lvngDecimalField);
                     lvngLoanJournalValue.Insert(true)
                 end;
-            lvngLoanImportSchemaLine."Value Type"::lvngInteger:
+            lvngLoanImportSchemaLine."Value Type"::Integer:
                 begin
                     Clear(lvngIntegerField);
                     if not Evaluate(lvngIntegerField, lvngValue) then
@@ -238,7 +238,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                     lvngLoanJournalValue."Field Value" := Format(lvngIntegerField);
                     lvngLoanJournalValue.Insert(true)
                 end;
-            lvngLoanImportSchemaLine."Value Type"::lvngText:
+            lvngLoanImportSchemaLine."Value Type"::Text:
                 begin
                     Clear(lvngLoanJournalValue);
                     lvngLoanJournalValue.Init();
@@ -281,7 +281,7 @@ codeunit 14135101 "lvngLoanJournalImport"
         end;
 
         case lvngLoanImportSchemaLine."Value Type" of
-            lvngLoanImportSchemaLine."Value Type"::lvngBoolean:
+            lvngLoanImportSchemaLine."Value Type"::Boolean:
                 begin
                     Clear(lvngBooleanField);
                     case lvngLoanImportSchemaLine."Boolean Format" of
@@ -327,14 +327,14 @@ codeunit 14135101 "lvngLoanJournalImport"
                     end;
                     lvngFieldRef.Validate(lvngBooleanField);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::lvngDate:
+            lvngLoanImportSchemaLine."Value Type"::Date:
                 begin
                     Clear(lvngDateField);
                     if not Evaluate(lvngDateField, lvngValue) then
                         Error(lvngDateStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name");
                     lvngFieldRef.Validate(lvngDateField);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::lvngDecimal:
+            lvngLoanImportSchemaLine."Value Type"::Decimal:
                 begin
                     Clear(lvngDecimalField);
                     if not Evaluate(lvngDecimalField, lvngValue) then
@@ -347,7 +347,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                         lvngDecimalField := -lvngDecimalField;
                     lvngFieldRef.Validate(lvngDecimalField);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::lvngInteger:
+            lvngLoanImportSchemaLine."Value Type"::Integer:
                 begin
                     Clear(lvngIntegerField);
                     if not Evaluate(lvngIntegerField, lvngValue) then
@@ -360,7 +360,7 @@ codeunit 14135101 "lvngLoanJournalImport"
                         lvngIntegerField := -lvngIntegerField;
                     lvngFieldRef.Validate(lvngIntegerField);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::lvngText:
+            lvngLoanImportSchemaLine."Value Type"::Text:
                 begin
                     lvngFieldRef.Validate(CopyStr(lvngValue, 1, lvngFieldRef.Length()));
                 end;

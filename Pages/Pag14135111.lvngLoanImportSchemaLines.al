@@ -38,19 +38,19 @@ page 14135111 "lvngLoanImportSchemaLines"
                                     case FieldRec.Type of
                                         Fieldrec.Type::Integer:
                                             begin
-                                                "Value Type" := "Value Type"::lvngInteger;
+                                                "Value Type" := "Value Type"::Integer;
                                             end;
                                         FieldRec.Type::Boolean:
                                             begin
-                                                "Value Type" := "Value Type"::lvngBoolean;
+                                                "Value Type" := "Value Type"::Boolean;
                                             end;
                                         FieldRec.Type::Decimal:
                                             begin
-                                                "Value Type" := "Value Type"::lvngDecimal;
+                                                "Value Type" := "Value Type"::Decimal;
                                             end;
                                         FieldRec.Type::Date:
                                             begin
-                                                "Value Type" := "Value Type"::lvngDate;
+                                                "Value Type" := "Value Type"::Date;
                                             end;
                                     end;
                                 end;
@@ -85,19 +85,19 @@ page 14135111 "lvngLoanImportSchemaLines"
                                         case FieldRec.Type of
                                             Fieldrec.Type::Integer:
                                                 begin
-                                                    "Value Type" := "Value Type"::lvngInteger;
+                                                    "Value Type" := "Value Type"::Integer;
                                                 end;
                                             FieldRec.Type::Boolean:
                                                 begin
-                                                    "Value Type" := "Value Type"::lvngBoolean;
+                                                    "Value Type" := "Value Type"::Boolean;
                                                 end;
                                             FieldRec.Type::Decimal:
                                                 begin
-                                                    "Value Type" := "Value Type"::lvngDecimal;
+                                                    "Value Type" := "Value Type"::Decimal;
                                                 end;
                                             FieldRec.Type::Date:
                                                 begin
-                                                    "Value Type" := "Value Type"::lvngDate;
+                                                    "Value Type" := "Value Type"::Date;
                                                 end;
                                         end;
                                     end;

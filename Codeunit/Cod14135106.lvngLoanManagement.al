@@ -1663,19 +1663,19 @@ codeunit 14135106 "lvngLoanManagement"
         end;
 
         case lvngLoanFieldsConfigurationTemp."Value Type" of
-            lvngloanfieldsconfigurationtemp."Value Type"::lvngBoolean:
+            lvngloanfieldsconfigurationtemp."Value Type"::Boolean:
                 begin
                     if evaluate(lvngLoanValue."Boolean Value", lvngLoanValue."Field Value") then;
                 end;
-            lvngloanfieldsconfigurationtemp."Value Type"::lvngDate:
+            lvngloanfieldsconfigurationtemp."Value Type"::Date:
                 begin
                     if evaluate(lvngLoanValue."Date Value", lvngLoanValue."Field Value") then;
                 end;
-            lvngloanfieldsconfigurationtemp."Value Type"::lvngDecimal:
+            lvngloanfieldsconfigurationtemp."Value Type"::Decimal:
                 begin
                     if evaluate(lvngLoanValue."Decimal Value", lvngLoanValue."Field Value") then;
                 end;
-            lvngloanfieldsconfigurationtemp."Value Type"::lvngInteger:
+            lvngloanfieldsconfigurationtemp."Value Type"::Integer:
                 begin
                     if evaluate(lvngLoanValue."Integer Value", lvngLoanValue."Field Value") then;
                 end;

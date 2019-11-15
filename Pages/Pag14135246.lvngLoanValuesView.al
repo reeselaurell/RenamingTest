@@ -348,7 +348,7 @@ page 14135246 lvngLoanValuesView
                     if LoanValue.Get(Loan."No.", LoanLevelReportSchemaLine."Value Field No.") then begin
                         LoanFieldsConfiguration.Get(LoanValue."Field No.");
                         case LoanFieldsConfiguration."Value Type" of
-                            LoanFieldsConfiguration."Value Type"::lvngBoolean:
+                            LoanFieldsConfiguration."Value Type"::Boolean:
                                 begin
                                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngText;
                                     if LoanValue."Boolean Value" then
@@ -356,19 +356,19 @@ page 14135246 lvngLoanValuesView
                                     else
                                         ValueBuffer."Raw Value" := NoTxt;
                                 end;
-                            LoanFieldsConfiguration."Value Type"::lvngDate:
+                            LoanFieldsConfiguration."Value Type"::Date:
                                 begin
                                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngDate;
                                     ValueBuffer."Date Value" := LoanValue."Date Value";
                                     ValueBuffer."Raw Value" := Format(ValueBuffer."Date Value");
                                 end;
-                            LoanFieldsConfiguration."Value Type"::lvngDecimal:
+                            LoanFieldsConfiguration."Value Type"::Decimal:
                                 begin
                                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngNumber;
                                     ValueBuffer."Numeric Value" := LoanValue."Decimal Value";
                                     ValueBuffer."Raw Value" := Format(ValueBuffer."Numeric Value");
                                 end;
-                            LoanFieldsConfiguration."Value Type"::lvngInteger:
+                            LoanFieldsConfiguration."Value Type"::Integer:
                                 begin
                                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngNumber;
                                     ValueBuffer."Numeric Value" := LoanValue."Integer Value";

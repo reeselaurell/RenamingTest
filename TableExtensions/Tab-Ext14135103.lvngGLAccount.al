@@ -22,7 +22,7 @@ tableextension 14135103 "lvngGLAccount" extends "G/L Account"
         {
             Caption = 'Reconciliation Field No.';
             DataClassification = CustomerContent;
-            TableRelation = lvngLoanFieldsConfiguration."Field No." where("Value Type" = const(lvngDecimal));
+            TableRelation = lvngLoanFieldsConfiguration."Field No." where("Value Type" = const(Decimal));
 
         }
         field(14135105; lvngReportGrouping; Option)

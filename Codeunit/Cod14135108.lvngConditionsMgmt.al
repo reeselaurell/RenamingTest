@@ -76,15 +76,15 @@ codeunit 14135108 "lvngConditionsMgmt"
                     lvngExpressionValueBuffer.Value := lvngLoanValue."Field Value";
                 end else begin
                     case lvngLoanFieldsConfigurationTemp."Value Type" of
-                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngBoolean:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::Boolean:
                             begin
                                 lvngExpressionValueBuffer.Value := 'False';
                             end;
-                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngDecimal:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::Decimal:
                             begin
                                 lvngExpressionValueBuffer.Value := '0.00';
                             end;
-                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngInteger:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::Integer:
                             begin
                                 lvngExpressionValueBuffer.Value := '0';
                             end;
@@ -175,15 +175,15 @@ codeunit 14135108 "lvngConditionsMgmt"
                     lvngExpressionValueBuffer.Value := lvngLoanJournalValue."Field Value";
                 end else begin
                     case lvngLoanFieldsConfigurationTemp."Value Type" of
-                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngBoolean:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::Boolean:
                             begin
                                 lvngExpressionValueBuffer.Value := 'False';
                             end;
-                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngDecimal:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::Decimal:
                             begin
                                 lvngExpressionValueBuffer.Value := '0.00';
                             end;
-                        lvngLoanFieldsConfigurationTemp."Value Type"::lvngInteger:
+                        lvngLoanFieldsConfigurationTemp."Value Type"::Integer:
                             begin
                                 lvngExpressionValueBuffer.Value := '0';
                             end;
