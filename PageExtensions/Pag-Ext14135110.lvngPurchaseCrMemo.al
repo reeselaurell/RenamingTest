@@ -117,7 +117,7 @@ pageextension 14135110 "lvngPurchaseCrMemo" extends "Purchase Credit Memo" //MyT
                 trigger OnAction()
                 var
                     lvngPurchFileImportManagement: codeunit lvngPurchFileImportManagement;
-                    lvngDocumentType: enum lvngDocumentType;
+                    lvngDocumentType: enum lvngLoanDocumentType;
                     lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer temporary;
                     lvngImportBufferError: Record lvngImportBufferError temporary;
                     lvngJournalDataImport: Page lvngJournalDataImport;
@@ -131,7 +131,7 @@ pageextension 14135110 "lvngPurchaseCrMemo" extends "Purchase Credit Memo" //MyT
                         lvngJournalDataImport.SetParams(lvngGenJnlImportBuffer, lvngImportBufferError);
                         lvngJournalDataImport.Run();
                     end else begin
-                        lvngPurchFileImportManagement.CreatePurchaseLines(lvngGenJnlImportBuffer, lvngDocumentType::lvngCreditMemo, "No.");
+                        lvngPurchFileImportManagement.CreatePurchaseLines(lvngGenJnlImportBuffer, lvngDocumentType::"Credit Memo", "No.");
                     end;
                     CurrPage.Update(false);
                 end;

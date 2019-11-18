@@ -1,17 +1,8 @@
-enum 14135113 "lvngProcessingDimensionRule"
+enum 14135113 lvngProcessingDimensionRule
 {
     Extensible = false;
 
-    value(0; lvngJournalLine)
-    {
-        Caption = 'Journal Line';
-    }
-    value(1; lvngBlank)
-    {
-        Caption = 'Blank';
-    }
-    value(2; lvngDefined)
-    {
-        Caption = 'Defined';
-    }
+    value(0; "Journal Line") { Caption = 'Journal Line'; }
+    value(1; Blank) { Caption = 'Blank'; }
+    value(2; Defined) { Caption = 'Defined'; }
 }

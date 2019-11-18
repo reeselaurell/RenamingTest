@@ -54,7 +54,7 @@ page 14135235 lvngDimensionPerformanceView
 
                 trigger OnAction()
                 begin
-                    ExportToExcel(GridExportMode::lvngXlsx);
+                    ExportToExcel(GridExportMode::Xlsx);
                 end;
             }
             action(PdfExport)
@@ -68,7 +68,7 @@ page 14135235 lvngDimensionPerformanceView
 
                 trigger OnAction()
                 begin
-                    ExportToExcel(GridExportMode::lvngPdf);
+                    ExportToExcel(GridExportMode::Pdf);
                 end;
             }
             action(HtmlExport)
@@ -81,7 +81,7 @@ page 14135235 lvngDimensionPerformanceView
 
                 trigger OnAction()
                 begin
-                    ExportToExcel(GridExportMode::lvngHtml);
+                    ExportToExcel(GridExportMode::Html);
                 end;
             }
         }
@@ -161,7 +161,7 @@ page 14135235 lvngDimensionPerformanceView
                 DimensionValue.Get(BandSchema."Dimension Code", DynamicBandLink."Dimension Value Code");
                 TempBandLine."Header Description" := DimensionValue.Name;
                 TempBandLine."Dimension Filter" := DimensionValue.Code;
-                TempBandLine."Band Type" := TempBandLine."Band Type"::lvngNormal;
+                TempBandLine."Band Type" := TempBandLine."Band Type"::Normal;
                 LineNo += 1;
                 TempBandLine.Insert();
             until DynamicBandLink.Next() = 0;
@@ -181,7 +181,7 @@ page 14135235 lvngDimensionPerformanceView
 
         TempBandLine.Reset();
         TempBandLine.SetRange("Schema Code", BandSchema.Code);
-        TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngNormal);
+        TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::Normal);
         TempBandLine.FindSet();
         repeat
             BandFilter := SystemFilter;
@@ -191,13 +191,13 @@ page 14135235 lvngDimensionPerformanceView
 
         TempBandLine.Reset();
         TempBandLine.SetRange("Schema Code", BandSchema.Code);
-        TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngTotals);
+        TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::Totals);
         if TempBandLine.FindSet() then
             Error(NoDimensionPerformanceTotalsErr);
 
         TempBandLine.Reset();
         TempBandLine.SetRange("Schema Code", BandSchema.Code);
-        TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::lvngFormula);
+        TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::Formula);
         if TempBandLine.FindSet() then
             repeat
                 BandFilter := SystemFilter;
@@ -234,20 +234,20 @@ page 14135235 lvngDimensionPerformanceView
         GLEntries: Page lvngPerformanceGLEntries;
     begin
         TempBandLine.Get(BandSchema.Code, BandIndex);
-        if TempBandLine."Band Type" = TempBandLine."Band Type"::lvngNormal then begin
+        if TempBandLine."Band Type" = TempBandLine."Band Type"::Normal then begin
             RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
             CalcUnit.Get(RowLine."Calculation Unit Code");
             BandFilter := SystemFilter;
             PerformanceMgmt.ApplyDimensionBandFilter(BandFilter, BandSchema, TempBandLine);
             case CalcUnit."Lookup Source" of
-                CalcUnit."Lookup Source"::lvngLoanCard:
+                CalcUnit."Lookup Source"::"Loan Card":
                     begin
                         Loan.Reset();
                         PerformanceMgmt.ApplyLoanFilter(Loan, CalcUnit, BandFilter);
                         LoanList.SetTableView(Loan);
                         LoanList.RunModal();
                     end;
-                CalcUnit."Lookup Source"::lvngLedgerEntries:
+                CalcUnit."Lookup Source"::"Ledger Entries":
                     begin
                         GLEntry.Reset();
                         PerformanceMgmt.ApplyGLFilter(GLEntry, CalcUnit, BandFilter);

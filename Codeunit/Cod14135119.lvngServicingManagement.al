@@ -174,8 +174,8 @@ codeunit 14135119 "lvngServicingManagement"
                 lvngLineNo := 1000;
                 Clear(lvngLoanDocument);
                 lvngLoanDocument.Init();
-                lvngLoanDocument.validate("Transaction Type", lvngLoanDocument."Transaction Type"::lvngServiced);
-                lvngLoanDocument.validate("Document Type", lvngLoanDocument."Document Type"::lvngInvoice);
+                lvngLoanDocument.validate("Transaction Type", lvngLoanDocument."Transaction Type"::Serviced);
+                lvngLoanDocument.validate("Document Type", lvngLoanDocument."Document Type"::Invoice);
                 lvngLoanDocument.validate("Document No.", NoSeriesManagement.DoGetNextNo(lvngLoanServicingSetup.lvngServicedNoSeries, TODAY, true, false));
                 lvngLoanDocument.validate("Customer No.", lvngServicingWorksheet.lvngCustomerNo);
                 lvngLoanDocument.validate("Loan No.", lvngServicingWorksheet.lvngLoanNo);
@@ -188,7 +188,7 @@ codeunit 14135119 "lvngServicingManagement"
                 lvngLoanDocumentLine.Validate("Account Type", lvngLoanDocumentLine."Account Type"::"G/L Account");
                 lvngLoanDocumentLine."Line No." := lvngLineNo;
                 lvngLoanDocumentLine.Amount := lvngServicingWorksheet.lvngInterestAmount;
-                lvngLoanDocumentLine."Servicing Type" := lvngLoanDocumentLine."Servicing Type"::lvngInterest;
+                lvngLoanDocumentLine."Servicing Type" := lvngLoanDocumentLine."Servicing Type"::Interest;
                 lvngLoanDocumentLine.Insert(true);
                 lvngLineNo := lvngLineNo + 1000;
             end;

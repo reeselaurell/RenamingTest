@@ -57,9 +57,9 @@ page 14135151 "lvngServicingDocuments"
                 ApplicationArea = All;
                 trigger OnAction()
                 begin
-                    if lvngServicingDocumentType = lvngServicingDocumentType::lvngInvoice then
+                    if lvngServicingDocumentType = lvngServicingDocumentType::Invoice then
                         Page.Run(Page::lvngServicingInvoice, Rec);
-                    if lvngServicingDocumentType = lvngServicingDocumentType::lvngCreditMemo then
+                    if lvngServicingDocumentType = lvngServicingDocumentType::"Credit Memo" then
                         Page.Run(Page::lvngServicingCrMemo, Rec);
                 end;
             }

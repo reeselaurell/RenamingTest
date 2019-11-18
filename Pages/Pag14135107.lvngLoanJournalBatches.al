@@ -87,7 +87,7 @@ page 14135107 "lvngLoanJournalBatches"
                     lvngLoanJournalLine: Record lvngLoanJournalLine;
                 begin
                     case "Loan Journal Type" of
-                        "Loan Journal Type"::lvngFunded:
+                        "Loan Journal Type"::Funded:
                             begin
                                 Clear(lvngFundedJournalLinesPage);
                                 lvngLoanJournalLine.Reset();
@@ -95,7 +95,7 @@ page 14135107 "lvngLoanJournalBatches"
                                 lvngFundedJournalLinesPage.SetTableView(lvngLoanJournalLine);
                                 lvngFundedJournalLinesPage.Run();
                             end;
-                        "Loan Journal Type"::lvngSold:
+                        "Loan Journal Type"::Sold:
                             begin
                                 Clear(lvngSoldJournalLinesPage);
                                 lvngLoanJournalLine.Reset();
@@ -103,7 +103,7 @@ page 14135107 "lvngLoanJournalBatches"
                                 lvngSoldJournalLinesPage.SetTableView(lvngLoanJournalLine);
                                 lvngSoldJournalLinesPage.Run();
                             end;
-                        "Loan Journal Type"::lvngLoan:
+                        "Loan Journal Type"::Loan:
                             begin
                                 Clear(lvngLoanJournalLinesPage);
                                 lvngLoanJournalLine.Reset();

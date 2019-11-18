@@ -90,13 +90,13 @@ codeunit 14135104 lvngDimensionsManagement
     procedure GetHierarchyDimensionNo(lvngHierarchyLevels: Enum lvngHierarchyLevels): Integer;
     begin
         case lvngHierarchyLevels of
-            lvngHierarchyLevels::lvngDimension1:
+            lvngHierarchyLevels::"Dimension 1":
                 exit(1);
-            lvngHierarchyLevels::lvngDimension2:
+            lvngHierarchyLevels::"Dimension 2":
                 exit(2);
-            lvngHierarchyLevels::lvngDimension3:
+            lvngHierarchyLevels::"Dimension 3":
                 exit(3);
-            lvngHierarchyLevels::lvngDimension4:
+            lvngHierarchyLevels::"Dimension 4":
                 exit(4);
         end;
         exit(5);

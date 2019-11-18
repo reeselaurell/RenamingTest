@@ -6,7 +6,7 @@ table 14135125 lvngLoanSoldDocumentLine
     {
         field(2; "Document No."; Code[20]) { DataClassification = CustomerContent; }
         field(3; "Line No."; Integer) { DataClassification = CustomerContent; }
-        field(10; "Account Type"; enum lvngAccountType) { DataClassification = CustomerContent; }
+        field(10; "Account Type"; enum lvngLoanAccountType) { DataClassification = CustomerContent; }
         field(11; "Account No."; Code[20]) { DataClassification = CustomerContent; TableRelation = if ("Account Type" = const("G/L Account")) "G/L Account"."No." where("Account Type" = const(Posting), Blocked = const(false)) else if ("Account Type" = const("Bank Account")) "Bank Account" where(Blocked = const(false)); }
         field(12; "Reason Code"; Code[10]) { DataClassification = CustomerContent; TableRelation = "Reason Code"; }
         field(13; Description; Text[50]) { DataClassification = CustomerContent; }

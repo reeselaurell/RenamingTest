@@ -28,7 +28,7 @@ page 14135111 "lvngLoanImportSchemaLines"
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case "Field Type" of
-                            "Field Type"::lvngTable:
+                            "Field Type"::Table:
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -54,7 +54,7 @@ page 14135111 "lvngLoanImportSchemaLines"
                                             end;
                                     end;
                                 end;
-                            "Field Type"::lvngVariable:
+                            "Field Type"::Variable:
                                 begin
                                     lvngLoanFieldsConfiguration.Get("Field No.");
                                     "Field Name" := lvngLoanFieldsConfiguration."Field Name";
@@ -70,7 +70,7 @@ page 14135111 "lvngLoanImportSchemaLines"
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case "Field Type" of
-                            "Field Type"::lvngTable:
+                            "Field Type"::Table:
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -102,7 +102,7 @@ page 14135111 "lvngLoanImportSchemaLines"
                                         end;
                                     end;
                                 end;
-                            "Field Type"::lvngVariable:
+                            "Field Type"::Variable:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
                                         "Field No." := lvngLoanFieldsConfiguration."Field No.";
@@ -122,7 +122,7 @@ page 14135111 "lvngLoanImportSchemaLines"
                 {
                     ApplicationArea = All;
                 }
-                field(lvngNumbericalFormatting; "Numerical Formatting")
+                field(lvngNumbericalFormatting; "Numeric Format")
                 {
                     ApplicationArea = All;
                 }

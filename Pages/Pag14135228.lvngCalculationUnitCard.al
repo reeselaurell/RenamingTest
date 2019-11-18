@@ -16,24 +16,24 @@ page 14135228 lvngCalculationUnitCard
             }
             group(Constant)
             {
-                Visible = Type = Type::lvngConstant;
+                Visible = Type = Type::Constant;
 
                 field("Constant Value"; "Constant Value") { ApplicationArea = All; }
             }
             group(Lookup)
             {
-                Visible = (Type = Type::lvngAmountLookup) or (Type = Type::lvngCountLookup);
+                Visible = (Type = Type::"Amount Lookup") or (Type = Type::"Count Lookup");
 
                 field("Lookup Source"; "Lookup Source") { ApplicationArea = All; }
                 group("Loan Card")
                 {
-                    Visible = "Lookup Source" = "Lookup Source"::lvngLoanCard;
+                    Visible = "Lookup Source" = "Lookup Source"::"Loan Card";
 
                     field("Based On Date"; "Based On Date") { ApplicationArea = All; }
                 }
                 group("Ledger Entries")
                 {
-                    Visible = "Lookup Source" = "Lookup Source"::lvngLedgerEntries;
+                    Visible = "Lookup Source" = "Lookup Source"::"Ledger Entries";
 
                     field("Account No. Filter"; "Account No. Filter") { ApplicationArea = All; }
                     field("Amount Type"; "Amount Type") { ApplicationArea = All; }
@@ -41,7 +41,7 @@ page 14135228 lvngCalculationUnitCard
             }
             group(Expression)
             {
-                Visible = Type = Type::lvngExpression;
+                Visible = Type = Type::Expression;
 
                 grid(ExpressionCode)
                 {
@@ -75,7 +75,7 @@ page 14135228 lvngCalculationUnitCard
             }
             group("Provider Value")
             {
-                Visible = Type = Type::lvngProviderValue;
+                Visible = Type = Type::"Provider Value";
 
                 field("Provider Metadata"; "Provider Metadata") { ApplicationArea = All; }
             }

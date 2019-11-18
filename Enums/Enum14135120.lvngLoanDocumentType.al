@@ -1,4 +1,4 @@
-enum 14135140 lvngServicingDocumentType
+enum 14135120 lvngLoanDocumentType
 {
     Extensible = false;
 

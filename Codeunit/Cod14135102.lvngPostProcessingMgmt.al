@@ -33,35 +33,35 @@ codeunit 14135102 "lvngPostProcessingMgmt"
             lvngPostProcessingSchemaLine.FindSet();
             repeat
                 case lvngPostProcessingSchemaLine.Type of
-                    lvngPostProcessingSchemaLine.Type::lvngCopyLoanCardValue:
+                    lvngPostProcessingSchemaLine.Type::"Copy Loan Card Value":
                         begin
                             CopyLoanCardValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
                         end;
-                    lvngPostProcessingSchemaLine.Type::lvngCopyLoanJournalValue:
+                    lvngPostProcessingSchemaLine.Type::"Copy Loan Journal Value":
                         begin
                             CopyLoanJournalValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
                         end;
-                    lvngPostProcessingSchemaLine.Type::lvngCopyLoanJournalVariableValue:
+                    lvngPostProcessingSchemaLine.Type::"Copy Loan Journal Variable Value":
                         begin
                             CopyLoanJournalVariableValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
                         end;
-                    lvngPostProcessingSchemaLine.Type::lvngCopyLoanVariableValue:
+                    lvngPostProcessingSchemaLine.Type::"Copy Loan Variable Value":
                         begin
                             CopyLoanVariableValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
                         end;
-                    lvngPostProcessingSchemaLine.Type::lvngExpression:
+                    lvngPostProcessingSchemaLine.Type::Expression:
                         begin
                             CalculateExpression(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
                         end;
-                    lvngPostProcessingSchemaLine.Type::lvngSwitchExpression:
+                    lvngPostProcessingSchemaLine.Type::"Switch Expression":
                         begin
                             CalculateSwitch(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
                         end;
-                    lvngPostProcessingSchemaLine.Type::lvngDimensionMapping:
+                    lvngPostProcessingSchemaLine.Type::"Dimension Mapping":
                         begin
                             MapImportedDimension(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
                         end;
-                    lvngPostProcessingSchemaLine.Type::lvngAssignCustomValue:
+                    lvngPostProcessingSchemaLine.Type::"Assign Custom Value":
                         begin
                             AssignCustomValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
                         end;
@@ -96,7 +96,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngHierarchyBasedOnDate: Date;
     begin
         case lvngLoanJournalBatch."Dimension Import Rule" of
-            lvngloanjournalbatch."Dimension Import Rule"::lvngCopyAllFromLoan:
+            lvngloanjournalbatch."Dimension Import Rule"::"Copy All From Loan":
                 begin
                     if lvngloan.Get(lvngLoanJournalLine."Loan No.") then begin
                         lvngLoanJournalLine."Global Dimension 1 Code" := lvngloan."Global Dimension 1 Code";
@@ -111,7 +111,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                         lvngLoanJournalLine.Modify();
                     end;
                 end;
-            lvngLoanJournalBatch."Dimension Import Rule"::lvngCopyAllFromLoanIfEmpty:
+            lvngLoanJournalBatch."Dimension Import Rule"::"Copy All From Loan If Empty":
                 begin
                     if lvngloan.Get(lvngLoanJournalLine."Loan No.") then begin
                         if lvngLoanJournalLine."Global Dimension 1 Code" = '' then
@@ -150,17 +150,17 @@ codeunit 14135102 "lvngPostProcessingMgmt"
             lvngDimensionHierarchy.reset;
             lvngDimensionHierarchy.Ascending(false);
             case lvngLoanJournalBatch."Dimension Hierarchy Date" of
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::lvngApplicationDate:
+                lvngLoanJournalBatch."Dimension Hierarchy Date"::Application:
                     lvngHierarchyBasedOnDate := lvngLoanJournalLine."Application Date";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::lvngCommissionDate:
+                lvngLoanJournalBatch."Dimension Hierarchy Date"::Commission:
                     lvngHierarchyBasedOnDate := lvngLoanJournalLine."Commission Date";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::lvngDateClosed:
+                lvngLoanJournalBatch."Dimension Hierarchy Date"::Closed:
                     lvngHierarchyBasedOnDate := lvngLoanJournalLine."Date Closed";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::lvngDateFunded:
+                lvngLoanJournalBatch."Dimension Hierarchy Date"::Funded:
                     lvngHierarchyBasedOnDate := lvngLoanJournalLine."Date Funded";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::lvngDateLocked:
+                lvngLoanJournalBatch."Dimension Hierarchy Date"::Locked:
                     lvngHierarchyBasedOnDate := lvngLoanJournalLine."Date Locked";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::lvngDateSold:
+                lvngLoanJournalBatch."Dimension Hierarchy Date"::Sold:
                     lvngHierarchyBasedOnDate := lvngLoanJournalLine."Date Sold";
             end;
             lvngDimensionHierarchy.SetFilter(Date, '..%1', lvngHierarchyBasedOnDate);
@@ -191,7 +191,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngImportDimensionMapping: Record lvngImportDimensionMapping;
         lvngLoanJournalValue: Record lvngLoanJournalValue;
     begin
-        if lvngPostProcessingSchemaLine."Assign To" = lvngPostProcessingSchemaLine."Assign To"::lvngLoanJournalField then begin
+        if lvngPostProcessingSchemaLine."Assign To" = lvngPostProcessingSchemaLine."Assign To"::"Loan Journal Field" then begin
             if not lvngLoanJournalValue.Get(lvngLoanJournalLine."Loan Journal Batch Code", lvngLoanJournalLine."Line No.", lvngPostProcessingSchemaLine."From Field No.") then
                 exit;
             GetGLSetup();
@@ -370,7 +370,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         lvngDecimalValue: Decimal;
     begin
         case lvngPostProcessingSchemaLine."Assign To" of
-            lvngPostProcessingSchemaLine."Assign To"::lvngLoanJournalVariableField:
+            lvngPostProcessingSchemaLine."Assign To"::"Loan Journal Variable Field":
                 begin
                     if not lvngLoanJournalValue.Get(lvngLoanJournalLine."Loan Journal Batch Code", lvngLoanJournalLine."Line No.", lvngPostProcessingSchemaLine."To Field No.") then begin
                         Clear(lvngLoanJournalValue);
@@ -388,7 +388,7 @@ codeunit 14135102 "lvngPostProcessingMgmt"
                     end;
                     lvngLoanJournalValue.Modify(true);
                 end;
-            lvngPostProcessingSchemaLine."Assign To"::lvngLoanJournalField:
+            lvngPostProcessingSchemaLine."Assign To"::"Loan Journal Field":
                 begin
                     lvngRecRefTo.GetTable(lvngLoanJournalLine);
                     lvngFieldRefTo := lvngRecRefTo.Field(lvngPostProcessingSchemaLine."To Field No.");

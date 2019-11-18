@@ -102,7 +102,7 @@ table 14135128 "lvngGenJnlImportBuffer"
             Caption = 'Due Date';
             DataClassification = CustomerContent;
         }
-        field(28; lvngRecurringMethod; enum lvngRecurringMethod)
+        field(28; lvngRecurringMethod; enum lvngRecurrencyMethod)
         {
             Caption = 'Recurring Method';
             DataClassification = CustomerContent;

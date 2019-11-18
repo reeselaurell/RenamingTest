@@ -58,8 +58,8 @@ codeunit 14135222 lvngPerformanceDataExport
         until RowLine.Next() = 0;
         //Add header
         ExcelExport.NewRow(-10);
-        ExcelExport.StyleColumn(DefaultBoolean::lvngTrue, DefaultBoolean::lvngDefault, DefaultBoolean::lvngDefault, -1, '', '', '');
-        ExcelExport.StyleRow(DefaultBoolean::lvngTrue, DefaultBoolean::lvngDefault, DefaultBoolean::lvngDefault, 14, '', '', '');
+        ExcelExport.StyleColumn(DefaultBoolean::Yes, DefaultBoolean::Default, DefaultBoolean::Default, -1, '', '', '');
+        ExcelExport.StyleRow(DefaultBoolean::Yes, DefaultBoolean::Default, DefaultBoolean::Default, 14, '', '', '');
         ExcelExport.BeginRange();
         ExcelExport.WriteString(HeaderData.Description);
         ExcelExport.SkipCells(6);
@@ -101,8 +101,8 @@ codeunit 14135222 lvngPerformanceDataExport
         //Add Grid Band Header
         ExcelExport.NewRow(RowId);
         RowId -= 10;
-        ExcelExport.StyleRow(DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, -1, '', '', '');
-        ExcelExport.AlignRow(CellHorizontalAlignment::lvngCenter, CellVerticalAlignment::lvngDefault, -1, 0, DefaultBoolean::lvngDefault, DefaultBoolean::lvngDefault);
+        ExcelExport.StyleRow(DefaultBoolean::Yes, DefaultBoolean::Yes, DefaultBoolean::Yes, -1, '', '', '');
+        ExcelExport.AlignRow(CellHorizontalAlignment::Center, CellVerticalAlignment::Default, -1, 0, DefaultBoolean::Default, DefaultBoolean::Default);
         ExcelExport.SkipCells(1);
         ColLine.Reset();
         ColLine.SetRange("Schema Code", RowSchema."Column Schema");
@@ -123,8 +123,8 @@ codeunit 14135222 lvngPerformanceDataExport
         //Add Grid Primary Header
         ExcelExport.NewRow(RowId);
         RowId -= 10;
-        ExcelExport.StyleRow(DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, -1, '', '', '');
-        ExcelExport.AlignRow(CellHorizontalAlignment::lvngCenter, CellVerticalAlignment::lvngDefault, -1, 0, DefaultBoolean::lvngDefault, DefaultBoolean::lvngDefault);
+        ExcelExport.StyleRow(DefaultBoolean::Yes, DefaultBoolean::Yes, DefaultBoolean::Yes, -1, '', '', '');
+        ExcelExport.AlignRow(CellHorizontalAlignment::Center, CellVerticalAlignment::Default, -1, 0, DefaultBoolean::Default, DefaultBoolean::Default);
         ExcelExport.WriteString(NameTxt);
         DataColStartIdx := 1; //Skip Name column
         DataRowStartIdx := -RowId div 10 - 1; //Skip header columns, - 1 for zero-based
@@ -141,7 +141,7 @@ codeunit 14135222 lvngPerformanceDataExport
         TempRowLine.FindSet();
         repeat
             case TempRowLine."Row Type" of
-                TempRowLine."Row Type"::lvngNormal:
+                TempRowLine."Row Type"::Normal:
                     begin
                         ExcelExport.NewRow(RowLine."Line No.");
                         if TempRowLine."Row Style" <> '' then
@@ -165,12 +165,12 @@ codeunit 14135222 lvngPerformanceDataExport
                                 if not CalcUnit.Get(RowLine."Calculation Unit Code") then
                                     ExcelExport.WriteNumber(0)
                                 else
-                                    if (CalcUnit.Type <> CalcUnit.Type::lvngExpression) and (BandInfo."Band Type" = BandInfo."Band Type"::lvngFormula) then begin
+                                    if (CalcUnit.Type <> CalcUnit.Type::Expression) and (BandInfo."Band Type" = BandInfo."Band Type"::Formula) then begin
                                         //Apply row formula
                                         ExpressionHeader.Get(BandInfo."Row Formula Code", PerformanceMgmt.GetPeriodRowExpressionConsumerId());
                                         ExcelExport.WriteFormula('=' + TranslateRowFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), TempRowLine."Data Row Index", RowLine."Column No." - 1, DataRowStartIdx, DataColStartIdx, ColumnCount, BandIndexLookup));
                                     end else begin
-                                        if CalcUnit.Type = CalcUnit.Type::lvngExpression then begin
+                                        if CalcUnit.Type = CalcUnit.Type::Expression then begin
                                             //Apply column formula
                                             ExpressionHeader.Get(CalcUnit."Expression Code", PerformanceMgmt.GetBandExpressionConsumerId());
                                             case ExpressionHeader.Type of
@@ -197,11 +197,11 @@ codeunit 14135222 lvngPerformanceDataExport
                             BandIdx += 1;
                         until BandInfo.Next() = 0;
                     end;
-                RowLine."Row Type"::lvngHeader:
+                RowLine."Row Type"::Header:
                     begin
                         ExcelExport.NewRow(RowLine."Line No.");
-                        ExcelExport.StyleRow(DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, -1, '', '', '');
-                        ExcelExport.AlignRow(CellHorizontalAlignment::lvngCenter, CellVerticalAlignment::lvngDefault, -1, 0, DefaultBoolean::lvngFalse, DefaultBoolean::lvngFalse);
+                        ExcelExport.StyleRow(DefaultBoolean::Yes, DefaultBoolean::Yes, DefaultBoolean::Yes, -1, '', '', '');
+                        ExcelExport.AlignRow(CellHorizontalAlignment::Center, CellVerticalAlignment::Default, -1, 0, DefaultBoolean::No, DefaultBoolean::No);
                         ExcelExport.SkipCells(1);
                         for Idx := 1 to BandInfo.Count do begin
                             ColLine.Reset();
@@ -212,7 +212,7 @@ codeunit 14135222 lvngPerformanceDataExport
                             until ColLine.Next() = 0;
                         end;
                     end;
-                RowLine."Row Type"::lvngEmpty:
+                RowLine."Row Type"::Empty:
                     begin
                         ExcelExport.NewRow(RowLine."Line No.");
                     end;
@@ -369,16 +369,16 @@ codeunit 14135222 lvngPerformanceDataExport
     procedure GetExportFileName(Mode: Enum lvngGridExportMode; SchemaType: Enum lvngPerformanceRowSchemaType) OutputFileName: Text
     begin
         case SchemaType of
-            SchemaType::lvngDimensionDynamic,
-            SchemaType::lvngDimensionPredefined:
+            SchemaType::"Dimension Dynamic",
+            SchemaType::"Dimension Predefined":
                 OutputFileName := DimensionPerfExportFileNameTxt
             else
                 OutputFileName := PeriodPerfExportFileNameTxt;
         end;
         case Mode of
-            Mode::lvngPdf:
+            Mode::Pdf:
                 OutputFileName += '.pdf';
-            Mode::lvngHtml:
+            Mode::Html:
                 OutputFileName += '.html'
             else
                 OutputFileName += '.xlsx';

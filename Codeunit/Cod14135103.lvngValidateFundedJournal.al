@@ -51,7 +51,7 @@ codeunit 14135103 "lvngValidateFundedJournal"
             lvngLoanDocument.reset;
             lvngLoanDocument.SetRange(Void, true);
             lvngLoanDocument.SetRange("Loan No.", lvngLoanJournalLine."Loan No.");
-            lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
+            lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::Funded);
             if not lvngLoanDocument.IsEmpty() then begin
                 lvngLoanDocument.FindFirst();
                 lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, strsubstno(NonPostedVoidDocumentExistsLbl, lvngLoanDocument."Document No."));
@@ -67,7 +67,7 @@ codeunit 14135103 "lvngValidateFundedJournal"
             lvngLoanDocument.reset;
             lvngLoanDocument.SetRange(Void, false);
             lvngLoanDocument.SetRange("Loan No.", lvngLoanJournalLine."Loan No.");
-            lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::lvngFunded);
+            lvngLoanDocument.SetRange("Transaction Type", lvngLoanDocument."Transaction Type"::Funded);
             if not lvngLoanDocument.IsEmpty() then begin
                 lvngLoanDocument.FindFirst();
                 lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, strsubstno(NonPostedDocumentExistsLbl, lvngLoanDocument."Document No."));

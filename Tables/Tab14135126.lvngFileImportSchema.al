@@ -165,7 +165,7 @@ table 14135126 "lvngFileImportSchema"
         field(115; "Loan No. Validation Rule"; Enum lvngLoanNoValidationRule) { DataClassification = CustomerContent; }
         field(116; "Applies-To Doc. Type"; enum lvngGenJnlImportDocumentType) { Caption = 'Applies-to Doc. Type'; DataClassification = CustomerContent; }
         field(117; "Bank Payment Type"; Enum lvngBankPaymentType) { DataClassification = CustomerContent; }
-        field(118; "Recurring Method"; enum lvngRecurringMethod) { DataClassification = CustomerContent; }
+        field(118; "Recurring Method"; enum lvngRecurrencyMethod) { DataClassification = CustomerContent; }
         field(119; "Recurring Frequency"; DateFormula) { DataClassification = CustomerContent; }
         field(120; "Deposit Document Type"; enum lvngDepositDocumentType) { DataClassification = CustomerContent; }
     }

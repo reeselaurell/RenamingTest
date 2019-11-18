@@ -21,7 +21,7 @@ pageextension 14135112 "lvngSalesCrMemo" extends "Sales Credit Memo"
                 trigger OnAction()
                 var
                     lvngSalesFileImportManagement: codeunit lvngSalesFileImportManagement;
-                    lvngDocumentType: enum lvngDocumentType;
+                    lvngDocumentType: enum lvngLoanDocumentType;
                     lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer temporary;
                     lvngImportBufferError: Record lvngImportBufferError temporary;
                     lvngJournalDataImport: Page lvngJournalDataImport;
@@ -35,7 +35,7 @@ pageextension 14135112 "lvngSalesCrMemo" extends "Sales Credit Memo"
                         lvngJournalDataImport.SetParams(lvngGenJnlImportBuffer, lvngImportBufferError);
                         lvngJournalDataImport.Run();
                     end else begin
-                        lvngSalesFileImportManagement.CreateSalesLines(lvngGenJnlImportBuffer, lvngDocumentType::lvngCreditMemo, "No.");
+                        lvngSalesFileImportManagement.CreateSalesLines(lvngGenJnlImportBuffer, lvngDocumentType::"Credit Memo", "No.");
                     end;
                     CurrPage.Update(false);
                 end;

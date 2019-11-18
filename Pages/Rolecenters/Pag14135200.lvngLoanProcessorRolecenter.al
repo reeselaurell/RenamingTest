@@ -43,7 +43,7 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 ToolTip = 'Edit and Post Funded Documents';
                 Image = Documents;
                 RunObject = page lvngLoanDocumentsList;
-                RunPageView = sorting("Document No.") where("Transaction Type" = const(lvngFunded));
+                RunPageView = sorting("Document No.") where("Transaction Type" = const(Funded));
                 ApplicationArea = All;
             }
             action(lvngServicingWorksheet)
@@ -62,7 +62,7 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 ToolTip = 'Edit and Post Sold Documents';
                 Image = DocumentEdit;
                 RunObject = page lvngLoanDocumentsList;
-                RunPageView = sorting("Document No.") where("Transaction Type" = const(lvngSold));
+                RunPageView = sorting("Document No.") where("Transaction Type" = const(Sold));
                 ApplicationArea = All;
             }
 

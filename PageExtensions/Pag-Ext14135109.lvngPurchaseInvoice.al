@@ -121,7 +121,7 @@ pageextension 14135109 "lvngPurchaseInvoice" extends "Purchase Invoice" //MyTarg
                 trigger OnAction()
                 var
                     lvngPurchFileImportManagement: codeunit lvngPurchFileImportManagement;
-                    lvngDocumentType: enum lvngDocumentType;
+                    lvngDocumentType: enum lvngLoanDocumentType;
                     lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer temporary;
                     lvngImportBufferError: Record lvngImportBufferError temporary;
                     lvngJournalDataImport: Page lvngJournalDataImport;
@@ -135,7 +135,7 @@ pageextension 14135109 "lvngPurchaseInvoice" extends "Purchase Invoice" //MyTarg
                         lvngJournalDataImport.SetParams(lvngGenJnlImportBuffer, lvngImportBufferError);
                         lvngJournalDataImport.Run();
                     end else begin
-                        lvngPurchFileImportManagement.CreatePurchaseLines(lvngGenJnlImportBuffer, lvngDocumentType::lvngInvoice, "No.");
+                        lvngPurchFileImportManagement.CreatePurchaseLines(lvngGenJnlImportBuffer, lvngDocumentType::Invoice, "No.");
                     end;
                     CurrPage.Update(false);
                 end;

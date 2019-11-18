@@ -79,11 +79,11 @@ codeunit 14135221 lvngExcelExport
     local procedure GetDownloadFileFilter() Result: Text
     begin
         case ExportMode of
-            ExportMode::lvngXlsx:
+            ExportMode::Xlsx:
                 Result := ExcelFileTxt;
-            ExportMode::lvngPdf:
+            ExportMode::Pdf:
                 Result := PdfFileTxt;
-            ExportMode::lvngHtml:
+            ExportMode::Html:
                 Result := HtmlFileTxt;
         end;
         if Result <> '' then
@@ -98,18 +98,18 @@ codeunit 14135221 lvngExcelExport
         Instruction.Add('n', TargetFunction);
         Instruction.Add('p', Params);
         Script.Add(Instruction);
-        if Horizontal <> Horizontal::lvngDefault then
+        if Horizontal <> Horizontal::Default then
             Params.Add('h', Horizontal - 1);
-        if Vertical <> Vertical::lvngDefault then
+        if Vertical <> Vertical::Default then
             Params.Add('v', Vertical - 1);
         if Indent > 0 then
             Params.Add('i', Indent);
         if Rotation > 0 then
             Params.Add('r', Rotation);
-        if ShrinkToFit <> ShrinkToFit::lvngDefault then
-            Params.Add('s', ShrinkToFit = ShrinkToFit::lvngTrue);
-        if WrapText <> WrapText::lvngDefault then
-            Params.Add('w', WrapText = WrapText::lvngTrue);
+        if ShrinkToFit <> ShrinkToFit::Default then
+            Params.Add('s', ShrinkToFit = ShrinkToFit::Yes);
+        if WrapText <> WrapText::Default then
+            Params.Add('w', WrapText = WrapText::Yes);
     end;
 
     procedure AlignRow(Horizontal: Enum lvngCellHorizontalAlignment; Vertical: Enum lvngCellVerticalAlignment; Indent: Integer; Rotation: Integer; ShrinkToFit: Enum lvngDefaultBoolean; WrapText: Enum lvngDefaultBoolean)
@@ -133,12 +133,12 @@ codeunit 14135221 lvngExcelExport
         Clear(Params);
         Instruction.Add('n', TargetFunction);
         Instruction.Add('p', Params);
-        if Bold <> Bold::lvngDefault then
-            Params.Add('b', Bold = Bold::lvngTrue);
-        if Italic <> Italic::lvngDefault then
-            Params.Add('i', Italic = Italic::lvngTrue);
-        if Underline <> Underline::lvngDefault then
-            Params.Add('u', Underline = Underline::lvngTrue);
+        if Bold <> Bold::Default then
+            Params.Add('b', Bold = Bold::Yes);
+        if Italic <> Italic::Default then
+            Params.Add('i', Italic = Italic::Yes);
+        if Underline <> Underline::Default then
+            Params.Add('u', Underline = Underline::Yes);
         if FontSize > 0 then
             Params.Add('fs', FontSize);
         if FontName <> '' then
@@ -210,13 +210,13 @@ codeunit 14135221 lvngExcelExport
         Zero: Text;
     begin
         case NumberFormat.Rounding of
-            NumberFormat.Rounding::lvngTwo:
+            NumberFormat.Rounding::Two:
                 Positive := '.00';
-            NumberFormat.Rounding::lvngOne:
+            NumberFormat.Rounding::One:
                 Positive := '.0';
-            NumberFormat.Rounding::lvngNone:
+            NumberFormat.Rounding::None:
                 Positive := '.0##########';
-            NumberFormat.Rounding::lvngThousands:
+            NumberFormat.Rounding::Thousands:
                 Positive := ',';
         end;
         if NumberFormat."Suppress Thousand Separator" then
@@ -229,12 +229,12 @@ codeunit 14135221 lvngExcelExport
             NumberFormat."Value Type"::Percentage:
                 Positive := Positive + '\%';
         end;
-        if not NumberFormat."Invert Sign" and (NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::lvngNone) and (NumberFormat."Blank Zero" = NumberFormat."Blank Zero"::lvngDefault) then
+        if not NumberFormat."Invert Sign" and (NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::None) and (NumberFormat."Blank Zero" = NumberFormat."Blank Zero"::Default) then
             exit(Positive);
         case NumberFormat."Negative Formatting" of
-            NumberFormat."Negative Formatting"::lvngSuppressSign:
+            NumberFormat."Negative Formatting"::"Suppress Sign":
                 Negative := Positive;
-            NumberFormat."Negative Formatting"::lvngParenthesis:
+            NumberFormat."Negative Formatting"::Parenthesis:
                 Negative := '(' + Positive + ')'
             else
                 Negative := '-' + Positive;
@@ -245,11 +245,11 @@ codeunit 14135221 lvngExcelExport
             Negative := Zero;
         end;
         case NumberFormat."Blank Zero" of
-            NumberFormat."Blank Zero"::lvngBlank:
+            NumberFormat."Blank Zero"::Blank:
                 exit(Positive + ';' + Negative + ';');
-            NumberFormat."Blank Zero"::lvngDefault:
+            NumberFormat."Blank Zero"::Default:
                 exit(Positive + ';' + Negative + ';-');
-            NumberFormat."Blank Zero"::lvngZero:
+            NumberFormat."Blank Zero"::Zero:
                 exit(Positive + ';' + Negative + ';0')
             else
                 exit(Positive + ';' + Negative);

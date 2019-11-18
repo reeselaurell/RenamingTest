@@ -1,20 +1,20 @@
-enum 14135108 lvngNumericalFormatting
+enum 14135108 lvngParseNumericFormat
 {
     Extensible = false;
 
-    value(0; lvngNone)
+    value(0; None)
     {
-        Caption = ' ';
+        Caption = 'None';
     }
-    value(1; lvngReverseSign)
+    value(1; "Reverse Sign")
     {
         Caption = 'Reverse Sign';
     }
-    value(2; lvngPositive)
+    value(2; Positive)
     {
         Caption = 'Positive';
     }
-    value(3; lvngNegative)
+    value(3; Negative)
     {
         Caption = 'Negative';
     }

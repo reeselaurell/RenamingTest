@@ -100,15 +100,15 @@ page 14135118 "lvngDimensionsHierarchy"
     local procedure CheckDimensionsVisibility(lvngHierarchyLevels: Enum lvngHierarchyLevels)
     begin
         case lvngHierarchyLevels of
-            lvngHierarchyLevels::lvngDimension1:
+            lvngHierarchyLevels::"Dimension 1":
                 Dimension1Visible := true;
-            lvngHierarchyLevels::lvngDimension2:
+            lvngHierarchyLevels::"Dimension 2":
                 Dimension2Visible := true;
-            lvngHierarchyLevels::lvngDimension3:
+            lvngHierarchyLevels::"Dimension 3":
                 Dimension3Visible := true;
-            lvngHierarchyLevels::lvngDimension4:
+            lvngHierarchyLevels::"Dimension 4":
                 Dimension4Visible := true;
-            lvngHierarchyLevels::lvngBusinessUnit:
+            lvngHierarchyLevels::"Business Unit":
                 BusinessUnitVisible := true;
         end;
     end;

@@ -29,7 +29,7 @@ page 14135113 "lvngPostProcessingSchemaLines"
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case Type of
-                            Type::lvngCopyLoanCardValue:
+                            Type::"Copy Loan Card Value":
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoan);
@@ -42,13 +42,13 @@ page 14135113 "lvngPostProcessingSchemaLines"
                                         "From Field No." := FieldRec."No.";
                                     end;
                                 end;
-                            Type::lvngCopyLoanVariableValue, Type::lvngCopyLoanJournalVariableValue, Type::lvngDimensionMapping:
+                            Type::"Copy Loan Variable Value", Type::"Copy Loan Journal Variable Value", Type::"Dimension Mapping":
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
                                         "From Field No." := lvngLoanFieldsConfiguration."Field No.";
                                     end;
                                 end;
-                            Type::lvngCopyLoanJournalValue:
+                            Type::"Copy Loan Journal Value":
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -95,7 +95,7 @@ page 14135113 "lvngPostProcessingSchemaLines"
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case "Assign To" of
-                            "Assign To"::lvngLoanJournalField:
+                            "Assign To"::"Loan Journal Field":
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -108,7 +108,7 @@ page 14135113 "lvngPostProcessingSchemaLines"
                                         "To Field No." := FieldRec."No.";
                                     end;
                                 end;
-                            "Assign To"::lvngLoanJournalVariableField:
+                            "Assign To"::"Loan Journal Variable Field":
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
                                         "To Field No." := lvngLoanFieldsConfiguration."Field No.";

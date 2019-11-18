@@ -159,16 +159,18 @@ codeunit 14135220 lvngPerformanceMgmt
             if SystemFilter."Business Unit" <> '' then
                 Loan.SetRange("Business Unit Code", SystemFilter."Business Unit");
         case CalcUnit."Based On Date" of
-            CalcUnit."Based On Date"::lvngApplication:
+            CalcUnit."Based On Date"::Application:
                 Loan.SetFilter("Application Date", SystemFilter."Date Filter");
-            CalcUnit."Based On Date"::lvngClosed:
+            CalcUnit."Based On Date"::Closed:
                 Loan.SetFilter("Date Closed", SystemFilter."Date Filter");
-            CalcUnit."Based On Date"::lvngFunded:
+            CalcUnit."Based On Date"::Funded:
                 Loan.SetFilter("Date Funded", SystemFilter."Date Filter");
-            CalcUnit."Based On Date"::lvngLocked:
+            CalcUnit."Based On Date"::Locked:
                 Loan.SetFilter("Date Locked", SystemFilter."Date Filter");
-            CalcUnit."Based On Date"::lvngSold:
+            CalcUnit."Based On Date"::Sold:
                 Loan.SetFilter("Date Sold", SystemFilter."Date Filter");
+            CalcUnit."Based On Date"::Commission:
+                Loan.SetFilter("Commission Date", SystemFilter."Date Filter");
         end;
         Loan.FilterGroup(0);
     end;
@@ -241,7 +243,7 @@ codeunit 14135220 lvngPerformanceMgmt
         RowLine.FindSet();
         repeat
             case RowLine."Row Type" of
-                RowLine."Row Type"::lvngNormal:
+                RowLine."Row Type"::Normal:
                     begin
                         ShowLine := true;
                         if RowLine."Hide Zero Line" then begin
@@ -280,7 +282,7 @@ codeunit 14135220 lvngPerformanceMgmt
                             DataSource.Add(RowData);
                         end;
                     end;
-                RowLine."Row Type"::lvngHeader:
+                RowLine."Row Type"::Header:
                     begin
                         Clear(RowData);
                         RowData.Add('rowId', RowLine."Line No.");
@@ -302,7 +304,7 @@ codeunit 14135220 lvngPerformanceMgmt
                         until Buffer.Next() = 0;
                         DataSource.Add(RowData);
                     end;
-                RowLine."Row Type"::lvngEmpty:
+                RowLine."Row Type"::Empty:
                     begin
                         Clear(RowData);
                         RowData.Add('rowId', RowLine."Line No.");
@@ -325,25 +327,25 @@ codeunit 14135220 lvngPerformanceMgmt
             Clear(NumberFormat);
         if NumericValue = 0 then
             case NumberFormat."Blank Zero" of
-                NumberFormat."Blank Zero"::lvngZero:
+                NumberFormat."Blank Zero"::Zero:
                     exit('0');
-                NumberFormat."Blank Zero"::lvngDash:
+                NumberFormat."Blank Zero"::Dash:
                     exit('-');
-                NumberFormat."Blank Zero"::lvngBlank:
+                NumberFormat."Blank Zero"::Blank:
                     exit('&nbsp;');
             end;
         if NumberFormat."Invert Sign" then
             NumericValue := -NumericValue;
-        if (NumericValue < 0) and (NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::lvngSuppressSign) then
+        if (NumericValue < 0) and (NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::"Suppress Sign") then
             NumericValue := Abs(NumericValue);
         case NumberFormat.Rounding of
-            NumberFormat.Rounding::lvngNone:
+            NumberFormat.Rounding::None:
                 NumericValue := Round(NumericValue, 0.01);
-            NumberFormat.Rounding::lvngOne:
+            NumberFormat.Rounding::One:
                 NumericValue := Round(NumericValue, 0.1);
-            NumberFormat.Rounding::lvngRound:
+            NumberFormat.Rounding::Round:
                 NumericValue := Round(NumericValue, 1);
-            NumberFormat.Rounding::lvngThousands:
+            NumberFormat.Rounding::Thousands:
                 NumericValue := Round(NumericValue, 1000);
         end;
         if NumberFormat."Suppress Thousand Separator" then
@@ -356,7 +358,7 @@ codeunit 14135220 lvngPerformanceMgmt
             NumberFormat."Value Type"::Percentage:
                 TextValue := TextValue + '%';
         end;
-        if NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::lvngParenthesis then
+        if NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::Parenthesis then
             if NumericValue < 0 then
                 TextValue := '(' + TextValue + ')'
             else
@@ -465,21 +467,21 @@ codeunit 14135220 lvngPerformanceMgmt
             if Style.Get(StyleCode) then begin
                 Clear(CssClass);
                 case Style.Bold of
-                    Style.Bold::lvngTrue:
+                    Style.Bold::Yes:
                         CssClass.Add('font-weight', 'bold');
-                    Style.Bold::lvngFalse:
+                    Style.Bold::No:
                         CssClass.Add('font-weight', 'normal');
                 end;
                 case Style.Italic of
-                    Style.Italic::lvngTrue:
+                    Style.Italic::Yes:
                         CssClass.Add('font-style', 'italic');
-                    Style.Italic::lvngFalse:
+                    Style.Italic::No:
                         CssClass.Add('font-style', 'normal');
                 end;
                 case Style.Underline of
-                    Style.Underline::lvngTrue:
+                    Style.Underline::Yes:
                         CssClass.Add('text-decoration', 'underline');
-                    Style.Underline::lvngFalse:
+                    Style.Underline::No:
                         CssClass.Add('text-decoration', 'none');
                 end;
                 if Style."Font Size" > 0 then
@@ -494,10 +496,10 @@ codeunit 14135220 lvngPerformanceMgmt
 
     local procedure IsClickableCell(var CalculationUnit: Record lvngCalculationUnit): Boolean
     begin
-        if (CalculationUnit.Type = CalculationUnit.Type::lvngAmountLookup) or (CalculationUnit.Type = CalculationUnit.Type::lvngCountLookup) then begin
-            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::lvngLoanCard then
+        if (CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup") or (CalculationUnit.Type = CalculationUnit.Type::"Count Lookup") then begin
+            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::"Loan Card" then
                 exit(true);
-            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::lvngLedgerEntries then
+            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::"Ledger Entries" then
                 exit(CalculationUnit."Account No. Filter" <> '');
         end;
         exit(false);
@@ -563,22 +565,22 @@ codeunit 14135220 lvngPerformanceMgmt
         if Path.IndexOf(CalculationUnit.Code) <> 0 then
             Error(CircularReferenceErr);
         case CalculationUnit.Type of
-            CalculationUnit.Type::lvngConstant:
+            CalculationUnit.Type::Constant:
                 Result := CalculationUnit."Constant Value";
-            CalculationUnit.Type::lvngAmountLookup, CalculationUnit.Type::lvngCountLookup:
+            CalculationUnit.Type::"Amount Lookup", CalculationUnit.Type::"Count Lookup":
                 begin
-                    if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::lvngLoanCard then
+                    if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::"Loan Card" then
                         Result := LookupLoanCard(CalculationUnit, SystemFilter)
                     else
                         Result := LookupGeneralLedger(CalculationUnit, SystemFilter);
                 end;
-            CalculationUnit.Type::lvngExpression:
+            CalculationUnit.Type::Expression:
                 begin
                     Path.Add(CalculationUnit.Code);
                     Result := CalculateBandExpression(CalculationUnit, SystemFilter, Cache, Path);
                     Path.RemoveAt(Path.Count());
                 end;
-            CalculationUnit.Type::lvngProviderValue:
+            CalculationUnit.Type::"Provider Value":
                 begin
                     GetProviderValue(CalculationUnit."Provider Metadata", SystemFilter, Result);
                 end;
@@ -636,20 +638,22 @@ codeunit 14135220 lvngPerformanceMgmt
             if SystemFilter."Business Unit" <> '' then
                 LoanAmountsByDimension.SetFilter(BusinessUnitFilter, SystemFilter."Business Unit");
         case CalculationUnit."Based On Date" of
-            CalculationUnit."Based On Date"::lvngApplication:
+            CalculationUnit."Based On Date"::Application:
                 LoanAmountsByDimension.SetFilter(DateApplicationFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::lvngClosed:
+            CalculationUnit."Based On Date"::Closed:
                 LoanAmountsByDimension.SetFilter(DateClosedFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::lvngFunded:
+            CalculationUnit."Based On Date"::Funded:
                 LoanAmountsByDimension.SetFilter(DateFundedFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::lvngLocked:
+            CalculationUnit."Based On Date"::Locked:
                 LoanAmountsByDimension.SetFilter(DateLockedFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::lvngSold:
+            CalculationUnit."Based On Date"::Sold:
                 LoanAmountsByDimension.SetFilter(DateSoldFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Commission:
+                LoanAmountsByDimension.SetFilter(DateCommissionFilter, SystemFilter."Date Filter");
         end;
         LoanAmountsByDimension.Open();
         LoanAmountsByDimension.Read();
-        if CalculationUnit.Type = CalculationUnit.Type::lvngAmountLookup then
+        if CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup" then
             Result := LoanAmountsByDimension.LoanAmount
         else
             Result := LoanAmountsByDimension.LoanCount;
@@ -709,17 +713,17 @@ codeunit 14135220 lvngPerformanceMgmt
                 GLEntry.SetFilter(lvngBusinessUnitCode, SystemFilter."Business Unit");
         GLEntry.SetFilter(lvngPostingDate, SystemFilter.GetGLPostingDateFilter());
         case CalculationUnit."Amount Type" of
-            CalculationUnit."Amount Type"::lvngNetAmount:
+            CalculationUnit."Amount Type"::"Net Amount":
                 begin
                     GLEntry.CalcSums(lvngAmount);
                     Result := GLEntry.lvngAmount;
                 end;
-            CalculationUnit."Amount Type"::lvngDebitAmount:
+            CalculationUnit."Amount Type"::"Debit Amount":
                 begin
                     GLEntry.CalcSums(lvngDebitAmount);
                     Result := GLEntry.lvngDebitAmount;
                 end;
-            CalculationUnit."Amount Type"::lvngCreditAmount:
+            CalculationUnit."Amount Type"::"Credit Amount":
                 begin
                     GLEntry.CalcSums(lvngCreditAmount);
                     Result := GLEntry.lvngCreditAmount;
@@ -830,11 +834,11 @@ codeunit 14135220 lvngPerformanceMgmt
             BandInfoBuffer."Header Description" := BandLine."Header Description";
             BandInfoBuffer."Band Index" := Idx;
             case BandLine."Band Type" of
-                BandLine."Band Type"::lvngNormal,
-                BandLine."Band Type"::lvngFormula:  //In case expression formula refers to not cached row formula value it will be calculated as Normal
+                BandLine."Band Type"::Normal,
+                BandLine."Band Type"::Formula:  //In case expression formula refers to not cached row formula value it will be calculated as Normal
                     begin
                         case BandLine."Period Type" of
-                            BandLine."Period Type"::lvngMTD:
+                            BandLine."Period Type"::MTD:
                                 begin
                                     StartDate := CalcDate('<-CM>', BaseFilter."As Of Date");
                                     if BandLine."Period Offset" <> 0 then
@@ -845,7 +849,7 @@ codeunit 14135220 lvngPerformanceMgmt
                                     if BandLine."Dynamic Date Description" then
                                         BandInfoBuffer."Header Description" := Format(StartDate, 0, '<Month Text,3>-<Year4>');
                                 end;
-                            BandLine."Period Type"::lvngQTD:
+                            BandLine."Period Type"::QTD:
                                 begin
                                     StartDate := CalcDate('<-CQ>', BaseFilter."As Of Date");
                                     if BandLine."Period Offset" <> 0 then begin
@@ -865,7 +869,7 @@ codeunit 14135220 lvngPerformanceMgmt
                                     if BandLine."Dynamic Date Description" then
                                         BandInfoBuffer."Header Description" := Format(StartDate, 0, 'Qtr. <Quarter>, <Year4>');
                                 end;
-                            BandLine."Period Type"::lvngYTD:
+                            BandLine."Period Type"::YTD:
                                 begin
                                     StartDate := CalcDate('<-CY>', BaseFilter."As Of Date");
                                     if BandLine."Period Offset" <> 0 then begin
@@ -878,7 +882,7 @@ codeunit 14135220 lvngPerformanceMgmt
                                     if BandLine."Dynamic Date Description" then
                                         BandInfoBuffer."Header Description" := Format(StartDate, 0, 'Year <Year4>');
                                 end;
-                            BandLine."Period Type"::lvngFiscalQTD:
+                            BandLine."Period Type"::"Fiscal QTD":
                                 begin
                                     AccountingPeriod.Reset();
                                     AccountingPeriod.SetRange("Starting Date", 0D, BaseFilter."As Of Date");
@@ -907,7 +911,7 @@ codeunit 14135220 lvngPerformanceMgmt
                                         else
                                             BandInfoBuffer."Header Description" := Format(StartDate, 0, BandInfoBuffer."Header Description");
                                 end;
-                            BandLine."Period Type"::lvngFiscalYTD:
+                            BandLine."Period Type"::"Fiscal YTD":
                                 begin
                                     AccountingPeriod.Reset();
                                     AccountingPeriod.SetRange("New Fiscal Year", true);
@@ -936,7 +940,7 @@ codeunit 14135220 lvngPerformanceMgmt
                                         else
                                             BandInfoBuffer."Header Description" := Format(EndDate, 0, BandInfoBuffer."Header Description");
                                 end;
-                            BandLine."Period Type"::lvngLifeToDate:
+                            BandLine."Period Type"::"Life To Date":
                                 begin
                                     StartDate := 00010101D;
                                     EndDate := BaseFilter."As Of Date";
@@ -949,7 +953,7 @@ codeunit 14135220 lvngPerformanceMgmt
                                     BandInfoBuffer."Date From" := StartDate;
                                     BandInfoBuffer."Date To" := EndDate;
                                 end;
-                            BandLine."Period Type"::lvngCustomDateFilter:
+                            BandLine."Period Type"::Custom:
                                 begin
                                     BandLine.TestField("Date From");
                                     BandLine.TestField("Date To");
@@ -969,7 +973,7 @@ codeunit 14135220 lvngPerformanceMgmt
                                 TotalEndDate := BandInfoBuffer."Date To";
                         end;
                     end;
-                BandLine."Band Type"::lvngTotals:
+                BandLine."Band Type"::Totals:
                     begin
                         BandInfoBuffer."Date From" := TotalStartDate;
                         BandInfoBuffer."Date To" := TotalEndDate;
@@ -992,7 +996,7 @@ codeunit 14135220 lvngPerformanceMgmt
         until BandLine.Next() = 0;
 
         BandInfoBuffer.Reset();
-        BandInfoBuffer.SetFilter("Band Type", '<>%1', BandInfoBuffer."Band Type"::lvngFormula);
+        BandInfoBuffer.SetFilter("Band Type", '<>%1', BandInfoBuffer."Band Type"::Formula);
         BandInfoBuffer.FindSet();
         repeat
             ApplyPeriodBandFilter(SystemFilter, BaseFilter, BandInfoBuffer);
@@ -1000,7 +1004,7 @@ codeunit 14135220 lvngPerformanceMgmt
         until BandInfoBuffer.Next() = 0;
 
         BandInfoBuffer.Reset();
-        BandInfoBuffer.SetRange("Band Type", BandInfoBuffer."Band Type"::lvngFormula);
+        BandInfoBuffer.SetRange("Band Type", BandInfoBuffer."Band Type"::Formula);
         if BandInfoBuffer.FindSet() then
             repeat
                 ApplyPeriodBandFilter(SystemFilter, BaseFilter, BandInfoBuffer);
@@ -1038,7 +1042,7 @@ codeunit 14135220 lvngPerformanceMgmt
                 begin
                     PeriodPerfBandSchemaLine.Reset();
                     PeriodPerfBandSchemaLine.SetRange("Schema Code", ConsumerMetadata);
-                    PeriodPerfBandSchemaLine.SetFilter("Band Type", '<>%1', PeriodPerfBandSchemaLine."Band Type"::lvngFormula);
+                    PeriodPerfBandSchemaLine.SetFilter("Band Type", '<>%1', PeriodPerfBandSchemaLine."Band Type"::Formula);
                     if PeriodPerfBandSchemaLine.FindSet() then
                         repeat
                             Clear(ExpressionBuffer);
@@ -1052,7 +1056,7 @@ codeunit 14135220 lvngPerformanceMgmt
                 begin
                     DimPerfBandSchemaLine.Reset();
                     DimPerfBandSchemaLine.SetRange("Schema Code", ConsumerMetadata);
-                    DimPerfBandSchemaLine.SetFilter("Band Type", '<>%1', DimPerfBandSchemaLine."Band Type"::lvngFormula);
+                    DimPerfBandSchemaLine.SetFilter("Band Type", '<>%1', DimPerfBandSchemaLine."Band Type"::Formula);
                     if DimPerfBandSchemaLine.FindSet() then
                         repeat
                             Clear(ExpressionBuffer);

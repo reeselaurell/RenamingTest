@@ -25,7 +25,7 @@ page 14135122 "lvngLoanUpdateSchema"
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case "Import Field Type" of
-                            "Import Field Type"::lvngTable:
+                            "Import Field Type"::Table:
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -33,7 +33,7 @@ page 14135122 "lvngLoanUpdateSchema"
                                     FieldRec.FindFirst();
                                     lvngFieldDescription := FieldRec."Field Caption";
                                 end;
-                            "Import Field Type"::lvngVariable:
+                            "Import Field Type"::Variable:
                                 begin
                                     lvngLoanFieldsConfiguration.Get("Field No.");
                                     lvngFieldDescription := lvngLoanFieldsConfiguration."Field Name";
@@ -48,7 +48,7 @@ page 14135122 "lvngLoanUpdateSchema"
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case "Import Field Type" of
-                            "Import Field Type"::lvngTable:
+                            "Import Field Type"::Table:
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -62,7 +62,7 @@ page 14135122 "lvngLoanUpdateSchema"
                                         lvngFieldDescription := FieldRec."Field Caption";
                                     end;
                                 end;
-                            "Import Field Type"::lvngVariable:
+                            "Import Field Type"::Variable:
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
                                         "Field No." := lvngLoanFieldsConfiguration."Field No.";
@@ -140,7 +140,7 @@ page 14135122 "lvngLoanUpdateSchema"
                     var
                         lvngLoanManagement: Codeunit lvngLoanManagement;
                     begin
-                        lvngLoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::lvngIfDestinationBlank);
+                        lvngLoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::"If Destination Blank");
                         CurrPage.Update(false);
                     end;
                 }
@@ -154,7 +154,7 @@ page 14135122 "lvngLoanUpdateSchema"
                     var
                         lvngLoanManagement: Codeunit lvngLoanManagement;
                     begin
-                        lvngLoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::lvngIfSourceNotBlank);
+                        lvngLoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::"If Source Not Blank");
                         CurrPage.Update(false);
                     end;
                 }
@@ -174,7 +174,7 @@ page 14135122 "lvngLoanUpdateSchema"
     begin
         Clear(lvngFieldDescription);
         case "Import Field Type" of
-            "Import Field Type"::lvngTable:
+            "Import Field Type"::Table:
                 begin
                     TableField.SetRange("No.", "Field No.");
                     TableField.setrange(TableNo, Database::lvngLoanJournalLine);
@@ -182,7 +182,7 @@ page 14135122 "lvngLoanUpdateSchema"
                         lvngFieldDescription := TableField."Field Caption";
                     //lvngFieldDescription := CaptionManagement.GetTranslatedFieldCaption('', Database::lvngLoanJournalLine, lvngFieldNo);
                 end;
-            "Import Field Type"::lvngVariable:
+            "Import Field Type"::Variable:
                 lvngFieldDescription := lvngLoanManagement.GetFieldName("Field No.");
         end;
     end;

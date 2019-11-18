@@ -6,14 +6,14 @@ table 14135114 "lvngLoanDocument"
 
     fields
     {
-        field(1; "Transaction Type"; Enum lvngTransactionType) { DataClassification = CustomerContent; }
+        field(1; "Transaction Type"; Enum lvngLoanTransactionType) { DataClassification = CustomerContent; }
         field(2; "Document No."; code[20]) { DataClassification = CustomerContent; NotBlank = true; }
         field(10; "Loan No."; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngLoan; }
         field(11; "Customer No."; Code[20]) { DataClassification = CustomerContent; TableRelation = Customer; }
         field(12; Void; Boolean) { DataClassification = CustomerContent; }
         field(13; "Posting Date"; Date) { DataClassification = CustomerContent; }
         field(14; "Reason Code"; Code[10]) { DataClassification = CustomerContent; TableRelation = "Reason Code"; }
-        field(15; "Document Type"; enum lvngDocumentType) { DataClassification = CustomerContent; }
+        field(15; "Document Type"; enum lvngLoanDocumentType) { DataClassification = CustomerContent; }
         field(80; "Global Dimension 1 Code"; Code[20])
         {
             DataClassification = CustomerContent;

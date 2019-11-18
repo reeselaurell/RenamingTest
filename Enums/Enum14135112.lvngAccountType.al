@@ -1,4 +1,4 @@
-enum 14135112 "lvngAccountType"
+enum 14135112 lvngLoanAccountType
 {
     Extensible = false;
 

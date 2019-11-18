@@ -7,7 +7,7 @@ table 14135238 lvngReportGeneratorSequence
         field(1; "Batch Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngReportGeneratorBatch; }
         field(2; "Sequence No."; Integer) { DataClassification = CustomerContent; }
         field(10; Description; Text[250]) { DataClassification = CustomerContent; }
-        field(11; "Row Layout"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngPerformanceRowSchema.Code where("Schema Type" = const(lvngPeriod)); }
+        field(11; "Row Layout"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngPerformanceRowSchema.Code where("Schema Type" = const(Period)); }
         field(12; "Band Layout"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngPerformanceColSchema.Code; }
         field(13; "Expand Filter"; Enum lvngReportGeneratorFilterExpansion) { DataClassification = CustomerContent; }
         field(14; "Business Unit Filter"; Text[250]) { DataClassification = CustomerContent; TableRelation = "Business Unit".Code; ValidateTableRelation = false; }

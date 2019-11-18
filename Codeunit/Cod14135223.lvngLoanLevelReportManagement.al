@@ -20,7 +20,7 @@ codeunit 14135223 lvngLoanLevelReportManagement
         if ExpressionHeader."Consumer Id" = GetLoanLevelFormulaConsumerId() then begin
             LoanLevelReportSchemaLine.Reset();
             LoanLevelReportSchemaLine.SetRange("Report Code", ConsumerMetadata);
-            LoanLevelReportSchemaLine.SetFilter(Type, '<>%1', LoanLevelReportSchemaLine.Type::lvngFormula);
+            LoanLevelReportSchemaLine.SetFilter(Type, '<>%1', LoanLevelReportSchemaLine.Type::Formula);
             if LoanLevelReportSchemaLine.FindSet() then
                 repeat
                     Clear(ExpressionBuffer);

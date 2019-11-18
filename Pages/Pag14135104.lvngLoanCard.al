@@ -86,17 +86,17 @@ page 14135104 "lvngLoanCard"
                 group(lvngAddress)
                 {
                     Caption = 'Addresses';
-                    field(lvngBorrowerAddress; GetLoanAddress(lvngLoanAddressTypeEnum::lvngBorrower))
+                    field(lvngBorrowerAddress; GetLoanAddress(lvngLoanAddressTypeEnum::Borrower))
                     {
                         Caption = 'Borrower';
                         ApplicationArea = All;
                         AssistEdit = true;
                         trigger OnAssistEdit()
                         begin
-                            AddressEdit(lvngLoanAddressTypeEnum::lvngBorrower);
+                            AddressEdit(lvngLoanAddressTypeEnum::Borrower);
                         end;
                     }
-                    field(lvngCoBorrowerAddress; GetLoanAddress(lvngLoanAddressTypeEnum::lvngCoBorrower))
+                    field(lvngCoBorrowerAddress; GetLoanAddress(lvngLoanAddressTypeEnum::CoBorrower))
                     {
                         Caption = 'Co-Borrower';
                         Importance = Additional;
@@ -104,27 +104,27 @@ page 14135104 "lvngLoanCard"
                         AssistEdit = true;
                         trigger OnAssistEdit()
                         begin
-                            AddressEdit(lvngLoanAddressTypeEnum::lvngCoBorrower);
+                            AddressEdit(lvngLoanAddressTypeEnum::CoBorrower);
                         end;
                     }
-                    field(lvngMailingAddress; GetLoanAddress(lvngLoanAddressTypeEnum::lvngMailing))
+                    field(lvngMailingAddress; GetLoanAddress(lvngLoanAddressTypeEnum::Mailing))
                     {
                         Caption = 'Mailing';
                         ApplicationArea = All;
                         AssistEdit = true;
                         trigger OnAssistEdit()
                         begin
-                            AddressEdit(lvngLoanAddressTypeEnum::lvngMailing);
+                            AddressEdit(lvngLoanAddressTypeEnum::Mailing);
                         end;
                     }
-                    field(lvngPropertyAddress; GetLoanAddress(lvngLoanAddressTypeEnum::lvngProperty))
+                    field(lvngPropertyAddress; GetLoanAddress(lvngLoanAddressTypeEnum::Property))
                     {
                         Caption = 'Property';
                         ApplicationArea = All;
                         AssistEdit = true;
                         trigger OnAssistEdit()
                         begin
-                            AddressEdit(lvngLoanAddressTypeEnum::lvngProperty);
+                            AddressEdit(lvngLoanAddressTypeEnum::Property);
                         end;
                     }
                 }

@@ -13,7 +13,7 @@ table 14135228 lvngCalculationUnit
         //For Type::"Amount Lookup" and Type::"Count Lookup"
         field(30; "Lookup Source"; Enum lvngPerformanceLineSourceType) { DataClassification = CustomerContent; }
         //For "Lookup Source"::"Loan Card"
-        field(31; "Based On Date"; Enum lvngPerformanceBaseDate) { DataClassification = CustomerContent; }
+        field(31; "Based On Date"; Enum lvngLoanDateType) { DataClassification = CustomerContent; }
         //For "Lookup Source"::"Ledger Entries"
         field(32; "Account No. Filter"; Text[250]) { DataClassification = CustomerContent; TableRelation = "G/L Account"."No."; ValidateTableRelation = false; }
         field(33; "Amount Type"; Enum lvngPerformanceAmountType) { DataClassification = CustomerContent; }
@@ -57,7 +57,7 @@ table 14135228 lvngCalculationUnit
         CalcUnitLine.SetRange("Unit Code", Code);
         if CalcUnitLine.IsEmpty() then
             exit;
-        if Type = Type::lvngExpression then
+        if Type = Type::Expression then
             if not Confirm(DeleteLinesQst) then
                 exit;
         CalcUnitLine.DeleteAll();

@@ -1,17 +1,8 @@
-enum 14135130 "lvngLoanNoValidationRule"
+enum 14135130 lvngLoanNoValidationRule
 {
     Extensible = true;
 
-    value(0; lvngNoValidation)
-    {
-        Caption = 'No Validation';
-    }
-    value(1; lvngBlankIfNotFound)
-    {
-        Caption = 'Blank if not Found';
-    }
-    value(2; lvngValidate)
-    {
-        Caption = 'Validate';
-    }
+    value(0; "No Validation") { Caption = 'No Validation'; }
+    value(1; "Blank If Not Found") { Caption = 'Blank if not Found'; }
+    value(2; Validate) { Caption = 'Validate'; }
 }

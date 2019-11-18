@@ -24,11 +24,11 @@ codeunit 14135110 "lvngPostLoanDocument"
     begin
         GetLoanVisionSetup();
         case lvngLoanDocument."Transaction Type" of
-            lvngLoanDocument."Transaction Type"::lvngFunded:
+            lvngLoanDocument."Transaction Type"::Funded:
                 lvngSourceCode := lvngLoanVisionSetup."Funded Source Code";
-            lvngLoanDocument."Transaction Type"::lvngSold:
+            lvngLoanDocument."Transaction Type"::Sold:
                 lvngSourceCode := lvngLoanVisionSetup."Sold Source Code";
-            lvngLoanDocument."Transaction Type"::lvngServiced:
+            lvngLoanDocument."Transaction Type"::Serviced:
                 begin
                     GetLoanServicingSetup();
                     lvngSourceCode := lvngLoanServicingSetup.lvngServicedSourceCode;
@@ -110,7 +110,7 @@ codeunit 14135110 "lvngPostLoanDocument"
     local procedure CreateCustomerGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; var GenJnlLine: Record "Gen. Journal Line"; Amount: Decimal)
     begin
 
-        if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::lvngInvoice then
+        if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::Invoice then
             GenJnlLine."Document Type" := GenJnlLine."Document Type"::Invoice
         else
             GenJnlLine."Document Type" := GenJnlLine."Document Type"::"Credit Memo";
@@ -129,7 +129,7 @@ codeunit 14135110 "lvngPostLoanDocument"
 
     local procedure CreateGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line")
     begin
-        if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::lvngInvoice then
+        if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::Invoice then
             GenJnlLine."Document Type" := GenJnlLine."Document Type"::Invoice
         else
             GenJnlLine."Document Type" := GenJnlLine."Document Type"::"Credit Memo";
@@ -156,7 +156,7 @@ codeunit 14135110 "lvngPostLoanDocument"
     local procedure CreateBalancingGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line")
     begin
         GenJnlLine."Document No." := lvngLoanDocument."Document No.";
-        if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::lvngCreditMemo then
+        if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::"Credit Memo" then
             GenJnlLine."Document Type" := GenJnlLine."Document Type"::Refund else
             GenJnlLine."Document Type" := GenJnlLine."Document Type"::Payment;
         case lvngLoanDocumentLine."Account Type" of
@@ -174,7 +174,7 @@ codeunit 14135110 "lvngPostLoanDocument"
         GenJnlLine.Amount := lvngLoanDocumentLine.Amount;
         GenJnlLine."Bal. Account Type" := GenJnlLine."Bal. Account Type"::Customer;
         GenJnlLine."Bal. Account No." := lvngLoanDocument."Customer No.";
-        if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::lvngCreditMemo then
+        if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::"Credit Memo" then
             GenJnlLine."Applies-to Doc. Type" := GenJnlLine."Applies-to Doc. Type"::"Credit Memo" else
             GenJnlLine."Applies-to Doc. Type" := GenJnlLine."Applies-to Doc. Type"::"Invoice";
         GenJnlLine."Applies-to Doc. No." := GenJnlLine."Document No.";
@@ -190,7 +190,7 @@ codeunit 14135110 "lvngPostLoanDocument"
         lvngLoanSoldDocument: Record lvngLoanSoldDocument;
     begin
         case lvngLoanDocument."Transaction Type" of
-            lvngLoanDocument."Transaction Type"::lvngFunded:
+            lvngLoanDocument."Transaction Type"::Funded:
                 begin
                     Clear(lvngLoanFundedDocument);
                     lvngLoanFundedDocument.TransferFields(lvngLoanDocument);
@@ -202,7 +202,7 @@ codeunit 14135110 "lvngPostLoanDocument"
                         lvngLoanFundedDocument.Modify();
                     end;
                 end;
-            lvngLoanDocument."Transaction Type"::lvngSold:
+            lvngLoanDocument."Transaction Type"::Sold:
                 begin
                     Clear(lvngLoanSoldDocument);
                     lvngLoanSoldDocument.TransferFields(lvngLoanDocument);
@@ -223,13 +223,13 @@ codeunit 14135110 "lvngPostLoanDocument"
         lvngLoanSoldDocumentLine: Record lvngLoanSoldDocumentLine;
     begin
         case lvngLoanDocumentLine."Transaction Type" of
-            lvngLoanDocumentLine."Transaction Type"::lvngFunded:
+            lvngLoanDocumentLine."Transaction Type"::Funded:
                 begin
                     Clear(lvngLoanFundedDocumentLine);
                     lvngLoanFundedDocumentLine.TransferFields(lvngLoanDocumentLine);
                     lvngLoanFundedDocumentLine.Insert(true);
                 end;
-            lvngLoanDocumentLine."Transaction Type"::lvngSold:
+            lvngLoanDocumentLine."Transaction Type"::Sold:
                 begin
                     Clear(lvngLoanSoldDocumentLine);
                     lvngLoanSoldDocumentLine.TransferFields(lvngLoanDocumentLine);

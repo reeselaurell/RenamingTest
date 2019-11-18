@@ -21,7 +21,7 @@ pageextension 14135111 "lvngSalesInvoice" extends "Sales Invoice"
                 trigger OnAction()
                 var
                     lvngSalesFileImportManagement: codeunit lvngSalesFileImportManagement;
-                    lvngDocumentType: enum lvngDocumentType;
+                    lvngDocumentType: enum lvngLoanDocumentType;
                     lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer temporary;
                     lvngImportBufferError: Record lvngImportBufferError temporary;
                     lvngJournalDataImport: Page lvngJournalDataImport;
@@ -35,7 +35,7 @@ pageextension 14135111 "lvngSalesInvoice" extends "Sales Invoice"
                         lvngJournalDataImport.SetParams(lvngGenJnlImportBuffer, lvngImportBufferError);
                         lvngJournalDataImport.Run();
                     end else begin
-                        lvngSalesFileImportManagement.CreateSalesLines(lvngGenJnlImportBuffer, lvngDocumentType::lvngInvoice, "No.");
+                        lvngSalesFileImportManagement.CreateSalesLines(lvngGenJnlImportBuffer, lvngDocumentType::Invoice, "No.");
                     end;
                     CurrPage.Update(false);
                 end;

@@ -58,7 +58,7 @@ page 14135246 lvngLoanValuesView
 
                 trigger OnAction()
                 begin
-                    ExportToExcel(GridExportMode::lvngXlsx);
+                    ExportToExcel(GridExportMode::Xlsx);
                 end;
             }
             action(PdfExport)
@@ -72,7 +72,7 @@ page 14135246 lvngLoanValuesView
 
                 trigger OnAction()
                 begin
-                    ExportToExcel(GridExportMode::lvngPdf);
+                    ExportToExcel(GridExportMode::Pdf);
                 end;
             }
             action(HtmlExport)
@@ -85,7 +85,7 @@ page 14135246 lvngLoanValuesView
 
                 trigger OnAction()
                 begin
-                    ExportToExcel(GridExportMode::lvngHtml);
+                    ExportToExcel(GridExportMode::Html);
                 end;
             }
         }
@@ -154,7 +154,7 @@ page 14135246 lvngLoanValuesView
         Clear(GLFilterCache);
         LoanLevelReportSchemaLine.Reset();
         LoanLevelReportSchemaLine.SetRange("Report Code", LoanLevelReportSchema.Code);
-        LoanLevelReportSchemaLine.SetRange(Type, LoanLevelReportSchemaLine.Type::lvngGLEntry);
+        LoanLevelReportSchemaLine.SetRange(Type, LoanLevelReportSchemaLine.Type::"G/L Entry");
         if LoanLevelReportSchemaLine.FindSet() then
             repeat
                 if LoanLevelReportSchemaLine."G/L Filter".HasValue then begin
@@ -179,7 +179,7 @@ page 14135246 lvngLoanValuesView
         ValueBuffer.DeleteAll();
         Clear(TotalsData);
         RowNo := 1;
-        if BasedOn = BasedOn::lvngPosting then begin
+        if BasedOn = BasedOn::Posting then begin
             Clear(GLLoansPerPeriod);
             if SystemFilter."Shortcut Dimension 1" <> '' then
                 GLLoansPerPeriod.SetFilter(Dim1Filter, SystemFilter."Shortcut Dimension 1");
@@ -216,7 +216,7 @@ page 14135246 lvngLoanValuesView
                 Loan.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
             if SystemFilter."Business Unit" <> '' then
                 Loan.SetFilter("Business Unit Code", SystemFilter."Business Unit");
-            if BasedOn = BasedOn::lvngSold then
+            if BasedOn = BasedOn::Sold then
                 Loan.SetFilter("Date Sold", SystemFilter."Date Filter")
             else
                 Loan.SetFilter("Date Funded", SystemFilter."Date Filter");
@@ -226,7 +226,7 @@ page 14135246 lvngLoanValuesView
                     RowBuffer.ID := RowNo;
                     RowNo += 1;
                     RowBuffer.Name := Loan."No.";
-                    if BasedOn = BasedOn::lvngSold then
+                    if BasedOn = BasedOn::Sold then
                         RowBuffer.Value := Format(Loan."Date Sold")
                     else
                         RowBuffer.Value := Format(loan."Date Funded");
@@ -273,7 +273,7 @@ page 14135246 lvngLoanValuesView
         RecordReference.GetTable(Loan);
         LoanLevelReportSchemaLine.Reset();
         LoanLevelReportSchemaLine.SetRange("Report Code", LoanLevelReportSchema.Code);
-        LoanLevelReportSchemaLine.SetFilter(Type, '<>%1', LoanLevelReportSchemaLine.Type::lvngFormula);
+        LoanLevelReportSchemaLine.SetFilter(Type, '<>%1', LoanLevelReportSchemaLine.Type::Formula);
         LoanLevelReportSchemaLine.FindSet();
         repeat
             Clear(ValueBuffer);
@@ -285,7 +285,7 @@ page 14135246 lvngLoanValuesView
         until LoanLevelReportSchemaLine.Next() = 0;
         LoanLevelReportSchemaLine.Reset();
         LoanLevelReportSchemaLine.SetRange("Report Code", LoanLevelReportSchema.Code);
-        LoanLevelReportSchemaLine.SetRange(Type, LoanLevelReportSchemaLine.Type::lvngFormula);
+        LoanLevelReportSchemaLine.SetRange(Type, LoanLevelReportSchemaLine.Type::Formula);
         LoanLevelReportSchemaLine.FindSet();
         repeat
             CalculatedValue := CalculateFormulaValue(LoanLevelReportSchemaLine);
@@ -295,9 +295,9 @@ page 14135246 lvngLoanValuesView
             ValueBuffer."Number Format Code" := LoanLevelReportSchemaLine."Number Format Code";
             ValueBuffer."Raw Value" := CalculatedValue;
             if Evaluate(ValueBuffer."Numeric Value", CalculatedValue) then
-                ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngNumber
+                ValueBuffer."Value Type" := ValueBuffer."Value Type"::Number
             else
-                ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngText;
+                ValueBuffer."Value Type" := ValueBuffer."Value Type"::Text;
             ValueBuffer.Insert();
         until LoanLevelReportSchemaLine.Next() = 0;
         RecordReference.Close();
@@ -307,11 +307,11 @@ page 14135246 lvngLoanValuesView
             if ValueBuffer.FindSet() then
                 repeat
                     if RowBuffer.ID = 1 then begin //First row
-                        if ValueBuffer."Value Type" = ValueBuffer."Value Type"::lvngNumber then
+                        if ValueBuffer."Value Type" = ValueBuffer."Value Type"::Number then
                             TotalsData.Add(ValueBuffer."Column No.", ValueBuffer."Numeric Value");
                     end else begin
                         if TotalsData.Get(ValueBuffer."Column No.", CurrentTotal) then begin
-                            if ValueBuffer."Value Type" = ValueBuffer."Value Type"::lvngNumber then
+                            if ValueBuffer."Value Type" = ValueBuffer."Value Type"::Number then
                                 TotalsData.Set(ValueBuffer."Column No.", CurrentTotal + ValueBuffer."Numeric Value")
                             else
                                 TotalsData.Remove(ValueBuffer."Column No.");
@@ -329,9 +329,9 @@ page 14135246 lvngLoanValuesView
         GLFilter: Text;
     begin
         case LoanLevelReportSchemaLine.Type of
-            LoanLevelReportSchemaLine.Type::lvngGLEntry:
+            LoanLevelReportSchemaLine.Type::"G/L Entry":
                 begin
-                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngNumber;
+                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::Number;
                     ValueBuffer."Numeric Value" := 0;
                     TempGLEntry.Reset();
                     if GLFilterCache.Get(LoanLevelReportSchemaLine."Column No.", GLFilter) then begin
@@ -343,14 +343,14 @@ page 14135246 lvngLoanValuesView
                     end;
                     ValueBuffer."Raw Value" := Format(ValueBuffer."Numeric Value");
                 end;
-            LoanLevelReportSchemaLine.Type::lvngVariableField:
+            LoanLevelReportSchemaLine.Type::"Variable Field":
                 begin
                     if LoanValue.Get(Loan."No.", LoanLevelReportSchemaLine."Value Field No.") then begin
                         LoanFieldsConfiguration.Get(LoanValue."Field No.");
                         case LoanFieldsConfiguration."Value Type" of
                             LoanFieldsConfiguration."Value Type"::Boolean:
                                 begin
-                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngText;
+                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::Text;
                                     if LoanValue."Boolean Value" then
                                         ValueBuffer."Raw Value" := YesTxt
                                     else
@@ -358,39 +358,39 @@ page 14135246 lvngLoanValuesView
                                 end;
                             LoanFieldsConfiguration."Value Type"::Date:
                                 begin
-                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngDate;
+                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::Date;
                                     ValueBuffer."Date Value" := LoanValue."Date Value";
                                     ValueBuffer."Raw Value" := Format(ValueBuffer."Date Value");
                                 end;
                             LoanFieldsConfiguration."Value Type"::Decimal:
                                 begin
-                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngNumber;
+                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::Number;
                                     ValueBuffer."Numeric Value" := LoanValue."Decimal Value";
                                     ValueBuffer."Raw Value" := Format(ValueBuffer."Numeric Value");
                                 end;
                             LoanFieldsConfiguration."Value Type"::Integer:
                                 begin
-                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngNumber;
+                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::Number;
                                     ValueBuffer."Numeric Value" := LoanValue."Integer Value";
                                     ValueBuffer."Raw Value" := Format(ValueBuffer."Numeric Value");
                                 end
                             else begin
-                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngText;
+                                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::Text;
                                     ValueBuffer."Raw Value" := LoanValue."Field Value";
                                 end;
                         end;
                     end;
                 end;
-            LoanLevelReportSchemaLine.Type::lvngTableField:
+            LoanLevelReportSchemaLine.Type::"Table Field":
                 begin
                     FieldReference := LoanRef.Field(LoanLevelReportSchemaLine."Value Field No.");
                     ValueBuffer."Raw Value" := Format(FieldReference.Value);
-                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngText;
+                    ValueBuffer."Value Type" := ValueBuffer."Value Type"::Text;
                     if Evaluate(ValueBuffer."Date Value", ValueBuffer."Raw Value") then
-                        ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngDate
+                        ValueBuffer."Value Type" := ValueBuffer."Value Type"::Date
                     else
                         if Evaluate(ValueBuffer."Numeric Value", ValueBuffer."Raw Value") then
-                            ValueBuffer."Value Type" := ValueBuffer."Value Type"::lvngNumber;
+                            ValueBuffer."Value Type" := ValueBuffer."Value Type"::Number;
                 end;
         end;
     end;
@@ -407,7 +407,7 @@ page 14135246 lvngLoanValuesView
         FormulaBuffer.DeleteAll();
         ValueBuffer.Reset();
         ValueBuffer.SetRange("Row No.", RowBuffer.ID);
-        ValueBuffer.SetRange("Value Type", ValueBuffer."Value Type"::lvngNumber);
+        ValueBuffer.SetRange("Value Type", ValueBuffer."Value Type"::Number);
         if ValueBuffer.FindSet() then
             repeat
                 Clear(FormulaBuffer);
@@ -484,7 +484,7 @@ page 14135246 lvngLoanValuesView
                 ValueBuffer.SetRange("Row No.", RowBuffer.ID);
                 if ValueBuffer.FindSet() then
                     repeat
-                        if ValueBuffer."Value Type" = ValueBuffer."Value Type"::lvngNumber then begin
+                        if ValueBuffer."Value Type" = ValueBuffer."Value Type"::Number then begin
                             Clear(ValueData);
                             ValueData.Add('v', FormatValue(ValueBuffer));
                             ValueData.Add('c', 'right');
@@ -522,7 +522,7 @@ page 14135246 lvngLoanValuesView
     var
         PerformanceMgmt: Codeunit lvngPerformanceMgmt;
     begin
-        if Buffer."Value Type" <> Buffer."Value Type"::lvngNumber then
+        if Buffer."Value Type" <> Buffer."Value Type"::Number then
             exit(Buffer."Raw Value")
         else
             exit(PerformanceMgmt.FormatValue(Buffer."Numeric Value", Buffer."Number Format Code"))
@@ -535,9 +535,9 @@ page 14135246 lvngLoanValuesView
     begin
         GridColumns.Add(GetColumn('LoanNo', LoanNoLbl, 'desc', true));
         case BasedOn of
-            BasedOn::lvngSold:
+            BasedOn::Sold:
                 GridColumns.Add(GetColumn('BaseDate', DateSoldLbl, '', true));
-            BasedOn::lvngPosting:
+            BasedOn::Posting:
                 GridColumns.Add(GetColumn('BaseDate', PostingDateLbl, '', true))
             else
                 GridColumns.Add(GetColumn('BaseDate', DateFundedLbl, '', true));
@@ -548,7 +548,7 @@ page 14135246 lvngLoanValuesView
         if LoanLevelReportSchemaLine.FindSet() then
             repeat
                 ShowCol := true;
-                if LoanLevelReportSchema."Skip Zero Balance Lines" and (LoanLevelReportSchemaLine.Type = LoanLevelReportSchemaLine.Type::lvngGLEntry) then begin
+                if LoanLevelReportSchema."Skip Zero Balance Lines" and (LoanLevelReportSchemaLine.Type = LoanLevelReportSchemaLine.Type::"G/L Entry") then begin
                     ValueBuffer.Reset();
                     ValueBuffer.SetRange("Column No.", LoanLevelReportSchemaLine."Column No.");
                     ValueBuffer.SetFilter("Numeric Value", '<>0');
@@ -594,7 +594,7 @@ page 14135246 lvngLoanValuesView
         if LoanLevelReportSchemaLine.FindSet() then
             repeat
                 ShowCol := true;
-                if LoanLevelReportSchema."Skip Zero Balance Lines" and (LoanLevelReportSchemaLine.Type = LoanLevelReportSchemaLine.Type::lvngGLEntry) then begin
+                if LoanLevelReportSchema."Skip Zero Balance Lines" and (LoanLevelReportSchemaLine.Type = LoanLevelReportSchemaLine.Type::"G/L Entry") then begin
                     ValueBuffer.Reset();
                     ValueBuffer.SetRange("Column No.", LoanLevelReportSchemaLine."Column No.");
                     ValueBuffer.SetFilter("Numeric Value", '<>0');
@@ -610,8 +610,8 @@ page 14135246 lvngLoanValuesView
         ExcelExport.Init('LoanLevelWorksheet', GridExportMode);
         //Add Filters
         ExcelExport.NewRow(-10);
-        ExcelExport.StyleColumn(DefaultBoolean::lvngTrue, DefaultBoolean::lvngDefault, DefaultBoolean::lvngDefault, -1, '', '', '');
-        ExcelExport.StyleRow(DefaultBoolean::lvngTrue, DefaultBoolean::lvngDefault, DefaultBoolean::lvngDefault, 14, '', '', '');
+        ExcelExport.StyleColumn(DefaultBoolean::Yes, DefaultBoolean::Default, DefaultBoolean::Default, -1, '', '', '');
+        ExcelExport.StyleRow(DefaultBoolean::Yes, DefaultBoolean::Default, DefaultBoolean::Default, 14, '', '', '');
         ExcelExport.BeginRange();
         ExcelExport.WriteString(LoanLevelReportSchema.Description);
         ExcelExport.SkipCells(6);
@@ -651,8 +651,8 @@ page 14135246 lvngLoanValuesView
         ExcelExport.NewRow(RowId);
         RowId -= 10;
         ExcelExport.WriteString(BaseDateText);
-        if BasedOn = BasedOn::lvngDefault then
-            BasedOn := BasedOn::lvngFunded;
+        if BasedOn = BasedOn::Default then
+            BasedOn := BasedOn::Funded;
         ExcelExport.WriteString(Format(BasedOn));
         ExcelExport.NewRow(RowId);
         RowId -= 10;
@@ -663,15 +663,15 @@ page 14135246 lvngLoanValuesView
         //Add Header
         ExcelExport.NewRow(RowId);
         RowId -= 10;
-        ExcelExport.StyleRow(DefaultBoolean::lvngTrue, DefaultBoolean::lvngTrue, DefaultBoolean::lvngFalse, -1, '', '', '');
-        ExcelExport.AlignRow(CellHorizontalAlignment::lvngCenter, CellVerticalAlignment::lvngDefault, -1, 0, DefaultBoolean::lvngDefault, DefaultBoolean::lvngDefault);
+        ExcelExport.StyleRow(DefaultBoolean::Yes, DefaultBoolean::Yes, DefaultBoolean::No, -1, '', '', '');
+        ExcelExport.AlignRow(CellHorizontalAlignment::Center, CellVerticalAlignment::Default, -1, 0, DefaultBoolean::Default, DefaultBoolean::Default);
         DataColStartIdx := 3; //Skip LoanNo, BaseDate and LOName columns
         DataRowStartIdx := -RowId div 10 - 1; //Skip header columns, - 1 for zero-based
         ExcelExport.WriteString(LoanNoLbl);
         case BasedOn of
-            BasedOn::lvngSold:
+            BasedOn::Sold:
                 ExcelExport.WriteString(DateSoldLbl);
-            BasedOn::lvngPosting:
+            BasedOn::Posting:
                 ExcelExport.WriteString(PostingDateLbl);
             else
                 ExcelExport.WriteString(DateFundedLbl);
@@ -694,7 +694,7 @@ page 14135246 lvngLoanValuesView
                 ColBuffer.Reset();
                 if ColBuffer.FindSet() then
                     repeat
-                        if ColBuffer.Type = ColBuffer.Type::lvngFormula then begin
+                        if ColBuffer.Type = ColBuffer.Type::Formula then begin
                             ExcelExport.FormatCell(ColBuffer."Number Format Code");
                             ExpressionHeader.Get(ColBuffer."Formula Code", LoanLevelMgmt.GetLoanLevelFormulaConsumerId());
                             ExcelExport.WriteFormula('=' + TranslateRowFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), RowBuffer.ID - 1, DataRowStartIdx, DataColStartIdx, ColIndexLookup));
@@ -703,9 +703,9 @@ page 14135246 lvngLoanValuesView
                             if ValueBuffer."Number Format Code" <> '' then
                                 ExcelExport.FormatCell(ValueBuffer."Number Format Code");
                             case ValueBuffer."Value Type" of
-                                ValueBuffer."Value Type"::lvngNumber:
+                                ValueBuffer."Value Type"::Number:
                                     ExcelExport.WriteNumber(ValueBuffer."Numeric Value");
-                                ValueBuffer."Value Type"::lvngDate:
+                                ValueBuffer."Value Type"::Date:
                                     ExcelExport.WriteDate(ValueBuffer."Date Value");
                                 else
                                     ExcelExport.WriteString(ValueBuffer."Raw Value");
@@ -715,7 +715,7 @@ page 14135246 lvngLoanValuesView
             until RowBuffer.Next() = 0;
             if TotalsRowVisible then begin
                 ExcelExport.NewRow(RowBuffer.ID + 1);
-                ExcelExport.StyleRow(DefaultBoolean::lvngTrue, DefaultBoolean::lvngFalse, DefaultBoolean::lvngFalse, -1, '', '', '');
+                ExcelExport.StyleRow(DefaultBoolean::Yes, DefaultBoolean::No, DefaultBoolean::No, -1, '', '', '');
                 ExcelExport.WriteString(TotalsTxt);
                 ExcelExport.WriteString(NotAvailableTxt);
                 ExcelExport.WriteString(NotAvailableTxt);
@@ -772,9 +772,9 @@ page 14135246 lvngLoanValuesView
     procedure GetExportFileName(Mode: Enum lvngGridExportMode): Text
     begin
         case Mode of
-            Mode::lvngPdf:
+            Mode::Pdf:
                 exit(LoanLevelExportFileNameTxt + '.pdf');
-            Mode::lvngHtml:
+            Mode::Html:
                 exit(LoanLevelExportFileNameTxt + '.html');
             else
                 exit(LoanLevelExportFileNameTxt + '.xlsx');

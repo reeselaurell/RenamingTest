@@ -78,15 +78,15 @@ codeunit 14135105 "lvngCreateFundedDocuments"
                 Clear(lvngLoanDocument);
                 lvngLoanDocument.init;
                 lvngLoanDocument.TransferFields(lvngLoanFundedDocument);
-                lvngLoanDocument."Transaction Type" := lvngLoanDocument."Transaction Type"::lvngFunded;
+                lvngLoanDocument."Transaction Type" := lvngLoanDocument."Transaction Type"::Funded;
                 if not lvngPreview then begin
                     lvngLoanDocument."Document No." := NoSeriesManagement.DoGetNextNo(lvngLoanVisionSetup."Void Funded No. Series", TODAY, true, false);
                 end else begin
                     lvngLoanDocument."Document No." := TempDocumentLbl;
                 end;
-                if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::lvngCreditMemo then
-                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice else
-                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
+                if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::"Credit Memo" then
+                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::Invoice else
+                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::"Credit Memo";
 
                 lvngLoanDocument.Void := true;
                 lvngLoanDocument."Void Document No." := lvngLoanFundedDocument."Document No.";
@@ -140,7 +140,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         if lvngLoanProcessingSchema."Use Global Schema Code" <> '' then begin
             lvngLoanProcessingSchemaLine.reset;
             lvngLoanProcessingSchemaLine.SetRange("Balancing Entry", false);
-            lvngLoanProcessingSchemaLine.Setfilter("Processing Source Type", '<>%1', lvngLoanProcessingSchemaLine."Processing Source Type"::lvngTag);
+            lvngLoanProcessingSchemaLine.Setfilter("Processing Source Type", '<>%1', lvngLoanProcessingSchemaLine."Processing Source Type"::Tag);
             lvngLoanProcessingSchemaLine.SetRange("Processing Code", lvngLoanProcessingSchema."Use Global Schema Code");
             if lvngLoanProcessingSchemaLine.FindSet() then begin
                 repeat
@@ -151,7 +151,7 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         lvngLoanProcessingSchemaLine.reset;
         lvngLoanProcessingSchemaLine.SetRange("Processing Code", lvngLoanProcessingSchema.Code);
         lvngLoanProcessingSchemaLine.SetRange("Balancing Entry", false);
-        lvngLoanProcessingSchemaLine.Setfilter("Processing Source Type", '<>%1', lvngLoanProcessingSchemaLine."Processing Source Type"::lvngTag);
+        lvngLoanProcessingSchemaLine.Setfilter("Processing Source Type", '<>%1', lvngLoanProcessingSchemaLine."Processing Source Type"::Tag);
         if lvngLoanProcessingSchemaLine.FindSet() then begin
             repeat
                 CreateDocumentLine(lvngLoanDocumentLine, lvngLoanDocument, lvngLoanProcessingSchemaLine, lvngLoanJournalLine, lvngLineNo);
@@ -197,20 +197,20 @@ codeunit 14135105 "lvngCreateFundedDocuments"
         end;
         //Option here
         case lvngLoanProcessingSchema."Document Type Option" of
-            lvngloanprocessingschema."Document Type Option"::lvngInvoice:
+            lvngloanprocessingschema."Document Type Option"::Invoice:
                 begin
-                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice;
+                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::Invoice;
                 end;
-            lvngloanprocessingschema."Document Type Option"::lvngCreditMemo:
+            lvngloanprocessingschema."Document Type Option"::"Credit Memo":
                 begin
-                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
+                    lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::"Credit Memo";
                 end;
-            lvngloanprocessingschema."Document Type Option"::lvngAmountBased:
+            lvngloanprocessingschema."Document Type Option"::"Amount Based":
                 begin
                     IF lvngDocumentAmount > 0 THEN BEGIN
-                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice;
+                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::Invoice;
                     END ELSE BEGIN
-                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
+                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::"Credit Memo";
                         lvngLoanDocumentLine.reset;
                         lvngLoanDocumentLine.SetRange("Balancing Entry", false);
                         if lvngLoanDocumentLine.FindSet() then begin
@@ -221,12 +221,12 @@ codeunit 14135105 "lvngCreateFundedDocuments"
                         end;
                     END;
                 end;
-            lvngloanprocessingschema."Document Type Option"::lvngAmountBasedReversed:
+            lvngloanprocessingschema."Document Type Option"::"Amount Based Reversed":
                 begin
                     IF lvngDocumentAmount > 0 THEN BEGIN
-                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
+                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::"Credit Memo";
                     END ELSE BEGIN
-                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice;
+                        lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::Invoice;
                         lvngLoanDocumentLine.reset;
                         lvngLoanDocumentLine.SetRange("Balancing Entry", false);
                         if lvngLoanDocumentLine.FindSet() then begin
@@ -276,26 +276,26 @@ codeunit 14135105 "lvngCreateFundedDocuments"
                     lvngLoanDocumentLine."Account No." := lvngAccountNo;
             end;
             case lvngLoanProcessingSchemaLine."Processing Source Type" of
-                lvngLoanProcessingSchemaLine."Processing Source Type"::lvngFunction:
+                lvngLoanProcessingSchemaLine."Processing Source Type"::Function:
                     begin
                         if Evaluate(lvngDecimalValue, GetFunctionValue(lvngLoanProcessingSchemaLine."Function Code")) then
                             lvngLoanDocumentLine.Amount := lvngDecimalValue;
                     end;
-                lvngLoanProcessingSchemaLine."Processing Source Type"::lvngLoanJournalValue:
+                lvngLoanProcessingSchemaLine."Processing Source Type"::"Loan Journal Value":
                     begin
                         lvngRecRef.GetTable(lvngLoanJournalLine);
                         lvngFieldRef := lvngRecRef.Field(lvngLoanProcessingSchemaLine."Field No.");
                         lvngLoanDocumentLine.Amount := lvngFieldRef.Value();
                         lvngRecRef.Close();
                     end;
-                lvngLoanProcessingSchemaLine."Processing Source Type"::lvngLoanJournalVariableValue:
+                lvngLoanProcessingSchemaLine."Processing Source Type"::"Loan Journal Variable Value":
                     begin
                         if lvngLoanJournalValue.Get(lvngLoanJournalLine."Loan Journal Batch Code", lvngLoanJournalLine."Line No.", lvngLoanProcessingSchemaLine."Field No.") then begin
                             if Evaluate(lvngDecimalValue, lvngLoanJournalValue."Field Value") then
                                 lvngLoanDocumentLine.Amount := lvngDecimalValue;
                         end;
                     end;
-                lvngLoanProcessingSchemaLine."Processing Source Type"::lvngTag:
+                lvngLoanProcessingSchemaLine."Processing Source Type"::Tag:
                     begin
                         Clear(lvngDecimalValue);
                         lvngLoanProcessingSchemaLine.TestField("Balancing Entry");
@@ -329,11 +329,11 @@ codeunit 14135105 "lvngCreateFundedDocuments"
     local procedure AssignDimensions(var AssignToDimension: Code[20]; lvngProcessingDimensionValueCode: Code[20]; lvngJournalDimensionValueCode: Code[20]; lvngProcessingDimensionRule: enum lvngProcessingDimensionRule)
     begin
         case lvngProcessingDimensionRule of
-            lvngProcessingDimensionRule::lvngDefined:
+            lvngProcessingDimensionRule::Defined:
                 begin
                     AssignToDimension := lvngProcessingDimensionValueCode;
                 end;
-            lvngProcessingDimensionRule::lvngJournalLine:
+            lvngProcessingDimensionRule::"Journal Line":
                 begin
                     AssignToDimension := lvngJournalDimensionValueCode;
                 end;

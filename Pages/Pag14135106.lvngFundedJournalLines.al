@@ -349,7 +349,7 @@ page 14135106 "lvngFundedJournalLines"
                     lvngLoanImportSchema: Record lvngLoanImportSchema;
                 begin
                     lvngLoanImportSchema.reset;
-                    lvngLoanImportSchema.SetRange("Loan Journal Batch Type", lvngLoanImportSchema."Loan Journal Batch Type"::lvngFunded);
+                    lvngLoanImportSchema.SetRange("Loan Journal Batch Type", lvngLoanImportSchema."Loan Journal Batch Type"::Funded);
                     if Page.RunModal(0, lvngLoanImportSchema) = Action::LookupOk then begin
                         Clear(lvngLoanJournalImport);
                         lvngLoanJournalImport.ReadCSVStream("Loan Journal Batch Code", lvngLoanImportSchema);

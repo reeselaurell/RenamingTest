@@ -1,17 +1,8 @@
-enum 14135114 "lvngTransactionType"
+enum 14135114 lvngLoanTransactionType
 {
     Extensible = false;
 
-    value(0; lvngFunded)
-    {
-        Caption = 'Funding';
-    }
-    value(1; lvngSold)
-    {
-        Caption = 'Sale';
-    }
-    value(2; lvngServiced)
-    {
-        Caption = 'Service';
-    }
+    value(0; Funded) { Caption = 'Funding'; }
+    value(1; Sold) { Caption = 'Sale'; }
+    value(2; Serviced) { Caption = 'Service'; }
 }

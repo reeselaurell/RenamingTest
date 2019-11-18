@@ -11,6 +11,7 @@ query 14135220 lvngLoanAmountsByDimension
             filter(DateSoldFilter; "Date Sold") { }
             filter(DateLockedFilter; "Date Locked") { }
             filter(DateClosedFilter; "Date Closed") { }
+            filter(DateCommissionFilter; "Commission Date") { }
             filter(Dimension1Filter; "Global Dimension 1 Code") { }
             filter(Dimension2Filter; "Global Dimension 2 Code") { }
             filter(Dimension3Filter; "Shortcut Dimension 3 Code") { }

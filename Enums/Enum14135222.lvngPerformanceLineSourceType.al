@@ -2,6 +2,6 @@ enum 14135222 lvngPerformanceLineSourceType
 {
     Extensible = false;
 
-    value(0; lvngLoanCard) { Caption = 'Loan Card'; }
-    value(1; lvngLedgerEntries) { Caption = 'Ledger Entries'; }
+    value(0; "Loan Card") { Caption = 'Loan Card'; }
+    value(1; "Ledger Entries") { Caption = 'Ledger Entries'; }
 }

@@ -2,8 +2,8 @@ enum 14135238 lvngLoanLevelReportBaseDate
 {
     Extensible = false;
 
-    value(0; lvngDefault) { Caption = 'Default'; }
-    value(1; lvngFunded) { Caption = 'Date Funded'; }
-    value(2; lvngSold) { Caption = 'Date Sold'; }
-    value(3; lvngPosting) { Caption = 'Posting Date'; }
+    value(0; Default) { Caption = 'Default'; }
+    value(1; Funded) { Caption = 'Date Funded'; }
+    value(2; Sold) { Caption = 'Date Sold'; }
+    value(3; Posting) { Caption = 'Posting Date'; }
 }

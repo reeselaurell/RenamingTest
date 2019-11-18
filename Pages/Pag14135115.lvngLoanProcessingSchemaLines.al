@@ -75,7 +75,7 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case "Processing Source Type" of
-                            "Processing Source Type"::lvngLoanJournalValue:
+                            "Processing Source Type"::"Loan Journal Value":
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -83,7 +83,7 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                                     FieldRec.FindFirst();
                                     Description := FieldRec."Field Caption";
                                 end;
-                            "Processing Source Type"::lvngLoanJournalVariableValue:
+                            "Processing Source Type"::"Loan Journal Variable Value":
                                 begin
                                     lvngLoanFieldsConfiguration.Get("Field No.");
                                     Description := lvngLoanFieldsConfiguration."Field Name";
@@ -98,7 +98,7 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                         lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case "Processing Source Type" of
-                            "Processing Source Type"::lvngLoanJournalValue:
+                            "Processing Source Type"::"Loan Journal Value":
                                 begin
                                     FieldRec.reset;
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -112,7 +112,7 @@ page 14135115 "lvngLoanProcessingSchemaLines"
                                         Description := FieldRec."Field Caption";
                                     end;
                                 end;
-                            "Processing Source Type"::lvngLoanJournalVariableValue:
+                            "Processing Source Type"::"Loan Journal Variable Value":
                                 begin
                                     if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
                                         "Field No." := lvngLoanFieldsConfiguration."Field No.";

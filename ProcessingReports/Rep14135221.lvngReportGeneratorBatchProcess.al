@@ -20,7 +20,7 @@ report 14135221 lvngRptGeneratorBatchProcess
 
                         trigger OnValidate()
                         begin
-                            if ExportFormat = ExportFormat::lvngHtml then
+                            if ExportFormat = ExportFormat::Html then
                                 Message(HtmlExportWarningMsg);
                         end;
                     }
@@ -66,7 +66,7 @@ report 14135221 lvngRptGeneratorBatchProcess
         Dialog.Open(ProcessProgressMsg, ProcessedCount, TotalCount);
         ExcelExport.Init('ReportGeneratorBatchProcess', ExportFormat);
         repeat
-            if ReportGeneratorSequence."Expand Filter" = ReportGeneratorSequence."Expand Filter"::lvngNone then begin
+            if ReportGeneratorSequence."Expand Filter" = ReportGeneratorSequence."Expand Filter"::None then begin
                 if ProcessedCount > 0 then
                     ExcelExport.NewSheet();
                 ExcelExport.RenameSheet(Format(ReportGeneratorSequence."Sequence No.") + ' ' + ReportGeneratorSequence.Description);
@@ -96,7 +96,7 @@ report 14135221 lvngRptGeneratorBatchProcess
             ProcessedCount += 1;
         until ReportGeneratorSequence.Next() = 0;
         Dialog.Close();
-        ExcelExport.Download(PerformanceDataExport.GetExportFileName(ExportFormat, SchemaType::lvngPeriod));
+        ExcelExport.Download(PerformanceDataExport.GetExportFileName(ExportFormat, SchemaType::Period));
     end;
 
     procedure SetParams(BatchCode: Code[20])
@@ -107,15 +107,15 @@ report 14135221 lvngRptGeneratorBatchProcess
     local procedure GetFilterValue(var ReportGeneratorSequence: Record lvngReportGeneratorSequence): Text
     begin
         case ReportGeneratorSequence."Expand Filter" of
-            ReportGeneratorSequence."Expand Filter"::lvngBusinessUnit:
+            ReportGeneratorSequence."Expand Filter"::"Business Unit":
                 exit(ReportGeneratorSequence."Business Unit Filter");
-            ReportGeneratorSequence."Expand Filter"::lvngDimension1:
+            ReportGeneratorSequence."Expand Filter"::"Dimension 1":
                 exit(ReportGeneratorSequence."Dimension 1 Filter");
-            ReportGeneratorSequence."Expand Filter"::lvngDimension2:
+            ReportGeneratorSequence."Expand Filter"::"Dimension 2":
                 exit(ReportGeneratorSequence."Dimension 2 Filter");
-            ReportGeneratorSequence."Expand Filter"::lvngDimension3:
+            ReportGeneratorSequence."Expand Filter"::"Dimension 3":
                 exit(ReportGeneratorSequence."Dimension 3 Filter");
-            ReportGeneratorSequence."Expand Filter"::lvngDimension4:
+            ReportGeneratorSequence."Expand Filter"::"Dimension 4":
                 exit(ReportGeneratorSequence."Dimension 4 Filter");
         end;
     end;
@@ -123,15 +123,15 @@ report 14135221 lvngRptGeneratorBatchProcess
     local procedure SetFilterValue(var ReportGeneratorSequence: Record lvngReportGeneratorSequence; Value: Text): Text
     begin
         case ReportGeneratorSequence."Expand Filter" of
-            ReportGeneratorSequence."Expand Filter"::lvngBusinessUnit:
+            ReportGeneratorSequence."Expand Filter"::"Business Unit":
                 ReportGeneratorSequence."Business Unit Filter" := Value;
-            ReportGeneratorSequence."Expand Filter"::lvngDimension1:
+            ReportGeneratorSequence."Expand Filter"::"Dimension 1":
                 ReportGeneratorSequence."Dimension 1 Filter" := Value;
-            ReportGeneratorSequence."Expand Filter"::lvngDimension2:
+            ReportGeneratorSequence."Expand Filter"::"Dimension 2":
                 ReportGeneratorSequence."Dimension 2 Filter" := Value;
-            ReportGeneratorSequence."Expand Filter"::lvngDimension3:
+            ReportGeneratorSequence."Expand Filter"::"Dimension 3":
                 ReportGeneratorSequence."Dimension 3 Filter" := Value;
-            ReportGeneratorSequence."Expand Filter"::lvngDimension4:
+            ReportGeneratorSequence."Expand Filter"::"Dimension 4":
                 ReportGeneratorSequence."Dimension 4 Filter" := Value;
         end;
     end;

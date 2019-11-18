@@ -1,133 +1,37 @@
-enum 14135133 "lvngGenJnlImportFieldType"
+enum 14135133 lvngGenJnlImportFieldType
 {
     Extensible = true;
 
-    value(0; lvngDummy)
-    {
-        Caption = 'Dummy';
-    }
-    value(1; lvngDescription)
-    {
-        Caption = 'Description';
-    }
-    value(2; lvngAccountNo)
-    {
-        Caption = 'Account No.';
-    }
-    value(3; lvngBalAccountNo)
-    {
-        Caption = 'Bal. Account No.';
-    }
-    value(4; lvngAccountType)
-    {
-        Caption = 'Account Type';
-    }
-    value(5; lvngBalAccountType)
-    {
-        Caption = 'Bal. Account Type';
-    }
-    value(6; lvngDocumentNo)
-    {
-        Caption = 'Document No.';
-    }
-    value(7; lvngLoanNo)
-    {
-        Caption = 'Loan No.';
-    }
-    value(8; lvngAmount)
-    {
-        Caption = 'Amount';
-    }
-    value(9; lvngReasonCode)
-    {
-        Caption = 'Reason Code';
-    }
-    value(10; lvngPostingDate)
-    {
-        Caption = 'Posting Date';
-    }
-    value(11; lvngDocumentDate)
-    {
-        Caption = 'Document Date';
-    }
-    value(12; lvngDueDate)
-    {
-        Caption = 'Due Date';
-    }
-    value(13; lvngExternalDocumentNo)
-    {
-        Caption = 'External Document No.';
-    }
-    value(14; lvngPostingGroupCode)
-    {
-        Caption = 'Posting Group';
-    }
-    value(15; lvngBankPaymentType)
-    {
-        Caption = 'Bank Payment Type';
-    }
-    value(16; lvngAppliesToDocType)
-    {
-        Caption = 'Applies-to Doc. Type';
-    }
-    value(17; lvngAppliesToDocNo)
-    {
-        Caption = 'Applies-to Doc. No.';
-    }
-    value(18; lvngComment)
-    {
-        Caption = 'Comment';
-    }
-    value(19; lvngDocumentType)
-    {
-        Caption = 'Document Type';
-    }
-    value(20; lvngPaymentMethodCode)
-    {
-        Caption = 'Payment Method Code';
-    }
-    value(21; lvngDepreciationBookCode)
-    {
-        Caption = 'Depreciation Book Code';
-    }
-    value(22; lvngFAPostingType)
-    {
-        Caption = 'FA Posting Type';
-    }
-    value(23; lvngDimension1Code)
-    {
-        Caption = 'Dimension 1 Code';
-    }
-    value(24; lvngDimension2Code)
-    {
-        Caption = 'Dimension 2 Code';
-    }
-    value(25; lvngDimension3Code)
-    {
-        Caption = 'Dimension 3 Code';
-    }
-    value(26; lvngDimension4Code)
-    {
-        Caption = 'Dimension 4 Code';
-    }
-    value(27; lvngDimension5Code)
-    {
-        Caption = 'Dimension 5 Code';
-    }
-    value(28; lvngDimension6Code)
-    {
-        Caption = 'Dimension 6 Code';
-    }
-    value(29; lvngDimension7Code)
-    {
-        Caption = 'Dimension 7 Code';
-    }
-    value(30; lvngDimension8Code)
-    {
-        Caption = 'Dimension 8 Code';
-    }
-    value(31; lvngBusinessUnitCode)
-    {
-        Caption = 'Business Unit Code';
-    }
+    value(0; Dummy) { Caption = 'Dummy'; }
+    value(1; Description) { Caption = 'Description'; }
+    value(2; "Account No.") { Caption = 'Account No.'; }
+    value(3; "Bal. Account No.") { Caption = 'Bal. Account No.'; }
+    value(4; "Account Type") { Caption = 'Account Type'; }
+    value(5; "Bal. Account Type") { Caption = 'Bal. Account Type'; }
+    value(6; "Document No.") { Caption = 'Document No.'; }
+    value(7; "Loan No.") { Caption = 'Loan No.'; }
+    value(8; Amount) { Caption = 'Amount'; }
+    value(9; "Reason Code") { Caption = 'Reason Code'; }
+    value(10; "Posting Date") { Caption = 'Posting Date'; }
+    value(11; "Document Date") { Caption = 'Document Date'; }
+    value(12; "Due Date") { Caption = 'Due Date'; }
+    value(13; "External Document No.") { Caption = 'External Document No.'; }
+    value(14; "Posting Group Code") { Caption = 'Posting Group'; }
+    value(15; "Bank Payment Type") { Caption = 'Bank Payment Type'; }
+    value(16; "Applies-To Doc. Type") { Caption = 'Applies-to Doc. Type'; }
+    value(17; "Applies-To Doc. No.") { Caption = 'Applies-to Doc. No.'; }
+    value(18; Comment) { Caption = 'Comment'; }
+    value(19; "Document Type") { Caption = 'Document Type'; }
+    value(20; "Payment Method Code") { Caption = 'Payment Method Code'; }
+    value(21; "Depreciation Book Code") { Caption = 'Depreciation Book Code'; }
+    value(22; "FA Posting Type") { Caption = 'FA Posting Type'; }
+    value(23; "Dimension 1 Code") { Caption = 'Dimension 1 Code'; }
+    value(24; "Dimension 2 Code") { Caption = 'Dimension 2 Code'; }
+    value(25; "Dimension 3 Code") { Caption = 'Dimension 3 Code'; }
+    value(26; "Dimension 4 Code") { Caption = 'Dimension 4 Code'; }
+    value(27; "Dimension 5 Code") { Caption = 'Dimension 5 Code'; }
+    value(28; "Dimension 6 Code") { Caption = 'Dimension 6 Code'; }
+    value(29; "Dimension 7 Code") { Caption = 'Dimension 7 Code'; }
+    value(30; "Dimension 8 Code") { Caption = 'Dimension 8 Code'; }
+    value(31; "Business Unit Code") { Caption = 'Business Unit Code'; }
 }

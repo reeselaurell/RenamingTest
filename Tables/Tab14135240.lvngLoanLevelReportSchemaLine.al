@@ -20,14 +20,14 @@ table 14135240 lvngLoanLevelReportSchemaLine
                 FieldSelection: Codeunit "Field Selection";
             begin
                 case Type of
-                    Type::lvngTableField:
+                    Type::"Table Field":
                         begin
                             TableField.Reset();
                             TableField.SetRange(TableNo, Database::lvngLoan);
                             if FieldSelection.Open(TableField) then
                                 Validate("Value Field No.", TableField."No.");
                         end;
-                    Type::lvngVariableField:
+                    Type::"Variable Field":
                         begin
                             LoanFieldsConfiguration.Reset();
                             if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then

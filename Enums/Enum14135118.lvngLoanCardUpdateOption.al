@@ -1,16 +1,8 @@
-enum 14135118 "lvngLoanCardUpdateOption"
+enum 14135118 lvngLoanCardUpdateOption
 {
     Extensible = false;
-    value(0; lvngAlways)
-    {
-        Caption = 'Always';
-    }
-    value(1; lvngSchema)
-    {
-        Caption = 'Update Schema';
-    }
-    value(2; lvngNoUpdate)
-    {
-        Caption = 'Do Not Update';
-    }
+
+    value(0; Always) { Caption = 'Always'; }
+    value(1; Schema) { Caption = 'Update Schema'; }
+    value(2; "No Update") { Caption = 'Do Not Update'; }
 }

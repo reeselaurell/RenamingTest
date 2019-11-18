@@ -113,11 +113,11 @@ page 14135126 "lvngLoanDocumentsList"
                 trigger OnAction()
                 begin
                     case "Transaction Type" of
-                        "Transaction Type"::lvngFunded:
+                        "Transaction Type"::Funded:
                             begin
                                 page.Run(Page::lvngFundedDocument, Rec);
                             end;
-                        "Transaction Type"::lvngSold:
+                        "Transaction Type"::Sold:
                             begin
                                 page.Run(Page::lvngSoldDocument, Rec);
                             end;

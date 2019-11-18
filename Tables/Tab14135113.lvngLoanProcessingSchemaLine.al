@@ -24,7 +24,7 @@ table 14135113 "lvngLoanProcessingSchemaLine"
             end;
         }
         field(13; Description; Text[50]) { DataClassification = CustomerContent; }
-        field(14; "Account Type"; enum lvngAccountType) { DataClassification = CustomerContent; }
+        field(14; "Account Type"; enum lvngLoanAccountType) { DataClassification = CustomerContent; }
         field(15; "Account No."; code[20]) { DataClassification = CustomerContent; }
         field(16; "Account No. Switch Code"; Code[20])
         {

@@ -114,7 +114,7 @@ report 14135151 "lvngLoanFundedDocument"
                 Clear(State);
                 Clear(DimensionValues);
                 lvngLoan.Get(lvngLoanFundedDocument."Loan No.");
-                PropertyAddress := lvngLoan.GetLoanAddress(lvngLoanAddressTypeEnum::lvngProperty);
+                PropertyAddress := lvngLoan.GetLoanAddress(lvngLoanAddressTypeEnum::Property);
                 BorrowerName := StrSubstNo(lvngLoanVisionSetup."Search Name Template", lvngLoan."Borrower First Name", lvngloan."Borrower Last Name", lvngLoan."Borrower Middle Name");
                 lvngDimensionsManagement.FillDimensionsFromTable(lvngLoan, DimensionValues);
                 CostCenter := GetDimensionValueName(lvngLoanVisionSetup."Cost Center Dimension Code");

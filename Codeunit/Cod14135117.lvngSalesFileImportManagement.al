@@ -1,13 +1,13 @@
 codeunit 14135117 "lvngSalesFileImportManagement"
 {
-    procedure CreateSalesLines(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; lvngDocumentType: enum lvngDocumentType; lvngDocumentNo: Code[20])
+    procedure CreateSalesLines(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; lvngDocumentType: enum lvngLoanDocumentType; lvngDocumentNo: Code[20])
     var
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
         DimensionManagement: Codeunit DimensionManagement;
         LineNo: Integer;
     begin
-        if lvngDocumentType = lvngDocumentType::lvngCreditMemo then begin
+        if lvngDocumentType = lvngDocumentType::"Credit Memo" then begin
             SalesHeader.Get(SalesHeader."Document Type"::"Credit Memo", lvngDocumentNo);
         end else begin
             SalesHeader.Get(SalesHeader."Document Type"::Invoice, lvngDocumentNo);
@@ -66,7 +66,7 @@ codeunit 14135117 "lvngSalesFileImportManagement"
     procedure ManualFileImport(var lvngGenJnlImportBuffer: Record lvngGenJnlImportBuffer; var lvngImportBufferError: Record lvngImportBufferError): Boolean
     begin
         lvngFileImportSchema.reset;
-        lvngFileImportSchema.SetRange("File Import Type", lvngFileImportSchema."File Import Type"::lvngSalesLine);
+        lvngFileImportSchema.SetRange("File Import Type", lvngFileImportSchema."File Import Type"::"Sales Line");
         if page.RunModal(0, lvngFileImportSchema) = Action::LookupOK then begin
             lvngGenJnlImportBuffer.reset;
             lvngGenJnlImportBuffer.DeleteAll();
@@ -126,13 +126,13 @@ codeunit 14135117 "lvngSalesFileImportManagement"
             lvngGenJnlImportBuffer.Insert(true);
             lvngFileImportJnlLineTemp.reset;
             lvngFileImportJnlLineTemp.SetRange(Code, lvngFileImportSchema.Code);
-            lvngFileImportJnlLineTemp.SetFilter("Sales Import Field Type", '<>%1', lvngFileImportJnlLine."Sales Import Field Type"::lvngDummy);
+            lvngFileImportJnlLineTemp.SetFilter("Sales Import Field Type", '<>%1', lvngFileImportJnlLine."Sales Import Field Type"::Dummy);
             lvngFileImportJnlLineTemp.FindSet();
             repeat
                 lvngValue := CSVBufferTemp.GetValue(lvngStartLine, lvngFileImportJnlLineTemp."Column No.");
                 if lvngValue <> '' then begin
                     case lvngFileImportJnlLineTemp."Sales Import Field Type" of
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngAccountNo:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Account No.":
                             begin
                                 lvngGenJnlImportBuffer.lvngAccountValue := copystr(lvngValue, 1, maxstrlen(lvngGenJnlImportBuffer.lvngAccountValue));
                                 if lvngFileImportJnlLineTemp."Dimension Split" then begin
@@ -164,51 +164,51 @@ codeunit 14135117 "lvngSalesFileImportManagement"
                                     END;
                                 end;
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngAmount:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::Amount:
                             begin
                                 Evaluate(lvngGenJnlImportBuffer.lvngAmount, lvngValue);
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDescription:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::Description:
                             begin
                                 lvngGenJnlImportBuffer.lvngDescription := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngDescription));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension1Code:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 1 Code":
                             begin
                                 lvngGenJnlImportBuffer.lvngGlobalDimension1Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngGlobalDimension1Value));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension2Code:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 2 Code":
                             begin
                                 lvngGenJnlImportBuffer.lvngGlobalDimension2Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngGlobalDimension2Value));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension3Code:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 3 Code":
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension3Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension3Value));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension4Code:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 4 Code":
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension4Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension4Value));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension5Code:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 5 Code":
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension5Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension5Value));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension6Code:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 6 Code":
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension6Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension6Value));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension7Code:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 7 Code":
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension7Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension7Value));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension8Code:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 8 Code":
                             begin
                                 lvngGenJnlImportBuffer.lvngShortcutDimension8Value := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngShortcutDimension8Value));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngLoanNo:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Loan No.":
                             begin
                                 lvngGenJnlImportBuffer.lvngLoanNo := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngLoanNo));
                             end;
-                        lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngReasonCode:
+                        lvngFileImportJnlLineTemp."Sales Import Field Type"::"Reason Code":
                             begin
                                 lvngGenJnlImportBuffer.lvngReasonCode := CopyStr(lvngValue, 1, MaxStrLen(lvngGenJnlImportBuffer.lvngReasonCode));
                             end;
@@ -242,7 +242,7 @@ codeunit 14135117 "lvngSalesFileImportManagement"
                     lvngGenJnlImportBuffer.lvngAmount := -lvngGenJnlImportBuffer.lvngAmount;
                 end;
                 //Document Type
-                if lvngFileImportSchema."Document Type Option" = lvngFileImportSchema."Document Type Option"::lvngPredefined then begin
+                if lvngFileImportSchema."Document Type Option" = lvngFileImportSchema."Document Type Option"::Predefined then begin
                     lvngGenJnlImportBuffer.lvngDocumentType := lvngFileImportSchema."Document Type";
                 end;
 
@@ -262,13 +262,13 @@ codeunit 14135117 "lvngSalesFileImportManagement"
                         AddErrorLine(lvngGenJnlImportBuffer, lvngImportBufferError, StrSubstNo(lvngLoanNoNotFoundLbl, lvngGenJnlImportBuffer.lvngLoanNo));
                     end;
                     if lvngGenJnlImportBuffer.lvngLoanNo <> '' then begin
-                        if lvngFileImportSchema."Dimension Validation Rule" = lvngFileImportSchema."Dimension Validation Rule"::lvngAllLoanDimensions then begin
+                        if lvngFileImportSchema."Dimension Validation Rule" = lvngFileImportSchema."Dimension Validation Rule"::"All Loan Dimensions" then begin
                             AssignLoanDimensions(lvngGenJnlImportBuffer);
                         end;
-                        if lvngFileImportSchema."Dimension Validation Rule" = lvngFileImportSchema."Dimension Validation Rule"::lvngEmptyDimensions then begin
+                        if lvngFileImportSchema."Dimension Validation Rule" = lvngFileImportSchema."Dimension Validation Rule"::"Empty Dimensions" then begin
                             AssignEmptyLoanDimensions(lvngGenJnlImportBuffer);
                         end;
-                        if lvngFileImportSchema."Dimension Validation Rule" = lvngFileImportSchema."Dimension Validation Rule"::lvngLoanAndExcludeImportedDimensions then begin
+                        if lvngFileImportSchema."Dimension Validation Rule" = lvngFileImportSchema."Dimension Validation Rule"::"Loan & Exclude Imported Dimensions" then begin
                             AssignNotImportedLoanDimensions(lvngGenJnlImportBuffer);
                         end;
                     end;
@@ -375,19 +375,19 @@ codeunit 14135117 "lvngSalesFileImportManagement"
             DimensionValue.reset;
             DimensionValue.SetRange("Global Dimension No.", lvngDimensionNo);
             case lvngDimensionMappingType of
-                lvngDimensionMappingType::lvngCode:
+                lvngDimensionMappingType::Code:
                     begin
                         DimensionValue.SetRange(Code, copystr(lvngDimensionValue, 1, MaxStrLen(DimensionValue.Code)));
                     end;
-                lvngDimensionMappingType::lvngName:
+                lvngDimensionMappingType::Name:
                     begin
                         DimensionValue.SetFilter(Name, copystr(lvngDimensionValue, 1, MaxStrLen(DimensionValue.Name)));
                     end;
-                lvngDimensionMappingType::lvngSearchName:
+                lvngDimensionMappingType::"Search Name":
                     begin
                         DimensionValue.Setrange(Name, '@' + copystr(lvngDimensionValue, 1, MaxStrLen(DimensionValue.Name)));
                     end;
-                lvngDimensionMappingType::lvngAdditionalCode:
+                lvngDimensionMappingType::"Additional Code":
                     begin
                         DimensionValue.SetRange(lvngAdditionalCode, copystr(lvngDimensionValue, 1, MaxStrLen(DimensionValue.lvngAdditionalCode)));
                     end;
@@ -455,35 +455,35 @@ codeunit 14135117 "lvngSalesFileImportManagement"
     begin
         if lvngLoan.Get(lvngGenJnlImportBuffer.lvngLoanNo) then begin
             lvngFileImportJnlLineTemp.reset;
-            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension1Code);
+            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 1 Code");
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngGlobalDimension1Code := lvngLoan."Global Dimension 1 Code";
 
-            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension2Code);
+            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 2 Code");
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngGlobalDimension2Code := lvngLoan."Global Dimension 2 Code";
 
-            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension3Code);
+            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 3 Code");
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension3Code := lvngLoan."Shortcut Dimension 3 Code";
 
-            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension4Code);
+            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 4 Code");
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension4Code := lvngLoan."Shortcut Dimension 4 Code";
 
-            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension5Code);
+            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 5 Code");
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension5Code := lvngLoan."Shortcut Dimension 5 Code";
 
-            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension6Code);
+            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 6 Code");
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension6Code := lvngLoan."Shortcut Dimension 6 Code";
 
-            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension7Code);
+            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 7 Code");
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension7Code := lvngLoan."Shortcut Dimension 7 Code";
 
-            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::lvngDimension8Code);
+            lvngFileImportJnlLineTemp.SetRange("Sales Import Field Type", lvngFileImportJnlLineTemp."Sales Import Field Type"::"Dimension 8 Code");
             if lvngFileImportJnlLineTemp.IsEmpty() then
                 lvngGenJnlImportBuffer.lvngShortcutDimension8Code := lvngLoan."Shortcut Dimension 8 Code";
         end;
@@ -494,14 +494,14 @@ codeunit 14135117 "lvngSalesFileImportManagement"
         lvngLoan: Record lvngLoan;
     begin
         case lvngFileImportSchema."Loan No. Validation Rule" of
-            lvngFileImportSchema."Loan No. Validation Rule"::lvngBlankIfNotFound:
+            lvngFileImportSchema."Loan No. Validation Rule"::"Blank If Not Found":
                 begin
                     if not lvngLoan.Get(lvngLoanNo) then begin
                         Clear(lvngLoanNo);
                         exit(true);
                     end;
                 end;
-            lvngFileImportSchema."Loan No. Validation Rule"::lvngValidate:
+            lvngFileImportSchema."Loan No. Validation Rule"::Validate:
                 begin
                     if not lvngloan.Get(lvngLoanNo) then
                         exit(false);
@@ -516,7 +516,7 @@ codeunit 14135117 "lvngSalesFileImportManagement"
     begin
         //Account Type and Account No.
         case lvngFileImportSchema."Account Mapping Type" of
-            lvngFileImportSchema."Account Mapping Type"::lvngName:
+            lvngFileImportSchema."Account Mapping Type"::Name:
                 begin
                     GLAccount.reset;
                     GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
@@ -525,7 +525,7 @@ codeunit 14135117 "lvngSalesFileImportManagement"
                         lvngAccountNo := GLAccount."No.";
                     end;
                 end;
-            lvngFileImportSchema."Account Mapping Type"::lvngNo:
+            lvngFileImportSchema."Account Mapping Type"::"No.":
                 begin
                     GLAccount.reset;
                     GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
@@ -534,7 +534,7 @@ codeunit 14135117 "lvngSalesFileImportManagement"
                         lvngAccountNo := GLAccount."No.";
                     end;
                 end;
-            lvngFileImportSchema."Account Mapping Type"::lvngNo2:
+            lvngFileImportSchema."Account Mapping Type"::"No. 2":
                 begin
                     GLAccount.reset;
                     GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
@@ -543,7 +543,7 @@ codeunit 14135117 "lvngSalesFileImportManagement"
                         lvngAccountNo := GLAccount."No.";
                     end;
                 end;
-            lvngFileImportSchema."Account Mapping Type"::lvngSearchName:
+            lvngFileImportSchema."Account Mapping Type"::"Search Name":
                 begin
                     GLAccount.reset;
                     GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);

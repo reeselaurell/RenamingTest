@@ -44,7 +44,7 @@ report 14135220 lvngPerformanceWorksheet
                         begin
                             if not RowSchema.Get(RowSchemaCode) then
                                 exit(false);
-                            if RowSchema."Schema Type" = RowSchema."Schema Type"::lvngPeriod then begin
+                            if RowSchema."Schema Type" = RowSchema."Schema Type"::Period then begin
                                 Clear(PeriodSchemaList);
                                 if PeriodBand.Get(BandSchemaCode) then
                                     PeriodSchemaList.SetRecord(PeriodBand);
@@ -57,9 +57,9 @@ report 14135220 lvngPerformanceWorksheet
                             end else begin
                                 Clear(DimensionSchemaList);
                                 DimensionBand.Reset();
-                                DimensionBand.SetRange("Dynamic Layout", RowSchema."Schema Type" = RowSchema."Schema Type"::lvngDimensionDynamic);
+                                DimensionBand.SetRange("Dynamic Layout", RowSchema."Schema Type" = RowSchema."Schema Type"::"Dimension Dynamic");
                                 DimensionSchemaList.SetTableView(DimensionBand);
-                                if DimensionBand.Get(BandSchemaCode, RowSchema."Schema Type" = RowSchema."Schema Type"::lvngDimensionDynamic) then
+                                if DimensionBand.Get(BandSchemaCode, RowSchema."Schema Type" = RowSchema."Schema Type"::"Dimension Dynamic") then
                                     DimensionSchemaList.SetRecord(DimensionBand);
                                 DimensionSchemaList.LookupMode(true);
                                 if DimensionSchemaList.RunModal() = Action::LookupOK then begin
@@ -86,7 +86,7 @@ report 14135220 lvngPerformanceWorksheet
                             FilterTokens: Codeunit "Filter Tokens";
                         begin
                             RowSchema.Get(RowSchemaCode);
-                            if RowSchema."Schema Type" = RowSchema."Schema Type"::lvngPeriod then begin
+                            if RowSchema."Schema Type" = RowSchema."Schema Type"::Period then begin
                                 Evaluate(AsOfDate, DateFilter);
                                 DateFilter := Format(AsOfDate);
                             end else begin
@@ -127,7 +127,7 @@ report 14135220 lvngPerformanceWorksheet
         DimensionPerformanceView: Page lvngDimensionPerformanceView;
     begin
         RowSchema.Get(RowSchemaCode);
-        if RowSchema."Schema Type" = RowSchema."Schema Type"::lvngPeriod then begin
+        if RowSchema."Schema Type" = RowSchema."Schema Type"::Period then begin
             Clear(PeriodPerformanceView);
             Evaluate(SystemFilter."As Of Date", DateFilter);
             PeriodPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, SystemFilter);

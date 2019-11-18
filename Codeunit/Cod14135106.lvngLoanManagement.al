@@ -28,7 +28,7 @@ codeunit 14135106 "lvngLoanManagement"
     begin
         GetLoanVisionSetup();
         lvngLoanJournalBatch.Get(lvngJournalBatchCode);
-        if lvngLoanJournalBatch."Loan Card Update Option" = lvngLoanJournalBatch."Loan Card Update Option"::lvngSchema then begin
+        if lvngLoanJournalBatch."Loan Card Update Option" = lvngLoanJournalBatch."Loan Card Update Option"::Schema then begin
             lvngLoanUpdateSchema.reset;
             lvngLoanUpdateSchema.SetRange("Journal Batch Code", lvngJournalBatchCode);
             lvngLoanUpdateSchema.FindSet();
@@ -40,12 +40,12 @@ codeunit 14135106 "lvngLoanManagement"
         end;
         lvngLoanJournalLine.reset;
         lvngLoanJournalLine.SetRange("Loan Journal Batch Code", lvngJournalBatchCode);
-        if lvngLoanJournalBatch."Loan Journal Type" = lvngLoanJournalBatch."Loan Journal Type"::lvngFunded then begin
+        if lvngLoanJournalBatch."Loan Journal Type" = lvngLoanJournalBatch."Loan Journal Type"::Funded then begin
             if lvngLoanVisionSetup."Funded Void Reason Code" <> '' then begin
                 lvngLoanJournalLine.SetFilter("Reason Code", '<>%1', lvngLoanVisionSetup."Funded Void Reason Code");
             end;
         end;
-        if lvngLoanJournalBatch."Loan Journal Type" = lvngLoanJournalBatch."Loan Journal Type"::lvngSold then begin
+        if lvngLoanJournalBatch."Loan Journal Type" = lvngLoanJournalBatch."Loan Journal Type"::Sold then begin
             if lvngLoanVisionSetup."Sold Void Reason Code" <> '' then begin
                 lvngLoanJournalLine.SetFilter("Reason Code", '<>%1', lvngLoanVisionSetup."Sold Void Reason Code");
             end;
@@ -61,9 +61,9 @@ codeunit 14135106 "lvngLoanManagement"
                     Window.Update(1, lvngCounter);
                 if not lvngLoanJournalErrorMgmt.HasError(lvngLoanJournalLine) then begin
                     case lvngLoanJournalBatch."Loan Card Update Option" of
-                        lvngloanjournalbatch."Loan Card Update Option"::lvngAlways:
+                        lvngloanjournalbatch."Loan Card Update Option"::Always:
                             UpdateLoanCard(lvngLoanJournalLine);
-                        lvngloanjournalbatch."Loan Card Update Option"::lvngSchema:
+                        lvngloanjournalbatch."Loan Card Update Option"::Schema:
                             UpdateLoan(lvngLoanJournalLine, lvngLoanUpdateSchemaTemp);
                     end;
                     lvngProcessedCount := lvngProcessedCount + 1;
@@ -101,7 +101,7 @@ codeunit 14135106 "lvngLoanManagement"
         if lvngLoanUpdateSchema.FindSet() then begin
             repeat
                 case lvngLoanUpdateSchema."Import Field Type" of
-                    lvngloanupdateschema."Import Field Type"::lvngVariable:
+                    lvngloanupdateschema."Import Field Type"::Variable:
                         begin
                             if lvngLoanJournalValue.Get(lvngLoanJournalLine."Loan Journal Batch Code", lvngLoanJournalLine."Line No.", lvngLoanUpdateSchema."Field No.") then begin
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -116,7 +116,7 @@ codeunit 14135106 "lvngLoanManagement"
                                             lvngLoanValue.Validate("Field Value", lvngLoanJournalValue."Field Value");
                                             lvngLoanValue.Modify();
                                         end;
-                                    lvngloanupdateschema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngloanupdateschema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if not lvngLoanValue.get(lvngLoanJournalLine."Loan No.", lvngLoanUpdateSchema."Field No.") then begin
                                                 Clear(lvngLoanValue);
@@ -129,7 +129,7 @@ codeunit 14135106 "lvngLoanManagement"
                                                 lvngLoanValue.Modify();
                                             end;
                                         end;
-                                    lvngloanupdateschema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngloanupdateschema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if not lvngLoanValue.get(lvngLoanJournalLine."Loan No.", lvngLoanUpdateSchema."Field No.") then begin
                                                 Clear(lvngLoanValue);
@@ -145,7 +145,7 @@ codeunit 14135106 "lvngLoanManagement"
                                 end;
                             end;
                         end;
-                    lvngloanupdateschema."Import Field Type"::lvngTable:
+                    lvngloanupdateschema."Import Field Type"::Table:
                         begin
                             //Search Name
                             if lvngLoanUpdateSchema."Field No." = 10 then begin
@@ -154,12 +154,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Search Name" := lvngLoanJournalLine."Search Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Search Name" = '' then
                                                 lvngloan."Search Name" := lvngLoanJournalLine."Search Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Search Name" <> '' then begin
                                                 lvngLoan."Search Name" := lvngLoanJournalLine."Search Name";
@@ -174,12 +174,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Borrower First Name" := lvngLoanJournalLine."Borrower First Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Borrower First Name" = '' then
                                                 lvngloan."Borrower First Name" := lvngLoanJournalLine."Borrower First Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Borrower First Name" <> '' then begin
                                                 lvngLoan."Borrower First Name" := lvngLoanJournalLine."Borrower First Name";
@@ -194,12 +194,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Borrower Last Name" := lvngLoanJournalLine."Borrower Last Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Borrower Last Name" = '' then
                                                 lvngloan."Borrower Last Name" := lvngLoanJournalLine."Borrower Last Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Borrower Last Name" <> '' then begin
                                                 lvngLoan."Borrower Last Name" := lvngLoanJournalLine."Borrower Last Name";
@@ -214,12 +214,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Borrower Middle Name" := lvngLoanJournalLine."Borrower Middle Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Borrower Middle Name" = '' then
                                                 lvngloan."Borrower Middle Name" := lvngLoanJournalLine."Borrower Middle Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Borrower Middle Name" <> '' then begin
                                                 lvngLoan."Borrower Middle Name" := lvngLoanJournalLine."Borrower Middle Name";
@@ -234,12 +234,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Title Customer No." := lvngLoanJournalLine."Title Customer No.";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Title Customer No." = '' then
                                                 lvngloan."Title Customer No." := lvngLoanJournalLine."Title Customer No.";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Title Customer No." <> '' then begin
                                                 lvngLoan."Title Customer No." := lvngLoanJournalLine."Title Customer No.";
@@ -254,12 +254,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Investor Customer No." := lvngLoanJournalLine."Investor Customer No.";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Investor Customer No." = '' then
                                                 lvngloan."Investor Customer No." := lvngLoanJournalLine."Investor Customer No.";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Investor Customer No." <> '' then begin
                                                 lvngLoan."Investor Customer No." := lvngLoanJournalLine."Investor Customer No.";
@@ -274,12 +274,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Borrower Customer No" := lvngLoanJournalLine."Borrower Customer No.";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Borrower Customer No" = '' then
                                                 lvngloan."Borrower Customer No" := lvngLoanJournalLine."Borrower Customer No.";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Borrower Customer No." <> '' then begin
                                                 lvngLoan."Borrower Customer No" := lvngLoanJournalLine."Borrower Customer No.";
@@ -294,12 +294,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Application Date" := lvngLoanJournalLine."Application Date";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Application Date" = 0D then
                                                 lvngloan."Application Date" := lvngLoanJournalLine."Application Date";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Application Date" <> 0D then begin
                                                 lvngLoan."Application Date" := lvngLoanJournalLine."Application Date";
@@ -314,12 +314,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Date Closed" := lvngLoanJournalLine."Date Closed";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Date Closed" = 0D then
                                                 lvngloan."Date Closed" := lvngLoanJournalLine."Date Closed";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Date Closed" <> 0D then begin
                                                 lvngLoan."Date Closed" := lvngLoanJournalLine."Date Closed";
@@ -334,12 +334,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Date Funded" := lvngLoanJournalLine."Date Funded";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Date Funded" = 0D then
                                                 lvngloan."Date Funded" := lvngLoanJournalLine."Date Funded";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Date Funded" <> 0D then begin
                                                 lvngLoan."Date Funded" := lvngLoanJournalLine."Date Funded";
@@ -354,12 +354,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Date Sold" := lvngLoanJournalLine."Date Sold";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Date Sold" = 0D then
                                                 lvngloan."Date Sold" := lvngLoanJournalLine."Date Sold";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Date Sold" <> 0D then begin
                                                 lvngLoan."Date Sold" := lvngLoanJournalLine."Date Sold";
@@ -374,12 +374,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Date Locked" := lvngLoanJournalLine."Date Locked";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Date Locked" = 0D then
                                                 lvngloan."Date Locked" := lvngLoanJournalLine."Date Locked";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Date Locked" <> 0D then begin
                                                 lvngLoan."Date Locked" := lvngLoanJournalLine."Date Locked";
@@ -394,12 +394,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Loan Amount" := lvngLoanJournalLine."Loan Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Loan Amount" = 0 then
                                                 lvngloan."Loan Amount" := lvngLoanJournalLine."Loan Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Loan Amount" <> 0 then begin
                                                 lvngLoan."Loan Amount" := lvngLoanJournalLine."Loan Amount";
@@ -414,12 +414,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.Blocked := lvngLoanJournalLine.Blocked;
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan.Blocked = false then
                                                 lvngloan.Blocked := lvngLoanJournalLine.Blocked;
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine.Blocked <> false then begin
                                                 lvngLoan.Blocked := lvngLoanJournalLine.Blocked;
@@ -434,12 +434,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Warehouse Line Code" := lvngLoanJournalLine."Warehouse Line Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Warehouse Line Code" = '' then
                                                 lvngloan."Warehouse Line Code" := lvngLoanJournalLine."Warehouse Line Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Warehouse Line Code" <> '' then begin
                                                 lvngLoan."Warehouse Line Code" := lvngLoanJournalLine."Warehouse Line Code";
@@ -454,12 +454,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Co-Borrower First Name" := lvngLoanJournalLine."Co-Borrower First Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Co-Borrower First Name" = '' then
                                                 lvngloan."Co-Borrower First Name" := lvngLoanJournalLine."Co-Borrower First Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Co-Borrower First Name" <> '' then begin
                                                 lvngLoan."Co-Borrower First Name" := lvngLoanJournalLine."Co-Borrower First Name";
@@ -474,12 +474,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Co-Borrower Last Name" := lvngLoanJournalLine."Co-Borrower Last Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Co-Borrower Last Name" = '' then
                                                 lvngloan."Co-Borrower Last Name" := lvngLoanJournalLine."Co-Borrower Last Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Co-Borrower Last Name" <> '' then begin
                                                 lvngLoan."Co-Borrower Last Name" := lvngLoanJournalLine."Co-Borrower Last Name";
@@ -494,12 +494,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Co-Borrower Middle Name" := lvngLoanJournalLine."Co-Borrower Middle Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Co-Borrower Middle Name" = '' then
                                                 lvngloan."Co-Borrower Middle Name" := lvngLoanJournalLine."Co-Borrower Middle Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Co-Borrower Middle Name" <> '' then begin
                                                 lvngLoan."Co-Borrower Middle Name" := lvngLoanJournalLine."Co-Borrower Middle Name";
@@ -514,12 +514,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."203K Contractor Name" := lvngLoanJournalLine."203K Contractor Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."203K Contractor Name" = '' then
                                                 lvngloan."203K Contractor Name" := lvngLoanJournalLine."203K Contractor Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."203K Contractor Name" <> '' then begin
                                                 lvngLoan."203K Contractor Name" := lvngLoanJournalLine."203K Contractor Name";
@@ -534,12 +534,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."203K Inspector Name" := lvngLoanJournalLine."203K Inspector Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."203K Inspector Name" = '' then
                                                 lvngloan."203K Inspector Name" := lvngLoanJournalLine."203K Inspector Name";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."203K Inspector Name" <> '' then begin
                                                 lvngLoan."203K Inspector Name" := lvngLoanJournalLine."203K Inspector Name";
@@ -554,12 +554,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.validate("Global Dimension 1 Code", lvngLoanJournalLine."Global Dimension 1 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Global Dimension 1 Code" = '' then
                                                 lvngLoan.validate("Global Dimension 1 Code", lvngLoanJournalLine."Global Dimension 1 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Global Dimension 1 Code" <> '' then begin
                                                 lvngLoan.validate("Global Dimension 1 Code", lvngLoanJournalLine."Global Dimension 1 Code");
@@ -574,12 +574,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.validate("Global Dimension 2 Code", lvngLoanJournalLine."Global Dimension 2 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Global Dimension 2 Code" = '' then
                                                 lvngLoan.validate("Global Dimension 2 Code", lvngLoanJournalLine."Global Dimension 2 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Global Dimension 2 Code" <> '' then begin
                                                 lvngLoan.validate("Global Dimension 2 Code", lvngLoanJournalLine."Global Dimension 2 Code");
@@ -594,12 +594,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.validate("Shortcut Dimension 3 Code", lvngLoanJournalLine."Shortcut Dimension 3 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Shortcut Dimension 3 Code" = '' then
                                                 lvngLoan.validate("Shortcut Dimension 3 Code", lvngLoanJournalLine."Shortcut Dimension 3 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Shortcut Dimension 3 Code" <> '' then begin
                                                 lvngLoan.validate("Shortcut Dimension 3 Code", lvngLoanJournalLine."Shortcut Dimension 3 Code");
@@ -614,12 +614,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.validate("Shortcut Dimension 4 Code", lvngLoanJournalLine."Shortcut Dimension 4 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Shortcut Dimension 4 Code" = '' then
                                                 lvngLoan.validate("Shortcut Dimension 4 Code", lvngLoanJournalLine."Shortcut Dimension 4 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Shortcut Dimension 4 Code" <> '' then begin
                                                 lvngLoan.validate("Shortcut Dimension 4 Code", lvngLoanJournalLine."Shortcut Dimension 4 Code");
@@ -634,12 +634,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.validate("Shortcut Dimension 5 Code", lvngLoanJournalLine."Shortcut Dimension 5 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Shortcut Dimension 5 Code" = '' then
                                                 lvngLoan.validate("Shortcut Dimension 5 Code", lvngLoanJournalLine."Shortcut Dimension 5 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Shortcut Dimension 5 Code" <> '' then begin
                                                 lvngLoan.validate("Shortcut Dimension 5 Code", lvngLoanJournalLine."Shortcut Dimension 5 Code");
@@ -654,12 +654,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.validate("Shortcut Dimension 6 Code", lvngLoanJournalLine."Shortcut Dimension 6 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Shortcut Dimension 6 Code" = '' then
                                                 lvngLoan.validate("Shortcut Dimension 6 Code", lvngLoanJournalLine."Shortcut Dimension 6 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Shortcut Dimension 6 Code" <> '' then begin
                                                 lvngLoan.validate("Shortcut Dimension 6 Code", lvngLoanJournalLine."Shortcut Dimension 6 Code");
@@ -674,12 +674,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.validate("Shortcut Dimension 7 Code", lvngLoanJournalLine."Shortcut Dimension 7 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Shortcut Dimension 7 Code" = '' then
                                                 lvngLoan.validate("Shortcut Dimension 7 Code", lvngLoanJournalLine."Shortcut Dimension 7 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Shortcut Dimension 7 Code" <> '' then begin
                                                 lvngLoan.validate("Shortcut Dimension 7 Code", lvngLoanJournalLine."Shortcut Dimension 7 Code");
@@ -694,12 +694,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.validate("Shortcut Dimension 8 Code", lvngLoanJournalLine."Shortcut Dimension 8 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Shortcut Dimension 8 Code" = '' then
                                                 lvngLoan.validate("Shortcut Dimension 8 Code", lvngLoanJournalLine."Shortcut Dimension 8 Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Shortcut Dimension 8 Code" <> '' then begin
                                                 lvngLoan.validate("Shortcut Dimension 8 Code", lvngLoanJournalLine."Shortcut Dimension 8 Code");
@@ -714,12 +714,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan.validate("Business Unit Code", lvngLoanJournalLine."Business Unit Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Business Unit Code" = '' then
                                                 lvngLoan.validate("Business Unit Code", lvngLoanJournalLine."Business Unit Code");
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Business Unit Code" <> '' then begin
                                                 lvngLoan.validate("Business Unit Code", lvngLoanJournalLine."Business Unit Code");
@@ -734,12 +734,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Loan Term (Months)" := lvngLoanJournalLine."Loan Term (Months)";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Loan Term (Months)" = 0 then
                                                 lvngLoan."Loan Term (Months)" := lvngLoanJournalLine."Loan Term (Months)";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Loan Term (Months)" <> 0 then begin
                                                 lvngLoan."Loan Term (Months)" := lvngLoanJournalLine."Loan Term (Months)";
@@ -754,12 +754,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Interest Rate" := lvngLoanJournalLine."Interest Rate";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Interest Rate" = 0 then
                                                 lvngLoan."Interest Rate" := lvngLoanJournalLine."Interest Rate";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Interest Rate" <> 0 then begin
                                                 lvngLoan."Interest Rate" := lvngLoanJournalLine."Interest Rate";
@@ -774,12 +774,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."First Payment Due" := lvngLoanJournalLine."First Payment Due";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."First Payment Due" = 0D then
                                                 lvngLoan."First Payment Due" := lvngLoanJournalLine."First Payment Due";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."First Payment Due" <> 0D then begin
                                                 lvngLoan."First Payment Due" := lvngLoanJournalLine."First Payment Due";
@@ -794,12 +794,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."First Payment Due To Investor" := lvngLoanJournalLine."First Payment Due To Investor";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."First Payment Due To Investor" = 0D then
                                                 lvngLoan."First Payment Due To Investor" := lvngLoanJournalLine."First Payment Due To Investor";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."First Payment Due To Investor" <> 0D then begin
                                                 lvngLoan."First Payment Due To Investor" := lvngLoanJournalLine."First Payment Due To Investor";
@@ -814,12 +814,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Next Payment Date" := lvngLoanJournalLine."Next Payment Date";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Next Payment Date" = 0D then
                                                 lvngLoan."Next Payment Date" := lvngLoanJournalLine."Next Payment Date";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Next Payment Date" <> 0D then begin
                                                 lvngLoan."Next Payment Date" := lvngLoanJournalLine."Next Payment Date";
@@ -834,12 +834,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Monthly Escrow Amount" := lvngLoanJournalLine."Monthly Escrow Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Monthly Escrow Amount" = 0 then
                                                 lvngLoan."Monthly Escrow Amount" := lvngLoanJournalLine."Monthly Escrow Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Monthly Escrow Amount" <> 0 then begin
                                                 lvngLoan."Monthly Escrow Amount" := lvngLoanJournalLine."Monthly Escrow Amount";
@@ -854,12 +854,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Monthly Payment Amount" := lvngLoanJournalLine."Monthly Payment Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Monthly Payment Amount" = 0 then
                                                 lvngLoan."Monthly Payment Amount" := lvngLoanJournalLine."Monthly Payment Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Monthly Payment Amount" <> 0 then begin
                                                 lvngLoan."Monthly Payment Amount" := lvngLoanJournalLine."Monthly Payment Amount";
@@ -874,12 +874,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Late Fee" := lvngLoanJournalLine."Late Fee";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Late Fee" = 0 then
                                                 lvngLoan."Late Fee" := lvngLoanJournalLine."Late Fee";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Late Fee" <> 0 then begin
                                                 lvngLoan."Late Fee" := lvngLoanJournalLine."Late Fee";
@@ -894,12 +894,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Commission Base Amount" := lvngLoanJournalLine."Commission Base Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Commission Base Amount" = 0 then
                                                 lvngLoan."Commission Base Amount" := lvngLoanJournalLine."Commission Base Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Commission Base Amount" <> 0 then begin
                                                 lvngLoan."Commission Base Amount" := lvngLoanJournalLine."Commission Base Amount";
@@ -914,12 +914,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Commission Date" := lvngLoanJournalLine."Commission Date";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Commission Date" = 0D then
                                                 lvngLoan."Commission Date" := lvngLoanJournalLine."Commission Date";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Commission Date" <> 0D then begin
                                                 lvngLoan."Commission Date" := lvngLoanJournalLine."Commission Date";
@@ -934,12 +934,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Commission Bps" := lvngLoanJournalLine."Commission Bps";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Commission Bps" = 0 then
                                                 lvngLoan."Commission Bps" := lvngLoanJournalLine."Commission Bps";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Commission Bps" <> 0 then begin
                                                 lvngLoan."Commission Bps" := lvngLoanJournalLine."Commission Bps";
@@ -954,12 +954,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Commission Amount" := lvngLoanJournalLine."Commission Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Commission Amount" = 0 then
                                                 lvngLoan."Commission Amount" := lvngLoanJournalLine."Commission Amount";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Commission Amount" <> 0 then begin
                                                 lvngLoan."Commission Amount" := lvngLoanJournalLine."Commission Amount";
@@ -974,12 +974,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoan."Constr. Interest Rate" := lvngLoanJournalLine."Constr. Interest Rate";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngloan."Constr. Interest Rate" = 0 then
                                                 lvngLoan."Constr. Interest Rate" := lvngLoanJournalLine."Constr. Interest Rate";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Constr. Interest Rate" <> 0 then begin
                                                 lvngLoan."Constr. Interest Rate" := lvngLoanJournalLine."Constr. Interest Rate";
@@ -989,10 +989,10 @@ codeunit 14135106 "lvngLoanManagement"
                             end;
                             //Borrower
                             if lvngLoanUpdateSchema."Field No." = 200 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Borrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Borrower;
                                     lvngLoanAddress.Insert();
 
                                 end;
@@ -1001,13 +1001,13 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.Address := lvngLoanJournalLine."Borrower Address";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.Address = '' then begin
                                                 lvngLoanAddress.Address := lvngLoanJournalLine."Borrower Address";
                                             end;
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Borrower Address" <> '' then begin
                                                 lvngLoanAddress.Address := lvngLoanJournalLine."Borrower Address";
@@ -1017,10 +1017,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 201 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Borrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Borrower;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1028,12 +1028,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress."Address 2" := lvngLoanJournalLine."Borrower Address 2";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress."Address 2" = '' then
                                                 lvngLoanAddress."Address 2" := lvngLoanJournalLine."Borrower Address 2";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Borrower Address" <> '' then begin
                                                 lvngLoanAddress."Address 2" := lvngLoanJournalLine."Borrower Address 2";
@@ -1043,10 +1043,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 202 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Borrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Borrower;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1054,12 +1054,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.City := lvngLoanJournalLine."Borrower City";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.City = '' then
                                                 lvngLoanAddress.City := lvngLoanJournalLine."Borrower City";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Borrower Address" <> '' then begin
                                                 lvngLoanAddress.City := lvngLoanJournalLine."Borrower City";
@@ -1069,10 +1069,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 203 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Borrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Borrower;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1080,12 +1080,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.State := lvngLoanJournalLine."Borrower State";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.State = '' then
                                                 lvngLoanAddress.State := lvngLoanJournalLine."Borrower State";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Borrower Address" <> '' then begin
                                                 lvngLoanAddress.State := lvngLoanJournalLine."Borrower State";
@@ -1095,10 +1095,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 204 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Borrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Borrower;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1106,12 +1106,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Borrower ZIP Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress."ZIP Code" = '' then
                                                 lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Borrower ZIP Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Borrower Address" <> '' then begin
                                                 lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Borrower ZIP Code";
@@ -1122,10 +1122,10 @@ codeunit 14135106 "lvngLoanManagement"
                             end;
                             //CoBorrower
                             if lvngLoanUpdateSchema."Field No." = 210 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngCoBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::CoBorrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngCoBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::CoBorrower;
                                     lvngLoanAddress.Insert();
 
                                 end;
@@ -1134,13 +1134,13 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.Address := lvngLoanJournalLine."Co-Borrower Address";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.Address = '' then begin
                                                 lvngLoanAddress.Address := lvngLoanJournalLine."Co-Borrower Address";
                                             end;
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Co-Borrower Address" <> '' then begin
                                                 lvngLoanAddress.Address := lvngLoanJournalLine."Co-Borrower Address";
@@ -1150,10 +1150,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 211 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngCoBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::CoBorrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngCoBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::CoBorrower;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1161,12 +1161,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress."Address 2" := lvngLoanJournalLine.lvngCoBorrowerAddress2;
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress."Address 2" = '' then
                                                 lvngLoanAddress."Address 2" := lvngLoanJournalLine.lvngCoBorrowerAddress2;
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Co-Borrower Address" <> '' then begin
                                                 lvngLoanAddress."Address 2" := lvngLoanJournalLine.lvngCoBorrowerAddress2;
@@ -1176,10 +1176,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 212 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngCoBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::CoBorrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngCoBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::CoBorrower;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1187,12 +1187,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.City := lvngLoanJournalLine."Co-Borrower City";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.City = '' then
                                                 lvngLoanAddress.City := lvngLoanJournalLine."Co-Borrower City";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Co-Borrower Address" <> '' then begin
                                                 lvngLoanAddress.City := lvngLoanJournalLine."Co-Borrower City";
@@ -1202,10 +1202,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 213 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngCoBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::CoBorrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngCoBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::CoBorrower;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1213,12 +1213,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.State := lvngLoanJournalLine."Co-Borrower State";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.State = '' then
                                                 lvngLoanAddress.State := lvngLoanJournalLine."Co-Borrower State";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Co-Borrower Address" <> '' then begin
                                                 lvngLoanAddress.State := lvngLoanJournalLine."Co-Borrower State";
@@ -1228,10 +1228,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 214 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngCoBorrower) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::CoBorrower) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngCoBorrower;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::CoBorrower;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1239,12 +1239,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Co-Borrower ZIP Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress."ZIP Code" = '' then
                                                 lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Co-Borrower ZIP Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Co-Borrower Address" <> '' then begin
                                                 lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Co-Borrower ZIP Code";
@@ -1255,10 +1255,10 @@ codeunit 14135106 "lvngLoanManagement"
                             end;
                             //Property
                             if lvngLoanUpdateSchema."Field No." = 220 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngProperty) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Property) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngProperty;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Property;
                                     lvngLoanAddress.Insert();
 
                                 end;
@@ -1267,13 +1267,13 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.Address := lvngLoanJournalLine."Property Address";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.Address = '' then begin
                                                 lvngLoanAddress.Address := lvngLoanJournalLine."Property Address";
                                             end;
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Property Address" <> '' then begin
                                                 lvngLoanAddress.Address := lvngLoanJournalLine."Property Address";
@@ -1283,10 +1283,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 221 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngProperty) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Property) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngProperty;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Property;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1294,12 +1294,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress."Address 2" := lvngLoanJournalLine."Property Address 2";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress."Address 2" = '' then
                                                 lvngLoanAddress."Address 2" := lvngLoanJournalLine."Property Address 2";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Property Address" <> '' then begin
                                                 lvngLoanAddress."Address 2" := lvngLoanJournalLine."Property Address 2";
@@ -1309,10 +1309,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 222 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngProperty) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Property) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngProperty;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Property;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1320,12 +1320,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.City := lvngLoanJournalLine."Property City";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.City = '' then
                                                 lvngLoanAddress.City := lvngLoanJournalLine."Property City";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Property Address" <> '' then begin
                                                 lvngLoanAddress.City := lvngLoanJournalLine."Property City";
@@ -1335,10 +1335,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 223 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngProperty) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Property) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngProperty;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Property;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1346,12 +1346,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.State := lvngLoanJournalLine."Property State";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.State = '' then
                                                 lvngLoanAddress.State := lvngLoanJournalLine."Property State";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Property Address" <> '' then begin
                                                 lvngLoanAddress.State := lvngLoanJournalLine."Property State";
@@ -1361,10 +1361,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 224 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngProperty) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Property) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngProperty;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Property;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1372,12 +1372,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Property ZIP Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress."ZIP Code" = '' then
                                                 lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Property ZIP Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Property Address" <> '' then begin
                                                 lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Property ZIP Code";
@@ -1388,10 +1388,10 @@ codeunit 14135106 "lvngLoanManagement"
                             end;
                             //Mailing
                             if lvngLoanUpdateSchema."Field No." = 230 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngMailing) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Mailing) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngMailing;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Mailing;
                                     lvngLoanAddress.Insert();
 
                                 end;
@@ -1400,13 +1400,13 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.Address := lvngLoanJournalLine."Mailing Address";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.Address = '' then begin
                                                 lvngLoanAddress.Address := lvngLoanJournalLine."Mailing Address";
                                             end;
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Mailing Address" <> '' then begin
                                                 lvngLoanAddress.Address := lvngLoanJournalLine."Mailing Address";
@@ -1416,10 +1416,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 231 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngMailing) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Mailing) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngMailing;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Mailing;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1427,12 +1427,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress."Address 2" := lvngLoanJournalLine."Mailing Address 2";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress."Address 2" = '' then
                                                 lvngLoanAddress."Address 2" := lvngLoanJournalLine."Mailing Address 2";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Mailing Address" <> '' then begin
                                                 lvngLoanAddress."Address 2" := lvngLoanJournalLine."Mailing Address 2";
@@ -1442,10 +1442,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 232 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngMailing) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Mailing) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngMailing;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Mailing;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1453,12 +1453,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.City := lvngLoanJournalLine."Mailing City";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.City = '' then
                                                 lvngLoanAddress.City := lvngLoanJournalLine."Mailing City";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Mailing Address" <> '' then begin
                                                 lvngLoanAddress.City := lvngLoanJournalLine."Mailing City";
@@ -1468,10 +1468,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 233 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngMailing) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Mailing) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngMailing;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Mailing;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1479,12 +1479,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress.State := lvngLoanJournalLine."Mailing State";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress.State = '' then
                                                 lvngLoanAddress.State := lvngLoanJournalLine."Mailing State";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Mailing Address" <> '' then begin
                                                 lvngLoanAddress.State := lvngLoanJournalLine."Mailing State";
@@ -1494,10 +1494,10 @@ codeunit 14135106 "lvngLoanManagement"
                                 lvngLoanAddress.Modify();
                             end;
                             if lvngLoanUpdateSchema."Field No." = 234 then begin
-                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngMailing) then begin
+                                if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Mailing) then begin
                                     Clear(lvngLoanAddress);
                                     lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngMailing;
+                                    lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Mailing;
                                     lvngLoanAddress.Insert();
                                 end;
                                 case lvngLoanUpdateSchema."Field Update Option" of
@@ -1505,12 +1505,12 @@ codeunit 14135106 "lvngLoanManagement"
                                         begin
                                             lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Mailing ZIP Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfDestinationBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress."ZIP Code" = '' then
                                                 lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Mailing ZIP Code";
                                         end;
-                                    lvngLoanUpdateSchema."Field Update Option"::lvngIfSourceNotBlank:
+                                    lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Mailing Address" <> '' then begin
                                                 lvngLoanAddress."ZIP Code" := lvngLoanJournalLine."Mailing ZIP Code";
@@ -1580,10 +1580,10 @@ codeunit 14135106 "lvngLoanManagement"
         lvngloan."Co-Borrower Middle Name" := lvngLoanJournalLine."Co-Borrower Middle Name";
         lvngloan."203K Contractor Name" := lvngLoanJournalLine."203K Contractor Name";
         lvngloan."203K Inspector Name" := lvngLoanJournalLine."203K Inspector Name";
-        if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngBorrower) then begin
+        if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Borrower) then begin
             Clear(lvngLoanAddress);
             lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-            lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngBorrower;
+            lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Borrower;
             lvngLoanAddress.Insert();
         end;
         lvngLoanAddress.Address := lvngLoanJournalLine."Borrower Address";
@@ -1592,10 +1592,10 @@ codeunit 14135106 "lvngLoanManagement"
         lvngLoanAddress.State := lvngLoanJournalLine."Borrower State";
         lvngloanaddress."ZIP Code" := lvngLoanJournalLine."Borrower ZIP Code";
         lvngLoanAddress.Modify();
-        if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngCoBorrower) then begin
+        if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::CoBorrower) then begin
             Clear(lvngLoanAddress);
             lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-            lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngCoBorrower;
+            lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::CoBorrower;
             lvngLoanAddress.Insert();
         end;
         lvngLoanAddress.Address := lvngLoanJournalLine."Co-Borrower Address";
@@ -1604,10 +1604,10 @@ codeunit 14135106 "lvngLoanManagement"
         lvngLoanAddress.State := lvngLoanJournalLine."Co-Borrower State";
         lvngloanaddress."ZIP Code" := lvngLoanJournalLine."Co-Borrower ZIP Code";
         lvngLoanAddress.Modify();
-        if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngMailing) then begin
+        if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Mailing) then begin
             Clear(lvngLoanAddress);
             lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-            lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngMailing;
+            lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Mailing;
             lvngLoanAddress.Insert();
         end;
         lvngLoanAddress.Address := lvngLoanJournalLine."Mailing Address";
@@ -1616,10 +1616,10 @@ codeunit 14135106 "lvngLoanManagement"
         lvngLoanAddress.State := lvngLoanJournalLine."Mailing State";
         lvngloanaddress."ZIP Code" := lvngLoanJournalLine."Mailing ZIP Code";
         lvngLoanAddress.Modify();
-        if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::lvngProperty) then begin
+        if not lvngLoanAddress.Get(lvngLoanJournalLine."Loan No.", lvngLoanAddress."Address Type"::Property) then begin
             Clear(lvngLoanAddress);
             lvngLoanAddress."Loan No." := lvngLoanJournalLine."Loan No.";
-            lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::lvngProperty;
+            lvngLoanAddress."Address Type" := lvngLoanAddress."Address Type"::Property;
             lvngLoanAddress.Insert();
         end;
         lvngLoanAddress.Address := lvngLoanJournalLine."Property Address";
@@ -1700,7 +1700,7 @@ codeunit 14135106 "lvngLoanManagement"
         if Page.RunModal(0, lvngLoanImportSchema) = Action::LookupOK then begin
             lvngLoanImportSchemaLine.reset;
             lvngLoanImportSchemaLine.SetRange(Code, lvngLoanImportSchema.Code);
-            lvngLoanImportSchemaLine.SetFilter("Field Type", '<>%1', lvngLoanImportSchemaLine."Field Type"::lvngDummy);
+            lvngLoanImportSchemaLine.SetFilter("Field Type", '<>%1', lvngLoanImportSchemaLine."Field Type"::Dummy);
             if lvngLoanImportSchemaLine.FindSet() then begin
                 repeat
                     Clear(lvngLoanUpdateSchema);
@@ -1721,7 +1721,7 @@ codeunit 14135106 "lvngLoanManagement"
         end;
     end;
 
-    procedure ModifyFieldUpdateOption(lvngJournalBatchCode: code[20]; lvngFieldUpdateOption: Enum lvngFieldUpdateOption)
+    procedure ModifyFieldUpdateOption(lvngJournalBatchCode: code[20]; lvngFieldUpdateOption: Enum lvngFieldUpdateCondition)
     var
         lvngLoanUpdateSchema: Record lvngLoanUpdateSchema;
         lvngConfirmModificationLbl: Label 'Do You want to update all entries to %1 update option?';

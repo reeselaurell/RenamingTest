@@ -59,22 +59,22 @@ page 14135140 "lvngFileImportSchemas"
                     lvngDepositImportSchema: Page lvngDepositImportSchema;
                 begin
                     case "File Import Type" of
-                        "File Import Type"::lvngGeneralJournal:
+                        "File Import Type"::"General Journal":
                             begin
                                 lvngGenJnlImportSchema.SetRecord(Rec);
                                 lvngGenJnlImportSchema.Run();
                             end;
-                        "File Import Type"::lvngPurchaseLine:
+                        "File Import Type"::"Purchase Line":
                             begin
                                 lvngPurchaseLinesImportSchema.SetRecord(Rec);
                                 lvngPurchaseLinesImportSchema.Run();
                             end;
-                        "File Import Type"::lvngSalesLine:
+                        "File Import Type"::"Sales Line":
                             begin
                                 lvngSalesLinesImportSchema.SetRecord(Rec);
                                 lvngSalesLinesImportSchema.Run();
                             end;
-                        "File Import Type"::lvngDepositLines:
+                        "File Import Type"::"Deposit Lines":
                             begin
                                 lvngDepositImportSchema.SetRecord(Rec);
                                 lvngDepositImportSchema.Run();

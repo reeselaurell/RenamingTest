@@ -15,11 +15,11 @@ codeunit 14135111 "lvngLoanVoidDocument"
         end;
         Clear(lvngLoanDocument);
         lvngLoanDocument.TransferFields(lvngLoanFundedDocument);
-        lvngLoanDocument."Transaction Type" := lvngLoanDocument."Transaction Type"::lvngFunded;
+        lvngLoanDocument."Transaction Type" := lvngLoanDocument."Transaction Type"::Funded;
         lvngLoanDocument."Document No." := NoSeriesMgmt.DoGetNextNo(lvngLoanVisionSetup."Void Funded No. Series", TODAY, true, true);
-        if lvngLoanFundedDocument."Document Type" = lvngLoanFundedDocument."Document Type"::lvngCreditMemo then
-            lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice else
-            lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
+        if lvngLoanFundedDocument."Document Type" = lvngLoanFundedDocument."Document Type"::"Credit Memo" then
+            lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::Invoice else
+            lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::"Credit Memo";
         lvngLoanDocument.Void := true;
         lvngLoanDocument."Void Document No." := lvngLoanFundedDocument."Document No.";
         lvngLoanDocument.Insert();
@@ -53,11 +53,11 @@ codeunit 14135111 "lvngLoanVoidDocument"
         end;
         Clear(lvngLoanDocument);
         lvngLoanDocument.TransferFields(lvngLoanSoldDocument);
-        lvngLoanDocument."Transaction Type" := lvngLoanDocument."Transaction Type"::lvngFunded;
+        lvngLoanDocument."Transaction Type" := lvngLoanDocument."Transaction Type"::Funded;
         lvngLoanDocument."Document No." := NoSeriesMgmt.DoGetNextNo(lvngLoanVisionSetup."Void Funded No. Series", TODAY, true, true);
-        if lvngLoanSoldDocument."Document Type" = lvngLoanSoldDocument."Document Type"::lvngCreditMemo then
-            lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngInvoice else
-            lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::lvngCreditMemo;
+        if lvngLoanSoldDocument."Document Type" = lvngLoanSoldDocument."Document Type"::"Credit Memo" then
+            lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::Invoice else
+            lvngLoanDocument."Document Type" := lvngLoanDocument."Document Type"::"Credit Memo";
         lvngLoanDocument.Void := true;
         lvngLoanDocument."Void Document No." := lvngLoanSoldDocument."Document No.";
         lvngLoanDocument.Insert();

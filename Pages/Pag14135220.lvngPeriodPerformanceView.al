@@ -54,7 +54,7 @@ page 14135220 lvngPeriodPerformanceView
 
                 trigger OnAction()
                 begin
-                    ExportToExcel(GridExportMode::lvngXlsx);
+                    ExportToExcel(GridExportMode::Xlsx);
                 end;
             }
             action(PdfExport)
@@ -68,7 +68,7 @@ page 14135220 lvngPeriodPerformanceView
 
                 trigger OnAction()
                 begin
-                    ExportToExcel(GridExportMode::lvngPdf);
+                    ExportToExcel(GridExportMode::Pdf);
                 end;
             }
             action(HtmlExport)
@@ -81,7 +81,7 @@ page 14135220 lvngPeriodPerformanceView
 
                 trigger OnAction()
                 begin
-                    ExportToExcel(GridExportMode::lvngHtml);
+                    ExportToExcel(GridExportMode::Html);
                 end;
             }
         }
@@ -152,18 +152,18 @@ page 14135220 lvngPeriodPerformanceView
         GLEntries: Page lvngPerformanceGLEntries;
     begin
         BandLine.Get(BandSchema.Code, BandIndex);
-        if BandLine."Band Type" = BandLine."Band Type"::lvngNormal then begin
+        if BandLine."Band Type" = BandLine."Band Type"::Normal then begin
             RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
             CalcUnit.Get(RowLine."Calculation Unit Code");
             case CalcUnit."Lookup Source" of
-                CalcUnit."Lookup Source"::lvngLoanCard:
+                CalcUnit."Lookup Source"::"Loan Card":
                     begin
                         Loan.Reset();
                         PerformanceMgmt.ApplyLoanFilter(Loan, CalcUnit, SystemFilter);
                         LoanList.SetTableView(Loan);
                         LoanList.RunModal();
                     end;
-                CalcUnit."Lookup Source"::lvngLedgerEntries:
+                CalcUnit."Lookup Source"::"Ledger Entries":
                     begin
                         GLEntry.Reset();
                         PerformanceMgmt.ApplyGLFilter(GLEntry, CalcUnit, SystemFilter);
