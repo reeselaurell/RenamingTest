@@ -13,47 +13,47 @@ pageextension 14135101 "lvngGLEntry" extends "General Ledger Entries" //MyTarget
         }
         addlast(Control1)
         {
-            field(lvngShortcutDimension3Code; lvngShortcutDimension3Code)
+            field(lvngShortcutDimension3Code; "Shortcut Dimension 3 Code")
             {
                 ApplicationArea = All;
             }
-            field(lvngShortcutDimension4Code; lvngShortcutDimension4Code)
+            field(lvngShortcutDimension4Code; "Shortcut Dimension 4 Code")
             {
                 ApplicationArea = All;
             }
-            field(lvngShortcutDimension5Code; lvngShortcutDimension5Code)
+            field(lvngShortcutDimension5Code; "Shortcut Dimension 5 Code")
             {
                 ApplicationArea = All;
             }
-            field(lvngShortcutDimension6Code; lvngShortcutDimension6Code)
+            field(lvngShortcutDimension6Code; "Shortcut Dimension 6 Code")
             {
                 ApplicationArea = All;
             }
-            field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
+            field(lvngShortcutDimension7Code; "Shortcut Dimension 7 Code")
             {
                 ApplicationArea = All;
             }
-            field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
+            field(lvngShortcutDimension8Code; "Shortcut Dimension 8 Code")
             {
                 ApplicationArea = All;
             }
-            field(lvngLoanNo; lvngLoanNo)
+            field(lvngLoanNo; "Loan No.")
             {
                 ApplicationArea = All;
             }
-            field(lvngServicingType; lvngServicingType)
+            field(lvngServicingType; "Servicing Type")
             {
                 ApplicationArea = All;
             }
-            field(lvngBorrowerSearchName; lvngBorrowerSearchName)
+            field(lvngBorrowerSearchName; "Borrower Search Name")
             {
                 ApplicationArea = All;
             }
-            field(lvngEntryDate; lvngEntryDate)
+            field(lvngEntryDate; "Entry Date")
             {
                 ApplicationArea = All;
             }
-            field(lvngVoided; lvngVoided)
+            field(lvngVoided; Voided)
             {
                 ApplicationArea = All;
             }

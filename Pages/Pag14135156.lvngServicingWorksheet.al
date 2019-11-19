@@ -13,72 +13,72 @@ page 14135156 "lvngServicingWorksheet"
             repeater(lvngRepeater)
             {
                 FreezeColumn = lvngBorrowerName;
-                field(lvngLoanNo; lvngLoanNo)
+                field(lvngLoanNo; "Loan No.")
                 {
                     ApplicationArea = All;
                     DrillDown = false;
                     Style = Attention;
-                    StyleExpr = lvngErrorMessage <> '';
+                    StyleExpr = "Error Message" <> '';
                 }
-                field(lvngBorrowerName; lvngBorrowerName)
+                field(lvngBorrowerName; "Borrower Name")
                 {
                     ApplicationArea = All;
                     DrillDown = false;
 
                 }
-                field(lvngCustomerNo; lvngCustomerNo)
+                field(lvngCustomerNo; "Customer No.")
                 {
                     ApplicationArea = All;
                     DrillDown = false;
                 }
-                field(lvngDateFunded; lvngDateFunded)
+                field(lvngDateFunded; "Date Funded")
                 {
                     ApplicationArea = All;
                     DrillDown = false;
                 }
-                field(lvngFirstPaymentDue; lvngFirstPaymentDue)
+                field(lvngFirstPaymentDue; "First Payment Due")
                 {
                     ApplicationArea = All;
                     DrillDown = false;
                 }
-                field(lvngNextPaymentDate; lvngNextPaymentDate)
+                field(lvngNextPaymentDate; "Next Payment Date")
                 {
                     ApplicationArea = All;
                     DrillDown = false;
                 }
-                field(lvngFirstPaymentDueToInvestor; lvngFirstPaymentDueToInvestor)
+                field(lvngFirstPaymentDueToInvestor; "First Payment Due To Investor")
                 {
                     ApplicationArea = All;
                     DrillDown = false;
                 }
-                field(lvngDateSold; lvngDateSold)
+                field(lvngDateSold; "Date Sold")
                 {
                     ApplicationArea = All;
                     DrillDown = false;
                 }
-                field(lvngInterestAmount; lvngInterestAmount)
+                field(lvngInterestAmount; "Interest Amount")
                 {
                     ApplicationArea = All;
                     Editable = false;
                 }
-                field(lvngPrincipalAmount; lvngPrincipalAmount)
+                field(lvngPrincipalAmount; "Principal Amount")
                 {
                     ApplicationArea = All;
                     Editable = false;
                 }
-                field(lvngEscrowAmount; lvngEscrowAmount)
+                field(lvngEscrowAmount; "Escrow Amount")
                 {
                     ApplicationArea = All;
                     Editable = false;
                 }
-                field(lvngTotalAmount; lvngInterestAmount + lvngPrincipalAmount + lvngEscrowAmount)
+                field(lvngTotalAmount; "Interest Amount" + "Principal Amount" + "Escrow Amount")
                 {
                     ApplicationArea = All;
                     Editable = false;
                     Caption = 'Total Amount';
                 }
 
-                field(lvngErrorMessage; lvngErrorMessage)
+                field(lvngErrorMessage; "Error Message")
                 {
                     ApplicationArea = All;
                     Editable = false;
@@ -108,7 +108,7 @@ page 14135156 "lvngServicingWorksheet"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = page lvngLoanCard;
-                RunPageLink = "No." = field(lvngLoanNo);
+                RunPageLink = "No." = field("Loan No.");
             }
             action(lvngRetrieveLoansForServicing)
             {
@@ -156,7 +156,7 @@ page 14135156 "lvngServicingWorksheet"
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.lvngEscrows.Page.SetParams(lvngLoanNo);
+        CurrPage.lvngEscrows.Page.SetParams("Loan No.");
     end;
 
     var

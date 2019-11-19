@@ -7,8 +7,8 @@ report 14135173 "lvngSubsequentDisbursements"
     {
         dataitem(lvngGLEntry; "G/L Entry")
         {
-            DataItemTableView = sorting ("G/L Account No.", "Posting Date");
-            RequestFilterFields = "G/L Account No.", "Posting Date", lvngEntryDate, "Source Type", "Source No.";
+            DataItemTableView = sorting("G/L Account No.", "Posting Date");
+            RequestFilterFields = "G/L Account No.", "Posting Date", "Entry Date", "Source Type", "Source No.";
             column(Amount; Amount)
             {
 
@@ -45,7 +45,7 @@ report 14135173 "lvngSubsequentDisbursements"
             {
 
             }
-            column(EntryDate; lvngEntryDate)
+            column(EntryDate; "Entry Date")
             {
 
             }

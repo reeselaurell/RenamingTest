@@ -1,4 +1,4 @@
-tableextension 14135130 lvngAccountingPeriodExtension extends "Accounting Period"
+tableextension 14135130 lvngAccountingPeriod extends "Accounting Period"
 {
     fields
     {

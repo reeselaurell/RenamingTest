@@ -25,7 +25,7 @@ report 14135160 "lvngSalesInvoice-Regular"
             {
 
             }
-            column(LoanNo; lvngSalesInvoiceHeader.lvngLoanNo)
+            column(LoanNo; lvngSalesInvoiceHeader."Loan No.")
             {
 
             }
@@ -113,7 +113,7 @@ report 14135160 "lvngSalesInvoice-Regular"
                 {
 
                 }
-                column(LineLoanNo; lnvgSalesInvoiceLine.lvngLoanNo)
+                column(LineLoanNo; lnvgSalesInvoiceLine."Loan No.")
                 {
 
                 }
@@ -128,8 +128,8 @@ report 14135160 "lvngSalesInvoice-Regular"
                 trigger OnAfterGetRecord()
                 begin
                     Clear(BorrowerName);
-                    if lnvgSalesInvoiceLine.lvngLoanNo <> '' then begin
-                        if Loan.Get(lnvgSalesInvoiceLine.lvngLoanNo) then
+                    if lnvgSalesInvoiceLine."Loan No." <> '' then begin
+                        if Loan.Get(lnvgSalesInvoiceLine."Loan No.") then
                             BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
                     end;
                     if "No." = UpperCase(Description) then begin
@@ -144,13 +144,13 @@ report 14135160 "lvngSalesInvoice-Regular"
             begin
                 Clear(BranchName);
                 Clear(LoanOfficerName);
-                if lvngSalesInvoiceHeader.lvngLoanNo <> '' then begin
-                    if DefaultDimension.Get(Database::lvngLoan, lvngSalesInvoiceHeader.lvngLoanNo, LoanVisionSetup."Cost Center Dimension Code") then begin
+                if lvngSalesInvoiceHeader."Loan No." <> '' then begin
+                    if DefaultDimension.Get(Database::lvngLoan, lvngSalesInvoiceHeader."Loan No.", LoanVisionSetup."Cost Center Dimension Code") then begin
                         if DimensionValue.Get(DefaultDimension."Dimension Code", DefaultDimension."Dimension Value Code") then begin
                             BranchName := DimensionValue.Name;
                         end;
                     end;
-                    if DefaultDimension.Get(Database::lvngLoan, lvngSalesInvoiceHeader.lvngLoanNo, LoanVisionSetup."Loan Officer Dimension Code") then begin
+                    if DefaultDimension.Get(Database::lvngLoan, lvngSalesInvoiceHeader."Loan No.", LoanVisionSetup."Loan Officer Dimension Code") then begin
                         if DimensionValue.Get(DefaultDimension."Dimension Code", DefaultDimension."Dimension Value Code") then begin
                             LoanOfficerName := DimensionValue.Name;
                         end;

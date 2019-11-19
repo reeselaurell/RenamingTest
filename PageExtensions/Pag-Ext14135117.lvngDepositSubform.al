@@ -8,7 +8,7 @@ pageextension 14135117 "lvngDepositSubform" extends "Deposit Subform"
             {
                 ApplicationArea = All;
             }
-            field(lvngLoanNo; lvngLoanNo)
+            field(lvngLoanNo; "Loan No.")
             {
                 ApplicationArea = All;
             }

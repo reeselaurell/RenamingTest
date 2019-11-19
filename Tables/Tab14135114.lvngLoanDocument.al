@@ -1,4 +1,4 @@
-table 14135114 "lvngLoanDocument"
+table 14135114 lvngLoanDocument
 {
     Caption = 'Loan Document';
     DataClassification = CustomerContent;
@@ -6,17 +6,18 @@ table 14135114 "lvngLoanDocument"
 
     fields
     {
-        field(1; "Transaction Type"; Enum lvngLoanTransactionType) { DataClassification = CustomerContent; }
-        field(2; "Document No."; code[20]) { DataClassification = CustomerContent; NotBlank = true; }
-        field(10; "Loan No."; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngLoan; }
-        field(11; "Customer No."; Code[20]) { DataClassification = CustomerContent; TableRelation = Customer; }
-        field(12; Void; Boolean) { DataClassification = CustomerContent; }
-        field(13; "Posting Date"; Date) { DataClassification = CustomerContent; }
-        field(14; "Reason Code"; Code[10]) { DataClassification = CustomerContent; TableRelation = "Reason Code"; }
-        field(15; "Document Type"; enum lvngLoanDocumentType) { DataClassification = CustomerContent; }
+        field(1; "Transaction Type"; Enum lvngLoanTransactionType) { Caption = 'Transaction Type'; DataClassification = CustomerContent; }
+        field(2; "Document No."; code[20]) { Caption = 'Document No.'; DataClassification = CustomerContent; NotBlank = true; }
+        field(10; "Loan No."; Code[20]) { Caption = 'Loan No.'; DataClassification = CustomerContent; TableRelation = lvngLoan; }
+        field(11; "Customer No."; Code[20]) { Caption = 'Customer No.'; DataClassification = CustomerContent; TableRelation = Customer; }
+        field(12; Void; Boolean) { Caption = 'Void'; DataClassification = CustomerContent; }
+        field(13; "Posting Date"; Date) { Caption = 'Posting Date'; DataClassification = CustomerContent; }
+        field(14; "Reason Code"; Code[10]) { Caption = 'Reason Code'; DataClassification = CustomerContent; TableRelation = "Reason Code"; }
+        field(15; "Document Type"; enum lvngLoanDocumentType) { Caption = 'Document Type'; DataClassification = CustomerContent; }
         field(80; "Global Dimension 1 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Global Dimension 1 Code';
             CaptionClass = '1,1,1';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1));
 
@@ -28,6 +29,7 @@ table 14135114 "lvngLoanDocument"
         field(81; "Global Dimension 2 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Global Dimension 2 Code';
             CaptionClass = '1,1,2';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2));
 
@@ -39,6 +41,7 @@ table 14135114 "lvngLoanDocument"
         field(82; "Shortcut Dimension 3 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Shortcut Dimension 3 Code';
             CaptionClass = '1,2,3';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3));
 
@@ -50,6 +53,7 @@ table 14135114 "lvngLoanDocument"
         field(83; "Shortcut Dimension 4 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Shortcut Dimension 4 Code';
             CaptionClass = '1,2,4';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4));
 
@@ -61,6 +65,7 @@ table 14135114 "lvngLoanDocument"
         field(84; "Shortcut Dimension 5 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Shortcut Dimension 5 Code';
             CaptionClass = '1,2,5';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(5));
 
@@ -72,6 +77,7 @@ table 14135114 "lvngLoanDocument"
         field(85; "Shortcut Dimension 6 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Shortcut Dimension 6 Code';
             CaptionClass = '1,2,6';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6));
 
@@ -83,6 +89,7 @@ table 14135114 "lvngLoanDocument"
         field(86; "Shortcut Dimension 7 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Shortcut Dimension 7 Code';
             CaptionClass = '1,2,7';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7));
 
@@ -94,6 +101,7 @@ table 14135114 "lvngLoanDocument"
         field(87; "Shortcut Dimension 8 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Shortcut Dimension 8 Code';
             CaptionClass = '1,2,8';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8));
 
@@ -102,11 +110,11 @@ table 14135114 "lvngLoanDocument"
                 DimensionManagement.ValidateShortcutDimValues(8, "Shortcut Dimension 8 Code", "Dimension Set ID");
             end;
         }
-        field(88; "Business Unit Code"; Code[10]) { DataClassification = CustomerContent; TableRelation = "Business Unit"; }
-        field(89; "Dimension Set ID"; Integer) { DataClassification = CustomerContent; }
-        field(200; "Warehouse Line Code"; Code[50]) { DataClassification = CustomerContent; TableRelation = lvngWarehouseLine.Code; }
-        field(1000; "Void Document No."; Code[20]) { DataClassification = CustomerContent; }
-        field(10000; "Borrower Search Name"; Code[50]) { FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Search Name" where("No." = field("Loan No."))); Editable = false; }
+        field(88; "Business Unit Code"; Code[10]) { Caption = 'Business Unit Code'; DataClassification = CustomerContent; TableRelation = "Business Unit"; }
+        field(89; "Dimension Set ID"; Integer) { Caption = 'Dimension Set ID'; DataClassification = CustomerContent; }
+        field(200; "Warehouse Line Code"; Code[50]) { Caption = 'Warehouse Line Code'; DataClassification = CustomerContent; TableRelation = lvngWarehouseLine.Code; }
+        field(1000; "Void Document No."; Code[20]) { Caption = 'Void Document No.'; DataClassification = CustomerContent; }
+        field(10000; "Borrower Search Name"; Code[50]) { Caption = 'Borrower Search Name'; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Search Name" where("No." = field("Loan No."))); Editable = false; }
     }
 
     keys

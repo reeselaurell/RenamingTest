@@ -14,31 +14,31 @@ page 14135151 "lvngServicingDocuments"
         {
             repeater(lvngRepeater)
             {
-                field(lvngServicingDocumentType; lvngServicingDocumentType)
+                field(lvngServicingDocumentType; "Servicing Document Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngNo; lvngNo)
+                field(lvngNo; "No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBorrowerCustomerNo; lvngBorrowerCustomerNo)
+                field(lvngBorrowerCustomerNo; "Borrower Customer No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngLoanNo; lvngLoanNo)
+                field(lvngLoanNo; "Loan No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPostingDate; lvngPostingDate)
+                field(lvngPostingDate; "Posting Date")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDueDate; lvngDueDate)
+                field(lvngDueDate; "Due Date")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngReasonCode; lvngReasonCode)
+                field(lvngReasonCode; "Reason Code")
                 {
                     ApplicationArea = All;
                 }
@@ -57,9 +57,9 @@ page 14135151 "lvngServicingDocuments"
                 ApplicationArea = All;
                 trigger OnAction()
                 begin
-                    if lvngServicingDocumentType = lvngServicingDocumentType::Invoice then
+                    if "Servicing Document Type" = "Servicing Document Type"::Invoice then
                         Page.Run(Page::lvngServicingInvoice, Rec);
-                    if lvngServicingDocumentType = lvngServicingDocumentType::"Credit Memo" then
+                    if "Servicing Document Type" = "Servicing Document Type"::"Credit Memo" then
                         Page.Run(Page::lvngServicingCrMemo, Rec);
                 end;
             }

@@ -1,14 +1,14 @@
-tableextension 14135110 "lvngPurchaseLine" extends "Purchase Line" //MyTargetTableId
+tableextension 14135121 lvngPurchInvLine extends "Purch. Inv. Line"
 {
     fields
     {
-        field(14135100; lvngLoanNo; Code[20])
+        field(14135100; "Loan No."; Code[20])
         {
             Caption = 'Loan No.';
             DataClassification = CustomerContent;
             TableRelation = lvngLoan;
         }
-        field(14135102; lvngReasonCode; Code[10])
+        field(14135102; "Reason Code"; Code[10])
         {
             Caption = 'Reason Code';
             DataClassification = CustomerContent;

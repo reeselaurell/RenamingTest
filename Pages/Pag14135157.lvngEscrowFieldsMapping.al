@@ -12,19 +12,19 @@ page 14135157 "lvngEscrowFieldsMapping"
         {
             repeater(lvngRepeater)
             {
-                field(lvngFieldNo; lvngFieldNo)
+                field(lvngFieldNo; "Field No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMapToGLAccountNo; lvngMapToGLAccountNo)
+                field(lvngMapToGLAccountNo; "Map-To G/L Account No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngSwitchCode; lvngSwitchCode)
+                field(lvngSwitchCode; "Switch Code")
                 {
                     ApplicationArea = All;
                 }

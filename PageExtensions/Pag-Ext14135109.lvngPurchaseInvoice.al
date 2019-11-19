@@ -89,11 +89,11 @@ pageextension 14135109 "lvngPurchaseInvoice" extends "Purchase Invoice" //MyTarg
 
         addafter("Job Queue Status")
         {
-            field(lvngLoanNo; lvngLoanNo)
+            field(lvngLoanNo; "Loan No.")
             {
                 ApplicationArea = All;
             }
-            field(lvngDocumentTotalCheck; lvngDocumentTotalCheck)
+            field(lvngDocumentTotalCheck; "Document Total (Check)")
             {
                 ApplicationArea = All;
             }

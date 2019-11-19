@@ -12,7 +12,7 @@ page 14135144 "lvngImportBufferErrors"
         {
             repeater(lvngRepeater)
             {
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }

@@ -1,4 +1,4 @@
-table 14135133 "lvngEscrowFieldsMapping"
+table 14135133 lvngEscrowFieldsMapping
 {
     Caption = 'Escrow Fields Mapping';
     DataClassification = CustomerContent;
@@ -6,7 +6,7 @@ table 14135133 "lvngEscrowFieldsMapping"
 
     fields
     {
-        field(1; lvngFieldNo; Integer)
+        field(1; "Field No."; Integer)
         {
             Caption = 'Field No.';
             TableRelation = lvngLoanFieldsConfiguration."Field No." where("Value Type" = const(Decimal));
@@ -14,56 +14,41 @@ table 14135133 "lvngEscrowFieldsMapping"
 
             trigger OnValidate()
             var
-                lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+                LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
             begin
-                lvngLoanFieldsConfiguration.Get(lvngFieldNo);
-                lvngDescription := lvngLoanFieldsConfiguration."Field Name";
+                LoanFieldsConfiguration.Get("Field No.");
+                Description := LoanFieldsConfiguration."Field Name";
             end;
         }
-        field(10; lvngDescription; Text[100])
-        {
-            Caption = 'Description';
-            DataClassification = CustomerContent;
-        }
-        field(11; lvngMapToGLAccountNo; Code[20])
-        {
-            Caption = 'Map-to G/L Account No.';
-            TableRelation = "G/L Account"."No." where("Account Type" = const(Posting));
-            DataClassification = CustomerContent;
-        }
-        field(12; lvngSwitchCode; Code[20])
+        field(10; Description; Text[100]) { Caption = 'Description'; DataClassification = CustomerContent; }
+        field(11; "Map-To G/L Account No."; Code[20]) { Caption = 'Map-to G/L Account No.'; TableRelation = "G/L Account"."No." where("Account Type" = const(Posting)); DataClassification = CustomerContent; }
+        field(12; "Switch Code"; Code[20])
         {
             Caption = 'G/L Account Switch Code';
             DataClassification = CustomerContent;
 
             trigger OnLookup()
             var
-                lvngSelectedExpressionCode: Code[20];
-                lvngExpressionList: Page lvngExpressionList;
+                ConditionsMgmt: Codeunit lvngConditionsMgmt;
+                ExpressionList: Page lvngExpressionList;
+                SelectedExpressionCode: Code[20];
                 ExpressionType: Enum lvngExpressionType;
             begin
-                Clear(lvngExpressionList);
-                lvngSelectedExpressionCode := lvngExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', lvngSwitchCode, ExpressionType::Switch);
-                if lvngSelectedExpressionCode <> '' then
-                    lvngSwitchCode := lvngSelectedExpressionCode;
+                Clear(ExpressionList);
+                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', "Switch Code", ExpressionType::Switch);
+                if SelectedExpressionCode <> '' then
+                    "Switch Code" := SelectedExpressionCode;
             end;
         }
     }
 
     keys
     {
-        key(PK; lvngFieldNo)
-        {
-            Clustered = true;
-        }
+        key(PK; "Field No.") { Clustered = true; }
     }
 
     fieldgroups
     {
-        fieldgroup(DropDown; lvngFieldNo, lvngDescription, lvngMapToGLAccountNo, lvngSwitchCode) { }
+        fieldgroup(DropDown; "Field No.", Description, "Map-To G/L Account No.", "Switch Code") { }
     }
-
-    var
-        ConditionsMgmt: Codeunit lvngConditionsMgmt;
-
 }

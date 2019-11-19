@@ -8,8 +8,8 @@ report 14135175 "lvngEquityTransaction"
     {
         dataitem(lvngGLEntry; "G/L Entry")
         {
-            DataItemTableView = sorting ("G/L Account No.", "Posting Date");
-            RequestFilterFields = "G/L Account No.", "Posting Date", lvngEntryDate, "Source Type", "Source No.";
+            DataItemTableView = sorting("G/L Account No.", "Posting Date");
+            RequestFilterFields = "G/L Account No.", "Posting Date", "Entry Date", "Source Type", "Source No.";
             column(EntryNo; "Entry No.")
             {
 

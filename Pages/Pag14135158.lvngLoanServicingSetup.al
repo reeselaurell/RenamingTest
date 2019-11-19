@@ -17,50 +17,50 @@ page 14135158 "lvngLoanServicingSetup"
             {
                 Caption = 'General';
 
-                field(lvngBorrowerCustomerTemplate; lvngBorrowerCustomerTemplate)
+                field(lvngBorrowerCustomerTemplate; "Borrower Customer Template")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngServicedReasonCode; lvngServicedReasonCode)
+                field(lvngServicedReasonCode; "Serviced Reason Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngServicedVoidReasonCode; lvngServicedVoidReasonCode)
+                field(lvngServicedVoidReasonCode; "Serviced Void Reason Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngServicedSourceCode; lvngServicedSourceCode)
+                field(lvngServicedSourceCode; "Serviced Source Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngServicedNoSeries; lvngServicedNoSeries)
+                field(lvngServicedNoSeries; "Serviced No. Series")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngVoidServicedNoSeries; lvngVoidServicedNoSeries)
+                field(lvngVoidServicedNoSeries; "Void Serviced No. Series")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngTestEscrowTotals; lvngTestEscrowTotals)
+                field(lvngTestEscrowTotals; "Test Escrow Totals")
                 {
                     ApplicationArea = All;
                 }
 
                 group(Interest)
                 {
-                    field(lvngInterestGLAccountNo; lvngInterestGLAccountNo)
+                    field(lvngInterestGLAccountNo; "Interest G/L Account No.")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngInterestGLAccSwitchCode; lvngInterestGLAccSwitchCode)
+                    field(lvngInterestGLAccSwitchCode; "Interest G/L Acc. Switch Code")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngInterestCostCenterOption; lvngInterestCostCenterOption)
+                    field(lvngInterestCostCenterOption; "Interest Cost Center Option")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngInterestCostCenter; lvngInterestCostCenter)
+                    field(lvngInterestCostCenter; "Interest Cost Center")
                     {
                         ApplicationArea = All;
                     }
@@ -70,28 +70,28 @@ page 14135158 "lvngLoanServicingSetup"
                 {
                     Caption = 'Principal';
 
-                    field(lvngPrincipalGLAccountNo; lvngPrincipalGLAccountNo)
+                    field(lvngPrincipalGLAccountNo; "Principal G/L Account No.")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngPrincipalGLAccSwitchCode; lvngPrincipalGLAccSwitchCode)
+                    field(lvngPrincipalGLAccSwitchCode; "Principal G/L Acc. Switch Code")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngPrincipalCostCenterOption; lvngPrincipalCostCenterOption)
+                    field(lvngPrincipalCostCenterOption; "Principal Cost Center Option")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngPrincipalCostCenter; lvngPrincipalCostCenter)
+                    field(lvngPrincipalCostCenter; "Principal Cost Center")
                     {
                         ApplicationArea = All;
                     }
 
-                    field(lvngPrincipalRedGLAccountNo; lvngPrincipalRedGLAccountNo)
+                    field(lvngPrincipalRedGLAccountNo; "Principal Red. G/L Account No.")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngPrincipalRedReasonCode; lvngPrincipalRedReasonCode)
+                    field(lvngPrincipalRedReasonCode; "Principal Red. Reason Code")
                     {
                         ApplicationArea = All;
                     }
@@ -99,23 +99,23 @@ page 14135158 "lvngLoanServicingSetup"
 
                 group(Other)
                 {
-                    field(lvngAddEscrowGLAccountNo; lvngAddEscrowGLAccountNo)
+                    field(lvngAddEscrowGLAccountNo; "Add. Escrow G/L Account No.")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngAdditionalEscrowReasonCode; lvngAdditionalEscrowReasonCode)
+                    field(lvngAdditionalEscrowReasonCode; "Additional Escrow Reason Code")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngLatePaymentGLAccountNo; lvngLatePaymentGLAccountNo)
+                    field(lvngLatePaymentGLAccountNo; "Late Payment G/L Account No.")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngLatePaymentReasonCode; lvngLatePaymentReasonCode)
+                    field(lvngLatePaymentReasonCode; "Late Payment Reason Code")
                     {
                         ApplicationArea = All;
                     }
-                    field(lvngLateFeeRule; lvngLateFeeRule)
+                    field(lvngLateFeeRule; "Late Fee Rule")
                     {
                         ApplicationArea = All;
                     }

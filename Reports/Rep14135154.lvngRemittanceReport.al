@@ -58,7 +58,7 @@ report 14135154 lvngRemittanceReport
                 {
 
                 }
-                column(DocumentAmount; TempPurchaseHeader.lvngDocumentTotalCheck)
+                column(DocumentAmount; TempPurchaseHeader."Document Total (Check)")
                 {
 
                 }
@@ -120,7 +120,7 @@ report 14135154 lvngRemittanceReport
                             Clear(TempPurchaseHeader."Pay-to Contact");
                             TempPurchaseHeader."Pay-to Contact" := TempPurchaseHeader."Vendor Invoice No.";
                             TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
-                            TempPurchaseHeader.lvngDocumentTotalCheck := CollectData."Amount (LCY)";
+                            TempPurchaseHeader."Document Total (Check)" := CollectData."Amount (LCY)";
                             TempPurchaseHeader.Insert();
                             DocumentFound := true;
                         end;
@@ -132,7 +132,7 @@ report 14135154 lvngRemittanceReport
                             Clear(TempPurchaseHeader."Pay-to Contact");
                             TempPurchaseHeader."Pay-to Contact" := TempPurchaseHeader."Vendor Cr. Memo No.";
                             TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::"Credit Memo";
-                            TempPurchaseHeader.lvngDocumentTotalCheck := -CollectData."Amount (LCY)";
+                            TempPurchaseHeader."Document Total (Check)" := -CollectData."Amount (LCY)";
                             TempPurchaseHeader.Insert();
                             DocumentFound := true;
                         end;
@@ -146,7 +146,7 @@ report 14135154 lvngRemittanceReport
                         TempPurchaseHeader."Pay-to Name" := Vendor.Name;
                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
                         TempPurchaseHeader."Vendor Invoice No." := CollectData."Document No.";
-                        TempPurchaseHeader.lvngDocumentTotalCheck := CollectData."Amount (LCY)";
+                        TempPurchaseHeader."Document Total (Check)" := CollectData."Amount (LCY)";
                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
                         TempPurchaseHeader."Document Date" := CollectData."Document Date";
                         Clear(TempPurchaseHeader."Pay-to Contact");
@@ -171,7 +171,7 @@ report 14135154 lvngRemittanceReport
                                         TempPurchaseHeader."Pay-to Contact" := TempPurchaseHeader."Vendor Invoice No.";
                                         TempPurchaseHeader."Pay-to Vendor No." := CollectData."Account No.";
                                         VendorLedgerEntry.CalcFields(Amount);
-                                        TempPurchaseHeader.lvngDocumentTotalCheck := -VendorLedgerEntry.Amount;
+                                        TempPurchaseHeader."Document Total (Check)" := -VendorLedgerEntry.Amount;
                                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
                                         TempPurchaseHeader.Insert();
                                         DocumentFound := true;
@@ -185,7 +185,7 @@ report 14135154 lvngRemittanceReport
                                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
                                         TempPurchaseHeader."Vendor Invoice No." := VendorLedgerEntry."Document No.";
                                         VendorLedgerEntry.CalcFields(Amount);
-                                        TempPurchaseHeader.lvngDocumentTotalCheck := -VendorLedgerEntry.Amount;
+                                        TempPurchaseHeader."Document Total (Check)" := -VendorLedgerEntry.Amount;
                                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
                                         TempPurchaseHeader."Document Date" := CollectData."Document Date";
                                         Clear(TempPurchaseHeader."Pay-to Contact");
@@ -209,7 +209,7 @@ report 14135154 lvngRemittanceReport
                                         end;
                                         TempPurchaseHeader."Posting Description" := CollectData.Description;
                                         VendorLedgerEntry.CalcFields(Amount);
-                                        TempPurchaseHeader.lvngDocumentTotalCheck := -VendorLedgerEntry.Amount;
+                                        TempPurchaseHeader."Document Total (Check)" := -VendorLedgerEntry.Amount;
                                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::"Credit Memo";
                                         TempPurchaseHeader.Insert();
                                         DocumentFound := true;
@@ -223,7 +223,7 @@ report 14135154 lvngRemittanceReport
                                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
                                         TempPurchaseHeader."Vendor Invoice No." := VendorLedgerEntry."Document No.";
                                         VendorLedgerEntry.CalcFields(Amount);
-                                        TempPurchaseHeader.lvngDocumentTotalCheck := -VendorLedgerEntry.Amount;
+                                        TempPurchaseHeader."Document Total (Check)" := -VendorLedgerEntry.Amount;
                                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
                                         TempPurchaseHeader."Document Date" := CollectData."Document Date";
                                         TempPurchaseHeader."Posting Description" := CollectData.Description;
@@ -246,7 +246,7 @@ report 14135154 lvngRemittanceReport
                         TempPurchaseHeader."Pay-to Name" := Vendor.Name;
                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
                         TempPurchaseHeader."Vendor Invoice No." := CollectData."Document No.";
-                        TempPurchaseHeader.lvngDocumentTotalCheck := CollectData."Amount (LCY)";
+                        TempPurchaseHeader."Document Total (Check)" := CollectData."Amount (LCY)";
                         TempPurchaseHeader."Document Type" := TempPurchaseHeader."Document Type"::Invoice;
                         TempPurchaseHeader."Document Date" := CollectData."Document Date";
                         TempPurchaseHeader."Posting Description" := CollectData.Description;

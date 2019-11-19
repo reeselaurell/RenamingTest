@@ -29,7 +29,7 @@ pageextension 14135100 "lvngGenJournalExt" extends "General Journal"//MyTargetPa
 
         addlast(Control1)
         {
-            field(lvngLoanNo; lvngLoanNo)
+            field(lvngLoanNo; "Loan No.")
             {
                 ApplicationArea = All;
             }

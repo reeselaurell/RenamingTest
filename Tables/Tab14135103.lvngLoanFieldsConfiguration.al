@@ -6,10 +6,11 @@ table 14135103 lvngLoanFieldsConfiguration
 
     fields
     {
-        field(1; "Field No."; Integer) { DataClassification = CustomerContent; NotBlank = true; MinValue = 1; }
+        field(1; "Field No."; Integer) { Caption = 'Field No.'; DataClassification = CustomerContent; NotBlank = true; MinValue = 1; }
         field(10; "Field Name"; Text[100])
         {
             DataClassification = CustomerContent;
+            Caption = 'Field Name';
 
             trigger OnValidate()
             var
@@ -25,7 +26,7 @@ table 14135103 lvngLoanFieldsConfiguration
                 TableReference.Close();
             end;
         }
-        field(11; "Value Type"; Enum lvngLoanFieldValueType) { DataClassification = CustomerContent; }
+        field(11; "Value Type"; Enum lvngLoanFieldValueType) { Caption = 'Value Type'; DataClassification = CustomerContent; }
     }
 
     keys

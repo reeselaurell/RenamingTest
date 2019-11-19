@@ -73,7 +73,7 @@ report 14135182 lvngGLDetails
                 {
 
                 }
-                column(LoanNo; lvngGLEntry.lvngLoanNo)
+                column(LoanNo; lvngGLEntry."Loan No.")
                 {
 
                 }
@@ -115,7 +115,7 @@ report 14135182 lvngGLDetails
                     Clear(DateSold);
                     Loan.SecurityFiltering(SecurityFiltering::Ignored);
                     Clear(LoanFound);
-                    if Loan.Get(lvngLoanNo) then begin
+                    if Loan.Get("Loan No.") then begin
                         BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
                         DateFunded := Loan."Date Funded";
                         DateSold := Loan."Date Sold";
@@ -142,7 +142,7 @@ report 14135182 lvngGLDetails
                         ColumnNo := ColumnNo + 1;
                         ExportDateColumn(ColumnNo, "Posting Date");
                         ColumnNo := ColumnNo + 1;
-                        ExportTextColumn(ColumnNo, lvngLoanNo, false);
+                        ExportTextColumn(ColumnNo, "Loan No.", false);
                         ColumnNo := ColumnNo + 1;
                         if LoanFound then begin
                             ExportTextColumn(ColumnNo, Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name", false);

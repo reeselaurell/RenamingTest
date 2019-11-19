@@ -22,9 +22,9 @@ report 14135155 "lvngPaymentJournalBreakdown"
                             VendorLedgerEntry.SetRange("Vendor No.", "Account No.");
                             VendorLedgerEntry.SetRange("Document No.", "Applies-to Doc. No.");
                             if VendorLedgerEntry.FindFirst() then begin
-                                TempPurchHeader.lvngDocumentTotalCheck := -VendorLedgerEntry."Amount to Apply";//Amount;//PurchInvHeader."Amount Including VAT";
+                                TempPurchHeader."Document Total (Check)" := -VendorLedgerEntry."Amount to Apply";//Amount;//PurchInvHeader."Amount Including VAT";
                             end else begin
-                                TempPurchHeader.lvngDocumentTotalCheck := PurchInvHeader."Amount Including VAT";
+                                TempPurchHeader."Document Total (Check)" := PurchInvHeader."Amount Including VAT";
                             end;
                             TempPurchHeader."Document Date" := "Due Date";
                             TempPurchHeader."Applies-to Doc. No." := "Document No.";
@@ -43,7 +43,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
                                     TempPurchHeader."Buy-from Vendor No." := VendorLedgerEntry."Vendor No.";
                                     TempPurchHeader."Pay-to Vendor No." := VendorLedgerEntry."Vendor No.";
                                     VendorLedgerEntry.CalcFields(Amount);
-                                    TempPurchHeader.lvngDocumentTotalCheck := -VendorLedgerEntry."Amount to Apply";
+                                    TempPurchHeader."Document Total (Check)" := -VendorLedgerEntry."Amount to Apply";
                                     TempPurchHeader."Document Date" := VendorLedgerEntry."Due Date";
                                     TempPurchHeader."Posting Description" := VendorLedgerEntry.Description;
                                     TempPurchHeader."Vendor Invoice No." := VendorLedgerEntry."External Document No.";
@@ -58,7 +58,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
                             Clear(TempPurchHeader);
                             TempPurchHeader.TransferFields(PurchCrMemoHeader);
                             TempPurchHeader."Document Type" := TempPurchHeader."Document Type"::"Credit Memo";
-                            TempPurchHeader.lvngDocumentTotalCheck := -PurchCrMemoHeader."Amount Including VAT";
+                            TempPurchHeader."Document Total (Check)" := -PurchCrMemoHeader."Amount Including VAT";
                             TempPurchHeader."Applies-to Doc. No." := "Document No.";
                             TempPurchHeader."Document Date" := "Due Date";
                             TempPurchHeader."Posting Description" := PurchCrMemoHeader."Posting Description";
@@ -77,7 +77,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
                                     TempPurchHeader."Pay-to Vendor No." := VendorLedgerEntry."Vendor No.";
                                     TempPurchHeader."Applies-to Doc. No." := "Document No.";
                                     VendorLedgerEntry.CalcFields(Amount);
-                                    TempPurchHeader.lvngDocumentTotalCheck := -Amount;//-VendorLedgerEntry.Amount;
+                                    TempPurchHeader."Document Total (Check)" := -Amount;//-VendorLedgerEntry.Amount;
                                     TempPurchHeader."Document Date" := VendorLedgerEntry."Due Date";
                                     TempPurchHeader."Posting Description" := VendorLedgerEntry.Description;
                                     TempPurchHeader."Vendor Invoice No." := VendorLedgerEntry."External Document No.";
@@ -98,7 +98,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
                                     if PurchInvHeader.Get(VendorLedgerEntry."Document No.") then begin
                                         Clear(TempPurchHeader);
                                         TempPurchHeader.TransferFields(PurchInvHeader);
-                                        TempPurchHeader.lvngDocumentTotalCheck := -VendorLedgerEntry."Amount to Apply";//Amount;//PurchInvHeader."Amount Including VAT";
+                                        TempPurchHeader."Document Total (Check)" := -VendorLedgerEntry."Amount to Apply";//Amount;//PurchInvHeader."Amount Including VAT";
                                         TempPurchHeader."Document Type" := TempPurchHeader."Document Type"::Invoice;
                                         TempPurchHeader."Document Date" := "Due Date";
                                         TempPurchHeader."Applies-to Doc. No." := "Document No.";
@@ -111,7 +111,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
                                         TempPurchHeader."Buy-from Vendor No." := VendorLedgerEntry."Vendor No.";
                                         TempPurchHeader."Pay-to Vendor No." := VendorLedgerEntry."Vendor No.";
                                         VendorLedgerEntry.CalcFields(Amount);
-                                        TempPurchHeader.lvngDocumentTotalCheck := -VendorLedgerEntry."Amount to Apply";//Amount;//-VendorLedgerEntry.Amount;
+                                        TempPurchHeader."Document Total (Check)" := -VendorLedgerEntry."Amount to Apply";//Amount;//-VendorLedgerEntry.Amount;
                                         TempPurchHeader."Applies-to Doc. No." := "Document No.";
                                         TempPurchHeader."Posting Description" := VendorLedgerEntry.Description;
                                         TempPurchHeader."Document Date" := VendorLedgerEntry."Due Date";
@@ -123,7 +123,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
                                     if PurchCrMemoHeader.Get(VendorLedgerEntry."Document No.") then begin
                                         Clear(TempPurchHeader);
                                         TempPurchHeader.TransferFields(PurchCrMemoHeader);
-                                        TempPurchHeader.lvngDocumentTotalCheck := -VendorLedgerEntry."Amount to Apply";//Amount;//-PurchCrMemoHeader."Amount Including VAT";
+                                        TempPurchHeader."Document Total (Check)" := -VendorLedgerEntry."Amount to Apply";//Amount;//-PurchCrMemoHeader."Amount Including VAT";
                                         TempPurchHeader."Document Type" := TempPurchHeader."Document Type"::"Credit Memo";
                                         TempPurchHeader."Applies-to Doc. No." := "Document No.";
                                         TempPurchHeader."Posting Description" := VendorLedgerEntry.Description;
@@ -139,7 +139,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
                                         TempPurchHeader."Applies-to Doc. No." := "Document No.";
                                         TempPurchHeader."Vendor Invoice No." := VendorLedgerEntry."External Document No.";
                                         VendorLedgerEntry.CalcFields(Amount);
-                                        TempPurchHeader.lvngDocumentTotalCheck := -VendorLedgerEntry."Amount to Apply";//Amount;//-VendorLedgerEntry.Amount;
+                                        TempPurchHeader."Document Total (Check)" := -VendorLedgerEntry."Amount to Apply";//Amount;//-VendorLedgerEntry.Amount;
                                         TempPurchHeader."Document Date" := VendorLedgerEntry."Due Date";
                                         if TempPurchHeader.Insert() then;
                                     end;
@@ -161,7 +161,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
             {
 
             }
-            column(DocumentAmount; TempPurchHeader.lvngDocumentTotalCheck)
+            column(DocumentAmount; TempPurchHeader."Document Total (Check)")
             {
 
             }
@@ -262,7 +262,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
                             end else begin
                                 Clear(TempPurchLine);
                                 TempPurchLine.Description := TempPurchHeader."Posting Description";
-                                TempPurchLine."Amount Including VAT" := TempPurchHeader.lvngDocumentTotalCheck;
+                                TempPurchLine."Amount Including VAT" := TempPurchHeader."Document Total (Check)";
                                 TempPurchLine.Insert();
                             end;
                         end;
@@ -282,7 +282,7 @@ report 14135155 "lvngPaymentJournalBreakdown"
                             end else begin
                                 Clear(TempPurchLine);
                                 TempPurchLine.Description := TempPurchHeader."Posting Description";
-                                TempPurchLine."Amount Including VAT" := TempPurchHeader.lvngDocumentTotalCheck;
+                                TempPurchLine."Amount Including VAT" := TempPurchHeader."Document Total (Check)";
                                 TempPurchLine.Insert();
                             end;
                         end;

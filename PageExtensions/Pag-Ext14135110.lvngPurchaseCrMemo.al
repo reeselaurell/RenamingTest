@@ -85,11 +85,11 @@ pageextension 14135110 "lvngPurchaseCrMemo" extends "Purchase Credit Memo" //MyT
 
         addafter("Job Queue Status")
         {
-            field(lvngLoanNo; lvngLoanNo)
+            field(lvngLoanNo; "Loan No.")
             {
                 ApplicationArea = All;
             }
-            field(lvngDocumentTotalCheck; lvngDocumentTotalCheck)
+            field(lvngDocumentTotalCheck; "Document Total (Check)")
             {
                 ApplicationArea = All;
             }

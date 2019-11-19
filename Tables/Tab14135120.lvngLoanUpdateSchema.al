@@ -8,7 +8,7 @@ table 14135120 lvngLoanUpdateSchema
     {
         field(1; "Journal Batch Code"; Code[20]) { Caption = 'Import Journal Batch Code'; DataClassification = CustomerContent; }
         field(2; "Import Field Type"; Enum lvngImportFieldType) { Caption = 'Field Type'; DataClassification = CustomerContent; }
-        field(3; "Field No."; Integer) { DataClassification = CustomerContent; }
+        field(3; "Field No."; Integer) { Caption = 'Field No.'; DataClassification = CustomerContent; }
         field(10; "Field Update Option"; enum lvngFieldUpdateCondition) { Caption = 'Update Option'; DataClassification = CustomerContent; }
     }
 

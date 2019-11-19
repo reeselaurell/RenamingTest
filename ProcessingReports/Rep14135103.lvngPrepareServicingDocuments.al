@@ -14,7 +14,7 @@ report 14135103 "lvngPrepareServicingDocuments"
             trigger OnAfterGetRecord()
             begin
                 Clear(lvngServicingWorksheet);
-                lvngServicingWorksheet.Validate(lvngLoanNo, "No.");
+                lvngServicingWorksheet.Validate("Loan No.", "No.");
                 lvngServicingWorksheet.Insert(true);
             end;
         }

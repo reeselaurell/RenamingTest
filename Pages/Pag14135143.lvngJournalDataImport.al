@@ -12,190 +12,190 @@ page 14135143 "lvngJournalDataImport"
         {
             repeater(lvngRepeater)
             {
-                field(lvngLineNo; lvngLineNo)
+                field(lvngLineNo; "Line No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDocumentType; lvngDocumentType)
+                field(lvngDocumentType; "Document Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDocumentNo; lvngDocumentNo)
+                field(lvngDocumentNo; "Document No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngExternalDocumentNo; lvngExternalDocumentNo)
+                field(lvngExternalDocumentNo; "External Document No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDocumentDate; lvngDocumentDate)
+                field(lvngDocumentDate; "Document Date")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPostingDate; lvngPostingDate)
+                field(lvngPostingDate; "Posting Date")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDueDate; lvngDueDate)
+                field(lvngDueDate; "Due Date")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngAccountType; lvngAccountType)
+                field(lvngAccountType; "Account Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngAccountNo; lvngAccountNo)
+                field(lvngAccountNo; "Account No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngAmount; lvngAmount)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngReasonCode; lvngReasonCode)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngLoanNo; lvngLoanNo)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngAppliesToDocNo; lvngAppliesToDocNo)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngAppliesToDocType; lvngAppliesToDocType)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngBalAccountType; lvngBalAccountType)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngBalAccountNo; lvngBalAccountNo)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngPaymentMethodCode; lvngPaymentMethodCode)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngPostingGroup; lvngPostingGroup)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDepreciationBookCode; lvngDepreciationBookCode)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngFAPostingType; lvngFAPostingType)
+                field(lvngAmount; Amount)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngRecurringMethod; lvngRecurringMethod)
+                field(lvngReasonCode; "Reason Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngRecurringFrequency; lvngRecurringFrequency)
+                field(lvngLoanNo; "Loan No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBankPaymentType; lvngBankPaymentType)
+                field(lvngAppliesToDocNo; "Applies-To Doc. No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngComment; lvngComment)
+                field(lvngAppliesToDocType; "Applies-To Doc. Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngGlobalDimension1Code; lvngGlobalDimension1Code)
+                field(lvngBalAccountType; "Bal. Account Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngGlobalDimension2Code; lvngGlobalDimension2Code)
+                field(lvngBalAccountNo; "Bal. Account No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngShortcutDimension3Code; lvngShortcutDimension3Code)
+                field(lvngPaymentMethodCode; "Payment Method Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngShortcutDimension4Code; lvngShortcutDimension4Code)
+                field(lvngPostingGroup; "Posting Group")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngShortcutDimension5Code; lvngShortcutDimension5Code)
+                field(lvngDepreciationBookCode; "Depreciation Book Code")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngShortcutDimension6Code; lvngShortcutDimension6Code)
+
+                field(lvngFAPostingType; "FA Posting Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
+                field(lvngRecurringMethod; "Recurring Method")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
+                field(lvngRecurringFrequency; "Recurring Frequency")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBusinessUnitCode; lvngBusinessUnitCode)
+                field(lvngBankPaymentType; "Bank Payment Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngGlobalDimension1Value; lvngGlobalDimension1Value)
+                field(lvngComment; Comment)
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngGlobalDimension1Code; "Global Dimension 1 Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngGlobalDimension2Code; "Global Dimension 2 Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngShortcutDimension3Code; "Shortcut Dimension 3 Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngShortcutDimension4Code; "Shortcut Dimension 4 Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngShortcutDimension5Code; "Shortcut Dimension 5 Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngShortcutDimension6Code; "Shortcut Dimension 6 Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngShortcutDimension7Code; "Shortcut Dimension 7 Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngShortcutDimension8Code; "Shortcut Dimension 8 Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngBusinessUnitCode; "Business Unit Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvngGlobalDimension1Value; "Global Dimension 1 Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngGlobalDimension2Value; lvngGlobalDimension2Value)
+                field(lvngGlobalDimension2Value; "Global Dimension 2 Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngShortcutDimension3Value; lvngShortcutDimension3Value)
+                field(lvngShortcutDimension3Value; "Shortcut Dimension 3 Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngShortcutDimension4Value; lvngShortcutDimension4Value)
+                field(lvngShortcutDimension4Value; "Shortcut Dimension 4 Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngShortcutDimension5Value; lvngShortcutDimension5Value)
+                field(lvngShortcutDimension5Value; "Shortcut Dimension 5 Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngShortcutDimension6Value; lvngShortcutDimension6Value)
+                field(lvngShortcutDimension6Value; "Shortcut Dimension 6 Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngShortcutDimension7Value; lvngShortcutDimension7Value)
+                field(lvngShortcutDimension7Value; "Shortcut Dimension 7 Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngShortcutDimension8Value; lvngShortcutDimension8Value)
+                field(lvngShortcutDimension8Value; "Shortcut Dimension 8 Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngAccountValue; lvngAccountValue)
+                field(lvngAccountValue; "Account Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field(lvngBalAccountValue; lvngBalAccountValue)
+                field(lvngBalAccountValue; "Bal. Account Value")
                 {
                     ApplicationArea = All;
                     Visible = false;
@@ -208,7 +208,7 @@ page 14135143 "lvngJournalDataImport"
             {
                 Caption = 'Errors';
                 ApplicationArea = All;
-                SubPageLink = lvngLineNo = field (lvngLineNo);
+                SubPageLink = "Line No." = field("Line No.");
             }
         }
     }

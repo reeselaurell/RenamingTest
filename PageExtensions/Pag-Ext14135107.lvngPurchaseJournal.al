@@ -29,7 +29,7 @@ pageextension 14135107 "lvngPurchaseJournal" extends "Purchase Journal"
 
         addlast(Control1)
         {
-            field(lvngLoanNo; lvngLoanNo)
+            field(lvngLoanNo; "Loan No.")
             {
                 ApplicationArea = All;
             }

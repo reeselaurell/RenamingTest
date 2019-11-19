@@ -1,6 +1,7 @@
 table 14135102 lvngLoan
 {
     DataClassification = CustomerContent;
+    Caption = 'Loan';
     LookupPageId = lvngLoanList;
     DrillDownPageId = lvngLoanList;
     DataCaptionFields = "No.", "Search Name";
@@ -8,29 +9,30 @@ table 14135102 lvngLoan
     fields
     {
         field(1; "No."; Code[20]) { DataClassification = CustomerContent; NotBlank = true; Caption = 'Loan No.'; }
-        field(10; "Search Name"; Code[100]) { DataClassification = CustomerContent; }
-        field(11; "Borrower First Name"; Text[30]) { DataClassification = CustomerContent; }
+        field(10; "Search Name"; Code[100]) { Caption = 'Search Name'; DataClassification = CustomerContent; }
+        field(11; "Borrower First Name"; Text[30]) { Caption = 'Borrower First Name'; DataClassification = CustomerContent; }
         field(12; "Borrower Last Name"; Text[30]) { DataClassification = CustomerContent; }
-        field(13; "Borrower Middle Name"; Text[30]) { DataClassification = CustomerContent; }
+        field(13; "Borrower Middle Name"; Text[30]) { Caption = 'Borrower Middle Name'; DataClassification = CustomerContent; }
         field(14; "Title Customer No."; Code[20]) { DataClassification = CustomerContent; TableRelation = Customer."No."; }
         field(15; "Investor Customer No."; Code[20]) { DataClassification = CustomerContent; TableRelation = Customer."No."; }
         field(16; "Borrower Customer No"; Code[20]) { Caption = 'Borrower Customer No.'; DataClassification = CustomerContent; TableRelation = Customer."No."; }
-        field(20; "Application Date"; Date) { DataClassification = CustomerContent; }
-        field(21; "Date Closed"; Date) { DataClassification = CustomerContent; }
-        field(22; "Date Funded"; Date) { DataClassification = CustomerContent; }
-        field(23; "Date Sold"; Date) { DataClassification = CustomerContent; }
-        field(24; "Date Locked"; Date) { DataClassification = CustomerContent; }
-        field(25; "Loan Amount"; Decimal) { DataClassification = CustomerContent; }
-        field(26; Blocked; Boolean) { DataClassification = CustomerContent; }
-        field(27; "Warehouse Line Code"; Code[50]) { DataClassification = CustomerContent; TableRelation = lvngWarehouseLine; }
-        field(28; "Co-Borrower First Name"; Text[30]) { DataClassification = CustomerContent; }
-        field(29; "Co-Borrower Last Name"; Text[30]) { DataClassification = CustomerContent; }
-        field(30; "Co-Borrower Middle Name"; Text[30]) { DataClassification = CustomerContent; }
-        field(31; "203K Contractor Name"; Text[100]) { DataClassification = CustomerContent; }
-        field(32; "203K Inspector Name"; Text[100]) { DataClassification = CustomerContent; }
+        field(20; "Application Date"; Date) { Caption = 'Application Date'; DataClassification = CustomerContent; }
+        field(21; "Date Closed"; Date) { Caption = 'Date Closed'; DataClassification = CustomerContent; }
+        field(22; "Date Funded"; Date) { Caption = 'Date Funded'; DataClassification = CustomerContent; }
+        field(23; "Date Sold"; Date) { Caption = 'Date Sold'; DataClassification = CustomerContent; }
+        field(24; "Date Locked"; Date) { Caption = 'Date Locked'; DataClassification = CustomerContent; }
+        field(25; "Loan Amount"; Decimal) { Caption = 'Loan Amount'; DataClassification = CustomerContent; }
+        field(26; Blocked; Boolean) { Caption = 'Blocked'; DataClassification = CustomerContent; }
+        field(27; "Warehouse Line Code"; Code[50]) { Caption = 'Warehouse Line Code'; DataClassification = CustomerContent; TableRelation = lvngWarehouseLine; }
+        field(28; "Co-Borrower First Name"; Text[30]) { Caption = 'Co-Borrower First Name'; DataClassification = CustomerContent; }
+        field(29; "Co-Borrower Last Name"; Text[30]) { Caption = 'Co-Borrower Last Name'; DataClassification = CustomerContent; }
+        field(30; "Co-Borrower Middle Name"; Text[30]) { Caption = 'Co-Borrower Middle Name'; DataClassification = CustomerContent; }
+        field(31; "203K Contractor Name"; Text[100]) { Caption = '203K Contractor Name'; DataClassification = CustomerContent; }
+        field(32; "203K Inspector Name"; Text[100]) { Caption = '203K Inspector Name'; DataClassification = CustomerContent; }
         field(80; "Global Dimension 1 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Global Dimension 1 Code';
             CaptionClass = '1,1,1';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1));
 
@@ -42,6 +44,7 @@ table 14135102 lvngLoan
         field(81; "Global Dimension 2 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Global Dimension 2 Code';
             CaptionClass = '1,1,2';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2));
 
@@ -52,6 +55,7 @@ table 14135102 lvngLoan
         }
         field(82; "Shortcut Dimension 3 Code"; Code[20])
         {
+            Caption = 'Global Dimension 3 Code';
             DataClassification = CustomerContent;
             CaptionClass = '1,2,3';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3));
@@ -64,6 +68,7 @@ table 14135102 lvngLoan
         field(83; "Shortcut Dimension 4 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Global Dimension 4 Code';
             CaptionClass = '1,2,4';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4));
 
@@ -75,6 +80,7 @@ table 14135102 lvngLoan
         field(84; "Shortcut Dimension 5 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Global Dimension 5 Code';
             CaptionClass = '1,2,5';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(5));
 
@@ -86,6 +92,7 @@ table 14135102 lvngLoan
         field(85; "Shortcut Dimension 6 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Global Dimension 6 Code';
             CaptionClass = '1,2,6';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6));
 
@@ -97,6 +104,7 @@ table 14135102 lvngLoan
         field(86; "Shortcut Dimension 7 Code"; Code[20])
         {
             DataClassification = CustomerContent;
+            Caption = 'Global Dimension 7 Code';
             CaptionClass = '1,2,7';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7));
 
@@ -109,6 +117,7 @@ table 14135102 lvngLoan
         {
             DataClassification = CustomerContent;
             CaptionClass = '1,2,8';
+            Caption = 'Global Dimension 8 Code';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8));
 
             trigger OnValidate()
@@ -116,23 +125,23 @@ table 14135102 lvngLoan
                 ValidateShortcutDimCode(8, "Shortcut Dimension 8 Code");
             end;
         }
-        field(88; "Business Unit Code"; Code[10]) { DataClassification = CustomerContent; TableRelation = "Business Unit"; }
-        field(100; "Loan Term (Months)"; Integer) { DataClassification = CustomerContent; }
-        field(101; "Interest Rate"; Decimal) { DataClassification = CustomerContent; DecimalPlaces = 3 : 3; }
-        field(102; "First Payment Due"; Date) { DataClassification = CustomerContent; }
+        field(88; "Business Unit Code"; Code[10]) { Caption = 'Business Unit Code'; DataClassification = CustomerContent; TableRelation = "Business Unit"; }
+        field(100; "Loan Term (Months)"; Integer) { Caption = 'Loan Term (Months)'; DataClassification = CustomerContent; }
+        field(101; "Interest Rate"; Decimal) { Caption = 'Interest Rate'; DataClassification = CustomerContent; DecimalPlaces = 3 : 3; }
+        field(102; "First Payment Due"; Date) { Caption = 'First Payment Due'; DataClassification = CustomerContent; }
         field(103; "First Payment Due To Investor"; Date) { Caption = 'First Payment Due to Investor'; DataClassification = CustomerContent; }
-        field(104; "Next Payment Date"; Date) { DataClassification = CustomerContent; }
-        field(105; "Monthly Escrow Amount"; Decimal) { DataClassification = CustomerContent; }
+        field(104; "Next Payment Date"; Date) { Caption = 'Next Payment Date'; DataClassification = CustomerContent; }
+        field(105; "Monthly Escrow Amount"; Decimal) { Caption = 'Monthly Escrow Amount'; DataClassification = CustomerContent; }
         field(106; "Monthly Payment Amount"; Decimal) { Caption = 'Monthly Payment Amount (P+I)'; DataClassification = CustomerContent; }
         field(107; "Late Fee"; Decimal) { Caption = 'Servicing Late Fee'; DataClassification = CustomerContent; }
-        field(500; "Commission Base Amount"; Decimal) { DataClassification = CustomerContent; }
-        field(501; "Commission Date"; Date) { DataClassification = CustomerContent; }
-        field(502; "Commission Bps"; Decimal) { DataClassification = CustomerContent; }
-        field(503; "Commission Amount"; Decimal) { DataClassification = CustomerContent; }
+        field(500; "Commission Base Amount"; Decimal) { Caption = 'Commission Base Amount'; DataClassification = CustomerContent; }
+        field(501; "Commission Date"; Date) { Caption = 'Commission Date'; DataClassification = CustomerContent; }
+        field(502; "Commission Bps"; Decimal) { Caption = 'Commission Bps'; DataClassification = CustomerContent; }
+        field(503; "Commission Amount"; Decimal) { Caption = 'Commission Amount'; DataClassification = CustomerContent; }
         field(600; "Constr. Interest Rate"; Decimal) { Caption = 'Construction Interest Rate'; DataClassification = CustomerContent; DecimalPlaces = 3 : 3; }
-        field(1000; "Servicing Finished"; Boolean) { DataClassification = CustomerContent; }
-        field(80000; "Creation Date"; Date) { DataClassification = CustomerContent; }
-        field(80001; "Modified Date"; Date) { DataClassification = CustomerContent; }
+        field(1000; "Servicing Finished"; Boolean) { Caption = 'Servicing Finished'; DataClassification = CustomerContent; }
+        field(80000; "Creation Date"; Date) { Caption = 'Creation Date'; DataClassification = CustomerContent; }
+        field(80001; "Modified Date"; Date) { Caption = 'Modified Date'; DataClassification = CustomerContent; }
     }
 
     keys

@@ -190,35 +190,35 @@ codeunit 14135220 lvngPerformanceMgmt
             if SystemFilter."Shortcut Dimension 2" <> '' then
                 GLEntry.SetRange("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
         if CalcUnit."Dimension 3 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
+            GLEntry.SetRange("Shortcut Dimension 3 Code", CalcUnit."Dimension 3 Filter")
         else
             if SystemFilter."Shortcut Dimension 3" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
+                GLEntry.SetRange("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
         if CalcUnit."Dimension 4 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
+            GLEntry.SetRange("Shortcut Dimension 4 Code", CalcUnit."Dimension 4 Filter")
         else
             if SystemFilter."Shortcut Dimension 4" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
+                GLEntry.SetRange("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
         if CalcUnit."Dimension 5 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter")
+            GLEntry.SetRange("Shortcut Dimension 5 Code", CalcUnit."Dimension 5 Filter")
         else
             if SystemFilter."Shortcut Dimension 5" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension5Code, SystemFilter."Shortcut Dimension 5");
+                GLEntry.SetRange("Shortcut Dimension 5 Code", SystemFilter."Shortcut Dimension 5");
         if CalcUnit."Dimension 6 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter")
+            GLEntry.SetRange("Shortcut Dimension 6 Code", CalcUnit."Dimension 6 Filter")
         else
             if SystemFilter."Shortcut Dimension 6" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension6Code, SystemFilter."Shortcut Dimension 6");
+                GLEntry.SetRange("Shortcut Dimension 6 Code", SystemFilter."Shortcut Dimension 6");
         if CalcUnit."Dimension 7 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter")
+            GLEntry.SetRange("Shortcut Dimension 7 Code", CalcUnit."Dimension 7 Filter")
         else
             if SystemFilter."Shortcut Dimension 7" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension7Code, SystemFilter."Shortcut Dimension 7");
+                GLEntry.SetRange("Shortcut Dimension 7 Code", SystemFilter."Shortcut Dimension 7");
         if CalcUnit."Dimension 8 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter")
+            GLEntry.SetRange("Shortcut Dimension 8 Code", CalcUnit."Dimension 8 Filter")
         else
             if SystemFilter."Shortcut Dimension 8" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension8Code, SystemFilter."Shortcut Dimension 8");
+                GLEntry.SetRange("Shortcut Dimension 8 Code", SystemFilter."Shortcut Dimension 8");
         if CalcUnit."Business Unit Filter" <> '' then
             GLEntry.SetRange("Business Unit Code", CalcUnit."Business Unit Filter")
         else
@@ -665,68 +665,68 @@ codeunit 14135220 lvngPerformanceMgmt
         GLEntry: Record lvngGroupedGLEntry;
     begin
         GLEntry.Reset();
-        GLEntry.SetFilter(lvngGLAccountNo, CalculationUnit."Account No. Filter");
+        GLEntry.SetFilter("G/L Account No.", CalculationUnit."Account No. Filter");
         if CalculationUnit."Dimension 1 Filter" <> '' then
-            GLEntry.SetFilter(lvngGlobalDimension1Code, CalculationUnit."Dimension 1 Filter")
+            GLEntry.SetFilter("Global Dimension 1 Code", CalculationUnit."Dimension 1 Filter")
         else
             if SystemFilter."Shortcut Dimension 1" <> '' then
-                GLEntry.SetFilter(lvngGlobalDimension1Code, SystemFilter."Shortcut Dimension 1");
+                GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
         if CalculationUnit."Dimension 2 Filter" <> '' then
-            GLEntry.SetFilter(lvngGlobalDimension2Code, CalculationUnit."Dimension 2 Filter")
+            GLEntry.SetFilter("Global Dimension 2 Code", CalculationUnit."Dimension 2 Filter")
         else
             if SystemFilter."Shortcut Dimension 2" <> '' then
-                GLEntry.SetFilter(lvngGlobalDimension2Code, SystemFilter."Shortcut Dimension 2");
+                GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
         if CalculationUnit."Dimension 3 Filter" <> '' then
-            GLEntry.SetFilter(lvngShortcutDimension3Code, CalculationUnit."Dimension 3 Filter")
+            GLEntry.SetFilter("Shortcut Dimension 3 Code", CalculationUnit."Dimension 3 Filter")
         else
             if SystemFilter."Shortcut Dimension 3" <> '' then
-                GLEntry.SetFilter(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
+                GLEntry.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
         if CalculationUnit."Dimension 4 Filter" <> '' then
-            GLEntry.SetFilter(lvngShortcutDimension4Code, CalculationUnit."Dimension 4 Filter")
+            GLEntry.SetFilter("Shortcut Dimension 4 Code", CalculationUnit."Dimension 4 Filter")
         else
             if SystemFilter."Shortcut Dimension 4" <> '' then
-                GLEntry.SetFilter(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
+                GLEntry.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
         if CalculationUnit."Dimension 5 Filter" <> '' then
-            GLEntry.SetFilter(lvngShortcutDimension5Code, CalculationUnit."Dimension 5 Filter")
+            GLEntry.SetFilter("Shortcut Dimension 5 Code", CalculationUnit."Dimension 5 Filter")
         else
             if SystemFilter."Shortcut Dimension 5" <> '' then
-                GLEntry.SetFilter(lvngShortcutDimension5Code, SystemFilter."Shortcut Dimension 5");
+                GLEntry.SetFilter("Shortcut Dimension 5 Code", SystemFilter."Shortcut Dimension 5");
         if CalculationUnit."Dimension 6 Filter" <> '' then
-            GLEntry.SetFilter(lvngShortcutDimension6Code, CalculationUnit."Dimension 6 Filter")
+            GLEntry.SetFilter("Shortcut Dimension 6 Code", CalculationUnit."Dimension 6 Filter")
         else
             if SystemFilter."Shortcut Dimension 6" <> '' then
-                GLEntry.SetFilter(lvngShortcutDimension6Code, SystemFilter."Shortcut Dimension 6");
+                GLEntry.SetFilter("Shortcut Dimension 6 Code", SystemFilter."Shortcut Dimension 6");
         if CalculationUnit."Dimension 7 Filter" <> '' then
-            GLEntry.SetFilter(lvngShortcutDimension7Code, CalculationUnit."Dimension 7 Filter")
+            GLEntry.SetFilter("Shortcut Dimension 7 Code", CalculationUnit."Dimension 7 Filter")
         else
             if SystemFilter."Shortcut Dimension 7" <> '' then
-                GLEntry.SetFilter(lvngShortcutDimension7Code, SystemFilter."Shortcut Dimension 7");
+                GLEntry.SetFilter("Shortcut Dimension 7 Code", SystemFilter."Shortcut Dimension 7");
         if CalculationUnit."Dimension 8 Filter" <> '' then
-            GLEntry.SetFilter(lvngShortcutDimension8Code, CalculationUnit."Dimension 8 Filter")
+            GLEntry.SetFilter("Shortcut Dimension 8 Code", CalculationUnit."Dimension 8 Filter")
         else
             if SystemFilter."Shortcut Dimension 8" <> '' then
-                GLEntry.SetFilter(lvngShortcutDimension8Code, SystemFilter."Shortcut Dimension 8");
+                GLEntry.SetFilter("Shortcut Dimension 8 Code", SystemFilter."Shortcut Dimension 8");
         if CalculationUnit."Business Unit Filter" <> '' then
-            GLEntry.SetFilter(lvngBusinessUnitCode, CalculationUnit."Business Unit Filter")
+            GLEntry.SetFilter("Business Unit Code", CalculationUnit."Business Unit Filter")
         else
             if SystemFilter."Business Unit" <> '' then
-                GLEntry.SetFilter(lvngBusinessUnitCode, SystemFilter."Business Unit");
-        GLEntry.SetFilter(lvngPostingDate, SystemFilter.GetGLPostingDateFilter());
+                GLEntry.SetFilter("Business Unit Code", SystemFilter."Business Unit");
+        GLEntry.SetFilter("Posting Date", SystemFilter.GetGLPostingDateFilter());
         case CalculationUnit."Amount Type" of
             CalculationUnit."Amount Type"::"Net Amount":
                 begin
-                    GLEntry.CalcSums(lvngAmount);
-                    Result := GLEntry.lvngAmount;
+                    GLEntry.CalcSums(Amount);
+                    Result := GLEntry.Amount;
                 end;
             CalculationUnit."Amount Type"::"Debit Amount":
                 begin
-                    GLEntry.CalcSums(lvngDebitAmount);
-                    Result := GLEntry.lvngDebitAmount;
+                    GLEntry.CalcSums("Debit Amount");
+                    Result := GLEntry."Debit Amount";
                 end;
             CalculationUnit."Amount Type"::"Credit Amount":
                 begin
-                    GLEntry.CalcSums(lvngCreditAmount);
-                    Result := GLEntry.lvngCreditAmount;
+                    GLEntry.CalcSums("Credit Amount");
+                    Result := GLEntry."Credit Amount";
                 end;
         end;
     end;

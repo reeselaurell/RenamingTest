@@ -31,7 +31,7 @@ codeunit 14135110 "lvngPostLoanDocument"
             lvngLoanDocument."Transaction Type"::Serviced:
                 begin
                     GetLoanServicingSetup();
-                    lvngSourceCode := lvngLoanServicingSetup.lvngServicedSourceCode;
+                    lvngSourceCode := lvngLoanServicingSetup."Serviced Source Code";
                 end;
         end;
         if lvngSourceCode = '' then
@@ -118,7 +118,7 @@ codeunit 14135110 "lvngPostLoanDocument"
         GenJnlLine."Document No." := lvngLoanDocument."Document No.";
         GenJnlLine."Account Type" := GenJnlLine."Account Type"::Customer;
         GenJnlLine."Account No." := lvngLoanDocument."Customer No.";
-        GenJnlLine.lvngLoanNo := lvngLoanDocument."Loan No.";
+        GenJnlLine."Loan No." := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
         GenJnlLine.Amount := Amount;
         GenJnlLine."Source Code" := lvngSourceCode;
@@ -148,9 +148,9 @@ codeunit 14135110 "lvngPostLoanDocument"
         GenJnlLine.Amount := lvngLoanDocumentLine.Amount;
         GenJnlLine."System-Created Entry" := true;
         GenJnlLine."Source Code" := lvngSourceCode;
-        GenJnlLine.lvngLoanNo := lvngLoanDocument."Loan No.";
+        GenJnlLine."Loan No." := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
-        GenJnlLine.lvngServicingType := lvngLoanDocumentLine."Servicing Type";
+        GenJnlLine."Servicing Type" := lvngLoanDocumentLine."Servicing Type";
     end;
 
     local procedure CreateBalancingGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line")
@@ -180,7 +180,7 @@ codeunit 14135110 "lvngPostLoanDocument"
         GenJnlLine."Applies-to Doc. No." := GenJnlLine."Document No.";
         GenJnlLine."System-Created Entry" := true;
         GenJnlLine."Source Code" := lvngSourceCode;
-        GenJnlLine.lvngLoanNo := lvngLoanDocument."Loan No.";
+        GenJnlLine."Loan No." := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
     end;
 
@@ -291,7 +291,7 @@ codeunit 14135110 "lvngPostLoanDocument"
     begin
         if not lvngLoanVisionSetupRetrieved then begin
             lvngLoanServicingSetup.Get();
-            lvngLoanServicingSetup.TestField(lvngServicedSourceCode);
+            lvngLoanServicingSetup.TestField("Serviced Source Code");
             lvngLoanServicingSetupRetrieved := true;
         end;
     end;

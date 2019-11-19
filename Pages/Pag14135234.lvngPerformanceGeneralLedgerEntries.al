@@ -24,23 +24,23 @@ page 14135234 lvngPerformanceGLEntries
                 field("Document Type"; "Document Type") { ApplicationArea = All; }
                 field("Document No."; "Document No.") { ApplicationArea = All; }
                 field("External Document No."; "External Document No.") { ApplicationArea = All; }
-                field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; Caption = 'Loan No.'; DrillDown = false; Lookup = false; AssistEdit = false; }
+                field(lvngLoanNo; "Loan No.") { ApplicationArea = All; Caption = 'Loan No.'; DrillDown = false; Lookup = false; AssistEdit = false; }
                 field(Description; Description) { ApplicationArea = All; }
                 field(Amount; Amount) { ApplicationArea = All; }
                 field("Reason Code"; "Reason Code") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
                 field("Business Unit Code"; "Business Unit Code") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvngGlobalDimension1Name; lvngGlobalDimension1Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvngGlobalDimension2Name; lvngGlobalDimension2Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvngShortcutDimension3Name; lvngShortcutDimension3Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvngShortcutDimension4Name; lvngShortcutDimension4Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvngShortcutDimension5Name; lvngShortcutDimension5Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvngShortcutDimension6Name; lvngShortcutDimension6Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvngShortcutDimension7Name; lvngShortcutDimension7Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvngShortcutDimension8Name; lvngShortcutDimension8Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvngBorrowerSearchName; lvngBorrowerSearchName) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; Caption = 'Borrower Name'; }
+                field(lvngGlobalDimension1Name; "Global Dimension 1 Name") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(lvngGlobalDimension2Name; "Global Dimension 2 Name") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(lvngShortcutDimension3Name; "Shortcut Dimension 3 Name") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(lvngShortcutDimension4Name; "Shortcut Dimension 4 Name") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(lvngShortcutDimension5Name; "Shortcut Dimension 5 Name") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(lvngShortcutDimension6Name; "Shortcut Dimension 6 Name") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(lvngShortcutDimension7Name; "Shortcut Dimension 7 Name") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(lvngShortcutDimension8Name; "Shortcut Dimension 8 Name") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(lvngBorrowerSearchName; "Borrower Search Name") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; Caption = 'Borrower Name'; }
                 field("Source Type"; "Source Type") { ApplicationArea = All; }
-                field(lvngSourceName; lvngSourceName) { ApplicationArea = All; Caption = 'Source Name'; }
-                field(lvngWarehouseLineCode; lvngWarehouseLineCode) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
+                field(lvngSourceName; "Source Name") { ApplicationArea = All; Caption = 'Source Name'; }
+                field(lvngWarehouseLineCode; "Warehouse Line Code") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
                 field(InvestorCustomerNumber; Loan."Investor Customer No.") { ApplicationArea = All; Caption = 'Investor Customer No.'; Lookup = false; DrillDown = false; AssistEdit = false; }
 
             }
@@ -88,7 +88,7 @@ page 14135234 lvngPerformanceGLEntries
         Customer: Record Customer;
     begin
         InvestorName := '';
-        if not Loan.Get(lvngLoanNo) then
+        if not Loan.Get("Loan No.") then
             Clear(Loan)
         else
             if Loan."Investor Customer No." <> '' then

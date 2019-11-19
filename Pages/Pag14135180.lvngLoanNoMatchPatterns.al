@@ -10,23 +10,23 @@ page 14135180 "lvngLoanNoMatchPatterns"
         {
             repeater(lvngRepeater)
             {
-                field(lvngCode; lvngCode)
+                field(lvngCode; Code)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMinFieldLength; lvngMinFieldLength)
+                field(lvngMinFieldLength; "Min. Field Length")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMaxFieldLength; lvngMaxFieldLength)
+                field(lvngMaxFieldLength; "Max. Field Length")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngMatchPattern; lvngMatchPattern)
+                field(lvngMatchPattern; "Match Pattern")
                 {
                     ApplicationArea = All;
                 }

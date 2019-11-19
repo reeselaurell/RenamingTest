@@ -2,11 +2,11 @@ codeunit 14135106 "lvngLoanManagement"
 {
     procedure LoanNumberBatch(lvngLoanNo: Code[20]; lvngLoanNoMatchPattern: Record lvngLoanNoMatchPattern): Boolean
     begin
-        if lvngLoanNoMatchPattern.lvngMaxFieldLength > 0 then
-            if strlen(lvngLoanNo) > lvngLoanNoMatchPattern.lvngMaxFieldLength then
+        if lvngLoanNoMatchPattern."Max. Field Length" > 0 then
+            if strlen(lvngLoanNo) > lvngLoanNoMatchPattern."Max. Field Length" then
                 exit(false);
-        if lvngLoanNoMatchPattern.lvngMinFieldLength <> 0 then
-            if lvngLoanNoMatchPattern.lvngMinFieldLength > strlen(lvngLoanNo) then
+        if lvngLoanNoMatchPattern."Min. Field Length" <> 0 then
+            if lvngLoanNoMatchPattern."Min. Field Length" > strlen(lvngLoanNo) then
                 exit(false);
         //TODO: Issues with Regex not available in Codeunit 10. Requires implementation
         exit(true);

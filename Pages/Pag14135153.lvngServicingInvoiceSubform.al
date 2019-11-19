@@ -10,68 +10,68 @@ page 14135153 "lvngServicingInvoiceSubform"
         {
             repeater(lvngRepeater)
             {
-                field(lvngAccountNo; lvngAccountNo)
+                field(lvngAccountNo; "Account No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDescription; lvngDescription)
+                field(lvngDescription; Description)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngAmount; lvngAmount)
+                field(lvngAmount; Amount)
                 {
                     ApplicationArea = All;
                 }
-                field(lvngServicingType; lvngServicingType)
+                field(lvngServicingType; "Servicing Type")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBusinessUnitCode; lvngBusinessUnitCode)
+                field(lvngBusinessUnitCode; "Business Unit Code")
                 {
                     ApplicationArea = All;
                 }
 
-                field(lvngDimension1Code; lvngGlobalDimension1Code)
+                field(lvngDimension1Code; "Global Dimension 1 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible1;
                 }
-                field(lvngDimension2Code; lvngGlobalDimension2Code)
+                field(lvngDimension2Code; "Global Dimension 2 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible2;
                 }
-                field(lvngDimension3Code; lvngShortcutDimension3Code)
+                field(lvngDimension3Code; "Shortcut Dimension 3 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible3;
                 }
-                field(lvngDimension4Code; lvngShortcutDimension4Code)
+                field(lvngDimension4Code; "Shortcut Dimension 4 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible4;
                 }
-                field(lvngDimension5Code; lvngShortcutDimension5Code)
+                field(lvngDimension5Code; "Shortcut Dimension 5 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible5;
                 }
-                field(lvngDimension6Code; lvngShortcutDimension6Code)
+                field(lvngDimension6Code; "Shortcut Dimension 6 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible6;
                 }
-                field(lvngDimension7Code; lvngShortcutDimension7Code)
+                field(lvngDimension7Code; "Shortcut Dimension 7 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible7;
                 }
-                field(lvngDimension8Code; lvngShortcutDimension8Code)
+                field(lvngDimension8Code; "Shortcut Dimension 8 Code")
                 {
                     ApplicationArea = All;
                     Visible = DimensionVisible8;
                 }
-                field(lvngLineNo; lvngLineNo)
+                field(lvngLineNo; "Line No.")
                 {
                     ApplicationArea = All;
                 }
@@ -86,11 +86,11 @@ page 14135153 "lvngServicingInvoiceSubform"
         lvngServiceLine: Record lvngServiceLine;
     begin
         lvngServiceLine.reset;
-        lvngServiceLine.SetRange(lvngServicingDocumentType, lvngServicingDocumentType);
-        lvngServiceLine.SetRange(lvngDocumentNo, lvngDocumentNo);
+        lvngServiceLine.SetRange("Servicing Document Type", "Servicing Document Type");
+        lvngServiceLine.SetRange("Document No.", "Document No.");
         if lvngServiceLine.FindLast() then
-            lvngLineNo := lvngServiceLine.lvngLineNo;
-        lvngLineNo := lvngLineNo + 100;
+            "Line No." := lvngServiceLine."Line No.";
+        "Line No." := "Line No." + 100;
 
     end;
 

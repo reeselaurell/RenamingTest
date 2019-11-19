@@ -11,27 +11,27 @@ page 14135154 "lvngServicingCrMemo"
             group(lvngGeneral)
             {
                 Caption = 'General';
-                field(lvngNo; lvngNo)
+                field(lvngNo; "No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngBorrowerCustomerNo; lvngBorrowerCustomerNo)
+                field(lvngBorrowerCustomerNo; "Borrower Customer No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngLoanNo; lvngLoanNo)
+                field(lvngLoanNo; "Loan No.")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngPostingDate; lvngPostingDate)
+                field(lvngPostingDate; "Posting Date")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngDueDate; lvngDueDate)
+                field(lvngDueDate; "Due Date")
                 {
                     ApplicationArea = All;
                 }
-                field(lvngReasonCode; lvngReasonCode)
+                field(lvngReasonCode; "Reason Code")
                 {
                     ApplicationArea = All;
                 }
@@ -39,53 +39,53 @@ page 14135154 "lvngServicingCrMemo"
                 {
                     Caption = 'Dimensions';
 
-                    field(lvngGlobalDimension1Code; lvngGlobalDimension1Code)
+                    field(lvngGlobalDimension1Code; "Global Dimension 1 Code")
                     {
                         ApplicationArea = All;
                         Visible = DimensionVisible1;
                     }
-                    field(lvngGlobalDimension2Code; lvngGlobalDimension2Code)
+                    field(lvngGlobalDimension2Code; "Global Dimension 2 Code")
                     {
                         ApplicationArea = All;
                         Visible = DimensionVisible2;
                     }
-                    field(lvngShortcutDimension3Code; lvngShortcutDimension3Code)
+                    field(lvngShortcutDimension3Code; "Shortcut Dimension 3 Code")
                     {
                         Importance = Additional;
                         ApplicationArea = All;
                         Visible = DimensionVisible3;
                     }
-                    field(lvngShortcutDimension4Code; lvngShortcutDimension4Code)
+                    field(lvngShortcutDimension4Code; "Shortcut Dimension 4 Code")
                     {
                         Importance = Additional;
                         ApplicationArea = All;
                         Visible = DimensionVisible4;
                     }
-                    field(lvngShortcutDimension5Code; lvngShortcutDimension5Code)
+                    field(lvngShortcutDimension5Code; "Shortcut Dimension 5 Code")
                     {
                         Importance = Additional;
                         ApplicationArea = All;
                         Visible = DimensionVisible5;
                     }
-                    field(lvngShortcutDimension6Code; lvngShortcutDimension6Code)
+                    field(lvngShortcutDimension6Code; "Shortcut Dimension 6 Code")
                     {
                         Importance = Additional;
                         ApplicationArea = All;
                         Visible = DimensionVisible6;
                     }
-                    field(lvngShortcutDimension7Code; lvngShortcutDimension7Code)
+                    field(lvngShortcutDimension7Code; "Shortcut Dimension 7 Code")
                     {
                         Importance = Additional;
                         ApplicationArea = All;
                         Visible = DimensionVisible7;
                     }
-                    field(lvngShortcutDimension8Code; lvngShortcutDimension8Code)
+                    field(lvngShortcutDimension8Code; "Shortcut Dimension 8 Code")
                     {
                         Importance = Additional;
                         ApplicationArea = All;
                         Visible = DimensionVisible8;
                     }
-                    field(lvngBusinessUnitCode; lvngBusinessUnitCode)
+                    field(lvngBusinessUnitCode; "Business Unit Code")
                     {
                         Importance = Additional;
                         ApplicationArea = All;
@@ -96,7 +96,7 @@ page 14135154 "lvngServicingCrMemo"
             part(lvngServicingCrMemoSubform; lvngServicingCrMemoSubform)
             {
                 Caption = 'Lines';
-                SubPageLink = lvngServicingDocumentType = field (lvngServicingDocumentType), lvngDocumentNo = field (lvngNo);
+                SubPageLink = "Servicing Document Type" = field("Servicing Document Type"), "Document No." = field("No.");
             }
         }
     }
