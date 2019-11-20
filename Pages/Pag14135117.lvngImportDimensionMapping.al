@@ -10,21 +10,11 @@ page 14135117 lvngImportDimensionMapping
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngDimensionCode; "Dimension Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngMappingValue; "Mapping Value")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDimensionValueCode; "Dimension Value Code")
-                {
-                    ApplicationArea = All;
-                }
-
+                field("Dimension Code"; "Dimension Code") { ApplicationArea = All; }
+                field("Mapping Value"; "Mapping Value") { ApplicationArea = All; }
+                field("Dimension Value Code"; "Dimension Value Code") { ApplicationArea = All; }
             }
         }
     }

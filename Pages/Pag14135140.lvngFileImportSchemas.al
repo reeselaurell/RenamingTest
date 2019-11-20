@@ -1,4 +1,4 @@
-page 14135140 "lvngFileImportSchemas"
+page 14135140 lvngFileImportSchemas
 {
     Caption = 'File Import Schemas';
     PageType = List;
@@ -10,39 +10,22 @@ page 14135140 "lvngFileImportSchemas"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngCode; Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngFileImportType; "File Import Type")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDescription; Description)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngFieldSeparator; "Field Separator")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Use <TAB> for Tab or any other symbol';
-                }
-                field(lvngSkipRows; "Skip Rows")
-                {
-                    ApplicationArea = All;
-                }
+                field(Code; Code) { ApplicationArea = All; }
+                field("File Import Type"; "File Import Type") { ApplicationArea = All; }
+                field(Description; Description) { ApplicationArea = All; }
+                field("Field Separator"; "Field Separator") { ApplicationArea = All; ToolTip = 'Use <TAB> for Tab or any other symbol'; }
+                field("Skip Rows"; "Skip Rows") { ApplicationArea = All; }
             }
         }
-
     }
 
     actions
     {
         area(Processing)
         {
-            action(lvngEdit)
+            action(Edit)
             {
                 Caption = 'Edit Schema';
                 Image = DocumentEdit;
@@ -53,31 +36,31 @@ page 14135140 "lvngFileImportSchemas"
 
                 trigger OnAction();
                 var
-                    lvngGenJnlImportSchema: page lvngGenJnlImportSchema;
-                    lvngPurchaseLinesImportSchema: Page lvngPurchaseLinesImportSchema;
-                    lvngSalesLinesImportSchema: Page lvngSalesLinesImportSchema;
-                    lvngDepositImportSchema: Page lvngDepositImportSchema;
+                    GenJnlImportSchema: page lvngGenJnlImportSchema;
+                    PurchaseLinesImportSchema: Page lvngPurchaseLinesImportSchema;
+                    SalesLinesImportSchema: Page lvngSalesLinesImportSchema;
+                    DepositImportSchema: Page lvngDepositImportSchema;
                 begin
                     case "File Import Type" of
                         "File Import Type"::"General Journal":
                             begin
-                                lvngGenJnlImportSchema.SetRecord(Rec);
-                                lvngGenJnlImportSchema.Run();
+                                GenJnlImportSchema.SetRecord(Rec);
+                                GenJnlImportSchema.Run();
                             end;
                         "File Import Type"::"Purchase Line":
                             begin
-                                lvngPurchaseLinesImportSchema.SetRecord(Rec);
-                                lvngPurchaseLinesImportSchema.Run();
+                                PurchaseLinesImportSchema.SetRecord(Rec);
+                                PurchaseLinesImportSchema.Run();
                             end;
                         "File Import Type"::"Sales Line":
                             begin
-                                lvngSalesLinesImportSchema.SetRecord(Rec);
-                                lvngSalesLinesImportSchema.Run();
+                                SalesLinesImportSchema.SetRecord(Rec);
+                                SalesLinesImportSchema.Run();
                             end;
                         "File Import Type"::"Deposit Lines":
                             begin
-                                lvngDepositImportSchema.SetRecord(Rec);
-                                lvngDepositImportSchema.Run();
+                                DepositImportSchema.SetRecord(Rec);
+                                DepositImportSchema.Run();
                             end;
                     end;
                 end;

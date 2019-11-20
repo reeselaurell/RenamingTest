@@ -1,4 +1,4 @@
-page 14135148 "lvngSalesImportSchemaLines"
+page 14135148 lvngSalesImportSchemaLines
 {
     Caption = 'Import Lines';
     PageType = ListPart;
@@ -8,33 +8,14 @@ page 14135148 "lvngSalesImportSchemaLines"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngColumnNo; "Column No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngSalesImportFieldType; "Sales Import Field Type")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDescriptionSequence; "Description Sequence")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDimensionSplit; "Dimension Split")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDimensionSplitCharacter; "Dimension Split Character")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngSplitDimensionNo; "Split Dimension No.")
-                {
-                    ApplicationArea = All;
-                }
-
+                field("Column No."; "Column No.") { ApplicationArea = All; }
+                field("Sales Import Field Type"; "Sales Import Field Type") { ApplicationArea = All; }
+                field("Description Sequence"; "Description Sequence") { ApplicationArea = All; }
+                field("Dimension Split"; "Dimension Split") { ApplicationArea = All; }
+                field("Dimension Split Character"; "Dimension Split Character") { ApplicationArea = All; }
+                field("Split Dimension No."; "Split Dimension No.") { ApplicationArea = All; }
             }
         }
     }

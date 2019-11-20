@@ -1,4 +1,4 @@
-page 14135126 "lvngLoanDocumentsList"
+page 14135126 lvngLoanDocumentsList
 {
     Caption = 'Loan Documents';
     PageType = List;
@@ -10,89 +10,26 @@ page 14135126 "lvngLoanDocumentsList"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngTransactionType; "Transaction Type")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDocumentType; "Document Type")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDocumentNo; "Document No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngCustomerNo; "Customer No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngLoanNo; "Loan No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngWarehouseLineCode; "Warehouse Line Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoid; Void)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoidDocumentNo; "Void Document No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngBorrowerSearchName; "Borrower Search Name")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngGlobalDimension1Code; "Global Dimension 1 Code")
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible1;
-                }
-                field(lvngGlobalDimension2Code; "Global Dimension 2 Code")
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible2;
-                }
-                field(lvngShortcutDimension3Code; "Shortcut Dimension 3 Code")
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible3;
-                }
-                field(lvngShortcutDimension4Code; "Shortcut Dimension 4 Code")
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible4;
-                }
-                field(lvngShortcutDimension5Code; "Shortcut Dimension 5 Code")
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible5;
-                }
-                field(lvngShortcutDimension6Code; "Shortcut Dimension 6 Code")
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible6;
-                }
-                field(lvngShortcutDimension7Code; "Shortcut Dimension 7 Code")
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible7;
-                }
-                field(lvngShortcutDimension8Code; "Shortcut Dimension 8 Code")
-                {
-                    ApplicationArea = All;
-                    Visible = DimensionVisible8;
-                }
-                field(lvngBusinessUnitCode; "Business Unit Code")
-                {
-                    ApplicationArea = All;
-                }
-
+                field("Transaction Type"; "Transaction Type") { ApplicationArea = All; }
+                field("Document Type"; "Document Type") { ApplicationArea = All; }
+                field("Document No."; "Document No.") { ApplicationArea = All; }
+                field("Customer No."; "Customer No.") { ApplicationArea = All; }
+                field("Loan No."; "Loan No.") { ApplicationArea = All; }
+                field("Warehouse Line Code"; "Warehouse Line Code") { ApplicationArea = All; }
+                field(Void; Void) { ApplicationArea = All; }
+                field("Void Document No."; "Void Document No.") { ApplicationArea = All; }
+                field("Borrower Search Name"; "Borrower Search Name") { ApplicationArea = All; }
+                field("Global Dimension 1 Code"; "Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
+                field("Global Dimension 2 Code"; "Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
+                field("Shortcut Dimension 3 Code"; "Shortcut Dimension 3 Code") { ApplicationArea = All; Visible = DimensionVisible3; }
+                field("Shortcut Dimension 4 Code"; "Shortcut Dimension 4 Code") { ApplicationArea = All; Visible = DimensionVisible4; }
+                field("Shortcut Dimension 5 Code"; "Shortcut Dimension 5 Code") { ApplicationArea = All; Visible = DimensionVisible5; }
+                field("Shortcut Dimension 6 Code"; "Shortcut Dimension 6 Code") { ApplicationArea = All; Visible = DimensionVisible6; }
+                field("Shortcut Dimension 7 Code"; "Shortcut Dimension 7 Code") { ApplicationArea = All; Visible = DimensionVisible7; }
+                field("Shortcut Dimension 8 Code"; "Shortcut Dimension 8 Code") { ApplicationArea = All; Visible = DimensionVisible8; }
+                field("Business Unit Code"; "Business Unit Code") { ApplicationArea = All; }
             }
         }
     }
@@ -101,7 +38,7 @@ page 14135126 "lvngLoanDocumentsList"
     {
         area(Processing)
         {
-            action(lvngShowDocument)
+            action(ShowDocument)
             {
                 Caption = 'Show Document';
                 Image = DocumentEdit;
@@ -114,17 +51,14 @@ page 14135126 "lvngLoanDocumentsList"
                 begin
                     case "Transaction Type" of
                         "Transaction Type"::Funded:
-                            begin
-                                page.Run(Page::lvngFundedDocument, Rec);
-                            end;
+                            Page.Run(Page::lvngFundedDocument, Rec);
                         "Transaction Type"::Sold:
-                            begin
-                                page.Run(Page::lvngSoldDocument, Rec);
-                            end;
+                            Page.Run(Page::lvngSoldDocument, Rec);
                     end;
                 end;
             }
-            action(lvngPost)
+
+            action(Post)
             {
                 Caption = 'Post';
                 ApplicationArea = All;
@@ -135,16 +69,16 @@ page 14135126 "lvngLoanDocumentsList"
 
                 trigger OnAction()
                 var
-                    lvngPostLoanDocument: Codeunit lvngPostLoanDocument;
-                    PostConfirmationLbl: Label 'Do You want to Post Document?';
+                    PostLoanDocument: Codeunit lvngPostLoanDocument;
+                    PostConfirmationQst: Label 'Do You want to Post Document?';
                 begin
-                    if Confirm(PostConfirmationLbl, false) then begin
-                        lvngPostLoanDocument.Run(Rec);
+                    if Confirm(PostConfirmationQst, false) then begin
+                        PostLoanDocument.Run(Rec);
                     end;
                 end;
             }
 
-            action(lvngBatchPost)
+            action(BatchPost)
             {
                 Caption = 'Post Batch';
                 ApplicationArea = All;
@@ -155,7 +89,7 @@ page 14135126 "lvngLoanDocumentsList"
                 RunObject = report lvngPostLoanDocuments;
             }
 
-            action(lvngPrint)
+            action(Print)
             {
                 Caption = 'Print';
                 ApplicationArea = All;
@@ -168,14 +102,7 @@ page 14135126 "lvngLoanDocumentsList"
         }
     }
 
-    trigger OnOpenPage()
-    begin
-        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6,
-        DimensionVisible7, DimensionVisible8);
-    end;
-
     var
-        DimensionManagement: Codeunit DimensionManagement;
         DimensionVisible1: Boolean;
         DimensionVisible2: Boolean;
         DimensionVisible3: Boolean;
@@ -184,4 +111,11 @@ page 14135126 "lvngLoanDocumentsList"
         DimensionVisible6: Boolean;
         DimensionVisible7: Boolean;
         DimensionVisible8: Boolean;
+
+    trigger OnOpenPage()
+    var
+        DimensionManagement: Codeunit DimensionManagement;
+    begin
+        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6, DimensionVisible7, DimensionVisible8);
+    end;
 }

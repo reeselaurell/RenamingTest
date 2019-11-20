@@ -13,20 +13,9 @@ page 14135102 lvngLoanFieldsConfiguration
         {
             repeater(Group)
             {
-                field(FieldsNo; "Field No.")
-                {
-                    ApplicationArea = All;
-                }
-
-                field(FieldName; "Field Name")
-                {
-                    ApplicationArea = All;
-                }
-
-                field(ValueType; "Value Type")
-                {
-                    ApplicationArea = All;
-                }
+                field("Field No."; "Field No.") { ApplicationArea = All; }
+                field("Field Name"; "Field Name") { ApplicationArea = All; }
+                field("Value Type"; "Value Type") { ApplicationArea = All; }
             }
         }
     }

@@ -1,4 +1,4 @@
-page 14135105 "lvngLoanAddressCard"
+page 14135105 lvngLoanAddressCard
 {
     PageType = Card;
     SourceTable = lvngLoanAddress;
@@ -10,47 +10,14 @@ page 14135105 "lvngLoanAddressCard"
         {
             group(General)
             {
-                field(lvngAddressType; "Address Type")
-                {
-                    Editable = false;
-                }
-                field(lvngAddress; Address)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngAddress2; "Address 2")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngCity; City)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngZIPCode; "ZIP Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngState; State)
-                {
-                    ApplicationArea = All;
-                }
+                Caption = 'General';
 
-            }
-        }
-    }
-
-    actions
-    {
-        area(Processing)
-        {
-            action(ActionName)
-            {
-                ApplicationArea = All;
-
-                trigger OnAction()
-                begin
-
-                end;
+                field("Address Type"; "Address Type") { Editable = false; }
+                field(Address; Address) { ApplicationArea = All; }
+                field("Address 2"; "Address 2") { ApplicationArea = All; }
+                field(City; City) { ApplicationArea = All; }
+                field("ZIP Code"; "ZIP Code") { ApplicationArea = All; }
+                field(State; State) { ApplicationArea = All; }
             }
         }
     }

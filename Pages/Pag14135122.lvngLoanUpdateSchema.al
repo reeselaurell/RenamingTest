@@ -1,4 +1,4 @@
-page 14135122 "lvngLoanUpdateSchema"
+page 14135122 lvngLoanUpdateSchema
 {
     PageType = List;
     SourceTable = lvngLoanUpdateSchema;
@@ -8,81 +8,68 @@ page 14135122 "lvngLoanUpdateSchema"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-
-                field(lvngImportFieldType; "Import Field Type")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngFieldNo; "Field No.")
+                field("Import Field Type"; "Import Field Type") { ApplicationArea = All; }
+                field("Field No."; "Field No.")
                 {
                     ApplicationArea = All;
 
                     trigger OnValidate()
                     var
                         FieldRec: Record Field;
-                        lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+                        LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case "Import Field Type" of
                             "Import Field Type"::Table:
                                 begin
-                                    FieldRec.reset;
+                                    FieldRec.Reset();
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
                                     FieldRec.SetRange("No.", "Field No.");
                                     FieldRec.FindFirst();
-                                    lvngFieldDescription := FieldRec."Field Caption";
+                                    FieldDescription := FieldRec."Field Caption";
                                 end;
                             "Import Field Type"::Variable:
                                 begin
-                                    lvngLoanFieldsConfiguration.Get("Field No.");
-                                    lvngFieldDescription := lvngLoanFieldsConfiguration."Field Name";
+                                    LoanFieldsConfiguration.Get("Field No.");
+                                    FieldDescription := LoanFieldsConfiguration."Field Name";
                                 end;
                         end;
                     end;
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsListPage: Page "Fields Lookup";
+                        FieldsLookup: Page "Fields Lookup";
                         FieldRec: Record Field;
-                        lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+                        LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
                         case "Import Field Type" of
                             "Import Field Type"::Table:
                                 begin
-                                    FieldRec.reset;
+                                    FieldRec.Reset();
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
                                     FieldRec.SetFilter("No.", '%1..%2', 5, 4999);
-                                    Clear(FieldsListPage);
-                                    FieldsListPage.SetTableView(FieldRec);
-                                    FieldsListPage.LookupMode(true);
-                                    if FieldsListPage.RunModal() = Action::LookupOK then begin
-                                        FieldsListPage.GetRecord(FieldRec);
+                                    Clear(FieldsLookup);
+                                    FieldsLookup.SetTableView(FieldRec);
+                                    FieldsLookup.LookupMode(true);
+                                    if FieldsLookup.RunModal() = Action::LookupOK then begin
+                                        FieldsLookup.GetRecord(FieldRec);
                                         "Field No." := FieldRec."No.";
-                                        lvngFieldDescription := FieldRec."Field Caption";
+                                        FieldDescription := FieldRec."Field Caption";
                                     end;
                                 end;
                             "Import Field Type"::Variable:
                                 begin
-                                    if Page.RunModal(0, lvngLoanFieldsConfiguration) = Action::LookupOK then begin
-                                        "Field No." := lvngLoanFieldsConfiguration."Field No.";
-                                        lvngFieldDescription := lvngLoanFieldsConfiguration."Field Name";
+                                    if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
+                                        "Field No." := LoanFieldsConfiguration."Field No.";
+                                        FieldDescription := LoanFieldsConfiguration."Field Name";
                                     end;
                                 end;
                         end;
                     end;
                 }
-                field(lvngFieldDescription; lvngFieldDescription)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Field Name';
-                    Editable = false;
-                }
-
-                field(lvngFieldUpdateOption; "Field Update Option")
-                {
-                    ApplicationArea = All;
-                }
+                field(FieldDescription; FieldDescription) { ApplicationArea = All; Caption = 'Field Name'; Editable = false; }
+                field("Field Update Option"; "Field Update Option") { ApplicationArea = All; }
             }
 
         }
@@ -92,7 +79,7 @@ page 14135122 "lvngLoanUpdateSchema"
     {
         area(Processing)
         {
-            action(lvngCopyFromImportSchema)
+            action(CopyFromImportSchema)
             {
                 ApplicationArea = All;
                 Caption = 'Copy from Import Schema';
@@ -103,88 +90,86 @@ page 14135122 "lvngLoanUpdateSchema"
 
                 trigger OnAction()
                 var
-                    lvngLoanManagement: Codeunit lvngLoanManagement;
+                    LoanManagement: Codeunit lvngLoanManagement;
                 begin
-                    lvngLoanManagement.CopyImportSchemaToUpdateSchema("Journal Batch Code");
+                    LoanManagement.CopyImportSchemaToUpdateSchema("Journal Batch Code");
                     CurrPage.Update(false);
                 end;
             }
 
-
-            group(lvngOptions)
+            group(Options)
             {
                 Caption = 'Change Update Option';
                 Image = UpdateDescription;
 
-                action(lvngAlways)
+                action(Always)
                 {
                     ApplicationArea = all;
                     Image = Change;
                     Promoted = true;
                     Caption = 'Always';
+
                     trigger OnAction()
                     var
-                        lvngLoanManagement: Codeunit lvngLoanManagement;
+                        LoanManagement: Codeunit lvngLoanManagement;
                     begin
-                        lvngLoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::lvngAlways);
+                        LoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::lvngAlways);
                         CurrPage.Update(false);
                     end;
                 }
-                action(lvngDestinationBlank)
+                action(DestinationBlank)
                 {
                     ApplicationArea = all;
                     Image = Change;
                     Promoted = true;
                     Caption = 'If Destination Blank';
+
                     trigger OnAction()
                     var
-                        lvngLoanManagement: Codeunit lvngLoanManagement;
+                        LoanManagement: Codeunit lvngLoanManagement;
                     begin
-                        lvngLoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::"If Destination Blank");
+                        LoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::"If Destination Blank");
                         CurrPage.Update(false);
                     end;
                 }
-                action(lvngSourceNotBlank)
+                action(SourceNotBlank)
                 {
                     ApplicationArea = all;
                     Image = Change;
                     Promoted = true;
                     Caption = 'If Source not Blank';
+
                     trigger OnAction()
                     var
-                        lvngLoanManagement: Codeunit lvngLoanManagement;
+                        LoanManagement: Codeunit lvngLoanManagement;
                     begin
-                        lvngLoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::"If Source Not Blank");
+                        LoanManagement.ModifyFieldUpdateOption("Journal Batch Code", "Field Update Option"::"If Source Not Blank");
                         CurrPage.Update(false);
                     end;
                 }
             }
-
         }
-
     }
 
     var
-        lvngFieldDescription: Text;
+        FieldDescription: Text;
 
     trigger OnAfterGetRecord()
     var
         TableField: Record Field;
-        lvngLoanManagement: Codeunit lvngLoanManagement;
+        LoanManagement: Codeunit lvngLoanManagement;
     begin
-        Clear(lvngFieldDescription);
+        FieldDescription := '';
         case "Import Field Type" of
             "Import Field Type"::Table:
                 begin
                     TableField.SetRange("No.", "Field No.");
                     TableField.setrange(TableNo, Database::lvngLoanJournalLine);
                     if TableField.FindFirst() then
-                        lvngFieldDescription := TableField."Field Caption";
-                    //lvngFieldDescription := CaptionManagement.GetTranslatedFieldCaption('', Database::lvngLoanJournalLine, lvngFieldNo);
+                        FieldDescription := TableField."Field Caption";
                 end;
             "Import Field Type"::Variable:
-                lvngFieldDescription := lvngLoanManagement.GetFieldName("Field No.");
+                FieldDescription := LoanManagement.GetFieldName("Field No.");
         end;
     end;
-
 }

@@ -51,7 +51,7 @@ table 14135107 lvngLoanJournalLine
         field(203; "Borrower State"; Text[30]) { Caption = 'Borrower State'; DataClassification = CustomerContent; }
         field(204; "Borrower ZIP Code"; Code[20]) { Caption = 'Borrower ZIP Code'; DataClassification = CustomerContent; }
         field(210; "Co-Borrower Address"; Text[50]) { Caption = 'Co-Borrower Address'; DataClassification = CustomerContent; }
-        field(211; lvngCoBorrowerAddress2; Text[50]) { Caption = 'lvngCoBorrowerAddress2'; DataClassification = CustomerContent; }
+        field(211; "Co-Borrower Address 2"; Text[50]) { Caption = 'lvngCoBorrowerAddress2'; DataClassification = CustomerContent; }
         field(212; "Co-Borrower City"; Text[30]) { Caption = 'Co-Borrower City'; DataClassification = CustomerContent; }
         field(213; "Co-Borrower State"; Text[30]) { Caption = 'Co-Borrower State'; DataClassification = CustomerContent; }
         field(214; "Co-Borrower ZIP Code"; Code[20]) { Caption = 'Co-Borrower ZIP Code'; DataClassification = CustomerContent; }

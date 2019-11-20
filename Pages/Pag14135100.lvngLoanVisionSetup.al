@@ -17,29 +17,29 @@ page 14135100 lvngLoanVisionSetup
             {
                 Caption = 'General';
 
-                group(lvngReasonCodes)
+                group(ReasonCodes)
                 {
                     Caption = 'Reason Codes';
 
-                    field(lvngFundedReasonCode; "Funded Reason Code") { ApplicationArea = All; }
-                    field(lvngFundedVoidReasonCode; "Funded Void Reason Code") { ApplicationArea = All; }
-                    field(lvngSoldReasonCode; "Sold Reason Code") { ApplicationArea = All; }
-                    field(lvngSoldVoidReasonCode; "Sold Void Reason Code") { ApplicationArea = All; }
+                    field("Funded Reason Code"; "Funded Reason Code") { ApplicationArea = All; }
+                    field("Funded Void Reason Code"; "Funded Void Reason Code") { ApplicationArea = All; }
+                    field("Sold Reason Code"; "Sold Reason Code") { ApplicationArea = All; }
+                    field("Sold Void Reason Code"; "Sold Void Reason Code") { ApplicationArea = All; }
                 }
-                group(lvngSourceCodes)
+                group(SourceCodes)
                 {
                     Caption = 'Source Codes';
 
-                    field(lvngFundedSourceCode; "Funded Source Code") { ApplicationArea = All; }
-                    field(lvngSoldSourceCode; "Sold Source Code") { ApplicationArea = All; }
+                    field("Funded Source Code"; "Funded Source Code") { ApplicationArea = All; }
+                    field("Sold Source Code"; "Sold Source Code") { ApplicationArea = All; }
                 }
-                group(lvngMisc)
+                group(Misc)
                 {
                     Caption = 'Miscellaneous';
 
-                    field(lvngSearchNameTemplate; "Search Name Template") { ApplicationArea = All; ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name'; }
-                    field(lvngLoanOfficerNameTemplate; "Loan Officer Name Template") { ApplicationArea = All; ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name'; }
-                    field(MaintenanceMode; "Maintenance Mode") { ApplicationArea = All; }
+                    field("Search Name Template"; "Search Name Template") { ApplicationArea = All; ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name'; }
+                    field("Loan Officer Name Template"; "Loan Officer Name Template") { ApplicationArea = All; ToolTip = '%1 - First Name, %2 - Last Name, %3 - Middle Name'; }
+                    field("Maintenance Mode"; "Maintenance Mode") { ApplicationArea = All; }
                 }
             }
             group(Dimensions)
@@ -48,32 +48,32 @@ page 14135100 lvngLoanVisionSetup
                 {
                     Caption = 'General';
 
-                    field(CostCenter; "Cost Center Dimension Code") { ApplicationArea = All; }
-                    field(PropertyStateCode; "Property State Dimension Code") { ApplicationArea = All; }
-                    field(LoanTypeCode; "Loan Type Dimension Code") { ApplicationArea = All; }
-                    field(LoanOfficerCode; "Loan Officer Dimension Code") { ApplicationArea = All; }
-                    field(LoanPurposeCode; "Loan Purpose Dimension Code") { ApplicationArea = All; }
+                    field("Cost Center Dimension Code"; "Cost Center Dimension Code") { ApplicationArea = All; }
+                    field("Property State Dimension Code"; "Property State Dimension Code") { ApplicationArea = All; }
+                    field("Loan Type Dimension Code"; "Loan Type Dimension Code") { ApplicationArea = All; }
+                    field("Loan Officer Dimension Code"; "Loan Officer Dimension Code") { ApplicationArea = All; }
+                    field("Loan Purpose Dimension Code"; "Loan Purpose Dimension Code") { ApplicationArea = All; }
                 }
                 group(HierarchyLevelsGroup)
                 {
                     Caption = 'Hierarchy Levels';
 
-                    field(HierarchyLevels; "Hierarchy Levels") { ApplicationArea = All; }
-                    field(HierarchyLevel1; "Level 1") { Editable = "Hierarchy Levels" > 0; ApplicationArea = All; }
-                    field(HierarchyLevel2; "Level 2") { Editable = "Hierarchy Levels" > 1; ApplicationArea = All; }
-                    field(HierarchyLevel3; "Level 3") { Editable = "Hierarchy Levels" > 2; ApplicationArea = All; }
-                    field(HierarchyLevel4; "Level 4") { Editable = "Hierarchy Levels" > 3; ApplicationArea = All; }
-                    field(HierarchyLevel5; "Level 5") { Editable = "Hierarchy Levels" > 4; ApplicationArea = All; }
+                    field("Hierarchy Levels"; "Hierarchy Levels") { ApplicationArea = All; }
+                    field("Level 1"; "Level 1") { Editable = "Hierarchy Levels" > 0; ApplicationArea = All; }
+                    field("Level 2"; "Level 2") { Editable = "Hierarchy Levels" > 1; ApplicationArea = All; }
+                    field("Level 3"; "Level 3") { Editable = "Hierarchy Levels" > 2; ApplicationArea = All; }
+                    field("Level 4"; "Level 4") { Editable = "Hierarchy Levels" > 3; ApplicationArea = All; }
+                    field("Level 5"; "Level 5") { Editable = "Hierarchy Levels" > 4; ApplicationArea = All; }
                 }
             }
-            group(lvngNoSeries)
+            group(NoSeries)
             {
                 Caption = 'No. Series';
 
-                field(lvngFundedNoSeries; "Funded No. Series") { ApplicationArea = All; }
-                field(lvngVoidFundedNoSeries; "Void Funded No. Series") { ApplicationArea = All; }
-                field(lvngSoldNoSeries; "Sold No. Series") { ApplicationArea = All; }
-                field(lvngVoidSoldNoSeries; "Void Sold No. Series") { ApplicationArea = All; }
+                field("Funded No. Series"; "Funded No. Series") { ApplicationArea = All; }
+                field("Void Funded No. Series"; "Void Funded No. Series") { ApplicationArea = All; }
+                field("Sold No. Series"; "Sold No. Series") { ApplicationArea = All; }
+                field("Void Sold No. Series"; "Void Sold No. Series") { ApplicationArea = All; }
             }
         }
     }
@@ -81,7 +81,7 @@ page 14135100 lvngLoanVisionSetup
     {
         area(Processing)
         {
-            action(lvngLoanMatchingPatterns)
+            action(LoanMatchingPatterns)
             {
                 Caption = 'Loan No. Match Patterns';
                 ApplicationArea = All;

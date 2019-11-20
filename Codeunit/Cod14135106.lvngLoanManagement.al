@@ -1159,17 +1159,17 @@ codeunit 14135106 "lvngLoanManagement"
                                 case lvngLoanUpdateSchema."Field Update Option" of
                                     lvngloanupdateschema."Field Update Option"::lvngAlways:
                                         begin
-                                            lvngLoanAddress."Address 2" := lvngLoanJournalLine.lvngCoBorrowerAddress2;
+                                            lvngLoanAddress."Address 2" := lvngLoanJournalLine."Co-Borrower Address 2";
                                         end;
                                     lvngLoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         begin
                                             if lvngLoanAddress."Address 2" = '' then
-                                                lvngLoanAddress."Address 2" := lvngLoanJournalLine.lvngCoBorrowerAddress2;
+                                                lvngLoanAddress."Address 2" := lvngLoanJournalLine."Co-Borrower Address 2";
                                         end;
                                     lvngLoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         begin
                                             if lvngLoanJournalLine."Co-Borrower Address" <> '' then begin
-                                                lvngLoanAddress."Address 2" := lvngLoanJournalLine.lvngCoBorrowerAddress2;
+                                                lvngLoanAddress."Address 2" := lvngLoanJournalLine."Co-Borrower Address 2";
                                             end;
                                         end;
                                 end;
@@ -1599,7 +1599,7 @@ codeunit 14135106 "lvngLoanManagement"
             lvngLoanAddress.Insert();
         end;
         lvngLoanAddress.Address := lvngLoanJournalLine."Co-Borrower Address";
-        lvngLoanAddress."Address 2" := lvngLoanJournalLine.lvngCoBorrowerAddress2;
+        lvngLoanAddress."Address 2" := lvngLoanJournalLine."Co-Borrower Address 2";
         lvngloanAddress.City := lvngLoanJournalLine."Co-Borrower City";
         lvngLoanAddress.State := lvngLoanJournalLine."Co-Borrower State";
         lvngloanaddress."ZIP Code" := lvngLoanJournalLine."Co-Borrower ZIP Code";

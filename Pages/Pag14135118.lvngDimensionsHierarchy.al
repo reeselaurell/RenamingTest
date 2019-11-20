@@ -1,4 +1,4 @@
-page 14135118 "lvngDimensionsHierarchy"
+page 14135118 lvngDimensionsHierarchy
 {
     PageType = List;
     UsageCategory = Lists;
@@ -10,18 +10,20 @@ page 14135118 "lvngDimensionsHierarchy"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngCode; Code)
+                field(Code; Code)
                 {
                     ApplicationArea = All;
+
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         DimensionValue: Record "Dimension Value";
                         BusinessUnit: Record "Business Unit";
+                        DimensionsManagement: Codeunit lvngDimensionsManagement;
                         DimensionCode: Code[20];
                     begin
-                        DimensionCode := lvngDimensionsManagement.GetMainHierarchyDimensionCode();
+                        DimensionCode := DimensionsManagement.GetMainHierarchyDimensionCode();
                         if DimensionCode = '' then begin
                             BusinessUnit.reset;
                             if page.RunModal(0, BusinessUnit) = Action::LookupOK then begin
@@ -36,89 +38,63 @@ page 14135118 "lvngDimensionsHierarchy"
                         end;
                     end;
                 }
-                field(lvngDate; Date)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngShortcutDimension4Code; "Shortcut Dimension 4 Code")
-                {
-                    Visible = Dimension4Visible;
-                    ApplicationArea = All;
-                }
-                field(lvngShortcutDimension3Code; "Shortcut Dimension 3 Code")
-                {
-                    Visible = Dimension3Visible;
-                    ApplicationArea = All;
-                }
-                field(lvngGlobalDimension2Code; "Global Dimension 2 Code")
-                {
-                    Visible = Dimension2Visible;
-                    ApplicationArea = All;
-                }
-                field(lvngGlobalDimension1Code; "Global Dimension 1 Code")
-                {
-                    Visible = Dimension1Visible;
-                    ApplicationArea = All;
-                }
-
-                field(lvngBusinessUnitCode; "Business Unit Code")
-                {
-                    Visible = BusinessUnitVisible;
-                    ApplicationArea = All;
-                }
-
+                field(Date; Date) { ApplicationArea = All; }
+                field("Shortcut Dimension 4 Code"; "Shortcut Dimension 4 Code") { Visible = Dimension4Visible; ApplicationArea = All; }
+                field("Shortcut Dimension 3 Code"; "Shortcut Dimension 3 Code") { Visible = Dimension3Visible; ApplicationArea = All; }
+                field("Global Dimension 2 Code"; "Global Dimension 2 Code") { Visible = Dimension2Visible; ApplicationArea = All; }
+                field("Global Dimension 1 Code"; "Global Dimension 1 Code") { Visible = Dimension1Visible; ApplicationArea = All; }
+                field("Business Unit Code"; "Business Unit Code") { Visible = BusinessUnitVisible; ApplicationArea = All; }
             }
         }
     }
 
-    trigger OnOpenPage()
     var
-    begin
-        lvngLoanVisionSetup.Get();
-        if lvngLoanVisionSetup."Hierarchy Levels" = 1 then
-            exit;
-        if lvngLoanVisionSetup."Hierarchy Levels" = 2 then begin
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 1");
-        end;
-        if lvngLoanVisionSetup."Hierarchy Levels" = 3 then begin
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 2");
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 1");
-        end;
-        if lvngLoanVisionSetup."Hierarchy Levels" = 4 then begin
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 3");
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 2");
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 1");
-        end;
-        if lvngLoanVisionSetup."Hierarchy Levels" = 5 then begin
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 4");
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 3");
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 2");
-            CheckDimensionsVisibility(lvngLoanVisionSetup."Level 1");
-        end;
-    end;
-
-    local procedure CheckDimensionsVisibility(lvngHierarchyLevels: Enum lvngHierarchyLevels)
-    begin
-        case lvngHierarchyLevels of
-            lvngHierarchyLevels::"Dimension 1":
-                Dimension1Visible := true;
-            lvngHierarchyLevels::"Dimension 2":
-                Dimension2Visible := true;
-            lvngHierarchyLevels::"Dimension 3":
-                Dimension3Visible := true;
-            lvngHierarchyLevels::"Dimension 4":
-                Dimension4Visible := true;
-            lvngHierarchyLevels::"Business Unit":
-                BusinessUnitVisible := true;
-        end;
-    end;
-
-    var
-        lvngLoanVisionSetup: Record lvngLoanVisionSetup;
-        lvngDimensionsManagement: Codeunit lvngDimensionsManagement;
         Dimension1Visible: Boolean;
         Dimension2Visible: Boolean;
         Dimension3Visible: Boolean;
         Dimension4Visible: Boolean;
         BusinessUnitVisible: Boolean;
+
+    trigger OnOpenPage()
+    var
+        LoanVisionSetup: Record lvngLoanVisionSetup;
+        DimensionsManagement: Codeunit lvngDimensionsManagement;
+    begin
+        LoanVisionSetup.Get();
+        if LoanVisionSetup."Hierarchy Levels" = 1 then
+            exit;
+        if LoanVisionSetup."Hierarchy Levels" = 2 then
+            CheckDimensionsVisibility(LoanVisionSetup."Level 1");
+        if LoanVisionSetup."Hierarchy Levels" = 3 then begin
+            CheckDimensionsVisibility(LoanVisionSetup."Level 2");
+            CheckDimensionsVisibility(LoanVisionSetup."Level 1");
+        end;
+        if LoanVisionSetup."Hierarchy Levels" = 4 then begin
+            CheckDimensionsVisibility(LoanVisionSetup."Level 3");
+            CheckDimensionsVisibility(LoanVisionSetup."Level 2");
+            CheckDimensionsVisibility(LoanVisionSetup."Level 1");
+        end;
+        if LoanVisionSetup."Hierarchy Levels" = 5 then begin
+            CheckDimensionsVisibility(LoanVisionSetup."Level 4");
+            CheckDimensionsVisibility(LoanVisionSetup."Level 3");
+            CheckDimensionsVisibility(LoanVisionSetup."Level 2");
+            CheckDimensionsVisibility(LoanVisionSetup."Level 1");
+        end;
+    end;
+
+    local procedure CheckDimensionsVisibility(HierarchyLevels: Enum lvngHierarchyLevels)
+    begin
+        case HierarchyLevels of
+            HierarchyLevels::"Dimension 1":
+                Dimension1Visible := true;
+            HierarchyLevels::"Dimension 2":
+                Dimension2Visible := true;
+            HierarchyLevels::"Dimension 3":
+                Dimension3Visible := true;
+            HierarchyLevels::"Dimension 4":
+                Dimension4Visible := true;
+            HierarchyLevels::"Business Unit":
+                BusinessUnitVisible := true;
+        end;
+    end;
 }

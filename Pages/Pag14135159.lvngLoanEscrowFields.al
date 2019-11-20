@@ -11,39 +11,30 @@ page 14135159 lvngLoanEscrowFields
     {
         area(content)
         {
-            repeater(General)
+            repeater(Group)
             {
-                field(lvngDescription; Description)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngAmount; lvngAmount)
-                {
-                    Caption = 'Amount';
-                    ApplicationArea = All;
-                }
+                field(Description; Description) { Caption = 'Description'; ApplicationArea = All; }
+                field(Amount; Amount) { Caption = 'Amount'; ApplicationArea = All; }
             }
         }
     }
 
+    var
+        LoanNo: Code[20];
+        Amount: Decimal;
 
     trigger OnAfterGetRecord()
+    var
+        LoanValue: Record lvngLoanValue;
     begin
-        Clear(lvngAmount);
-        if lvngLoanValue.Get(lvngLoanNo, "Field No.") then
-            lvngAmount := lvngLoanValue."Decimal Value";
+        Clear(Amount);
+        if LoanValue.Get(LoanNo, "Field No.") then
+            Amount := LoanValue."Decimal Value";
     end;
 
-    var
-        lvngLoanValue: Record lvngLoanValue;
-        lvngLoanNo: Code[20];
-        lvngAmount: Decimal;
-
-
-    procedure SetParams(lvngLoanNoParam: Code[20])
+    procedure SetParams(LoanCode: Code[20])
     begin
-        lvngLoanNo := lvngLoanNoParam;
+        LoanNo := LoanCode;
         CurrPage.Update(false);
     end;
-
 }

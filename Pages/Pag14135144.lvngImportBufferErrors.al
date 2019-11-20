@@ -1,4 +1,4 @@
-page 14135144 "lvngImportBufferErrors"
+page 14135144 lvngImportBufferErrors
 {
     PageType = ListPart;
     SourceTable = lvngImportBufferError;
@@ -10,25 +10,21 @@ page 14135144 "lvngImportBufferErrors"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngDescription; Description)
-                {
-                    ApplicationArea = All;
-                }
+                field(Description; Description) { ApplicationArea = All; }
             }
         }
     }
 
-    procedure SetEntries(var lvngImportBufferError: Record lvngImportBufferError)
+    procedure SetEntries(var ImportBufferError: Record lvngImportBufferError)
     begin
-        lvngImportBufferError.reset;
-        lvngImportBufferError.FindSet();
+        ImportBufferError.Reset();
+        ImportBufferError.FindSet();
         repeat
             Clear(Rec);
-            Rec := lvngImportBufferError;
+            Rec := ImportBufferError;
             Rec.Insert();
-        until lvngImportBufferError.Next() = 0;
+        until ImportBufferError.Next() = 0;
     end;
-
 }

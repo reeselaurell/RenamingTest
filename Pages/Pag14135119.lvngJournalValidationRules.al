@@ -1,4 +1,4 @@
-page 14135119 "lvngJournalValidationRules"
+page 14135119 lvngJournalValidationRules
 {
     PageType = List;
     Caption = 'Loan Journal Validation Rules';
@@ -8,25 +8,12 @@ page 14135119 "lvngJournalValidationRules"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngLineNo; "Line No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDescription; Description)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngConditionCode; "Condition Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngErrorMessage; "Error Message")
-                {
-                    ApplicationArea = All;
-                }
-
+                field("Line No."; "Line No.") { ApplicationArea = All; }
+                field(Description; Description) { ApplicationArea = All; }
+                field("Condition Code"; "Condition Code") { ApplicationArea = All; }
+                field("Error Message"; "Error Message") { ApplicationArea = All; }
             }
         }
     }

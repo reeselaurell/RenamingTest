@@ -1,4 +1,4 @@
-page 14135151 "lvngServicingDocuments"
+page 14135151 lvngServicingDocuments
 {
     Caption = 'Servicing Documents';
     PageType = List;
@@ -12,36 +12,15 @@ page 14135151 "lvngServicingDocuments"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngServicingDocumentType; "Servicing Document Type")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngNo; "No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngBorrowerCustomerNo; "Borrower Customer No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngLoanNo; "Loan No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngPostingDate; "Posting Date")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDueDate; "Due Date")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngReasonCode; "Reason Code")
-                {
-                    ApplicationArea = All;
-                }
+                field("Servicing Document Type"; "Servicing Document Type") { ApplicationArea = All; }
+                field("No."; "No.") { ApplicationArea = All; }
+                field("Borrower Customer No."; "Borrower Customer No.") { ApplicationArea = All; }
+                field("Loan No."; "Loan No.") { ApplicationArea = All; }
+                field("Posting Date"; "Posting Date") { ApplicationArea = All; }
+                field("Due Date"; "Due Date") { ApplicationArea = All; }
+                field("Reason Code"; "Reason Code") { ApplicationArea = All; }
             }
         }
     }
@@ -50,11 +29,12 @@ page 14135151 "lvngServicingDocuments"
     {
         area(Processing)
         {
-            action(lvngEdit)
+            action(Edit)
             {
                 Caption = 'Edit';
                 Image = Edit;
                 ApplicationArea = All;
+
                 trigger OnAction()
                 begin
                     if "Servicing Document Type" = "Servicing Document Type"::Invoice then
@@ -63,15 +43,18 @@ page 14135151 "lvngServicingDocuments"
                         Page.Run(Page::lvngServicingCrMemo, Rec);
                 end;
             }
-            action(lvngPost)
+
+            action(Post)
             {
                 Caption = 'Post';
                 Image = Post;
                 ApplicationArea = All;
 
-                trigger OnAction();
+                trigger OnAction()
+                var
+                    ImplMgmt: Codeunit lvngImplementationManagement;
                 begin
-                    Message('a');
+                    ImplMgmt.ThrowNotImplementedError();
                 end;
             }
         }

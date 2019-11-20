@@ -1,4 +1,4 @@
-page 14135125 "lvngLoanImportValueEdit"
+page 14135125 lvngLoanImportValueEdit
 {
     PageType = List;
     SourceTable = lvngLoanJournalValue;
@@ -9,20 +9,11 @@ page 14135125 "lvngLoanImportValueEdit"
     {
         area(Content)
         {
-            repeater(lvngValues)
+            repeater(Group)
             {
-                field(lvngFieldNo; "Field No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngFieldName; "Field Name")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngFieldValue; "Field Value")
-                {
-                    ApplicationArea = All;
-                }
+                field("Field No."; "Field No.") { ApplicationArea = All; }
+                field("Field Name"; "Field Name") { ApplicationArea = All; }
+                field("Field Value"; "Field Value") { ApplicationArea = All; }
             }
         }
     }

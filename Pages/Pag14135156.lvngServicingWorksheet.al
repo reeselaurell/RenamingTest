@@ -1,4 +1,4 @@
-page 14135156 "lvngServicingWorksheet"
+page 14135156 lvngServicingWorksheet
 {
     Caption = 'Servicing Worksheet';
     PageType = List;
@@ -10,85 +10,29 @@ page 14135156 "lvngServicingWorksheet"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                FreezeColumn = lvngBorrowerName;
-                field(lvngLoanNo; "Loan No.")
-                {
-                    ApplicationArea = All;
-                    DrillDown = false;
-                    Style = Attention;
-                    StyleExpr = "Error Message" <> '';
-                }
-                field(lvngBorrowerName; "Borrower Name")
-                {
-                    ApplicationArea = All;
-                    DrillDown = false;
+                FreezeColumn = "Borrower Name";
 
-                }
-                field(lvngCustomerNo; "Customer No.")
-                {
-                    ApplicationArea = All;
-                    DrillDown = false;
-                }
-                field(lvngDateFunded; "Date Funded")
-                {
-                    ApplicationArea = All;
-                    DrillDown = false;
-                }
-                field(lvngFirstPaymentDue; "First Payment Due")
-                {
-                    ApplicationArea = All;
-                    DrillDown = false;
-                }
-                field(lvngNextPaymentDate; "Next Payment Date")
-                {
-                    ApplicationArea = All;
-                    DrillDown = false;
-                }
-                field(lvngFirstPaymentDueToInvestor; "First Payment Due To Investor")
-                {
-                    ApplicationArea = All;
-                    DrillDown = false;
-                }
-                field(lvngDateSold; "Date Sold")
-                {
-                    ApplicationArea = All;
-                    DrillDown = false;
-                }
-                field(lvngInterestAmount; "Interest Amount")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field(lvngPrincipalAmount; "Principal Amount")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field(lvngEscrowAmount; "Escrow Amount")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field(lvngTotalAmount; "Interest Amount" + "Principal Amount" + "Escrow Amount")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                    Caption = 'Total Amount';
-                }
-
-                field(lvngErrorMessage; "Error Message")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-
+                field("Loan No."; "Loan No.") { ApplicationArea = All; DrillDown = false; Style = Attention; StyleExpr = "Error Message" <> ''; }
+                field("Borrower Name"; "Borrower Name") { ApplicationArea = All; DrillDown = false; }
+                field("Customer No."; "Customer No.") { ApplicationArea = All; DrillDown = false; }
+                field("Date Funded"; "Date Funded") { ApplicationArea = All; DrillDown = false; }
+                field("First Payment Due"; "First Payment Due") { ApplicationArea = All; DrillDown = false; }
+                field("Next Payment Date"; "Next Payment Date") { ApplicationArea = All; DrillDown = false; }
+                field("First Payment Due To Investor"; "First Payment Due To Investor") { ApplicationArea = All; DrillDown = false; }
+                field("Date Sold"; "Date Sold") { ApplicationArea = All; DrillDown = false; }
+                field("Interest Amount"; "Interest Amount") { ApplicationArea = All; Editable = false; }
+                field("Principal Amount"; "Principal Amount") { ApplicationArea = All; Editable = false; }
+                field("Escrow Amount"; "Escrow Amount") { ApplicationArea = All; Editable = false; }
+                field(TotalAmount; "Interest Amount" + "Principal Amount" + "Escrow Amount") { ApplicationArea = All; Editable = false; Caption = 'Total Amount'; }
+                field("Error Message"; "Error Message") { ApplicationArea = All; Editable = false; }
             }
         }
+
         area(Factboxes)
         {
-            part(lvngEscrows; lvngLoanEscrowFields)
+            part(Escrows; lvngLoanEscrowFields)
             {
                 Caption = 'Escrows Breakdown';
             }
@@ -99,7 +43,7 @@ page 14135156 "lvngServicingWorksheet"
     {
         area(Processing)
         {
-            action(lvngLoanCard)
+            action(LoanCard)
             {
                 Caption = 'Loan Card';
                 ApplicationArea = All;
@@ -110,7 +54,8 @@ page 14135156 "lvngServicingWorksheet"
                 RunObject = page lvngLoanCard;
                 RunPageLink = "No." = field("Loan No.");
             }
-            action(lvngRetrieveLoansForServicing)
+
+            action(RetrieveLoansForServicing)
             {
                 Caption = 'Retrieve Loans for Servicing';
                 ApplicationArea = All;
@@ -120,7 +65,8 @@ page 14135156 "lvngServicingWorksheet"
                 PromotedIsBig = true;
                 RunObject = report lvngPrepareServicingDocuments;
             }
-            action(lvngValidateLines)
+
+            action(ValidateLines)
             {
                 Caption = 'Validate Lines';
                 ApplicationArea = All;
@@ -131,11 +77,11 @@ page 14135156 "lvngServicingWorksheet"
 
                 trigger OnAction()
                 begin
-                    lvngServicingManagement.ValidateServicingWorksheet();
-                    Message(lvngValidationCompletedLbl);
+                    ServicingManagement.ValidateServicingWorksheet();
+                    Message(ValidationCompletedMsg);
                 end;
             }
-            action(lvngCreateBorrowerCustomers)
+            action(CreateBorrowerCustomers)
             {
                 Caption = 'Create Borrower Customers';
                 ApplicationArea = All;
@@ -146,20 +92,20 @@ page 14135156 "lvngServicingWorksheet"
 
                 trigger OnAction()
                 begin
-                    lvngServicingManagement.CreateBorrowerCustomers();
-                    lvngServicingManagement.ValidateServicingWorksheet();
+                    ServicingManagement.CreateBorrowerCustomers();
+                    ServicingManagement.ValidateServicingWorksheet();
                     CurrPage.Update(false);
                 end;
             }
         }
     }
 
+    var
+        ServicingManagement: Codeunit lvngServicingManagement;
+        ValidationCompletedMsg: Label 'Validation completed';
+
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.lvngEscrows.Page.SetParams("Loan No.");
+        CurrPage.Escrows.Page.SetParams("Loan No.");
     end;
-
-    var
-        lvngServicingManagement: Codeunit lvngServicingManagement;
-        lvngValidationCompletedLbl: Label 'Validation completed';
 }

@@ -1,4 +1,4 @@
-page 14135157 "lvngEscrowFieldsMapping"
+page 14135157 lvngEscrowFieldsMapping
 {
     Caption = 'Escrow Fields Mapping';
     PageType = List;
@@ -10,25 +10,12 @@ page 14135157 "lvngEscrowFieldsMapping"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngFieldNo; "Field No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDescription; Description)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngMapToGLAccountNo; "Map-To G/L Account No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngSwitchCode; "Switch Code")
-                {
-                    ApplicationArea = All;
-                }
-
+                field("Field No."; "Field No.") { ApplicationArea = All; }
+                field(Description; Description) { ApplicationArea = All; }
+                field("Map-To G/L Account No."; "Map-To G/L Account No.") { ApplicationArea = All; }
+                field("Switch Code"; "Switch Code") { ApplicationArea = All; }
             }
         }
     }

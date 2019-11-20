@@ -1,4 +1,4 @@
-page 14135110 "lvngLoanImportSchemaList"
+page 14135110 lvngLoanImportSchemaList
 {
     PageType = List;
     SourceTable = lvngLoanImportSchema;
@@ -12,32 +12,12 @@ page 14135110 "lvngLoanImportSchemaList"
         {
             repeater(Group)
             {
-                field(lvngCode; Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDescription; Description)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngLoanJournalBatchType; "Loan Journal Batch Type")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngFieldSeparatorCharacter; "Field Separator Character")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngSkipLines; "Skip Lines")
-                {
-                    ApplicationArea = All;
-                }
-
+                field(Code; Code) { ApplicationArea = All; }
+                field(Description; Description) { ApplicationArea = All; }
+                field("Loan Journal Batch Type"; "Loan Journal Batch Type") { ApplicationArea = All; }
+                field("Field Separator Character"; "Field Separator Character") { ApplicationArea = All; }
+                field("Skip Lines"; "Skip Lines") { ApplicationArea = All; }
             }
-        }
-        area(Factboxes)
-        {
-
         }
     }
 
@@ -45,7 +25,7 @@ page 14135110 "lvngLoanImportSchemaList"
     {
         area(Processing)
         {
-            action(lvngOpenSchemaLines)
+            action(OpenSchemaLines)
             {
                 Caption = 'Schema Lines';
                 ApplicationArea = All;

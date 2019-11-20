@@ -1,4 +1,4 @@
-page 14135200 "lvngLoanProcessorRolecenter"
+page 14135200 lvngLoanProcessorRolecenter
 {
     PageType = RoleCenter;
     Caption = 'Loan Processor';
@@ -7,8 +7,9 @@ page 14135200 "lvngLoanProcessorRolecenter"
     {
         area(RoleCenter)
         {
-            part(lvngWarehouseLineActivities; lvngLoanActivities)
+            part(WarehouseLineActivities; lvngLoanActivities)
             {
+                Caption = 'Loan Activities';
                 ApplicationArea = All;
             }
         }
@@ -18,7 +19,7 @@ page 14135200 "lvngLoanProcessorRolecenter"
     {
         area(Processing)
         {
-            action(lvngLoanList)
+            action(LoanList)
             {
                 ApplicationArea = All;
                 Caption = 'Loan List';
@@ -27,7 +28,7 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 RunObject = page lvngLoanList;
                 RunPageMode = View;
             }
-            action(lvngLoansProcessing)
+            action(LoansProcessing)
             {
                 RunPageMode = Edit;
                 Caption = 'Loan Journal Batches';
@@ -36,7 +37,7 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 RunObject = page lvngLoanJournalBatches;
                 ApplicationArea = All;
             }
-            action(lvngFundedDocuments)
+            action(FundedDocuments)
             {
                 RunPageMode = Edit;
                 Caption = 'Funded Documents';
@@ -46,7 +47,7 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 RunPageView = sorting("Document No.") where("Transaction Type" = const(Funded));
                 ApplicationArea = All;
             }
-            action(lvngServicingWorksheet)
+            action(ServicingWorksheet)
             {
                 RunPageMode = Edit;
                 Caption = 'Servicing Worksheet';
@@ -55,7 +56,7 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 RunObject = page lvngServicingWorksheet;
                 ApplicationArea = All;
             }
-            action(lvngSoldDocuments)
+            action(SoldDocuments)
             {
                 RunPageMode = Edit;
                 Caption = 'Sold Documents';
@@ -66,14 +67,14 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 ApplicationArea = All;
             }
 
-            action(lvngLoanVisionSetup)
+            action(LoanVisionSetup)
             {
                 Caption = 'Loan Vision Setup';
                 ToolTip = 'Loan Vision Setup';
                 RunObject = Page lvngLoanVisionSetup;
                 ApplicationArea = All;
             }
-            action(lvngLoanServicingSetup)
+            action(LoanServicingSetup)
             {
                 Caption = 'Loan Servicing Setup';
                 ToolTip = 'Loan Servicing Setup';
@@ -90,74 +91,64 @@ page 14135200 "lvngLoanProcessorRolecenter"
                 ToolTip = 'Overview and change system and application settings, and manage extensions and services';
                 Image = Setup;
 
-                action(lvngWarehouseLines)
+                action(WarehouseLines)
                 {
                     Caption = 'Warehouse Lines';
                     ToolTip = 'Warehouse Lines';
                     RunObject = Page lvngWarehouseLines;
                     ApplicationArea = All;
                 }
-                action(lvngLoanFieldsConfiguration)
+                action(LoanFieldsConfiguration)
                 {
                     Caption = 'Loan Fields Configuration';
                     ToolTip = 'Loan Fields Configuration';
                     RunObject = Page lvngLoanFieldsConfiguration;
                     ApplicationArea = All;
                 }
-                action(lvngDimensionHierarchy)
+                action(DimensionHierarchy)
                 {
                     Caption = 'Dimension Hierarchy';
                     ToolTip = 'Setup Dimension Hierarchy';
                     RunObject = page lvngDimensionsHierarchy;
                     ApplicationArea = All;
                 }
-
-                action(lvngImportSchema)
+                action(ImportSchema)
                 {
                     Caption = 'Loan Journal Import Schemas';
                     ToolTip = 'Configure Loan Journal Import Schemas';
                     RunObject = page lvngLoanImportSchemaList;
                     ApplicationArea = All;
                 }
-                action(lvngProcessingSchemas)
+                action(ProcessingSchemas)
                 {
                     Caption = 'Processing Schemas';
                     ToolTip = 'Configrue Processing Schemas';
                     RunObject = page lvngLoanProcessingSchema;
                     ApplicationArea = All;
                 }
-                action(lvngEscrowFieldsMapping)
+                action(EscrowFieldsMapping)
                 {
                     Caption = 'Escrow Fields Mapping';
                     ToolTip = 'Setup Servicing Escrow Fields Mapping';
                     RunObject = page lvngEscrowFieldsMapping;
                     ApplicationArea = All;
                 }
-                action(lvngImportDimensionsMapping)
+                action(ImportDimensionsMapping)
                 {
                     Caption = 'Import Dimensions Mapping';
                     ToolTip = 'Configure Import Dimensions Mapping';
                     RunObject = page lvngImportDimensionMapping;
                     ApplicationArea = all;
                 }
-                action(lvngFileImportSchemas)
+                action(FileImportSchemas)
                 {
                     Caption = 'File Import Schemas';
                     ToolTip = 'Configure File Import Schemas';
                     RunObject = page lvngFileImportSchemas;
                     ApplicationArea = All;
                 }
-
             }
         }
     }
 
-}
-
-profile "Loan Processor"
-{
-
-    Caption = 'Loan Processor';
-    ProfileDescription = 'Loan Processor Profile';
-    RoleCenter = lvngLoanProcessorRolecenter;
 }

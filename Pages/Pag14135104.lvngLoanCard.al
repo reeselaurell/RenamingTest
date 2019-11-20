@@ -1,4 +1,4 @@
-page 14135104 "lvngLoanCard"
+page 14135104 lvngLoanCard
 {
     PageType = Card;
     SourceTable = lvngLoan;
@@ -8,309 +8,153 @@ page 14135104 "lvngLoanCard"
     {
         area(Content)
         {
-            group(lvngGeneral)
+            group(General)
             {
                 Caption = 'General';
-                field(lvngLoanNo; "No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngWarehouseLineCode; "Warehouse Line Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngBlocked; Blocked)
-                {
-                    ApplicationArea = All;
-                }
 
+                field("No."; "No.") { ApplicationArea = All; }
+                field("Warehouse Line Code"; "Warehouse Line Code") { ApplicationArea = All; }
+                field(Blocked; Blocked) { ApplicationArea = All; }
+                field("Search Name"; "Search Name") { ApplicationArea = All; }
+                field("Title Customer No."; "Title Customer No.") { ApplicationArea = All; }
+                field("Investor Customer No."; "Investor Customer No.") { ApplicationArea = All; }
 
-                field(lvngSearchName; "Search Name")
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngTitleCustomerNo; "Title Customer No.")
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngInvestorCustomerNo; "Investor Customer No.")
-                {
-                    ApplicationArea = All;
-                }
-                group(lvngBorrower)
+                group(Borrower)
                 {
                     Caption = 'Borrower';
-                    field(lvngBorrowerCustomerNo; "Borrower Customer No")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngBorrowerFirstName; "Borrower First Name")
-                    {
-                        ApplicationArea = All;
-                    }
 
-                    field(lvngBorrowerMiddleName; "Borrower Middle Name")
-                    {
-                        ApplicationArea = All;
-                    }
-
-                    field(lvngBorrowerLastName; "Borrower Last Name")
-                    {
-                        ApplicationArea = All;
-                    }
-
+                    field("Borrower Customer No"; "Borrower Customer No") { ApplicationArea = All; }
+                    field("Borrower First Name"; "Borrower First Name") { ApplicationArea = All; }
+                    field("Borrower Middle Name"; "Borrower Middle Name") { ApplicationArea = All; }
+                    field("Borrower Last Name"; "Borrower Last Name") { ApplicationArea = All; }
                 }
-                group(lvngCoBorrower)
+
+                group(CoBorrower)
                 {
                     Caption = 'Co-Borrower';
 
-                    field(lvngCoBorrowerFirstName; "Co-Borrower First Name")
-                    {
-                        Importance = Additional;
-                        ApplicationArea = All;
-                    }
-                    field(lvngCoBorrowerMiddleName; "Co-Borrower Middle Name")
-                    {
-                        Importance = Additional;
-                        ApplicationArea = All;
-                    }
-                    field(lvngCoBorrowerLastName; "Co-Borrower Last Name")
-                    {
-                        Importance = Additional;
-                        ApplicationArea = All;
-                    }
+                    field("Co-Borrower First Name"; "Co-Borrower First Name") { Importance = Additional; ApplicationArea = All; }
+                    field("Co-Borrower Middle Name"; "Co-Borrower Middle Name") { Importance = Additional; ApplicationArea = All; }
+                    field("Co-Borrower Last Name"; "Co-Borrower Last Name") { Importance = Additional; ApplicationArea = All; }
                 }
 
-                group(lvngAddress)
+                group(Address)
                 {
                     Caption = 'Addresses';
-                    field(lvngBorrowerAddress; GetLoanAddress(lvngLoanAddressTypeEnum::Borrower))
+
+                    field(BorrowerAddress; GetLoanAddress(LoanAddressType::Borrower))
                     {
                         Caption = 'Borrower';
                         ApplicationArea = All;
                         AssistEdit = true;
+
                         trigger OnAssistEdit()
                         begin
-                            AddressEdit(lvngLoanAddressTypeEnum::Borrower);
+                            AddressEdit(LoanAddressType::Borrower);
                         end;
                     }
-                    field(lvngCoBorrowerAddress; GetLoanAddress(lvngLoanAddressTypeEnum::CoBorrower))
+                    field(CoBorrowerAddress; GetLoanAddress(LoanAddressType::CoBorrower))
                     {
                         Caption = 'Co-Borrower';
                         Importance = Additional;
                         ApplicationArea = All;
                         AssistEdit = true;
+
                         trigger OnAssistEdit()
                         begin
-                            AddressEdit(lvngLoanAddressTypeEnum::CoBorrower);
+                            AddressEdit(LoanAddressType::CoBorrower);
                         end;
                     }
-                    field(lvngMailingAddress; GetLoanAddress(lvngLoanAddressTypeEnum::Mailing))
+                    field(MailingAddress; GetLoanAddress(LoanAddressType::Mailing))
                     {
                         Caption = 'Mailing';
                         ApplicationArea = All;
                         AssistEdit = true;
+
                         trigger OnAssistEdit()
                         begin
-                            AddressEdit(lvngLoanAddressTypeEnum::Mailing);
+                            AddressEdit(LoanAddressType::Mailing);
                         end;
                     }
-                    field(lvngPropertyAddress; GetLoanAddress(lvngLoanAddressTypeEnum::Property))
+                    field(PropertyAddress; GetLoanAddress(LoanAddressType::Property))
                     {
                         Caption = 'Property';
                         ApplicationArea = All;
                         AssistEdit = true;
+
                         trigger OnAssistEdit()
                         begin
-                            AddressEdit(lvngLoanAddressTypeEnum::Property);
+                            AddressEdit(LoanAddressType::Property);
                         end;
                     }
                 }
-                group(lvngDates)
+
+                group(Dates)
                 {
                     Caption = 'Dates';
-                    field(lvngApplicationDate; "Application Date")
-                    {
-                        ApplicationArea = All;
-                        Importance = Additional;
-                    }
-                    field(lvngDateLocked; "Date Locked")
-                    {
-                        ApplicationArea = All;
-                        Importance = Additional;
-                    }
-                    field(lvngDateClosed; "Date Closed")
-                    {
-                        ApplicationArea = All;
-                        Importance = Additional;
-                    }
-                    field(lvngDateFunded; "Date Funded")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngDateSold; "Date Sold")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngCreationDate; "Creation Date")
-                    {
-                        Editable = false;
-                        ApplicationArea = All;
-                        Importance = Additional;
-                    }
-                    field(lvngModifiedDate; "Modified Date")
-                    {
-                        Editable = false;
-                        ApplicationArea = All;
-                        Importance = Additional;
-                    }
+
+                    field("Application Date"; "Application Date") { ApplicationArea = All; Importance = Additional; }
+                    field("Date Locked"; "Date Locked") { ApplicationArea = All; Importance = Additional; }
+                    field("Date Closed"; "Date Closed") { ApplicationArea = All; Importance = Additional; }
+                    field("Date Funded"; "Date Funded") { ApplicationArea = All; }
+                    field("Date Sold"; "Date Sold") { ApplicationArea = All; }
+                    field("Creation Date"; "Creation Date") { Editable = false; ApplicationArea = All; Importance = Additional; }
+                    field("Modified Date"; "Modified Date") { Editable = false; ApplicationArea = All; Importance = Additional; }
                 }
-                group(lvngDimensions)
+
+                group(Dimensions)
                 {
                     Caption = 'Dimensions';
-                    field(lvngBusinessUnitCode; "Business Unit Code")
-                    {
-                        ApplicationArea = All;
-                    }
 
-                    field(lvngGlobalDimension1Code; "Global Dimension 1 Code")
-                    {
-                        ApplicationArea = All;
-                        Visible = DimensionVisible1;
-                    }
-                    field(lvngGlobalDimension2Code; "Global Dimension 2 Code")
-                    {
-                        ApplicationArea = All;
-                        Visible = DimensionVisible2;
-                    }
-                    field(lvngShortcutDimension3Code; "Shortcut Dimension 3 Code")
-                    {
-                        ApplicationArea = All;
-                        Visible = DimensionVisible3;
-                    }
-                    field(lvngShortcutDimension4Code; "Shortcut Dimension 4 Code")
-                    {
-                        ApplicationArea = All;
-                        Visible = DimensionVisible4;
-                    }
-                    field(lvngShortcutDimension5Code; "Shortcut Dimension 5 Code")
-                    {
-                        ApplicationArea = All;
-                        Visible = DimensionVisible5;
-                    }
-                    field(lvngShortcutDimension6Code; "Shortcut Dimension 6 Code")
-                    {
-                        ApplicationArea = All;
-                        Visible = DimensionVisible6;
-                    }
-                    field(lvngShortcutDimension7Code; "Shortcut Dimension 7 Code")
-                    {
-                        ApplicationArea = All;
-                        Visible = DimensionVisible7;
-                    }
-                    field(lvngShortcutDimension8Code; "Shortcut Dimension 8 Code")
-                    {
-                        ApplicationArea = All;
-                        Visible = DimensionVisible8;
-                    }
-
+                    field("Business Unit Code"; "Business Unit Code") { ApplicationArea = All; }
+                    field("Global Dimension 1 Code"; "Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
+                    field("Global Dimension 2 Code"; "Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
+                    field("Shortcut Dimension 3 Code"; "Shortcut Dimension 3 Code") { ApplicationArea = All; Visible = DimensionVisible3; }
+                    field("Shortcut Dimension 4 Code"; "Shortcut Dimension 4 Code") { ApplicationArea = All; Visible = DimensionVisible4; }
+                    field("Shortcut Dimension 5 Code"; "Shortcut Dimension 5 Code") { ApplicationArea = All; Visible = DimensionVisible5; }
+                    field("Shortcut Dimension 6 Code"; "Shortcut Dimension 6 Code") { ApplicationArea = All; Visible = DimensionVisible6; }
+                    field("Shortcut Dimension 7 Code"; "Shortcut Dimension 7 Code") { ApplicationArea = All; Visible = DimensionVisible7; }
+                    field("Shortcut Dimension 8 Code"; "Shortcut Dimension 8 Code") { ApplicationArea = All; Visible = DimensionVisible8; }
                 }
             }
-            group(lvng203K)
+
+            group("203K")
             {
                 Caption = '203K Information';
 
-                field(lvng203KContractorName; "203K Contractor Name")
-                {
-                    ApplicationArea = All;
-                    Importance = Promoted;
-
-                }
-                field(lvng203KInspectorName; "203K Inspector Name")
-                {
-                    ApplicationArea = All;
-                    Importance = Promoted;
-                }
-
+                field("203K Contractor Name"; "203K Contractor Name") { ApplicationArea = All; Importance = Promoted; }
+                field("203K Inspector Name"; "203K Inspector Name") { ApplicationArea = All; Importance = Promoted; }
             }
-            group(lvngServicing)
+
+            group(Servicing)
             {
                 Caption = 'Servicing';
-                field(lvngServicingFinished; "Servicing Finished")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngLoanTerm; "Loan Term (Months)")
-                {
-                    ApplicationArea = All;
-                    Importance = Promoted;
-                }
 
-                field(lvngInterestRate; "Interest Rate")
-                {
-                    ApplicationArea = All;
-                    Importance = Promoted;
-                }
-
-                field(lvngConstructionInteresTRate; "Constr. Interest Rate")
-                {
-                    ApplicationArea = All;
-                }
-
-
-                field(lvngMonthlyEscrowAmount; "Monthly Escrow Amount")
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngMonthlyPaymentAmount; "Monthly Payment Amount")
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngFirstPaymentDue; "First Payment Due")
-                {
-                    ApplicationArea = All;
-                    Importance = Promoted;
-                }
-                field(lvngNextPaymentdate; "Next Payment Date")
-                {
-                    ApplicationArea = All;
-                    Importance = Promoted;
-                }
-                field(lvngFirstPaymentDueToInvestor; "First Payment Due To Investor")
-                {
-                    ApplicationArea = All;
-                    Importance = Promoted;
-                }
+                field("Servicing Finished"; "Servicing Finished") { ApplicationArea = All; }
+                field("Loan Term (Months)"; "Loan Term (Months)") { ApplicationArea = All; Importance = Promoted; }
+                field("Interest Rate"; "Interest Rate") { ApplicationArea = All; Importance = Promoted; }
+                field("Constr. Interest Rate"; "Constr. Interest Rate") { ApplicationArea = All; }
+                field("Monthly Escrow Amount"; "Monthly Escrow Amount") { ApplicationArea = All; }
+                field("Monthly Payment Amount"; "Monthly Payment Amount") { ApplicationArea = All; }
+                field("First Payment Due"; "First Payment Due") { ApplicationArea = All; Importance = Promoted; }
+                field("Next Payment Date"; "Next Payment Date") { ApplicationArea = All; Importance = Promoted; }
+                field("First Payment Due To Investor"; "First Payment Due To Investor") { ApplicationArea = All; Importance = Promoted; }
             }
-            group(lvngCommissions)
+
+            group(Commissions)
             {
                 Caption = 'Commissions';
-                field(lvngCommissionDate; "Commission Date")
-                {
-                    ApplicationArea = All;
-                }
 
-                field(lvngCommissionBaseAmount; "Commission Base Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngCommissionBps; "Commission Bps")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngCommissionAmount; "Commission Amount")
-                {
-                    ApplicationArea = All;
-                }
+                field("Commission Date"; "Commission Date") { ApplicationArea = All; }
+                field("Commission Base Amount"; "Commission Base Amount") { ApplicationArea = All; }
+                field("Commission Bps"; "Commission Bps") { ApplicationArea = All; }
+                field("Commission Amount"; "Commission Amount") { ApplicationArea = All; }
             }
         }
+
         area(Factboxes)
         {
-            part(lvngValues; lvngLoanCardValuesPart)
+            part(Values; lvngLoanCardValuesPart)
             {
                 Caption = 'Values';
                 ApplicationArea = All;
@@ -323,7 +167,7 @@ page 14135104 "lvngLoanCard"
     {
         area(Processing)
         {
-            action(lvngShowLoanValues)
+            action(ShowLoanValues)
             {
                 ApplicationArea = All;
                 Caption = 'Edit Loan Values';
@@ -338,10 +182,7 @@ page 14135104 "lvngLoanCard"
     }
 
     var
-        lvngLoanAddressTypeEnum: Enum lvngAddressType;
-        lvngLoanAddressCard: Page lvngLoanAddressCard;
-        lvngLoanAddress: Record lvngLoanAddress;
-        DimensionManagement: Codeunit DimensionManagement;
+        LoanAddressType: Enum lvngAddressType;
         DimensionVisible1: Boolean;
         DimensionVisible2: Boolean;
         DimensionVisible3: Boolean;
@@ -351,30 +192,29 @@ page 14135104 "lvngLoanCard"
         DimensionVisible7: Boolean;
         DimensionVisible8: Boolean;
 
-
-    local procedure AddressEdit(lvngAddressTypeEnum: Enum lvngAddressType)
+    local procedure AddressEdit(AddressType: Enum lvngAddressType)
+    var
+        LoanAddressCard: Page lvngLoanAddressCard;
+        LoanAddress: Record lvngLoanAddress;
     begin
-        if not lvngLoanAddress.Get("No.", lvngAddressTypeEnum) then begin
-            Clear(lvngLoanAddress);
-            lvngLoanAddress.Init();
-            lvngLoanAddress."Address Type" := lvngAddressTypeEnum;
-            lvngLoanAddress."Loan No." := "No.";
-            lvngLoanAddress.Insert(true);
+        if not LoanAddress.Get("No.", AddressType) then begin
+            Clear(LoanAddress);
+            LoanAddress.Init();
+            LoanAddress."Address Type" := AddressType;
+            LoanAddress."Loan No." := "No.";
+            LoanAddress.Insert(true);
             Commit();
         end;
-        lvngLoanAddress.Get("No.", lvngAddressTypeEnum);
-        Clear(lvngLoanAddressCard);
-        lvngLoanAddressCard.SetRecord(lvngLoanAddress);
-        lvngLoanAddressCard.RunModal();
+        Clear(LoanAddressCard);
+        LoanAddressCard.SetRecord(LoanAddress);
+        LoanAddressCard.RunModal();
         CurrPage.Update(false);
     end;
 
     trigger OnOpenPage()
+    var
+        DimensionManagement: Codeunit DimensionManagement;
     begin
-        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6,
-        DimensionVisible7, DimensionVisible8);
+        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6, DimensionVisible7, DimensionVisible8);
     end;
-
-
-
 }

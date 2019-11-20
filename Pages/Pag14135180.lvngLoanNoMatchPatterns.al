@@ -1,4 +1,4 @@
-page 14135180 "lvngLoanNoMatchPatterns"
+page 14135180 lvngLoanNoMatchPatterns
 {
     Caption = 'Loan No. Match Patterns';
     PageType = List;
@@ -8,28 +8,13 @@ page 14135180 "lvngLoanNoMatchPatterns"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngCode; Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDescription; Description)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngMinFieldLength; "Min. Field Length")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngMaxFieldLength; "Max. Field Length")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngMatchPattern; "Match Pattern")
-                {
-                    ApplicationArea = All;
-                }
+                field(Code; Code) { ApplicationArea = All; }
+                field(Description; Description) { ApplicationArea = All; }
+                field("Min. Field Length"; "Min. Field Length") { ApplicationArea = All; }
+                field("Max. Field Length"; "Max. Field Length") { ApplicationArea = All; }
+                field("Match Pattern"; "Match Pattern") { ApplicationArea = All; }
             }
         }
     }

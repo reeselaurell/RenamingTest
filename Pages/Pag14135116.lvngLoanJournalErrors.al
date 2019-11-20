@@ -1,4 +1,4 @@
-page 14135116 "lvngLoanJournalErrors"
+page 14135116 lvngLoanJournalErrors
 {
     PageType = ListPart;
     SourceTable = lvngLoanImportErrorLine;
@@ -9,13 +9,9 @@ page 14135116 "lvngLoanJournalErrors"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngDescription; Description)
-                {
-                    ApplicationArea = All;
-                }
-
+                field(Description; Description) { ApplicationArea = All; }
             }
         }
     }

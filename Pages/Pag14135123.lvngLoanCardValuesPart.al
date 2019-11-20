@@ -1,4 +1,4 @@
-page 14135123 "lvngLoanCardValuesPart"
+page 14135123 lvngLoanCardValuesPart
 {
     Caption = 'Loan Values';
     PageType = ListPart;
@@ -9,72 +9,41 @@ page 14135123 "lvngLoanCardValuesPart"
     {
         area(Content)
         {
-            repeater(lvngRepeater)
+            repeater(Group)
             {
-                field(lvngFieldNo; "Field No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngFieldName; lvngFieldName)
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                    Caption = 'Field Name';
-                }
-                field(lvngFieldValue; "Field Value")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngBooleanValue; "Boolean Value")
-                {
-                    ApplicationArea = All;
-                    Visible = false;
-                }
-                field(lvngDateValue; "Date Value")
-                {
-                    ApplicationArea = All;
-                    Visible = false;
-                }
-                field(lvngDecimalValue; "Decimal Value")
-                {
-                    ApplicationArea = All;
-                    Visible = false;
-                }
-                field(lvngIntegerValue; "Integer Value")
-                {
-                    ApplicationArea = All;
-                    Visible = false;
-                }
-
+                field("Field No."; "Field No.") { ApplicationArea = All; }
+                field(FieldDescription; FieldDescription) { ApplicationArea = All; Editable = false; Caption = 'Field Name'; }
+                field("Field Value"; "Field Value") { ApplicationArea = All; }
+                field("Boolean Value"; "Boolean Value") { ApplicationArea = All; Visible = false; }
+                field("Date Value"; "Date Value") { ApplicationArea = All; Visible = false; }
+                field("Decimal Value"; "Decimal Value") { ApplicationArea = All; Visible = false; }
+                field("Integer Value"; "Integer Value") { ApplicationArea = All; Visible = false; }
             }
         }
     }
 
+    var
+        TempLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration temporary;
+        FieldDescription: Text;
+
     trigger OnOpenPage()
+    var
+        LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
     begin
-        lvngLoanFieldsConfiguration.reset;
-        if lvngLoanFieldsConfiguration.FindSet() then begin
+        LoanFieldsConfiguration.Reset();
+        if LoanFieldsConfiguration.FindSet() then begin
             repeat
-                Clear(lvngLoanFieldsConfigurationTemp);
-                lvngLoanFieldsConfigurationTemp := lvngLoanFieldsConfiguration;
-                lvngLoanFieldsConfigurationTemp.Insert();
-            until lvngLoanFieldsConfiguration.Next() = 0;
+                TempLoanFieldsConfiguration := LoanFieldsConfiguration;
+                TempLoanFieldsConfiguration.Insert();
+            until LoanFieldsConfiguration.Next() = 0;
         end;
     end;
 
     trigger OnAfterGetRecord()
     begin
-        Clear(lvngFieldName);
-        if lvngLoanFieldsConfigurationTemp.Get("Field No.") then begin
-            lvngFieldName := lvngLoanFieldsConfigurationTemp."Field Name";
+        FieldDescription := '';
+        if TempLoanFieldsConfiguration.Get("Field No.") then begin
+            FieldDescription := TempLoanFieldsConfiguration."Field Name";
         end;
     end;
-
-    var
-        lvngLoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
-        lvngLoanFieldsConfigurationTemp: Record lvngLoanFieldsConfiguration temporary;
-        lvngFieldName: Text;
-
-
-
 }

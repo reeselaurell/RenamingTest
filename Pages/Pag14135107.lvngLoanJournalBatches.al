@@ -1,4 +1,4 @@
-page 14135107 "lvngLoanJournalBatches"
+page 14135107 lvngLoanJournalBatches
 {
     PageType = List;
     Caption = 'Loan Journals';
@@ -12,57 +12,18 @@ page 14135107 "lvngLoanJournalBatches"
         {
             repeater(Group)
             {
-                field(lvngCode; Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngLoanJournalType; "Loan Journal Type")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDescription; Description)
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDimensionImportRule; "Dimension Import Rule")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngMapDimensionsUsingHierachy; "Map Dimensions Using Hierachy")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDimensionHierarchyDate; "Dimension Hierarchy Date")
-                {
-                    ApplicationArea = All;
-                }
-
-                field(lvngDefaultTitleCustomerNo; "Default Title Customer No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDefaultInvestorCustomerNo; "Default Investor Customer No.")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDefaultReasonCode; "Default Reason Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngDefProcessingSchemaCode; "Def. Processing Schema Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngLoanCardUpdateOption; "Loan Card Update Option")
-                {
-                    ApplicationArea = All;
-                }
-
+                field(Code; Code) { ApplicationArea = All; }
+                field("Loan Journal Type"; "Loan Journal Type") { ApplicationArea = All; }
+                field(Description; Description) { ApplicationArea = All; }
+                field("Dimension Import Rule"; "Dimension Import Rule") { ApplicationArea = All; }
+                field("Map Dimensions Using Hierachy"; "Map Dimensions Using Hierachy") { ApplicationArea = All; }
+                field("Dimension Hierarchy Date"; "Dimension Hierarchy Date") { ApplicationArea = All; }
+                field("Default Title Customer No."; "Default Title Customer No.") { ApplicationArea = All; }
+                field("Default Investor Customer No."; "Default Investor Customer No.") { ApplicationArea = All; }
+                field("Default Reason Code"; "Default Reason Code") { ApplicationArea = All; }
+                field("Def. Processing Schema Code"; "Def. Processing Schema Code") { ApplicationArea = All; }
+                field("Loan Card Update Option"; "Loan Card Update Option") { ApplicationArea = All; }
             }
-        }
-        area(Factboxes)
-        {
-
         }
     }
 
@@ -70,7 +31,7 @@ page 14135107 "lvngLoanJournalBatches"
     {
         area(Processing)
         {
-            action(lvngEditJournal)
+            action(EditJournal)
             {
                 Caption = 'Edit Journal';
                 Promoted = true;
@@ -81,41 +42,41 @@ page 14135107 "lvngLoanJournalBatches"
 
                 trigger OnAction();
                 var
-                    lvngFundedJournalLinesPage: Page lvngFundedJournalLines;
-                    lvngSoldJournalLinesPage: Page lvngSoldJournalLines;
-                    lvngLoanJournalLinesPage: Page lvngLoanJournalLines;
-                    lvngLoanJournalLine: Record lvngLoanJournalLine;
+                    LoanJournalLine: Record lvngLoanJournalLine;
+                    FundedJournalLinesPage: Page lvngFundedJournalLines;
+                    SoldJournalLinesPage: Page lvngSoldJournalLines;
+                    LoanJournalLinesPage: Page lvngLoanJournalLines;
                 begin
                     case "Loan Journal Type" of
                         "Loan Journal Type"::Funded:
                             begin
-                                Clear(lvngFundedJournalLinesPage);
-                                lvngLoanJournalLine.Reset();
-                                lvngLoanJournalLine.SetRange("Loan Journal Batch Code", Code);
-                                lvngFundedJournalLinesPage.SetTableView(lvngLoanJournalLine);
-                                lvngFundedJournalLinesPage.Run();
+                                Clear(FundedJournalLinesPage);
+                                LoanJournalLine.Reset();
+                                LoanJournalLine.SetRange("Loan Journal Batch Code", Code);
+                                FundedJournalLinesPage.SetTableView(LoanJournalLine);
+                                FundedJournalLinesPage.Run();
                             end;
                         "Loan Journal Type"::Sold:
                             begin
-                                Clear(lvngSoldJournalLinesPage);
-                                lvngLoanJournalLine.Reset();
-                                lvngLoanJournalLine.SetRange("Loan Journal Batch Code", Code);
-                                lvngSoldJournalLinesPage.SetTableView(lvngLoanJournalLine);
-                                lvngSoldJournalLinesPage.Run();
+                                Clear(SoldJournalLinesPage);
+                                LoanJournalLine.Reset();
+                                LoanJournalLine.SetRange("Loan Journal Batch Code", Code);
+                                SoldJournalLinesPage.SetTableView(LoanJournalLine);
+                                SoldJournalLinesPage.Run();
                             end;
                         "Loan Journal Type"::Loan:
                             begin
-                                Clear(lvngLoanJournalLinesPage);
-                                lvngLoanJournalLine.Reset();
-                                lvngLoanJournalLine.SetRange("Loan Journal Batch Code", Code);
-                                lvngLoanJournalLinesPage.SetTableView(lvngLoanJournalLine);
-                                lvngLoanJournalLinesPage.Run();
+                                Clear(LoanJournalLinesPage);
+                                LoanJournalLine.Reset();
+                                LoanJournalLine.SetRange("Loan Journal Batch Code", Code);
+                                LoanJournalLinesPage.SetTableView(LoanJournalLine);
+                                LoanJournalLinesPage.Run();
                             end;
-
                     end;
                 end;
             }
-            action(lvngPostProcessingLines)
+
+            action(PostProcessingLines)
             {
                 Caption = 'Post Processing Lines';
                 RunObject = page lvngPostProcessingSchemaLines;
@@ -128,7 +89,7 @@ page 14135107 "lvngLoanJournalBatches"
                 ApplicationArea = All;
             }
 
-            action(lvngValidationRules)
+            action(ValidationRules)
             {
                 Caption = 'Validation Rules';
                 RunObject = page lvngJournalValidationRules;
@@ -141,7 +102,7 @@ page 14135107 "lvngLoanJournalBatches"
                 ApplicationArea = All;
             }
 
-            action(lvngLoanCardUpdateSchema)
+            action(LoanCardUpdateSchema)
             {
                 Caption = 'Loan Card Update Schema';
                 RunObject = page lvngLoanUpdateSchema;
@@ -152,7 +113,6 @@ page 14135107 "lvngLoanJournalBatches"
                 PromotedCategory = Process;
                 Image = UpdateDescription;
                 ApplicationArea = All;
-
             }
         }
     }

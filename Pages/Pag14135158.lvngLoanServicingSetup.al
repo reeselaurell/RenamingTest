@@ -1,4 +1,4 @@
-page 14135158 "lvngLoanServicingSetup"
+page 14135158 lvngLoanServicingSetup
 {
 
     PageType = Card;
@@ -17,116 +17,49 @@ page 14135158 "lvngLoanServicingSetup"
             {
                 Caption = 'General';
 
-                field(lvngBorrowerCustomerTemplate; "Borrower Customer Template")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngServicedReasonCode; "Serviced Reason Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngServicedVoidReasonCode; "Serviced Void Reason Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngServicedSourceCode; "Serviced Source Code")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngServicedNoSeries; "Serviced No. Series")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngVoidServicedNoSeries; "Void Serviced No. Series")
-                {
-                    ApplicationArea = All;
-                }
-                field(lvngTestEscrowTotals; "Test Escrow Totals")
-                {
-                    ApplicationArea = All;
-                }
+                field("Borrower Customer Template"; "Borrower Customer Template") { ApplicationArea = All; }
+                field("Serviced Reason Code"; "Serviced Reason Code") { ApplicationArea = All; }
+                field("Serviced Void Reason Code"; "Serviced Void Reason Code") { ApplicationArea = All; }
+                field("Serviced Source Code"; "Serviced Source Code") { ApplicationArea = All; }
+                field("Serviced No. Series"; "Serviced No. Series") { ApplicationArea = All; }
+                field("Void Serviced No. Series"; "Void Serviced No. Series") { ApplicationArea = All; }
+                field("Test Escrow Totals"; "Test Escrow Totals") { ApplicationArea = All; }
 
                 group(Interest)
                 {
-                    field(lvngInterestGLAccountNo; "Interest G/L Account No.")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngInterestGLAccSwitchCode; "Interest G/L Acc. Switch Code")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngInterestCostCenterOption; "Interest Cost Center Option")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngInterestCostCenter; "Interest Cost Center")
-                    {
-                        ApplicationArea = All;
-                    }
+                    Caption = 'Interest';
+
+                    field("Interest G/L Account No."; "Interest G/L Account No.") { ApplicationArea = All; }
+                    field("Interest G/L Acc. Switch Code"; "Interest G/L Acc. Switch Code") { ApplicationArea = All; }
+                    field("Interest Cost Center Option"; "Interest Cost Center Option") { ApplicationArea = All; }
+                    field("Interest Cost Center"; "Interest Cost Center") { ApplicationArea = All; }
                 }
 
                 group(Principal)
                 {
                     Caption = 'Principal';
 
-                    field(lvngPrincipalGLAccountNo; "Principal G/L Account No.")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngPrincipalGLAccSwitchCode; "Principal G/L Acc. Switch Code")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngPrincipalCostCenterOption; "Principal Cost Center Option")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngPrincipalCostCenter; "Principal Cost Center")
-                    {
-                        ApplicationArea = All;
-                    }
-
-                    field(lvngPrincipalRedGLAccountNo; "Principal Red. G/L Account No.")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngPrincipalRedReasonCode; "Principal Red. Reason Code")
-                    {
-                        ApplicationArea = All;
-                    }
+                    field("Principal G/L Account No."; "Principal G/L Account No.") { ApplicationArea = All; }
+                    field("Principal G/L Acc. Switch Code"; "Principal G/L Acc. Switch Code") { ApplicationArea = All; }
+                    field("Principal Cost Center Option"; "Principal Cost Center Option") { ApplicationArea = All; }
+                    field("Principal Cost Center"; "Principal Cost Center") { ApplicationArea = All; }
+                    field("Principal Red. G/L Account No."; "Principal Red. G/L Account No.") { ApplicationArea = All; }
+                    field("Principal Red. Reason Code"; "Principal Red. Reason Code") { ApplicationArea = All; }
                 }
 
                 group(Other)
                 {
-                    field(lvngAddEscrowGLAccountNo; "Add. Escrow G/L Account No.")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngAdditionalEscrowReasonCode; "Additional Escrow Reason Code")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngLatePaymentGLAccountNo; "Late Payment G/L Account No.")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngLatePaymentReasonCode; "Late Payment Reason Code")
-                    {
-                        ApplicationArea = All;
-                    }
-                    field(lvngLateFeeRule; "Late Fee Rule")
-                    {
-                        ApplicationArea = All;
-                    }
+                    Caption = 'Other';
 
+                    field("Add. Escrow G/L Account No."; "Add. Escrow G/L Account No.") { ApplicationArea = All; }
+                    field("Additional Escrow Reason Code"; "Additional Escrow Reason Code") { ApplicationArea = All; }
+                    field("Late Payment G/L Account No."; "Late Payment G/L Account No.") { ApplicationArea = All; }
+                    field("Late Payment Reason Code"; "Late Payment Reason Code") { ApplicationArea = All; }
+                    field("Late Fee Rule"; "Late Fee Rule") { ApplicationArea = All; }
                 }
 
             }
-
         }
-        //You might want to add fields here
-
     }
     actions
     {
@@ -144,16 +77,10 @@ page 14135158 "lvngLoanServicingSetup"
 
     trigger OnOpenPage()
     begin
-        InsertIfNotExists();
-    end;
-
-    local procedure InsertIfNotExists()
-    begin
-        reset;
-        if not get then begin
+        Reset();
+        if not Get() then begin
             Init();
             Insert();
         end;
     end;
-
 }

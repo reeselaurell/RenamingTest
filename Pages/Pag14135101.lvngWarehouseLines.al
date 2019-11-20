@@ -1,4 +1,4 @@
-page 14135101 "lvngWarehouseLines"
+page 14135101 lvngWarehouseLines
 {
     PageType = List;
     UsageCategory = Lists;
@@ -12,24 +12,9 @@ page 14135101 "lvngWarehouseLines"
         {
             repeater(Group)
             {
-                field(Code; Code)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(Description; Description)
-                {
-                    ApplicationArea = All;
-                }
-
-                field(ShowInRoleCenter; "Show In Rolecenter")
-                {
-                    ApplicationArea = All;
-                }
-
-
-
-
+                field(Code; Code) { ApplicationArea = All; }
+                field(Description; Description) { ApplicationArea = All; }
+                field("Show In Rolecenter"; "Show In Rolecenter") { ApplicationArea = All; }
             }
         }
     }
