@@ -5,81 +5,30 @@ report 14135153 "lvngLoanProfitability"
     RDLCLayout = 'Reports\Layouts\Rep14135153.rdl';
     dataset
     {
-        dataitem(lvngLoan; lvngLoan)
+        dataitem(Loan; lvngLoan)
         {
             RequestFilterFields = "No.";
             DataItemTableView = sorting("No.");
-            column(lvngLoanNo; "No.")
-            {
-
-            }
-            column(lvngBorrowerFirstName; "Borrower First Name")
-            {
-
-            }
-            column(lvngBorrowerMiddleName; "Borrower Middle Name")
-            {
-
-            }
-            column(lvngBorrowerLastName; "Borrower Last Name")
-            {
-
-            }
-            column(lvngDateFunded; "Date Funded")
-            {
-
-            }
-            column(lvngWarehouseLineCode; "Warehouse Line Code")
-            {
-
-            }
-            column(LoanType; LoanType)
-            {
-
-            }
-            column(lvngInterestRate; "Interest Rate")
-            {
-
-            }
-            column(lvngDateSold; "Date Sold")
-            {
-
-            }
-            column(InvestorName; InvestorName)
-            {
-
-            }
-            column(lvngLoanAmount; "Loan Amount")
-            {
-
-            }
-            column(LoanOfficerName; LoanOfficerName)
-            {
-
-            }
-            column(CompanyName; CompanyInformation.Name)
-            {
-
-            }
-            column(AsOfDate; AsOfDate)
-            {
-
-            }
+            column(LoanNo; "No.") { }
+            column(BorrowerFirstName; "Borrower First Name") { }
+            column(BorrowerMiddleName; "Borrower Middle Name") { }
+            column(BorrowerLastName; "Borrower Last Name") { }
+            column(DateFunded; "Date Funded") { }
+            column(WarehouseLineCode; "Warehouse Line Code") { }
+            column(LoanType; LoanType) { }
+            column(InterestRate; "Interest Rate") { }
+            column(DateSold; "Date Sold") { }
+            column(InvestorName; InvestorName) { }
+            column(LoanAmount; "Loan Amount") { }
+            column(LoanOfficerName; LoanOfficerName) { }
+            column(CompanyName; CompanyInformation.Name) { }
+            column(AsOfDate; AsOfDate) { }
             dataitem(DataSetValues; Integer)
             {
                 DataItemTableView = sorting(Number);
-                column(BalanceAtDate; CalculatedValue)
-                {
-
-                }
-                column(ReportingAccountType; ReportingAccountType)
-                {
-
-                }
-                column(Descripiton; Buffer."Cell Value as Text")
-                {
-
-                }
+                column(BalanceAtDate; CalculatedValue) { }
+                column(ReportingAccountType; ReportingAccountType) { }
+                column(Descripiton; Buffer."Value as Text") { }
 
                 trigger OnPreDataItem()
                 begin
@@ -95,7 +44,7 @@ report 14135153 "lvngLoanProfitability"
                         Buffer.Next();
                     Clear(CalculatedValue);
                     GLAccount.Reset();
-                    GLAccount.SetRange("Reporting Account Name", Buffer."Cell Value as Text");
+                    GLAccount.SetRange("Reporting Account Name", Buffer."Value as Text");
                     GLAccount.FindSet();
                     repeat
                         if GLAccount.Totaling <> '' then
@@ -135,7 +84,7 @@ report 14135153 "lvngLoanProfitability"
                 if Customer.Get("Investor Customer No.") then begin
                     InvestorName := Customer.Name;
                 end;
-                GLEntriesByDimension.SetRange(LoanNoFilter, lvngLoan."No.");
+                GLEntriesByDimension.SetRange(LoanNoFilter, Loan."No.");
             end;
         }
     }
@@ -147,13 +96,16 @@ report 14135153 "lvngLoanProfitability"
             {
                 group(Options)
                 {
-                    field(FromDate; PeriodStart)
+                    group("G/L Transactions")
                     {
-                        Caption = 'From Date';
-                    }
-                    field(ToDate; PeriodEnd1)
-                    {
-                        Caption = 'To Date';
+                        field(FromDate; PeriodStart)
+                        {
+                            Caption = 'From Date';
+                        }
+                        field(ToDate; PeriodEnd1)
+                        {
+                            Caption = 'To Date';
+                        }
                     }
                     field(ReportingType; ReportingType)
                     {
@@ -162,6 +114,7 @@ report 14135153 "lvngLoanProfitability"
                     }
                     group(Dimensions)
                     {
+                        Caption = 'G/L Entries Deimension Filter';
                         field(Dimension1Filter; Dimension1Filter)
                         {
                             Visible = Dimension1FilterVisible;
@@ -265,7 +218,6 @@ report 14135153 "lvngLoanProfitability"
         GLAccount.Reset();
         GLAccount.SetFilter("Reporting Account Name", '<>%1', '');
         if ReportingType = ReportingType::Income then begin
-
             GLAccount.SetRange("Account Category", GLAccount."Account Category"::Income);
         end;
         if ReportingType = ReportingType::Expense then begin
@@ -300,12 +252,12 @@ report 14135153 "lvngLoanProfitability"
         GLAccount.FindSet();
         repeat
             Buffer.Reset();
-            Buffer.SetRange("Cell Value as Text", GLAccount."Reporting Account Name");
+            Buffer.SetRange("Value as Text", GLAccount."Reporting Account Name");
             if Buffer.IsEmpty then begin
                 Clear(Buffer);
-                Buffer."Row No." := EntryNo;
+                Buffer."Entry No." := EntryNo;
                 EntryNo := EntryNo + 1;
-                Buffer."Cell Value as Text" := GLAccount."Reporting Account Name";
+                Buffer."Value as Text" := GLAccount."Reporting Account Name";
                 Buffer.Bold := (GLAccount."Account Category" = GLAccount."Account Category"::Income);
                 Buffer.Insert();
             end;
@@ -317,7 +269,7 @@ report 14135153 "lvngLoanProfitability"
         GeneralLedgerSetup: Record "General Ledger Setup";
         DefaultDimension: Record "Default Dimension";
         LoanVisionSetup: Record lvngLoanVisionSetup;
-        Buffer: Record "Excel Buffer" temporary;
+        Buffer: Record lvngDataStorageBuffer temporary;
         GLAccount: Record "G/L Account";
         Customer: Record Customer;
         DimensionValue: Record "Dimension Value";
@@ -350,8 +302,4 @@ report 14135153 "lvngLoanProfitability"
         CalculatedValue: Decimal;
         ReportingType: Option ,Income,Expense;
         Text001: TextConst ENU = 'If you set Dimension Filter you must also set From Date and To Date';
-
-
-
-
 }

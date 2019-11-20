@@ -601,7 +601,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngLoanNo.Value</Value>
+                                                    <Value>=Fields!LoanNo.Value</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontSize>9pt</FontSize>
@@ -636,7 +636,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngBorrowerFirstName.Value &amp;" "&amp; Fields!lvngBorrowerMiddleName.Value&amp;" "&amp;Fields!lvngBorrowerLastName.Value</Value>
+                                                    <Value>=Fields!lBorrowerFirstName.Value &amp;" "&amp; Fields!BorrowerMiddleName.Value&amp;" "&amp;Fields!BorrowerLastName.Value</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontSize>9pt</FontSize>
@@ -819,7 +819,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngLoanAmount.Value</Value>
+                                                    <Value>=Fields!LoanAmount.Value</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontSize>9pt</FontSize>
@@ -1038,14 +1038,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngDateFunded">
+                                          <Textbox Name="DateFunded">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngDateFunded.Value</Value>
+                                                    <Value>=Fields!DateFunded.Value</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontSize>9pt</FontSize>
@@ -1059,7 +1059,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngDateFunded</rd:DefaultName>
+                                            <rd:DefaultName>DateFunded</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Color>Gray</Color>
@@ -1148,14 +1148,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngWarehouseLineCode">
+                                          <Textbox Name="WarehouseLineCode">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngWarehouseLineCode.Value</Value>
+                                                    <Value>=Fields!WarehouseLineCode.Value</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -1164,7 +1164,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngWarehouseLineCode</rd:DefaultName>
+                                            <rd:DefaultName>WarehouseLineCode</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Color>Gray</Color>
@@ -1372,14 +1372,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngInterestRate">
+                                          <Textbox Name="InterestRate">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngInterestRate.Value</Value>
+                                                    <Value>=Fields!InterestRate.Value</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <Format>0.00000;(0.00000)</Format>
@@ -1389,7 +1389,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngInterestRate</rd:DefaultName>
+                                            <rd:DefaultName>InterestRate</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Color>Gray</Color>
@@ -2195,7 +2195,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>="Net Income/Loss for Loan: " &amp; Fields!lvngLoanNo.Value</Value>
+                                                    <Value>="Net Income/Loss for Loan: " &amp; Fields!LoanNo.Value</Value>
                                                     <Style>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
@@ -2389,44 +2389,44 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="lvngLoanNo">
-          <DataField>lvngLoanNo</DataField>
+        <Field Name="LoanNo">
+          <DataField>LoanNo</DataField>
         </Field>
-        <Field Name="lvngBorrowerFirstName">
-          <DataField>lvngBorrowerFirstName</DataField>
+        <Field Name="BorrowerFirstName">
+          <DataField>BorrowerFirstName</DataField>
         </Field>
-        <Field Name="lvngBorrowerMiddleName">
-          <DataField>lvngBorrowerMiddleName</DataField>
+        <Field Name="BorrowerMiddleName">
+          <DataField>BorrowerMiddleName</DataField>
         </Field>
-        <Field Name="lvngBorrowerLastName">
-          <DataField>lvngBorrowerLastName</DataField>
+        <Field Name="BorrowerLastName">
+          <DataField>BorrowerLastName</DataField>
         </Field>
-        <Field Name="lvngDateFunded">
-          <DataField>lvngDateFunded</DataField>
+        <Field Name="DateFunded">
+          <DataField>DateFunded</DataField>
         </Field>
-        <Field Name="lvngWarehouseLineCode">
-          <DataField>lvngWarehouseLineCode</DataField>
+        <Field Name="WarehouseLineCode">
+          <DataField>WarehouseLineCode</DataField>
         </Field>
         <Field Name="LoanType">
           <DataField>LoanType</DataField>
         </Field>
-        <Field Name="lvngInterestRate">
-          <DataField>lvngInterestRate</DataField>
+        <Field Name="InterestRate">
+          <DataField>InterestRate</DataField>
         </Field>
-        <Field Name="lvngInterestRateFormat">
-          <DataField>lvngInterestRateFormat</DataField>
+        <Field Name="InterestRateFormat">
+          <DataField>InterestRateFormat</DataField>
         </Field>
-        <Field Name="lvngDateSold">
-          <DataField>lvngDateSold</DataField>
+        <Field Name="DateSold">
+          <DataField>DateSold</DataField>
         </Field>
         <Field Name="InvestorName">
           <DataField>InvestorName</DataField>
         </Field>
-        <Field Name="lvngLoanAmount">
-          <DataField>lvngLoanAmount</DataField>
+        <Field Name="LoanAmount">
+          <DataField>LoanAmount</DataField>
         </Field>
-        <Field Name="lvngLoanAmountFormat">
-          <DataField>lvngLoanAmountFormat</DataField>
+        <Field Name="LoanAmountFormat">
+          <DataField>LoanAmountFormat</DataField>
         </Field>
         <Field Name="LoanOfficerName">
           <DataField>LoanOfficerName</DataField>
