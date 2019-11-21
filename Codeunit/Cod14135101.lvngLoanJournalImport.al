@@ -1,370 +1,352 @@
-codeunit 14135101 "lvngLoanJournalImport"
+codeunit 14135101 lvngLoanJournalImport
 {
     var
-        CSVBufferTemp: Record "CSV Buffer" temporary;
-        lvngLoanImportSchemaTemp: Record lvngLoanImportSchema temporary;
-        lvngLoanJournalBatch: Record lvngLoanJournalBatch;
-        lvngOpenFileLabel: Label 'Open File for Import';
-        lvngErrorReadingToStreamLabel: Label 'Error reading file to stream';
-        lvngPostProcessingMgmt: Codeunit lvngPostProcessingMgmt;
-        lvngImportStream: InStream;
-        lvngFileName: Text;
-        lvngImportToStream: Boolean;
+        BooleanStringWrongFormatErr: Label 'Boolean Value %1 has wrong format. Line No. %2, Field %3. Possible Values %4 %5';
+        BooleanStringNoFormatDefinedErr: Label 'Boolean format is not defined for field %1';
+        DateStringWrongFormatErr: Label 'Date Value %1 has wrong format. Line No. %2, Field %3';
+        DecimalStringWrongFormatErr: Label 'Decimal Value %1 has wrong format. Line No. %2, Field %3';
+        IntegerStringWrongFormatErr: Label 'Integer Value %1 has wrong format. Line No. %2, Field %3';
+
+        TempCSVBuffer: Record "CSV Buffer" temporary;
+        TempLoanImportSchema: Record lvngLoanImportSchema temporary;
+        LoanJournalBatch: Record lvngLoanJournalBatch;
+        OpenFileLbl: Label 'Open File for Import';
+        ReadingToStreamErr: Label 'Error reading file to stream';
+        PostProcessingMgmt: Codeunit lvngPostProcessingMgmt;
+        ImportStream: InStream;
+        FileName: Text;
+        ImportToStream: Boolean;
 
     procedure ReadCSVStream(lvngLoanJournalBatchCode: Code[20]; lvngImportSchema: Record lvngLoanImportSchema)
     var
         TabChar: Char;
     begin
         TabChar := 9;
-        lvngLoanImportSchemaTemp := lvngImportSchema;
-        if lvngLoanImportSchemaTemp."Field Separator Character" = '<TAB>' then
-            lvngLoanImportSchemaTemp."Field Separator Character" := Format(TabChar);
-        lvngLoanJournalBatch.Get(lvngLoanJournalBatchCode);
-        lvngImportToStream := UploadIntoStream(lvngOpenFileLabel, '', '', lvngFileName, lvngImportStream);
-        if lvngImportToStream then begin
-            CSVBufferTemp.LoadDataFromStream(lvngImportStream, lvngLoanImportSchemaTemp."Field Separator Character");
-            CSVBufferTemp.ResetFilters();
-            CSVBufferTemp.SetRange("Line No.", 0, lvngLoanImportSchemaTemp."Skip Lines");
-            CSVBufferTemp.DeleteAll();
+        TempLoanImportSchema := lvngImportSchema;
+        if TempLoanImportSchema."Field Separator Character" = '<TAB>' then
+            TempLoanImportSchema."Field Separator Character" := Format(TabChar);
+        LoanJournalBatch.Get(lvngLoanJournalBatchCode);
+        ImportToStream := UploadIntoStream(OpenFileLbl, '', '', FileName, ImportStream);
+        if ImportToStream then begin
+            TempCSVBuffer.LoadDataFromStream(ImportStream, TempLoanImportSchema."Field Separator Character");
+            TempCSVBuffer.ResetFilters();
+            TempCSVBuffer.SetRange("Line No.", 0, TempLoanImportSchema."Skip Lines");
+            TempCSVBuffer.DeleteAll();
             ProcessImportCSVBuffer();
-            Clear(lvngPostProcessingMgmt);
-            lvngPostProcessingMgmt.PostProcessBatch(lvngLoanJournalBatchCode);
-        end else begin
-            Error(lvngErrorReadingToStreamLabel);
-        end;
+            Clear(PostProcessingMgmt);
+            PostProcessingMgmt.PostProcessBatch(lvngLoanJournalBatchCode);
+        end else
+            Error(ReadingToStreamErr);
     end;
 
     procedure ProcessImportCSVBuffer()
     var
-        lvngLoanImportSchemaLine: Record lvngLoanImportSchemaLine;
-        lvngLoanImportSchemaLineTemp: Record lvngLoanImportSchemaLine temporary;
-        lvngLoanJournalLine: Record lvngLoanJournalLine;
-        lvngRecRef: RecordRef;
-        lvngFieldRef: FieldRef;
-        lvngStartLine: Integer;
-        lvngEndLine: Integer;
-        lvngColumnNo: Integer;
+        LoanImportSchemaLine: Record lvngLoanImportSchemaLine;
+        TempLoanImportSchemaLine: Record lvngLoanImportSchemaLine temporary;
+        LoanJournalLine: Record lvngLoanJournalLine;
+        RecordReference: RecordRef;
+        FieldReference: FieldRef;
+        StartLine: Integer;
+        EndLine: Integer;
+        ColumnNo: Integer;
     begin
-        CSVBufferTemp.ResetFilters();
-        CSVBufferTemp.FindFirst();
-        lvngStartLine := CSVBufferTemp."Line No.";
-        lvngEndLine := CSVBufferTemp.GetNumberOfLines();
-        lvngLoanImportSchemaLine.reset;
-        lvngLoanImportSchemaLine.SetRange(Code, lvngLoanImportSchemaTemp.Code);
-        lvngLoanImportSchemaLine.FindSet();
+        TempCSVBuffer.ResetFilters();
+        TempCSVBuffer.FindFirst();
+        StartLine := TempCSVBuffer."Line No.";
+        EndLine := TempCSVBuffer.GetNumberOfLines();
+        LoanImportSchemaLine.Reset();
+        LoanImportSchemaLine.SetRange(Code, TempLoanImportSchema.Code);
+        LoanImportSchemaLine.FindSet();
         repeat
-            Clear(lvngLoanImportSchemaLineTemp);
-            lvngLoanImportSchemaLineTemp := lvngLoanImportSchemaLine;
-            lvngLoanImportSchemaLineTemp.insert;
-        until lvngLoanImportSchemaLine.next = 0;
-        CSVBufferTemp.ResetFilters();
-        lvngLoanJournalLine.reset;
-        lvngLoanJournalLine.SetRange("Loan Journal Batch Code", lvngLoanJournalBatch.Code);
-        lvngLoanJournalLine.DeleteAll(true);
+            TempLoanImportSchemaLine := LoanImportSchemaLine;
+            TempLoanImportSchemaLine.Insert();
+        until LoanImportSchemaLine.next = 0;
+        TempCSVBuffer.ResetFilters();
+        LoanJournalLine.Reset();
+        LoanJournalLine.SetRange("Loan Journal Batch Code", LoanJournalBatch.Code);
+        LoanJournalLine.DeleteAll(true);
         repeat
-            Clear(lvngLoanJournalLine);
-            lvngLoanJournalLine."Loan Journal Batch Code" := lvngLoanJournalBatch.Code;
-            lvngLoanJournalLine."Line No." := lvngStartLine;
-            lvngLoanJournalLine.Insert(true);
-            lvngRecRef.GetTable(lvngLoanJournalLine);
-            lvngLoanImportSchemaLineTemp.reset;
-            lvngLoanImportSchemaLineTemp.FindSet();
-            lvngColumnNo := 0;
+            Clear(LoanJournalLine);
+            LoanJournalLine."Loan Journal Batch Code" := LoanJournalBatch.Code;
+            LoanJournalLine."Line No." := StartLine;
+            LoanJournalLine.Insert(true);
+            RecordReference.GetTable(LoanJournalLine);
+            TempLoanImportSchemaLine.Reset();
+            TempLoanImportSchemaLine.FindSet();
+            ColumnNo := 0;
             repeat
-                lvngColumnNo := lvngColumnNo + 1;
-                case lvngLoanImportSchemaLineTemp."Field Type" of
-                    lvngLoanImportSchemaLineTemp."Field Type"::Table:
+                ColumnNo := ColumnNo + 1;
+                case TempLoanImportSchemaLine."Field Type" of
+                    TempLoanImportSchemaLine."Field Type"::Table:
                         begin
-                            lvngFieldRef := lvngRecRef.Field(lvngLoanImportSchemaLineTemp."Field No.");
-                            AssignValueToJournalField(lvngStartLine, CSVBufferTemp.GetValue(lvngStartLine, lvngColumnNo), lvngLoanImportSchemaLineTemp, lvngFieldRef);
+                            FieldReference := RecordReference.Field(TempLoanImportSchemaLine."Field No.");
+                            AssignValueToJournalField(StartLine, TempCSVBuffer.GetValue(StartLine, ColumnNo), TempLoanImportSchemaLine, FieldReference);
                         end;
-                    lvngLoanImportSchemaLineTemp."Field Type"::Variable:
-                        begin
-                            AssignValueToVariableField(CSVBufferTemp.GetValue(lvngStartLine, lvngColumnNo), lvngLoanJournalLine, lvngLoanImportSchemaLineTemp);
-                        end;
+                    TempLoanImportSchemaLine."Field Type"::Variable:
+                        AssignValueToVariableField(TempCSVBuffer.GetValue(StartLine, ColumnNo), LoanJournalLine, TempLoanImportSchemaLine);
                 end;
-            until lvngLoanImportSchemaLineTemp.Next() = 0;
-            lvngRecRef.Modify(true);
-            lvngRecRef.SetTable(lvngLoanJournalLine);
-            lvngRecRef.Close();
-            if lvngLoanJournalLine."Processing Schema Code" = '' then
-                lvngLoanJournalLine."Processing Schema Code" := lvngLoanJournalBatch."Def. Processing Schema Code";
-            if lvngLoanJournalLine."Reason Code" = '' then
-                lvngLoanJournalLine."Reason Code" := lvngLoanJournalBatch."Default Reason Code";
-            if lvngLoanJournalLine."Title Customer No." = '' then
-                lvngLoanJournalLine."Title Customer No." := lvngLoanJournalBatch."Default Title Customer No.";
-            lvngLoanJournalLine.Modify();
-            lvngStartLine := lvngStartLine + 1;
-        until (lvngStartLine > lvngEndLine);
+            until TempLoanImportSchemaLine.Next() = 0;
+            RecordReference.Modify(true);
+            RecordReference.SetTable(LoanJournalLine);
+            RecordReference.Close();
+            if LoanJournalLine."Processing Schema Code" = '' then
+                LoanJournalLine."Processing Schema Code" := LoanJournalBatch."Def. Processing Schema Code";
+            if LoanJournalLine."Reason Code" = '' then
+                LoanJournalLine."Reason Code" := LoanJournalBatch."Default Reason Code";
+            if LoanJournalLine."Title Customer No." = '' then
+                LoanJournalLine."Title Customer No." := LoanJournalBatch."Default Title Customer No.";
+            LoanJournalLine.Modify();
+            StartLine := StartLine + 1;
+        until (StartLine > EndLine);
     end;
 
-    procedure AssignValueToVariableField(lvngValue: Text; lvngLoanJournalLine: Record lvngLoanJournalLine; lvngLoanImportSchemaLine: record lvngLoanImportSchemaLine)
+    procedure AssignValueToVariableField(Value: Text; LoanJournalLine: Record lvngLoanJournalLine; LoanImportSchemaLine: Record lvngLoanImportSchemaLine)
     var
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
+        LoanJournalValue: Record lvngLoanJournalValue;
         StringConversionManagement: Codeunit StringConversionManagement;
-        lvngBooleanStringWrongFormat: Label 'Boolean Value %1 has wrong format. Line No. %2, Field %3. Possible Values %4 %5';
-        lvngBooleanStringNoFormatDefined: Label 'Boolean format is not defined for field %1';
-        lvngDateStringWrongFormat: Label 'Date Value %1 has wrong format. Line No. %2, Field %3';
-        lvngDecimalStringWrongFormat: Label 'Decimal Value %1 has wrong format. Line No. %2, Field %3';
-        lvngIntegerStringWrongFormat: Label 'Integer Value %1 has wrong format. Line No. %2, Field %3';
-        lvngBooleanField: Boolean;
-        lvngDateField: Date;
-        lvngIntegerField: Integer;
-        lvngDecimalField: Decimal;
-        lvngLineNo: Integer;
+        BooleanField: Boolean;
+        DateField: Date;
+        IntegerField: Integer;
+        DecimalField: Decimal;
+        LineNo: Integer;
+        UpperValue: Text;
     begin
-        lvngLineNo := lvngLoanJournalLine."Line No.";
-        if lvngLoanImportSchemaLine."Field Size" > 0 then begin
-            if lvngLoanImportSchemaLine.Trimming = lvngLoanImportSchemaLine.Trimming::Spaces then begin
-                lvngValue := DelChr(lvngValue, '<>', ' ');
-            end;
-            if lvngLoanImportSchemaLine.Trimming = lvngLoanImportSchemaLine.Trimming::"To Size" then begin
-                lvngValue := DelChr(lvngValue, '<>', ' ');
-                lvngValue := CopyStr(lvngValue, 1, lvngLoanImportSchemaLine."Field Size");
+        LineNo := LoanJournalLine."Line No.";
+        if LoanImportSchemaLine."Field Size" > 0 then begin
+            if LoanImportSchemaLine.Trimming = LoanImportSchemaLine.Trimming::Spaces then
+                Value := DelChr(Value, '<>', ' ');
+            if LoanImportSchemaLine.Trimming = LoanImportSchemaLine.Trimming::"To Size" then begin
+                Value := DelChr(Value, '<>', ' ');
+                Value := CopyStr(Value, 1, LoanImportSchemaLine."Field Size");
             end;
         end;
-        if (lvngLoanImportSchemaLine."Padding Character" <> '') and (lvngLoanImportSchemaLine."Field Size" > 0) then begin
-            if lvngLoanImportSchemaLine."Padding Side" = lvngLoanImportSchemaLine."Padding Side"::Left then
-                lvngValue := StringConversionManagement.GetPaddedString(lvngValue, lvngLoanImportSchemaLine."Field Size", lvngLoanImportSchemaLine."Padding Character", 0);
-            if lvngLoanImportSchemaLine."Padding Side" = lvngLoanImportSchemaLine."Padding Side"::Right then
-                lvngValue := StringConversionManagement.GetPaddedString(lvngValue, lvngLoanImportSchemaLine."Field Size", lvngLoanImportSchemaLine."Padding Character", 1);
+        if (LoanImportSchemaLine."Padding Character" <> '') and (LoanImportSchemaLine."Field Size" > 0) then begin
+            if LoanImportSchemaLine."Padding Side" = LoanImportSchemaLine."Padding Side"::Left then
+                Value := StringConversionManagement.GetPaddedString(Value, LoanImportSchemaLine."Field Size", LoanImportSchemaLine."Padding Character", 0);
+            if LoanImportSchemaLine."Padding Side" = LoanImportSchemaLine."Padding Side"::Right then
+                Value := StringConversionManagement.GetPaddedString(Value, LoanImportSchemaLine."Field Size", LoanImportSchemaLine."Padding Character", 1);
         end;
-
-        case lvngLoanImportSchemaLine."Value Type" of
-            lvngLoanImportSchemaLine."Value Type"::Boolean:
+        case LoanImportSchemaLine."Value Type" of
+            LoanImportSchemaLine."Value Type"::Boolean:
                 begin
-                    Clear(lvngBooleanField);
-                    case lvngLoanImportSchemaLine."Boolean Format" of
-                        lvngLoanImportSchemaLine."Boolean Format"::"1/0":
+                    Clear(BooleanField);
+                    case LoanImportSchemaLine."Boolean Format" of
+                        LoanImportSchemaLine."Boolean Format"::"1/0":
                             begin
-                                if (StrLen(lvngValue) <> 1) AND ((lvngValue <> '1') OR (lvngValue <> '0')) then begin
-                                    Error(lvngBooleanStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name", 1, 0);
-                                end;
-                                if lvngValue = '1' then
-                                    lvngbooleanField := true;
+                                if (Value <> '1') and (Value <> '0') then
+                                    Error(BooleanStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name", 1, 0);
+                                BooleanField := Value = '1';
                             end;
-                        lvngLoanImportSchemaLine."Boolean Format"::"False If Blank":
+                        LoanImportSchemaLine."Boolean Format"::"False If Blank":
+                            BooleanField := Value <> '';
+                        LoanImportSchemaLine."Boolean Format"::Undefined:
+                            Error(BooleanStringNoFormatDefinedErr, LoanImportSchemaLine."Field Name");
+                        LoanImportSchemaLine."Boolean Format"::"True/False":
                             begin
-                                if lvngValue <> '' then
-                                    lvngBooleanField := true;
+                                UpperValue := UpperCase(Value);
+                                if (UpperValue <> 'FALSE') and (UpperValue <> 'TRUE') then
+                                    Error(BooleanStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name", 'True', 'False');
+                                BooleanField := UpperValue = 'TRUE';
                             end;
-                        lvngLoanImportSchemaLine."Boolean Format"::Undefined:
+                        LoanImportSchemaLine."Boolean Format"::"Yes/No":
                             begin
-                                Error(lvngBooleanStringNoFormatDefined, lvngLoanImportSchemaLine."Field Name");
+                                UpperValue := UpperCase(Value);
+                                if (UpperValue <> 'NO') and (UpperValue <> 'YES') then
+                                    Error(BooleanStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name", 'Yes', 'No');
+                                BooleanField := UpperValue = 'YES';
                             end;
-                        lvngLoanImportSchemaLine."Boolean Format"::"True/False":
+                        LoanImportSchemaLine."Boolean Format"::"Y/N":
                             begin
-                                if (UpperCase(lvngValue) <> 'FALSE') AND (UpperCase(lvngValue) <> 'TRUE') then begin
-                                    Error(lvngBooleanStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name", 'True', 'False');
-                                end;
-                                if (UpperCase(lvngValue) = 'TRUE') then
-                                    lvngBooleanField := true;
-                            end;
-                        lvngLoanImportSchemaLine."Boolean Format"::"Yes/No":
-                            begin
-                                if (UpperCase(lvngValue) <> 'NO') AND (UpperCase(lvngValue) <> 'YES') then begin
-                                    Error(lvngBooleanStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name", 'Yes', 'No');
-                                end;
-                                if (UpperCase(lvngValue) = 'YES') then
-                                    lvngBooleanField := true;
-                            end;
-                        lvngLoanImportSchemaLine."Boolean Format"::"Y/N":
-                            begin
-                                if (UpperCase(lvngValue) <> 'N') AND (UpperCase(lvngValue) <> 'Y') then begin
-                                    Error(lvngBooleanStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name", 'Y', 'N');
-                                end;
-                                if (UpperCase(lvngValue) = 'Y') then
-                                    lvngBooleanField := true;
+                                UpperValue := UpperCase(Value);
+                                if (UpperValue <> 'N') and (UpperValue <> 'Y') then
+                                    Error(BooleanStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name", 'Y', 'N');
+                                BooleanField := UpperValue = 'Y';
                             end;
                     end;
-                    Clear(lvngLoanJournalValue);
-                    lvngLoanJournalValue.Init();
-                    lvngLoanJournalValue."Loan Journal Batch Code" := lvngLoanJournalLine."Loan Journal Batch Code";
-                    lvngLoanJournalValue."Line No." := lvngLoanJournalLine."Line No.";
-                    lvngLoanJournalValue."Field No." := lvngLoanImportSchemaLine."Field No.";
-                    if lvngBooleanField then
-                        lvngLoanJournalValue."Field Value" := 'True' else
-                        lvngLoanJournalValue."Field Value" := 'False';
-                    lvngLoanJournalValue.Insert(true)
+                    Clear(LoanJournalValue);
+                    LoanJournalValue.Init();
+                    LoanJournalValue."Loan Journal Batch Code" := LoanJournalLine."Loan Journal Batch Code";
+                    LoanJournalValue."Line No." := LoanJournalLine."Line No.";
+                    LoanJournalValue."Field No." := LoanImportSchemaLine."Field No.";
+                    if BooleanField then
+                        LoanJournalValue."Field Value" := 'True'
+                    else
+                        LoanJournalValue."Field Value" := 'False';
+                    LoanJournalValue.Insert(true);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::Date:
+            LoanImportSchemaLine."Value Type"::Date:
                 begin
-                    clear(lvngDateField);
-                    if not Evaluate(lvngDateField, lvngValue) then
-                        Error(lvngDateStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name");
-                    Clear(lvngLoanJournalValue);
-                    lvngLoanJournalValue.Init();
-                    lvngLoanJournalValue."Loan Journal Batch Code" := lvngLoanJournalLine."Loan Journal Batch Code";
-                    lvngLoanJournalValue."Line No." := lvngLoanJournalLine."Line No.";
-                    lvngLoanJournalValue."Field No." := lvngLoanImportSchemaLine."Field No.";
-                    lvngLoanJournalValue."Field Value" := Format(lvngDateField);
-                    lvngLoanJournalValue.Insert(true)
+                    Clear(DateField);
+                    if not Evaluate(DateField, Value) then
+                        Error(DateStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name");
+                    Clear(LoanJournalValue);
+                    LoanJournalValue.Init();
+                    LoanJournalValue."Loan Journal Batch Code" := LoanJournalLine."Loan Journal Batch Code";
+                    LoanJournalValue."Line No." := LoanJournalLine."Line No.";
+                    LoanJournalValue."Field No." := LoanImportSchemaLine."Field No.";
+                    LoanJournalValue."Field Value" := Format(DateField);
+                    LoanJournalValue.Insert(true);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::Decimal:
+            LoanImportSchemaLine."Value Type"::Decimal:
                 begin
-                    Clear(lvngDecimalField);
-                    if not Evaluate(lvngDecimalField, lvngValue) then
-                        Error(lvngDecimalStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name");
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::Negative then
-                        lvngDecimalField := -ABS(lvngDecimalField);
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::Positive then
-                        lvngDecimalField := ABS(lvngDecimalField);
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::"Reverse Sign" then
-                        lvngDecimalField := -lvngDecimalField;
-                    Clear(lvngLoanJournalValue);
-                    lvngLoanJournalValue.Init();
-                    lvngLoanJournalValue."Loan Journal Batch Code" := lvngLoanJournalLine."Loan Journal Batch Code";
-                    lvngLoanJournalValue."Line No." := lvngLoanJournalLine."Line No.";
-                    lvngLoanJournalValue."Field No." := lvngLoanImportSchemaLine."Field No.";
-                    lvngLoanJournalValue."Field Value" := Format(lvngDecimalField);
-                    lvngLoanJournalValue.Insert(true)
+                    Clear(DecimalField);
+                    if not Evaluate(DecimalField, Value) then
+                        Error(DecimalStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name");
+                    case LoanImportSchemaLine."Numeric Format" of
+                        LoanImportSchemaLine."Numeric Format"::Negative:
+                            DecimalField := -Abs(DecimalField);
+                        LoanImportSchemaLine."Numeric Format"::Positive:
+                            DecimalField := Abs(DecimalField);
+                        LoanImportSchemaLine."Numeric Format"::"Reverse Sign":
+                            DecimalField := -DecimalField;
+                    end;
+                    Clear(LoanJournalValue);
+                    LoanJournalValue.Init();
+                    LoanJournalValue."Loan Journal Batch Code" := LoanJournalLine."Loan Journal Batch Code";
+                    LoanJournalValue."Line No." := LoanJournalLine."Line No.";
+                    LoanJournalValue."Field No." := LoanImportSchemaLine."Field No.";
+                    LoanJournalValue."Field Value" := Format(DecimalField);
+                    LoanJournalValue.Insert(true);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::Integer:
+            LoanImportSchemaLine."Value Type"::Integer:
                 begin
-                    Clear(lvngIntegerField);
-                    if not Evaluate(lvngIntegerField, lvngValue) then
-                        Error(lvngIntegerStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name");
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::Negative then
-                        lvngIntegerField := -ABS(lvngIntegerField);
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::Positive then
-                        lvngIntegerField := ABS(lvngIntegerField);
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::"Reverse Sign" then
-                        lvngIntegerField := -lvngIntegerField;
-                    Clear(lvngLoanJournalValue);
-                    lvngLoanJournalValue.Init();
-                    lvngLoanJournalValue."Loan Journal Batch Code" := lvngLoanJournalLine."Loan Journal Batch Code";
-                    lvngLoanJournalValue."Line No." := lvngLoanJournalLine."Line No.";
-                    lvngLoanJournalValue."Field No." := lvngLoanImportSchemaLine."Field No.";
-                    lvngLoanJournalValue."Field Value" := Format(lvngIntegerField);
-                    lvngLoanJournalValue.Insert(true)
+                    Clear(IntegerField);
+                    if not Evaluate(IntegerField, Value) then
+                        Error(IntegerStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name");
+                    case LoanImportSchemaLine."Numeric Format" of
+                        LoanImportSchemaLine."Numeric Format"::Negative:
+                            IntegerField := -Abs(IntegerField);
+                        LoanImportSchemaLine."Numeric Format"::Positive:
+                            IntegerField := Abs(IntegerField);
+                        LoanImportSchemaLine."Numeric Format"::"Reverse Sign":
+                            IntegerField := -IntegerField;
+                    end;
+                    Clear(LoanJournalValue);
+                    LoanJournalValue.Init();
+                    LoanJournalValue."Loan Journal Batch Code" := LoanJournalLine."Loan Journal Batch Code";
+                    LoanJournalValue."Line No." := LoanJournalLine."Line No.";
+                    LoanJournalValue."Field No." := LoanImportSchemaLine."Field No.";
+                    LoanJournalValue."Field Value" := Format(IntegerField);
+                    LoanJournalValue.Insert(true);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::Text:
+            LoanImportSchemaLine."Value Type"::Text:
                 begin
-                    Clear(lvngLoanJournalValue);
-                    lvngLoanJournalValue.Init();
-                    lvngLoanJournalValue."Loan Journal Batch Code" := lvngLoanJournalLine."Loan Journal Batch Code";
-                    lvngLoanJournalValue."Line No." := lvngLoanJournalLine."Line No.";
-                    lvngLoanJournalValue."Field No." := lvngLoanImportSchemaLine."Field No.";
-                    lvngLoanJournalValue."Field Value" := CopyStr(lvngValue, 1, 250);
-                    lvngLoanJournalValue.Insert(true)
+                    Clear(LoanJournalValue);
+                    LoanJournalValue.Init();
+                    LoanJournalValue."Loan Journal Batch Code" := LoanJournalLine."Loan Journal Batch Code";
+                    LoanJournalValue."Line No." := LoanJournalLine."Line No.";
+                    LoanJournalValue."Field No." := LoanImportSchemaLine."Field No.";
+                    LoanJournalValue."Field Value" := CopyStr(Value, 1, 250);
+                    LoanJournalValue.Insert(true);
                 end;
         end;
     end;
 
-    procedure AssignValueToJournalField(lvngLineNo: integer; lvngValue: Text; lvngLoanImportSchemaLine: record lvngLoanImportSchemaLine; var lvngFieldRef: FieldRef)
+    procedure AssignValueToJournalField(LineNo: Integer; Value: Text; LoanImportSchemaLine: Record lvngLoanImportSchemaLine; var FieldReference: FieldRef)
     var
         StringConversionManagement: Codeunit StringConversionManagement;
-        lvngBooleanStringWrongFormat: Label 'Boolean Value %1 has wrong format. Line No. %2, Field %3. Possible Values %4 %5';
-        lvngBooleanStringNoFormatDefined: Label 'Boolean format is not defined for field %1';
-        lvngDateStringWrongFormat: Label 'Date Value %1 has wrong format. Line No. %2, Field %3';
-        lvngDecimalStringWrongFormat: Label 'Decimal Value %1 has wrong format. Line No. %2, Field %3';
-        lvngIntegerStringWrongFormat: Label 'Integer Value %1 has wrong format. Line No. %2, Field %3';
-        lvngBooleanField: Boolean;
-        lvngDateField: Date;
-        lvngIntegerField: Integer;
-        lvngDecimalField: Decimal;
+        BooleanField: Boolean;
+        DateField: Date;
+        IntegerField: Integer;
+        DecimalField: Decimal;
+        UpperValue: Text;
     begin
-        if lvngLoanImportSchemaLine."Field Size" > 0 then begin
-            if lvngLoanImportSchemaLine.Trimming = lvngLoanImportSchemaLine.Trimming::Spaces then begin
-                lvngValue := DelChr(lvngValue, '<>', ' ');
+        if LoanImportSchemaLine."Field Size" > 0 then begin
+            if LoanImportSchemaLine.Trimming = LoanImportSchemaLine.Trimming::Spaces then begin
+                Value := DelChr(Value, '<>', ' ');
             end;
-            if lvngLoanImportSchemaLine.Trimming = lvngLoanImportSchemaLine.Trimming::"To Size" then begin
-                lvngValue := DelChr(lvngValue, '<>', ' ');
-                lvngValue := CopyStr(lvngValue, 1, lvngLoanImportSchemaLine."Field Size");
+            if LoanImportSchemaLine.Trimming = LoanImportSchemaLine.Trimming::"To Size" then begin
+                Value := DelChr(Value, '<>', ' ');
+                Value := CopyStr(Value, 1, LoanImportSchemaLine."Field Size");
             end;
         end;
-        if (lvngLoanImportSchemaLine."Padding Character" <> '') and (lvngLoanImportSchemaLine."Field Size" > 0) then begin
-            if lvngLoanImportSchemaLine."Padding Side" = lvngLoanImportSchemaLine."Padding Side"::Left then
-                lvngValue := StringConversionManagement.GetPaddedString(lvngValue, lvngLoanImportSchemaLine."Field Size", lvngLoanImportSchemaLine."Padding Character", 0);
-            if lvngLoanImportSchemaLine."Padding Side" = lvngLoanImportSchemaLine."Padding Side"::Right then
-                lvngValue := StringConversionManagement.GetPaddedString(lvngValue, lvngLoanImportSchemaLine."Field Size", lvngLoanImportSchemaLine."Padding Character", 1);
+        if (LoanImportSchemaLine."Padding Character" <> '') and (LoanImportSchemaLine."Field Size" > 0) then begin
+            if LoanImportSchemaLine."Padding Side" = LoanImportSchemaLine."Padding Side"::Left then
+                Value := StringConversionManagement.GetPaddedString(Value, LoanImportSchemaLine."Field Size", LoanImportSchemaLine."Padding Character", 0);
+            if LoanImportSchemaLine."Padding Side" = LoanImportSchemaLine."Padding Side"::Right then
+                Value := StringConversionManagement.GetPaddedString(Value, LoanImportSchemaLine."Field Size", LoanImportSchemaLine."Padding Character", 1);
         end;
 
-        case lvngLoanImportSchemaLine."Value Type" of
-            lvngLoanImportSchemaLine."Value Type"::Boolean:
+        case LoanImportSchemaLine."Value Type" of
+            LoanImportSchemaLine."Value Type"::Boolean:
                 begin
-                    Clear(lvngBooleanField);
-                    case lvngLoanImportSchemaLine."Boolean Format" of
-                        lvngLoanImportSchemaLine."Boolean Format"::"1/0":
+                    Clear(BooleanField);
+                    case LoanImportSchemaLine."Boolean Format" of
+                        LoanImportSchemaLine."Boolean Format"::"1/0":
                             begin
-                                if StrLen(lvngValue) <> 1 then begin
-                                    Error(lvngBooleanStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name", 1, 0);
-                                end;
+                                if (Value <> '1') and (Value <> '0') then
+                                    Error(BooleanStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name", 1, 0);
+                                BooleanField := Value = '1';
                             end;
-                        lvngLoanImportSchemaLine."Boolean Format"::"False If Blank":
+                        LoanImportSchemaLine."Boolean Format"::"False If Blank":
+                            BooleanField := Value <> '';
+                        LoanImportSchemaLine."Boolean Format"::Undefined:
+                            Error(BooleanStringNoFormatDefinedErr, LoanImportSchemaLine."Field Name");
+                        LoanImportSchemaLine."Boolean Format"::"True/False":
                             begin
-                                if lvngValue <> '' then
-                                    lvngBooleanField := true;
+                                UpperValue := UpperCase(Value);
+                                if (UpperValue <> 'FALSE') and (UpperValue <> 'TRUE') then
+                                    Error(BooleanStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name", 'True', 'False');
+                                BooleanField := UpperValue = 'TRUE';
                             end;
-                        lvngLoanImportSchemaLine."Boolean Format"::Undefined:
+                        LoanImportSchemaLine."Boolean Format"::"Yes/No":
                             begin
-                                Error(lvngBooleanStringNoFormatDefined, lvngLoanImportSchemaLine."Field Name");
+                                UpperValue := UpperCase(Value);
+                                if (UpperValue <> 'NO') and (UpperValue <> 'YES') then
+                                    Error(BooleanStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name", 'Yes', 'No');
+                                BooleanField := UpperValue = 'YES';
                             end;
-                        lvngLoanImportSchemaLine."Boolean Format"::"True/False":
+                        LoanImportSchemaLine."Boolean Format"::"Y/N":
                             begin
-                                if (UpperCase(lvngValue) <> 'FALSE') AND (UpperCase(lvngValue) <> 'TRUE') then begin
-                                    Error(lvngBooleanStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name", 'True', 'False');
-                                end;
-                                if (UpperCase(lvngValue) = 'TRUE') then
-                                    lvngBooleanField := true;
-                            end;
-                        lvngLoanImportSchemaLine."Boolean Format"::"Yes/No":
-                            begin
-                                if (UpperCase(lvngValue) <> 'NO') AND (UpperCase(lvngValue) <> 'YES') then begin
-                                    Error(lvngBooleanStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name", 'Yes', 'No');
-                                end;
-                                if (UpperCase(lvngValue) = 'YES') then
-                                    lvngBooleanField := true;
-                            end;
-                        lvngLoanImportSchemaLine."Boolean Format"::"Y/N":
-                            begin
-                                if (UpperCase(lvngValue) <> 'N') AND (UpperCase(lvngValue) <> 'Y') then begin
-                                    Error(lvngBooleanStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name", 'Y', 'N');
-                                end;
-                                if (UpperCase(lvngValue) = 'Y') then
-                                    lvngBooleanField := true;
+                                UpperValue := UpperCase(Value);
+                                if (UpperValue <> 'N') and (UpperValue <> 'Y') then
+                                    Error(BooleanStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name", 'Y', 'N');
+                                BooleanField := UpperValue = 'Y';
                             end;
                     end;
-                    lvngFieldRef.Validate(lvngBooleanField);
+                    FieldReference.Validate(BooleanField);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::Date:
+            LoanImportSchemaLine."Value Type"::Date:
                 begin
-                    Clear(lvngDateField);
-                    if not Evaluate(lvngDateField, lvngValue) then
-                        Error(lvngDateStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name");
-                    lvngFieldRef.Validate(lvngDateField);
+                    Clear(DateField);
+                    if not Evaluate(DateField, Value) then
+                        Error(DateStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name");
+                    FieldReference.Validate(DateField);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::Decimal:
+            LoanImportSchemaLine."Value Type"::Decimal:
                 begin
-                    Clear(lvngDecimalField);
-                    if not Evaluate(lvngDecimalField, lvngValue) then
-                        Error(lvngDecimalStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name");
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::Negative then
-                        lvngDecimalField := -ABS(lvngDecimalField);
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::Positive then
-                        lvngDecimalField := ABS(lvngDecimalField);
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::"Reverse Sign" then
-                        lvngDecimalField := -lvngDecimalField;
-                    lvngFieldRef.Validate(lvngDecimalField);
+                    Clear(DecimalField);
+                    if not Evaluate(DecimalField, Value) then
+                        Error(DecimalStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name");
+                    case LoanImportSchemaLine."Numeric Format" of
+                        LoanImportSchemaLine."Numeric Format"::Negative:
+                            DecimalField := -Abs(DecimalField);
+                        LoanImportSchemaLine."Numeric Format"::Positive:
+                            DecimalField := Abs(DecimalField);
+                        LoanImportSchemaLine."Numeric Format"::"Reverse Sign":
+                            DecimalField := -DecimalField;
+                    end;
+                    FieldReference.Validate(DecimalField);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::Integer:
+            LoanImportSchemaLine."Value Type"::Integer:
                 begin
-                    Clear(lvngIntegerField);
-                    if not Evaluate(lvngIntegerField, lvngValue) then
-                        Error(lvngIntegerStringWrongFormat, lvngValue, lvngLineNo, lvngLoanImportSchemaLine."Field Name");
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::Negative then
-                        lvngIntegerField := -ABS(lvngIntegerField);
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::Positive then
-                        lvngIntegerField := ABS(lvngIntegerField);
-                    if lvngLoanImportSchemaLine."Numeric Format" = lvngLoanImportSchemaLine."Numeric Format"::"Reverse Sign" then
-                        lvngIntegerField := -lvngIntegerField;
-                    lvngFieldRef.Validate(lvngIntegerField);
+                    Clear(IntegerField);
+                    if not Evaluate(IntegerField, Value) then
+                        Error(IntegerStringWrongFormatErr, Value, LineNo, LoanImportSchemaLine."Field Name");
+                    case LoanImportSchemaLine."Numeric Format" of
+                        LoanImportSchemaLine."Numeric Format"::Negative:
+                            IntegerField := -Abs(IntegerField);
+                        LoanImportSchemaLine."Numeric Format"::Positive:
+                            IntegerField := Abs(IntegerField);
+                        LoanImportSchemaLine."Numeric Format"::"Reverse Sign":
+                            IntegerField := -IntegerField;
+                    end;
+                    FieldReference.Validate(IntegerField);
                 end;
-            lvngLoanImportSchemaLine."Value Type"::Text:
+            LoanImportSchemaLine."Value Type"::Text:
                 begin
-                    lvngFieldRef.Validate(CopyStr(lvngValue, 1, lvngFieldRef.Length()));
+                    FieldReference.Validate(CopyStr(Value, 1, FieldReference.Length()));
                 end;
         end;
     end;
-
 }

@@ -1,4 +1,4 @@
-codeunit 14135100 "lvngGLEntryEventsSubscriber"
+codeunit 14135100 lvngGLEntryEventsSubscriber
 {
     [EventSubscriber(ObjectType::Table, Database::"G/L Entry", 'OnAfterCopyGLEntryFromGenJnlLine', '', false, false)]
     local procedure OnAfterCopyGLEntryFromGenJnlLine(var GLEntry: Record "G/L Entry"; var GenJournalLine: Record "Gen. Journal Line")
