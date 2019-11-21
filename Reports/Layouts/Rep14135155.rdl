@@ -11,67 +11,6 @@
       <rd:DataSourceID>da0d7b95-9416-4a59-97e4-d270b60b4405</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="VendorNo">
-          <DataField>VendorNo</DataField>
-        </Field>
-        <Field Name="DocumentNo">
-          <DataField>DocumentNo</DataField>
-        </Field>
-        <Field Name="DocumentAmount">
-          <DataField>DocumentAmount</DataField>
-        </Field>
-        <Field Name="DocumentAmountFormat">
-          <DataField>DocumentAmountFormat</DataField>
-        </Field>
-        <Field Name="DueDate">
-          <DataField>DueDate</DataField>
-        </Field>
-        <Field Name="VendorInvoiceNo">
-          <DataField>VendorInvoiceNo</DataField>
-        </Field>
-        <Field Name="AppliesToDocNo">
-          <DataField>AppliesToDocNo</DataField>
-        </Field>
-        <Field Name="PostingDescription">
-          <DataField>PostingDescription</DataField>
-        </Field>
-        <Field Name="VendorName">
-          <DataField>VendorName</DataField>
-        </Field>
-        <Field Name="ShowInvDet">
-          <DataField>ShowInvDet</DataField>
-        </Field>
-        <Field Name="ShowDet">
-          <DataField>ShowDet</DataField>
-        </Field>
-        <Field Name="ShowCostDet">
-          <DataField>ShowCostDet</DataField>
-        </Field>
-        <Field Name="GLAccountNo">
-          <DataField>GLAccountNo</DataField>
-        </Field>
-        <Field Name="CostCenter">
-          <DataField>CostCenter</DataField>
-        </Field>
-        <Field Name="LineDescription">
-          <DataField>LineDescription</DataField>
-        </Field>
-        <Field Name="LineAmount">
-          <DataField>LineAmount</DataField>
-        </Field>
-        <Field Name="LineAmountFormat">
-          <DataField>LineAmountFormat</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1832,22 +1771,19 @@
                                     </TablixMember>
                                   </TablixMembers>
                                   <Visibility>
-                                    <Hidden>true</Hidden>
-                                    <ToggleItem>GLAccountNo</ToggleItem>
+                                    <Hidden>=IIf(Fields!ShowCostDet.Value=FALSE,TRUE,FALSE)</Hidden>
                                   </Visibility>
                                 </TablixMember>
                               </TablixMembers>
                               <Visibility>
-                                <Hidden>true</Hidden>
-                                <ToggleItem>DocumentNo</ToggleItem>
+                                <Hidden>=IIf(Fields!ShowCostDet.Value=FALSE,TRUE,FALSE)</Hidden>
                               </Visibility>
                             </TablixMember>
                           </TablixMembers>
                         </TablixMember>
                       </TablixMembers>
                       <Visibility>
-                        <Hidden>true</Hidden>
-                        <ToggleItem>VendorNo</ToggleItem>
+                        <Hidden>=IIf(Fields!ShowDet.Value=FALSE,TRUE,FALSE)</Hidden>
                       </Visibility>
                     </TablixMember>
                   </TablixMembers>
@@ -2147,12 +2083,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -2192,4 +2122,65 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="VendorNo">
+          <DataField>VendorNo</DataField>
+        </Field>
+        <Field Name="DocumentNo">
+          <DataField>DocumentNo</DataField>
+        </Field>
+        <Field Name="DocumentAmount">
+          <DataField>DocumentAmount</DataField>
+        </Field>
+        <Field Name="DocumentAmountFormat">
+          <DataField>DocumentAmountFormat</DataField>
+        </Field>
+        <Field Name="DueDate">
+          <DataField>DueDate</DataField>
+        </Field>
+        <Field Name="VendorInvoiceNo">
+          <DataField>VendorInvoiceNo</DataField>
+        </Field>
+        <Field Name="AppliesToDocNo">
+          <DataField>AppliesToDocNo</DataField>
+        </Field>
+        <Field Name="PostingDescription">
+          <DataField>PostingDescription</DataField>
+        </Field>
+        <Field Name="VendorName">
+          <DataField>VendorName</DataField>
+        </Field>
+        <Field Name="ShowInvDet">
+          <DataField>ShowInvDet</DataField>
+        </Field>
+        <Field Name="ShowDet">
+          <DataField>ShowDet</DataField>
+        </Field>
+        <Field Name="ShowCostDet">
+          <DataField>ShowCostDet</DataField>
+        </Field>
+        <Field Name="GLAccountNo">
+          <DataField>GLAccountNo</DataField>
+        </Field>
+        <Field Name="CostCenter">
+          <DataField>CostCenter</DataField>
+        </Field>
+        <Field Name="LineDescription">
+          <DataField>LineDescription</DataField>
+        </Field>
+        <Field Name="LineAmount">
+          <DataField>LineAmount</DataField>
+        </Field>
+        <Field Name="LineAmountFormat">
+          <DataField>LineAmountFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>
