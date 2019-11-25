@@ -74,7 +74,7 @@ report 14135154 lvngRemittanceReport
                 Clear(BuyFromAddress);
                 DocumentFound := false;
                 if "Applies-to Doc. No." <> '' then begin
-                    if "Applies-to Doc. Type" = "Applies-to Doc. Type"::Invoice then begin
+                    if "Applies-to Doc. Type" = "Applies-to Doc. Type"::Invoice then
                         if PurchInvHeader.Get("Applies-to Doc. No.") then begin
                             Clear(TempPurchaseHeaderBuffer);
                             TempPurchaseHeaderBuffer.TransferFields(PurchInvHeader);
@@ -85,8 +85,7 @@ report 14135154 lvngRemittanceReport
                             TempPurchaseHeaderBuffer.Insert();
                             DocumentFound := true;
                         end;
-                    end;
-                    if "Applies-to Doc. Type" = "Applies-to Doc. Type"::"Credit Memo" then begin
+                    if "Applies-to Doc. Type" = "Applies-to Doc. Type"::"Credit Memo" then
                         if PurchCrMemoHeader.Get("Applies-to Doc. No.") then begin
                             Clear(TempPurchaseHeaderBuffer);
                             TempPurchaseHeaderBuffer.TransferFields(PurchCrMemoHeader);
@@ -97,7 +96,6 @@ report 14135154 lvngRemittanceReport
                             TempPurchaseHeaderBuffer.Insert();
                             DocumentFound := true;
                         end;
-                    end;
                     if not DocumentFound then begin
                         Clear(TempPurchaseHeaderBuffer);
                         Vendor.Get(CollectData."Account No.");
@@ -122,9 +120,9 @@ report 14135154 lvngRemittanceReport
                         VendorLedgerEntry.SetRange("Vendor No.", "Account No.");
                         VendorLedgerEntry.SetRange("Applies-to ID", "Applies-to ID");
                         VendorLedgerEntry.SetFilter("Document Type", '%1|%2', VendorLedgerEntry."Document Type"::Invoice, VendorLedgerEntry."Document Type"::"Credit Memo");
-                        if VendorLedgerEntry.FindSet() then begin
+                        if VendorLedgerEntry.FindSet() then
                             repeat
-                                if VendorLedgerEntry."Document Type" = VendorLedgerEntry."Document Type"::Invoice then begin
+                                if VendorLedgerEntry."Document Type" = VendorLedgerEntry."Document Type"::Invoice then
                                     if PurchInvHeader.Get(VendorLedgerEntry."Document No.") then begin
                                         Clear(TempPurchaseHeaderBuffer);
                                         TempPurchaseHeaderBuffer.TransferFields(PurchInvHeader);
@@ -151,14 +149,12 @@ report 14135154 lvngRemittanceReport
                                         TempPurchaseHeaderBuffer."Document Date" := CollectData."Document Date";
                                         TempPurchaseHeaderBuffer."Pay-to Contact" := '';
                                         TempPurchaseHeaderBuffer."Pay-to Contact" := CollectData."External Document No.";
-                                        if TempPurchaseHeaderBuffer."Pay-to Contact" = '' then begin
+                                        if TempPurchaseHeaderBuffer."Pay-to Contact" = '' then
                                             TempPurchaseHeaderBuffer."Pay-to Contact" := VendorLedgerEntry."External Document No.";
-                                        end;
                                         TempPurchaseHeaderBuffer."Posting Description" := CollectData.Description;
                                         TempPurchaseHeaderBuffer.Insert();
                                     end;
-                                end;
-                                if VendorLedgerEntry."Document Type" = VendorLedgerEntry."Document Type"::"Credit Memo" then begin
+                                if VendorLedgerEntry."Document Type" = VendorLedgerEntry."Document Type"::"Credit Memo" then
                                     if PurchCrMemoHeader.Get(VendorLedgerEntry."Document No.") then begin
                                         Clear(TempPurchaseHeaderBuffer);
                                         TempPurchaseHeaderBuffer.TransferFields(PurchCrMemoHeader);
@@ -189,14 +185,11 @@ report 14135154 lvngRemittanceReport
                                         TempPurchaseHeaderBuffer."Posting Description" := CollectData.Description;
                                         TempPurchaseHeaderBuffer."Pay-to Contact" := '';
                                         TempPurchaseHeaderBuffer."Pay-to Contact" := CollectData."External Document No.";
-                                        if TempPurchaseHeaderBuffer."Pay-to Contact" = '' then begin
+                                        if TempPurchaseHeaderBuffer."Pay-to Contact" = '' then
                                             TempPurchaseHeaderBuffer."Pay-to Contact" := VendorLedgerEntry."External Document No.";
-                                        end;
                                         TempPurchaseHeaderBuffer.Insert();
                                     end;
-                                end;
                             until VendorLedgerEntry.Next() = 0;
-                        end;
                     end else begin
                         Clear(TempPurchaseHeaderBuffer);
                         Vendor.Get(CollectData."Account No.");
@@ -212,9 +205,8 @@ report 14135154 lvngRemittanceReport
                         TempPurchaseHeaderBuffer."Posting Description" := CollectData.Description;
                         TempPurchaseHeaderBuffer."Pay-to Contact" := '';
                         TempPurchaseHeaderBuffer."Pay-to Contact" := CollectData."External Document No.";
-                        if TempPurchaseHeaderBuffer."Pay-to Contact" = '' then begin
+                        if TempPurchaseHeaderBuffer."Pay-to Contact" = '' then
                             TempPurchaseHeaderBuffer."Pay-to Contact" := VendorLedgerEntry."External Document No.";
-                        end;
                         TempPurchaseHeaderBuffer.Insert();
                     end;
                 end;
