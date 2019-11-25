@@ -7,7 +7,7 @@ enum 14135109 lvngPostProcessingType
     value(2; "Copy Loan Journal Variable Value") { Caption = 'Copy Loan Journal Variable Value'; }
     value(3; "Copy Loan Journal Value") { Caption = 'Copy Loan Journal Value'; }
     value(4; "Switch Expression") { Caption = 'Switch Expression'; }
-    value(5; Expression) { Caption = 'Expression'; }
+    value(5; "Formula Expression") { Caption = 'Formula Expression'; }
     value(6; "Dimension Mapping") { Caption = 'Dimension Mapping'; }
     value(7; "Assign Custom Value") { Caption = 'Assign Custom Value'; }
 }

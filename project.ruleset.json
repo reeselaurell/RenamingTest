@@ -1,0 +1,20 @@
+{
+    "name": "Ruleset modifications which cannot be resolved",
+    "rules": [
+        {
+            "id": "AS0015",
+            "action": "None",
+            "justification": "Do not need any translations while application is only shipped to US markets"
+        },
+        {
+            "id": "AW0006",
+            "action": "None",
+            "justification": "Not all pages should be searchable"
+        },
+        {
+            "id": "PTE0001",
+            "action": "None",
+            "justification": "We use our own id range"
+        }
+    ]
+}

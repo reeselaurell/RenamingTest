@@ -1,75 +1,63 @@
-codeunit 14135102 "lvngPostProcessingMgmt"
+codeunit 14135102 lvngPostProcessingMgmt
 {
-
-    procedure PostProcessBatch(lvngJournalBatchCode: Code[20])
     var
-        lvngLoanJournalBatch: Record lvngLoanJournalBatch;
-        lvngLoanJournalLine: Record lvngLoanJournalLine;
-        lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine;
+        GLSetup: Record "General Ledger Setup";
+        GLSetupRetrieved: Boolean;
+        MainDimensionNo: Integer;
+        HierarchyDimensionsUsage: array[5] of Boolean;
+
+    procedure PostProcessBatch(JournalBatchCode: Code[20])
+    var
+        LoanJournalBatch: Record lvngLoanJournalBatch;
+        LoanJournalLine: Record lvngLoanJournalLine;
+        PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine;
+        DimensionsManagement: Codeunit lvngDimensionsManagement;
     begin
-        MainDimensionCode := lvngDimensionsManagement.GetMainHierarchyDimensionCode();
-        MainDimensionNo := lvngDimensionsManagement.GetMainHierarchyDimensionNo();
-        lvngDimensionsManagement.GetHierarchyDimensionsUsage(HierarchyDimensionsUsage);
+        MainDimensionNo := DimensionsManagement.GetMainHierarchyDimensionNo();
+        DimensionsManagement.GetHierarchyDimensionsUsage(HierarchyDimensionsUsage);
         if MainDimensionNo <> 0 then
             HierarchyDimensionsUsage[MainDimensionNo] := false;
-        lvngLoanJournalBatch.Get(lvngJournalBatchCode);
-        lvngPostProcessingSchemaLine.reset;
-        lvngPostProcessingSchemaLine.SetRange("Journal Batch Code", lvngJournalBatchCode);
-        if lvngPostProcessingSchemaLine.IsEmpty() then begin
-            lvngLoanJournalLine.Reset();
-            lvngLoanJournalLine.SetRange("Loan Journal Batch Code", lvngJournalBatchCode);
-            if lvngLoanJournalLine.FindSet() then begin
+        LoanJournalBatch.Get(JournalBatchCode);
+        PostProcessingSchemaLine.Reset();
+        PostProcessingSchemaLine.SetRange("Journal Batch Code", JournalBatchCode);
+        if PostProcessingSchemaLine.IsEmpty() then begin
+            LoanJournalLine.Reset();
+            LoanJournalLine.SetRange("Loan Journal Batch Code", JournalBatchCode);
+            if LoanJournalLine.FindSet() then
                 repeat
-                    AssignDimensions(lvngLoanJournalBatch, lvngLoanJournalLine);
-                until lvngLoanJournalLine.Next() = 0;
-            end;
+                    AssignDimensions(LoanJournalBatch, LoanJournalLine);
+                until LoanJournalLine.Next() = 0;
             exit;
         end;
-        lvngPostProcessingSchemaLine.SetCurrentKey(Priority);
-        lvngLoanJournalLine.Reset();
-        lvngLoanJournalLine.SetRange("Loan Journal Batch Code", lvngJournalBatchCode);
-        lvngLoanJournalLine.FindSet();
+        PostProcessingSchemaLine.SetCurrentKey(Priority);
+        LoanJournalLine.Reset();
+        LoanJournalLine.SetRange("Loan Journal Batch Code", JournalBatchCode);
+        LoanJournalLine.FindSet();
         repeat
-            lvngPostProcessingSchemaLine.FindSet();
+            PostProcessingSchemaLine.FindSet();
             repeat
-                case lvngPostProcessingSchemaLine.Type of
-                    lvngPostProcessingSchemaLine.Type::"Copy Loan Card Value":
-                        begin
-                            CopyLoanCardValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
-                        end;
-                    lvngPostProcessingSchemaLine.Type::"Copy Loan Journal Value":
-                        begin
-                            CopyLoanJournalValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
-                        end;
-                    lvngPostProcessingSchemaLine.Type::"Copy Loan Journal Variable Value":
-                        begin
-                            CopyLoanJournalVariableValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
-                        end;
-                    lvngPostProcessingSchemaLine.Type::"Copy Loan Variable Value":
-                        begin
-                            CopyLoanVariableValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
-                        end;
-                    lvngPostProcessingSchemaLine.Type::Expression:
-                        begin
-                            CalculateExpression(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
-                        end;
-                    lvngPostProcessingSchemaLine.Type::"Switch Expression":
-                        begin
-                            CalculateSwitch(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
-                        end;
-                    lvngPostProcessingSchemaLine.Type::"Dimension Mapping":
-                        begin
-                            MapImportedDimension(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
-                        end;
-                    lvngPostProcessingSchemaLine.Type::"Assign Custom Value":
-                        begin
-                            AssignCustomValue(lvngPostProcessingSchemaLine, lvngLoanJournalLine);
-                        end;
+                case PostProcessingSchemaLine.Type of
+                    PostProcessingSchemaLine.Type::"Copy Loan Card Value":
+                        CopyLoanCardValue(PostProcessingSchemaLine, LoanJournalLine);
+                    PostProcessingSchemaLine.Type::"Copy Loan Journal Value":
+                        CopyLoanJournalValue(PostProcessingSchemaLine, LoanJournalLine);
+                    PostProcessingSchemaLine.Type::"Copy Loan Journal Variable Value":
+                        CopyLoanJournalVariableValue(PostProcessingSchemaLine, LoanJournalLine);
+                    PostProcessingSchemaLine.Type::"Copy Loan Variable Value":
+                        CopyLoanVariableValue(PostProcessingSchemaLine, LoanJournalLine);
+                    PostProcessingSchemaLine.Type::"Formula Expression":
+                        CalculateFormula(PostProcessingSchemaLine, LoanJournalLine);
+                    PostProcessingSchemaLine.Type::"Switch Expression":
+                        CalculateSwitch(PostProcessingSchemaLine, LoanJournalLine);
+                    PostProcessingSchemaLine.Type::"Dimension Mapping":
+                        MapImportedDimension(PostProcessingSchemaLine, LoanJournalLine);
+                    PostProcessingSchemaLine.Type::"Assign Custom Value":
+                        AssignCustomValue(PostProcessingSchemaLine, LoanJournalLine);
                 end;
-            until lvngPostProcessingSchemaLine.Next() = 0;
-            AssignDimensions(lvngLoanJournalBatch, lvngLoanJournalLine);
-            lvngLoanJournalLine.Modify();
-        until lvngLoanJournalLine.Next() = 0;
+            until PostProcessingSchemaLine.Next() = 0;
+            AssignDimensions(LoanJournalBatch, LoanJournalLine);
+            LoanJournalLine.Modify();
+        until LoanJournalLine.Next() = 0;
     end;
 
     local procedure GetGLSetup()
@@ -80,386 +68,364 @@ codeunit 14135102 "lvngPostProcessingMgmt"
         end;
     end;
 
-    local procedure GetLoanVisionSetup()
-    begin
-        if not loanvisionsetupretrieved then begin
-            lvngLoanVisionSetup.get;
-            LoanVisionSetupRetrieved := true;
-        end;
-    end;
-
-    local procedure AssignDimensions(lvngLoanJournalBatch: Record lvngLoanJournalBatch; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure AssignDimensions(LoanJournalBatch: Record lvngLoanJournalBatch; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        lvngLoan: Record lvngLoan;
+        Loan: Record lvngLoan;
         DimensionCode: Code[20];
-        lvngDimensionHierarchy: Record lvngDimensionHierarchy;
-        lvngHierarchyBasedOnDate: Date;
+        DimensionHierarchy: Record lvngDimensionHierarchy;
+        HierarchyBasedOnDate: Date;
     begin
-        case lvngLoanJournalBatch."Dimension Import Rule" of
-            lvngloanjournalbatch."Dimension Import Rule"::"Copy All From Loan":
+        case LoanJournalBatch."Dimension Import Rule" of
+            LoanJournalBatch."Dimension Import Rule"::"Copy All From Loan":
                 begin
-                    if lvngloan.Get(lvngLoanJournalLine."Loan No.") then begin
-                        lvngLoanJournalLine."Global Dimension 1 Code" := lvngloan."Global Dimension 1 Code";
-                        lvngLoanJournalLine."Global Dimension 2 Code" := lvngloan."Global Dimension 2 Code";
-                        lvngLoanJournalLine."Shortcut Dimension 3 Code" := lvngloan."Shortcut Dimension 3 Code";
-                        lvngLoanJournalLine."Shortcut Dimension 4 Code" := lvngloan."Shortcut Dimension 4 Code";
-                        lvngLoanJournalLine."Shortcut Dimension 5 Code" := lvngloan."Shortcut Dimension 5 Code";
-                        lvngLoanJournalLine."Shortcut Dimension 6 Code" := lvngloan."Shortcut Dimension 6 Code";
-                        lvngLoanJournalLine."Shortcut Dimension 7 Code" := lvngloan."Shortcut Dimension 7 Code";
-                        lvngLoanJournalLine."Shortcut Dimension 8 Code" := lvngloan."Shortcut Dimension 8 Code";
-                        lvngLoanJournalLine."Business Unit Code" := lvngLoan."Business Unit Code";
-                        lvngLoanJournalLine.Modify();
+                    if Loan.Get(LoanJournalLine."Loan No.") then begin
+                        LoanJournalLine."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
+                        LoanJournalLine."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
+                        LoanJournalLine."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
+                        LoanJournalLine."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
+                        LoanJournalLine."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
+                        LoanJournalLine."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
+                        LoanJournalLine."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
+                        LoanJournalLine."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
+                        LoanJournalLine."Business Unit Code" := Loan."Business Unit Code";
+                        LoanJournalLine.Modify();
                     end;
                 end;
-            lvngLoanJournalBatch."Dimension Import Rule"::"Copy All From Loan If Empty":
+            LoanJournalBatch."Dimension Import Rule"::"Copy All From Loan If Empty":
                 begin
-                    if lvngloan.Get(lvngLoanJournalLine."Loan No.") then begin
-                        if lvngLoanJournalLine."Global Dimension 1 Code" = '' then
-                            lvngLoanJournalLine."Global Dimension 1 Code" := lvngloan."Global Dimension 1 Code";
-                        if lvngLoanJournalLine."Global Dimension 2 Code" = '' then
-                            lvngLoanJournalLine."Global Dimension 2 Code" := lvngloan."Global Dimension 2 Code";
-                        if lvngLoanJournalLine."Shortcut Dimension 3 Code" = '' then
-                            lvngLoanJournalLine."Shortcut Dimension 3 Code" := lvngloan."Shortcut Dimension 3 Code";
-                        if lvngLoanJournalLine."Shortcut Dimension 4 Code" = '' then
-                            lvngLoanJournalLine."Shortcut Dimension 4 Code" := lvngloan."Shortcut Dimension 4 Code";
-                        if lvngLoanJournalLine."Shortcut Dimension 5 Code" = '' then
-                            lvngLoanJournalLine."Shortcut Dimension 5 Code" := lvngloan."Shortcut Dimension 5 Code";
-                        if lvngLoanJournalLine."Shortcut Dimension 6 Code" = '' then
-                            lvngLoanJournalLine."Shortcut Dimension 6 Code" := lvngloan."Shortcut Dimension 6 Code";
-                        if lvngLoanJournalLine."Shortcut Dimension 7 Code" = '' then
-                            lvngLoanJournalLine."Shortcut Dimension 7 Code" := lvngloan."Shortcut Dimension 7 Code";
-                        if lvngLoanJournalLine."Shortcut Dimension 8 Code" = '' then
-                            lvngLoanJournalLine."Shortcut Dimension 8 Code" := lvngloan."Shortcut Dimension 8 Code";
-                        if lvngLoanJournalLine."Business Unit Code" = '' then
-                            lvngLoanJournalLine."Business Unit Code" := lvngLoan."Business Unit Code";
-                        lvngLoanJournalLine.Modify();
+                    if Loan.Get(LoanJournalLine."Loan No.") then begin
+                        if LoanJournalLine."Global Dimension 1 Code" = '' then
+                            LoanJournalLine."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
+                        if LoanJournalLine."Global Dimension 2 Code" = '' then
+                            LoanJournalLine."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
+                        if LoanJournalLine."Shortcut Dimension 3 Code" = '' then
+                            LoanJournalLine."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
+                        if LoanJournalLine."Shortcut Dimension 4 Code" = '' then
+                            LoanJournalLine."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
+                        if LoanJournalLine."Shortcut Dimension 5 Code" = '' then
+                            LoanJournalLine."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
+                        if LoanJournalLine."Shortcut Dimension 6 Code" = '' then
+                            LoanJournalLine."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
+                        if LoanJournalLine."Shortcut Dimension 7 Code" = '' then
+                            LoanJournalLine."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
+                        if LoanJournalLine."Shortcut Dimension 8 Code" = '' then
+                            LoanJournalLine."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
+                        if LoanJournalLine."Business Unit Code" = '' then
+                            LoanJournalLine."Business Unit Code" := Loan."Business Unit Code";
+                        LoanJournalLine.Modify();
                     end;
                 end;
         end;
-        if lvngLoanJournalBatch."Map Dimensions Using Hierachy" then begin
+        if LoanJournalBatch."Map Dimensions Using Hierachy" then begin
             case MainDimensionNo of
                 1:
-                    DimensionCode := lvngLoanJournalLine."Global Dimension 1 Code";
+                    DimensionCode := LoanJournalLine."Global Dimension 1 Code";
                 2:
-                    DimensionCode := lvngLoanJournalLine."Global Dimension 2 Code";
+                    DimensionCode := LoanJournalLine."Global Dimension 2 Code";
                 3:
-                    DimensionCode := lvngLoanJournalLine."Shortcut Dimension 3 Code";
+                    DimensionCode := LoanJournalLine."Shortcut Dimension 3 Code";
                 4:
-                    DimensionCode := lvngLoanJournalLine."Shortcut Dimension 4 Code";
+                    DimensionCode := LoanJournalLine."Shortcut Dimension 4 Code";
             end;
-            lvngDimensionHierarchy.reset;
-            lvngDimensionHierarchy.Ascending(false);
-            case lvngLoanJournalBatch."Dimension Hierarchy Date" of
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::Application:
-                    lvngHierarchyBasedOnDate := lvngLoanJournalLine."Application Date";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::Commission:
-                    lvngHierarchyBasedOnDate := lvngLoanJournalLine."Commission Date";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::Closed:
-                    lvngHierarchyBasedOnDate := lvngLoanJournalLine."Date Closed";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::Funded:
-                    lvngHierarchyBasedOnDate := lvngLoanJournalLine."Date Funded";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::Locked:
-                    lvngHierarchyBasedOnDate := lvngLoanJournalLine."Date Locked";
-                lvngLoanJournalBatch."Dimension Hierarchy Date"::Sold:
-                    lvngHierarchyBasedOnDate := lvngLoanJournalLine."Date Sold";
+            DimensionHierarchy.Reset();
+            DimensionHierarchy.Ascending(false);
+            case LoanJournalBatch."Dimension Hierarchy Date" of
+                LoanJournalBatch."Dimension Hierarchy Date"::Application:
+                    HierarchyBasedOnDate := LoanJournalLine."Application Date";
+                LoanJournalBatch."Dimension Hierarchy Date"::Commission:
+                    HierarchyBasedOnDate := LoanJournalLine."Commission Date";
+                LoanJournalBatch."Dimension Hierarchy Date"::Closed:
+                    HierarchyBasedOnDate := LoanJournalLine."Date Closed";
+                LoanJournalBatch."Dimension Hierarchy Date"::Funded:
+                    HierarchyBasedOnDate := LoanJournalLine."Date Funded";
+                LoanJournalBatch."Dimension Hierarchy Date"::Locked:
+                    HierarchyBasedOnDate := LoanJournalLine."Date Locked";
+                LoanJournalBatch."Dimension Hierarchy Date"::Sold:
+                    HierarchyBasedOnDate := LoanJournalLine."Date Sold";
             end;
-            lvngDimensionHierarchy.SetFilter(Date, '..%1', lvngHierarchyBasedOnDate);
-            lvngDimensionHierarchy.SetRange(Code, DimensionCode);
-            if lvngDimensionHierarchy.FindFirst() then begin
+            DimensionHierarchy.SetFilter(Date, '..%1', HierarchyBasedOnDate);
+            DimensionHierarchy.SetRange(Code, DimensionCode);
+            if DimensionHierarchy.FindFirst() then begin
                 if HierarchyDimensionsUsage[1] then
-                    lvngLoanJournalLine."Global Dimension 1 Code" := lvngDimensionHierarchy."Global Dimension 1 Code";
+                    LoanJournalLine."Global Dimension 1 Code" := DimensionHierarchy."Global Dimension 1 Code";
                 if HierarchyDimensionsUsage[2] then
-                    lvngLoanJournalLine."Global Dimension 2 Code" := lvngDimensionHierarchy."Global Dimension 2 Code";
+                    LoanJournalLine."Global Dimension 2 Code" := DimensionHierarchy."Global Dimension 2 Code";
                 if HierarchyDimensionsUsage[3] then
-                    lvngLoanJournalLine."Shortcut Dimension 3 Code" := lvngDimensionHierarchy."Shortcut Dimension 3 Code";
+                    LoanJournalLine."Shortcut Dimension 3 Code" := DimensionHierarchy."Shortcut Dimension 3 Code";
                 if HierarchyDimensionsUsage[4] then
-                    lvngLoanJournalLine."Shortcut Dimension 4 Code" := lvngDimensionHierarchy."Shortcut Dimension 4 Code";
+                    LoanJournalLine."Shortcut Dimension 4 Code" := DimensionHierarchy."Shortcut Dimension 4 Code";
                 if HierarchyDimensionsUsage[5] then
-                    lvngLoanJournalLine."Business Unit Code" := lvngDimensionHierarchy."Business Unit Code";
-                lvngLoanJournalLine.Modify();
+                    LoanJournalLine."Business Unit Code" := DimensionHierarchy."Business Unit Code";
+                LoanJournalLine.Modify();
             end;
         end;
     end;
 
-    local procedure AssignCustomValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure AssignCustomValue(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     begin
-        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngPostProcessingSchemaLine."Custom Value");
+        AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, PostProcessingSchemaLine."Custom Value");
     end;
 
-    local procedure MapImportedDimension(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure MapImportedDimension(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        lvngImportDimensionMapping: Record lvngImportDimensionMapping;
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
+        ImportDimensionMapping: Record lvngImportDimensionMapping;
+        LoanJournalValue: Record lvngLoanJournalValue;
     begin
-        if lvngPostProcessingSchemaLine."Assign To" = lvngPostProcessingSchemaLine."Assign To"::"Loan Journal Field" then begin
-            if not lvngLoanJournalValue.Get(lvngLoanJournalLine."Loan Journal Batch Code", lvngLoanJournalLine."Line No.", lvngPostProcessingSchemaLine."From Field No.") then
+        if PostProcessingSchemaLine."Assign To" = PostProcessingSchemaLine."Assign To"::"Loan Journal Field" then begin
+            if not LoanJournalValue.Get(LoanJournalLine."Loan Journal Batch Code", LoanJournalLine."Line No.", PostProcessingSchemaLine."From Field No.") then
                 exit;
             GetGLSetup();
-            lvngImportDimensionMapping.reset;
-            lvngImportDimensionMapping.SetRange("Mapping Value", lvngLoanJournalValue."Field Value");
-            case lvngPostProcessingSchemaLine."To Field No." of
+            ImportDimensionMapping.Reset();
+            ImportDimensionMapping.SetRange("Mapping Value", LoanJournalValue."Field Value");
+            case PostProcessingSchemaLine."To Field No." of
                 80:
                     begin
-                        lvngImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 1 Code");
-                        if lvngImportDimensionMapping.FindFirst() then begin
-                            lvngLoanJournalLine."Global Dimension 1 Code" := lvngImportDimensionMapping."Dimension Value Code";
-                            lvngLoanJournalLine.Modify();
+                        ImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 1 Code");
+                        if ImportDimensionMapping.FindFirst() then begin
+                            LoanJournalLine."Global Dimension 1 Code" := ImportDimensionMapping."Dimension Value Code";
+                            LoanJournalLine.Modify();
                         end;
                     end;
                 81:
                     begin
-                        lvngImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 2 Code");
-                        if lvngImportDimensionMapping.FindFirst() then begin
-                            lvngLoanJournalLine."Global Dimension 2 Code" := lvngImportDimensionMapping."Dimension Value Code";
-                            lvngLoanJournalLine.Modify();
+                        ImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 2 Code");
+                        if ImportDimensionMapping.FindFirst() then begin
+                            LoanJournalLine."Global Dimension 2 Code" := ImportDimensionMapping."Dimension Value Code";
+                            LoanJournalLine.Modify();
                         end;
                     end;
                 82:
                     begin
-                        lvngImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 3 Code");
-                        if lvngImportDimensionMapping.FindFirst() then begin
-                            lvngLoanJournalLine."Shortcut Dimension 3 Code" := lvngImportDimensionMapping."Dimension Value Code";
-                            lvngLoanJournalLine.Modify();
+                        ImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 3 Code");
+                        if ImportDimensionMapping.FindFirst() then begin
+                            LoanJournalLine."Shortcut Dimension 3 Code" := ImportDimensionMapping."Dimension Value Code";
+                            LoanJournalLine.Modify();
                         end;
                     end;
                 83:
                     begin
-                        lvngImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 4 Code");
-                        if lvngImportDimensionMapping.FindFirst() then begin
-                            lvngLoanJournalLine."Shortcut Dimension 4 Code" := lvngImportDimensionMapping."Dimension Value Code";
-                            lvngLoanJournalLine.Modify();
+                        ImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 4 Code");
+                        if ImportDimensionMapping.FindFirst() then begin
+                            LoanJournalLine."Shortcut Dimension 4 Code" := ImportDimensionMapping."Dimension Value Code";
+                            LoanJournalLine.Modify();
                         end;
                     end;
                 84:
                     begin
-                        lvngImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 5 Code");
-                        if lvngImportDimensionMapping.FindFirst() then begin
-                            lvngLoanJournalLine."Shortcut Dimension 5 Code" := lvngImportDimensionMapping."Dimension Value Code";
-                            lvngLoanJournalLine.Modify();
+                        ImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 5 Code");
+                        if ImportDimensionMapping.FindFirst() then begin
+                            LoanJournalLine."Shortcut Dimension 5 Code" := ImportDimensionMapping."Dimension Value Code";
+                            LoanJournalLine.Modify();
                         end;
                     end;
                 85:
                     begin
-                        lvngImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 6 Code");
-                        if lvngImportDimensionMapping.FindFirst() then begin
-                            lvngLoanJournalLine."Shortcut Dimension 6 Code" := lvngImportDimensionMapping."Dimension Value Code";
-                            lvngLoanJournalLine.Modify();
+                        ImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 6 Code");
+                        if ImportDimensionMapping.FindFirst() then begin
+                            LoanJournalLine."Shortcut Dimension 6 Code" := ImportDimensionMapping."Dimension Value Code";
+                            LoanJournalLine.Modify();
                         end;
                     end;
                 86:
                     begin
-                        lvngImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 7 Code");
-                        if lvngImportDimensionMapping.FindFirst() then begin
-                            lvngLoanJournalLine."Shortcut Dimension 7 Code" := lvngImportDimensionMapping."Dimension Value Code";
-                            lvngLoanJournalLine.Modify();
+                        ImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 7 Code");
+                        if ImportDimensionMapping.FindFirst() then begin
+                            LoanJournalLine."Shortcut Dimension 7 Code" := ImportDimensionMapping."Dimension Value Code";
+                            LoanJournalLine.Modify();
                         end;
                     end;
                 87:
                     begin
-                        lvngImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 8 Code");
-                        if lvngImportDimensionMapping.FindFirst() then begin
-                            lvngLoanJournalLine."Shortcut Dimension 8 Code" := lvngImportDimensionMapping."Dimension Value Code";
-                            lvngLoanJournalLine.Modify();
+                        ImportDimensionMapping.SetRange("Dimension Code", GLSetup."Shortcut Dimension 8 Code");
+                        if ImportDimensionMapping.FindFirst() then begin
+                            LoanJournalLine."Shortcut Dimension 8 Code" := ImportDimensionMapping."Dimension Value Code";
+                            LoanJournalLine.Modify();
                         end;
                     end;
                 88:
                     begin
-                        lvngImportDimensionMapping.SetRange("Dimension Code", '');
-                        if lvngImportDimensionMapping.FindFirst() then begin
-                            lvngLoanJournalLine."Business Unit Code" := lvngImportDimensionMapping."Dimension Value Code";
-                            lvngLoanJournalLine.Modify();
+                        ImportDimensionMapping.SetRange("Dimension Code", '');
+                        if ImportDimensionMapping.FindFirst() then begin
+                            LoanJournalLine."Business Unit Code" := ImportDimensionMapping."Dimension Value Code";
+                            LoanJournalLine.Modify();
                         end;
                     end;
             end;
         end;
     end;
 
-    local procedure CalculateSwitch(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure CalculateSwitch(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
-        lvngExpressionEngine: Codeunit lvngExpressionEngine;
-        lvngExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        ExpressionEngine: Codeunit lvngExpressionEngine;
+        ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
         ExpressionHeader: Record lvngExpressionHeader;
-        lvngValue: Text;
-        SwitchCaseErrorLbl: Label 'Switch Case %1 can not be resolved';
+        Value: Text;
+        SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
     begin
-        lvngPostProcessingSchemaLine.TestField("Expression Code");
-        lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
-        ExpressionHeader.Get(lvngPostProcessingSchemaLine."Expression Code", lvngConditionsMgmt.GetConditionsMgmtConsumerId());
-        if not lvngExpressionEngine.SwitchCase(ExpressionHeader, lvngValue, lvngExpressionValueBuffer) then
-            Error(SwitchCaseErrorLbl, lvngPostProcessingSchemaLine."Expression Code");
-        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
+        PostProcessingSchemaLine.TestField("Expression Code");
+        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine);
+        ExpressionHeader.Get(PostProcessingSchemaLine."Expression Code", ConditionsMgmt.GetConditionsMgmtConsumerId());
+        if not ExpressionEngine.SwitchCase(ExpressionHeader, Value, ExpressionValueBuffer) then
+            Error(SwitchCaseErr, PostProcessingSchemaLine."Expression Code");
+        AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CalculateExpression(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure CalculateFormula(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
-        lvngExpressionEngine: Codeunit lvngExpressionEngine;
-        lvngExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        ExpressionEngine: Codeunit lvngExpressionEngine;
+        ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
         ExpressionHeader: Record lvngExpressionHeader;
-        lvngValue: Text;
+        Value: Text;
     begin
-        lvngPostProcessingSchemaLine.TestField("Expression Code");
-        lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
-        ExpressionHeader.Get(lvngPostProcessingSchemaLine."Expression Code", lvngConditionsMgmt.GetConditionsMgmtConsumerId());
-        lvngValue := lvngExpressionEngine.CalculateFormula(ExpressionHeader, lvngExpressionValueBuffer);
-        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
+        PostProcessingSchemaLine.TestField("Expression Code");
+        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine);
+        ExpressionHeader.Get(PostProcessingSchemaLine."Expression Code", ConditionsMgmt.GetConditionsMgmtConsumerId());
+        Value := ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer);
+        AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CopyLoanCardValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure CopyLoanCardValue(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        lvngLoan: Record lvngLoan;
-        lvngRecRef: RecordRef;
-        lvngFieldRef: FieldRef;
-        lvngValue: Text;
+        Loan: Record lvngLoan;
+        RecordReference: RecordRef;
+        FieldReference: FieldRef;
+        Value: Text;
     begin
-        lvngLoan.get(lvngLoanJournalLine."Loan No.");
-        lvngRecRef.GetTable(lvngLoan);
-        lvngFieldRef := lvngRecRef.Field(lvngPostProcessingSchemaLine."From Field No.");
-        lvngValue := Format(lvngFieldRef.Value());
-        if lvngPostProcessingSchemaLine."Copy Field Part" then
-            lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine."From Character No.", lvngPostProcessingSchemaLine."Characters Count");
-        lvngRecRef.Close();
-        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
+        Loan.Get(LoanJournalLine."Loan No.");
+        RecordReference.GetTable(Loan);
+        FieldReference := RecordReference.Field(PostProcessingSchemaLine."From Field No.");
+        Value := Format(FieldReference.Value());
+        if PostProcessingSchemaLine."Copy Field Part" then
+            Value := CopyFieldPart(Value, PostProcessingSchemaLine."From Character No.", PostProcessingSchemaLine."Characters Count");
+        RecordReference.Close();
+        AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CopyLoanJournalValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure CopyLoanJournalValue(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        lvngRecRef: RecordRef;
-        lvngFieldRef: FieldRef;
-        lvngValue: Text;
+        RecordReference: RecordRef;
+        FieldReference: FieldRef;
+        Value: Text;
     begin
-        lvngRecRef.GetTable(lvngLoanJournalLine);
-        lvngFieldRef := lvngRecRef.Field(lvngPostProcessingSchemaLine."From Field No.");
-        lvngValue := lvngFieldRef.Value();
-        if lvngPostProcessingSchemaLine."Copy Field Part" then
-            lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine."From Character No.", lvngPostProcessingSchemaLine."Characters Count");
-        lvngRecRef.Close();
-        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
+        RecordReference.GetTable(LoanJournalLine);
+        FieldReference := RecordReference.Field(PostProcessingSchemaLine."From Field No.");
+        Value := FieldReference.Value();
+        if PostProcessingSchemaLine."Copy Field Part" then
+            Value := CopyFieldPart(Value, PostProcessingSchemaLine."From Character No.", PostProcessingSchemaLine."Characters Count");
+        RecordReference.Close();
+        AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CopyLoanJournalVariableValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure CopyLoanJournalVariableValue(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        lvngLoanJournalValueFrom: record lvngLoanJournalValue;
-        lvngValue: Text;
+        LoanJournalValueFrom: record lvngLoanJournalValue;
+        Value: Text;
     begin
-        lvngLoanJournalValueFrom.Get(lvngLoanJournalLine."Loan Journal Batch Code", lvngLoanJournalLine."Line No.", lvngPostProcessingSchemaLine."From Field No.");
-        lvngValue := lvngLoanJournalValueFrom."Field Value";
-        if lvngPostProcessingSchemaLine."Copy Field Part" then
-            lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine."From Character No.", lvngPostProcessingSchemaLine."Characters Count");
-        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
+        LoanJournalValueFrom.Get(LoanJournalLine."Loan Journal Batch Code", LoanJournalLine."Line No.", PostProcessingSchemaLine."From Field No.");
+        Value := LoanJournalValueFrom."Field Value";
+        if PostProcessingSchemaLine."Copy Field Part" then
+            Value := CopyFieldPart(Value, PostProcessingSchemaLine."From Character No.", PostProcessingSchemaLine."Characters Count");
+        AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CopyLoanVariableValue(lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var lvngLoanJournalLine: record lvngLoanJournalLine)
+    local procedure CopyLoanVariableValue(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        lvngLoanValueFrom: record lvngLoanValue;
-        lvngValue: Text;
+        LoanValueFrom: record lvngLoanValue;
+        Value: Text;
     begin
-        lvngLoanValueFrom.Get(lvngLoanJournalLine."Loan No.", lvngPostProcessingSchemaLine."From Field No.");
-        lvngValue := lvngLoanValueFrom."Field Value";
-        if lvngPostProcessingSchemaLine."Copy Field Part" then
-            lvngValue := CopyFieldPart(lvngValue, lvngPostProcessingSchemaLine."From Character No.", lvngPostProcessingSchemaLine."Characters Count");
-        AssignFieldValue(lvngLoanJournalLine, lvngPostProcessingSchemaLine, lvngValue);
+        LoanValueFrom.Get(LoanJournalLine."Loan No.", PostProcessingSchemaLine."From Field No.");
+        Value := LoanValueFrom."Field Value";
+        if PostProcessingSchemaLine."Copy Field Part" then
+            Value := CopyFieldPart(Value, PostProcessingSchemaLine."From Character No.", PostProcessingSchemaLine."Characters Count");
+        AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure AssignFieldValue(var lvngLoanJournalLine: Record lvngLoanJournalLine; lvngPostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; lvngValue: Text)
+    local procedure AssignFieldValue(var LoanJournalLine: Record lvngLoanJournalLine; PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; Value: Text)
     var
-        lvngRecRefTo: RecordRef;
-        lvngFieldRefTo: FieldRef;
-        lvngLoanJournalValue: Record lvngLoanJournalValue;
-        lvngDecimalValue: Decimal;
+        RecordRefTo: RecordRef;
+        FieldRefTo: FieldRef;
+        LoanJournalValue: Record lvngLoanJournalValue;
+        DecimalValue: Decimal;
     begin
-        case lvngPostProcessingSchemaLine."Assign To" of
-            lvngPostProcessingSchemaLine."Assign To"::"Loan Journal Variable Field":
+        case PostProcessingSchemaLine."Assign To" of
+            PostProcessingSchemaLine."Assign To"::"Loan Journal Variable Field":
                 begin
-                    if not lvngLoanJournalValue.Get(lvngLoanJournalLine."Loan Journal Batch Code", lvngLoanJournalLine."Line No.", lvngPostProcessingSchemaLine."To Field No.") then begin
-                        Clear(lvngLoanJournalValue);
-                        lvngLoanJournalValue.init;
-                        lvngLoanJournalValue."Loan Journal Batch Code" := lvngLoanJournalLine."Loan Journal Batch Code";
-                        lvngLoanJournalValue."Line No." := lvngloanjournalline."Line No.";
-                        lvngLoanJournalValue."Field No." := lvngPostProcessingSchemaLine."To Field No.";
-                        lvngLoanJournalValue.Insert(true);
+                    if not LoanJournalValue.Get(LoanJournalLine."Loan Journal Batch Code", LoanJournalLine."Line No.", PostProcessingSchemaLine."To Field No.") then begin
+                        Clear(LoanJournalValue);
+                        LoanJournalValue.Init();
+                        LoanJournalValue."Loan Journal Batch Code" := LoanJournalLine."Loan Journal Batch Code";
+                        LoanJournalValue."Line No." := LoanJournalLine."Line No.";
+                        LoanJournalValue."Field No." := PostProcessingSchemaLine."To Field No.";
+                        LoanJournalValue.Insert(true);
                     end;
-                    lvngLoanJournalValue."Field Value" := lvngValue;
-                    if lvngPostProcessingSchemaLine."Rounding Expression" <> 0 then begin
-                        if Evaluate(lvngDecimalValue, lvngLoanJournalValue."Field Value") then begin
-                            lvngLoanJournalValue."Field Value" := Format(Round(lvngDecimalValue, lvngPostProcessingSchemaLine."Rounding Expression"));
+                    LoanJournalValue."Field Value" := Value;
+                    if PostProcessingSchemaLine."Rounding Expression" <> 0 then begin
+                        if Evaluate(DecimalValue, LoanJournalValue."Field Value") then begin
+                            LoanJournalValue."Field Value" := Format(Round(DecimalValue, PostProcessingSchemaLine."Rounding Expression"));
                         end;
                     end;
-                    lvngLoanJournalValue.Modify(true);
+                    LoanJournalValue.Modify(true);
                 end;
-            lvngPostProcessingSchemaLine."Assign To"::"Loan Journal Field":
+            PostProcessingSchemaLine."Assign To"::"Loan Journal Field":
                 begin
-                    lvngRecRefTo.GetTable(lvngLoanJournalLine);
-                    lvngFieldRefTo := lvngRecRefTo.Field(lvngPostProcessingSchemaLine."To Field No.");
-                    AssignFieldRefValue(lvngFieldRefTo, lvngPostProcessingSchemaLine."Rounding Expression", lvngValue);
-                    lvngRecRefTo.SetTable(lvngLoanJournalLine);
-                    lvngRecRefTo.Close();
-                    lvngLoanJournalLine.Modify(true);
+                    RecordRefTo.GetTable(LoanJournalLine);
+                    FieldRefTo := RecordRefTo.Field(PostProcessingSchemaLine."To Field No.");
+                    AssignFieldRefValue(FieldRefTo, PostProcessingSchemaLine."Rounding Expression", Value);
+                    RecordRefTo.SetTable(LoanJournalLine);
+                    RecordRefTo.Close();
+                    LoanJournalLine.Modify(true);
                 end;
         end;
     end;
 
-    local procedure AssignFieldRefValue(var lvngFieldRefTo: FieldRef; lvngRoundExpression: Decimal; lvngValue: Text)
+    local procedure AssignFieldRefValue(var FieldRefTo: FieldRef; RoundExpression: Decimal; Value: Text)
     var
-        lvngDateValue: Date;
-        lvngDecimalValue: Decimal;
-        lvngIntegerValue: Integer;
-        lvngBooleanValue: Boolean;
+        DateValue: Date;
+        DecimalValue: Decimal;
+        IntegerValue: Integer;
+        BooleanValue: Boolean;
     begin
-        case lvngFieldRefTo.Type of
-            lvngFieldRefTo.Type::Boolean:
+        case FieldRefTo.Type of
+            FieldRefTo.Type::Boolean:
                 begin
-                    if not Evaluate(lvngBooleanValue, lvngValue) then
-                        lvngBooleanValue := false;
-                    lvngFieldRefTo.Validate(lvngBooleanValue);
+                    if not Evaluate(BooleanValue, Value) then
+                        BooleanValue := false;
+                    FieldRefTo.Validate(BooleanValue);
                 end;
-            lvngFieldRefTo.Type::Decimal:
+            FieldRefTo.Type::Decimal:
                 begin
-                    if not Evaluate(lvngDecimalValue, lvngValue) then
-                        lvngDecimalValue := 0;
-                    if lvngRoundExpression <> 0 then begin
-                        lvngFieldRefTo.Validate(Round(lvngDecimalValue, lvngRoundExpression));
-                    end else begin
-                        lvngFieldRefTo.Validate(lvngDecimalValue);
-                    end;
+                    if not Evaluate(DecimalValue, Value) then
+                        DecimalValue := 0;
+                    if RoundExpression <> 0 then
+                        FieldRefTo.Validate(Round(DecimalValue, RoundExpression))
+                    else
+                        FieldRefTo.Validate(DecimalValue);
                 end;
-            lvngFieldRefTo.Type::Integer:
+            FieldRefTo.Type::Integer:
                 begin
-                    if not Evaluate(lvngIntegerValue, lvngValue) then
-                        lvngIntegerValue := 0;
-                    lvngFieldRefTo.Validate(lvngIntegerValue);
+                    if not Evaluate(IntegerValue, Value) then
+                        IntegerValue := 0;
+                    FieldRefTo.Validate(IntegerValue);
                 end;
-            lvngFieldRefTo.Type::Date:
+            FieldRefTo.Type::Date:
                 begin
-                    if not Evaluate(lvngDateValue, lvngValue) then
-                        lvngDateValue := 0D;
-                    lvngFieldRefTo.Validate(lvngDateValue);
+                    if not Evaluate(DateValue, Value) then
+                        DateValue := 0D;
+                    FieldRefTo.Validate(DateValue);
                 end;
-            else begin
-                    lvngFieldRefTo.Validate(lvngValue);
-                end;
+            else
+                FieldRefTo.Validate(Value);
         end;
     end;
 
-    local procedure CopyFieldPart(lvngInputValue: Text; lvngFromCharacterNo: Integer; lvngCharactersCount: Integer): Text
+    local procedure CopyFieldPart(InputValue: Text; FromCharacterNo: Integer; CharactersCount: Integer): Text
     begin
-        if (lvngFromCharacterNo = 0) or (lvngFromCharacterNo > 249) or (lvngCharactersCount < 1) then
+        if (FromCharacterNo = 0) or (CharactersCount < 1) then
             exit;
-        if StrLen(lvngInputValue) > lvngFromCharacterNo then
+        if StrLen(InputValue) <= FromCharacterNo then
             exit;
-        if (lvngFromCharacterNo + lvngCharactersCount) > 249 then
-            exit;
-        exit(copystr(lvngInputValue, lvngFromCharacterNo, lvngCharactersCount));
+        exit(copystr(InputValue, FromCharacterNo, CharactersCount));
     end;
-
-    var
-        GLSetup: Record "General Ledger Setup";
-        lvngLoanVisionSetup: Record lvngLoanVisionSetup;
-        lvngDimensionsManagement: Codeunit lvngDimensionsManagement;
-        GLSetupRetrieved: Boolean;
-        LoanVisionSetupRetrieved: Boolean;
-        MainDimensionCode: Code[20];
-        HierarchyDimensionsUsage: array[5] of boolean;
-        MainDimensionNo: Integer;
 }
