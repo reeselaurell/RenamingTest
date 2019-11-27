@@ -15,7 +15,7 @@ report 14135166 lvngServicingStatementInvoice
                 DataItemTableView = sorting("No.");
                 DataItemLink = "No." = field("Sell-to Customer No.");
 
-                column(Logo; MortgageStatementSetup."Statement Logo") { }
+                column(Logo; LoanServicingSetup."Statement Logo") { }
                 column(AccountNumber; "No.") { }
                 column(StatementDate; AsOfDate) { }
                 column(PropertyAddress1; PropertyAddress[1]) { }
@@ -25,8 +25,8 @@ report 14135166 lvngServicingStatementInvoice
                 column(PaymentDueDate; PaymentDueDate) { }
                 column(CurrentInvoiceAmountDue; CurrentInvoiceAmountDue) { }
                 column(LatePaymentVerbiage; LatePaymentVerbiage) { }
-                column(ServicingPhoneNo; MortgageStatementSetup."Serv. Department Phone No.") { }
-                column(ServicingName; MortgageStatementSetup."Name On Statement Report") { }
+                column(ServicingPhoneNo; LoanServicingSetup."Serv. Department Phone No.") { }
+                column(ServicingName; LoanServicingSetup."Name On Statement Report") { }
                 column(CustomerAddress1; CustAddr[1]) { }
                 column(CustomerAddress2; CustAddr[2]) { }
                 column(CustomerAddress3; CustAddr[3]) { }
@@ -125,18 +125,18 @@ report 14135166 lvngServicingStatementInvoice
                 column(PaidYTD5; PaidYTD[5]) { }
                 column(PaidYTD6; PaidYTD[6]) { }
                 column(DueByVerbiage; DueByVerbiage) { }
-                column(ServPhoneNo; MortgageStatementSetup."Serv. Department Phone No.") { }
-                column(ServFaxNo; MortgageStatementSetup."Serv. Department Fax No.") { }
-                column(ServWorkingDays; MortgageStatementSetup."Serv. Department Working Days") { }
-                column(ServWorkingHours; MortgageStatementSetup."Serv. Department Working Hours") { }
-                column(ServEmail; MortgageStatementSetup."Serv. Department E-Mail") { }
-                column(Website; MortgageStatementSetup."Company Website") { }
+                column(ServPhoneNo; LoanServicingSetup."Serv. Department Phone No.") { }
+                column(ServFaxNo; LoanServicingSetup."Serv. Department Fax No.") { }
+                column(ServWorkingDays; LoanServicingSetup."Serv. Department Working Days") { }
+                column(ServWorkingHours; LoanServicingSetup."Serv. Department Working Hours") { }
+                column(ServEmail; LoanServicingSetup."Serv. Department E-Mail") { }
+                column(Website; LoanServicingSetup."Company Website") { }
                 column(ServAddressFull; ServAddressFull) { }
-                column(CollectionPhoneNo; MortgageStatementSetup."Collection Dep. Phone No.") { }
-                column(CollectionWorkingDays; MortgageStatementSetup."Collection Dep. Working Days") { }
-                column(CollectionWorkingHours; MortgageStatementSetup."Collection Dep. Working Hours") { }
-                column(CollectionFaxNo; MortgageStatementSetup."Collection Dep.Fax No.") { }
-                column(CompanyNameOnStatement; MortgageStatementSetup."Name On Statement Report") { }
+                column(CollectionPhoneNo; LoanServicingSetup."Collection Dep. Phone No.") { }
+                column(CollectionWorkingDays; LoanServicingSetup."Collection Dep. Working Days") { }
+                column(CollectionWorkingHours; LoanServicingSetup."Collection Dep. Working Hours") { }
+                column(CollectionFaxNo; LoanServicingSetup."Collection Dep.Fax No.") { }
+                column(CompanyNameOnStatement; LoanServicingSetup."Name On Statement Report") { }
 
                 trigger OnPreDataItem()
                 begin
@@ -199,12 +199,12 @@ report 14135166 lvngServicingStatementInvoice
                         CustLedgEntry.CalcFields(Amount, "Remaining Amount");
                         if CustLedgEntry."Remaining Amount" <> 0 then begin
                             CurrentInvoiceAmountDue := CustLedgEntry.Amount;
-                            if MortgageStatementSetup."Serv. Report Due Date" = MortgageStatementSetup."Serv. Report Due Date"::"Ledger Entries" then
+                            if LoanServicingSetup."Serv. Report Due Date" = LoanServicingSetup."Serv. Report Due Date"::"Ledger Entries" then
                                 PaymentDueDate := CustLedgEntry."Due Date"
                             else
-                                PaymentDueDate := CalcDate(MortgageStatementSetup."Serv. Due Date Formula", CustLedgEntry."Posting Date");
-                            LateFeeAmount := Round(MortgageStatementSetup."Late Payment Fee Percent" * CustLedgEntry.Amount / 100, 0.01);
-                            LatePaymentVerbiage := StrSubstNo(LateFeeTxt, CalcDate(MortgageStatementSetup."Late Payment Date Formula", PaymentDueDate), LateFeeAmount);
+                                PaymentDueDate := CalcDate(LoanServicingSetup."Serv. Due Date Formula", CustLedgEntry."Posting Date");
+                            LateFeeAmount := Round(LoanServicingSetup."Late Payment Fee Percent" * CustLedgEntry.Amount / 100, 0.01);
+                            LatePaymentVerbiage := StrSubstNo(LateFeeTxt, CalcDate(LoanServicingSetup."Late Payment Date Formula", PaymentDueDate), LateFeeAmount);
                         end;
                         RegularMonthlyPayment := CustLedgEntry.Amount;
                         if SalesInvHeader.Get(CustLedgEntry."Document No.") then begin
@@ -457,7 +457,6 @@ report 14135166 lvngServicingStatementInvoice
         LateFeeTxt: Label 'If payment is received after %1 a $%2 late fee will be charged.';
         TransactionActivityTxt: Label 'Transaction Activity Since Last Statement';
         DueByTxt: Label 'Due By %1: $%2';
-        MortgageStatementSetup: Record lvngMortgageStatementSetup;
         LoanVisionSetup: Record lvngLoanVisionSetup;
         LoanServicingSetup: Record lvngLoanServicingSetup;
         Loan: Record lvngLoan;
@@ -514,11 +513,11 @@ report 14135166 lvngServicingStatementInvoice
 
     trigger OnPreReport()
     begin
-        MortgageStatementSetup.Get();
-        MortgageStatementSetup.CalcFields("Statement Logo");
+        LoanServicingSetup.Get();
+        LoanServicingSetup.CalcFields("Statement Logo");
         LoanVisionSetup.Get();
         Clear(FormatAddress);
-        with MortgageStatementSetup do begin
+        with LoanServicingSetup do begin
             FormatAddress.FormatAddr(CompanyAddr, '', '', '', "Serv. Department Address 1", "Serv. Department Address 2",
             "Serv. Department City", "Serv. Department Zip Code", "Serv. Department State", '');
         end;
