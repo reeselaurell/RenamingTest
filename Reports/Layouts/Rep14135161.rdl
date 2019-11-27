@@ -764,7 +764,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>0.02778in</Top>
+            <Top>0.15278in</Top>
             <Height>0.81667in</Height>
             <Width>7.77082in</Width>
             <Style>
@@ -774,13 +774,13 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>0.84445in</Height>
+        <Height>1.01112in</Height>
         <Style />
       </Body>
       <Width>7.77082in</Width>
       <Page>
         <PageHeader>
-          <Height>2.25763in</Height>
+          <Height>2.30971in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -981,7 +981,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox2</rd:DefaultName>
               <Top>2.05555in</Top>
-              <Height>0.17708in</Height>
+              <Height>0.19861in</Height>
               <Width>3.79166in</Width>
               <ZIndex>6</ZIndex>
               <Style>
@@ -1742,7 +1742,7 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.30833in</Height>
+          <Height>0.29791in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1767,6 +1767,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox55</rd:DefaultName>
               <Top>0.02777in</Top>
+              <Left>0in</Left>
               <Height>0.25in</Height>
               <Width>7.77082in</Width>
               <Style>
@@ -1861,11 +1862,20 @@ End Function
         <Field Name="LoanNo">
           <DataField>LoanNo</DataField>
         </Field>
+        <Field Name="BillToCustomerNo">
+          <DataField>BillToCustomerNo</DataField>
+        </Field>
         <Field Name="ExternalDocumentNo">
           <DataField>ExternalDocumentNo</DataField>
         </Field>
         <Field Name="BranchName">
           <DataField>BranchName</DataField>
+        </Field>
+        <Field Name="BorrowerName">
+          <DataField>BorrowerName</DataField>
+        </Field>
+        <Field Name="DueDate">
+          <DataField>DueDate</DataField>
         </Field>
         <Field Name="LoanOfficerName">
           <DataField>LoanOfficerName</DataField>

@@ -312,7 +312,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Posting_Date.Value</Value>
+                                  <Value>=Fields!PostingDate.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -898,8 +898,8 @@
             </Border>
           </Style>
         </PageHeader>
-        <PageHeight>0in</PageHeight>
-        <PageWidth>2in</PageWidth>
+        <PageHeight>8.5in</PageHeight>
+        <PageWidth>11in</PageWidth>
         <LeftMargin>0.2in</LeftMargin>
         <RightMargin>0.1in</RightMargin>
         <TopMargin>0.25in</TopMargin>
@@ -950,8 +950,8 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="Posting_Date">
-          <DataField>Posting_Date</DataField>
+        <Field Name="PostingDate">
+          <DataField>PostingDate</DataField>
         </Field>
         <Field Name="FromBankAccountName">
           <DataField>FromBankAccountName</DataField>

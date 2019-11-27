@@ -13,5 +13,6 @@ tableextension 14135103 lvngGLAccount extends "G/L Account"
         field(14135109; "Shortcut Dimension 6 Filter"; Code[20]) { Caption = 'Shortcut Dimension 6 Filter'; CaptionClass = '1,4,6'; FieldClass = FlowFilter; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6)); }
         field(14135110; "Shortcut Dimension 7 Filter"; Code[20]) { Caption = 'Shortcut Dimension 7 Filter'; CaptionClass = '1,4,7'; FieldClass = FlowFilter; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7)); }
         field(14135111; "Shortcut Dimension 8 Filter"; Code[20]) { Caption = 'Shortcut Dimension 8 Filter'; CaptionClass = '1,4,8'; FieldClass = FlowFilter; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8)); }
+        field(14135112; "Revenue G/L Account No."; Code[20]) { Caption = 'Revenue G/L Account'; DataClassification = CustomerContent; TableRelation = "G/L Account"."No." where("Account Type" = const(Posting)); }
     }
 }

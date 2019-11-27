@@ -1,4 +1,4 @@
-report 14135165 "lvngAverageDailyTrialBalance"
+report 14135165 lvngAverageDailyTrialBalance
 {
     Caption = 'Average Daily Trial Balance';
     DefaultLayout = RDLC;
@@ -6,14 +6,14 @@ report 14135165 "lvngAverageDailyTrialBalance"
 
     dataset
     {
-        dataitem(lvngGLAccount; "G/L Account")
+        dataitem("G/L Account"; "G/L Account")
         {
             DataItemTableView = sorting("No.");
             RequestFilterFields = "Date Filter", "Global Dimension 1 Filter", "Global Dimension 2 Filter", "Business Unit Filter", "Income/Balance", "Shortcut Dimension 3 Filter", "Shortcut Dimension 4 Filter";
 
-            column(GLAccountNo; lvngGLAccount."No.") { }
-            column(Name; lvngGLAccount.Name) { }
-            column(NetChange; lvngGLAccount."Net Change") { }
+            column(GLAccountNo; "G/L Account"."No.") { }
+            column(Name; "G/L Account".Name) { }
+            column(NetChange; "G/L Account"."Net Change") { }
             column(BeginningBalance; BeginningBalance) { }
             column(EndingBalance; EndingBalance) { }
             column(DebitAmount; "Debit Amount") { }
@@ -36,7 +36,7 @@ report 14135165 "lvngAverageDailyTrialBalance"
                 ShowEntry := true;
                 TotalAmount := 0;
                 GLAccount.Get("No.");
-                GLAccount.CopyFilters(lvngGLAccount);
+                GLAccount.CopyFilters("G/L Account");
                 GLAccount.SetFilter("Date Filter", '..%1', DateFrom - 1);
                 GLAccount.CalcFields("Balance at Date");
                 BeginningBalance := GLAccount."Balance at Date";
@@ -94,8 +94,8 @@ report 14135165 "lvngAverageDailyTrialBalance"
     trigger OnPreReport()
     begin
         CompanyInformation.Get();
-        DateFrom := lvngGLAccount.GetRangeMin("Date Filter");
-        DateTo := lvngGLAccount.GetRangeMax("Date Filter");
+        DateFrom := "G/L Account".GetRangeMin("Date Filter");
+        DateTo := "G/L Account".GetRangeMax("Date Filter");
         TotalDays := DateTo - DateFrom + 1;
     end;
 
