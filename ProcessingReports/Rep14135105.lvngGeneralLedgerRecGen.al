@@ -23,7 +23,7 @@ report 14135105 lvngGeneralLedgerRecGen
                 Counter := 1;
                 while QuerySum.Read() do begin
                     if (QuerySum.DebitAmount <> 0) or (QuerySum.CreditAmount <> 0) then
-                        if HideZeroBalance then begin
+                        if HideZeroBalance then
                             if QuerySum.DebitAmount - QuerySum.CreditAmount <> 0 then begin
                                 Clear(TempLoan);
                                 TempLoan."Entry No." := Counter;
@@ -39,23 +39,23 @@ report 14135105 lvngGeneralLedgerRecGen
                                 if Customer.Get(QuerySum.InvestorCustomerNo) then
                                     TempLoan."Investor Name" := Customer.Name;
                                 TempLoan.Insert();
+                            end
+                            else begin
+                                Clear(TempLoan);
+                                TempLoan."Entry No." := Counter;
+                                TempLoan."Loan No." := QuerySum.LoanNo;
+                                TempLoan."Debit Amount" := QuerySum.DebitAmount;
+                                TempLoan."Credit Amount" := QuerySum.CreditAmount;
+                                TempLoan.Name := QuerySum.BorrowerFirstName + ' ' + QuerySum.BorrowerMiddleName + ' ' + QuerySum.BorrowerLastName;
+                                TempLoan."Date Funded" := QuerySum.DateFunded;
+                                TempLoan."Current Balance" := QuerySum.DebitAmount - QuerySum.CreditAmount;
+                                TempLoan."G/L Account No." := QuerySum.GLAccount;
+                                TempLoan."Date Filter" := DateFilter;
+                                TempLoan."Date Sold" := QuerySum.DateSold;
+                                if Customer.Get(QuerySum.InvestorCustomerNo) then
+                                    TempLoan."Investor Name" := Customer.Name;
+                                TempLoan.Insert();
                             end;
-                        end else begin
-                            Clear(TempLoan);
-                            TempLoan."Entry No." := Counter;
-                            TempLoan."Loan No." := QuerySum.LoanNo;
-                            TempLoan."Debit Amount" := QuerySum.DebitAmount;
-                            TempLoan."Credit Amount" := QuerySum.CreditAmount;
-                            TempLoan.Name := QuerySum.BorrowerFirstName + ' ' + QuerySum.BorrowerMiddleName + ' ' + QuerySum.BorrowerLastName;
-                            TempLoan."Date Funded" := QuerySum.DateFunded;
-                            TempLoan."Current Balance" := QuerySum.DebitAmount - QuerySum.CreditAmount;
-                            TempLoan."G/L Account No." := QuerySum.GLAccount;
-                            TempLoan."Date Filter" := DateFilter;
-                            TempLoan."Date Sold" := QuerySum.DateSold;
-                            if Customer.Get(QuerySum.InvestorCustomerNo) then
-                                TempLoan."Investor Name" := Customer.Name;
-                            TempLoan.Insert();
-                        end;
                     Counter := Counter + 1;
                 end;
                 QuerySum.Close();

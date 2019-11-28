@@ -11,9 +11,9 @@ report 14135165 lvngAverageDailyTrialBalance
             DataItemTableView = sorting("No.");
             RequestFilterFields = "Date Filter", "Global Dimension 1 Filter", "Global Dimension 2 Filter", "Business Unit Filter", "Income/Balance", "Shortcut Dimension 3 Filter", "Shortcut Dimension 4 Filter";
 
-            column(GLAccountNo; "G/L Account"."No.") { }
-            column(Name; "G/L Account".Name) { }
-            column(NetChange; "G/L Account"."Net Change") { }
+            column(GLAccountNo; "No.") { }
+            column(Name; Name) { }
+            column(NetChange; "Net Change") { }
             column(BeginningBalance; BeginningBalance) { }
             column(EndingBalance; EndingBalance) { }
             column(DebitAmount; "Debit Amount") { }

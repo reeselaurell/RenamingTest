@@ -146,6 +146,7 @@ report 14135166 lvngServicingStatementInvoice
                 trigger OnAfterGetRecord()
                 var
                     BorrowerName: Text;
+                    Counter: Integer;
                 begin
                     Customer.CalcFields("Balance on Date");
                     OverduePayment := Customer."Balance on Date";
@@ -188,7 +189,6 @@ report 14135166 lvngServicingStatementInvoice
                         LoanAddress.City, LoanAddress."ZIP Code", LoanAddress.State, '');
                     end else
                         FormatAddress.Customer(CustAddr, Customer);
-
                     CustLedgEntry.Reset();
                     CustLedgEntry.SetRange("Customer No.", "No.");
                     CustLedgEntry.SetRange("Reason Code", LoanServicingSetup."Serviced Reason Code");
@@ -309,7 +309,6 @@ report 14135166 lvngServicingStatementInvoice
                                 end;
                             until (GLEntry.Next() = 0) or (Counter = 11);
                     end;
-
                     if Counter < 11 then begin
                         CustLedgEntry.Reset();
                         CustLedgEntry.SetRange("Document Type", CustLedgEntry."Document Type"::Payment);
@@ -372,7 +371,6 @@ report 14135166 lvngServicingStatementInvoice
                                 end;
                             until (CustLedgEntry.Next() = 0) or (Counter = 11);
                     end;
-
                     //YTD
                     CustLedgEntry.Reset();
                     CustLedgEntry.SetFilter("Document Type", '%1|%2', CustLedgEntry."Document Type"::Invoice, CustLedgEntry."Document Type"::"Credit Memo");
@@ -426,9 +424,7 @@ report 14135166 lvngServicingStatementInvoice
                             if CustLedgEntry."Remaining Amount" <> 0 then
                                 PaidYTD[5] := PaidYTD[5] - CustLedgEntry.Amount;
                         until CustLedgEntry.Next() = 0;
-
                     PaidYTD[6] := PaidYTD[1] + PaidYTD[2] + PaidYTD[3] + PaidYTD[4] + PaidYTD[5];
-
                     TotalAmountDue := OverduePayment + CurrentInvoiceAmountDue;
                     DueByVerbiage := StrSubstNo(DueByTxt, PaymentDueDate, TotalAmountDue);
                 end;
@@ -439,10 +435,8 @@ report 14135166 lvngServicingStatementInvoice
                 AsOfDate := "Posting Date";
                 DateFrom := DMY2Date(1, Date2DMY(AsOfDate, 2), Date2DMY(AsOfDate, 3));
                 DateTo := CalcDate('<CM>', AsOfDate);
-
                 YTDStart := DMY2Date(1, 1, Date2DMY(AsOfDate, 3));
                 YTDEnd := AsOfDate;
-
                 SalesInvHeader.Reset();
                 SalesInvHeader.SetFilter("Posting Date", '<%1', "Posting Date");
                 SalesInvHeader.SetRange("Reason Code", LoanServicingSetup."Serviced Reason Code");
@@ -492,7 +486,6 @@ report 14135166 lvngServicingStatementInvoice
         CurrentInvoiceAmountDue: Decimal;
         LateFeeAmount: Decimal;
         HeaderAddress: Text;
-        Counter: Integer;
         ActivityDates: array[40] of Date;
         ActivityDescriptions: array[40] of Text;
         ActivityAmounts: array[40] of Decimal;
@@ -512,23 +505,19 @@ report 14135166 lvngServicingStatementInvoice
         AsOfDate: Date;
 
     trigger OnPreReport()
+    var
+        Counter: Integer;
     begin
         LoanServicingSetup.Get();
         LoanServicingSetup.CalcFields("Statement Logo");
         LoanVisionSetup.Get();
         Clear(FormatAddress);
-        with LoanServicingSetup do begin
-            FormatAddress.FormatAddr(CompanyAddr, '', '', '', "Serv. Department Address 1", "Serv. Department Address 2",
-            "Serv. Department City", "Serv. Department Zip Code", "Serv. Department State", '');
-        end;
-
+        FormatAddress.FormatAddr(CompanyAddr, '', '', '', LoanServicingSetup."Serv. Department Address 1", LoanServicingSetup."Serv. Department Address 2", LoanServicingSetup."Serv. Department City", LoanServicingSetup."Serv. Department Zip Code", LoanServicingSetup."Serv. Department State", '');
         for Counter := 1 to 8 do
             HeaderAddress := HeaderAddress + CompanyAddr[Counter] + ', ';
         HeaderAddress := DelChr(HeaderAddress, '<>', ', ');
-
         DateFrom := DMY2Date(1, Date2DMY(WorkDate(), 2), Date2DMY(WorkDate(), 3));
         DateTo := CalcDate('<CM>', WorkDate());
-
         YTDStart := DMY2Date(1, 1, Date2DMY(WorkDate(), 3));
         YTDEnd := WorkDate();
     end;

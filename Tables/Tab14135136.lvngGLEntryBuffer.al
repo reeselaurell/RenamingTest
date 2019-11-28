@@ -17,16 +17,16 @@ table 14135136 lvngGLEntryBuffer
         field(17; Amount; Decimal) { Caption = 'Amount'; DataClassification = CustomerContent; }
         field(18; "Reason Code"; Code[10]) { Caption = 'Reason Code'; DataClassification = CustomerContent; }
         field(19; "External Document No."; Code[35]) { Caption = 'External Document No.'; DataClassification = CustomerContent; }
-        field(20;"G/L Entry No.";Integer){Caption = 'G/L Entry No.'; DataClassification = CustomerContent;}
+        field(20; "G/L Entry No."; Integer) { Caption = 'G/L Entry No.'; DataClassification = CustomerContent; }
         field(30; "Investor Name"; Text[50]) { Caption = 'Investor Name'; DataClassification = CustomerContent; }
-        field(31; "Shortcut Dimension 1 Code"; Code[20]) { Caption = 'Shortcut Dimension 1 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,1'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1)); }
-        field(32; "Shortcut Dimension 2 Code"; Code[20]) { Caption = 'Shortcut Dimension 2 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,2'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2)); }
-        field(33; "Shortcut Dimension 3 Code"; Code[20]) { Caption = 'Shortcut Dimension 3 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,3'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3)); }
-        field(34; "Shortcut Dimension 4 Code"; Code[20]) { Caption = 'Shortcut Dimension 4 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,4'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4)); }
-        field(35; "Shortcut Dimension 5 Code"; Code[20]) { Caption = 'Shortcut Dimension 5 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,5'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(5)); }
-        field(36; "Shortcut Dimension 6 Code"; Code[20]) { Caption = 'Shortcut Dimension 6 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,6'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6)); }
-        field(37; "Shortcut Dimension 7 Code"; Code[20]) { Caption = 'Shortcut Dimension 7 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,7'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7)); }
-        field(38; "Shortcut Dimension 8 Code"; Code[20]) { Caption = 'Shortcut Dimension 8 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,8'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8)); }
+        field(31; "Shortcut Dimension 1 Code"; Code[20]) { Caption = 'Shortcut Dimension 1 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,1'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1)); }
+        field(32; "Shortcut Dimension 2 Code"; Code[20]) { Caption = 'Shortcut Dimension 2 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,2'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2)); }
+        field(33; "Shortcut Dimension 3 Code"; Code[20]) { Caption = 'Shortcut Dimension 3 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,3'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3)); }
+        field(34; "Shortcut Dimension 4 Code"; Code[20]) { Caption = 'Shortcut Dimension 4 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,4'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4)); }
+        field(35; "Shortcut Dimension 5 Code"; Code[20]) { Caption = 'Shortcut Dimension 5 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,5'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(5)); }
+        field(36; "Shortcut Dimension 6 Code"; Code[20]) { Caption = 'Shortcut Dimension 6 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,6'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6)); }
+        field(37; "Shortcut Dimension 7 Code"; Code[20]) { Caption = 'Shortcut Dimension 7 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,7'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7)); }
+        field(38; "Shortcut Dimension 8 Code"; Code[20]) { Caption = 'Shortcut Dimension 8 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,8'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8)); }
         field(26; "Reference No."; code[20]) { Caption = 'Reference No.'; DataClassification = CustomerContent; }
         field(204; "Payment Due Date"; Date) { Caption = 'Payment Due Date'; DataClassification = CustomerContent; }
         field(206; "Document No."; Code[20]) { Caption = 'Document No.'; DataClassification = CustomerContent; }

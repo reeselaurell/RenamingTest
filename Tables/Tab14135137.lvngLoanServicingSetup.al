@@ -30,6 +30,7 @@ table 14135137 lvngLoanServicingSetup
         {
             Caption = 'Principal Cost Center';
             DataClassification = CustomerContent;
+            
             trigger OnLookup()
             begin
                 DimensionsManagement.LookupCostCenter("Principal Cost Center");
