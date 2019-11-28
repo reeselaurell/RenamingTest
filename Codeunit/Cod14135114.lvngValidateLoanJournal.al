@@ -1,70 +1,53 @@
-codeunit 14135114 "lvngValidateLoanJournal"
+codeunit 14135114 lvngValidateLoanJournal
 {
     var
-        lvngLoanImportErrorLine: Record lvngLoanImportErrorLine;
-        lvngLoanVisionSetup: Record lvngLoanVisionSetup;
-        lvngLoanVisionSetupRetrieved: Boolean;
-
-    procedure ValidateLoanLines(lvngJournalBatchCode: Code[20])
-    var
-        lvngLoanJournalLine: Record lvngLoanJournalLine;
-    begin
-        lvngLoanJournalLine.reset;
-        lvngLoanJournalLine.SetRange("Loan Journal Batch Code", lvngJournalBatchCode);
-        lvngLoanJournalLine.FindSet();
-        repeat
-            lvngLoanJournalErrorMgmt.ClearJournalLineErrors(lvngLoanJournalLine);
-            ValidateSingleJournalLine(lvngLoanJournalLine);
-        until lvngLoanJournalLine.Next() = 0;
-
-    end;
-
-    local procedure ValidateSingleJournalLine(var lvngLoanJournalLine: record lvngLoanJournalLine)
-    var
-        lvngJournalValidationRule: Record lvngJournalValidationRule;
-        lvngExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
-        LoanNoEmptyLbl: Label 'Loan No. can not be blank';
-    begin
-        GetLoanVisionSetup();
-        if lvngLoanJournalLine."Loan No." = '' then
-            lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, LoanNoEmptyLbl);
-        if lvngLoanJournalLine."Search Name" = '' then begin
-            lvngLoanJournalLine."Search Name" := StrSubstNo(lvngLoanVisionSetup."Search Name Template", lvngLoanJournalLine."Borrower First Name", lvngLoanJournalLine."Borrower Last Name", lvngLoanJournalLine."Borrower Middle Name");
-            lvngLoanJournalLine.Modify();
-        end;
-        lvngJournalValidationRule.reset;
-        lvngJournalValidationRule.SetRange("Journal Batch Code", lvngLoanJournalLine."Loan Journal Batch Code");
-        if lvngJournalValidationRule.FindSet() then begin
-            lvngConditionsMgmt.FillJournalFieldValues(lvngExpressionValueBuffer, lvngLoanJournalLine);
-            repeat
-                if not ValidateConditionLine(lvngExpressionValueBuffer, lvngJournalValidationRule."Condition Code") then begin
-                    lvngLoanJournalErrorMgmt.AddJournalLineError(lvngLoanJournalLine, lvngJournalValidationRule."Error Message");
-                end;
-            until lvngJournalValidationRule.Next() = 0;
-        end;
-    end;
-
-    local procedure ValidateConditionLine(var lvngExpressionValueBuffer: Record lvngExpressionValueBuffer; lvngConditionCode: Code[20]): Boolean
-    var
-        lvngExpressionEngine: Codeunit lvngExpressionEngine;
+        LoanVisionSetup: Record lvngLoanVisionSetup;
+        LoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
         ConditionsMgmt: Codeunit lvngConditionsMgmt;
+
+    procedure ValidateLoanLines(JournalBatchCode: Code[20])
+    var
+        LoanJournalLine: Record lvngLoanJournalLine;
+    begin
+        LoanVisionSetup.Get();
+        LoanJournalLine.Reset();
+        LoanJournalLine.SetRange("Loan Journal Batch Code", JournalBatchCode);
+        LoanJournalLine.FindSet();
+        repeat
+            LoanJournalErrorMgmt.ClearJournalLineErrors(LoanJournalLine);
+            ValidateSingleJournalLine(LoanJournalLine);
+        until LoanJournalLine.Next() = 0;
+    end;
+
+    local procedure ValidateSingleJournalLine(var LoanJournalLine: record lvngLoanJournalLine)
+    var
+        JournalValidationRule: Record lvngJournalValidationRule;
+        ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
+        LoanNoEmptyErr: Label 'Loan No. can not be blank';
+    begin
+        if LoanJournalLine."Loan No." = '' then
+            LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, LoanNoEmptyErr);
+        if LoanJournalLine."Search Name" = '' then begin
+            LoanJournalLine."Search Name" := StrSubstNo(LoanVisionSetup."Search Name Template", LoanJournalLine."Borrower First Name", LoanJournalLine."Borrower Last Name", LoanJournalLine."Borrower Middle Name");
+            LoanJournalLine.Modify();
+        end;
+        JournalValidationRule.Reset();
+        JournalValidationRule.SetRange("Journal Batch Code", LoanJournalLine."Loan Journal Batch Code");
+        if JournalValidationRule.FindSet() then begin
+            ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine);
+            repeat
+                if not ValidateConditionLine(ExpressionValueBuffer, JournalValidationRule."Condition Code") then
+                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, JournalValidationRule."Error Message");
+            until JournalValidationRule.Next() = 0;
+        end;
+    end;
+
+    local procedure ValidateConditionLine(var ExpressionValueBuffer: Record lvngExpressionValueBuffer; ConditionCode: Code[20]): Boolean
+    var
+        ExpressionEngine: Codeunit lvngExpressionEngine;
         ExpressionHeader: Record lvngExpressionHeader;
     begin
-        GetLoanVisionSetup();
-        ExpressionHeader.Get(lvngConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        exit(lvngExpressionEngine.CheckCondition(ExpressionHeader, lvngExpressionValueBuffer));
+        ExpressionHeader.Get(ConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
+        exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));
     end;
-
-    local procedure GetLoanVisionSetup()
-    begin
-        if not lvngLoanVisionSetupRetrieved then begin
-            lvngLoanVisionSetup.Get();
-            lvngLoanVisionSetupRetrieved := true;
-        end;
-    end;
-
-    var
-        lvngLoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
-        lvngConditionsMgmt: Codeunit lvngConditionsMgmt;
-
 }

@@ -1,4 +1,4 @@
-codeunit 14135109 "lvngAPEventsSubscriber"
+codeunit 14135109 lvngAPEventsSubscriber
 {
     [EventSubscriber(ObjectType::Table, Database::"Vendor Ledger Entry", 'OnBeforeInsertEvent', '', false, false)]
     local procedure OnBeforeVendorLedgerEntryInsert(var Rec: Record "Vendor Ledger Entry")

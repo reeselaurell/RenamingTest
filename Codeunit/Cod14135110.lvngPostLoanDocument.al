@@ -1,90 +1,98 @@
-codeunit 14135110 "lvngPostLoanDocument"
+codeunit 14135110 lvngPostLoanDocument
 {
     TableNo = lvngLoanDocument;
 
     trigger OnRun()
+    var
+        LoanDocumentSave: Record lvngLoanDocument;
     begin
-        lvngLoanDocumentSave := Rec;
-        Post(lvngLoanDocumentSave);
-        DeleteAfterPosting();
-        Rec := lvngLoanDocumentSave;
+        LoanDocumentSave := Rec;
+        Post(LoanDocumentSave);
+        DeleteAfterPosting(LoanDocumentSave);
+        Rec := LoanDocumentSave;
     end;
 
-    procedure Post(lvngLoanDocument: Record lvngLoanDocument)
+    local procedure Post(LoanDocument: Record lvngLoanDocument)
     var
-        lvngLoanFundedDocument: Record lvngLoanFundedDocument;
-        lvngLoanFundedDocumentLine: Record lvngLoanFundedDocumentLine;
-        lvngLoanSoldDocument: Record lvngLoanSoldDocument;
-        lvngLoanSoldDocumentLine: Record lvngLoanSoldDocumentLine;
-        lvngLoanDocumentLineTemp: Record lvngLoanDocumentLine temporary;
+        LoanVisionSetup: Record lvngLoanVisionSetup;
+        LoanServicingSetup: Record lvngLoanServicingSetup;
+        LoanFundedDocument: Record lvngLoanFundedDocument;
+        LoanFundedDocumentLine: Record lvngLoanFundedDocumentLine;
+        LoanSoldDocument: Record lvngLoanSoldDocument;
+        LoanSoldDocumentLine: Record lvngLoanSoldDocumentLine;
+        TempLoanDocumentLine: Record lvngLoanDocumentLine temporary;
         GenJnlLine: Record "Gen. Journal Line";
         GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
+        SourceCode: Code[20];
         DocumentAmount: Decimal;
         SourceCodeBlankLbl: Label 'Source Code can not be blank';
     begin
-        GetLoanVisionSetup();
-        case lvngLoanDocument."Transaction Type" of
-            lvngLoanDocument."Transaction Type"::Funded:
-                lvngSourceCode := lvngLoanVisionSetup."Funded Source Code";
-            lvngLoanDocument."Transaction Type"::Sold:
-                lvngSourceCode := lvngLoanVisionSetup."Sold Source Code";
-            lvngLoanDocument."Transaction Type"::Serviced:
+        LoanVisionSetup.Get();
+        LoanVisionSetup.TestField("Funded Source Code");
+        LoanVisionSetup.TestField("Sold Source Code");
+        case LoanDocument."Transaction Type" of
+            LoanDocument."Transaction Type"::Funded:
+                SourceCode := LoanVisionSetup."Funded Source Code";
+            LoanDocument."Transaction Type"::Sold:
+                SourceCode := LoanVisionSetup."Sold Source Code";
+            LoanDocument."Transaction Type"::Serviced:
                 begin
-                    GetLoanServicingSetup();
-                    lvngSourceCode := lvngLoanServicingSetup."Serviced Source Code";
+                    LoanServicingSetup.Get();
+                    LoanServicingSetup.TestField("Serviced Source Code");
+                    SourceCode := LoanServicingSetup."Serviced Source Code";
                 end;
         end;
-        if lvngSourceCode = '' then
+        if SourceCode = '' then
             Error(SourceCodeBlankLbl);
-        if lvngLoanDocument.Void then
-            lvngLoanDocument.TestField("Void Document No.");
-        DocumentAmount := -PrepareDocumentLinesBuffer(lvngLoanDocument, lvngLoanDocumentLineTemp);
+        if LoanDocument.Void then
+            LoanDocument.TestField("Void Document No.");
+        DocumentAmount := -PrepareDocumentLinesBuffer(LoanDocument, TempLoanDocumentLine);
 
-        lvngLoanDocumentLineTemp.reset;
-        lvngLoanDocumentLineTemp.SetRange("Transaction Type", lvngLoanDocument."Transaction Type");
-        lvngLoanDocumentLineTemp.SetRange("Document No.", lvngLoanDocument."Document No.");
-        lvngLoanDocumentLineTemp.SetRange("Balancing Entry", false);
-        if lvngLoanDocumentLineTemp.FindSet() then begin
+        TempLoanDocumentLine.Reset();
+        TempLoanDocumentLine.SetRange("Transaction Type", LoanDocument."Transaction Type");
+        TempLoanDocumentLine.SetRange("Document No.", LoanDocument."Document No.");
+        TempLoanDocumentLine.SetRange("Balancing Entry", false);
+        if TempLoanDocumentLine.FindSet() then begin
             repeat
                 clear(GenJnlLine);
-                GenJnlLine.InitNewLine(lvngLoanDocument."Posting Date", lvngLoanDocument."Posting Date", lvngLoanDocumentLineTemp.Description, lvngLoanDocumentLineTemp."Global Dimension 1 Code", lvngLoanDocumentLineTemp."Global Dimension 2 Code", lvngLoanDocumentLineTemp."Dimension Set ID", lvngLoanDocumentLineTemp."Reason Code");
-                CreateGenJnlLine(lvngLoanDocument, lvngLoanDocumentLineTemp, GenJnlLine);
+                GenJnlLine.InitNewLine(LoanDocument."Posting Date", LoanDocument."Posting Date", TempLoanDocumentLine.Description, TempLoanDocumentLine."Global Dimension 1 Code", TempLoanDocumentLine."Global Dimension 2 Code", TempLoanDocumentLine."Dimension Set ID", TempLoanDocumentLine."Reason Code");
+                CreateGenJnlLine(LoanDocument, TempLoanDocumentLine, GenJnlLine, SourceCode);
                 GenJnlPostLine.RunWithCheck(GenJnlLine);
-                TransferDocumentLineToPosted(lvngLoanDocumentLineTemp);
-            until lvngLoanDocumentLineTemp.Next() = 0;
+                TransferDocumentLineToPosted(TempLoanDocumentLine);
+            until TempLoanDocumentLine.Next() = 0;
         end;
 
         clear(GenJnlLine);
-        GenJnlLine.InitNewLine(lvngLoanDocument."Posting Date", lvngLoanDocument."Posting Date", lvngLoanDocument."Loan No.", lvngLoanDocument."Global Dimension 1 Code", lvngLoanDocument."Global Dimension 2 Code", lvngLoanDocument."Dimension Set ID", lvngLoanDocument."Reason Code");
-        CreateCustomerGenJnlLine(lvngLoanDocument, GenJnlLine, DocumentAmount);
+        GenJnlLine.InitNewLine(LoanDocument."Posting Date", LoanDocument."Posting Date", LoanDocument."Loan No.", LoanDocument."Global Dimension 1 Code", LoanDocument."Global Dimension 2 Code", LoanDocument."Dimension Set ID", LoanDocument."Reason Code");
+        CreateCustomerGenJnlLine(LoanDocument, GenJnlLine, DocumentAmount, SourceCode);
         GenJnlPostLine.RunWithCheck(GenJnlLine);
-        TransferDocumentHeaderToPosted(lvngLoanDocument);
+        TransferDocumentHeaderToPosted(LoanDocument);
 
-        lvngLoanDocumentLineTemp.SetRange("Balancing Entry", true);
-        if lvngLoanDocumentLineTemp.FindSet() then begin
+        TempLoanDocumentLine.SetRange("Balancing Entry", true);
+        if TempLoanDocumentLine.FindSet() then begin
             repeat
                 Clear(GenJnlLine);
-                GenJnlLine.InitNewLine(lvngLoanDocument."Posting Date", lvngLoanDocument."Posting Date", lvngLoanDocumentLineTemp.Description, lvngLoanDocumentLineTemp."Global Dimension 1 Code", lvngLoanDocumentLineTemp."Global Dimension 2 Code", lvngLoanDocumentLineTemp."Dimension Set ID", lvngLoanDocumentLineTemp."Reason Code");
-                CreateBalancingGenJnlLine(lvngLoanDocument, lvngLoanDocumentLineTemp, GenJnlLine);
+                GenJnlLine.InitNewLine(LoanDocument."Posting Date", LoanDocument."Posting Date", TempLoanDocumentLine.Description, TempLoanDocumentLine."Global Dimension 1 Code", TempLoanDocumentLine."Global Dimension 2 Code", TempLoanDocumentLine."Dimension Set ID", TempLoanDocumentLine."Reason Code");
+                CreateBalancingGenJnlLine(LoanDocument, TempLoanDocumentLine, GenJnlLine, SourceCode);
                 GenJnlPostLine.RunWithCheck(GenJnlLine);
-                TransferDocumentLineToPosted(lvngLoanDocumentLineTemp);
-            until lvngLoanDocumentLineTemp.Next() = 0;
+                TransferDocumentLineToPosted(TempLoanDocumentLine);
+            until TempLoanDocumentLine.Next() = 0;
         end;
-        if lvngLoanDocument.Void then begin
-            VoidLedgerEntries(lvngLoanDocument."Document No.", lvngLoanDocument."Posting Date");
-            VoidLedgerEntries(lvngLoanDocument."Void Document No.", lvngLoanDocument."Posting Date");
+        if LoanDocument.Void then begin
+            VoidLedgerEntries(LoanDocument."Document No.", LoanDocument."Posting Date");
+            VoidLedgerEntries(LoanDocument."Void Document No.", LoanDocument."Posting Date");
         end;
     end;
 
-    local procedure DeleteAfterPosting()
+    local procedure DeleteAfterPosting(var LoanDocumentHeader: Record lvngLoanDocument)
     var
-        lvngLoanDocumentLine: Record lvngLoanDocumentLine;
+        LoanDocumentLine: Record lvngLoanDocumentLine;
     begin
-        lvngLoanDocumentLine.reset;
-        lvngLoanDocumentLine.SetRange("Transaction Type", lvngLoanDocumentSave."Transaction Type");
-        lvngLoanDocumentLine.SetRange("Document No.", lvngLoanDocumentSave."Document No.");
-        lvngLoanDocumentLine.DeleteAll();
-        lvngLoanDocumentSave.Delete();
+        LoanDocumentLine.Reset();
+        LoanDocumentLine.SetRange("Transaction Type", LoanDocumentHeader."Transaction Type");
+        LoanDocumentLine.SetRange("Document No.", LoanDocumentHeader."Document No.");
+        LoanDocumentLine.DeleteAll();
+        LoanDocumentHeader.Delete();
     end;
 
     local procedure PrepareDocumentLinesBuffer(lvngLoanDocument: Record lvngLoanDocument; var lvngLoanDocumentLineTemp: Record lvngLoanDocumentLine): Decimal
@@ -107,7 +115,7 @@ codeunit 14135110 "lvngPostLoanDocument"
         exit(DocumentAmount);
     end;
 
-    local procedure CreateCustomerGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; var GenJnlLine: Record "Gen. Journal Line"; Amount: Decimal)
+    local procedure CreateCustomerGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; var GenJnlLine: Record "Gen. Journal Line"; Amount: Decimal; SourceCode: Code[20])
     begin
 
         if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::Invoice then
@@ -121,13 +129,13 @@ codeunit 14135110 "lvngPostLoanDocument"
         GenJnlLine."Loan No." := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
         GenJnlLine.Amount := Amount;
-        GenJnlLine."Source Code" := lvngSourceCode;
+        GenJnlLine."Source Code" := SourceCode;
         GenJnlLine."System-Created Entry" := true;
     end;
 
 
 
-    local procedure CreateGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line")
+    local procedure CreateGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line"; SourceCode: Code[20])
     begin
         if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::Invoice then
             GenJnlLine."Document Type" := GenJnlLine."Document Type"::Invoice
@@ -147,13 +155,13 @@ codeunit 14135110 "lvngPostLoanDocument"
         GenJnlLine."Account No." := lvngLoanDocumentLine."Account No.";
         GenJnlLine.Amount := lvngLoanDocumentLine.Amount;
         GenJnlLine."System-Created Entry" := true;
-        GenJnlLine."Source Code" := lvngSourceCode;
+        GenJnlLine."Source Code" := SourceCode;
         GenJnlLine."Loan No." := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
         GenJnlLine."Servicing Type" := lvngLoanDocumentLine."Servicing Type";
     end;
 
-    local procedure CreateBalancingGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line")
+    local procedure CreateBalancingGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line"; SourceCode: Code[20])
     begin
         GenJnlLine."Document No." := lvngLoanDocument."Document No.";
         if lvngLoanDocument."Document Type" = lvngLoanDocument."Document Type"::"Credit Memo" then
@@ -179,7 +187,7 @@ codeunit 14135110 "lvngPostLoanDocument"
             GenJnlLine."Applies-to Doc. Type" := GenJnlLine."Applies-to Doc. Type"::"Invoice";
         GenJnlLine."Applies-to Doc. No." := GenJnlLine."Document No.";
         GenJnlLine."System-Created Entry" := true;
-        GenJnlLine."Source Code" := lvngSourceCode;
+        GenJnlLine."Source Code" := SourceCode;
         GenJnlLine."Loan No." := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
     end;
@@ -276,31 +284,4 @@ codeunit 14135110 "lvngPostLoanDocument"
             until BankAccountLedgerEntry.Next() = 0;
         end;
     end;
-
-    local procedure GetLoanVisionSetup()
-    begin
-        if not lvngLoanVisionSetupRetrieved then begin
-            lvngLoanVisionSetup.Get();
-            lvngLoanVisionSetup.TestField("Funded Source Code");
-            lvngLoanVisionSetup.TestField("Sold Source Code");
-            lvngLoanVisionSetupRetrieved := true;
-        end;
-    end;
-
-    local procedure GetLoanServicingSetup()
-    begin
-        if not lvngLoanVisionSetupRetrieved then begin
-            lvngLoanServicingSetup.Get();
-            lvngLoanServicingSetup.TestField("Serviced Source Code");
-            lvngLoanServicingSetupRetrieved := true;
-        end;
-    end;
-
-    var
-        lvngLoanVisionSetup: Record lvngLoanVisionSetup;
-        lvngLoanServicingSetup: Record lvngLoanServicingSetup;
-        lvngLoanVisionSetupRetrieved: Boolean;
-        lvngLoanServicingSetupRetrieved: Boolean;
-        lvngLoanDocumentSave: Record lvngLoanDocument;
-        lvngSourceCode: Code[20];
 }

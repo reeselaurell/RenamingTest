@@ -1,203 +1,193 @@
-codeunit 14135119 "lvngServicingManagement"
+codeunit 14135119 lvngServicingManagement
 {
-    trigger OnRun()
-    begin
+    var
+        LoanServicingSetup: Record lvngLoanServicingSetup;
+        LoanServicingSetupRetrieved: Boolean;
 
-    end;
-
-    procedure GetPrincipalAndInterest(lvngLoan: Record lvngLoan; var lvngNextPaymentDate: Date; var lvngPrincipalAmount: Decimal; var lvngInterestAmount: Decimal)
+    procedure GetPrincipalAndInterest(Loan: Record lvngLoan; var NextPaymentDate: Date; var PrincipalAmount: Decimal; var InterestAmount: Decimal)
     var
         GLEntry: Record "G/L Entry";
-        lvngGLEntryBuffer: Record lvngGLEntryBuffer temporary;
-        lvngLineNo: Integer;
-        lvngPreviousBalance: Decimal;
-        lvngInterestPerMonth: Decimal;
-        lvngMonthlyPayment: Decimal;
-        lvngStartDate: Date;
-        lvngCalculationDate: Date;
+        GLEntryBuffer: Record lvngGLEntryBuffer temporary;
+        LineNo: Integer;
+        PreviousBalance: Decimal;
+        InterestPerMonth: Decimal;
+        MonthlyPayment: Decimal;
+        StartDate: Date;
+        CalculationDate: Date;
     begin
-        if lvngLoan."Date Funded" = 0D then
+        if Loan."Date Funded" = 0D then
             exit;
-        if lvngLoan."Loan Term (Months)" = 0 then
+        if Loan."Loan Term (Months)" = 0 then
             exit;
-        if lvngLoan."First Payment Due" = 0D then
-            lvngLoan."First Payment Due" := CalcDate('<CM + 1D - 1M>', lvngLoan."Date Funded");
-        if CalcDate(StrSubstNo('<+%1M>', lvngLoan."Loan Term (Months)" + 1), lvngLoan."First Payment Due") < lvngNextPaymentDate then
+        if Loan."First Payment Due" = 0D then
+            Loan."First Payment Due" := CalcDate('<CM + 1D - 1M>', Loan."Date Funded");
+        if CalcDate(StrSubstNo('<+%1M>', Loan."Loan Term (Months)" + 1), Loan."First Payment Due") < NextPaymentDate then
             exit;
         GetLoanServicingSetup();
-        lvngLoanServicingSetup.TestField("Principal Red. Reason Code");
-        lvngLoanServicingSetup.TestField("Principal Red. G/L Account No.");
-        GLEntry.reset;
-        GLEntry.SetRange("Loan No.", lvngLoan."No.");
-        GLEntry.SetRange("Reason Code", lvngLoanServicingSetup."Principal Red. Reason Code");
-        GLEntry.SetRange("G/L Account No.", lvngLoanServicingSetup."Principal Red. G/L Account No.");
-        if GLEntry.FindSet() then begin
+        LoanServicingSetup.TestField("Principal Red. Reason Code");
+        LoanServicingSetup.TestField("Principal Red. G/L Account No.");
+        GLEntry.Reset();
+        GLEntry.SetRange("Loan No.", Loan."No.");
+        GLEntry.SetRange("Reason Code", LoanServicingSetup."Principal Red. Reason Code");
+        GLEntry.SetRange("G/L Account No.", LoanServicingSetup."Principal Red. G/L Account No.");
+        if GLEntry.FindSet() then
             repeat
-                Clear(lvngGLEntryBuffer);
-                lvngGLEntryBuffer."Entry No." := GLEntry."Entry No.";
-                lvngGLEntryBuffer.Amount := GLEntry.Amount;
-                lvngGLEntryBuffer."Posting Date" := GLEntry."Posting Date";
-                lvngGLEntryBuffer.Insert();
+                Clear(GLEntryBuffer);
+                GLEntryBuffer."Entry No." := GLEntry."Entry No.";
+                GLEntryBuffer.Amount := GLEntry.Amount;
+                GLEntryBuffer."Posting Date" := GLEntry."Posting Date";
+                GLEntryBuffer.Insert();
             until GLEntry.Next() = 0;
-        end;
-        lvngInterestPerMonth := lvngLoan."Interest Rate" / 12 / 100;
-        lvngMonthlyPayment := lvngInterestPerMonth * lvngLoan."Loan Amount" * Power(1 + lvngInterestPerMonth, lvngloan."Loan Term (Months)") / (Power(1 + lvngInterestPerMonth, lvngLoan."Loan Term (Months)") - 1);
-        lvngStartDate := lvngLoan."First Payment Due";
-        lvngPreviousBalance := lvngLoan."Loan Amount";
-        lvngCalculationDate := lvngStartDate;
-        for lvngLineNo := 1 to lvngLoan."Loan Term (Months)" do begin
-            lvngGLEntryBuffer.reset;
-            lvngGLEntryBuffer.SetRange("Posting Date", CalcDate('<-1M + 1D>', lvngCalculationDate), lvngCalculationDate);
-            if lvngGLEntryBuffer.FindSet() then begin
+        InterestPerMonth := Loan."Interest Rate" / 12 / 100;
+        MonthlyPayment := InterestPerMonth * Loan."Loan Amount" * Power(1 + InterestPerMonth, Loan."Loan Term (Months)") / (Power(1 + InterestPerMonth, Loan."Loan Term (Months)") - 1);
+        StartDate := Loan."First Payment Due";
+        PreviousBalance := Loan."Loan Amount";
+        CalculationDate := StartDate;
+        for LineNo := 1 to Loan."Loan Term (Months)" do begin
+            GLEntryBuffer.Reset();
+            GLEntryBuffer.SetRange("Posting Date", CalcDate('<-1M + 1D>', CalculationDate), CalculationDate);
+            if GLEntryBuffer.FindSet() then begin
                 repeat
-                    lvngPreviousBalance := lvngPreviousBalance + lvngGLEntryBuffer.Amount;
-                until lvngGLEntryBuffer.Next() = 0;
-                if lvngPreviousBalance < 0 then
-                    lvngPreviousBalance := 0;
+                    PreviousBalance := PreviousBalance + GLEntryBuffer.Amount;
+                until GLEntryBuffer.Next() = 0;
+                if PreviousBalance < 0 then
+                    PreviousBalance := 0;
             end;
-            lvngInterestAmount := lvngPreviousBalance * lvngInterestPerMonth;
-            lvngPrincipalAmount := lvngMonthlyPayment - lvngInterestAmount;
-            if lvngPrincipalAmount > lvngPreviousBalance then
-                lvngPrincipalAmount := lvngPreviousBalance;
-            if (lvngInterestAmount = 0) and (lvngPrincipalAmount = 0) then
+            InterestAmount := PreviousBalance * InterestPerMonth;
+            PrincipalAmount := MonthlyPayment - InterestAmount;
+            if PrincipalAmount > PreviousBalance then
+                PrincipalAmount := PreviousBalance;
+            if (InterestAmount = 0) and (PrincipalAmount = 0) then
                 exit;
-            lvngInterestAmount := round(lvngInterestAmount, 0.01);
-            lvngPrincipalAmount := round(lvngPrincipalAmount, 0.01);
-            if (lvngInterestAmount + lvngPrincipalAmount) <> lvngLoan."Monthly Payment Amount" then begin
-                lvngPrincipalAmount := lvngLoan."Monthly Payment Amount" - lvngInterestAmount;
+            InterestAmount := Round(InterestAmount, 0.01);
+            PrincipalAmount := Round(PrincipalAmount, 0.01);
+            if (InterestAmount + PrincipalAmount) <> Loan."Monthly Payment Amount" then begin
+                PrincipalAmount := Loan."Monthly Payment Amount" - InterestAmount;
             end;
-            lvngCalculationDate := calcdate(StrSubstNo('<+%1M>', lvngLineNo), lvngStartDate);
+            CalculationDate := calcdate(StrSubstNo('<+%1M>', LineNo), StartDate);
         end;
     end;
 
-    procedure GetTotalEscrowAmounts(lvngLoan: Record lvngLoan): Decimal
+    procedure GetTotalEscrowAmounts(Loan: Record lvngLoan): Decimal
     var
-        lvngEscrowFieldsMapping: Record lvngEscrowFieldsMapping;
-        lvngLoanValue: Record lvngLoanValue;
-        lvngEscrowAmount: Decimal;
+        EscrowFieldsMapping: Record lvngEscrowFieldsMapping;
+        LoanValue: Record lvngLoanValue;
+        EscrowAmount: Decimal;
     begin
-        lvngEscrowFieldsMapping.reset;
-        if lvngEscrowFieldsMapping.FindSet() then begin
+        EscrowFieldsMapping.Reset();
+        if EscrowFieldsMapping.FindSet() then
             repeat
-                if lvngLoanValue.Get(lvngLoan."No.", lvngEscrowFieldsMapping."Field No.") then begin
-                    lvngEscrowAmount := lvngEscrowAmount + lvngLoanValue."Decimal Value";
-                end;
-            until lvngEscrowFieldsMapping.Next() = 0;
-        end;
-        exit(lvngEscrowAmount);
+                if LoanValue.Get(Loan."No.", EscrowFieldsMapping."Field No.") then
+                    EscrowAmount := EscrowAmount + LoanValue."Decimal Value";
+            until EscrowFieldsMapping.Next() = 0;
+        exit(EscrowAmount);
     end;
 
     procedure ValidateServicingWorksheet()
+    var
+        ServicingWorksheet: Record lvngServicingWorksheet;
     begin
-        lvngServicingWorksheet.Reset();
-        if lvngServicingWorksheet.FindSet() then begin
+        ServicingWorksheet.Reset();
+        if ServicingWorksheet.FindSet() then begin
             repeat
-                lvngServicingWorksheet.CalculateAmounts();
-                ValidateServicingLine(lvngServicingWorksheet);
-                lvngServicingWorksheet.Modify();
-            until lvngServicingWorksheet.Next() = 0;
+                ServicingWorksheet.CalculateAmounts();
+                ValidateServicingLine(ServicingWorksheet);
+                ServicingWorksheet.Modify();
+            until ServicingWorksheet.Next() = 0;
         end;
     end;
 
-    procedure ValidateServicingLine(var lvngServicingWorksheetParam: Record lvngServicingWorksheet)
+    procedure ValidateServicingLine(var ServicingWorksheet: Record lvngServicingWorksheet)
     var
-        lvngLoan: record lvngLoan;
+        Loan: Record lvngLoan;
         Customer: Record Customer;
-        lvngEscrowsDoesntMatch: Label 'Total escrow amount doesn''t match';
-        lvngBorrowerCustomerMissing: Label 'Borrower Customer is empty or doesn''t exist';
+        EscrowsDoesntMatchErr: Label 'Total escrow amount doesn''t match';
+        BorrowerCustomerMissingErr: Label 'Borrower Customer is empty or doesn''t exist';
     begin
         GetLoanServicingSetup();
-        lvngLoan.Get(lvngServicingWorksheetParam."Loan No.");
-        clear(lvngServicingWorksheetParam."Error Message");
-        if lvngLoanServicingSetup."Test Escrow Totals" then begin
-            if lvngLoan."Monthly Escrow Amount" <> lvngServicingWorksheetParam."Escrow Amount" then begin
-                lvngServicingWorksheetParam."Error Message" := copystr(lvngEscrowsDoesntMatch, 1, MaxStrLen(lvngServicingWorksheetParam."Error Message"));
-            end;
-        end;
-        if lvngServicingWorksheetParam."Error Message" = '' then begin
-            if not Customer.Get(lvngLoan."Borrower Customer No") then begin
-                lvngServicingWorksheetParam."Error Message" := copystr(lvngBorrowerCustomerMissing, 1, MaxStrLen(lvngServicingWorksheetParam."Error Message"));
-            end;
-        end;
+        Loan.Get(ServicingWorksheet."Loan No.");
+        Clear(ServicingWorksheet."Error Message");
+        if LoanServicingSetup."Test Escrow Totals" then
+            if Loan."Monthly Escrow Amount" <> ServicingWorksheet."Escrow Amount" then
+                ServicingWorksheet."Error Message" := CopyStr(EscrowsDoesntMatchErr, 1, MaxStrLen(ServicingWorksheet."Error Message"));
+        if ServicingWorksheet."Error Message" = '' then
+            if not Customer.Get(Loan."Borrower Customer No") then
+                ServicingWorksheet."Error Message" := CopyStr(BorrowerCustomerMissingErr, 1, MaxStrLen(ServicingWorksheet."Error Message"));
     end;
 
     local procedure GetLoanServicingSetup()
     begin
-        if not lvngLoanServicingSetupRetrieved then begin
-            lvngLoanServicingSetup.Get();
-            lvngLoanServicingSetupRetrieved := true;
+        if not LoanServicingSetupRetrieved then begin
+            LoanServicingSetup.Get();
+            LoanServicingSetupRetrieved := true;
         end;
     end;
 
     procedure CreateBorrowerCustomers()
     var
-        lvngLoan: Record lvngLoan;
+        ServicingWorksheet: Record lvngServicingWorksheet;
+        Loan: Record lvngLoan;
         Customer: Record Customer;
         CustomerTemplate: Record "Customer Template";
     begin
         GetLoanServicingSetup();
-        lvngLoanServicingSetup.TestField("Borrower Customer Template");
-        CustomerTemplate.Get(lvngLoanServicingSetup."Borrower Customer Template");
-        lvngServicingWorksheet.reset;
-        lvngServicingWorksheet.FindSet();
+        LoanServicingSetup.TestField("Borrower Customer Template");
+        CustomerTemplate.Get(LoanServicingSetup."Borrower Customer Template");
+        ServicingWorksheet.Reset();
+        ServicingWorksheet.FindSet();
         repeat
-            lvngLoan.get(lvngServicingWorksheet."Loan No.");
-            if lvngLoan."Borrower Customer No" = '' then begin
-                Customer."No." := lvngLoan."No.";
-                Customer.Name := copystr(lvngloan."Search Name", 1, MaxStrLen(Customer.Name));
+            Loan.get(ServicingWorksheet."Loan No.");
+            if Loan."Borrower Customer No" = '' then begin
+                Customer."No." := Loan."No.";
+                Customer.Name := copystr(Loan."Search Name", 1, MaxStrLen(Customer.Name));
                 Customer.CopyFromCustomerTemplate(CustomerTemplate);
                 Customer.Insert(true);
-                lvngLoan."Borrower Customer No" := Customer."No.";
-                lvngLoan.Modify(true);
+                Loan."Borrower Customer No" := Customer."No.";
+                Loan.Modify(true);
             end;
-        until lvngServicingWorksheet.Next() = 0;
+        until ServicingWorksheet.Next() = 0;
     end;
 
     procedure CreateServicingDocuments()
     var
-        lvngLoanDocument: Record lvngLoanDocument;
-        lvngEscrowFieldsMapping: Record lvngEscrowFieldsMapping;
-        lvngLoan: Record lvngLoan;
-        lvngLoanValue: Record lvngLoanValue;
-        lvngLoanDocumentLine: Record lvngLoanDocumentLine;
+        ServicingWorksheet: Record lvngServicingWorksheet;
+        LoanDocument: Record lvngLoanDocument;
+        EscrowFieldsMapping: Record lvngEscrowFieldsMapping;
+        Loan: Record lvngLoan;
+        LoanValue: Record lvngLoanValue;
+        LoanDocumentLine: Record lvngLoanDocumentLine;
         NoSeriesManagement: Codeunit NoSeriesManagement;
-        lvngLineNo: Integer;
+        LineNo: Integer;
     begin
         ValidateServicingWorksheet();
         GetLoanServicingSetup();
-        lvngLoanServicingSetup.testfield("Serviced No. Series");
-        lvngLoanServicingSetup.TestField("Serviced Reason Code");
-        lvngServicingWorksheet.reset;
-        lvngServicingWorksheet.FindSet();
+        LoanServicingSetup.TestField("Serviced No. Series");
+        LoanServicingSetup.TestField("Serviced Reason Code");
+        ServicingWorksheet.Reset();
+        ServicingWorksheet.FindSet();
         repeat
-            if lvngServicingWorksheet."Error Message" = '' then begin
-                lvngLineNo := 1000;
-                Clear(lvngLoanDocument);
-                lvngLoanDocument.Init();
-                lvngLoanDocument.validate("Transaction Type", lvngLoanDocument."Transaction Type"::Serviced);
-                lvngLoanDocument.validate("Document Type", lvngLoanDocument."Document Type"::Invoice);
-                lvngLoanDocument.validate("Document No.", NoSeriesManagement.DoGetNextNo(lvngLoanServicingSetup."Serviced No. Series", TODAY, true, false));
-                lvngLoanDocument.validate("Customer No.", lvngServicingWorksheet."Customer No.");
-                lvngLoanDocument.validate("Loan No.", lvngServicingWorksheet."Loan No.");
-                lvngLoanDocument.validate("Posting Date", lvngServicingWorksheet."Next Payment Date");
-                lvngLoanDocument.Validate("Reason Code", lvngLoanServicingSetup."Serviced Reason Code");
-                lvngLoanDocument.Insert(true);
-                Clear(lvngLoanDocumentLine);
-                lvngLoanDocumentLine.validate("Transaction Type", lvngLoanDocument."Transaction Type");
-                lvngLoanDocumentLine.validate("Document No.", lvngLoanDocument."Document No.");
-                lvngLoanDocumentLine.Validate("Account Type", lvngLoanDocumentLine."Account Type"::"G/L Account");
-                lvngLoanDocumentLine."Line No." := lvngLineNo;
-                lvngLoanDocumentLine.Amount := lvngServicingWorksheet."Interest Amount";
-                lvngLoanDocumentLine."Servicing Type" := lvngLoanDocumentLine."Servicing Type"::Interest;
-                lvngLoanDocumentLine.Insert(true);
-                lvngLineNo := lvngLineNo + 1000;
+            if ServicingWorksheet."Error Message" = '' then begin
+                LineNo := 1000;
+                Clear(LoanDocument);
+                LoanDocument.Init();
+                LoanDocument.Validate("Transaction Type", LoanDocument."Transaction Type"::Serviced);
+                LoanDocument.Validate("Document Type", LoanDocument."Document Type"::Invoice);
+                LoanDocument.Validate("Document No.", NoSeriesManagement.DoGetNextNo(LoanServicingSetup."Serviced No. Series", TODAY, true, false));
+                LoanDocument.Validate("Customer No.", ServicingWorksheet."Customer No.");
+                LoanDocument.Validate("Loan No.", ServicingWorksheet."Loan No.");
+                LoanDocument.Validate("Posting Date", ServicingWorksheet."Next Payment Date");
+                LoanDocument.Validate("Reason Code", LoanServicingSetup."Serviced Reason Code");
+                LoanDocument.Insert(true);
+                Clear(LoanDocumentLine);
+                LoanDocumentLine.Validate("Transaction Type", LoanDocument."Transaction Type");
+                LoanDocumentLine.Validate("Document No.", LoanDocument."Document No.");
+                LoanDocumentLine.Validate("Account Type", LoanDocumentLine."Account Type"::"G/L Account");
+                LoanDocumentLine."Line No." := LineNo;
+                LoanDocumentLine.Amount := ServicingWorksheet."Interest Amount";
+                LoanDocumentLine."Servicing Type" := LoanDocumentLine."Servicing Type"::Interest;
+                LoanDocumentLine.Insert(true);
+                LineNo := LineNo + 1000;
             end;
-        until lvngServicingWorksheet.Next() = 0;
+        until ServicingWorksheet.Next() = 0;
     end;
-
-    var
-        lvngServicingWorksheet: Record lvngServicingWorksheet;
-        lvngLoanServicingSetup: Record lvngLoanServicingSetup;
-        lvngLoanServicingSetupRetrieved: Boolean;
-
 }
