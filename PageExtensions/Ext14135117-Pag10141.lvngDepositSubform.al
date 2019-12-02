@@ -5,7 +5,7 @@ pageextension 14135117 lvngDepositSubform extends "Deposit Subform"
         addlast(Control1020000)
         {
             field("Business Unit Code"; "Business Unit Code") { ApplicationArea = All; }
-            field(lvngLoanNo; "Loan No.") { ApplicationArea = All; }
+            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
         }
 
         modify("ShortcutDimCode[3]") { Visible = true; }

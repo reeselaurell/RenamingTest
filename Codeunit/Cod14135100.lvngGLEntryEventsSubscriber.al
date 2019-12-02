@@ -9,43 +9,43 @@ codeunit 14135100 lvngGLEntryEventsSubscriber
         if GLEntry.IsTemporary() then
             exit;
         DimensionManagement.GetShortcutDimensions(GLEntry."Dimension Set ID", ShortcutDimValues);
-        GLEntry."Shortcut Dimension 3 Code" := ShortcutDimValues[3];
-        GLEntry."Shortcut Dimension 4 Code" := ShortcutDimValues[4];
-        GLEntry."Shortcut Dimension 5 Code" := ShortcutDimValues[5];
-        GLEntry."Shortcut Dimension 6 Code" := ShortcutDimValues[6];
-        GLEntry."Shortcut Dimension 7 Code" := ShortcutDimValues[7];
-        GLEntry."Shortcut Dimension 8 Code" := ShortcutDimValues[8];
-        GLEntry."Loan No." := GenJournalLine."Loan No.";
-        GLEntry."Servicing Type" := GenJournalLine."Servicing Type";
-        GLEntry."Entry Date" := Today();
+        GLEntry.lvngShortcutDimension3Code := ShortcutDimValues[3];
+        GLEntry.lvngShortcutDimension4Code := ShortcutDimValues[4];
+        GLEntry.lvngShortcutDimension5Code := ShortcutDimValues[5];
+        GLEntry.lvngShortcutDimension6Code := ShortcutDimValues[6];
+        GLEntry.lvngShortcutDimension7Code := ShortcutDimValues[7];
+        GLEntry.lvngShortcutDimension8Code := ShortcutDimValues[8];
+        GLEntry.lvngLoanNo := GenJournalLine.lvngLoanNo;
+        GLEntry.lvngServicingType := GenJournalLine.lvngServicingType;
+        GLEntry.lvngEntryDate := Today();
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Invoice Post. Buffer", 'OnAfterInvPostBufferPreparePurchase', '', false, false)]
     local procedure OnAfterPurchasePostBufferPrepate(var InvoicePostBuffer: Record "Invoice Post. Buffer"; var PurchaseLine: Record "Purchase Line")
     begin
         InvoicePostBuffer."Additional Grouping Identifier" := Format(PurchaseLine."Line No.");
-        InvoicePostBuffer."Loan No." := PurchaseLine."Loan No.";
-        InvoicePostBuffer.Description := PurchaseLine.Description;
-        InvoicePostBuffer."Reason Code" := PurchaseLine."Reason Code";
+        InvoicePostBuffer.lvngLoanNo := PurchaseLine.lvngLoanNo;
+        InvoicePostBuffer.lvngDescription := PurchaseLine.Description;
+        InvoicePostBuffer.lvngReasonCode := PurchaseLine.lvngReasonCode;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Invoice Post. Buffer", 'OnAfterInvPostBufferPrepareSales', '', false, false)]
     local procedure OnAfterSalesPostBufferPrepate(var InvoicePostBuffer: Record "Invoice Post. Buffer"; var SalesLine: Record "Sales Line")
     begin
         InvoicePostBuffer."Additional Grouping Identifier" := Format(SalesLine."Line No.");
-        InvoicePostBuffer."Loan No." := SalesLine."Loan No.";
-        InvoicePostBuffer.Description := SalesLine.Description;
-        InvoicePostBuffer."Servicing Type" := SalesLine."Servicing Type";
-        InvoicePostBuffer."Reason Code" := SalesLine."Reason Code";
+        InvoicePostBuffer.lvngLoanNo := SalesLine.lvngLoanNo;
+        InvoicePostBuffer.lvngDescription := SalesLine.Description;
+        InvoicePostBuffer.lvngServicingType := SalesLine.lvngServicingType;
+        InvoicePostBuffer.lvngReasonCode := SalesLine.lvngReasonCode;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterCopyGenJnlLineFromInvPostBuffer', '', false, false)]
     local procedure OnAfterCopyGenJnlLineFromInvPostBuffer(var GenJournalLine: Record "Gen. Journal Line"; InvoicePostBuffer: Record "Invoice Post. Buffer")
     begin
-        GenJournalLine."Servicing Type" := InvoicePostBuffer."Servicing Type";
-        GenJournalLine."Loan No." := InvoicePostBuffer."Loan No.";
-        GenJournalLine.Description := InvoicePostBuffer.Description;
-        if InvoicePostBuffer."Reason Code" <> '' then
-            GenJournalLine."Reason Code" := InvoicePostBuffer."Reason Code";
+        GenJournalLine.lvngServicingType := InvoicePostBuffer.lvngServicingType;
+        GenJournalLine.lvngLoanNo := InvoicePostBuffer.lvngLoanNo;
+        GenJournalLine.Description := InvoicePostBuffer.lvngDescription;
+        if InvoicePostBuffer.lvngReasonCode <> '' then
+            GenJournalLine."Reason Code" := InvoicePostBuffer.lvngReasonCode;
     end;
 }

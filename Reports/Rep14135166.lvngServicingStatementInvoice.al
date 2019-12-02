@@ -210,17 +210,17 @@ report 14135166 lvngServicingStatementInvoice
                         if SalesInvHeader.Get(CustLedgEntry."Document No.") then begin
                             SalesInvLine.Reset();
                             SalesInvLine.SetRange("Document No.", SalesInvHeader."No.");
-                            SalesInvLine.SetRange("Servicing Type", SalesInvLine."Servicing Type"::Interest);
+                            SalesInvLine.SetRange(lvngServicingType, SalesInvLine.lvngServicingType::Interest);
                             if SalesInvLine.FindSet() then
                                 repeat
                                     AmountDueInterest := AmountDueInterest + SalesInvLine.Amount;
                                 until SalesInvLine.Next() = 0;
-                            SalesInvLine.SetRange("Servicing Type", SalesInvLine."Servicing Type"::Principal);
+                            SalesInvLine.SetRange(lvngServicingType, SalesInvLine.lvngServicingType::Principal);
                             if SalesInvLine.FindSet() then
                                 repeat
                                     AmountDuePrincipal := AmountDuePrincipal + SalesInvLine.Amount;
                                 until SalesInvLine.Next() = 0;
-                            SalesInvLine.SetRange("Servicing Type", SalesInvLine."Servicing Type"::Escrow);
+                            SalesInvLine.SetRange(lvngServicingType, SalesInvLine.lvngServicingType::Escrow);
                             if SalesInvLine.FindSet() then
                                 repeat
                                     AmountDueEscrow := AmountDueEscrow + SalesInvLine.Amount;
@@ -229,8 +229,8 @@ report 14135166 lvngServicingStatementInvoice
                     end;
                     GLEntry.Reset();
                     GLEntry.SetRange("Source Type", GLEntry."Source Type"::Customer);
-                    GLEntry.SetRange("Loan No.", Loan."No.");
-                    GLEntry.SetRange("Servicing Type", GLEntry."Servicing Type"::Escrow);
+                    GLEntry.SetRange(lvngLoanNo, Loan."No.");
+                    GLEntry.SetRange(lvngServicingType, GLEntry.lvngServicingType::Escrow);
                     GLEntry.SetRange("Posting Date", 0D, "Sales Invoice Header"."Posting Date");
                     if GLEntry.FindSet() then
                         repeat
@@ -246,8 +246,8 @@ report 14135166 lvngServicingStatementInvoice
                         until GLEntry.Next() = 0;
                     GLEntry.Reset();
                     GLEntry.SetRange("Source Type", GLEntry."Source Type"::Vendor);
-                    GLEntry.SetRange("Loan No.", Loan."No.");
-                    GLEntry.SetRange("Servicing Type", GLEntry."Servicing Type"::Escrow);
+                    GLEntry.SetRange(lvngLoanNo, Loan."No.");
+                    GLEntry.SetRange(lvngServicingType, GLEntry.lvngServicingType::Escrow);
                     GLEntry.SetRange("Posting Date", 0D, "Sales Invoice Header"."Posting Date");
                     if GLEntry.FindSet() then
                         repeat
@@ -267,7 +267,7 @@ report 14135166 lvngServicingStatementInvoice
                     GLEntry.Reset();
                     GLEntry.SetRange("Source Type", GLEntry."Source Type"::Customer);
                     GLEntry.SetRange("Source No.", Customer."No.");
-                    GLEntry.SetRange("Servicing Type", GLEntry."Servicing Type"::Principal);
+                    GLEntry.SetRange(lvngServicingType, GLEntry.lvngServicingType::Principal);
                     GLEntry.SetRange("Posting Date", 0D, "Sales Invoice Header"."Posting Date");
                     if GLEntry.FindSet() then
                         repeat
@@ -286,9 +286,9 @@ report 14135166 lvngServicingStatementInvoice
                     if Counter < 11 then begin
                         GLEntry.Reset();
                         GLEntry.SetRange("Source Type", GLEntry."Source Type"::Vendor);
-                        GLEntry.SetRange("Loan No.", Loan."No.");
+                        GLEntry.SetRange(lvngLoanNo, Loan."No.");
                         GLEntry.SetRange("Posting Date", PreviousInvoiceDate, "Sales Invoice Header"."Posting Date");
-                        GLEntry.SetRange("Servicing Type", GLEntry."Servicing Type"::Escrow);
+                        GLEntry.SetRange(lvngServicingType, GLEntry.lvngServicingType::Escrow);
                         if GLEntry.FindSet() then
                             repeat
                                 VendLedgEntry.Reset();
@@ -340,22 +340,22 @@ report 14135166 lvngServicingStatementInvoice
                                                     ActivityAmounts[Counter] := CustLedgEntry2.Amount;
                                                     SalesInvLine.Reset();
                                                     SalesInvLine.SetRange("Document No.", SalesInvHeader."No.");
-                                                    SalesInvLine.SetRange("Servicing Type", SalesInvLine."Servicing Type"::Blank);
+                                                    SalesInvLine.SetRange(lvngServicingType, SalesInvLine.lvngServicingType::Blank);
                                                     if SalesInvLine.FindSet() then
                                                         repeat
                                                             ActivityOther[Counter] := ActivityOther[Counter] + SalesInvLine.Amount;
                                                         until SalesInvLine.Next() = 0;
-                                                    SalesInvLine.SetRange("Servicing Type", SalesInvLine."Servicing Type"::Escrow);
+                                                    SalesInvLine.SetRange(lvngServicingType, SalesInvLine.lvngServicingType::Escrow);
                                                     if SalesInvLine.FindSet() then
                                                         repeat
                                                             ActivityEscrow[Counter] := ActivityEscrow[Counter] + SalesInvLine.Amount;
                                                         until SalesInvLine.Next() = 0;
-                                                    SalesInvLine.SetRange("Servicing Type", SalesInvLine."Servicing Type"::Principal);
+                                                    SalesInvLine.SetRange(lvngServicingType, SalesInvLine.lvngServicingType::Principal);
                                                     if SalesInvLine.FindSet() then
                                                         repeat
                                                             ActivityPrincipal[Counter] := ActivityPrincipal[Counter] + SalesInvLine.Amount;
                                                         until SalesInvLine.Next() = 0;
-                                                    SalesInvLine.SetRange("Servicing Type", SalesInvLine."Servicing Type"::Interest);
+                                                    SalesInvLine.SetRange(lvngServicingType, SalesInvLine.lvngServicingType::Interest);
                                                     if SalesInvLine.FindSet() then
                                                         repeat
                                                             ActivityInterest[Counter] := ActivityInterest[Counter] + SalesInvLine.Amount;
@@ -386,13 +386,13 @@ report 14135166 lvngServicingStatementInvoice
                                     SalesInvLine.SetRange("Document No.", CustLedgEntry."Document No.");
                                     if SalesInvLine.FindSet() then
                                         repeat
-                                            if SalesInvLine."Servicing Type" = SalesInvLine."Servicing Type"::Escrow then
+                                            if SalesInvLine.lvngServicingType = SalesInvLine.lvngServicingType::Escrow then
                                                 PaidYTD[3] := PaidYTD[3] + SalesInvLine.Amount;
-                                            if SalesInvLine."Servicing Type" = SalesInvLine."Servicing Type"::Interest then
+                                            if SalesInvLine.lvngServicingType = SalesInvLine.lvngServicingType::Interest then
                                                 PaidYTD[2] := PaidYTD[2] + SalesInvLine.Amount;
-                                            if SalesInvLine."Servicing Type" = SalesInvLine."Servicing Type"::Principal then
+                                            if SalesInvLine.lvngServicingType = SalesInvLine.lvngServicingType::Principal then
                                                 PaidYTD[1] := PaidYTD[1] + SalesInvLine.Amount;
-                                            if SalesInvLine."Servicing Type" = SalesInvLine."Servicing Type"::Blank then
+                                            if SalesInvLine.lvngServicingType = SalesInvLine.lvngServicingType::Blank then
                                                 PaidYTD[4] := PaidYTD[4] + SalesInvLine.Amount;
                                         until SalesInvLine.Next() = 0
                                     else
@@ -402,13 +402,13 @@ report 14135166 lvngServicingStatementInvoice
                                     SalesCrMemoLine.SetRange("Document No.", CustLedgEntry."Document No.");
                                     if SalesCrMemoLine.FindSet() then begin
                                         repeat
-                                            if SalesCrMemoLine."Servicing Type" = SalesCrMemoLine."Servicing Type"::Escrow then
+                                            if SalesCrMemoLine.lvngServicingType = SalesCrMemoLine.lvngServicingType::Escrow then
                                                 PaidYTD[3] := PaidYTD[3] - SalesCrMemoLine.Amount;
-                                            if SalesCrMemoLine."Servicing Type" = SalesCrMemoLine."Servicing Type"::Interest then
+                                            if SalesCrMemoLine.lvngServicingType = SalesCrMemoLine.lvngServicingType::Interest then
                                                 PaidYTD[2] := PaidYTD[2] - SalesCrMemoLine.Amount;
-                                            if SalesCrMemoLine."Servicing Type" = SalesCrMemoLine."Servicing Type"::Principal then
+                                            if SalesCrMemoLine.lvngServicingType = SalesCrMemoLine.lvngServicingType::Principal then
                                                 PaidYTD[1] := PaidYTD[1] - SalesCrMemoLine.Amount;
-                                            if SalesCrMemoLine."Servicing Type" = SalesCrMemoLine."Servicing Type"::Blank then
+                                            if SalesCrMemoLine.lvngServicingType = SalesCrMemoLine.lvngServicingType::Blank then
                                                 PaidYTD[4] := PaidYTD[4] - SalesCrMemoLine.Amount;
                                         until SalesCrMemoLine.Next() = 0;
                                     end else

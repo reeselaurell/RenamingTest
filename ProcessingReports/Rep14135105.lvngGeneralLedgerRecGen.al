@@ -48,7 +48,7 @@ report 14135105 lvngGeneralLedgerRecGen
                     GLEntry.Reset();
                     GLEntry.SetFilter("G/L Account No.", GLFilter);
                     GLEntry.SetFilter("Posting Date", DateFilter);
-                    GLEntry.SetRange("Loan No.", '');
+                    GLEntry.SetRange(lvngLoanNo, '');
                     if GLEntry.FindSet() then
                         repeat
                             if GLEntry."Document Type" = GLEntry."Document Type"::Payment then begin
@@ -79,10 +79,10 @@ report 14135105 lvngGeneralLedgerRecGen
                                                     GLEntry2.SetFilter(Amount, '>%1', 0);
                                                 if GLEntry2.FindSet() then
                                                     repeat
-                                                        if GLEntry2."Loan No." <> '' then begin
+                                                        if GLEntry2.lvngLoanNo <> '' then begin
                                                             TempLoan.Reset();
                                                             TempLoan.SetRange("G/L Account No.", GLEntry."G/L Account No.");
-                                                            TempLoan.SetRange("Loan No.", GLEntry2."Loan No.");
+                                                            TempLoan.SetRange("Loan No.", GLEntry2.lvngLoanNo);
                                                             if TempLoan.FindFirst() then begin
                                                                 TempLoan."Debit Amount" := TempLoan."Debit Amount" + GLEntry2."Credit Amount";
                                                                 TempLoan."Credit Amount" := TempLoan."Credit Amount" + GLEntry2."Debit Amount";
@@ -94,13 +94,13 @@ report 14135105 lvngGeneralLedgerRecGen
                                                             end else begin
                                                                 Clear(TempLoan);
                                                                 TempLoan."Entry No." := Counter;
-                                                                TempLoan."Loan No." := GLEntry2."Loan No.";
+                                                                TempLoan."Loan No." := GLEntry2.lvngLoanNo;
                                                                 TempLoan."Debit Amount" := GLEntry2."Credit Amount";
                                                                 TempLoan."Credit Amount" := GLEntry2."Debit Amount";
                                                                 TempLoan."Invoice Ledger Entry No." := VendorLedgerEntry2."Entry No.";
                                                                 TempLoan."Payment Ledger Entry No." := VendorLedgerEntry."Entry No.";
                                                                 TempLoan."Includes Multi-Payment" := true;
-                                                                if Loan.Get(GLEntry2."Loan No.") then begin
+                                                                if Loan.Get(GLEntry2.lvngLoanNo) then begin
                                                                     TempLoan.Name := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
                                                                     TempLoan."Date Funded" := Loan."Date Funded";
                                                                     TempLoan."Date Sold" := Loan."Date Sold";
@@ -171,9 +171,9 @@ report 14135105 lvngGeneralLedgerRecGen
                     TempLoan.Modify();
                 end else begin
                     GLEntry.Reset();
-                    GLEntry.SetCurrentKey("Loan No.", "Posting Date");
+                    GLEntry.SetCurrentKey(lvngLoanNo, "Posting Date");
                     GLEntry.SetRange("G/L Account No.", TempLoan."G/L Account No.");
-                    GLEntry.SetRange("Loan No.", TempLoan."Loan No.");
+                    GLEntry.SetRange(lvngLoanNo, TempLoan."Loan No.");
                     GLEntry.SetFilter("Posting Date", DateFilter);
                     if not GLEntry.IsEmpty() then begin
                         GLEntry.FindLast();

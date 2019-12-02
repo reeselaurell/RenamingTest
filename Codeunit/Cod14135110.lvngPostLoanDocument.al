@@ -126,7 +126,7 @@ codeunit 14135110 lvngPostLoanDocument
         GenJnlLine."Document No." := lvngLoanDocument."Document No.";
         GenJnlLine."Account Type" := GenJnlLine."Account Type"::Customer;
         GenJnlLine."Account No." := lvngLoanDocument."Customer No.";
-        GenJnlLine."Loan No." := lvngLoanDocument."Loan No.";
+        GenJnlLine.lvngLoanNo := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
         GenJnlLine.Amount := Amount;
         GenJnlLine."Source Code" := SourceCode;
@@ -156,9 +156,9 @@ codeunit 14135110 lvngPostLoanDocument
         GenJnlLine.Amount := lvngLoanDocumentLine.Amount;
         GenJnlLine."System-Created Entry" := true;
         GenJnlLine."Source Code" := SourceCode;
-        GenJnlLine."Loan No." := lvngLoanDocument."Loan No.";
+        GenJnlLine.lvngLoanNo := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
-        GenJnlLine."Servicing Type" := lvngLoanDocumentLine."Servicing Type";
+        GenJnlLine.lvngServicingType := lvngLoanDocumentLine."Servicing Type";
     end;
 
     local procedure CreateBalancingGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line"; SourceCode: Code[20])
@@ -188,7 +188,7 @@ codeunit 14135110 lvngPostLoanDocument
         GenJnlLine."Applies-to Doc. No." := GenJnlLine."Document No.";
         GenJnlLine."System-Created Entry" := true;
         GenJnlLine."Source Code" := SourceCode;
-        GenJnlLine."Loan No." := lvngLoanDocument."Loan No.";
+        GenJnlLine.lvngLoanNo := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
     end;
 

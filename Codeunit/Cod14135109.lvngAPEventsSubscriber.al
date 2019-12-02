@@ -4,6 +4,6 @@ codeunit 14135109 lvngAPEventsSubscriber
     local procedure OnBeforeVendorLedgerEntryInsert(var Rec: Record "Vendor Ledger Entry")
     begin
         if not Rec.IsTemporary() then
-            Rec."Entry Date" := Today();
+            Rec.lvngEntryDate := Today();
     end;
 }

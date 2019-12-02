@@ -9,7 +9,7 @@ report 14135173 lvngSubsequentDisbursements
         dataitem("G/L Entry"; "G/L Entry")
         {
             DataItemTableView = sorting("G/L Account No.", "Posting Date");
-            RequestFilterFields = "G/L Account No.", "Posting Date", "Entry Date", "Source Type", "Source No.";
+            RequestFilterFields = "G/L Account No.", "Posting Date", lvngEntryDate, "Source Type", "Source No.";
 
             column(Amount; Amount) { }
             column(BalAccountType; "Bal. Account Type") { }
@@ -20,7 +20,7 @@ report 14135173 lvngSubsequentDisbursements
             column(GLAccountName; "G/L Account Name") { }
             column(PostingDate; "Posting Date") { }
             column(SourceNo; "Source No.") { }
-            column(EntryDate; "Entry Date") { }
+            column(EntryDate; lvngEntryDate) { }
             column(DateFilter; DateFilter) { }
             column(CompanyName; CompanyInformation.Name) { }
             column(UserName; UserName) { }

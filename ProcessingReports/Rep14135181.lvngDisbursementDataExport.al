@@ -58,7 +58,7 @@ report 14135181 "lvngDisbursementDataExport"
                         VendorLedgerEntry.Get(DetailedVendLedgEntry."Vendor Ledger Entry No.");
                         ExportDateColumn(DetailedVendLedgEntry."Posting Date");
                         ExportTextColumn(VendorLedgerEntry."External Document No.", false);
-                        ExportTextColumn(VendorLedgerEntry."Loan No.", false);
+                        ExportTextColumn(VendorLedgerEntry.lvngLoanNo, false);
                         ExportTextColumn(VendorLedgerEntry."Vendor Posting Group", false);
                         ExportDateColumn("Posting Date");
                         ExportTextColumn("Document No.", false);

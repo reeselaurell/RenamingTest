@@ -2,33 +2,33 @@ tableextension 14135100 lvngGLEntry extends "G/L Entry"
 {
     fields
     {
-        field(14135100; "Loan No."; Code[20]) { Caption = 'Loan No.'; DataClassification = CustomerContent; TableRelation = lvngLoan; }
-        field(14135101; "Shortcut Dimension 3 Code"; Code[20]) { Caption = 'Shortcut Dimension 3 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,3'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3)); }
-        field(14135102; "Shortcut Dimension 4 Code"; Code[20]) { Caption = 'Shortcut Dimension 4 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,4'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4)); }
-        field(14135103; "Shortcut Dimension 5 Code"; Code[20]) { Caption = 'Shortcut Dimension 5 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,5'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(5)); }
-        field(14135104; "Shortcut Dimension 6 Code"; Code[20]) { Caption = 'Shortcut Dimension 6 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,6'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6)); }
-        field(14135105; "Shortcut Dimension 7 Code"; Code[20]) { Caption = 'Shortcut Dimension 7 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,7'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7)); }
-        field(14135106; "Shortcut Dimension 8 Code"; Code[20]) { Caption = 'Shortcut Dimension 8 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,8'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8)); }
-        field(14135107; "Entry Date"; Date) { Caption = 'Entry Date'; DataClassification = CustomerContent; }
-        field(14135108; "Servicing Type"; enum lvngServicingType) { Caption = 'Servicing Type'; DataClassification = CustomerContent; }
-        field(14135109; "Source Name"; Text[50]) { }
-        field(14135150; "Warehouse Line Code"; Code[50]) { Caption = 'Warehouse Line Code'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Warehouse Line Code" where("No." = field("Loan No."))); }
-        field(14135151; "Borrower Search Name"; Code[100]) { Caption = 'Borrower Search Name'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Search Name" where("No." = field("Loan No."))); }
-        field(14135220; "Global Dimension 1 Name"; Text[50]) { Caption = 'Global Dimension 1 Name'; CaptionClass = GetDimensionName(1); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(1), Code = field("Global Dimension 1 Code"))); }
-        field(14135221; "Global Dimension 2 Name"; Text[50]) { Caption = 'Global Dimension 2 Name'; CaptionClass = GetDimensionName(2); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(2), Code = field("Global Dimension 2 Code"))); }
-        field(14135222; "Shortcut Dimension 3 Name"; Text[50]) { Caption = 'Shortcut Dimension 3 Name'; CaptionClass = GetDimensionName(3); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(3), Code = field("Shortcut Dimension 3 Code"))); }
-        field(14135223; "Shortcut Dimension 4 Name"; Text[50]) { Caption = 'Shortcut Dimension 4 Name'; CaptionClass = GetDimensionName(4); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(4), Code = field("Shortcut Dimension 4 Code"))); }
-        field(14135224; "Shortcut Dimension 5 Name"; Text[50]) { Caption = 'Shortcut Dimension 5 Name'; CaptionClass = GetDimensionName(5); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(5), Code = field("Shortcut Dimension 5 Code"))); }
-        field(14135225; "Shortcut Dimension 6 Name"; Text[50]) { Caption = 'Shortcut Dimension 6 Name'; CaptionClass = GetDimensionName(6); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(6), Code = field("Shortcut Dimension 6 Code"))); }
-        field(14135226; "Shortcut Dimension 7 Name"; Text[50]) { Caption = 'Shortcut Dimension 7 Name'; CaptionClass = GetDimensionName(7); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(7), Code = field("Shortcut Dimension 7 Code"))); }
-        field(14135227; "Shortcut Dimension 8 Name"; Text[50]) { Caption = 'Shortcut Dimension 8 Name'; CaptionClass = GetDimensionName(8); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(8), Code = field("Shortcut Dimension 8 Code"))); }
-        field(14135500; "Import ID"; Guid) { Caption = 'Import ID'; DataClassification = CustomerContent; }
-        field(14135501; Voided; Boolean) { Caption = 'Voided'; DataClassification = CustomerContent; }
+        field(14135100; lvngLoanNo; Code[20]) { Caption = 'Loan No.'; DataClassification = CustomerContent; TableRelation = lvngLoan; }
+        field(14135101; lvngShortcutDimension3Code; Code[20]) { Caption = 'Shortcut Dimension 3 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,3'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3)); }
+        field(14135102; lvngShortcutDimension4Code; Code[20]) { Caption = 'Shortcut Dimension 4 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,4'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4)); }
+        field(14135103; lvngShortcutDimension5Code; Code[20]) { Caption = 'Shortcut Dimension 5 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,5'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(5)); }
+        field(14135104; lvngShortcutDimension6Code; Code[20]) { Caption = 'Shortcut Dimension 6 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,6'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6)); }
+        field(14135105; lvngShortcutDimension7Code; Code[20]) { Caption = 'Shortcut Dimension 7 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,7'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7)); }
+        field(14135106; lvngShortcutDimension8Code; Code[20]) { Caption = 'Shortcut Dimension 8 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,8'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8)); }
+        field(14135107; lvngEntryDate; Date) { Caption = 'Entry Date'; DataClassification = CustomerContent; }
+        field(14135108; lvngServicingType; enum lvngServicingType) { Caption = 'Servicing Type'; DataClassification = CustomerContent; }
+        field(14135109; lvngSourceName; Text[50]) { }
+        field(14135150; lvngWarehouseLineCode; Code[50]) { Caption = 'Warehouse Line Code'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Warehouse Line Code" where("No." = field(lvngLoanNo))); }
+        field(14135151; lvngBorrowerSearchName; Code[100]) { Caption = 'Borrower Search Name'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Search Name" where("No." = field(lvngLoanNo))); }
+        field(14135220; lvngGlobalDimension1Name; Text[50]) { Caption = 'Global Dimension 1 Name'; CaptionClass = GetDimensionName(1); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(1), Code = field("Global Dimension 1 Code"))); }
+        field(14135221; lvngGlobalDimension2Name; Text[50]) { Caption = 'Global Dimension 2 Name'; CaptionClass = GetDimensionName(2); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(2), Code = field("Global Dimension 2 Code"))); }
+        field(14135222; lvngShortcutDimension3Name; Text[50]) { Caption = 'Shortcut Dimension 3 Name'; CaptionClass = GetDimensionName(3); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(3), Code = field(lvngShortcutDimension3Code))); }
+        field(14135223; lvngShortcutDimension4Name; Text[50]) { Caption = 'Shortcut Dimension 4 Name'; CaptionClass = GetDimensionName(4); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(4), Code = field(lvngShortcutDimension4Code))); }
+        field(14135224; lvngShortcutDimension5Name; Text[50]) { Caption = 'Shortcut Dimension 5 Name'; CaptionClass = GetDimensionName(5); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(5), Code = field(lvngShortcutDimension5Code))); }
+        field(14135225; lvngShortcutDimension6Name; Text[50]) { Caption = 'Shortcut Dimension 6 Name'; CaptionClass = GetDimensionName(6); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(6), Code = field(lvngShortcutDimension6Code))); }
+        field(14135226; lvngShortcutDimension7Name; Text[50]) { Caption = 'Shortcut Dimension 7 Name'; CaptionClass = GetDimensionName(7); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(7), Code = field(lvngShortcutDimension7Code))); }
+        field(14135227; lvngShortcutDimension8Name; Text[50]) { Caption = 'Shortcut Dimension 8 Name'; CaptionClass = GetDimensionName(8); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(8), Code = field(lvngShortcutDimension8Code))); }
+        field(14135500; lvngImportID; Guid) { Caption = 'Import ID'; DataClassification = CustomerContent; }
+        field(14135501; lvngVoided; Boolean) { Caption = 'Voided'; DataClassification = CustomerContent; }
     }
 
     keys
     {
-        key(LoanNo; "Loan No.") { }
+        key(LoanNo; lvngLoanNo) { }
     }
 
     var

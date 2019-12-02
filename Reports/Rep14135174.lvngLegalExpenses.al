@@ -9,7 +9,7 @@ report 14135174 lvngLegalExpenses
         dataitem("G/L Entry"; "G/L Entry")
         {
             DataItemTableView = sorting("G/L Account No.", "Posting Date");
-            RequestFilterFields = "G/L Account No.", "Posting Date", "Entry Date", "Source Type", "Source No.";
+            RequestFilterFields = "G/L Account No.", "Posting Date", lvngEntryDate, "Source Type", "Source No.";
 
             column(EntryNo; "Entry No.") { }
             column(PostingDate; "Posting Date") { }
@@ -18,7 +18,7 @@ report 14135174 lvngLegalExpenses
             column(Description; Description) { }
             column(Amount; Amount) { }
             column(GLAccountName; "G/L Account Name") { }
-            column(SourceName; "Source Name") { }
+            column(SourceName; lvngSourceName) { }
             column(DateFilter; DateFilter) { }
             column(CompanyName; CompanyInformation.Name) { }
             column(BranchCode; BranchCode) { }
@@ -31,17 +31,17 @@ report 14135174 lvngLegalExpenses
                     2:
                         BranchCode := "Global Dimension 2 Code";
                     3:
-                        BranchCode := "Shortcut Dimension 3 Code";
+                        BranchCode := lvngShortcutDimension3Code;
                     4:
-                        BranchCode := "Shortcut Dimension 4 Code";
+                        BranchCode := lvngShortcutDimension4Code;
                     5:
-                        BranchCode := "Shortcut Dimension 5 Code";
+                        BranchCode := lvngShortcutDimension5Code;
                     6:
-                        BranchCode := "Shortcut Dimension 6 Code";
+                        BranchCode := lvngShortcutDimension6Code;
                     7:
-                        BranchCode := "Shortcut Dimension 7 Code";
+                        BranchCode := lvngShortcutDimension7Code;
                     8:
-                        BranchCode := "Shortcut Dimension 8 Code";
+                        BranchCode := lvngShortcutDimension8Code;
                     else
                         BranchCode := '';
                 end;

@@ -49,8 +49,8 @@ codeunit 14135117 lvngSalesFileImportManagement
             SalesLine.Validate(Quantity, 1);
             SalesLine.Validate("Unit Price", GenJnlImportBuffer.Amount);
             if GenJnlImportBuffer."Reason Code" <> '' then
-                SalesLine.Validate("Reason Code", GenJnlImportBuffer."Reason Code");
-            SalesLine."Loan No." := GenJnlImportBuffer."Loan No.";
+                SalesLine.Validate(lvngReasonCode, GenJnlImportBuffer."Reason Code");
+            SalesLine.lvngLoanNo := GenJnlImportBuffer."Loan No.";
             if GenJnlImportBuffer."Shortcut Dimension 4 Code" <> '' then
                 DimensionManagement.ValidateShortcutDimValues(4, GenJnlImportBuffer."Shortcut Dimension 4 Code", SalesLine."Dimension Set ID");
             if GenJnlImportBuffer."Shortcut Dimension 3 Code" <> '' then
@@ -346,7 +346,7 @@ codeunit 14135117 lvngSalesFileImportManagement
                 DimensionMappingType::"Search Name":
                     DimensionValue.SetFilter(Name, '@%1', DimensionValueText);
                 DimensionMappingType::"Additional Code":
-                    DimensionValue.SetRange("Additional Code", DimensionValueText);
+                    DimensionValue.SetRange(lvngAdditionalCode, DimensionValueText);
             end;
             if DimensionValue.FindFirst() then
                 DimensionValueCode := DimensionValue.Code;

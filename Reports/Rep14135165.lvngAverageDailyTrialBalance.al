@@ -9,7 +9,7 @@ report 14135165 lvngAverageDailyTrialBalance
         dataitem("G/L Account"; "G/L Account")
         {
             DataItemTableView = sorting("No.");
-            RequestFilterFields = "Date Filter", "Global Dimension 1 Filter", "Global Dimension 2 Filter", "Business Unit Filter", "Income/Balance", "Shortcut Dimension 3 Filter", "Shortcut Dimension 4 Filter";
+            RequestFilterFields = "Date Filter", "Global Dimension 1 Filter", "Global Dimension 2 Filter", "Business Unit Filter", "Income/Balance", lvngShortcutDimension3Filter, lvngShortcutDimension4Filter;
 
             column(GLAccountNo; "No.") { }
             column(Name; Name) { }

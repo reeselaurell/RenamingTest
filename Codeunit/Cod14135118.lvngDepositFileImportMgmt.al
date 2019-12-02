@@ -59,7 +59,7 @@ codeunit 14135118 lvngDepositFileImportMgmt
             GenJnlLine.Validate(Amount, GenJnlImportBuffer.Amount);
             GenJnlLine."Applies-to Doc. Type" := GenJnlImportBuffer."Applies-To Doc. Type";
             GenJnlLine."Applies-to Doc. No." := GenJnlImportBuffer."Applies-To Doc. No.";
-            GenJnlLine."Loan No." := GenJnlImportBuffer."Loan No.";
+            GenJnlLine.lvngLoanNo := GenJnlImportBuffer."Loan No.";
             GenJnlLine.validate("Reason Code", GenJnlImportBuffer."Reason Code");
             GenJnlLine."Shortcut Dimension 1 Code" := GenJnlImportBuffer."Global Dimension 1 Code";
             GenJnlLine."Shortcut Dimension 2 Code" := GenJnlImportBuffer."Global Dimension 2 Code";
@@ -274,7 +274,7 @@ codeunit 14135118 lvngDepositFileImportMgmt
                     if FileImportSchema."Subs. G/L With Bank Acc." then
                         if GLAccount.Get(GenJnlImportBuffer."Account No.") then begin
                             GenJnlImportBuffer."Account Type" := GenJnlImportBuffer."Account Type"::"Bank Account";
-                            GenJnlImportBuffer."Account No." := GLAccount."Linked Bank Account No.";
+                            GenJnlImportBuffer."Account No." := GLAccount.lvngLinkedBankAccountNo;
                         end;
                 //Loan No.
                 if GenJnlImportBuffer."Loan No." <> '' then begin
@@ -405,7 +405,7 @@ codeunit 14135118 lvngDepositFileImportMgmt
                 DimensionMappingType::"Search Name":
                     DimensionValue.SetFilter(Name, '@%1', DimensionValueText);
                 DimensionMappingType::"Additional Code":
-                    DimensionValue.SetRange("Additional Code", DimensionValueText);
+                    DimensionValue.SetRange(lvngAdditionalCode, DimensionValueText);
             end;
             if DimensionValue.FindFirst() then
                 DimensionValueCode := DimensionValue.Code;

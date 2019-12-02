@@ -9,15 +9,15 @@ query 14135101 lvngGLEntriesByLoanSums
         {
             filter(GLAccountNoFilter; "G/L Account No.") { }
             filter(PostingDateFilter; "Posting Date") { }
-            filter(LoanNoFilter; "Loan No.") { }
+            filter(LoanNoFilter; lvngLoanNo) { }
             column(GLAccount; "G/L Account No.") { }
-            column(LoanNo; "Loan No.") { }
+            column(LoanNo; lvngLoanNo) { }
             column(DebitAmount; "Debit Amount") { Method = Sum; }
             column(CreditAmount; "Credit Amount") { Method = Sum; }
 
             dataitem(Loan; lvngLoan)
             {
-                DataItemLink = "No." = GLEntry."Loan No.";
+                DataItemLink = "No." = GLEntry.lvngLoanNo;
 
                 column(BorrowerFirstName; "Borrower First Name") { }
                 column(BorrowerMiddleName; "Borrower Middle Name") { }

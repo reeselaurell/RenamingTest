@@ -190,35 +190,35 @@ codeunit 14135220 lvngPerformanceMgmt
             if SystemFilter."Shortcut Dimension 2" <> '' then
                 GLEntry.SetRange("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
         if CalcUnit."Dimension 3 Filter" <> '' then
-            GLEntry.SetRange("Shortcut Dimension 3 Code", CalcUnit."Dimension 3 Filter")
+            GLEntry.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
         else
             if SystemFilter."Shortcut Dimension 3" <> '' then
-                GLEntry.SetRange("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
+                GLEntry.SetRange(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
         if CalcUnit."Dimension 4 Filter" <> '' then
-            GLEntry.SetRange("Shortcut Dimension 4 Code", CalcUnit."Dimension 4 Filter")
+            GLEntry.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
         else
             if SystemFilter."Shortcut Dimension 4" <> '' then
-                GLEntry.SetRange("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
+                GLEntry.SetRange(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
         if CalcUnit."Dimension 5 Filter" <> '' then
-            GLEntry.SetRange("Shortcut Dimension 5 Code", CalcUnit."Dimension 5 Filter")
+            GLEntry.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter")
         else
             if SystemFilter."Shortcut Dimension 5" <> '' then
-                GLEntry.SetRange("Shortcut Dimension 5 Code", SystemFilter."Shortcut Dimension 5");
+                GLEntry.SetRange(lvngShortcutDimension5Code, SystemFilter."Shortcut Dimension 5");
         if CalcUnit."Dimension 6 Filter" <> '' then
-            GLEntry.SetRange("Shortcut Dimension 6 Code", CalcUnit."Dimension 6 Filter")
+            GLEntry.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter")
         else
             if SystemFilter."Shortcut Dimension 6" <> '' then
-                GLEntry.SetRange("Shortcut Dimension 6 Code", SystemFilter."Shortcut Dimension 6");
+                GLEntry.SetRange(lvngShortcutDimension6Code, SystemFilter."Shortcut Dimension 6");
         if CalcUnit."Dimension 7 Filter" <> '' then
-            GLEntry.SetRange("Shortcut Dimension 7 Code", CalcUnit."Dimension 7 Filter")
+            GLEntry.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter")
         else
             if SystemFilter."Shortcut Dimension 7" <> '' then
-                GLEntry.SetRange("Shortcut Dimension 7 Code", SystemFilter."Shortcut Dimension 7");
+                GLEntry.SetRange(lvngShortcutDimension7Code, SystemFilter."Shortcut Dimension 7");
         if CalcUnit."Dimension 8 Filter" <> '' then
-            GLEntry.SetRange("Shortcut Dimension 8 Code", CalcUnit."Dimension 8 Filter")
+            GLEntry.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter")
         else
             if SystemFilter."Shortcut Dimension 8" <> '' then
-                GLEntry.SetRange("Shortcut Dimension 8 Code", SystemFilter."Shortcut Dimension 8");
+                GLEntry.SetRange(lvngShortcutDimension8Code, SystemFilter."Shortcut Dimension 8");
         if CalcUnit."Business Unit Filter" <> '' then
             GLEntry.SetRange("Business Unit Code", CalcUnit."Business Unit Filter")
         else

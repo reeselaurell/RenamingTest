@@ -26,8 +26,8 @@ pageextension 14135109 lvngPurchaseInvoice extends "Purchase Invoice"
 
         addafter("Job Queue Status")
         {
-            field(lvngLoanNo; "Loan No.") { ApplicationArea = All; }
-            field(lvngDocumentTotalCheck; "Document Total (Check)") { ApplicationArea = All; }
+            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
+            field(lvngDocumentTotalCheck; lvngDocumentTotalCheck) { ApplicationArea = All; }
         }
     }
 

@@ -8,12 +8,12 @@ query 14135222 lvngGLEntryLoansPerPeriod
             filter(Dim1Filter; "Global Dimension 1 Code") { }
             filter(Dim2Filter; "Global Dimension 2 Code") { }
             filter(PostingDateFilter; "Posting Date") { }
-            filter(Dim3Filter; "Shortcut Dimension 3 Code") { }
-            filter(Dim4Filter; "Shortcut Dimension 4 Code") { }
+            filter(Dim3Filter; lvngShortcutDimension3Code) { }
+            filter(Dim4Filter; lvngShortcutDimension4Code) { }
             filter(BUFilter; "Business Unit Code") { }
             dataitem(lvngLoan; lvngLoan)
             {
-                DataItemLink = "No." = G_L_Entry."Loan No.";
+                DataItemLink = "No." = G_L_Entry.lvngLoanNo;
                 SqlJoinType = InnerJoin;
 
                 column(LoanNo; "No.") { }

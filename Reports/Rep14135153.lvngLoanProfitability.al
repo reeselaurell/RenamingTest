@@ -47,7 +47,7 @@ report 14135153 lvngLoanProfitability
                         Buffer.Next();
                     Clear(CalculatedValue);
                     GLAccount.Reset();
-                    GLAccount.SetRange("Reporting Account Name", Buffer."Value as Text");
+                    GLAccount.SetRange(lvngReportingAccountName, Buffer."Value as Text");
                     GLAccount.FindSet();
                     repeat
                         if GLAccount.Totaling <> '' then
@@ -185,7 +185,7 @@ report 14135153 lvngLoanProfitability
             PeriodEnd := WorkDate();
         EntryNo := 1;
         GLAccount.Reset();
-        GLAccount.SetFilter("Reporting Account Name", '<>%1', '');
+        GLAccount.SetFilter(lvngReportingAccountName, '<>%1', '');
         if ReportingType = ReportingType::Income then
             GLAccount.SetRange("Account Category", GLAccount."Account Category"::Income);
         if ReportingType = ReportingType::Expense then
@@ -211,12 +211,12 @@ report 14135153 lvngLoanProfitability
         GLAccount.FindSet();
         repeat
             Buffer.Reset();
-            Buffer.SetRange("Value as Text", GLAccount."Reporting Account Name");
+            Buffer.SetRange("Value as Text", GLAccount.lvngReportingAccountName);
             if Buffer.IsEmpty then begin
                 Clear(Buffer);
                 Buffer."Entry No." := EntryNo;
                 EntryNo := EntryNo + 1;
-                Buffer."Value as Text" := GLAccount."Reporting Account Name";
+                Buffer."Value as Text" := GLAccount.lvngReportingAccountName;
                 Buffer.Bold := (GLAccount."Account Category" = GLAccount."Account Category"::Income);
                 Buffer.Insert();
             end;

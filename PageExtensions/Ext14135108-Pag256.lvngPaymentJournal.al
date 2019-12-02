@@ -11,7 +11,7 @@ pageextension 14135108 lvngPaymentJournal extends "Payment Journal"
 
         addlast(Control1)
         {
-            field(lvngLoanNo; "Loan No.") { ApplicationArea = All; }
+            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
         }
     }
 

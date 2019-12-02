@@ -27,7 +27,7 @@ codeunit 14135119 lvngServicingManagement
         LoanServicingSetup.TestField("Principal Red. Reason Code");
         LoanServicingSetup.TestField("Principal Red. G/L Account No.");
         GLEntry.Reset();
-        GLEntry.SetRange("Loan No.", Loan."No.");
+        GLEntry.SetRange(lvngLoanNo, Loan."No.");
         GLEntry.SetRange("Reason Code", LoanServicingSetup."Principal Red. Reason Code");
         GLEntry.SetRange("G/L Account No.", LoanServicingSetup."Principal Red. G/L Account No.");
         if GLEntry.FindSet() then

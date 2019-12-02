@@ -46,7 +46,7 @@ report 14135156 lvngGeneralLedgerRecSimplified
                     trigger OnPreDataItem()
                     begin
                         SetFilter("Posting Date", DateFilter);
-                        SetRange("Loan No.", TempLoan."Loan No.");
+                        SetRange(lvngLoanNo, TempLoan."Loan No.");
                         SetRange("G/L Account No.", "G/L Account"."No.");
                     end;
 

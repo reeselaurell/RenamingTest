@@ -253,16 +253,16 @@ page 14135246 lvngLoanValuesView
         TempGLEntry.Reset();
         TempGLEntry.DeleteAll();
         GLEntry.Reset();
-        GLEntry.SetCurrentKey("Loan No.");
-        GLEntry.SetRange("Loan No.", Loan."No.");
+        GLEntry.SetCurrentKey(lvngLoanNo);
+        GLEntry.SetRange(lvngLoanNo, Loan."No.");
         if SystemFilter."Shortcut Dimension 1" <> '' then
             GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
         if SystemFilter."Shortcut Dimension 2" <> '' then
             GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
         if SystemFilter."Shortcut Dimension 3" <> '' then
-            GLEntry.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
+            GLEntry.SetFilter(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
         if SystemFilter."Shortcut Dimension 4" <> '' then
-            GLEntry.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
+            GLEntry.SetFilter(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
         if SystemFilter."Business Unit" <> '' then
             GLEntry.SetFilter("Business Unit Code", SystemFilter."Business Unit");
         if GLEntry.FindSet() then

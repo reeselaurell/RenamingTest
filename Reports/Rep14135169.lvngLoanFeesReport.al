@@ -13,11 +13,11 @@ report 14135169 lvngLoanFeesReport
 
             trigger OnAfterGetRecord()
             begin
-                if "G/L Account"."Revenue G/L Account No." <> '' then begin
+                if "G/L Account".lvngRevenueGLAccountNo <> '' then begin
                     Clear(TempExpenseGLAccount);
                     TempExpenseGLAccount := "G/L Account";
                     TempExpenseGLAccount.Insert();
-                    if GLAccount.Get("Revenue G/L Account No.") then begin
+                    if GLAccount.Get(lvngRevenueGLAccountNo) then begin
                         Clear(TempRevenueGLAccount);
                         TempRevenueGLAccount := GLAccount;
                         if TempRevenueGLAccount.Insert() then;
@@ -166,7 +166,7 @@ report 14135169 lvngLoanFeesReport
                         LoanOfficerCode := "Shortcut Dimension 8 Code";
                 end;
                 GLEntry.Reset();
-                GLEntry.SetRange("Loan No.", "No.");
+                GLEntry.SetRange(lvngLoanNo, "No.");
                 if DateFilter <> '' then
                     GLEntry.SetFilter("Posting Date", DateFilter);
                 if GLEntry.FindSet() then

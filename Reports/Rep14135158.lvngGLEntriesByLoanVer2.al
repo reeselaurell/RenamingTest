@@ -14,8 +14,8 @@ report 14135158 GLEntriesByLoanVer2
 
             dataitem("G/L Entry"; "G/L Entry")
             {
-                DataItemTableView = sorting("Loan No.") order(ascending);
-                DataItemLink = "Loan No." = field("No.");
+                DataItemTableView = sorting(lvngLoanNo) order(ascending);
+                DataItemLink = lvngLoanNo = field("No.");
                 RequestFilterFields = "Posting Date";
 
                 trigger OnPreDataItem()
@@ -48,18 +48,18 @@ report 14135158 GLEntriesByLoanVer2
                     TempGLEntryBuffer."Investor Name" := SourceName;
                     TempGLEntryBuffer."Shortcut Dimension 1 Code" := "Global Dimension 1 Code";
                     TempGLEntryBuffer."Shortcut Dimension 2 Code" := "Global Dimension 2 Code";
-                    TempGLEntryBuffer."Shortcut Dimension 3 Code" := "Shortcut Dimension 3 Code";
-                    TempGLEntryBuffer."Shortcut Dimension 4 Code" := "Shortcut Dimension 4 Code";
-                    TempGLEntryBuffer."Shortcut Dimension 5 Code" := "Shortcut Dimension 5 Code";
-                    TempGLEntryBuffer."Shortcut Dimension 6 Code" := "Shortcut Dimension 6 Code";
-                    TempGLEntryBuffer."Shortcut Dimension 7 Code" := "Shortcut Dimension 7 Code";
-                    TempGLEntryBuffer."Shortcut Dimension 8 Code" := "Shortcut Dimension 8 Code";
+                    TempGLEntryBuffer."Shortcut Dimension 3 Code" := lvngShortcutDimension3Code;
+                    TempGLEntryBuffer."Shortcut Dimension 4 Code" := lvngShortcutDimension4Code;
+                    TempGLEntryBuffer."Shortcut Dimension 5 Code" := lvngShortcutDimension5Code;
+                    TempGLEntryBuffer."Shortcut Dimension 6 Code" := lvngShortcutDimension6Code;
+                    TempGLEntryBuffer."Shortcut Dimension 7 Code" := lvngShortcutDimension7Code;
+                    TempGLEntryBuffer."Shortcut Dimension 8 Code" := lvngShortcutDimension8Code;
                     TempGLEntryBuffer.Name := Description;
                     TempGLEntryBuffer."Reason Code" := "Reason Code";
                     TempGLEntryBuffer."External Document No." := "External Document No.";
                     TempGLEntryBuffer."G/L Entry No." := "Entry No.";
                     TempGLEntryBuffer."G/L Account No." := "G/L Account No.";
-                    TempGLEntryBuffer."Loan No." := "Loan No.";
+                    TempGLEntryBuffer."Loan No." := lvngLoanNo;
                     TempGLEntryBuffer.Insert();
                     if not TempLoan.Get(LoanNo) then begin
                         if Loan.Get(LoanNo) then begin
@@ -70,7 +70,7 @@ report 14135158 GLEntriesByLoanVer2
                         end else begin
                             Clear(TempLoan);
                             TempLoan."Commission Base Amount" := Amount;
-                            TempLoan."No." := "Loan No.";
+                            TempLoan."No." := lvngLoanNo;
                             TempLoan.Insert();
                         end;
                     end else begin
@@ -85,8 +85,8 @@ report 14135158 GLEntriesByLoanVer2
                         TempGLAccountLoanBuffer."Custom Text 1" := GLAccount.Name;
                         if MinDate <> 0D then begin
                             GLEntry.Reset();
-                            GLEntry.SetCurrentKey("Loan No.");
-                            GLEntry.SetRange("Loan No.", "Loan No.");
+                            GLEntry.SetCurrentKey(lvngLoanNo);
+                            GLEntry.SetRange(lvngLoanNo, lvngLoanNo);
                             GLEntry.SetRange("Posting Date", 0D, MinDate);
                             GLEntry.SetRange("G/L Account No.", "G/L Account No.");
                             if GLEntry.FindSet() then
@@ -139,12 +139,12 @@ report 14135158 GLEntriesByLoanVer2
                                             TempGLEntryBuffer."Investor Name" := SourceName;
                                             TempGLEntryBuffer."Shortcut Dimension 1 Code" := "Global Dimension 1 Code";
                                             TempGLEntryBuffer."Shortcut Dimension 2 Code" := "Global Dimension 2 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 3 Code" := "Shortcut Dimension 3 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 4 Code" := "Shortcut Dimension 4 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 5 Code" := "Shortcut Dimension 5 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 6 Code" := "Shortcut Dimension 6 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 7 Code" := "Shortcut Dimension 7 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 8 Code" := "Shortcut Dimension 8 Code";
+                                            TempGLEntryBuffer."Shortcut Dimension 3 Code" := lvngShortcutDimension3Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 4 Code" := lvngShortcutDimension4Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 5 Code" := lvngShortcutDimension5Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 6 Code" := lvngShortcutDimension6Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 7 Code" := lvngShortcutDimension7Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 8 Code" := lvngShortcutDimension8Code;
                                             TempGLEntryBuffer."Reference No." := Format(Counter);
                                             TempGLEntryBuffer.Name := Description;
                                             TempGLEntryBuffer."Reason Code" := "Reason Code";
@@ -156,7 +156,7 @@ report 14135158 GLEntriesByLoanVer2
                                                 TempGLEntryBuffer."Credit Amount" := "G/L Entry"."Debit Amount"
                                             else
                                                 TempGLEntryBuffer."Debit Amount" := "G/L Entry"."Credit Amount";
-                                            TempGLEntryBuffer."Loan No." := "G/L Entry"."Loan No.";
+                                            TempGLEntryBuffer."Loan No." := "G/L Entry".lvngLoanNo;
                                             TempGLEntryBuffer.Insert();
                                             TempLoan.Modify();
                                         end;
@@ -169,7 +169,7 @@ report 14135158 GLEntriesByLoanVer2
                                             TempGLAccountLoanBuffer.Modify();
                                         end;
                                         GLEntry2.Reset();
-                                        GLEntry2.SetRange("Loan No.", '');
+                                        GLEntry2.SetRange(lvngLoanNo, '');
                                         GLEntry2.SetRange("Transaction No.", GLEntry."Transaction No.");
                                         GLEntry2.SetFilter("Entry No.", '<>%1', GLEntry."Entry No.");
                                         if GLEntry2.FindSet() then
@@ -190,12 +190,12 @@ report 14135158 GLEntriesByLoanVer2
                                                 TempGLEntryBuffer."Investor Name" := SourceName;
                                                 TempGLEntryBuffer."Shortcut Dimension 1 Code" := GLEntry2."Global Dimension 1 Code";
                                                 TempGLEntryBuffer."Shortcut Dimension 2 Code" := GLEntry2."Global Dimension 2 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 3 Code" := GLEntry2."Shortcut Dimension 3 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 4 Code" := GLEntry2."Shortcut Dimension 4 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 5 Code" := GLEntry2."Shortcut Dimension 5 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 6 Code" := GLEntry2."Shortcut Dimension 6 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 7 Code" := GLEntry2."Shortcut Dimension 7 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 8 Code" := GLEntry2."Shortcut Dimension 8 Code";
+                                                TempGLEntryBuffer."Shortcut Dimension 3 Code" := GLEntry2.lvngShortcutDimension3Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 4 Code" := GLEntry2.lvngShortcutDimension4Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 5 Code" := GLEntry2.lvngShortcutDimension5Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 6 Code" := GLEntry2.lvngShortcutDimension6Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 7 Code" := GLEntry2.lvngShortcutDimension7Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 8 Code" := GLEntry2.lvngShortcutDimension8Code;
                                                 TempGLEntryBuffer."Reference No." := Format(Counter);
                                                 TempGLEntryBuffer.Name := GLEntry2.Description;
                                                 TempGLEntryBuffer."Reason Code" := GLEntry2."Reason Code";
@@ -205,7 +205,7 @@ report 14135158 GLEntriesByLoanVer2
                                                 TempGLEntryBuffer."Current Balance" := -"G/L Entry".Amount;
                                                 TempGLEntryBuffer."Debit Amount" := "G/L Entry"."Debit Amount";
                                                 TempGLEntryBuffer."Credit Amount" := "G/L Entry"."Credit Amount";
-                                                TempGLEntryBuffer."Loan No." := "G/L Entry"."Loan No.";
+                                                TempGLEntryBuffer."Loan No." := "G/L Entry".lvngLoanNo;
                                                 TempGLEntryBuffer.Insert();
                                                 TempLoan."Commission Base Amount" := TempLoan."Commission Base Amount" + TempGLEntryBuffer."Current Balance";
                                                 Clear(TempGLAccountLoanBuffer);
@@ -260,12 +260,12 @@ report 14135158 GLEntriesByLoanVer2
                                             TempGLEntryBuffer."Investor Name" := SourceName;
                                             TempGLEntryBuffer."Shortcut Dimension 1 Code" := "Global Dimension 1 Code";
                                             TempGLEntryBuffer."Shortcut Dimension 2 Code" := "Global Dimension 2 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 3 Code" := "Shortcut Dimension 3 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 4 Code" := "Shortcut Dimension 4 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 5 Code" := "Shortcut Dimension 5 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 6 Code" := "Shortcut Dimension 6 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 7 Code" := "Shortcut Dimension 7 Code";
-                                            TempGLEntryBuffer."Shortcut Dimension 8 Code" := "Shortcut Dimension 8 Code";
+                                            TempGLEntryBuffer."Shortcut Dimension 3 Code" := lvngShortcutDimension3Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 4 Code" := lvngShortcutDimension4Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 5 Code" := lvngShortcutDimension5Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 6 Code" := lvngShortcutDimension6Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 7 Code" := lvngShortcutDimension7Code;
+                                            TempGLEntryBuffer."Shortcut Dimension 8 Code" := lvngShortcutDimension8Code;
                                             TempGLEntryBuffer."Reference No." := Format(Counter);
                                             TempGLEntryBuffer.Name := Description;
                                             TempGLEntryBuffer."Reason Code" := "Reason Code";
@@ -277,7 +277,7 @@ report 14135158 GLEntriesByLoanVer2
                                                 TempGLEntryBuffer."Credit Amount" := "G/L Entry"."Debit Amount"
                                             else
                                                 TempGLEntryBuffer."Debit Amount" := "G/L Entry"."Credit Amount";
-                                            TempGLEntryBuffer."Loan No." := "G/L Entry"."Loan No.";
+                                            TempGLEntryBuffer."Loan No." := "G/L Entry".lvngLoanNo;
                                             TempGLEntryBuffer.Insert();
                                             TempLoan."Commission Base Amount" := TempLoan."Commission Base Amount" + TempGLEntryBuffer."Current Balance";
                                             TempLoan.Modify();
@@ -291,7 +291,7 @@ report 14135158 GLEntriesByLoanVer2
                                             TempGLAccountLoanBuffer.Modify();
                                         end;
                                         GLEntry2.Reset();
-                                        GLEntry2.SetRange("Loan No.", '');
+                                        GLEntry2.SetRange(lvngLoanNo, '');
                                         GLEntry2.SetRange("Transaction No.", GLEntry."Transaction No.");
                                         GLEntry2.SetFilter("Entry No.", '<>%1', GLEntry."Entry No.");
                                         if GLEntry2.FindSet() then
@@ -312,12 +312,12 @@ report 14135158 GLEntriesByLoanVer2
                                                 TempGLEntryBuffer."Investor Name" := SourceName;
                                                 TempGLEntryBuffer."Shortcut Dimension 1 Code" := GLEntry2."Global Dimension 1 Code";
                                                 TempGLEntryBuffer."Shortcut Dimension 2 Code" := GLEntry2."Global Dimension 2 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 3 Code" := GLEntry2."Shortcut Dimension 3 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 4 Code" := GLEntry2."Shortcut Dimension 4 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 5 Code" := GLEntry2."Shortcut Dimension 5 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 6 Code" := GLEntry2."Shortcut Dimension 6 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 7 Code" := GLEntry2."Shortcut Dimension 7 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 8 Code" := GLEntry2."Shortcut Dimension 8 Code";
+                                                TempGLEntryBuffer."Shortcut Dimension 3 Code" := GLEntry2.lvngShortcutDimension3Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 4 Code" := GLEntry2.lvngShortcutDimension4Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 5 Code" := GLEntry2.lvngShortcutDimension5Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 6 Code" := GLEntry2.lvngShortcutDimension6Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 7 Code" := GLEntry2.lvngShortcutDimension7Code;
+                                                TempGLEntryBuffer."Shortcut Dimension 8 Code" := GLEntry2.lvngShortcutDimension8Code;
                                                 TempGLEntryBuffer."Reference No." := Format(Counter);
                                                 TempGLEntryBuffer.Name := GLEntry2.Description;
                                                 TempGLEntryBuffer."Reason Code" := GLEntry2."Reason Code";
@@ -327,7 +327,7 @@ report 14135158 GLEntriesByLoanVer2
                                                 TempGLEntryBuffer."Current Balance" := -"G/L Entry".Amount;
                                                 TempGLEntryBuffer."Credit Amount" := "G/L Entry"."Debit Amount";
                                                 TempGLEntryBuffer."Debit Amount" := "G/L Entry"."Credit Amount";
-                                                TempGLEntryBuffer."Loan No." := "G/L Entry"."Loan No.";
+                                                TempGLEntryBuffer."Loan No." := "G/L Entry".lvngLoanNo;
                                                 TempGLEntryBuffer.Insert();
                                                 TempLoan."Commission Base Amount" := TempLoan."Commission Base Amount" + TempGLEntryBuffer."Current Balance";
                                                 Clear(TempGLAccountLoanBuffer);
@@ -343,7 +343,7 @@ report 14135158 GLEntriesByLoanVer2
                             end;
                         until CustLedgerEntry.Next() = 0;
                     GLEntry2.Reset();
-                    GLEntry2.SetRange("Loan No.", '');
+                    GLEntry2.SetRange(lvngLoanNo, '');
                     GLEntry2.SetRange("Transaction No.", "Transaction No.");
                     GLEntry2.SetRange("Gen. Posting Type", "Gen. Posting Type"::" ");
                     if GLEntry2.FindSet() then
@@ -364,12 +364,12 @@ report 14135158 GLEntriesByLoanVer2
                             TempGLEntryBuffer."Investor Name" := SourceName;
                             TempGLEntryBuffer."Shortcut Dimension 1 Code" := "Global Dimension 1 Code";
                             TempGLEntryBuffer."Shortcut Dimension 2 Code" := "Global Dimension 2 Code";
-                            TempGLEntryBuffer."Shortcut Dimension 3 Code" := "Shortcut Dimension 3 Code";
-                            TempGLEntryBuffer."Shortcut Dimension 4 Code" := "Shortcut Dimension 4 Code";
-                            TempGLEntryBuffer."Shortcut Dimension 5 Code" := "Shortcut Dimension 5 Code";
-                            TempGLEntryBuffer."Shortcut Dimension 6 Code" := "Shortcut Dimension 6 Code";
-                            TempGLEntryBuffer."Shortcut Dimension 7 Code" := "Shortcut Dimension 7 Code";
-                            TempGLEntryBuffer."Shortcut Dimension 8 Code" := "Shortcut Dimension 8 Code";
+                            TempGLEntryBuffer."Shortcut Dimension 3 Code" := lvngShortcutDimension3Code;
+                            TempGLEntryBuffer."Shortcut Dimension 4 Code" := lvngShortcutDimension4Code;
+                            TempGLEntryBuffer."Shortcut Dimension 5 Code" := lvngShortcutDimension5Code;
+                            TempGLEntryBuffer."Shortcut Dimension 6 Code" := lvngShortcutDimension6Code;
+                            TempGLEntryBuffer."Shortcut Dimension 7 Code" := lvngShortcutDimension7Code;
+                            TempGLEntryBuffer."Shortcut Dimension 8 Code" := lvngShortcutDimension8Code;
                             TempGLEntryBuffer."Reference No." := Format(Counter);
                             TempGLEntryBuffer.Name := GLEntry2.Description;
                             TempGLEntryBuffer."Reason Code" := GLEntry2."Reason Code";
@@ -381,7 +381,7 @@ report 14135158 GLEntriesByLoanVer2
                                 TempGLEntryBuffer."Credit Amount" := "G/L Entry"."Debit Amount"
                             else
                                 TempGLEntryBuffer."Debit Amount" := "G/L Entry"."Credit Amount";
-                            TempGLEntryBuffer."Loan No." := "G/L Entry"."Loan No.";
+                            TempGLEntryBuffer."Loan No." := "G/L Entry".lvngLoanNo;
                             TempGLEntryBuffer.Insert();
                             TempLoan."Commission Base Amount" := TempLoan."Commission Base Amount" + TempGLEntryBuffer."Current Balance";
                             Clear(TempGLAccountLoanBuffer);

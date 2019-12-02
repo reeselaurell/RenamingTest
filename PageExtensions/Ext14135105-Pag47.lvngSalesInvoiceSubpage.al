@@ -4,8 +4,8 @@ pageextension 14135105 lvngSalesInvoiceSubpage extends "Sales Invoice Subform"
     {
         addlast(Control1)
         {
-            field(lvngLoanNo; "Loan No.") { ApplicationArea = All; }
-            field(lvngServicingType; "Servicing Type") { ApplicationArea = All; }
+            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
+            field(lvngServicingType; lvngServicingType) { ApplicationArea = All; }
         }
     }
 }

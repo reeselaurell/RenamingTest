@@ -35,27 +35,27 @@ query 14135100 lvngGLEntriesByDimension
             {
 
             }
-            filter(Dimension3Filter; "Shortcut Dimension 3 Code")
+            filter(Dimension3Filter; lvngShortcutDimension3Code)
             {
 
             }
-            filter(Dimension4Filter; "Shortcut Dimension 4 Code")
+            filter(Dimension4Filter; lvngShortcutDimension4Code)
             {
 
             }
-            filter(Dimension5Filter; "Shortcut Dimension 5 Code")
+            filter(Dimension5Filter; lvngShortcutDimension5Code)
             {
 
             }
-            filter(Dimension6Filter; "Shortcut Dimension 6 Code")
+            filter(Dimension6Filter; lvngShortcutDimension6Code)
             {
 
             }
-            filter(Dimension7Filter; "Shortcut Dimension 7 Code")
+            filter(Dimension7Filter; lvngShortcutDimension7Code)
             {
 
             }
-            filter(Dimension8Filter; "Shortcut Dimension 8 Code")
+            filter(Dimension8Filter; lvngShortcutDimension8Code)
             {
 
             }
@@ -63,7 +63,7 @@ query 14135100 lvngGLEntriesByDimension
             {
 
             }
-            filter(LoanNoFilter; "Loan No.")
+            filter(LoanNoFilter; lvngLoanNo)
             {
 
             }

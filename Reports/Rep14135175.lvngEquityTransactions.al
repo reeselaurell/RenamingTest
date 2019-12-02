@@ -9,7 +9,7 @@ report 14135175 lvngEquityTransaction
         dataitem("G/L Entry"; "G/L Entry")
         {
             DataItemTableView = sorting("G/L Account No.", "Posting Date");
-            RequestFilterFields = "G/L Account No.", "Posting Date", "Entry Date", "Source Type", "Source No.";
+            RequestFilterFields = "G/L Account No.", "Posting Date", lvngEntryDate, "Source Type", "Source No.";
 
             column(CompanyName; CompanyInformation.Name) { }
             column(EntryNo; "Entry No.") { }

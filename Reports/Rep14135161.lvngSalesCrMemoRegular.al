@@ -14,7 +14,7 @@ report 14135161 lvngSalesCrMemoRegular
             column(Logo; CompanyInformation.Picture) { }
             column(DocumentNo; "Sales Cr.Memo Header"."No.") { }
             column(PostingDate; "Sales Cr.Memo Header"."Posting Date") { }
-            column(LoanNo; "Sales Cr.Memo Header"."Loan No.") { }
+            column(LoanNo; "Sales Cr.Memo Header".lvngLoanNo) { }
             column(BillToCustomerNo; "Sales Cr.Memo Header"."Bill-to Customer No.") { }
             column(ExternalDocumentNo; DelChr("Sales Cr.Memo Header"."External Document No.", '<>', ' ')) { }
             column(BranchName; BranchName) { }
@@ -43,15 +43,15 @@ report 14135161 lvngSalesCrMemoRegular
                 column(AccNo; "Sales Cr.Memo Line"."No.") { }
                 column(Description; "Sales Cr.Memo Line".Description) { }
                 column(Description2; "Sales Cr.Memo Line"."Description 2") { }
-                column(LineLoanNo; "Sales Cr.Memo Line"."Loan No.") { }
+                column(LineLoanNo; "Sales Cr.Memo Line".lvngLoanNo) { }
                 column(Amount; "Sales Cr.Memo Line"."Amount Including VAT") { }
                 column(LineBorrowerName; LineBorrowerName) { }
 
                 trigger OnAfterGetRecord()
                 begin
                     BorrowerName := '';
-                    if "Sales Cr.Memo Line"."Loan No." <> '' then
-                        if Loan.Get("Sales Cr.Memo Line"."Loan No.") then
+                    if "Sales Cr.Memo Line".lvngLoanNo <> '' then
+                        if Loan.Get("Sales Cr.Memo Line".lvngLoanNo) then
                             LineBorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
                     if "No." = UpperCase(Description) then
                         if Type = Type::"G/L Account" then
@@ -64,14 +64,14 @@ report 14135161 lvngSalesCrMemoRegular
             begin
                 BranchName := '';
                 LoanOfficerName := '';
-                if "Sales Cr.Memo Header"."Loan No." <> '' then begin
-                    if DefaultDimension.Get(Database::lvngLoan, "Sales Cr.Memo Header"."Loan No.", LoanVisionSetup."Cost Center Dimension Code") then
+                if "Sales Cr.Memo Header".lvngLoanNo <> '' then begin
+                    if DefaultDimension.Get(Database::lvngLoan, "Sales Cr.Memo Header".lvngLoanNo, LoanVisionSetup."Cost Center Dimension Code") then
                         if DimensionValue.Get(DefaultDimension."Dimension Code", DefaultDimension."Dimension Value Code") then
                             BranchName := DimensionValue.Name;
-                    if DefaultDimension.Get(Database::lvngLoan, "Sales Cr.Memo Header"."Loan No.", LoanVisionSetup."Loan Officer Dimension Code") then
+                    if DefaultDimension.Get(Database::lvngLoan, "Sales Cr.Memo Header".lvngLoanNo, LoanVisionSetup."Loan Officer Dimension Code") then
                         if DimensionValue.Get(DefaultDimension."Dimension Code", DefaultDimension."Dimension Value Code") then
                             LoanOfficerName := DimensionValue.Name;
-                    if Loan.Get("Sales Cr.Memo Line"."Loan No.") then
+                    if Loan.Get("Sales Cr.Memo Line".lvngLoanNo) then
                         BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
                 end;
                 Clear(BillToAddress);

@@ -32,7 +32,7 @@ report 14135182 lvngGLDetails
                 column(PostingDate; PostingDate) { }
                 column(DebitAmount; "G/L Entry"."Debit Amount") { }
                 column(CreditAmount; "G/L Entry"."Credit Amount") { }
-                column(LoanNo; "G/L Entry"."Loan No.") { }
+                column(LoanNo; "G/L Entry".lvngLoanNo) { }
                 column(BorrowerName; BorrowerName) { }
                 column(DateFunded; DateFunded) { }
                 column(DateSold; DateSold) { }
@@ -50,7 +50,7 @@ report 14135182 lvngGLDetails
                     DateSold := 0D;
                     Loan.SecurityFiltering(SecurityFiltering::Ignored);
                     LoanFound := false;
-                    if Loan.Get("Loan No.") then begin
+                    if Loan.Get(lvngLoanNo) then begin
                         BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
                         DateFunded := Loan."Date Funded";
                         DateSold := Loan."Date Sold";
@@ -75,7 +75,7 @@ report 14135182 lvngGLDetails
                         ColumnNo := ColumnNo + 1;
                         ExportDateColumn(ColumnNo, "Posting Date");
                         ColumnNo := ColumnNo + 1;
-                        ExportTextColumn(ColumnNo, "Loan No.", false);
+                        ExportTextColumn(ColumnNo, lvngLoanNo, false);
                         ColumnNo := ColumnNo + 1;
                         if LoanFound then begin
                             ExportTextColumn(ColumnNo, Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name", false);
@@ -129,7 +129,7 @@ report 14135182 lvngGLDetails
                         end;
                     ReportingType::"Dimension 3":
                         begin
-                            SetFilter("Shortcut Dimension 3 Filter", Filtercode);
+                            SetFilter(lvngShortcutDimension3Filter, Filtercode);
                             DimensionValue.Reset();
                             DimensionValue.SetRange("Global Dimension No.", 3);
                             DimensionValue.SetRange(Code, Filtercode);
@@ -138,7 +138,7 @@ report 14135182 lvngGLDetails
                         end;
                     ReportingType::"Dimension 4":
                         begin
-                            SetFilter("Shortcut Dimension 4 Filter", Filtercode);
+                            SetFilter(lvngShortcutDimension4Filter, Filtercode);
                             DimensionValue.Reset();
                             DimensionValue.SetRange("Global Dimension No.", 4);
                             DimensionValue.SetRange(Code, Filtercode);
