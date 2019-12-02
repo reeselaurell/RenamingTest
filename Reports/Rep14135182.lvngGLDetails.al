@@ -6,130 +6,63 @@ report 14135182 lvngGLDetails
 
     dataset
     {
-        dataitem(lvngGLAccount; "G/L Account")
+        dataitem("G/L Account"; "G/L Account")
         {
             DataItemTableView = sorting("No.") where("Account Type" = const(Posting));
             RequestFilterFields = "No.", "Income/Balance";
 
-            column(AccountNo; lvngGLAccount."No.")
-            {
+            column(AccountNo; "G/L Account"."No.") { }
+            column(AccountName; "G/L Account".Name) { }
+            column(BegBalance; BegBalance) { }
+            column(EndBalance; EndBalance) { }
+            column(CompanyName; CompanyInformation.Name) { }
+            column(Filters; ForHeaderLbl + GetFilter("Date Filter")) { }
+            column(ReportName; ReportSubName) { }
 
-            }
-            column(AccountName; lvngGLAccount.Name)
-            {
-
-            }
-            column(BegBalance; BegBalance)
-            {
-
-            }
-            column(EndBalance; EndBalance)
-            {
-
-            }
-            column(CompanyName; CompanyInformation.Name)
-            {
-
-            }
-            column(Filters; 'For: ' + GetFilter("Date Filter"))
-            {
-
-            }
-            column(ReportName; ReportSubName)
-            {
-
-            }
-            dataitem(lvngGLEntry; "G/L Entry")
+            dataitem("G/L Entry"; "G/L Entry")
             {
                 DataItemTableView = sorting("G/L Account No.", "Posting Date");
                 DataItemLink = "G/L Account No." = field("No."), "Posting Date" = field("Date Filter"), "Global Dimension 1 Code" = field("Global Dimension 1 Filter"),
                 "Global Dimension 2 Code" = field("Global Dimension 2 Filter"), "Business Unit Code" = field("Business Unit Filter");
 
-                column(EntryNo; EntryNo)
-                {
-
-                }
-                column(Description; GLDescription)
-                {
-
-                }
-                column(ExternalDocumentNo; lvngGLEntry."External Document No.")
-                {
-
-                }
-                column(DocumentNo; DocumentNo)
-                {
-
-                }
-                column(PostingDate; PostingDate)
-                {
-
-                }
-                column(DebitAmount; lvngGLEntry."Debit Amount")
-                {
-
-                }
-                column(CreditAmount; lvngGLEntry."Credit Amount")
-                {
-
-                }
-                column(LoanNo; lvngGLEntry."Loan No.")
-                {
-
-                }
-                column(BorrowerName; BorrowerName)
-                {
-
-                }
-                column(DateFunded; DateFunded)
-                {
-
-                }
-                column(DateSold; DateSold)
-                {
-
-                }
-                column(GlobalDimension1Code; "Global Dimension 1 Code")
-                {
-
-                }
-                column(GlobalDimension2Code; "Global Dimension 2 Code")
-                {
-
-                }
-                column(Dim1Caption; Loan.FieldCaption("Global Dimension 1 Code"))
-                {
-
-                }
-                column(Dim2Caption; Loan.FieldCaption("Global Dimension 2 Code"))
-                {
-
-                }
+                column(EntryNo; EntryNo) { }
+                column(Description; GLDescription) { }
+                column(ExternalDocumentNo; "G/L Entry"."External Document No.") { }
+                column(DocumentNo; DocumentNo) { }
+                column(PostingDate; PostingDate) { }
+                column(DebitAmount; "G/L Entry"."Debit Amount") { }
+                column(CreditAmount; "G/L Entry"."Credit Amount") { }
+                column(LoanNo; "G/L Entry"."Loan No.") { }
+                column(BorrowerName; BorrowerName) { }
+                column(DateFunded; DateFunded) { }
+                column(DateSold; DateSold) { }
+                column(GlobalDimension1Code; "Global Dimension 1 Code") { }
+                column(GlobalDimension2Code; "Global Dimension 2 Code") { }
+                column(Dim1Caption; Loan.FieldCaption("Global Dimension 1 Code")) { }
+                column(Dim2Caption; Loan.FieldCaption("Global Dimension 2 Code")) { }
 
                 trigger OnAfterGetRecord()
                 var
                     LoanFound: Boolean;
                 begin
-                    Clear(BorrowerName);
-                    Clear(DateFunded);
-                    Clear(DateSold);
+                    BorrowerName := '';
+                    DateFunded := 0D;
+                    DateSold := 0D;
                     Loan.SecurityFiltering(SecurityFiltering::Ignored);
-                    Clear(LoanFound);
+                    LoanFound := false;
                     if Loan.Get("Loan No.") then begin
                         BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
                         DateFunded := Loan."Date Funded";
                         DateSold := Loan."Date Sold";
                         LoanFound := true;
                     end;
-
                     EntryNo := 0;
                     PostingDate := "Posting Date";
                     DocumentNo := "Document No.";
                     EntryNo := "Entry No.";
                     GLDescription := Description;
-
                     if ExcelExport then begin
-                        NewRow;
+                        NewRow();
                         ExportTextColumn(ColumnNo, "G/L Account No.", false);
                         ColumnNo := ColumnNo + 1;
                         ExportTextColumn(ColumnNo, GLAccount.Name, false);
@@ -150,9 +83,8 @@ report 14135182 lvngGLDetails
                             ExportDateColumn(ColumnNo, Loan."Date Funded");
                             ColumnNo := ColumnNo + 1;
                             ExportDateColumn(ColumnNo, Loan."Date Sold");
-                        end else begin
+                        end else
                             ColumnNo := ColumnNo + 2;
-                        end;
                         ColumnNo := ColumnNo + 1;
                         ExportTextColumn(ColumnNo, "Global Dimension 1 Code", false);
                         ColumnNo := ColumnNo + 1;
@@ -164,15 +96,18 @@ report 14135182 lvngGLDetails
                     end;
                 end;
             }
+
             trigger OnPreDataItem()
+            var
+                BusinessUnit: Record "Business Unit";
+                DimensionValue: Record "Dimension Value";
             begin
                 case ReportingType of
                     ReportingType::"Business Unit":
                         begin
                             SetFilter("Business Unit Filter", Filtercode);
-                            if BusinessUnit.Get(Filtercode) then begin
-                                ReportSubName := StrSubstNo(Text001, BusinessUnit.Code, BusinessUnit.Name);
-                            end;
+                            if BusinessUnit.Get(Filtercode) then
+                                ReportSubName := StrSubstNo(RangeTxt, BusinessUnit.Code, BusinessUnit.Name);
                         end;
                     ReportingType::"Dimension 2":
                         begin
@@ -180,9 +115,8 @@ report 14135182 lvngGLDetails
                             DimensionValue.Reset();
                             DimensionValue.SetRange("Global Dimension No.", 2);
                             DimensionValue.SetRange(Code, Filtercode);
-                            if DimensionValue.FindFirst() then begin
-                                ReportSubName := StrSubstNo(Text001, DimensionValue.Code, DimensionValue.Name);
-                            end;
+                            if DimensionValue.FindFirst() then
+                                ReportSubName := StrSubstNo(RangeTxt, DimensionValue.Code, DimensionValue.Name);
                         end;
                     ReportingType::"Dimension 1":
                         begin
@@ -190,41 +124,38 @@ report 14135182 lvngGLDetails
                             DimensionValue.Reset();
                             DimensionValue.SetRange("Global Dimension No.", 1);
                             DimensionValue.SetRange(Code, Filtercode);
-                            if DimensionValue.FindFirst() then begin
-                                ReportSubName := StrSubstNo(Text001, DimensionValue.Code, DimensionValue.Name);
-                            end;
+                            if DimensionValue.FindFirst() then
+                                ReportSubName := StrSubstNo(RangeTxt, DimensionValue.Code, DimensionValue.Name);
                         end;
                     ReportingType::"Dimension 3":
                         begin
-                            // SetFilter(lvngShortcutDimension3Filter, Filtercode);
+                            SetFilter("Shortcut Dimension 3 Filter", Filtercode);
                             DimensionValue.Reset();
                             DimensionValue.SetRange("Global Dimension No.", 3);
                             DimensionValue.SetRange(Code, Filtercode);
-                            if DimensionValue.FindFirst() then begin
-                                ReportSubName := StrSubstNo(Text001, DimensionValue.Code, DimensionValue.Name);
-                            end;
+                            if DimensionValue.FindFirst() then
+                                ReportSubName := StrSubstNo(RangeTxt, DimensionValue.Code, DimensionValue.Name);
                         end;
                     ReportingType::"Dimension 4":
                         begin
-                            // SetFilter(lvngShortcutDimension4Filter, Filtercode);
+                            SetFilter("Shortcut Dimension 4 Filter", Filtercode);
                             DimensionValue.Reset();
                             DimensionValue.SetRange("Global Dimension No.", 4);
                             DimensionValue.SetRange(Code, Filtercode);
-                            if DimensionValue.FindFirst() then begin
-                                ReportSubName := StrSubstNo(Text001, DimensionValue.Code, DimensionValue.Name);
-                            end;
+                            if DimensionValue.FindFirst() then
+                                ReportSubName := StrSubstNo(RangeTxt, DimensionValue.Code, DimensionValue.Name);
                         end;
                 end;
 
                 SetFilter("Date Filter", DateFilter);
-                BegDate := lvngGLAccount.GetRangeMin("Date Filter");
-                EndDate := lvngGLAccount.GetRangeMax("Date Filter");
+                BegDate := "G/L Account".GetRangeMin("Date Filter");
+                EndDate := "G/L Account".GetRangeMax("Date Filter");
             end;
 
             trigger OnAfterGetRecord()
             begin
                 GLAccount.Reset();
-                GLAccount.CopyFilters(lvngGLAccount);
+                GLAccount.CopyFilters("G/L Account");
                 GLAccount.SetRange("Date Filter", 0D, BegDate - 1);
                 GLAccount.Get("No.");
                 GLAccount.CalcFields("Balance at Date");
@@ -245,51 +176,43 @@ report 14135182 lvngGLDetails
                 group(Filters)
                 {
                     Caption = 'Filters';
+
                     field(BasedOnDimension; BasedOnDimension)
                     {
                         Caption = 'Type';
 
                         trigger OnValidate()
                         begin
-                            if GLSetup."Global Dimension 1 Code" = BasedOnDimension then begin
+                            if GLSetup."Global Dimension 1 Code" = BasedOnDimension then
                                 ReportingType := ReportingType::"Dimension 1";
-                            end;
-                            if GLSetup."Global Dimension 2 Code" = BasedOnDimension then begin
+                            if GLSetup."Global Dimension 2 Code" = BasedOnDimension then
                                 ReportingType := ReportingType::"Dimension 2";
-                            end;
-                            if GLSetup."Shortcut Dimension 3 Code" = BasedOnDimension then begin
+                            if GLSetup."Shortcut Dimension 3 Code" = BasedOnDimension then
                                 ReportingType := ReportingType::"Dimension 3";
-                            end;
-                            if GLSetup."Shortcut Dimension 4 Code" = BasedOnDimension then begin
+                            if GLSetup."Shortcut Dimension 4 Code" = BasedOnDimension then
                                 ReportingType := ReportingType::"Dimension 4";
-                            end;
-                            if BasedOnDimension = 'BUSINESS UNIT' then begin
+                            if BasedOnDimension = 'BUSINESS UNIT' then
                                 ReportingType := ReportingType::"Business Unit";
-                            end;
                         end;
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
-                            if Page.RunModal(0, DimensionLookup) = Action::LookupOK then begin
-                                BasedOnDimension := DimensionLookup.Code;
-                                if GLSetup."Global Dimension 1 Code" = BasedOnDimension then begin
+                            if Page.RunModal(0, TempDimensionLookup) = Action::LookupOK then begin
+                                BasedOnDimension := TempDimensionLookup.Code;
+                                if GLSetup."Global Dimension 1 Code" = BasedOnDimension then
                                     ReportingType := ReportingType::"Dimension 1";
-                                end;
-                                if GLSetup."Global Dimension 2 Code" = BasedOnDimension then begin
+                                if GLSetup."Global Dimension 2 Code" = BasedOnDimension then
                                     ReportingType := ReportingType::"Dimension 2";
-                                end;
-                                if GLSetup."Shortcut Dimension 3 Code" = BasedOnDimension then begin
+                                if GLSetup."Shortcut Dimension 3 Code" = BasedOnDimension then
                                     ReportingType := ReportingType::"Dimension 3";
-                                end;
-                                if GLSetup."Shortcut Dimension 4 Code" = BasedOnDimension then begin
+                                if GLSetup."Shortcut Dimension 4 Code" = BasedOnDimension then
                                     ReportingType := ReportingType::"Dimension 4";
-                                end;
-                                if BasedOnDimension = 'BUSINESS UNIT' then begin
+                                if BasedOnDimension = BusinessUnitCodeTxt then
                                     ReportingType := ReportingType::"Business Unit";
-                                end;
                             end;
                         end;
                     }
+
                     field(Filtercode; Filtercode)
                     {
                         Caption = 'Filter';
@@ -337,101 +260,90 @@ report 14135182 lvngGLDetails
                             end;
                         end;
                     }
-                    field(DateFilter; DateFilter)
-                    {
-                        Caption = 'Date Filter';
-
-
-                    }
-                    field(ExcelExport; ExcelExport)
-                    {
-                        Caption = 'Excel Export';
-                    }
+                    field(DateFilter; DateFilter) { Caption = 'Date Filter'; ApplicationArea = All; }
+                    field(ExcelExport; ExcelExport) { Caption = 'Excel Export'; ApplicationArea = All; }
                 }
             }
         }
 
-
         trigger OnOpenPage()
+        var
+            Dimension: Record Dimension;
         begin
             GLSetup.Get();
-            DimensionLookup.Reset();
-            DimensionLookup.DeleteAll();
+            TempDimensionLookup.Reset();
+            TempDimensionLookup.DeleteAll();
             if Dimension.Get(GLSetup."Global Dimension 1 Code") then begin
-                Clear(DimensionLookup);
-                DimensionLookup := Dimension;
-                DimensionLookup.Insert();
-                if ReportingType = ReportingType::"Dimension 1" then begin
+                Clear(TempDimensionLookup);
+                TempDimensionLookup := Dimension;
+                TempDimensionLookup.Insert();
+                if ReportingType = ReportingType::"Dimension 1" then
                     BasedOnDimension := GLSetup."Global Dimension 1 Code";
-                end;
             end;
             if Dimension.Get(GLSetup."Global Dimension 2 Code") then begin
-                Clear(DimensionLookup);
-                DimensionLookup := Dimension;
-                DimensionLookup.Insert();
-                if ReportingType = ReportingType::"Dimension 2" then begin
+                Clear(TempDimensionLookup);
+                TempDimensionLookup := Dimension;
+                TempDimensionLookup.Insert();
+                if ReportingType = ReportingType::"Dimension 2" then
                     BasedOnDimension := GLSetup."Global Dimension 2 Code";
-                end;
             end;
             if Dimension.Get(GLSetup."Shortcut Dimension 3 Code") then begin
-                Clear(DimensionLookup);
-                DimensionLookup := Dimension;
-                DimensionLookup.Insert();
-                if ReportingType = ReportingType::"Dimension 3" then begin
+                Clear(TempDimensionLookup);
+                TempDimensionLookup := Dimension;
+                TempDimensionLookup.Insert();
+                if ReportingType = ReportingType::"Dimension 3" then
                     BasedOnDimension := GLSetup."Shortcut Dimension 3 Code";
-                end;
             end;
             if Dimension.Get(GLSetup."Shortcut Dimension 4 Code") then begin
-                Clear(DimensionLookup);
-                DimensionLookup := Dimension;
-                DimensionLookup.Insert();
-                if ReportingType = ReportingType::"Dimension 4" then begin
+                Clear(TempDimensionLookup);
+                TempDimensionLookup := Dimension;
+                TempDimensionLookup.Insert();
+                if ReportingType = ReportingType::"Dimension 4" then
                     BasedOnDimension := GLSetup."Shortcut Dimension 4 Code";
-                end;
             end;
-            Clear(DimensionLookup);
-            DimensionLookup.Code := 'BUSINESS UNIT';
-            DimensionLookup.Name := 'Business Unit';
-            DimensionLookup.Insert();
-            if ReportingType = ReportingType::"Business Unit" then begin
-                BasedOnDimension := 'BUSINESS UNIT';
-            end;
+            Clear(TempDimensionLookup);
+            TempDimensionLookup.Code := BusinessUnitCodeTxt;
+            TempDimensionLookup.Name := BusinessUnitNameTxt;
+            TempDimensionLookup.Insert();
+            if ReportingType = ReportingType::"Business Unit" then
+                BasedOnDimension := BusinessUnitCodeTxt;
         end;
     }
 
     var
+        RangeTxt: Label 'For %1 - %2';
+        ForHeaderLbl: Label 'For: ';
+        BusinessUnitCodeTxt: Label 'BUSINESS UNIT';
+        BusinessUnitNameTxt: Label 'Business Unit';
+        CompanyInformation: Record "Company Information";
+        GLSetup: Record "General Ledger Setup";
+        GLAccount: Record "G/L Account";
+        Loan: Record lvngLoan;
+        TempExcelBuffer: Record "Excel Buffer" temporary;
+        TempDimensionLookup: Record Dimension temporary;
         BegBalance: Decimal;
         EndBalance: Decimal;
         DateFilter: Text;
-        GLAccount: Record "G/L Account";
         BorrowerName: Text;
-        Loan: Record lvngLoan;
         BegDate: Date;
         EndDate: Date;
         EntryNo: Integer;
         GLDescription: Text;
         PostingDate: Date;
         DocumentNo: Code[20];
-        CompanyInformation: Record "Company Information";
         ReportSubName: Text;
         ReportingType: Option "Business Unit","Dimension 1","Dimension 2","Dimension 3","Dimension 4";
         Filtercode: Code[20];
-        BusinessUnit: Record "Business Unit";
-        DimensionValue: Record "Dimension Value";
         DateSold: Date;
         DateFunded: Date;
-        ExcelBuffer: Record "Excel Buffer" temporary;
         RowNo: Integer;
         ColumnNo: Integer;
         ExcelExport: Boolean;
-        GLSetup: Record "General Ledger Setup";
-        DimensionLookup: Record Dimension temporary;
-        Dimension: Record Dimension;
         BasedOnDimension: Code[20];
-        Text001: TextConst ENU = 'For %1 - %2';
 
     trigger OnPreReport()
     begin
+        CompanyInformation.Get();
         if ExcelExport then begin
             RowNo := 1;
             ColumnNo := 1;
@@ -468,10 +380,10 @@ report 14135182 lvngGLDetails
     trigger OnPostReport()
     begin
         if ExcelExport then begin
-            ExcelBuffer.CreateNewBook('Export');
-            ExcelBuffer.WriteSheet('', CompanyName, '');
-            ExcelBuffer.CloseBook();
-            ExcelBuffer.OpenExcel();
+            TempExcelBuffer.CreateNewBook('Export');
+            TempExcelBuffer.WriteSheet('', CompanyName, '');
+            TempExcelBuffer.CloseBook();
+            TempExcelBuffer.OpenExcel();
         end;
     end;
 
@@ -483,45 +395,45 @@ report 14135182 lvngGLDetails
 
     local procedure ExportTextColumn(ColumnNo: Integer; Value: Text; Bold: Boolean)
     begin
-        Clear(ExcelBuffer);
-        ExcelBuffer.Validate("Row No.", RowNo);
-        ExcelBuffer.Validate("Column No.", ColumnNo);
-        ExcelBuffer.Validate("Cell Value as Text", Value);
-        ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.Validate(Bold, Bold);
-        ExcelBuffer.Insert(true);
+        Clear(TempExcelBuffer);
+        TempExcelBuffer.Validate("Row No.", RowNo);
+        TempExcelBuffer.Validate("Column No.", ColumnNo);
+        TempExcelBuffer.Validate("Cell Value as Text", Value);
+        TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.Validate(Bold, Bold);
+        TempExcelBuffer.Insert(true);
     end;
 
     local procedure ExportDateColumn(ColumnNo: Integer; Value: Date)
     begin
-        Clear(ExcelBuffer);
-        ExcelBuffer.Validate("Row No.", RowNo);
-        ExcelBuffer.Validate("Column No.", ColumnNo);
-        ExcelBuffer.Validate("Cell Value as Text", Format(Value));
-        ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Date);
-        ExcelBuffer.Insert(true);
+        Clear(TempExcelBuffer);
+        TempExcelBuffer.Validate("Row No.", RowNo);
+        TempExcelBuffer.Validate("Column No.", ColumnNo);
+        TempExcelBuffer.Validate("Cell Value as Text", Format(Value));
+        TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Date);
+        TempExcelBuffer.Insert(true);
     end;
 
     local procedure ExportDecimalColumn(ColumnNo: Integer; Value: Decimal)
     begin
-        Clear(ExcelBuffer);
-        ExcelBuffer.Validate("Row No.", RowNo);
-        ExcelBuffer.Validate("Column No.", ColumnNo);
-        ExcelBuffer.Validate("Cell Value as Text", Format(Value));
-        ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Number);
-        ExcelBuffer.NumberFormat := '0.00';
-        ExcelBuffer.Insert(true);
+        Clear(TempExcelBuffer);
+        TempExcelBuffer.Validate("Row No.", RowNo);
+        TempExcelBuffer.Validate("Column No.", ColumnNo);
+        TempExcelBuffer.Validate("Cell Value as Text", Format(Value));
+        TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Number);
+        TempExcelBuffer.NumberFormat := '0.00';
+        TempExcelBuffer.Insert(true);
     end;
 
     local procedure ExportIntColumn(ColumnNo: Integer; Value: Integer)
     begin
-        Clear(ExcelBuffer);
-        ExcelBuffer.Validate("Row No.", RowNo);
-        ExcelBuffer.Validate("Column No.", ColumnNo);
-        ExcelBuffer.Validate("Cell Value as Text", Format(Value));
-        ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Number);
-        ExcelBuffer.NumberFormat := '0';
-        ExcelBuffer.Insert(true);
+        Clear(TempExcelBuffer);
+        TempExcelBuffer.Validate("Row No.", RowNo);
+        TempExcelBuffer.Validate("Column No.", ColumnNo);
+        TempExcelBuffer.Validate("Cell Value as Text", Format(Value));
+        TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Number);
+        TempExcelBuffer.NumberFormat := '0';
+        TempExcelBuffer.Insert(true);
     end;
 
     procedure SetParams(_DateFilter: Text; _ReportingType: Option "Business Unit","Dimension 1","Dimension 2","Dimension 3","Dimension 4"; _Filter: Code[20])

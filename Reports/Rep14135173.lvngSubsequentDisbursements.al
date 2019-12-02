@@ -1,81 +1,40 @@
-report 14135173 "lvngSubsequentDisbursements"
+report 14135173 lvngSubsequentDisbursements
 {
     Caption = 'Subsequent Disbursements';
     DefaultLayout = RDLC;
     RDLCLayout = 'Reports\Layouts\Rep14135173.rdl';
+
     dataset
     {
-        dataitem(lvngGLEntry; "G/L Entry")
+        dataitem("G/L Entry"; "G/L Entry")
         {
             DataItemTableView = sorting("G/L Account No.", "Posting Date");
             RequestFilterFields = "G/L Account No.", "Posting Date", "Entry Date", "Source Type", "Source No.";
-            column(Amount; Amount)
-            {
 
-            }
-            column(BalAccountType; "Bal. Account Type")
-            {
+            column(Amount; Amount) { }
+            column(BalAccountType; "Bal. Account Type") { }
+            column(Description; Description) { }
+            column(DocumentNo; "Document No.") { }
+            column(DocumentType; "Document Type") { }
+            column(EntryNo; "Entry No.") { }
+            column(GLAccountName; "G/L Account Name") { }
+            column(PostingDate; "Posting Date") { }
+            column(SourceNo; "Source No.") { }
+            column(EntryDate; "Entry Date") { }
+            column(DateFilter; DateFilter) { }
+            column(CompanyName; CompanyInformation.Name) { }
+            column(UserName; UserName) { }
 
-            }
-            column(Description; Description)
-            {
-
-            }
-            column(DocumentNo; "Document No.")
-            {
-
-            }
-            column(DocumentType; "Document Type")
-            {
-
-            }
-            column(EntryNo; "Entry No.")
-            {
-
-            }
-            column(GLAccountName; "G/L Account Name")
-            {
-
-            }
-            column(PostingDate; "Posting Date")
-            {
-
-            }
-            column(SourceNo; "Source No.")
-            {
-
-            }
-            column(EntryDate; "Entry Date")
-            {
-
-            }
-            column(DateFilter; DateFilter)
-            {
-
-            }
-            column(CompanyName; CompanyInformation.Name)
-            {
-
-            }
-            column(UserName; UserName)
-            {
-
-            }
             trigger OnAfterGetRecord()
+            var
+                Idx: Integer;
             begin
-                if StrPos(lvngGLEntry."User ID", '\') <> 0 then
-                    UserName := CopyStr(lvngGLEntry."User ID", StrPos(lvngGLEntry."User ID", '\') + 1)
+                Idx := StrPos("G/L Entry"."User ID", '\');
+                if Idx <> 0 then
+                    UserName := CopyStr("G/L Entry"."User ID", Idx + 1)
                 else
-                    UserName := lvngGLEntry."User ID";
+                    UserName := "G/L Entry"."User ID";
             end;
-        }
-    }
-
-    requestpage
-    {
-        layout
-        {
-
         }
     }
 
@@ -84,9 +43,9 @@ report 14135173 "lvngSubsequentDisbursements"
         UserName: Text;
         DateFilter: Text;
 
-    Trigger OnPreReport()
+    trigger OnPreReport()
     begin
         CompanyInformation.Get();
-        DateFilter := lvngGLEntry.GetFilter("Posting Date");
+        DateFilter := "G/L Entry".GetFilter("Posting Date");
     end;
 }

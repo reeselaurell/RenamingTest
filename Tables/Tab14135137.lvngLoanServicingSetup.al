@@ -30,6 +30,7 @@ table 14135137 lvngLoanServicingSetup
         {
             Caption = 'Principal Cost Center';
             DataClassification = CustomerContent;
+            
             trigger OnLookup()
             begin
                 DimensionsManagement.LookupCostCenter("Principal Cost Center");
@@ -45,6 +46,29 @@ table 14135137 lvngLoanServicingSetup
         field(56; "Late Fee Rule"; enum lvngServicingLateFeeRule) { Caption = 'Late Fee Rule'; DataClassification = CustomerContent; }
         field(60; "Borrower Customer Template"; Code[20]) { Caption = 'Borrower Customer Template'; DataClassification = CustomerContent; TableRelation = "Customer Template".Code; }
         field(100; "Test Escrow Totals"; Boolean) { Caption = 'Test Escrow Total Amount'; DataClassification = CustomerContent; }
+        field(700; Code; Code[10]) { DataClassification = CustomerContent; Caption = 'Code'; }
+        field(701; "Serv. Department Phone No."; Text[30]) { DataClassification = CustomerContent; Caption = 'Serv. Department Phone No.'; }
+        field(702; "Serv. Department Fax No."; Text[30]) { DataClassification = CustomerContent; Caption = 'Serv. Department Fax No.'; }
+        field(703; "Serv. Department Working Days"; Text[30]) { DataClassification = CustomerContent; Caption = 'Serv. Department Working Days'; }
+        field(704; "Serv. Department Working Hours"; Text[30]) { DataClassification = CustomerContent; Caption = 'Serv. Department Working Hours'; }
+        field(705; "Serv. Department E-Mail"; Text[50]) { DataClassification = CustomerContent; Caption = 'Serv. Department E-Mail'; }
+        field(706; "Serv. Department Address 1"; Text[50]) { DataClassification = CustomerContent; Caption = 'Serv. Department Address 1'; }
+        field(707; "Serv. Department Address 2"; Text[50]) { DataClassification = CustomerContent; Caption = 'Serv. Department Address 2'; }
+        field(708; "Serv. Department State"; Code[10]) { DataClassification = CustomerContent; Caption = 'Serv. Department State'; }
+        field(709; "Serv. Department Zip Code"; Code[20]) { DataClassification = CustomerContent; Caption = 'Serv. Department Zip Code'; }
+        field(710; "Serv. Department City"; Text[30]) { DataClassification = CustomerContent; Caption = 'Serv. Department City'; }
+        field(711; "Collection Dep. Phone No."; Text[30]) { DataClassification = CustomerContent; Caption = 'Collection Dep. Phone No.'; }
+        field(712; "Collection Dep. Working Days"; Text[30]) { DataClassification = CustomerContent; Caption = 'Collection Dep. Working Days'; }
+        field(713; "Collection Dep. Working Hours"; Text[30]) { DataClassification = CustomerContent; Caption = 'Collection Dep. Working Hours'; }
+        field(714; "Collection Dep.Fax No."; Text[30]) { DataClassification = CustomerContent; Caption = 'Collection Dep. Fax No'; }
+        field(715; "Company Website"; Text[30]) { DataClassification = CustomerContent; Caption = 'Company Website'; }
+        field(716; "Statement Logo"; Blob) { DataClassification = CustomerContent; Caption = 'Statement Logo'; Subtype = Bitmap; }
+        field(717; "Name On Statement Report"; Text[50]) { DataClassification = CustomerContent; Caption = 'Name on Statement Report'; }
+        field(718; "Late Payment Fee Percent"; Decimal) { DataClassification = CustomerContent; Caption = 'Late Payment Fee %'; }
+        field(719; "Late Payment Date Formula"; DateFormula) { DataClassification = CustomerContent; Caption = 'Late Payment Date Formula'; }
+        field(720; "Toll Free Phone No."; Text[30]) { DataClassification = CustomerContent; Caption = 'Toll Free Phone No.'; }
+        field(721; "Serv. Report Due Date"; Option) { DataClassification = CustomerContent; Caption = 'Servicing Report Due Date'; OptionMembers = "Ledger Entries","Custom Formula"; }
+        field(722; "Serv. Due Date Formula"; DateFormula) { DataClassification = CustomerContent; Caption = 'Serv. Due Date Formula'; }
     }
 
     keys

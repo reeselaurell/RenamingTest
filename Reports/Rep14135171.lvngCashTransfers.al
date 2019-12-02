@@ -1,72 +1,39 @@
-report 14135171 "lvngCashTransfers"
+report 14135171 lvngCashTransfers
 {
     Caption = 'Cash Transfers';
     DefaultLayout = RDLC;
     RDLCLayout = 'Reports\Layouts\Rep14135171.rdl';
+
     dataset
     {
-        dataitem(lvngBankAccountLedgerEntry; "Bank Account Ledger Entry")
+        dataitem("Bank Account Ledger Entry"; "Bank Account Ledger Entry")
         {
-            DataItemTableView = sorting ("Bank Account No.", "Posting Date") where (Positive = const (true), "Bal. Account Type" = const ("Bank Account"));
-            column(Posting_Date; "Posting Date")
-            {
+            DataItemTableView = sorting("Bank Account No.", "Posting Date") where(Positive = const(true), "Bal. Account Type" = const("Bank Account"));
 
-            }
-            column(FromBankAccountName; FromBankAccountName)
-            {
+            column(PostingDate; "Posting Date") { }
+            column(FromBankAccountName; FromBankAccountName) { }
+            column(FromBankAccountNo; FromBankAccountNo) { }
+            column(Description; Description) { }
+            column(ToBankAccountName; ToBankAccountName) { }
+            column(ToBankAccountNo; ToBankAccountNo) { }
+            column(Amount; Amount) { }
+            column(DateFilter; GetFilter("Posting Date")) { }
+            column(CompanyName; CompanyInformation.Name) { }
 
-            }
-            column(FromBankAccountNo; FromBankAccountNo)
-            {
-
-            }
-            column(Description; Description)
-            {
-
-            }
-            column(ToBankAccountName; ToBankAccountName)
-            {
-
-            }
-            column(ToBankAccountNo; ToBankAccountNo)
-            {
-
-            }
-            column(Amount; Amount)
-            {
-
-            }
-            column(DateFilter; GetFilter("Posting Date"))
-            {
-
-            }
-            column(CompanyName; CompanyInformation.Name)
-            {
-
-            }
             trigger OnAfterGetRecord()
             begin
-                Clear(FromBankAccountName);
-                Clear(FromBankAccountNo);
-                Clear(ToBankAccountName);
-                Clear(ToBankAccountNo);
+                FromBankAccountName := '';
+                FromBankAccountNo := '';
+                ToBankAccountName := '';
+                ToBankAccountNo := '';
                 BankAccount.Get("Bank Account No.");
                 FromBankAccountName := BankAccount.Name;
-                FromBankAccountNo := '*****' + CopyStr(BankAccount."Bank Account No.", StrLen(BankAccount."Bank Account No.") - 3);
-                BankAccount.Get(lvngBankAccountLedgerEntry."Bal. Account No.");
+                FromBankAccountNo := BankAccountMaskTxt + CopyStr(BankAccount."Bank Account No.", StrLen(BankAccount."Bank Account No.") - 3);
+                BankAccount.Get("Bank Account Ledger Entry"."Bal. Account No.");
                 ToBankAccountName := BankAccount.Name;
-                ToBankAccountNo := '*****' + CopyStr(BankAccount."Bank Account No.", StrLen(BankAccount."Bank Account No.") - 3);
+                ToBankAccountNo := BankAccountMaskTxt + CopyStr(BankAccount."Bank Account No.", StrLen(BankAccount."Bank Account No.") - 3);
             end;
         }
-    }
-
-
-    requestpage
-    {
-        layout
-        {
-        }
-
     }
 
     var
@@ -76,6 +43,7 @@ report 14135171 "lvngCashTransfers"
         FromBankAccountNo: Text;
         ToBankAccountName: Text;
         ToBankAccountNo: Text;
+        BankAccountMaskTxt: Label '*****';
 
     trigger OnPreReport()
     begin

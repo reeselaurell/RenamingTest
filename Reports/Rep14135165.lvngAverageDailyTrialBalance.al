@@ -1,4 +1,4 @@
-report 14135165 "lvngAverageDailyTrialBalance"
+report 14135165 lvngAverageDailyTrialBalance
 {
     Caption = 'Average Daily Trial Balance';
     DefaultLayout = RDLC;
@@ -6,87 +6,43 @@ report 14135165 "lvngAverageDailyTrialBalance"
 
     dataset
     {
-        dataitem(lvngGLAccount; "G/L Account")
+        dataitem("G/L Account"; "G/L Account")
         {
             DataItemTableView = sorting("No.");
-            RequestFilterFields = "Date Filter", "Global Dimension 1 Filter", "Global Dimension 2 Filter", "Business Unit Filter", "Income/Balance";
-            // lvngShortcutDimension3Filter, lvngShortcutDimension4Filter;
-            column(GLAccountNo; lvngGLAccount."No.")
-            {
+            RequestFilterFields = "Date Filter", "Global Dimension 1 Filter", "Global Dimension 2 Filter", "Business Unit Filter", "Income/Balance", "Shortcut Dimension 3 Filter", "Shortcut Dimension 4 Filter";
 
-            }
-            column(Name; lvngGLAccount.Name)
-            {
+            column(GLAccountNo; "No.") { }
+            column(Name; Name) { }
+            column(NetChange; "Net Change") { }
+            column(BeginningBalance; BeginningBalance) { }
+            column(EndingBalance; EndingBalance) { }
+            column(DebitAmount; "Debit Amount") { }
+            column(CreditAmount; "Credit Amount") { }
+            column(AverageDailyBalance; AvgDailyBalance) { }
+            column(CompanyName; CompanyInformation.Name) { }
+            column(PostingAccount; ShowBold) { }
+            column(FiltersData; GetFilters) { }
+            column(FromDate; Format(DateFrom, 0, '<Month>/<Day,2>/<Year4>')) { }
+            column(ToDate; Format(DateTo, 0, '<Month>/<Day,2>/<Year4>')) { }
+            column(HideValues; HideValues) { }
 
-            }
-            column(NetChange; lvngGLAccount."Net Change")
-            {
-
-            }
-            column(BeginningBalance; BeginningBalance)
-            {
-
-            }
-            column(EndingBalance; EndingBalance)
-            {
-
-            }
-            column(DebitAmount; "Debit Amount")
-            {
-
-            }
-            column(CreditAmount; "Credit Amount")
-            {
-
-            }
-            column(AverageDailyBalance; AvgDailyBalance)
-            {
-
-            }
-            column(CompanyName; CompanyInformation.Name)
-            {
-
-            }
-            column(PostingAccount; ShowBold)
-            {
-
-            }
-            column(FiltersData; GetFilters)
-            {
-
-            }
-            column(FromDate; Format(DateFrom, 0, '<Month>/<Day,2>/<Year4>'))
-            {
-
-            }
-            column(ToDate; Format(DateTo, 0, '<Month>/<Day,2>/<Year4>'))
-            {
-
-            }
-            column(HideValues; HideValues)
-            {
-
-            }
             trigger OnAfterGetRecord()
             begin
-                Clear(HideValues);
+                HideValues := false;
                 ShowBold := not ("Account Type" = "Account Type"::Posting);
-                if ShowBold then begin
+                if ShowBold then
                     if Totaling = '' then
                         HideValues := true;
-                end;
                 ShowEntry := true;
-                Clear(TotalAmount);
+                TotalAmount := 0;
                 GLAccount.Get("No.");
-                GLAccount.CopyFilters(lvngGLAccount);
+                GLAccount.CopyFilters("G/L Account");
                 GLAccount.SetFilter("Date Filter", '..%1', DateFrom - 1);
                 GLAccount.CalcFields("Balance at Date");
                 BeginningBalance := GLAccount."Balance at Date";
                 GLAccount.SetFilter("Date Filter", '..%1', DateTo);
                 GLAccount.CalcFields("Balance at Date");
                 EndingBalance := GLAccount."Balance at Date";
-                //TotalAmount := BeginningBalance;
-
                 PeriodRec.Reset();
                 PeriodRec.SetRange("Period Type", PeriodRec."Period Type"::Date);
                 PeriodRec.SetRange("Period Start", DateFrom, DateTo);
@@ -96,27 +52,23 @@ report 14135165 "lvngAverageDailyTrialBalance"
                     GLAccount.CalcFields("Balance at Date");
                     TotalAmount := TotalAmount + GLAccount."Balance at Date";
                 until PeriodRec.Next() = 0;
-
                 AvgDailyBalance := TotalAmount / TotalDays;
-
                 if "Account Type" = "Account Type"::Posting then begin
-                    if PrintType = PrintType::"Accounts with Balances" then begin
-                        if (EndingBalance = 0) and (BeginningBalance = 0) then begin
-                            ShowEntry := false;
-                        end;
-                    end;
-                    if PrintType = PrintType::"Accounts with Activities" then begin
-                        GLEntry.Reset();
-                        GLEntry.SetRange("G/L Account No.", "No.");
-                        GLEntry.SetFilter("G/L Account No.", Totaling);
-                        GLENtry.SetRange("Business Unit Code", "Business Unit Filter");
-                        GLEntry.SetRange("Global Dimension 1 Code", "Global Dimension 1 Filter");
-                        GLEntry.SetRange("Global Dimension 2 Code", "Global Dimension 2 Filter");
-                        GLEntry.SetRange("Posting Date", "Date Filter");
-                        if GLEntry.IsEmpty then
-                            ShowEntry := false
-                        else
-                            ShowEntry := true;
+                    case PrintType of
+                        PrintType::"Accounts with Balances":
+                            if (EndingBalance = 0) and (BeginningBalance = 0) then
+                                ShowEntry := false;
+                        PrintType::"Accounts with Activities":
+                            begin
+                                GLEntry.Reset();
+                                GLEntry.SetRange("G/L Account No.", "No.");
+                                GLEntry.SetFilter("G/L Account No.", Totaling);
+                                GLENtry.SetRange("Business Unit Code", "Business Unit Filter");
+                                GLEntry.SetRange("Global Dimension 1 Code", "Global Dimension 1 Filter");
+                                GLEntry.SetRange("Global Dimension 2 Code", "Global Dimension 2 Filter");
+                                GLEntry.SetRange("Posting Date", "Date Filter");
+                                ShowEntry := not GLEntry.IsEmpty();
+                            end;
                     end;
                 end;
                 if not ShowEntry then
@@ -133,22 +85,11 @@ report 14135165 "lvngAverageDailyTrialBalance"
             {
                 group(Options)
                 {
-                    Caption = 'Options';
-                    field(Show; PrintType)
-                    {
-                        Caption = 'Show';
-                    }
+                    field(Show; PrintType) { Caption = 'Show'; ApplicationArea = All; }
                 }
             }
         }
     }
-    trigger OnPreReport()
-    begin
-        CompanyInformation.Get();
-        DateFrom := lvngGLAccount.GetRangeMin("Date Filter");
-        DateTo := lvngGLAccount.GetRangeMax("Date Filter");
-        TotalDays := DateTo - DateFrom + 1;
-    end;
 
     var
         BeginningBalance: Decimal;
@@ -166,4 +107,12 @@ report 14135165 "lvngAverageDailyTrialBalance"
         ShowEntry: Boolean;
         ShowBold: Boolean;
         HideValues: Boolean;
+
+    trigger OnPreReport()
+    begin
+        CompanyInformation.Get();
+        DateFrom := "G/L Account".GetRangeMin("Date Filter");
+        DateTo := "G/L Account".GetRangeMax("Date Filter");
+        TotalDays := DateTo - DateFrom + 1;
+    end;
 }

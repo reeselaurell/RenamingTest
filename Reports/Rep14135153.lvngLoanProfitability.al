@@ -1,85 +1,37 @@
-report 14135153 "lvngLoanProfitability"
+report 14135153 lvngLoanProfitability
 {
     Caption = 'Loan Profitability';
     DefaultLayout = RDLC;
     RDLCLayout = 'Reports\Layouts\Rep14135153.rdl';
+
     dataset
     {
-        dataitem(lvngLoan; lvngLoan)
+        dataitem(Loan; lvngLoan)
         {
             RequestFilterFields = "No.";
             DataItemTableView = sorting("No.");
-            column(lvngLoanNo; "No.")
-            {
 
-            }
-            column(lvngBorrowerFirstName; "Borrower First Name")
-            {
+            column(LoanNo; "No.") { }
+            column(BorrowerFirstName; "Borrower First Name") { }
+            column(BorrowerMiddleName; "Borrower Middle Name") { }
+            column(BorrowerLastName; "Borrower Last Name") { }
+            column(DateFunded; "Date Funded") { }
+            column(WarehouseLineCode; "Warehouse Line Code") { }
+            column(LoanType; LoanType) { }
+            column(InterestRate; "Interest Rate") { }
+            column(DateSold; "Date Sold") { }
+            column(InvestorName; InvestorName) { }
+            column(LoanAmount; "Loan Amount") { }
+            column(LoanOfficerName; LoanOfficerName) { }
+            column(CompanyName; CompanyInformation.Name) { }
+            column(AsOfDate; AsOfDate) { }
 
-            }
-            column(lvngBorrowerMiddleName; "Borrower Middle Name")
-            {
-
-            }
-            column(lvngBorrowerLastName; "Borrower Last Name")
-            {
-
-            }
-            column(lvngDateFunded; "Date Funded")
-            {
-
-            }
-            column(lvngWarehouseLineCode; "Warehouse Line Code")
-            {
-
-            }
-            column(LoanType; LoanType)
-            {
-
-            }
-            column(lvngInterestRate; "Interest Rate")
-            {
-
-            }
-            column(lvngDateSold; "Date Sold")
-            {
-
-            }
-            column(InvestorName; InvestorName)
-            {
-
-            }
-            column(lvngLoanAmount; "Loan Amount")
-            {
-
-            }
-            column(LoanOfficerName; LoanOfficerName)
-            {
-
-            }
-            column(CompanyName; CompanyInformation.Name)
-            {
-
-            }
-            column(AsOfDate; AsOfDate)
-            {
-
-            }
             dataitem(DataSetValues; Integer)
             {
                 DataItemTableView = sorting(Number);
-                column(BalanceAtDate; CalculatedValue)
-                {
-
-                }
-                column(ReportingAccountType; ReportingAccountType)
-                {
-
-                }
-                column(Descripiton; Buffer."Cell Value as Text")
-                {
-
-                }
+                column(BalanceAtDate; CalculatedValue) { }
+                column(ReportingAccountType; ReportingAccountType) { }
+                column(Descripiton; Buffer."Value as Text") { }
 
                 trigger OnPreDataItem()
                 begin
@@ -90,12 +42,12 @@ report 14135153 "lvngLoanProfitability"
                 trigger OnAfterGetRecord()
                 begin
                     if Number = 1 then
-                        Buffer.Find('-')
+                        Buffer.FindSet()
                     else
                         Buffer.Next();
                     Clear(CalculatedValue);
                     GLAccount.Reset();
-                    GLAccount.SetRange("Reporting Account Name", Buffer."Cell Value as Text");
+                    GLAccount.SetRange("Reporting Account Name", Buffer."Value as Text");
                     GLAccount.FindSet();
                     repeat
                         if GLAccount.Totaling <> '' then
@@ -103,9 +55,8 @@ report 14135153 "lvngLoanProfitability"
                         else
                             GLEntriesByDimension.SetRange(GLAccountNoFilter, GLAccount."No.");
                         GLEntriesByDimension.Open();
-                        if GLEntriesByDimension.Read() then begin
+                        if GLEntriesByDimension.Read() then
                             CalculatedValue := CalculatedValue + GLEntriesByDimension.SumAmount;
-                        end;
                     until GLAccount.Next() = 0;
                     GLEntriesByDimension.Close();
                     if Buffer.Bold then
@@ -120,22 +71,18 @@ report 14135153 "lvngLoanProfitability"
             begin
                 Clear(LoanType);
                 Clear(LoanOfficerName);
-                if DefaultDimension.Get(Database::lvngLoan, "No.", LoanVisionSetup."Loan Type Dimension Code") then begin
+                if DefaultDimension.Get(Database::lvngLoan, "No.", LoanVisionSetup."Loan Type Dimension Code") then
                     LoanType := DefaultDimension."Dimension Value Code";
-                end;
-                if DefaultDimension.Get(Database::lvngLoan, "No.", LoanVisionSetup."Loan Officer Dimension Code") then begin
+                if DefaultDimension.Get(Database::lvngLoan, "No.", LoanVisionSetup."Loan Officer Dimension Code") then
                     if DimensionValue.Get(LoanVisionSetup."Loan Officer Dimension Code", DefaultDimension."Dimension Value Code") then begin
                         LoanOfficerName := DimensionValue.Name;
-                        if LoanOfficerName = '' then begin
+                        if LoanOfficerName = '' then
                             LoanOfficerName := DimensionValue.Code;
-                        end;
                     end;
-                end;
                 Clear(InvestorName);
-                if Customer.Get("Investor Customer No.") then begin
+                if Customer.Get("Investor Customer No.") then
                     InvestorName := Customer.Name;
-                end;
-                GLEntriesByDimension.SetRange(LoanNoFilter, lvngLoan."No.");
+                GLEntriesByDimension.SetRange(LoanNoFilter, Loan."No.");
             end;
         }
     }
@@ -147,177 +94,50 @@ report 14135153 "lvngLoanProfitability"
             {
                 group(Options)
                 {
-                    field(FromDate; PeriodStart)
+                    group("G/L Transactions")
                     {
-                        Caption = 'From Date';
+                        field(FromDate; PeriodStart) { ApplicationArea = All; Caption = 'From Date'; }
+                        field(ToDate; PeriodEnd1) { ApplicationArea = All; Caption = 'To Date'; }
                     }
-                    field(ToDate; PeriodEnd1)
-                    {
-                        Caption = 'To Date';
-                    }
-                    field(ReportingType; ReportingType)
-                    {
-                        Caption = 'Reporting Type';
-                        OptionCaption = ',Income,Expense';
-                    }
+
+                    field(ReportingType; ReportingType) { Caption = 'Reporting Type'; OptionCaption = ',Income,Expense'; }
+
                     group(Dimensions)
                     {
-                        field(Dimension1Filter; Dimension1Filter)
-                        {
-                            Visible = Dimension1FilterVisible;
-                            TableRelation = "Dimension Value".Code where("Global Dimension No." = Const(1));
-                            CaptionClass = '1,1,1';
-                        }
-                        field(Dimension2Filter; Dimension2Filter)
-                        {
-                            Visible = Dimension2FilterVisible;
-                            TableRelation = "Dimension Value".Code where("Global Dimension No." = Const(2));
-                            CaptionClass = '1,1,2';
-                        }
-                        field(Dimension3Filter; Dimension3Filter)
-                        {
-                            Visible = Dimension3FilterVisible;
-                            TableRelation = "Dimension Value".Code where("Global Dimension No." = Const(3));
-                            CaptionClass = '1,2,3';
-                        }
-                        field(Dimension4Filter; Dimension4Filter)
-                        {
-                            Visible = Dimension4FilterVisible;
-                            TableRelation = "Dimension Value".Code where("Global Dimension No." = Const(4));
-                            CaptionClass = '1,2,4';
-                        }
-                        field(Dimension5Filter; Dimension5Filter)
-                        {
-                            Visible = Dimension5FilterVisible;
-                            TableRelation = "Dimension Value".Code where("Global Dimension No." = Const(5));
-                            CaptionClass = '1,2,5';
-                        }
-                        field(Dimension6Filter; Dimension6Filter)
-                        {
-                            Visible = Dimension6FilterVisible;
-                            TableRelation = "Dimension Value".Code where("Global Dimension No." = Const(6));
-                            CaptionClass = '1,2,6';
-                        }
-                        field(Dimension7Filter; Dimension7Filter)
-                        {
-                            Visible = Dimension7FilterVisible;
-                            TableRelation = "Dimension Value".Code where("Global Dimension No." = Const(7));
-                            CaptionClass = '1,2,7';
-                        }
-                        field(Dimension8Filter; Dimension8Filter)
-                        {
-                            Visible = Dimension8FilterVisible;
-                            TableRelation = "Dimension Value".Code where("Global Dimension No." = Const(8));
-                            CaptionClass = '1,2,8';
-                        }
+                        Caption = 'G/L Entries Deimension Filter';
+
+                        field(Dimension1Filter; Dimension1Filter) { ApplicationArea = All; Visible = Dimension1FilterVisible; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1)); CaptionClass = '1,1,1'; }
+                        field(Dimension2Filter; Dimension2Filter) { ApplicationArea = All; Visible = Dimension2FilterVisible; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2)); CaptionClass = '1,1,2'; }
+                        field(Dimension3Filter; Dimension3Filter) { ApplicationArea = All; Visible = Dimension3FilterVisible; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3)); CaptionClass = '1,2,3'; }
+                        field(Dimension4Filter; Dimension4Filter) { ApplicationArea = All; Visible = Dimension4FilterVisible; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4)); CaptionClass = '1,2,4'; }
+                        field(Dimension5Filter; Dimension5Filter) { ApplicationArea = All; Visible = Dimension5FilterVisible; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(5)); CaptionClass = '1,2,5'; }
+                        field(Dimension6Filter; Dimension6Filter) { ApplicationArea = All; Visible = Dimension6FilterVisible; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6)); CaptionClass = '1,2,6'; }
+                        field(Dimension7Filter; Dimension7Filter) { ApplicationArea = All; Visible = Dimension7FilterVisible; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7)); CaptionClass = '1,2,7'; }
+                        field(Dimension8Filter; Dimension8Filter) { ApplicationArea = All; Visible = Dimension8FilterVisible; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8)); CaptionClass = '1,2,8'; }
                     }
                 }
             }
         }
+
         trigger OnInit()
         begin
             GeneralLedgerSetup.Get();
         end;
 
         trigger OnOpenPage()
+        var
+            DimensionManagement: Codeunit DimensionManagement;
         begin
-            DimensionValue.SetRange("Dimension Code", GeneralLedgerSetup."Shortcut Dimension 1 Code");
-            Dimension1FilterVisible := not DimensionValue.IsEmpty;
-            DimensionValue.SetRange("Dimension Code", GeneralLedgerSetup."Shortcut Dimension 2 Code");
-            Dimension2FilterVisible := not DimensionValue.IsEmpty;
-            DimensionValue.SetRange("Dimension Code", GeneralLedgerSetup."Shortcut Dimension 3 Code");
-            Dimension3FilterVisible := not DimensionValue.IsEmpty;
-            DimensionValue.SetRange("Dimension Code", GeneralLedgerSetup."Shortcut Dimension 4 Code");
-            Dimension4FilterVisible := not DimensionValue.IsEmpty;
-            DimensionValue.SetRange("Dimension Code", GeneralLedgerSetup."Shortcut Dimension 5 Code");
-            Dimension5FilterVisible := not DimensionValue.IsEmpty;
-            DimensionValue.SetRange("Dimension Code", GeneralLedgerSetup."Shortcut Dimension 6 Code");
-            Dimension6FilterVisible := not DimensionValue.IsEmpty;
-            DimensionValue.SetRange("Dimension Code", GeneralLedgerSetup."Shortcut Dimension 7 Code");
-            Dimension7FilterVisible := not DimensionValue.IsEmpty;
-            DimensionValue.SetRange("Dimension Code", GeneralLedgerSetup."Shortcut Dimension 8 Code");
-            Dimension8FilterVisible := not DimensionValue.IsEmpty;
+            DimensionManagement.UseShortcutDims(Dimension1FilterVisible, Dimension2FilterVisible, Dimension3FilterVisible, Dimension4FilterVisible, Dimension5FilterVisible, Dimension6FilterVisible, Dimension7FilterVisible, Dimension8FilterVisible);
         end;
     }
-    trigger OnPreReport()
-    begin
-        CompanyInformation.Get();
-        LoanVisionSetup.Get();
-        LoanVisionSetup.TestField("Loan Type Dimension Code");
-        PeriodEnd := PeriodEnd1;
-        if (Dimension1Filter <> '') or
-        (Dimension2Filter <> '') or
-        (Dimension3Filter <> '') or
-        (Dimension4Filter <> '') or
-        (Dimension5Filter <> '') or
-        (Dimension6Filter <> '') or
-        (Dimension7Filter <> '') or
-        (Dimension8Filter <> '') then begin
-            if (PeriodEnd = 0D) or
-                (PeriodStart = 0D) then begin
-                Error(Text001);
-            end;
-        end;
-        if PeriodEnd = 0D then begin
-            PeriodEnd := WorkDate();
-        end;
-        EntryNo := 1;
-        GLAccount.Reset();
-        GLAccount.SetFilter("Reporting Account Name", '<>%1', '');
-        if ReportingType = ReportingType::Income then begin
-
-            GLAccount.SetRange("Account Category", GLAccount."Account Category"::Income);
-        end;
-        if ReportingType = ReportingType::Expense then begin
-            GLAccount.SetRange("Account Category", GLAccount."Account Category"::Expense);
-        end;
-        GLEntriesByDimension.SetRange(PostingDateFilter, PeriodStart, PeriodEnd);
-        if (Dimension1Filter <> '') then begin
-            GLEntriesByDimension.SetRange(Dimension1Filter, Dimension1Filter);
-        end;
-        if (Dimension2Filter <> '') then begin
-            GLEntriesByDimension.SetRange(Dimension2Filter, Dimension2Filter);
-        end;
-        if (Dimension3Filter <> '') then begin
-            GLEntriesByDimension.SetRange(Dimension3Filter, Dimension3Filter);
-        end;
-        if (Dimension4Filter <> '') then begin
-            GLEntriesByDimension.SetRange(Dimension4Filter, Dimension4Filter);
-        end;
-        if (Dimension5Filter <> '') then begin
-            GLEntriesByDimension.SetRange(Dimension5Filter, Dimension5Filter);
-        end;
-        if (Dimension6Filter <> '') then begin
-            GLEntriesByDimension.SetRange(Dimension6Filter, Dimension6Filter);
-        end;
-        if (Dimension7Filter <> '') then begin
-            GLEntriesByDimension.SetRange(Dimension7Filter, Dimension7Filter);
-        end;
-        if (Dimension8Filter <> '') then begin
-            GLEntriesByDimension.SetRange(Dimension8Filter, Dimension8Filter);
-        end;
-        AsOfDate := Format(PeriodStart, 0, '<Month,2>/<Day,2>/<Year4>') + '..' + Format(PeriodEnd, 0, '<Month,2>/<Day,2>/<Year4>');
-        GLAccount.FindSet();
-        repeat
-            Buffer.Reset();
-            Buffer.SetRange("Cell Value as Text", GLAccount."Reporting Account Name");
-            if Buffer.IsEmpty then begin
-                Clear(Buffer);
-                Buffer."Row No." := EntryNo;
-                EntryNo := EntryNo + 1;
-                Buffer."Cell Value as Text" := GLAccount."Reporting Account Name";
-                Buffer.Bold := (GLAccount."Account Category" = GLAccount."Account Category"::Income);
-                Buffer.Insert();
-            end;
-        until GLAccount.Next() = 0;
-    end;
 
     var
         CompanyInformation: Record "Company Information";
         GeneralLedgerSetup: Record "General Ledger Setup";
         DefaultDimension: Record "Default Dimension";
         LoanVisionSetup: Record lvngLoanVisionSetup;
-        Buffer: Record "Excel Buffer" temporary;
+        Buffer: Record lvngDataStorageBuffer temporary;
         GLAccount: Record "G/L Account";
         Customer: Record Customer;
         DimensionValue: Record "Dimension Value";
@@ -349,9 +169,57 @@ report 14135153 "lvngLoanProfitability"
         ReportingAccountType: Integer;
         CalculatedValue: Decimal;
         ReportingType: Option ,Income,Expense;
-        Text001: TextConst ENU = 'If you set Dimension Filter you must also set From Date and To Date';
+        DateRangeRequiredErr: Label 'If you set Dimension Filter you must also set From Date and To Date';
 
-
-
-
+    trigger OnPreReport()
+    begin
+        CompanyInformation.Get();
+        LoanVisionSetup.Get();
+        LoanVisionSetup.TestField("Loan Type Dimension Code");
+        PeriodEnd := PeriodEnd1;
+        if (Dimension1Filter <> '') or (Dimension2Filter <> '') or (Dimension3Filter <> '') or (Dimension4Filter <> '') or
+            (Dimension5Filter <> '') or (Dimension6Filter <> '') or (Dimension7Filter <> '') or (Dimension8Filter <> '') then
+            if (PeriodEnd = 0D) or (PeriodStart = 0D) then
+                Error(DateRangeRequiredErr);
+        if PeriodEnd = 0D then
+            PeriodEnd := WorkDate();
+        EntryNo := 1;
+        GLAccount.Reset();
+        GLAccount.SetFilter("Reporting Account Name", '<>%1', '');
+        if ReportingType = ReportingType::Income then
+            GLAccount.SetRange("Account Category", GLAccount."Account Category"::Income);
+        if ReportingType = ReportingType::Expense then
+            GLAccount.SetRange("Account Category", GLAccount."Account Category"::Expense);
+        GLEntriesByDimension.SetRange(PostingDateFilter, PeriodStart, PeriodEnd);
+        if (Dimension1Filter <> '') then
+            GLEntriesByDimension.SetRange(Dimension1Filter, Dimension1Filter);
+        if (Dimension2Filter <> '') then
+            GLEntriesByDimension.SetRange(Dimension2Filter, Dimension2Filter);
+        if (Dimension3Filter <> '') then
+            GLEntriesByDimension.SetRange(Dimension3Filter, Dimension3Filter);
+        if (Dimension4Filter <> '') then
+            GLEntriesByDimension.SetRange(Dimension4Filter, Dimension4Filter);
+        if (Dimension5Filter <> '') then
+            GLEntriesByDimension.SetRange(Dimension5Filter, Dimension5Filter);
+        if (Dimension6Filter <> '') then
+            GLEntriesByDimension.SetRange(Dimension6Filter, Dimension6Filter);
+        if (Dimension7Filter <> '') then
+            GLEntriesByDimension.SetRange(Dimension7Filter, Dimension7Filter);
+        if (Dimension8Filter <> '') then
+            GLEntriesByDimension.SetRange(Dimension8Filter, Dimension8Filter);
+        AsOfDate := Format(PeriodStart, 0, '<Month,2>/<Day,2>/<Year4>') + '..' + Format(PeriodEnd, 0, '<Month,2>/<Day,2>/<Year4>');
+        GLAccount.FindSet();
+        repeat
+            Buffer.Reset();
+            Buffer.SetRange("Value as Text", GLAccount."Reporting Account Name");
+            if Buffer.IsEmpty then begin
+                Clear(Buffer);
+                Buffer."Entry No." := EntryNo;
+                EntryNo := EntryNo + 1;
+                Buffer."Value as Text" := GLAccount."Reporting Account Name";
+                Buffer.Bold := (GLAccount."Account Category" = GLAccount."Account Category"::Income);
+                Buffer.Insert();
+            end;
+        until GLAccount.Next() = 0;
+    end;
 }

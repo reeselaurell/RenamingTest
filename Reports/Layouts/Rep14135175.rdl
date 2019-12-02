@@ -820,6 +820,9 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
         <Field Name="EntryNo">
           <DataField>EntryNo</DataField>
         </Field>
