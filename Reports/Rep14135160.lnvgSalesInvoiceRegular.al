@@ -17,7 +17,7 @@ report 14135160 lvngSalesInvoiceRegular
             column(PostingDate; "Sales Invoice Header"."Posting Date") { }
             column(LoanNo; "Sales Invoice Header"."Loan No.") { }
             column(BorrowerName; BorrowerName) { }
-            column(ExternalDocumentNo; DelChr("Sales Invoice Header"."External Document No.", '<>', '')) { }
+            column(ExternalDocumentNo; DelChr("Sales Invoice Header"."External Document No.", '<>', ' ')) { }
             column(DueDate; "Sales Invoice Header"."Due Date") { }
             column(BranchName; BranchName) { }
             column(LoanOfficerName; LoanOfficerName) { }
@@ -37,7 +37,7 @@ report 14135160 lvngSalesInvoiceRegular
 
             dataitem("Sales Invoice Line"; "Sales Invoice Line")
             {
-                DataItemTableView = sorting("Document No.", "Line No.") where(Type = filter(<> ' '));
+                DataItemTableView = sorting("Document No.", "Line No.") where(Type = filter(<> " "));
                 DataItemLink = "Document No." = field("No.");
 
                 column(AccNo; "Sales Invoice Line"."No.") { }

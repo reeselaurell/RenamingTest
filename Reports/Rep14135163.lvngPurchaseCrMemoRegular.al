@@ -16,7 +16,7 @@ report 14135163 lvngPurchaseCrMemoRegular
             column(BillToCustomerNo; "Purch. Cr. Memo Hdr."."Pay-to Vendor No.") { }
             column(PostingDate; "Purch. Cr. Memo Hdr."."Posting Date") { }
             column(LoanNo; "Purch. Cr. Memo Hdr."."Loan No.") { }
-            column(ExternalDocumentNo; DelChr("Purch. Cr. Memo Hdr."."Vendor Cr. Memo No.", '<>', '')) { }
+            column(ExternalDocumentNo; DelChr("Purch. Cr. Memo Hdr."."Vendor Cr. Memo No.", '<>', ' ')) { }
             column(DueDate; "Purch. Cr. Memo Hdr."."Due Date") { }
             column(BranchName; BranchName) { }
             column(LoanOfficerName; LoanOfficerName) { }
@@ -36,7 +36,7 @@ report 14135163 lvngPurchaseCrMemoRegular
 
             dataitem("Purch. Cr. Memo Line"; "Purch. Cr. Memo Line")
             {
-                DataItemTableView = sorting("Document No.", "Line No.") where(Type = filter(<> ' '));
+                DataItemTableView = sorting("Document No.", "Line No.") where(Type = filter(<> " "));
                 DataItemLink = "Document No." = field("No.");
 
                 column(AccNo; "Purch. Cr. Memo Line"."No.") { }

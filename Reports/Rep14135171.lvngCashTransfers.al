@@ -28,10 +28,10 @@ report 14135171 lvngCashTransfers
                 ToBankAccountNo := '';
                 BankAccount.Get("Bank Account No.");
                 FromBankAccountName := BankAccount.Name;
-                FromBankAccountNo := '*****' + CopyStr(BankAccount."Bank Account No.", StrLen(BankAccount."Bank Account No.") - 3);
+                FromBankAccountNo := BankAccountMaskTxt + CopyStr(BankAccount."Bank Account No.", StrLen(BankAccount."Bank Account No.") - 3);
                 BankAccount.Get("Bank Account Ledger Entry"."Bal. Account No.");
                 ToBankAccountName := BankAccount.Name;
-                ToBankAccountNo := '*****' + CopyStr(BankAccount."Bank Account No.", StrLen(BankAccount."Bank Account No.") - 3);
+                ToBankAccountNo := BankAccountMaskTxt + CopyStr(BankAccount."Bank Account No.", StrLen(BankAccount."Bank Account No.") - 3);
             end;
         }
     }
@@ -43,6 +43,7 @@ report 14135171 lvngCashTransfers
         FromBankAccountNo: Text;
         ToBankAccountName: Text;
         ToBankAccountNo: Text;
+        BankAccountMaskTxt: Label '*****';
 
     trigger OnPreReport()
     begin

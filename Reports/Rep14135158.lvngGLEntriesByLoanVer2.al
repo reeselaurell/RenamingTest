@@ -20,7 +20,7 @@ report 14135158 GLEntriesByLoanVer2
 
                 trigger OnPreDataItem()
                 begin
-                    if GuiAllowed then begin
+                    if GuiAllowed() then begin
                         Progress.Open(ProcessingMsg);
                         Progress.Update(2, Count);
                     end;
@@ -62,14 +62,13 @@ report 14135158 GLEntriesByLoanVer2
                     TempGLEntryBuffer."Loan No." := "Loan No.";
                     TempGLEntryBuffer.Insert();
                     if not TempLoan.Get(LoanNo) then begin
-                        Clear(TempLoan);
                         if Loan.Get(LoanNo) then begin
                             TempLoan := Loan;
                             TempLoan."Loan Amount" := 0;
-                            TempLoan."Commission Base Amount" := 0;
                             TempLoan."Commission Base Amount" := Amount;
                             TempLoan.Insert();
                         end else begin
+                            Clear(TempLoan);
                             TempLoan."Commission Base Amount" := Amount;
                             TempLoan."No." := "Loan No.";
                             TempLoan.Insert();
@@ -90,17 +89,15 @@ report 14135158 GLEntriesByLoanVer2
                             GLEntry.SetRange("Loan No.", "Loan No.");
                             GLEntry.SetRange("Posting Date", 0D, MinDate);
                             GLEntry.SetRange("G/L Account No.", "G/L Account No.");
-                            if not GLEntry.IsEmpty then
-                                if GLEntry.FindSet() then
-                                    repeat
-                                        TempGLAccountLoanBuffer."Custom Decimal 1" := TempGLAccountLoanBuffer."Custom Decimal 1" + GLEntry.Amount;
-                                        TempLoan."Loan Amount" := TempLoan."Loan Amount" + GLEntry.Amount;
-                                    until GLEntry.Next() = 0;
+                            if GLEntry.FindSet() then
+                                repeat
+                                    TempGLAccountLoanBuffer."Custom Decimal 1" := TempGLAccountLoanBuffer."Custom Decimal 1" + GLEntry.Amount;
+                                    TempLoan."Loan Amount" := TempLoan."Loan Amount" + GLEntry.Amount;
+                                until GLEntry.Next() = 0;
                         end;
                         TempLoan.Modify();
                         TempGLAccountLoanBuffer.Modify();
                     end;
-
                     VendorLedgerEntry.Reset();
                     VendorLedgerEntry.SetRange("Document No.", "Document No.");
                     VendorLedgerEntry.SetRange("Document Type", "Document Type");
@@ -280,7 +277,6 @@ report 14135158 GLEntriesByLoanVer2
                                                 TempGLEntryBuffer."Credit Amount" := "G/L Entry"."Debit Amount"
                                             else
                                                 TempGLEntryBuffer."Debit Amount" := "G/L Entry"."Credit Amount";
-
                                             TempGLEntryBuffer."Loan No." := "G/L Entry"."Loan No.";
                                             TempGLEntryBuffer.Insert();
                                             TempLoan."Commission Base Amount" := TempLoan."Commission Base Amount" + TempGLEntryBuffer."Current Balance";
@@ -321,7 +317,7 @@ report 14135158 GLEntriesByLoanVer2
                                                 TempGLEntryBuffer."Shortcut Dimension 5 Code" := GLEntry2."Shortcut Dimension 5 Code";
                                                 TempGLEntryBuffer."Shortcut Dimension 6 Code" := GLEntry2."Shortcut Dimension 6 Code";
                                                 TempGLEntryBuffer."Shortcut Dimension 7 Code" := GLEntry2."Shortcut Dimension 7 Code";
-                                                TempGLEntryBuffer."Shortcut Dimension 7 Code" := GLEntry2."Shortcut Dimension 7 Code";
+                                                TempGLEntryBuffer."Shortcut Dimension 8 Code" := GLEntry2."Shortcut Dimension 8 Code";
                                                 TempGLEntryBuffer."Reference No." := Format(Counter);
                                                 TempGLEntryBuffer.Name := GLEntry2.Description;
                                                 TempGLEntryBuffer."Reason Code" := GLEntry2."Reason Code";
@@ -346,7 +342,6 @@ report 14135158 GLEntriesByLoanVer2
                                     until GLEntry.Next() = 0;
                             end;
                         until CustLedgerEntry.Next() = 0;
-
                     GLEntry2.Reset();
                     GLEntry2.SetRange("Loan No.", '');
                     GLEntry2.SetRange("Transaction No.", "Transaction No.");
@@ -374,6 +369,7 @@ report 14135158 GLEntriesByLoanVer2
                             TempGLEntryBuffer."Shortcut Dimension 5 Code" := "Shortcut Dimension 5 Code";
                             TempGLEntryBuffer."Shortcut Dimension 6 Code" := "Shortcut Dimension 6 Code";
                             TempGLEntryBuffer."Shortcut Dimension 7 Code" := "Shortcut Dimension 7 Code";
+                            TempGLEntryBuffer."Shortcut Dimension 8 Code" := "Shortcut Dimension 8 Code";
                             TempGLEntryBuffer."Reference No." := Format(Counter);
                             TempGLEntryBuffer.Name := GLEntry2.Description;
                             TempGLEntryBuffer."Reason Code" := GLEntry2."Reason Code";
@@ -385,7 +381,6 @@ report 14135158 GLEntriesByLoanVer2
                                 TempGLEntryBuffer."Credit Amount" := "G/L Entry"."Debit Amount"
                             else
                                 TempGLEntryBuffer."Debit Amount" := "G/L Entry"."Credit Amount";
-
                             TempGLEntryBuffer."Loan No." := "G/L Entry"."Loan No.";
                             TempGLEntryBuffer.Insert();
                             TempLoan."Commission Base Amount" := TempLoan."Commission Base Amount" + TempGLEntryBuffer."Current Balance";
@@ -398,7 +393,6 @@ report 14135158 GLEntriesByLoanVer2
                                 TempGLAccountLoanBuffer.Modify();
                             end;
                         until GLEntry2.Next() = 0;
-
                     TempLoan."Commission Base Amount" := TempLoan."Commission Base Amount" + TempGLEntryBuffer."Current Balance";
                     TempLoan.Modify();
                     Counter := Counter + 1;
@@ -408,7 +402,7 @@ report 14135158 GLEntriesByLoanVer2
 
                 trigger OnPostDataItem()
                 begin
-                    if GuiAllowed then
+                    if GuiAllowed() then
                         Progress.Close();
                 end;
             }
@@ -455,7 +449,7 @@ report 14135158 GLEntriesByLoanVer2
                         TempGLEntryBuffer.Reset();
                         TempGLEntryBuffer.SetRange("G/L Account No.", TempGLAccountLoanBuffer."View Code");
                         TempGLEntryBuffer.SetRange("Loan No.", TempGLAccountLoanBuffer."Loan No.");
-                        SetRange(Number, 1, TempGLEntryBuffer.Count);
+                        SetRange(Number, 1, TempGLEntryBuffer.Count());
                     end;
 
                     trigger OnAfterGetRecord()
@@ -483,7 +477,7 @@ report 14135158 GLEntriesByLoanVer2
                                 CostCenter := TempGLEntryBuffer."Shortcut Dimension 8 Code";
                         end;
                         if TempGLEntryBuffer."Investor Name" <> '' then
-                            Description := TempGLEntryBuffer."Investor Name" + '|' + TempGLEntryBuffer.Name
+                            Description := TempGLEntryBuffer."Investor Name" + ' | ' + TempGLEntryBuffer.Name
                         else
                             Description := TempGLEntryBuffer.Name;
                     end;
@@ -493,13 +487,13 @@ report 14135158 GLEntriesByLoanVer2
                 begin
                     TempGLAccountLoanBuffer.Reset();
                     TempGLAccountLoanBuffer.SetRange("Loan No.", TempLoan."No.");
-                    SetRange(Number, 1, TempGLAccountLoanBuffer.Count);
+                    SetRange(Number, 1, TempGLAccountLoanBuffer.Count());
                 end;
 
                 trigger OnAfterGetRecord()
                 begin
                     if Number = 1 then
-                        TempGLAccountLoanBuffer.FindFirst()
+                        TempGLAccountLoanBuffer.FindSet()
                     else
                         TempGLAccountLoanBuffer.Next()
                 end;
@@ -508,13 +502,13 @@ report 14135158 GLEntriesByLoanVer2
             trigger OnPreDataItem()
             begin
                 TempLoan.Reset();
-                SetRange(Number, 1, TempLoan.Count);
+                SetRange(Number, 1, TempLoan.Count());
             end;
 
             trigger OnAfterGetRecord()
             begin
                 if Number = 1 then
-                    TempLoan.FindFirst()
+                    TempLoan.FindSet()
                 else
                     TempLoan.Next();
             end;
@@ -542,6 +536,8 @@ report 14135158 GLEntriesByLoanVer2
         DetailedVendorLedgEntry: Record "Detailed Vendor Ledg. Entry";
         DetailedCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
         CompanyInformation: Record "Company Information";
+        Vendor: Record Vendor;
+        Customer: Record Customer;
         Progress: Dialog;
         Counter: Integer;
         MinDate: Date;
@@ -551,8 +547,6 @@ report 14135158 GLEntriesByLoanVer2
         EntryNo: Integer;
         Description: Text;
         Filters: Text;
-        Vendor: Record Vendor;
-        Customer: Record Customer;
         SourceName: Text;
 
     trigger OnPreReport()
@@ -582,7 +576,6 @@ report 14135158 GLEntriesByLoanVer2
                 GLSetup."Shortcut Dimension 8 Code":
                     DimensionNo := 8;
             end;
-
         if LoanFilters.GetFilters() = '' then
             Error(NoFilterErr);
         if "G/L Entry".GetFilter("Posting Date") <> '' then

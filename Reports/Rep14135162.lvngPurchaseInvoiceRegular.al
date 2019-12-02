@@ -16,7 +16,7 @@ report 14135162 lvngPurchaseInvoiceRegular
             column(BillToCustomerNo; "Purch. Inv. Header"."Pay-to Vendor No.") { }
             column(PostingDate; "Purch. Inv. Header"."Posting Date") { }
             column(LoanNo; "Purch. Inv. Header"."Loan No.") { }
-            column(ExternalDocumentNo; DelChr("Purch. Inv. Header"."Vendor Invoice No.", '<>', '')) { }
+            column(ExternalDocumentNo; DelChr("Purch. Inv. Header"."Vendor Invoice No.", '<>', ' ')) { }
             column(DueDate; "Purch. Inv. Header"."Due Date") { }
             column(BranchName; BranchName) { }
             column(LoanOfficerName; LoanOfficerName) { }
@@ -36,7 +36,7 @@ report 14135162 lvngPurchaseInvoiceRegular
 
             dataitem("Purch. Inv. Line"; "Purch. Inv. Line")
             {
-                DataItemTableView = sorting("Document No.", "Line No.") where(Type = filter(<> ' '));
+                DataItemTableView = sorting("Document No.", "Line No.") where(Type = filter(<> " "));
                 DataItemLink = "Document No." = field("No.");
 
                 column(AccNo; "Purch. Inv. Line"."No.") { }
@@ -93,8 +93,8 @@ report 14135162 lvngPurchaseInvoiceRegular
 
     trigger OnPreReport()
     begin
-        LoanVisionSetup.Get;
-        CompanyInformation.Get;
+        LoanVisionSetup.Get();
+        CompanyInformation.Get();
         CompanyInformation.CalcFields(Picture);
         FormatAddress.Company(CompanyAddress, CompanyInformation)
     end;

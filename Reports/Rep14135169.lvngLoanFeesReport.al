@@ -65,7 +65,7 @@ report 14135169 lvngLoanFeesReport
                 trigger OnPreDataItem()
                 begin
                     TempExpenses.Reset();
-                    SetRange(Number, 1, TempExpenses.Count);
+                    SetRange(Number, 1, TempExpenses.Count());
                 end;
 
                 trigger OnAfterGetRecord()

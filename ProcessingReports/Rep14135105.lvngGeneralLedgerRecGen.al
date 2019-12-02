@@ -12,53 +12,38 @@ report 14135105 lvngGeneralLedgerRecGen
             PrintOnlyIfDetail = true;
 
             trigger OnPreDataItem()
+            var
+                LoanSums: Query lvngGLEntriesByLoanSums;
             begin
-                Clear(QuerySum);
+                Clear(LoanSums);
                 TempLoan.Reset();
                 TempLoan.DeleteAll();
-                QuerySum.SetFilter(GLAccountNoFilter, GLFilter);
-                QuerySum.SetFilter(PostingDateFilter, DateFilter);
-                QuerySum.SetFilter(LoanNoFilter, LoanNoFilter);
-                QuerySum.Open();
+                LoanSums.SetFilter(GLAccountNoFilter, GLFilter);
+                LoanSums.SetFilter(PostingDateFilter, DateFilter);
+                LoanSums.SetFilter(LoanNoFilter, LoanNoFilter);
+                LoanSums.Open();
                 Counter := 1;
-                while QuerySum.Read() do begin
-                    if (QuerySum.DebitAmount <> 0) or (QuerySum.CreditAmount <> 0) then
-                        if HideZeroBalance then
-                            if QuerySum.DebitAmount - QuerySum.CreditAmount <> 0 then begin
-                                Clear(TempLoan);
-                                TempLoan."Entry No." := Counter;
-                                TempLoan."Loan No." := QuerySum.LoanNo;
-                                TempLoan."Debit Amount" := QuerySum.DebitAmount;
-                                TempLoan."Credit Amount" := QuerySum.CreditAmount;
-                                TempLoan.Name := QuerySum.BorrowerFirstName + ' ' + QuerySum.BorrowerMiddleName + ' ' + QuerySum.BorrowerLastName;
-                                TempLoan."Date Funded" := QuerySum.DateFunded;
-                                TempLoan."Current Balance" := QuerySum.DebitAmount - QuerySum.CreditAmount;
-                                TempLoan."G/L Account No." := QuerySum.GLAccount;
-                                TempLoan."Date Filter" := DateFilter;
-                                TempLoan."Date Sold" := QuerySum.DateSold;
-                                if Customer.Get(QuerySum.InvestorCustomerNo) then
-                                    TempLoan."Investor Name" := Customer.Name;
-                                TempLoan.Insert();
-                            end
-                            else begin
-                                Clear(TempLoan);
-                                TempLoan."Entry No." := Counter;
-                                TempLoan."Loan No." := QuerySum.LoanNo;
-                                TempLoan."Debit Amount" := QuerySum.DebitAmount;
-                                TempLoan."Credit Amount" := QuerySum.CreditAmount;
-                                TempLoan.Name := QuerySum.BorrowerFirstName + ' ' + QuerySum.BorrowerMiddleName + ' ' + QuerySum.BorrowerLastName;
-                                TempLoan."Date Funded" := QuerySum.DateFunded;
-                                TempLoan."Current Balance" := QuerySum.DebitAmount - QuerySum.CreditAmount;
-                                TempLoan."G/L Account No." := QuerySum.GLAccount;
-                                TempLoan."Date Filter" := DateFilter;
-                                TempLoan."Date Sold" := QuerySum.DateSold;
-                                if Customer.Get(QuerySum.InvestorCustomerNo) then
-                                    TempLoan."Investor Name" := Customer.Name;
-                                TempLoan.Insert();
-                            end;
+                while LoanSums.Read() do begin
+                    if (LoanSums.DebitAmount <> 0) or (LoanSums.CreditAmount <> 0) then
+                        if not HideZeroBalance or (LoanSums.DebitAmount <> LoanSums.CreditAmount) then begin
+                            Clear(TempLoan);
+                            TempLoan."Entry No." := Counter;
+                            TempLoan."Loan No." := LoanSums.LoanNo;
+                            TempLoan."Debit Amount" := LoanSums.DebitAmount;
+                            TempLoan."Credit Amount" := LoanSums.CreditAmount;
+                            TempLoan.Name := LoanSums.BorrowerFirstName + ' ' + LoanSums.BorrowerMiddleName + ' ' + LoanSums.BorrowerLastName;
+                            TempLoan."Date Funded" := LoanSums.DateFunded;
+                            TempLoan."Current Balance" := LoanSums.DebitAmount - LoanSums.CreditAmount;
+                            TempLoan."G/L Account No." := LoanSums.GLAccount;
+                            TempLoan."Date Filter" := DateFilter;
+                            TempLoan."Date Sold" := LoanSums.DateSold;
+                            if Customer.Get(LoanSums.InvestorCustomerNo) then
+                                TempLoan."Investor Name" := Customer.Name;
+                            TempLoan.Insert();
+                        end;
                     Counter := Counter + 1;
                 end;
-                QuerySum.Close();
+                LoanSums.Close();
                 if DisableMultipaySearch then begin
                     GLEntry.Reset();
                     GLEntry.SetFilter("G/L Account No.", GLFilter);
@@ -182,7 +167,7 @@ report 14135105 lvngGeneralLedgerRecGen
                 Clear(Loan);
                 Clear(DefaultDimension);
                 if TempLoan."Loan No." = '' then begin
-                    TempLoan."Loan No." := 'BLANK';
+                    TempLoan."Loan No." := BlankTxt;
                     TempLoan.Modify();
                 end else begin
                     GLEntry.Reset();
@@ -196,7 +181,7 @@ report 14135105 lvngGeneralLedgerRecGen
                         TempLoan."Shortcut Dimension 2 Code" := GLEntry."Global Dimension 2 Code";
                         GLEntry.SetFilter("Global Dimension 2 Code", '<>%1', TempLoan."Shortcut Dimension 2 Code");
                         if not GLEntry.IsEmpty() then
-                            TempLoan."Shortcut Dimension 2 Code" := 'MULTIPLE';
+                            TempLoan."Shortcut Dimension 2 Code" := MultipleTxt;
                         GLEntry.SetRange("Global Dimension 2 Code");
                         GLEntry.FindLast();
                         TempLoan."Last Transaction Date" := GLEntry."Posting Date";
@@ -211,42 +196,36 @@ report 14135105 lvngGeneralLedgerRecGen
                     DefaultDimension.SetRange("Dimension Code", GLSetup."Shortcut Dimension 3 Code");
                     if DefaultDimension.FindFirst() then
                         TempLoan."Shortcut Dimension 3 Code" := DefaultDimension."Dimension Value Code";
-
                     DefaultDimension.Reset();
                     DefaultDimension.SetRange("Table ID", Database::lvngLoan);
                     DefaultDimension.SetRange("No.", TempLoan."Loan No.");
                     DefaultDimension.SetRange("Dimension Code", GLSetup."Shortcut Dimension 4 Code");
                     if DefaultDimension.FindFirst() then
                         TempLoan."Shortcut Dimension 4 Code" := DefaultDimension."Dimension Value Code";
-
                     DefaultDimension.Reset();
                     DefaultDimension.SetRange("Table ID", Database::lvngLoan);
                     DefaultDimension.SetRange("No.", TempLoan."Loan No.");
                     DefaultDimension.SetRange("Dimension Code", GLSetup."Shortcut Dimension 5 Code");
                     if DefaultDimension.FindFirst() then
                         TempLoan."Shortcut Dimension 5 Code" := DefaultDimension."Dimension Value Code";
-
                     DefaultDimension.Reset();
                     DefaultDimension.SetRange("Table ID", Database::lvngLoan);
                     DefaultDimension.SetRange("No.", TempLoan."Loan No.");
                     DefaultDimension.SetRange("Dimension Code", GLSetup."Shortcut Dimension 6 Code");
                     if DefaultDimension.FindFirst() then
                         TempLoan."Shortcut Dimension 6 Code" := DefaultDimension."Dimension Value Code";
-
                     DefaultDimension.Reset();
                     DefaultDimension.SetRange("Table ID", Database::lvngLoan);
                     DefaultDimension.SetRange("No.", TempLoan."Loan No.");
                     DefaultDimension.SetRange("Dimension Code", GLSetup."Shortcut Dimension 7 Code");
                     if DefaultDimension.FindFirst() then
                         TempLoan."Shortcut Dimension 7 Code" := DefaultDimension."Dimension Value Code";
-
                     DefaultDimension.Reset();
                     DefaultDimension.SetRange("Table ID", Database::lvngLoan);
                     DefaultDimension.SetRange("No.", TempLoan."Loan No.");
                     DefaultDimension.SetRange("Dimension Code", GLSetup."Shortcut Dimension 8 Code");
                     if DefaultDimension.FindFirst() then
                         TempLoan."Shortcut Dimension 8 Code" := DefaultDimension."Dimension Value Code";
-
                     TempLoan.Modify();
                 end;
             end;
@@ -276,6 +255,8 @@ report 14135105 lvngGeneralLedgerRecGen
 
     var
         DateFilterIsBlankErr: Label 'Date Filter can''t be blank';
+        BlankTxt: Label 'BLANK';
+        MultipleTxt: Label 'MULTIPLE';
         LoanSetup: Record lvngLoanVisionSetup;
         DefaultDimension: Record "Default Dimension";
         GLEntry: Record "G/L Entry";
@@ -289,7 +270,6 @@ report 14135105 lvngGeneralLedgerRecGen
         GLEntry2: Record "G/L Entry";
         VendorLedgerEntry2: Record "Vendor Ledger Entry";
         Customer: Record Customer;
-        QuerySum: Query lvngGLEntriesByLoanSums;
         HideZeroBalance: Boolean;
         DisableMultipaySearch: Boolean;
         LastTransaction: Date;
@@ -323,7 +303,6 @@ report 14135105 lvngGeneralLedgerRecGen
         TempLoan.Reset();
         if TempLoan.FindSet() then
             repeat
-                Clear(CopyDataTo);
                 CopyDataTo := TempLoan;
                 CopyDataTo.Insert();
             until TempLoan.Next = 0;

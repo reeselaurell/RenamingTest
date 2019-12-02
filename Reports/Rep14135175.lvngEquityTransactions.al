@@ -25,9 +25,12 @@ report 14135175 lvngEquityTransaction
             column(BalAccountNo; "Bal. Account No.") { }
 
             trigger OnAfterGetRecord()
+            var
+                Idx: Integer;
             begin
-                if StrPos("G/L Entry"."User ID", '\') <> 0 then
-                    UserName := CopyStr("G/L Entry"."User ID", StrPos("G/L Entry"."User ID", '\') + 1)
+                Idx := StrPos("G/L Entry"."User ID", '\');
+                if Idx <> 0 then
+                    UserName := CopyStr("G/L Entry"."User ID", Idx + 1)
                 else
                     UserName := "G/L Entry"."User ID";
             end;

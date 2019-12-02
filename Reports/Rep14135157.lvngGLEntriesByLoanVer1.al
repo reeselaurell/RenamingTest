@@ -15,9 +15,9 @@ report 14135157 lvngGLEntriesByLoanVer1
             begin
                 if "G/L Entry".GetFilter("Loan No.") = '' then
                     "G/L Entry".SetFilter("Loan No.", '<>%1', '');
-                if GuiAllowed then begin
+                if GuiAllowed() then begin
                     Progress.Open(ProcessingMsg);
-                    Progress.Update(2, Count);
+                    Progress.Update(2, Count());
                 end;
             end;
 
@@ -57,14 +57,13 @@ report 14135157 lvngGLEntriesByLoanVer1
                 TempGLEntryBuffer."Loan No." := "Loan No.";
                 TempGLEntryBuffer.Insert();
                 if not TempLoan.Get(LoanNo) then begin
-                    Clear(TempLoan);
                     if Loan.Get(LoanNo) then begin
                         TempLoan := Loan;
                         TempLoan."Loan Amount" := 0;
-                        TempLoan."Commission Base Amount" := 0;
                         TempLoan."Commission Base Amount" := Amount;
                         TempLoan.Insert();
                     end else begin
+                        Clear(TempLoan);
                         TempLoan."Commission Base Amount" := Amount;
                         TempLoan."No." := "Loan No.";
                         TempLoan.Insert();
@@ -85,17 +84,15 @@ report 14135157 lvngGLEntriesByLoanVer1
                         GLEntry.SetRange("Loan No.", "Loan No.");
                         GLEntry.SetRange("Posting Date", 0D, MinDate);
                         GLEntry.SetRange("G/L Account No.", "G/L Account No.");
-                        if not GLEntry.IsEmpty then
-                            if GLEntry.FindSet() then
-                                repeat
-                                    TempGLAccountLoanBuffer."Custom Decimal 1" := TempGLAccountLoanBuffer."Custom Decimal 1" + GLEntry.Amount;
-                                    TempLoan."Loan Amount" := TempLoan."Loan Amount" + GLEntry.Amount;
-                                until GLEntry.Next() = 0;
+                        if GLEntry.FindSet() then
+                            repeat
+                                TempGLAccountLoanBuffer."Custom Decimal 1" := TempGLAccountLoanBuffer."Custom Decimal 1" + GLEntry.Amount;
+                                TempLoan."Loan Amount" := TempLoan."Loan Amount" + GLEntry.Amount;
+                            until GLEntry.Next() = 0;
                     end;
                     TempLoan.Modify();
                     TempGLAccountLoanBuffer.Modify();
                 end;
-
                 if "G/L Entry".GetFilter("G/L Account No.") = '' then begin
                     VendorLedgerEntry.Reset();
                     VendorLedgerEntry.SetRange("Document No.", "Document No.");
@@ -157,7 +154,6 @@ report 14135157 lvngGLEntriesByLoanVer1
                                                 TempGLEntryBuffer."Debit Amount" := "G/L Entry"."Credit Amount";
                                             TempGLEntryBuffer."Loan No." := "G/L Entry"."Loan No.";
                                             TempGLEntryBuffer.Insert();
-
                                             TempLoan.Modify();
                                         end;
                                         Clear(TempGLAccountLoanBuffer);
@@ -344,7 +340,6 @@ report 14135157 lvngGLEntriesByLoanVer1
                                 until GLEntry.Next() = 0;
                         end;
                     until CustLedgerEntry.Next() = 0;
-
                 GLEntry2.Reset();
                 GLEntry2.SetRange("Loan No.", '');
                 GLEntry2.SetRange("Transaction No.", "Transaction No.");
@@ -406,7 +401,7 @@ report 14135157 lvngGLEntriesByLoanVer1
 
             trigger OnPostDataItem()
             begin
-                if GuiAllowed then
+                if GuiAllowed() then
                     Progress.Close();
             end;
         }
@@ -451,7 +446,7 @@ report 14135157 lvngGLEntriesByLoanVer1
                         TempGLEntryBuffer.Reset();
                         TempGLEntryBuffer.SetRange("G/L Account No.", TempGLAccountLoanBuffer."View Code");
                         TempGLEntryBuffer.SetRange("Loan No.", TempGLAccountLoanBuffer."Loan No.");
-                        SetRange(Number, 1, TempGLEntryBuffer.Count);
+                        SetRange(Number, 1, TempGLEntryBuffer.Count());
                     end;
 
                     trigger OnAfterGetRecord()
@@ -460,7 +455,6 @@ report 14135157 lvngGLEntriesByLoanVer1
                             TempGLEntryBuffer.FindSet()
                         else
                             TempGLEntryBuffer.Next();
-
                         case DimensionNo of
                             1:
                                 CostCenter := TempGLEntryBuffer."Shortcut Dimension 1 Code";
@@ -490,7 +484,7 @@ report 14135157 lvngGLEntriesByLoanVer1
                 begin
                     TempGLAccountLoanBuffer.Reset();
                     TempGLAccountLoanBuffer.SetRange("Loan No.", TempLoan."No.");
-                    SetRange(Number, 1, TempGLAccountLoanBuffer.Count);
+                    SetRange(Number, 1, TempGLAccountLoanBuffer.Count());
                 end;
 
                 trigger OnAfterGetRecord()
@@ -505,7 +499,7 @@ report 14135157 lvngGLEntriesByLoanVer1
             trigger OnPreDataItem()
             begin
                 TempLoan.Reset();
-                SetRange(Number, 1, TempLoan.Count);
+                SetRange(Number, 1, TempLoan.Count());
             end;
 
             trigger OnAfterGetRecord()
@@ -539,6 +533,8 @@ report 14135157 lvngGLEntriesByLoanVer1
         DetailedVendorLedgEntry: Record "Detailed Vendor Ledg. Entry";
         DetailedCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
         CompanyInformation: Record "Company Information";
+        Vendor: Record Vendor;
+        Customer: Record Customer;
         Progress: Dialog;
         Counter: Integer;
         MinDate: Date;
@@ -549,8 +545,6 @@ report 14135157 lvngGLEntriesByLoanVer1
         Description: Text;
         Filters: Text;
         SourceName: Text;
-        Vendor: Record Vendor;
-        Customer: Record Customer;
 
     trigger OnPreReport()
     begin

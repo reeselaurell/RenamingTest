@@ -54,21 +54,21 @@ report 14135165 lvngAverageDailyTrialBalance
                 until PeriodRec.Next() = 0;
                 AvgDailyBalance := TotalAmount / TotalDays;
                 if "Account Type" = "Account Type"::Posting then begin
-                    if PrintType = PrintType::"Accounts with Balances" then
-                        if (EndingBalance = 0) and (BeginningBalance = 0) then
-                            ShowEntry := false;
-                    if PrintType = PrintType::"Accounts with Activities" then begin
-                        GLEntry.Reset();
-                        GLEntry.SetRange("G/L Account No.", "No.");
-                        GLEntry.SetFilter("G/L Account No.", Totaling);
-                        GLENtry.SetRange("Business Unit Code", "Business Unit Filter");
-                        GLEntry.SetRange("Global Dimension 1 Code", "Global Dimension 1 Filter");
-                        GLEntry.SetRange("Global Dimension 2 Code", "Global Dimension 2 Filter");
-                        GLEntry.SetRange("Posting Date", "Date Filter");
-                        if GLEntry.IsEmpty then
-                            ShowEntry := false
-                        else
-                            ShowEntry := true;
+                    case PrintType of
+                        PrintType::"Accounts with Balances":
+                            if (EndingBalance = 0) and (BeginningBalance = 0) then
+                                ShowEntry := false;
+                        PrintType::"Accounts with Activities":
+                            begin
+                                GLEntry.Reset();
+                                GLEntry.SetRange("G/L Account No.", "No.");
+                                GLEntry.SetFilter("G/L Account No.", Totaling);
+                                GLENtry.SetRange("Business Unit Code", "Business Unit Filter");
+                                GLEntry.SetRange("Global Dimension 1 Code", "Global Dimension 1 Filter");
+                                GLEntry.SetRange("Global Dimension 2 Code", "Global Dimension 2 Filter");
+                                GLEntry.SetRange("Posting Date", "Date Filter");
+                                ShowEntry := not GLEntry.IsEmpty();
+                            end;
                     end;
                 end;
                 if not ShowEntry then
@@ -91,14 +91,6 @@ report 14135165 lvngAverageDailyTrialBalance
         }
     }
 
-    trigger OnPreReport()
-    begin
-        CompanyInformation.Get();
-        DateFrom := "G/L Account".GetRangeMin("Date Filter");
-        DateTo := "G/L Account".GetRangeMax("Date Filter");
-        TotalDays := DateTo - DateFrom + 1;
-    end;
-
     var
         BeginningBalance: Decimal;
         EndingBalance: Decimal;
@@ -115,4 +107,12 @@ report 14135165 lvngAverageDailyTrialBalance
         ShowEntry: Boolean;
         ShowBold: Boolean;
         HideValues: Boolean;
+
+    trigger OnPreReport()
+    begin
+        CompanyInformation.Get();
+        DateFrom := "G/L Account".GetRangeMin("Date Filter");
+        DateTo := "G/L Account".GetRangeMax("Date Filter");
+        TotalDays := DateTo - DateFrom + 1;
+    end;
 }

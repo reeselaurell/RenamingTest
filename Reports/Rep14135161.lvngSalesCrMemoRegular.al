@@ -16,7 +16,7 @@ report 14135161 lvngSalesCrMemoRegular
             column(PostingDate; "Sales Cr.Memo Header"."Posting Date") { }
             column(LoanNo; "Sales Cr.Memo Header"."Loan No.") { }
             column(BillToCustomerNo; "Sales Cr.Memo Header"."Bill-to Customer No.") { }
-            column(ExternalDocumentNo; DelChr("Sales Cr.Memo Header"."External Document No.", '<>', '')) { }
+            column(ExternalDocumentNo; DelChr("Sales Cr.Memo Header"."External Document No.", '<>', ' ')) { }
             column(BranchName; BranchName) { }
             column(BorrowerName; BorrowerName) { }
             column(DueDate; "Sales Cr.Memo Header"."Due Date") { }
@@ -37,7 +37,7 @@ report 14135161 lvngSalesCrMemoRegular
 
             dataitem("Sales Cr.Memo Line"; "Sales Cr.Memo Line")
             {
-                DataItemTableView = sorting("Document No.", "Line No.") where(Type = filter(<> ' '));
+                DataItemTableView = sorting("Document No.", "Line No.") where(Type = filter(<> " "));
                 DataItemLink = "Document No." = field("No.");
 
                 column(AccNo; "Sales Cr.Memo Line"."No.") { }
@@ -97,8 +97,8 @@ report 14135161 lvngSalesCrMemoRegular
 
     trigger OnPreReport()
     begin
-        LoanVisionSetup.Get;
-        CompanyInformation.Get;
+        LoanVisionSetup.Get();
+        CompanyInformation.Get();
         CompanyInformation.CalcFields(Picture);
         FormatAddress.Company(CompanyAddress, CompanyInformation);
     end;

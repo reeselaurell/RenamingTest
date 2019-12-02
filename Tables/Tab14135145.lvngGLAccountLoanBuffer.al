@@ -15,6 +15,4 @@ table 14135145 lvngGLAccountLoanBuffer
     {
         key(PK; "View Code", "Loan No.") { Clustered = true; }
     }
-
-
 }

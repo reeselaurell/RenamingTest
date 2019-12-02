@@ -16,7 +16,7 @@ report 14135182 lvngGLDetails
             column(BegBalance; BegBalance) { }
             column(EndBalance; EndBalance) { }
             column(CompanyName; CompanyInformation.Name) { }
-            column(Filters; 'For: ' + GetFilter("Date Filter")) { }
+            column(Filters; ForHeaderLbl + GetFilter("Date Filter")) { }
             column(ReportName; ReportSubName) { }
 
             dataitem("G/L Entry"; "G/L Entry")
@@ -56,15 +56,13 @@ report 14135182 lvngGLDetails
                         DateSold := Loan."Date Sold";
                         LoanFound := true;
                     end;
-
                     EntryNo := 0;
                     PostingDate := "Posting Date";
                     DocumentNo := "Document No.";
                     EntryNo := "Entry No.";
                     GLDescription := Description;
-
                     if ExcelExport then begin
-                        NewRow;
+                        NewRow();
                         ExportTextColumn(ColumnNo, "G/L Account No.", false);
                         ColumnNo := ColumnNo + 1;
                         ExportTextColumn(ColumnNo, GLAccount.Name, false);
@@ -87,7 +85,6 @@ report 14135182 lvngGLDetails
                             ExportDateColumn(ColumnNo, Loan."Date Sold");
                         end else
                             ColumnNo := ColumnNo + 2;
-
                         ColumnNo := ColumnNo + 1;
                         ExportTextColumn(ColumnNo, "Global Dimension 1 Code", false);
                         ColumnNo := ColumnNo + 1;
@@ -101,6 +98,9 @@ report 14135182 lvngGLDetails
             }
 
             trigger OnPreDataItem()
+            var
+                BusinessUnit: Record "Business Unit";
+                DimensionValue: Record "Dimension Value";
             begin
                 case ReportingType of
                     ReportingType::"Business Unit":
@@ -176,6 +176,7 @@ report 14135182 lvngGLDetails
                 group(Filters)
                 {
                     Caption = 'Filters';
+
                     field(BasedOnDimension; BasedOnDimension)
                     {
                         Caption = 'Type';
@@ -206,7 +207,7 @@ report 14135182 lvngGLDetails
                                     ReportingType := ReportingType::"Dimension 3";
                                 if GLSetup."Shortcut Dimension 4 Code" = BasedOnDimension then
                                     ReportingType := ReportingType::"Dimension 4";
-                                if BasedOnDimension = 'BUSINESS UNIT' then
+                                if BasedOnDimension = BusinessUnitCodeTxt then
                                     ReportingType := ReportingType::"Business Unit";
                             end;
                         end;
@@ -266,6 +267,8 @@ report 14135182 lvngGLDetails
         }
 
         trigger OnOpenPage()
+        var
+            Dimension: Record Dimension;
         begin
             GLSetup.Get();
             TempDimensionLookup.Reset();
@@ -299,47 +302,48 @@ report 14135182 lvngGLDetails
                     BasedOnDimension := GLSetup."Shortcut Dimension 4 Code";
             end;
             Clear(TempDimensionLookup);
-            TempDimensionLookup.Code := 'BUSINESS UNIT';
-            TempDimensionLookup.Name := 'Business Unit';
+            TempDimensionLookup.Code := BusinessUnitCodeTxt;
+            TempDimensionLookup.Name := BusinessUnitNameTxt;
             TempDimensionLookup.Insert();
             if ReportingType = ReportingType::"Business Unit" then
-                BasedOnDimension := 'BUSINESS UNIT';
+                BasedOnDimension := BusinessUnitCodeTxt;
         end;
     }
 
     var
         RangeTxt: Label 'For %1 - %2';
+        ForHeaderLbl: Label 'For: ';
+        BusinessUnitCodeTxt: Label 'BUSINESS UNIT';
+        BusinessUnitNameTxt: Label 'Business Unit';
+        CompanyInformation: Record "Company Information";
+        GLSetup: Record "General Ledger Setup";
+        GLAccount: Record "G/L Account";
+        Loan: Record lvngLoan;
+        TempExcelBuffer: Record "Excel Buffer" temporary;
+        TempDimensionLookup: Record Dimension temporary;
         BegBalance: Decimal;
         EndBalance: Decimal;
         DateFilter: Text;
-        GLAccount: Record "G/L Account";
         BorrowerName: Text;
-        Loan: Record lvngLoan;
         BegDate: Date;
         EndDate: Date;
         EntryNo: Integer;
         GLDescription: Text;
         PostingDate: Date;
         DocumentNo: Code[20];
-        CompanyInformation: Record "Company Information";
         ReportSubName: Text;
         ReportingType: Option "Business Unit","Dimension 1","Dimension 2","Dimension 3","Dimension 4";
         Filtercode: Code[20];
-        BusinessUnit: Record "Business Unit";
-        DimensionValue: Record "Dimension Value";
         DateSold: Date;
         DateFunded: Date;
-        TempExcelBuffer: Record "Excel Buffer" temporary;
         RowNo: Integer;
         ColumnNo: Integer;
         ExcelExport: Boolean;
-        GLSetup: Record "General Ledger Setup";
-        TempDimensionLookup: Record Dimension temporary;
-        Dimension: Record Dimension;
         BasedOnDimension: Code[20];
 
     trigger OnPreReport()
     begin
+        CompanyInformation.Get();
         if ExcelExport then begin
             RowNo := 1;
             ColumnNo := 1;

@@ -19,25 +19,24 @@ report 14135164 lvngLoanAmortizationSchedule
             dataitem(Amortization; Integer)
             {
                 column(PaymentNo; Number) { }
-                column(UPB; TempAmScheduleRec.Balance) { }
-                column(Interest; TempAmScheduleRec.Interest) { }
-                column(Principal; TempAmScheduleRec.Principal) { }
-                column(PaymentAmount; TempAmScheduleRec."Payment Amount") { }
-                column(PaymentDate; TempAmScheduleRec.Date) { }
+                column(UPB; AmortizationScheduleBuffer.Balance) { }
+                column(Interest; AmortizationScheduleBuffer.Interest) { }
+                column(Principal; AmortizationScheduleBuffer.Principal) { }
+                column(PaymentAmount; AmortizationScheduleBuffer."Payment Amount") { }
+                column(PaymentDate; AmortizationScheduleBuffer.Date) { }
 
                 trigger OnPreDataItem()
                 begin
-                    TempLoan := Loan;
-                    CreateAmortizationSchedule(TempLoan, TempAmScheduleRec);
-                    SetRange(Number, 1, TempAmScheduleRec.Count);
+                    CreateAmortizationSchedule(Loan);
+                    SetRange(Number, 1, AmortizationScheduleBuffer.Count);
                 end;
 
                 trigger OnAfterGetRecord()
                 begin
                     if Number = 1 then
-                        TempAmScheduleRec.FindSet()
+                        AmortizationScheduleBuffer.FindSet()
                     else
-                        TempAmScheduleRec.Next();
+                        AmortizationScheduleBuffer.Next();
                 end;
             }
 
@@ -56,15 +55,14 @@ report 14135164 lvngLoanAmortizationSchedule
     }
 
     var
-        TempAmScheduleRec: Record lvngAmortizationScheduleBuffer temporary;
+        AmortizationScheduleBuffer: Record lvngAmortizationScheduleBuffer temporary;
         LoanAddress: Record lvngLoanAddress;
-        TempLoan: Record lvngLoan temporary;
         LoanServicing: Codeunit lvngServicingManagement;
         Address1: Text;
         Address2: Text;
         BorrowerFullName: Text;
 
-    local procedure CreateAmortizationSchedule(Loan: Record lvngLoan; var AmortizationScheduleBuffer: Record lvngAmortizationScheduleBuffer)
+    local procedure CreateAmortizationSchedule(Loan: Record lvngLoan)
     var
         StartDate: Date;
         LineNo: Integer;

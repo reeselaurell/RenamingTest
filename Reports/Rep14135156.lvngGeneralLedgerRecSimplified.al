@@ -80,7 +80,7 @@ report 14135156 lvngGeneralLedgerRecSimplified
                     Clear(DefaultDimension);
                     LoanNo := TempLoan."Loan No.";
                     if LoanNo = '' then
-                        LoanNo := 'BLANK';
+                        LoanNo := BlankTxt;
                     if Loan.Get(TempLoan."Loan No.") then
                         if not DefaultDimension.Get(Database::lvngLoan, TempLoan."Loan No.", LoanSetup."Loan Type Dimension Code") then
                             Clear(DefaultDimension);
@@ -88,43 +88,32 @@ report 14135156 lvngGeneralLedgerRecSimplified
                 end;
             }
 
-            trigger OnAfterGetRecord()
+            trigger OnAfterGetRecord()  // G/L Account
+            var
+                LoanSums: Query lvngGLEntriesByLoanSums;
             begin
                 TempLoan.Reset();
                 TempLoan.DeleteAll();
-                LoanSumsQue.SetFilter(GLAccountNoFilter, "No.");
-                LoanSumsQue.SetFilter(PostingDateFilter, DateFilter);
-                LoanSumsQue.Open();
-                while LoanSumsQue.Read() do begin
-                    if (LoanSumsQue.DebitAmount <> 0) or (LoanSumsQue.CreditAmount <> 0) then
-                        if HideZeroBalance then begin
-                            if LoanSumsQue.DebitAmount - LoanSumsQue.CreditAmount <> 0 then begin
-                                Clear(TempLoan);
-                                TempLoan."Loan No." := LoanSumsQue.LoanNo;
-                                TempLoan."Fee 1 Amount" := LoanSumsQue.DebitAmount; //UPB
-                                TempLoan."Fee 2 Amount" := LoanSumsQue.CreditAmount; //Note Rate
-                                TempLoan."Borrower First Name" := LoanSumsQue.BorrowerFirstName;
-                                TempLoan."Borrower Middle Name" := LoanSumsQue.BorrowerMiddleName;
-                                TempLoan."Borrower Last Name" := LoanSumsQue.BorrowerLastName;
-                                TempLoan."Date Funded" := LoanSumsQue.DateFunded;
-                                TempLoan."Fee 3 Amount" := LoanSumsQue.DebitAmount - LoanSumsQue.CreditAmount; //extension fee
-                                TempLoan.Insert();
-                            end;
-                        end else begin
+                Clear(LoanSums);
+                LoanSums.SetFilter(GLAccountNoFilter, "No.");
+                LoanSums.SetFilter(PostingDateFilter, DateFilter);
+                LoanSums.Open();
+                while LoanSums.Read() do begin
+                    if (LoanSums.DebitAmount <> 0) or (LoanSums.CreditAmount <> 0) then
+                        if not HideZeroBalance or (LoanSums.DebitAmount <> LoanSums.CreditAmount) then begin
                             Clear(TempLoan);
-                            TempLoan."Loan No." := LoanSumsQue.LoanNo;
-                            TempLoan."Fee 1 Amount" := LoanSumsQue.DebitAmount; //UPB
-                            TempLoan."Fee 2 Amount" := LoanSumsQue.CreditAmount; //Note Rate
-                            TempLoan."Borrower First Name" := LoanSumsQue.BorrowerFirstName;
-                            TempLoan."Borrower Middle Name" := LoanSumsQue.BorrowerMiddleName;
-                            TempLoan."Borrower Last Name" := LoanSumsQue.BorrowerLastName;
-                            TempLoan."Date Funded" := LoanSumsQue.DateFunded;
-                            TempLoan."Fee 3 Amount" := LoanSumsQue.DebitAmount - LoanSumsQue.CreditAmount; //extension fee
+                            TempLoan."Loan No." := LoanSums.LoanNo;
+                            TempLoan."Fee 1 Amount" := LoanSums.DebitAmount; //UPB
+                            TempLoan."Fee 2 Amount" := LoanSums.CreditAmount; //Note Rate
+                            TempLoan."Borrower First Name" := LoanSums.BorrowerFirstName;
+                            TempLoan."Borrower Middle Name" := LoanSums.BorrowerMiddleName;
+                            TempLoan."Borrower Last Name" := LoanSums.BorrowerLastName;
+                            TempLoan."Date Funded" := LoanSums.DateFunded;
+                            TempLoan."Fee 3 Amount" := LoanSums.DebitAmount - LoanSums.CreditAmount; //extension fee
                             TempLoan.Insert();
                         end;
                 end;
-                LoanSumsQue.Close();
-                Clear(LoanSumsQue);
+                LoanSums.Close();
             end;
         }
     }
@@ -146,13 +135,13 @@ report 14135156 lvngGeneralLedgerRecSimplified
 
     var
         DateFilterBlankErr: Label 'Date Filter can''t be blank.';
+        BlankTxt: Label 'BLANK';
         LoanSetup: Record lvngLoanVisionSetup;
         DefaultDimension: Record "Default Dimension";
         CompanyInformation: Record "Company Information";
         GLEntry: Record "G/L Entry";
         TempLoan: Record lvngCommissionBuffer temporary;
         Loan: Record lvngLoan;
-        LoanSumsQue: Query lvngGLEntriesByLoanSums;
         DateFilter: Text;
         GLEntryFilters: Text;
         LoanCardFilters: Text;

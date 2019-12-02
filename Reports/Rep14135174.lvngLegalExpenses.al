@@ -25,23 +25,26 @@ report 14135174 lvngLegalExpenses
 
             trigger OnAfterGetRecord()
             begin
-                BranchCode := '';
-                if GLSetup."Shortcut Dimension 1 Code" = LoanVisionSetup."Cost Center Dimension Code" then
-                    BranchCode := "Global Dimension 1 Code";
-                if GLSetup."Shortcut Dimension 2 Code" = LoanVisionSetup."Cost Center Dimension Code" then
-                    BranchCode := "Global Dimension 2 Code";
-                if GLSetup."Shortcut Dimension 3 Code" = LoanVisionSetup."Cost Center Dimension Code" then
-                    BranchCode := "Shortcut Dimension 3 Code";
-                if GLSetup."Shortcut Dimension 4 Code" = LoanVisionSetup."Cost Center Dimension Code" then
-                    BranchCode := "Shortcut Dimension 4 Code";
-                if GLSetup."Shortcut Dimension 5 Code" = LoanVisionSetup."Cost Center Dimension Code" then
-                    BranchCode := "Shortcut Dimension 5 Code";
-                if GLSetup."Shortcut Dimension 6 Code" = LoanVisionSetup."Cost Center Dimension Code" then
-                    BranchCode := "Shortcut Dimension 6 Code";
-                if GLSetup."Shortcut Dimension 7 Code" = LoanVisionSetup."Cost Center Dimension Code" then
-                    BranchCode := "Shortcut Dimension 7 Code";
-                if GLSetup."Shortcut Dimension 8 Code" = LoanVisionSetup."Cost Center Dimension Code" then
-                    BranchCode := "Shortcut Dimension 8 Code";
+                case CostCenterDimNo of
+                    1:
+                        BranchCode := "Global Dimension 1 Code";
+                    2:
+                        BranchCode := "Global Dimension 2 Code";
+                    3:
+                        BranchCode := "Shortcut Dimension 3 Code";
+                    4:
+                        BranchCode := "Shortcut Dimension 4 Code";
+                    5:
+                        BranchCode := "Shortcut Dimension 5 Code";
+                    6:
+                        BranchCode := "Shortcut Dimension 6 Code";
+                    7:
+                        BranchCode := "Shortcut Dimension 7 Code";
+                    8:
+                        BranchCode := "Shortcut Dimension 8 Code";
+                    else
+                        BranchCode := '';
+                end;
             end;
         }
     }
@@ -52,6 +55,7 @@ report 14135174 lvngLegalExpenses
         CompanyInformation: Record "Company Information";
         DateFilter: Text;
         BranchCode: Code[20];
+        CostCenterDimNo: Integer;
 
     trigger OnPreReport()
     begin
@@ -59,5 +63,25 @@ report 14135174 lvngLegalExpenses
         GLSetup.Get();
         LoanVisionSetup.Get();
         DateFilter := "G/L Entry".GetFilter("Posting Date");
+        case LoanVisionSetup."Cost Center Dimension Code" of
+            GLSetup."Shortcut Dimension 1 Code":
+                CostCenterDimNo := 1;
+            GLSetup."Shortcut Dimension 2 Code":
+                CostCenterDimNo := 2;
+            GLSetup."Shortcut Dimension 3 Code":
+                CostCenterDimNo := 3;
+            GLSetup."Shortcut Dimension 4 Code":
+                CostCenterDimNo := 4;
+            GLSetup."Shortcut Dimension 5 Code":
+                CostCenterDimNo := 5;
+            GLSetup."Shortcut Dimension 6 Code":
+                CostCenterDimNo := 6;
+            GLSetup."Shortcut Dimension 7 Code":
+                CostCenterDimNo := 7;
+            GLSetup."Shortcut Dimension 8 Code":
+                CostCenterDimNo := 8;
+            else
+                CostCenterDimNo := 0;
+        end;
     end;
 }
