@@ -3,6 +3,7 @@ page 14135553 lvngConditionEdit
     PageType = Card;
     SourceTable = lvngExpressionHeader;
     Caption = 'Condition Editor';
+    DataCaptionFields = Code;
 
     layout
     {

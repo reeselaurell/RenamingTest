@@ -3,6 +3,7 @@ page 14135552 lvngSwitchEdit
     PageType = Card;
     SourceTable = lvngExpressionHeader;
     Caption = 'Switch Expression Editor';
+    DataCaptionFields = Code;
 
     layout
     {

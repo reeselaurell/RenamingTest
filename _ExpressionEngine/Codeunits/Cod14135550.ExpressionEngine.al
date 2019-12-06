@@ -98,6 +98,13 @@ codeunit 14135550 lvngExpressionEngine
                     TempValueBuffer.Insert();
                 end;
         end;
+        ValueBuffer.Reset();
+        ValueBuffer.SetRange(Type, 'Boolean');
+        if ValueBuffer.FindSet() then
+            repeat
+                TempValueBuffer := ValueBuffer;
+                TempValueBuffer.Insert();
+            until ValueBuffer.Next() = 0;
         Evaluate(Result, CalculateValue(Expression, TempValueBuffer));
         exit(Result);
     end;

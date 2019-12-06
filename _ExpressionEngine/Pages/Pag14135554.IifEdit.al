@@ -3,6 +3,7 @@ page 14135554 lvngIifEdit
     PageType = Card;
     SourceTable = lvngExpressionHeader;
     Caption = 'Iif Editor';
+    DataCaptionFields = Code;
 
     layout
     {
