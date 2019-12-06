@@ -18,7 +18,9 @@ table 14135136 lvngGLEntryBuffer
         field(18; "Reason Code"; Code[10]) { Caption = 'Reason Code'; DataClassification = CustomerContent; }
         field(19; "External Document No."; Code[35]) { Caption = 'External Document No.'; DataClassification = CustomerContent; }
         field(20; "G/L Entry No."; Integer) { Caption = 'G/L Entry No.'; DataClassification = CustomerContent; }
-        field(30; "Investor Name"; Text[50]) { Caption = 'Investor Name'; DataClassification = CustomerContent; }
+        field(21; "Date Sold"; Date) { Caption = 'Date Funded'; DataClassification = CustomerContent; }
+        field(22; "Loan Search Name"; Code[100]) { Caption = 'Loan Search Name'; DataClassification = CustomerContent; }
+        field(30; "Investor Name"; Text[100]) { Caption = 'Investor Name'; DataClassification = CustomerContent; }
         field(31; "Shortcut Dimension 1 Code"; Code[20]) { Caption = 'Shortcut Dimension 1 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,1'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1)); }
         field(32; "Shortcut Dimension 2 Code"; Code[20]) { Caption = 'Shortcut Dimension 2 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,2'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2)); }
         field(33; "Shortcut Dimension 3 Code"; Code[20]) { Caption = 'Shortcut Dimension 3 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,3'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3)); }

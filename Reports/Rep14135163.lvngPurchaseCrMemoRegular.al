@@ -51,7 +51,7 @@ report 14135163 lvngPurchaseCrMemoRegular
                     BorrowerName := '';
                     if "Purch. Cr. Memo Line".lvngLoanNo <> '' then
                         if Loan.Get("Purch. Cr. Memo Line".lvngLoanNo) then
-                            BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Co-Borrower Last Name";
+                            BorrowerName := Loan."Search Name";
                     if "No." = UpperCase(Description) then
                         if Type = Type::"G/L Account" then
                             if GLAccount.Get("No.") then

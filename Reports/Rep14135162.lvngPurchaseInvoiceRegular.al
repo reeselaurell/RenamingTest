@@ -51,7 +51,7 @@ report 14135162 lvngPurchaseInvoiceRegular
                     BorrowerName := '';
                     if "Purch. Inv. Line".lvngLoanNo <> '' then
                         if Loan.Get("Purch. Inv. Line".lvngLoanNo) then
-                            BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
+                            BorrowerName := Loan."Search Name";
                     if "No." = UpperCase(Description) then
                         if Type = Type::"G/L Account" then
                             if GLAccount.Get("No.") then
