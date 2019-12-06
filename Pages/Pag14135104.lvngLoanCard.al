@@ -13,6 +13,7 @@ page 14135104 lvngLoanCard
                 Caption = 'General';
 
                 field("No."; "No.") { ApplicationArea = All; }
+                field("Alternative Loan No."; "Alternative Loan No.") { ApplicationArea = All; }
                 field("Warehouse Line Code"; "Warehouse Line Code") { ApplicationArea = All; }
                 field(Blocked; Blocked) { ApplicationArea = All; }
                 field("Search Name"; "Search Name") { ApplicationArea = All; }

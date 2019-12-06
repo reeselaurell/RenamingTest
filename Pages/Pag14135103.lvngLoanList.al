@@ -17,6 +17,7 @@ page 14135103 lvngLoanList
             repeater(Group)
             {
                 field("No."; "No.") { ApplicationArea = All; }
+                field("Alternative Loan No."; "Alternative Loan No.") { ApplicationArea = All; }
                 field("Search Name"; "Search Name") { ApplicationArea = All; Width = 50; }
                 field("Borrower First Name"; "Borrower First Name") { Visible = false; ApplicationArea = All; }
                 field("Borrower Middle Name"; "Borrower Middle Name") { Visible = false; ApplicationArea = All; }

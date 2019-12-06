@@ -12,6 +12,7 @@ page 14135106 lvngFundedJournalLines
             repeater(Group)
             {
                 field("Loan No."; "Loan No.") { ApplicationArea = All; Style = Unfavorable; StyleExpr = "Error Exists"; }
+                field("Alternative Loan No."; "Alternative Loan No.") { ApplicationArea = All; }
                 field("Title Customer No."; "Title Customer No.") { ApplicationArea = All; }
                 field("Search Name"; "Search Name") { Width = 50; ApplicationArea = All; }
                 field("Borrower First Name"; "Borrower First Name") { Width = 30; ApplicationArea = All; }

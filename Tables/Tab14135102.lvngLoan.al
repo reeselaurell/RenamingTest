@@ -16,6 +16,7 @@ table 14135102 lvngLoan
         field(14; "Title Customer No."; Code[20]) { DataClassification = CustomerContent; TableRelation = Customer."No."; }
         field(15; "Investor Customer No."; Code[20]) { DataClassification = CustomerContent; TableRelation = Customer."No."; }
         field(16; "Borrower Customer No"; Code[20]) { Caption = 'Borrower Customer No.'; DataClassification = CustomerContent; TableRelation = Customer."No."; }
+        field(17; "Alternative Loan No."; Code[50]) { DataClassification = CustomerContent; Caption = 'Alternative Loan No.'; }
         field(20; "Application Date"; Date) { Caption = 'Application Date'; DataClassification = CustomerContent; }
         field(21; "Date Closed"; Date) { Caption = 'Date Closed'; DataClassification = CustomerContent; }
         field(22; "Date Funded"; Date) { Caption = 'Date Funded'; DataClassification = CustomerContent; }
@@ -151,11 +152,12 @@ table 14135102 lvngLoan
         key(CommissionDate; "Commission Date") { }
         key(FundedDate; "Date Funded") { }
         key(SoldDate; "Date Sold") { }
+        key(AlternativeLoanNo; "Alternative Loan No.") { }
     }
 
     fieldgroups
     {
-        fieldgroup(DropDown; "No.", "Search Name") { }
+        fieldgroup(DropDown; "No.", "Search Name", "Alternative Loan No.") { }
         fieldgroup(Brick; "No.", "Search Name", "Loan Amount") { }
     }
 

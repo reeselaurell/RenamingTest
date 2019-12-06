@@ -228,6 +228,18 @@ codeunit 14135106 lvngLoanManagement
                                         if LoanJournalLine."Borrower Customer No." <> '' then
                                             Loan."Borrower Customer No" := LoanJournalLine."Borrower Customer No.";
                                 end;
+                            //Alternative Loan No.
+                            if LoanUpdateSchema."Field No." = 17 then
+                                case LoanUpdateSchema."Field Update Option" of
+                                    LoanUpdateSchema."Field Update Option"::lvngAlways:
+                                        Loan."Alternative Loan No." := LoanJournalLine."Alternative Loan No.";
+                                    LoanUpdateSchema."Field Update Option"::"If Destination Blank":
+                                        if Loan."Alternative Loan No." = '' then
+                                            Loan."Alternative Loan No." := LoanJournalLine."Alternative Loan No.";
+                                    LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
+                                        if LoanJournalLine."Alternative Loan No." <> '' then
+                                            Loan."Alternative Loan No." := LoanJournalLine."Alternative Loan No.";
+                                end;
                             //Application Date
                             if LoanUpdateSchema."Field No." = 20 then
                                 case LoanUpdateSchema."Field Update Option" of
@@ -1059,6 +1071,7 @@ codeunit 14135106 lvngLoanManagement
         Loan."Borrower First Name" := LoanJournalLine."Borrower First Name";
         Loan."Borrower Last Name" := LoanJournalLine."Borrower Last Name";
         Loan."Borrower Middle Name" := LoanJournalLine."Borrower Middle Name";
+        Loan."Alternative Loan No." := LoanJournalLine."Alternative Loan No.";
         Loan."Application Date" := LoanJournalLine."Application Date";
         Loan.Blocked := LoanJournalLine.Blocked;
         Loan."Borrower Customer No" := LoanJournalLine."Borrower Customer No.";
