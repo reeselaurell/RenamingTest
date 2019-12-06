@@ -36,6 +36,10 @@ report 14135221 lvngRptGeneratorBatchProcess
         ExportFormat: Enum lvngGridExportMode;
         ProcessProgressMsg: Label 'Processing item #1#### of #2####';
         HtmlExportWarningMsg: Label 'Warning: Html format will only process first entry in whole batch!';
+        ExportCallerLbl: Label 'ReportGeneratorBatchProcess';
+        RenamedSheetTemplateLbl: Label '%1 %2';
+        RenamedSubSeqSheetTemplateLbl: Label '%1.%2 %3 %4';
+        ProgressTemplateMsg: Label '%1.%2';
 
     trigger OnInitReport()
     begin
@@ -64,19 +68,19 @@ report 14135221 lvngRptGeneratorBatchProcess
         ProcessedCount := 0;
         TotalCount := ReportGeneratorSequence.Count();
         Dialog.Open(ProcessProgressMsg, ProcessedCount, TotalCount);
-        ExcelExport.Init('ReportGeneratorBatchProcess', ExportFormat);
+        ExcelExport.Init(ExportCallerLbl, ExportFormat);
         repeat
             if ReportGeneratorSequence."Expand Filter" = ReportGeneratorSequence."Expand Filter"::None then begin
                 if ProcessedCount > 0 then
                     ExcelExport.NewSheet();
-                ExcelExport.RenameSheet(Format(ReportGeneratorSequence."Sequence No.") + ' ' + ReportGeneratorSequence.Description);
+                ExcelExport.RenameSheet(StrSubstNo(RenamedSheetTemplateLbl, ReportGeneratorSequence."Sequence No.", ReportGeneratorSequence.Description));
                 ProcessReportSequence(ExcelExport, ReportGeneratorSequence);
             end else begin
                 SubCount := 0;
                 FilterValue := GetFilterValue(ReportGeneratorSequence);
                 repeat
                     PipeIdx := StrPos(FilterValue, '|');
-                    Dialog.Update(1, Format(ProcessedCount + 1) + '.' + Format(SubCount + 1));
+                    Dialog.Update(1, StrSubstNo(ProgressTemplateMsg, ProcessedCount + 1, SubCount + 1));
                     SubSequence := ReportGeneratorSequence;
                     if PipeIdx = 0 then begin
                         SetFilterValue(SubSequence, FilterValue);
@@ -88,7 +92,7 @@ report 14135221 lvngRptGeneratorBatchProcess
                     end;
                     if (ProcessedCount > 0) or (SubCount > 0) then
                         ExcelExport.NewSheet();
-                    ExcelExport.RenameSheet(Format(ReportGeneratorSequence."Sequence No.") + '.' + Format(SubCount + 1) + ' ' + ReportGeneratorSequence.Description + ' ' + CurrentExpand);
+                    ExcelExport.RenameSheet(StrSubstNo(RenamedSubSeqSheetTemplateLbl, ReportGeneratorSequence."Sequence No.", SubCount + 1, ReportGeneratorSequence.Description, CurrentExpand));
                     ProcessReportSequence(ExcelExport, SubSequence);
                     SubCount += 1;
                 until PipeIdx = 0;

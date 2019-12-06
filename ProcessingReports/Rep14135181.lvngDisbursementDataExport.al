@@ -15,18 +15,18 @@ report 14135181 "lvngDisbursementDataExport"
             begin
                 RowNo := 1;
                 ColumnNo := 1;
-                ExportTextColumn('Posting Date', true);
-                ExportTextColumn('Invoice No.', true);
-                ExportTextColumn('Loan No.', true);
-                ExportTextColumn('Vendor Posting Group', true);
-                ExportTextColumn('Date Paid', true);
-                ExportTextColumn('Check #', true);
-                ExportTextColumn('Amount', true);
-                ExportTextColumn('Vendor No.', true);
-                ExportTextColumn('Vendor Name', true);
-                ExportTextColumn('Vendor Address', true);
-                ExportTextColumn('Payment Method', true);
-                ExportTextColumn('Date Cleared', true);
+                ExportTextColumn(PostingDateLbl, true);
+                ExportTextColumn(InvoiceNoLbl, true);
+                ExportTextColumn(LoanNoLbl, true);
+                ExportTextColumn(VendorPostingGroupLbl, true);
+                ExportTextColumn(DatePaidLbl, true);
+                ExportTextColumn(CheckNoLbl, true);
+                ExportTextColumn(AmountLbl, true);
+                ExportTextColumn(VendorNoLbl, true);
+                ExportTextColumn(VendorNameLbl, true);
+                ExportTextColumn(VendorAddressLbl, true);
+                ExportTextColumn(PaymentMethodLbl, true);
+                ExportTextColumn(DateClearedLbl, true);
             end;
 
             trigger OnAfterGetRecord()
@@ -43,9 +43,8 @@ report 14135181 "lvngDisbursementDataExport"
                     CheckLedgerEntry.SetRange("Bank Account Ledger Entry No.", BankAccountLedgerEntry."Entry No.");
                     if CheckLedgerEntry.FindFirst() then begin
                         PostedBankRecHeader.Reset();
-                        if PostedBankRecHeader.Get(CheckLedgerEntry."Bank Account No.", CheckLedgerEntry."Statement No.") then begin
+                        if PostedBankRecHeader.Get(CheckLedgerEntry."Bank Account No.", CheckLedgerEntry."Statement No.") then
                             ClearedDate := PostedBankRecHeader."Statement Date";
-                        end;
                     end;
                 end;
                 DetailedVendLedgEntry.Reset();
@@ -66,32 +65,24 @@ report 14135181 "lvngDisbursementDataExport"
                         ExportDecimalColumn(VendorLedgerEntry.Amount);
                         ExportTextColumn("Vendor No.", false);
                         ExportTextColumn(Vendor.Name, false);
-                        ExportTextColumn(Vendor.City + ', ' + Vendor.Address, false);
+                        ExportTextColumn(StrSubstNo(AddressTemplateLbl, Vendor.City, Vendor.Address), false);
                         ExportTextColumn("Payment Method Code", false);
-                        if ClearedDate <> 0D then begin
+                        if ClearedDate <> 0D then
                             ExportDateColumn(ClearedDate);
-                        end;
                     until DetailedVendLedgEntry.Next() = 0;
                 end;
             end;
 
             trigger OnPostDataItem()
             begin
-                ExcelBuffer.CreateNewBook('Data');
-                ExcelBuffer.WriteSheet('', CompanyName, '');
+                ExcelBuffer.CreateNewBook(ExportNameLbl);
+                ExcelBuffer.WriteSheet(ExportNameLbl, CompanyName, UserId);
                 ExcelBuffer.CloseBook();
                 ExcelBuffer.OpenExcel();
             end;
         }
     }
 
-    requestpage
-    {
-        layout
-        {
-
-        }
-    }
     var
         DetailedVendLedgEntry: Record "Detailed Vendor Ledg. Entry";
         VendorLedgerEntry: Record "Vendor Ledger Entry";
@@ -99,11 +90,24 @@ report 14135181 "lvngDisbursementDataExport"
         CheckLedgerEntry: Record "Check Ledger Entry";
         PostedBankRecHeader: Record "Posted Bank Rec. Header";
         BankAccountLedgerEntry: Record "Bank Account Ledger Entry";
+        ExcelBuffer: Record "Excel Buffer" temporary;
         ColumnNo: Integer;
         RowNo: Integer;
-        ExcelBuffer: Record "Excel Buffer" temporary;
         ClearedDate: Date;
-
+        ExportNameLbl: Label 'Export';
+        PostingDateLbl: Label 'Posting Date';
+        InvoiceNoLbl: Label 'Invoice No.';
+        LoanNoLbl: Label 'Loan No.';
+        VendorPostingGroupLbl: Label 'Vendor Posting Group';
+        DatePaidLbl: Label 'Date Paid';
+        CheckNoLbl: Label 'Check #';
+        AmountLbl: Label 'Amount';
+        VendorNoLbl: Label 'Vendor No.';
+        VendorNameLbl: Label 'Vendor Name';
+        VendorAddressLbl: Label 'Vendor Address';
+        PaymentMethodLbl: Label 'Payment Method';
+        DateClearedLbl: Label 'Date Cleared';
+        AddressTemplateLbl: Label '%1, %2';
 
     local procedure NewRow()
     begin
@@ -135,25 +139,29 @@ report 14135181 "lvngDisbursementDataExport"
     end;
 
     local procedure ExportDecimalColumn(Value: Decimal)
+    var
+        NumberFormatTxt: Label '0.00';
     begin
         Clear(ExcelBuffer);
         ExcelBuffer.Validate("Row No.", RowNo);
         ExcelBuffer.Validate("Column No.", ColumnNo);
         ExcelBuffer.Validate("Cell Value as Text", Format(Value));
         ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Number);
-        ExcelBuffer.NumberFormat := '0.00';
+        ExcelBuffer.NumberFormat := NumberFormatTxt;
         ExcelBuffer.Insert(true);
         ColumnNo := ColumnNo + 1;
     end;
 
     local procedure ExportIntColumn(Value: Decimal)
+    var
+        NumberFormatTxt: Label '0';
     begin
         Clear(ExcelBuffer);
         ExcelBuffer.Validate("Row No.", RowNo);
         ExcelBuffer.Validate("Column No.", ColumnNo);
         ExcelBuffer.Validate("Cell Value as Text", Format(Value));
         ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Number);
-        ExcelBuffer.NumberFormat := '0';
+        ExcelBuffer.NumberFormat := NumberFormatTxt;
         ExcelBuffer.Insert(true);
         ColumnNo := ColumnNo + 1;
     end;

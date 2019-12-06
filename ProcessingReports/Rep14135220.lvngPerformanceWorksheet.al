@@ -91,7 +91,7 @@ report 14135220 lvngPerformanceWorksheet
                                 DateFilter := Format(AsOfDate);
                             end else begin
                                 if Evaluate(AsOfDate, DateFilter) then
-                                    DateFilter := '..' + Format(AsOfDate)
+                                    DateFilter := StrSubstNo(DateFilterLbl, AsOfDate)
                                 else
                                     FilterTokens.MakeDateFilter(DateFilter);
                             end;
@@ -120,6 +120,7 @@ report 14135220 lvngPerformanceWorksheet
         RowSchemaCode: Code[20];
         BandSchemaCode: Code[20];
         AsOfDate: Date;
+        DateFilterLbl: Label '..%1';
 
     trigger OnPostReport()
     var
