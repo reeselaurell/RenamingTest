@@ -117,9 +117,10 @@ codeunit 14135115 lvngGenJnlFileImportManagement
     local procedure ReadCSVStream()
     var
         TabChar: Char;
+        FieldSeparatorLbl: Label '<TAB>';
     begin
         TabChar := 9;
-        if FileImportSchema."Field Separator" = '<TAB>' then
+        if FileImportSchema."Field Separator" = FieldSeparatorLbl then
             FileImportSchema."Field Separator" := TabChar;
         ImportToStream := UploadIntoStream(OpenFileLbl, '', '', FileName, ImportStream);
         if ImportToStream then begin
