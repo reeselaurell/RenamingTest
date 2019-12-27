@@ -19,4 +19,46 @@ table 14135230 lvngNumberFormat
     {
         key(PK; Code) { Clustered = true; }
     }
+
+    procedure FormatValue(NumericValue: Decimal) TextValue: Text
+    begin
+        if NumericValue = 0 then
+            case "Blank Zero" of
+                "Blank Zero"::Zero:
+                    exit('0');
+                "Blank Zero"::Dash:
+                    exit('-');
+                "Blank Zero"::Blank:
+                    exit('&nbsp;');
+            end;
+        if "Invert Sign" then
+            NumericValue := -NumericValue;
+        if (NumericValue < 0) and ("Negative Formatting" = "Negative Formatting"::"Suppress Sign") then
+            NumericValue := Abs(NumericValue);
+        case Rounding of
+            Rounding::Two:
+                NumericValue := Round(NumericValue, 0.01);
+            Rounding::One:
+                NumericValue := Round(NumericValue, 0.1);
+            Rounding::Round:
+                NumericValue := Round(NumericValue, 1);
+            Rounding::Thousands:
+                NumericValue := Round(NumericValue, 1000);
+        end;
+        if "Suppress Thousand Separator" then
+            TextValue := Format(NumericValue, 0, 9)
+        else
+            TextValue := Format(NumericValue);
+        case "Value Type" of
+            "Value Type"::Currency:
+                TextValue := '$' + TextValue;
+            "Value Type"::Percentage:
+                TextValue := TextValue + '%';
+        end;
+        if "Negative Formatting" = "Negative Formatting"::Parenthesis then
+            if NumericValue < 0 then
+                TextValue := '(' + TextValue + ')'
+            else
+                TextValue := '&nbsp;' + TextValue + '&nbsp;';
+    end;
 }

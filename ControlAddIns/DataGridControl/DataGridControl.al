@@ -20,4 +20,5 @@ controladdin DataGridControl
     procedure SetupStyles(Json: JsonObject);
     procedure ExportToExcel();
     procedure Print();
+    procedure SetHeight(NewHeight: Integer);
 }

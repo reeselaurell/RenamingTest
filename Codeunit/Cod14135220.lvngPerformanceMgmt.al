@@ -325,44 +325,7 @@ codeunit 14135220 lvngPerformanceMgmt
     begin
         if not NumberFormat.Get(FormatCode) then
             Clear(NumberFormat);
-        if NumericValue = 0 then
-            case NumberFormat."Blank Zero" of
-                NumberFormat."Blank Zero"::Zero:
-                    exit('0');
-                NumberFormat."Blank Zero"::Dash:
-                    exit('-');
-                NumberFormat."Blank Zero"::Blank:
-                    exit('&nbsp;');
-            end;
-        if NumberFormat."Invert Sign" then
-            NumericValue := -NumericValue;
-        if (NumericValue < 0) and (NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::"Suppress Sign") then
-            NumericValue := Abs(NumericValue);
-        case NumberFormat.Rounding of
-            NumberFormat.Rounding::None:
-                NumericValue := Round(NumericValue, 0.01);
-            NumberFormat.Rounding::One:
-                NumericValue := Round(NumericValue, 0.1);
-            NumberFormat.Rounding::Round:
-                NumericValue := Round(NumericValue, 1);
-            NumberFormat.Rounding::Thousands:
-                NumericValue := Round(NumericValue, 1000);
-        end;
-        if NumberFormat."Suppress Thousand Separator" then
-            TextValue := Format(NumericValue, 0, 9)
-        else
-            TextValue := Format(NumericValue);
-        case NumberFormat."Value Type" of
-            NumberFormat."Value Type"::Currency:
-                TextValue := '$' + TextValue;
-            NumberFormat."Value Type"::Percentage:
-                TextValue := TextValue + '%';
-        end;
-        if NumberFormat."Negative Formatting" = NumberFormat."Negative Formatting"::Parenthesis then
-            if NumericValue < 0 then
-                TextValue := '(' + TextValue + ')'
-            else
-                TextValue := '&nbsp;' + TextValue + '&nbsp;';
+        TextValue := NumberFormat.FormatValue(NumericValue);
     end;
 
     procedure GetGridStyles(StylesInUse: List of [Code[20]]) Json: JsonObject
