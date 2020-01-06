@@ -155,6 +155,7 @@ page 14135104 lvngLoanCard
 
         area(Factboxes)
         {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
             part(Values; lvngLoanCardValuesPart)
             {
                 Caption = 'Values';
@@ -193,6 +194,23 @@ page 14135104 lvngLoanCard
         DimensionVisible7: Boolean;
         DimensionVisible8: Boolean;
 
+    trigger OnOpenPage()
+    var
+        DimensionManagement: Codeunit DimensionManagement;
+    begin
+        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6, DimensionVisible7, DimensionVisible8);
+    end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
+
     local procedure AddressEdit(AddressType: Enum lvngAddressType)
     var
         LoanAddressCard: Page lvngLoanAddressCard;
@@ -210,12 +228,5 @@ page 14135104 lvngLoanCard
         LoanAddressCard.SetRecord(LoanAddress);
         LoanAddressCard.RunModal();
         CurrPage.Update(false);
-    end;
-
-    trigger OnOpenPage()
-    var
-        DimensionManagement: Codeunit DimensionManagement;
-    begin
-        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6, DimensionVisible7, DimensionVisible8);
     end;
 }

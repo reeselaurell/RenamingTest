@@ -19,5 +19,20 @@ pageextension 14135101 lvngGLEntry extends "General Ledger Entries"
             field(lvngEntryDate; lvngEntryDate) { ApplicationArea = All; }
             field(lvngVoided; lvngVoided) { ApplicationArea = All; }
         }
+
+        addfirst(factboxes)
+        {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
+        }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
 }

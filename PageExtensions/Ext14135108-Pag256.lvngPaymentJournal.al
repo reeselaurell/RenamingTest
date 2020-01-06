@@ -13,6 +13,11 @@ pageextension 14135108 lvngPaymentJournal extends "Payment Journal"
         {
             field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
         }
+
+        addfirst(factboxes)
+        {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
+        }
     }
 
     actions
@@ -50,4 +55,14 @@ pageextension 14135108 lvngPaymentJournal extends "Payment Journal"
             }
         }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
 }

@@ -24,6 +24,7 @@ tableextension 14135100 lvngGLEntry extends "G/L Entry"
         field(14135227; lvngShortcutDimension8Name; Text[50]) { Caption = 'Shortcut Dimension 8 Name'; CaptionClass = GetDimensionName(8); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(8), Code = field(lvngShortcutDimension8Code))); }
         field(14135500; lvngImportID; Guid) { Caption = 'Import ID'; DataClassification = CustomerContent; }
         field(14135501; lvngVoided; Boolean) { Caption = 'Voided'; DataClassification = CustomerContent; }
+        field(14135999; lvngDocumentGuid; Guid) { DataClassification = CustomerContent; }
     }
 
     keys
@@ -36,6 +37,14 @@ tableextension 14135100 lvngGLEntry extends "G/L Entry"
         GLSetupRead: Boolean;
         DimensionNames: array[8] of Text;
         DimensionNamesRetrieved: Boolean;
+
+    trigger OnInsert()
+    var
+        EmptyGuid: Guid;
+    begin
+        if lvngDocumentGuid = EmptyGuid then
+            lvngDocumentGuid := CreateGuid();
+    end;
 
     local procedure GetDimensionName(DimensionNo: Integer): Text
     var

@@ -29,6 +29,11 @@ pageextension 14135109 lvngPurchaseInvoice extends "Purchase Invoice"
             field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
             field(lvngDocumentTotalCheck; lvngDocumentTotalCheck) { ApplicationArea = All; }
         }
+
+        addfirst(factboxes)
+        {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
+        }
     }
 
     actions
@@ -68,4 +73,14 @@ pageextension 14135109 lvngPurchaseInvoice extends "Purchase Invoice"
             }
         }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
 }

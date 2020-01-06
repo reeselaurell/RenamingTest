@@ -1,4 +1,4 @@
-tableextension 14135112 lvngSalesShipmentHeader extends "Sales Shipment Header"
+tableextension 14135126 lvngReturnRcptHeader extends "Return Receipt Header"
 {
     fields
     {

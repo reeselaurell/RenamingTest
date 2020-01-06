@@ -143,6 +143,7 @@ table 14135102 lvngLoan
         field(1000; "Servicing Finished"; Boolean) { Caption = 'Servicing Finished'; DataClassification = CustomerContent; }
         field(80000; "Creation Date"; Date) { Caption = 'Creation Date'; DataClassification = CustomerContent; }
         field(80001; "Modified Date"; Date) { Caption = 'Modified Date'; DataClassification = CustomerContent; }
+        field(14135999; lvngDocumentGuid; Guid) { DataClassification = CustomerContent; }
     }
 
     keys
@@ -162,9 +163,13 @@ table 14135102 lvngLoan
     }
 
     trigger OnInsert()
+    var
+        EmptyGuid: Guid;
     begin
         "Creation Date" := Today();
         "Modified Date" := "Creation Date";
+        if lvngDocumentGuid = EmptyGuid then
+            lvngDocumentGuid := CreateGuid();
     end;
 
     trigger OnModify()

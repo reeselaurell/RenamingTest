@@ -28,6 +28,11 @@ pageextension 14135110 lvngPurchaseCrMemo extends "Purchase Credit Memo"
             field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
             field(lvngDocumentTotalCheck; lvngDocumentTotalCheck) { ApplicationArea = All; }
         }
+
+        addfirst(factboxes)
+        {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
+        }
     }
 
     actions
@@ -68,4 +73,14 @@ pageextension 14135110 lvngPurchaseCrMemo extends "Purchase Credit Memo"
             }
         }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
 }

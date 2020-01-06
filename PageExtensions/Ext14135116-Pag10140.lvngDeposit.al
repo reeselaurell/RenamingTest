@@ -1,5 +1,13 @@
 pageextension 14135116 "lvngDeposit" extends Deposit
 {
+    layout
+    {
+        addfirst(factboxes)
+        {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
+        }
+    }
+
     actions
     {
         addafter(PostAndPrint)
@@ -35,4 +43,14 @@ pageextension 14135116 "lvngDeposit" extends Deposit
             }
         }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
 }

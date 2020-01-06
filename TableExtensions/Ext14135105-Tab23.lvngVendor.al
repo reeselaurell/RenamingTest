@@ -8,5 +8,14 @@ tableextension 14135105 lvngVendor extends Vendor
         field(14135103; lvngLegalCity; Text[30]) { Caption = 'Legal City'; DataClassification = CustomerContent; }
         field(14135104; lvngLegalState; Text[30]) { Caption = 'Legal State'; DataClassification = CustomerContent; }
         field(14135105; lvngLegalZIPCode; Code[20]) { Caption = 'Legal ZIP Code'; DataClassification = CustomerContent; }
+        field(14135999; lvngDocumentGuid; Guid) { DataClassification = CustomerContent; }
     }
+
+    trigger OnInsert()
+    var
+        EmptyGuid: Guid;
+    begin
+        if lvngDocumentGuid = EmptyGuid then
+            lvngDocumentGuid := CreateGuid();
+    end;
 }

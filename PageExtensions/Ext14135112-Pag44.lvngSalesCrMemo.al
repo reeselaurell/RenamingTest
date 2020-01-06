@@ -1,5 +1,13 @@
 pageextension 14135112 lvngSalesCrMemo extends "Sales Credit Memo"
 {
+    layout
+    {
+        addfirst(factboxes)
+        {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
+        }
+    }
+
     actions
     {
         addafter(CopyDocument)
@@ -36,4 +44,14 @@ pageextension 14135112 lvngSalesCrMemo extends "Sales Credit Memo"
             }
         }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
 }

@@ -1,5 +1,13 @@
 pageextension 14135111 lvngSalesInvoice extends "Sales Invoice"
 {
+    layout
+    {
+        addfirst(factboxes)
+        {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
+        }
+    }
+
     actions
     {
         addafter(CopyDocument)
@@ -36,4 +44,14 @@ pageextension 14135111 lvngSalesInvoice extends "Sales Invoice"
             }
         }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
 }

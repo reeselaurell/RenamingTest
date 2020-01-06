@@ -22,6 +22,12 @@
     "publisher": "Microsoft",
     "name": "Base Application",
     "version": "15.0.0.0"
+  },
+  {
+    "appId": "e3a45569-e1d1-475f-8010-28590f6b9790",
+    "name": "Document Exchange",
+    "publisher": "Bestborn Business Solutions",
+    "version": "1.0.0.0"
   }],
   "screenshots": [],
   "platform": "15.0.0.0",
