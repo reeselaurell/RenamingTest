@@ -1,0 +1,68 @@
+0. Remember to initialize document id for the record when needed, Document Exchange won’t do it for you unless document is attached externally (from PdfSplitter, for example). Normally it should be OnNewRecord on page where Document Exchange is used.
+1. Copy "Bestborn Business Solutions_Document Exchange.app" file to .alpackages folder
+2. Add the following dependency to app.json:
+    {
+      "appId": "e3a45569-e1d1-475f-8010-28590f6b9790",
+      "name": "Document Exchange",
+      "publisher": "Bestborn Business Solutions",
+      "version": "1.0.0.0"
+    }
+3. Use as shown:
+
+tableextension 50200 lvngCustomerDocId extends Customer
+{
+    fields
+    {
+        field(14135999; lvngDocumentGuid; Guid) { DataClassification = CustomerContent; }
+    }
+
+    trigger OnInsert()
+    var
+        EmptyGuid: Guid;
+    begin
+        if lvngDocumentGuid = EmptyGuid then
+            lvngDocumentGuid := CreateGuid();
+    end;
+}
+
+pageextension 50200 lvngCustomerListDocuments extends "Customer List"
+{
+    layout
+    {
+        addfirst(factboxes)
+        {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
+        }
+    }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
+}
+
+pageextension 50201 lvngCustomerCardDocuments extends "Customer Card"
+{
+    layout
+    {
+        addfirst(factboxes)
+        {
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
+        }
+    }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        lvngDocumentGuid := CreateGuid();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
+}
