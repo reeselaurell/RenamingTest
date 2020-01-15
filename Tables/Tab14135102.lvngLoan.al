@@ -135,6 +135,10 @@ table 14135102 lvngLoan
         field(105; "Monthly Escrow Amount"; Decimal) { Caption = 'Monthly Escrow Amount'; DataClassification = CustomerContent; }
         field(106; "Monthly Payment Amount"; Decimal) { Caption = 'Monthly Payment Amount (P+I)'; DataClassification = CustomerContent; }
         field(107; "Late Fee"; Decimal) { Caption = 'Servicing Late Fee'; DataClassification = CustomerContent; }
+        field(300; "Borrower SSN"; Code[20]) { Caption = 'Borrower SSN'; DataClassification = CustomerContent; }
+        field(301; "Co-Borrower SSN"; Code[20]) { Caption = 'Co-Borrower SSN'; DataClassification = CustomerContent; }
+        field(302; "Borrower SSN Key"; Guid) { Caption = 'Borrower SSN Key'; DataClassification = CustomerContent; }
+        field(303; "Co-Borrower SSN Key"; Guid) { Caption = 'Co-Borrower SSN Key'; DataClassification = CustomerContent; }
         field(500; "Commission Base Amount"; Decimal) { Caption = 'Commission Base Amount'; DataClassification = CustomerContent; }
         field(501; "Commission Date"; Date) { Caption = 'Commission Date'; DataClassification = CustomerContent; }
         field(502; "Commission Bps"; Decimal) { Caption = 'Commission Bps'; DataClassification = CustomerContent; }

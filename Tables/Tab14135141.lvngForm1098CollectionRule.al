@@ -1,6 +1,5 @@
 table 14135141 lvngForm1098CollectionRule
 {
-    Description = '1098';
     Caption = 'Form 1098 Collection Rule';
     DataClassification = CustomerContent;
 

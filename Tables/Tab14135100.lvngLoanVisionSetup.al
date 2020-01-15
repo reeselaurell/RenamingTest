@@ -29,6 +29,8 @@ table 14135100 lvngLoanVisionSetup
         field(403; "Level 3"; enum lvngHierarchyLevels) { Caption = 'Level 3'; DataClassification = CustomerContent; }
         field(404; "Level 4"; enum lvngHierarchyLevels) { Caption = 'Level 4'; DataClassification = CustomerContent; }
         field(405; "Level 5"; enum lvngHierarchyLevels) { Caption = 'Level 5'; DataClassification = CustomerContent; }
+        field(862; "Borrower E-Mail Field No."; Integer) { Caption = 'Borrower E-Mail Field No.'; DataClassification = CustomerContent; TableRelation = lvngLoanFieldsConfiguration."Field No." where("Value Type" = const(Text)); }
+        field(2003; "Construction Purpose Code"; Code[20]) { Caption = 'Construction Purpose Code'; DataClassification = CustomerContent; TableRelation = "Dimension Value".Code where("Dimension Code" = field("Loan Purpose Dimension Code")); }
         field(90000; "Maintenance Mode"; Boolean) { Caption = 'Maintenance Mode'; DataClassification = CustomerContent; }
     }
 

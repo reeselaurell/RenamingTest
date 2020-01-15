@@ -1,6 +1,5 @@
 page 14135184 lvngForm1098RulesCollection
 {
-    Description = '1098';
     PageType = List;
     SourceTable = lvngForm1098ColRuleDetails;
     Caption = 'Form 1098 Rules Collection';
@@ -28,15 +27,59 @@ page 14135184 lvngForm1098RulesCollection
     {
         area(Processing)
         {
-            action(ActionName)
+            action(EditFilter)
             {
                 ApplicationArea = All;
+                Caption = 'Edit G/L Filter';
+                Image = Filter;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
 
                 trigger OnAction();
                 begin
-
+                    MakeFilter();
+                    CurrPage.Update(true);
                 end;
             }
         }
     }
+
+    var
+        GLEntryLbl: Label 'G/L Entry';
+
+    local procedure MakeFilter()
+    var
+        GLEntry: Record "G/L Entry";
+        FPBuilder: FilterPageBuilder;
+        IStream: InStream;
+        OStream: OutStream;
+        ViewText: Text;
+    begin
+        CalcFields("G/L Filter");
+        FPBuilder.AddRecord(GLEntryLbl, GLEntry);
+        FPBuilder.AddFieldNo(GLEntryLbl, 3);
+        FPBuilder.AddFieldNo(GLEntryLbl, 4);
+        FPBuilder.AddFieldNo(GLEntryLbl, 5);
+        FPBuilder.AddFieldNo(GLEntryLbl, 23);
+        FPBuilder.AddFieldNo(GLEntryLbl, 24);
+        FPBuilder.AddFieldNo(GLEntryLbl, 47);
+        FPBuilder.AddFieldNo(GLEntryLbl, 53);
+        FPBuilder.AddFieldNo(GLEntryLbl, 54);
+        FPBuilder.AddFieldNo(GLEntryLbl, 58);
+        FPBuilder.AddFieldNo(GLEntryLbl, 14135103);
+        FPBuilder.AddFieldNo(GLEntryLbl, 14135105);
+        FPBuilder.AddFieldNo(GLEntryLbl, 14135106);
+        if "G/L Filter".HasValue() then begin
+            "G/L Filter".CreateInStream(IStream);
+            IStream.ReadText(ViewText);
+            FPBuilder.SetView(GLEntryLbl, ViewText);
+        end;
+        if FPBuilder.RunModal() then begin
+            Clear("G/L Filter");
+            "G/L Filter".CreateOutStream(OStream);
+            OStream.WriteText(FPBuilder.GetView(GLEntryLbl, false));
+            Modify();
+        end;
+    end;
 }

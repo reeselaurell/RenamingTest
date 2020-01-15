@@ -1,6 +1,5 @@
 page 14135183 lvngForm1098Rules
 {
-    Description = '1098';
     Caption = 'Form 1098 Rules';
     PageType = List;
     ApplicationArea = All;
