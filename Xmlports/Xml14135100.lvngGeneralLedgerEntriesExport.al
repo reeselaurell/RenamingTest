@@ -198,17 +198,17 @@ xmlport 14135100 lvngGeneralLedgerEntriesExport
                 }
             }
 
-            tableelement(Loop; "G/L Entry")
+            tableelement(GLEntry; "G/L Entry")
             {
                 RequestFilterFields = "Reason Code", "Posting Date", lvngEntryDate;
                 SourceTableView = sorting("Entry No.");
 
-                fieldelement(EntryNo; Loop."Entry No.") { }
-                fieldelement(PostingDate; Loop."Posting Date") { }
-                fieldelement(EntryDate; Loop.lvngEntryDate) { }
-                fieldelement(DocumentType; Loop."Document Type") { }
-                fieldelement(DocumentNo; Loop."Document No.") { }
-                fieldelement(GLAccountNo; Loop."G/L Account No.") { }
+                fieldelement(EntryNo; GLEntry."Entry No.") { }
+                fieldelement(PostingDate; GLEntry."Posting Date") { }
+                fieldelement(EntryDate; GLEntry.lvngEntryDate) { }
+                fieldelement(DocumentType; GLEntry."Document Type") { }
+                fieldelement(DocumentNo; GLEntry."Document No.") { }
+                fieldelement(GLAccountNo; GLEntry."G/L Account No.") { }
                 textelement(GLAccountName)
                 {
                     trigger OnBeforePassVariable()
@@ -216,29 +216,29 @@ xmlport 14135100 lvngGeneralLedgerEntriesExport
                         GLAccountName := GLAccount.Name;
                     end;
                 }
-                fieldelement(Description; Loop.Description) { }
-                fieldelement(Amount; Loop.Amount) { }
-                fieldelement(ReasonCode; Loop."Reason Code") { }
-                fieldelement(BalAccountType; Loop."Bal. Account Type") { }
-                fieldelement(BalAccountNo; Loop."Bal. Account No.") { }
-                fieldelement(LoanNo; Loop.lvngLoanNo) { }
-                fieldelement(SourceType; Loop."Source Type") { }
-                fieldelement(SourceNo; Loop."Source No.") { }
-                fieldelement(SourceName; Loop.lvngSourceName) { }
-                fieldelement(Reversed; Loop.Reversed) { }
-                fieldelement(UserId; Loop."User ID") { }
-                fieldelement(Dim1; Loop."Global Dimension 1 Code") { }
-                fieldelement(Dim2; Loop."Global Dimension 2 Code") { }
-                fieldelement(Dim3; Loop.lvngShortcutDimension3Code) { }
-                fieldelement(Dim4; Loop.lvngShortcutDimension4Code) { }
-                fieldelement(Dim5; Loop.lvngShortcutDimension5Code) { }
-                fieldelement(Dim6; Loop.lvngShortcutDimension6Code) { }
-                fieldelement(Dim7; Loop.lvngShortcutDimension7Code) { }
-                fieldelement(Dim8; Loop.lvngShortcutDimension8Code) { }
+                fieldelement(Description; GLEntry.Description) { }
+                fieldelement(Amount; GLEntry.Amount) { }
+                fieldelement(ReasonCode; GLEntry."Reason Code") { }
+                fieldelement(BalAccountType; GLEntry."Bal. Account Type") { }
+                fieldelement(BalAccountNo; GLEntry."Bal. Account No.") { }
+                fieldelement(LoanNo; GLEntry.lvngLoanNo) { }
+                fieldelement(SourceType; GLEntry."Source Type") { }
+                fieldelement(SourceNo; GLEntry."Source No.") { }
+                fieldelement(SourceName; GLEntry.lvngSourceName) { }
+                fieldelement(Reversed; GLEntry.Reversed) { }
+                fieldelement(UserId; GLEntry."User ID") { }
+                fieldelement(Dim1; GLEntry."Global Dimension 1 Code") { }
+                fieldelement(Dim2; GLEntry."Global Dimension 2 Code") { }
+                fieldelement(Dim3; GLEntry.lvngShortcutDimension3Code) { }
+                fieldelement(Dim4; GLEntry.lvngShortcutDimension4Code) { }
+                fieldelement(Dim5; GLEntry.lvngShortcutDimension5Code) { }
+                fieldelement(Dim6; GLEntry.lvngShortcutDimension6Code) { }
+                fieldelement(Dim7; GLEntry.lvngShortcutDimension7Code) { }
+                fieldelement(Dim8; GLEntry.lvngShortcutDimension8Code) { }
 
                 trigger OnAfterGetRecord()
                 begin
-                    GLAccount.Get(Loop."G/L Account No.");
+                    GLAccount.Get(GLEntry."G/L Account No.");
                 end;
             }
         }
