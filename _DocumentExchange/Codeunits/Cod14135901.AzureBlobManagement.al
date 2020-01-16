@@ -14,16 +14,6 @@ codeunit 14135901 lvngAzureBlobManagement
         Output: Text;
     begin
         GetAzureBlobSetup();
-        /* Old version with json
-        JsonObj.Add('data', TempBlob.ToBase64String());
-        JsonObj.Add('filename', FileName);
-        JsonObj.Add('container', DirectoryName);
-        JsonObj.WriteTo(Input);
-        RequestContent.WriteFrom(Input);
-        RequestContent.GetHeaders(ContentHeaders);
-        ContentHeaders.Remove('Content-Type');
-        ContentHeaders.Add('Content-Type', 'application/json');
-        */
         TempBlob.CreateInStream(InputStream);
         RequestContent.WriteFrom(InputStream);
         RequestContent.GetHeaders(ContentHeaders);
@@ -41,15 +31,6 @@ codeunit 14135901 lvngAzureBlobManagement
         StatusCode: Integer;
     begin
         GetAzureBlobSetup();
-        /* Old version with json/post
-        JsonObj.Add('container', DirectoryName);
-        JsonObj.Add('filename', FileName);
-        JsonObj.WriteTo(Input);
-        RequestContent.WriteFrom(Input);
-        RequestContent.GetHeaders(ContentHeaders);
-        ContentHeaders.Remove('Content-Type');
-        ContentHeaders.Add('Content-Type', 'application/json');
-        */
         Client.Get(AzureBlobSetup."Azure Base Url" + 'BlobExists?code=' + EncodeUriComponent(AzureBlobSetup."Access Key") + '&filename=' + EncodeUriComponent(FileName) + '&container=' + EncodeUriComponent(DirectoryName), ResponseMsg);
         StatusCode := ResponseMsg.HttpStatusCode(); //Prevents compilation error with implicit cast
         case StatusCode of
@@ -73,15 +54,6 @@ codeunit 14135901 lvngAzureBlobManagement
         StatusCode: Integer;
     begin
         GetAzureBlobSetup();
-        /* Old version with json/post
-        JsonObj.Add('container', DirectoryName);
-        JsonObj.Add('filename', FileName);
-        JsonObj.WriteTo(Input);
-        RequestContent.WriteFrom(Input);
-        RequestContent.GetHeaders(ContentHeaders);
-        ContentHeaders.Remove('Content-Type');
-        ContentHeaders.Add('Content-Type', 'application/json');
-        */
         Client.Delete(AzureBlobSetup."Azure Base Url" + 'DeleteBlob?code=' + EncodeUriComponent(AzureBlobSetup."Access Key") + '&filename=' + EncodeUriComponent(FileName) + '&container=' + EncodeUriComponent(DirectoryName), ResponseMsg);
         StatusCode := ResponseMsg.HttpStatusCode(); //Prevents compilation error with implicit cast
         exit(StatusCode = 200);
@@ -95,15 +67,6 @@ codeunit 14135901 lvngAzureBlobManagement
         ResponseMsg: HttpResponseMessage;
     begin
         GetAzureBlobSetup();
-        /* Old version with json/post
-        JsonObj.Add('container', DirectoryName);
-        JsonObj.Add('filename', FileName);
-        JsonObj.WriteTo(Input);
-        RequestContent.WriteFrom(Input);
-        RequestContent.GetHeaders(ContentHeaders);
-        ContentHeaders.Remove('Content-Type');
-        ContentHeaders.Add('Content-Type', 'application/json');
-        */
         Client.Get(AzureBlobSetup."Azure Base Url" + 'DownloadBlob?code=' + EncodeUriComponent(AzureBlobSetup."Access Key") + '&filename=' + EncodeUriComponent(FileName) + '&container=' + EncodeUriComponent(DirectoryName), ResponseMsg);
         if not ResponseMsg.IsSuccessStatusCode() then
             Error(ResponseMsg.ReasonPhrase);
@@ -115,7 +78,6 @@ codeunit 14135901 lvngAzureBlobManagement
         if not AzureBlobSetupRetrieved then begin
             AzureBlobSetup.Get();
             AzureBlobSetup.TestField("Azure Base Url");
-            AzureBlobSetup.TestField("Access Key");
             if not AzureBlobSetup."Azure Base Url".EndsWith('/') then
                 AzureBlobSetup."Azure Base Url" += '/';
             AzureBlobSetupRetrieved := true;

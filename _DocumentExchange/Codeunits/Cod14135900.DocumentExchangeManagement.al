@@ -18,7 +18,7 @@ codeunit 14135900 lvngDocumentExchangeManagement
         if (not DocumentExchangeSetup.Get()) then
             exit(false);
         DocumentExchangeSetupRetrieved := true;
-        exit((DocumentExchangeSetup."Azure Base Url" <> '') and (DocumentExchangeSetup."Access Key" <> ''));
+        exit(DocumentExchangeSetup."Azure Base Url" <> '');
     end;
 
     procedure AttachDocument(ObjectId: Guid; FileName: Text; var Content: Codeunit "Temp Blob"; AttachmentDateTime: DateTime; UsedCompanyName: Text; Importing: Boolean; SkipOperations: Boolean): Guid
