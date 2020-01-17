@@ -66,17 +66,17 @@ codeunit 14135222 lvngPerformanceDataExport
         ExcelExport.MergeRange(false);
         ExcelExport.NewRow(-20);
         RowId := -30;
-        if HeaderData."Shortcut Dimension 1" <> '' then begin
+        if HeaderData."Global Dimension 1" <> '' then begin
             ExcelExport.NewRow(RowId);
             RowId -= 10;
             ExcelExport.WriteString(CaptionClassTranslate('3,1,1'));
-            ExcelExport.WriteString(HeaderData."Shortcut Dimension 1");
+            ExcelExport.WriteString(HeaderData."Global Dimension 1");
         end;
-        if HeaderData."Shortcut Dimension 2" <> '' then begin
+        if HeaderData."Global Dimension 2" <> '' then begin
             ExcelExport.NewRow(RowId);
             RowId -= 10;
             ExcelExport.WriteString(CaptionClassTranslate('3,1,2'));
-            ExcelExport.WriteString(HeaderData."Shortcut Dimension 2");
+            ExcelExport.WriteString(HeaderData."Global Dimension 2");
         end;
         if HeaderData."Shortcut Dimension 3" <> '' then begin
             ExcelExport.NewRow(RowId);

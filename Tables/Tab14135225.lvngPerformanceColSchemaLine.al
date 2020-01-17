@@ -1,15 +1,16 @@
 table 14135225 lvngPerformanceColSchemaLine
 {
+    Caption = 'Performance Column Schema Line';
     DataClassification = CustomerContent;
     LookupPageId = lvngPerformanceColSchemaLines;
 
     fields
     {
-        field(1; "Schema Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngPerformanceColSchema.Code; }
-        field(2; "Column No."; Integer) { DataClassification = CustomerContent; }
-        field(10; Description; Text[50]) { DataClassification = CustomerContent; }
-        field(11; "Primary Caption"; Text[50]) { DataClassification = CustomerContent; }
-        field(12; "Secondary Caption"; Text[50]) { DataClassification = CustomerContent; }
+        field(1; "Schema Code"; Code[20]) { Caption = 'Schema Code'; DataClassification = CustomerContent; TableRelation = lvngPerformanceColSchema.Code; }
+        field(2; "Column No."; Integer) { Caption = 'Column No.'; DataClassification = CustomerContent; }
+        field(10; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
+        field(11; "Primary Caption"; Text[50]) { Caption = 'Primary Caption'; DataClassification = CustomerContent; }
+        field(12; "Secondary Caption"; Text[50]) { Caption = 'Secondary Caption'; DataClassification = CustomerContent; }
     }
 
     keys

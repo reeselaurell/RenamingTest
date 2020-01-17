@@ -15,8 +15,8 @@ page 14135235 lvngDimensionPerformanceView
             group(Filters)
             {
                 field(SchemaName; SystemFilter.Description) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
-                field(Dim1Filter; SystemFilter."Shortcut Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
-                field(Dim2Filter; SystemFilter."Shortcut Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
+                field(Dim1Filter; SystemFilter."Global Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
+                field(Dim2Filter; SystemFilter."Global Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
                 field(Dim3Filter; SystemFilter."Shortcut Dimension 3") { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
                 field(Dim4Filter; SystemFilter."Shortcut Dimension 4") { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
                 field(BusinessUnitFilter; SystemFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
@@ -121,8 +121,8 @@ page 14135235 lvngDimensionPerformanceView
         SystemFilter := Filter;
         SystemFilter.Description := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
         BusinessUnitVisible := SystemFilter."Business Unit" <> '';
-        Dim1Visible := SystemFilter."Shortcut Dimension 1" <> '';
-        Dim2Visible := SystemFilter."Shortcut Dimension 2" <> '';
+        Dim1Visible := SystemFilter."Global Dimension 1" <> '';
+        Dim2Visible := SystemFilter."Global Dimension 2" <> '';
         Dim3Visible := SystemFilter."Shortcut Dimension 3" <> '';
         Dim4Visible := SystemFilter."Shortcut Dimension 4" <> '';
     end;
@@ -141,16 +141,16 @@ page 14135235 lvngDimensionPerformanceView
         if BandSchema."Dynamic Layout" then begin
             DynamicBandLink.Reset();
             DynamicBandLink.SetRange("Dimension Code", BandSchema."Dimension Code");
-            if SystemFilter."Shortcut Dimension 1" <> '' then
-                DynamicBandLink.SetRange("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
-            if SystemFilter."Shortcut Dimension 2" <> '' then
-                DynamicBandLink.SetRange("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
+            if SystemFilter."Global Dimension 1" <> '' then
+                DynamicBandLink.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
+            if SystemFilter."Global Dimension 2" <> '' then
+                DynamicBandLink.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
             if SystemFilter."Shortcut Dimension 3" <> '' then
-                DynamicBandLink.SetRange("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
+                DynamicBandLink.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
             if SystemFilter."Shortcut Dimension 4" <> '' then
-                DynamicBandLink.SetRange("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
+                DynamicBandLink.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
             if SystemFilter."Business Unit" <> '' then
-                DynamicBandLink.SetRange("Business Unit Code", SystemFilter."Business Unit");
+                DynamicBandLink.SetFilter("Business Unit Code", SystemFilter."Business Unit");
             DynamicBandLink.FindSet();
             LineNo := 1;
             repeat
@@ -267,8 +267,8 @@ page 14135235 lvngDimensionPerformanceView
     begin
         Clear(HeaderData);
         HeaderData.Description := SystemFilter.Description;
-        HeaderData."Shortcut Dimension 1" := SystemFilter."Shortcut Dimension 1";
-        HeaderData."Shortcut Dimension 2" := SystemFilter."Shortcut Dimension 2";
+        HeaderData."Global Dimension 1" := SystemFilter."Global Dimension 1";
+        HeaderData."Global Dimension 2" := SystemFilter."Global Dimension 2";
         HeaderData."Shortcut Dimension 3" := SystemFilter."Shortcut Dimension 3";
         HeaderData."Shortcut Dimension 4" := SystemFilter."Shortcut Dimension 4";
         HeaderData."Business Unit" := SystemFilter."Business Unit";

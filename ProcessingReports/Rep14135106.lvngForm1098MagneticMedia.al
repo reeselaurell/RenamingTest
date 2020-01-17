@@ -1,6 +1,6 @@
 report 14135106 Form1098MagneticMedia
 {
-    Caption = 'Form 1098 Magnetic Meia';
+    Caption = 'Form 1098 Magnetic Media';
     ProcessingOnly = true;
 
     dataset

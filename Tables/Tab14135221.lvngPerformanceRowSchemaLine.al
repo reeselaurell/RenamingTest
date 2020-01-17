@@ -1,12 +1,14 @@
 table 14135221 lvngPerformanceRowSchemaLine
 {
+    Caption = 'Performance Row Schema Line';
     DataClassification = CustomerContent;
 
     fields
     {
-        field(1; "Schema Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngPerformanceRowSchema.Code; }
+        field(1; "Schema Code"; Code[20]) { Caption = 'Schema Code'; DataClassification = CustomerContent; TableRelation = lvngPerformanceRowSchema.Code; }
         field(2; "Line No."; Integer)
         {
+            Caption = 'Line No.';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
@@ -15,16 +17,16 @@ table 14135221 lvngPerformanceRowSchemaLine
                     Error(ShouldBePositiveErr, FieldCaption("Line No."));
             end;
         }
-        field(3; "Column No."; Integer) { DataClassification = CustomerContent; }
-        field(10; Description; Text[100]) { DataClassification = CustomerContent; }
-        field(11; "Row Type"; Enum lvngPerformanceRowType) { DataClassification = CustomerContent; }
-        field(12; "Calculation Unit Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngCalculationUnit.Code; }
-        field(13; "Number Format Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngNumberFormat.Code; }
-        field(14; "Style Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngStyle.Code; }
-        field(15; "Neg. Style Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngStyle.Code; }
-        field(16; "Hide Zero Line"; Boolean) { DataClassification = CustomerContent; }
-        field(17; "Row Style"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngStyle.Code; }
-        field(50; "Data Row Index"; Integer) { DataClassification = CustomerContent; Description = 'For use in excel export'; }
+        field(3; "Column No."; Integer) { Caption = 'Column No.'; DataClassification = CustomerContent; }
+        field(10; Description; Text[100]) { Caption = 'Description'; DataClassification = CustomerContent; }
+        field(11; "Row Type"; Enum lvngPerformanceRowType) { Caption = 'Row Type'; DataClassification = CustomerContent; }
+        field(12; "Calculation Unit Code"; Code[20]) { Caption = 'Calculation Unit Code'; DataClassification = CustomerContent; TableRelation = lvngCalculationUnit.Code; }
+        field(13; "Number Format Code"; Code[20]) { Caption = 'Number Format Code'; DataClassification = CustomerContent; TableRelation = lvngNumberFormat.Code; }
+        field(14; "Style Code"; Code[20]) { Caption = 'Style Code'; DataClassification = CustomerContent; TableRelation = lvngStyle.Code; }
+        field(15; "Neg. Style Code"; Code[20]) { Caption = 'Negative Style Code'; DataClassification = CustomerContent; TableRelation = lvngStyle.Code; }
+        field(16; "Hide Zero Line"; Boolean) { Caption = 'Hide Zero Line'; DataClassification = CustomerContent; }
+        field(17; "Row Style"; Code[20]) { Caption = 'Row Style'; DataClassification = CustomerContent; TableRelation = lvngStyle.Code; }
+        field(50; "Data Row Index"; Integer) { Caption = 'Data Row Index'; DataClassification = CustomerContent; Description = 'For use in excel export'; }
     }
 
     keys

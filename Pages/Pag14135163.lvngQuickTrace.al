@@ -4,7 +4,7 @@ page 14135163 lvngQuickTrace
     PageType = Card;
     ApplicationArea = All;
     UsageCategory = Administration;
-    SourceTable = lvngQuickTraceBuffer;
+    SourceTable = lvngLoanReportingBuffer;
     SourceTableView = sorting("Loan No.");
     CardPageId = lvngLoanCard;
     InsertAllowed = false;
