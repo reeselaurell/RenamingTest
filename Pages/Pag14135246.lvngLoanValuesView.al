@@ -13,8 +13,8 @@ page 14135246 lvngLoanValuesView
             group(Filters)
             {
                 field(SchemaName; LoanLevelReportSchema.Description) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
-                field(Dim1Filter; SystemFilter."Shortcut Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
-                field(Dim2Filter; SystemFilter."Shortcut Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
+                field(Dim1Filter; SystemFilter."Global Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
+                field(Dim2Filter; SystemFilter."Global Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
                 field(Dim3Filter; SystemFilter."Shortcut Dimension 3") { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
                 field(Dim4Filter; SystemFilter."Shortcut Dimension 4") { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
                 field(BusinessUnitFilter; SystemFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
@@ -139,8 +139,8 @@ page 14135246 lvngLoanValuesView
         SystemFilter := Filter;
         TotalsRowVisible := ShowTotals;
         BusinessUnitVisible := Filter."Business Unit" <> '';
-        Dim1Visible := Filter."Shortcut Dimension 1" <> '';
-        Dim2Visible := Filter."Shortcut Dimension 2" <> '';
+        Dim1Visible := Filter."Global Dimension 1" <> '';
+        Dim2Visible := Filter."Global Dimension 2" <> '';
         Dim3Visible := Filter."Shortcut Dimension 3" <> '';
         Dim4Visible := Filter."Shortcut Dimension 4" <> '';
     end;
@@ -181,10 +181,10 @@ page 14135246 lvngLoanValuesView
         RowNo := 1;
         if BasedOn = BasedOn::Posting then begin
             Clear(GLLoansPerPeriod);
-            if SystemFilter."Shortcut Dimension 1" <> '' then
-                GLLoansPerPeriod.SetFilter(Dim1Filter, SystemFilter."Shortcut Dimension 1");
-            if SystemFilter."Shortcut Dimension 2" <> '' then
-                GLLoansPerPeriod.SetFilter(Dim1Filter, SystemFilter."Shortcut Dimension 2");
+            if SystemFilter."Global Dimension 1" <> '' then
+                GLLoansPerPeriod.SetFilter(Dim1Filter, SystemFilter."Global Dimension 1");
+            if SystemFilter."Global Dimension 2" <> '' then
+                GLLoansPerPeriod.SetFilter(Dim1Filter, SystemFilter."Global Dimension 2");
             GLLoansPerPeriod.SetFilter(PostingDate, SystemFilter."Date Filter");
             if SystemFilter."Shortcut Dimension 3" <> '' then
                 GLLoansPerPeriod.SetFilter(Dim1Filter, SystemFilter."Shortcut Dimension 3");
@@ -206,10 +206,10 @@ page 14135246 lvngLoanValuesView
             GLLoansPerPeriod.Close();
         end else begin
             Loan.Reset();
-            if SystemFilter."Shortcut Dimension 1" <> '' then
-                Loan.SetFilter("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
-            if SystemFilter."Shortcut Dimension 2" <> '' then
-                Loan.SetFilter("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
+            if SystemFilter."Global Dimension 1" <> '' then
+                Loan.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
+            if SystemFilter."Global Dimension 2" <> '' then
+                Loan.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
             if SystemFilter."Shortcut Dimension 3" <> '' then
                 Loan.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
             if SystemFilter."Shortcut Dimension 4" <> '' then
@@ -255,10 +255,10 @@ page 14135246 lvngLoanValuesView
         GLEntry.Reset();
         GLEntry.SetCurrentKey(lvngLoanNo);
         GLEntry.SetRange(lvngLoanNo, Loan."No.");
-        if SystemFilter."Shortcut Dimension 1" <> '' then
-            GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
-        if SystemFilter."Shortcut Dimension 2" <> '' then
-            GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
+        if SystemFilter."Global Dimension 1" <> '' then
+            GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
+        if SystemFilter."Global Dimension 2" <> '' then
+            GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
         if SystemFilter."Shortcut Dimension 3" <> '' then
             GLEntry.SetFilter(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
         if SystemFilter."Shortcut Dimension 4" <> '' then
@@ -618,17 +618,17 @@ page 14135246 lvngLoanValuesView
         ExcelExport.MergeRange(false);
         ExcelExport.NewRow(-20);
         RowId := -30;
-        if SystemFilter."Shortcut Dimension 1" <> '' then begin
+        if SystemFilter."Global Dimension 1" <> '' then begin
             ExcelExport.NewRow(RowId);
             RowId -= 10;
             ExcelExport.WriteString(CaptionClassTranslate('3,1,1'));
-            ExcelExport.WriteString(SystemFilter."Shortcut Dimension 1");
+            ExcelExport.WriteString(SystemFilter."Global Dimension 1");
         end;
-        if SystemFilter."Shortcut Dimension 2" <> '' then begin
+        if SystemFilter."Global Dimension 2" <> '' then begin
             ExcelExport.NewRow(RowId);
             RowId -= 10;
             ExcelExport.WriteString(CaptionClassTranslate('3,1,2'));
-            ExcelExport.WriteString(SystemFilter."Shortcut Dimension 2");
+            ExcelExport.WriteString(SystemFilter."Global Dimension 2");
         end;
         if SystemFilter."Shortcut Dimension 3" <> '' then begin
             ExcelExport.NewRow(RowId);

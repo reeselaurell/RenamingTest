@@ -1,15 +1,17 @@
 table 14135232 lvngDimensionPerfBandSchema
 {
+    Caption = 'Dimension Performance Band Schema';
     DataClassification = CustomerContent;
     LookupPageId = lvngDimPerfBandSchemaList;
 
     fields
     {
-        field(1; Code; Code[20]) { DataClassification = CustomerContent; }
-        field(2; "Dynamic Layout"; Boolean) { DataClassification = CustomerContent; }
-        field(10; Description; Text[100]) { DataClassification = CustomerContent; }
+        field(1; Code; Code[20]) { Caption = 'Code'; DataClassification = CustomerContent; }
+        field(2; "Dynamic Layout"; Boolean) { Caption = 'Dynamic Layout'; DataClassification = CustomerContent; }
+        field(10; Description; Text[100]) { Caption = 'Description'; DataClassification = CustomerContent; }
         field(12; "Dimension Code"; Code[20])
         {
+            Caption = 'Dimension Code';
             DataClassification = CustomerContent;
             TableRelation = Dimension.Code;
 

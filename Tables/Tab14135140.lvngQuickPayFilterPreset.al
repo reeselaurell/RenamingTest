@@ -5,9 +5,9 @@ table 14135140 lvngQuickPayFilterPreset
 
     fields
     {
-        field(1; Code; Code[20]) { DataClassification = CustomerContent; }
-        field(10; Description; Text[50]) { DataClassification = CustomerContent; }
-        field(11; View; Blob) { DataClassification = CustomerContent; }
+        field(1; Code; Code[20]) { Caption = 'Code'; DataClassification = CustomerContent; }
+        field(10; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
+        field(11; View; Blob) { Caption = 'View'; DataClassification = CustomerContent; }
     }
 
     keys

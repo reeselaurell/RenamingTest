@@ -114,50 +114,50 @@ codeunit 14135220 lvngPerformanceMgmt
     begin
         Loan.FilterGroup(2);
         if CalcUnit."Dimension 1 Filter" <> '' then
-            Loan.SetRange("Global Dimension 1 Code", CalcUnit."Dimension 1 Filter")
+            Loan.SetFilter("Global Dimension 1 Code", CalcUnit."Dimension 1 Filter")
         else
-            if SystemFilter."Shortcut Dimension 1" <> '' then
-                Loan.SetRange("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
+            if SystemFilter."Global Dimension 1" <> '' then
+                Loan.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
         if CalcUnit."Dimension 2 Filter" <> '' then
-            Loan.SetRange("Global Dimension 2 Code", CalcUnit."Dimension 2 Filter")
+            Loan.SetFilter("Global Dimension 2 Code", CalcUnit."Dimension 2 Filter")
         else
-            if SystemFilter."Shortcut Dimension 2" <> '' then
-                Loan.SetRange("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
+            if SystemFilter."Global Dimension 2" <> '' then
+                Loan.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
         if CalcUnit."Dimension 3 Filter" <> '' then
-            Loan.SetRange("Shortcut Dimension 3 Code", CalcUnit."Dimension 3 Filter")
+            Loan.SetFilter("Shortcut Dimension 3 Code", CalcUnit."Dimension 3 Filter")
         else
             if SystemFilter."Shortcut Dimension 3" <> '' then
-                Loan.SetRange("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
+                Loan.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
         if CalcUnit."Dimension 4 Filter" <> '' then
-            Loan.SetRange("Shortcut Dimension 4 Code", CalcUnit."Dimension 4 Filter")
+            Loan.SetFilter("Shortcut Dimension 4 Code", CalcUnit."Dimension 4 Filter")
         else
             if SystemFilter."Shortcut Dimension 4" <> '' then
-                Loan.SetRange("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
+                Loan.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
         if CalcUnit."Dimension 5 Filter" <> '' then
-            Loan.SetRange("Shortcut Dimension 5 Code", CalcUnit."Dimension 5 Filter")
+            Loan.SetFilter("Shortcut Dimension 5 Code", CalcUnit."Dimension 5 Filter")
         else
             if SystemFilter."Shortcut Dimension 5" <> '' then
-                Loan.SetRange("Shortcut Dimension 5 Code", SystemFilter."Shortcut Dimension 5");
+                Loan.SetFilter("Shortcut Dimension 5 Code", SystemFilter."Shortcut Dimension 5");
         if CalcUnit."Dimension 6 Filter" <> '' then
-            Loan.SetRange("Shortcut Dimension 6 Code", CalcUnit."Dimension 6 Filter")
+            Loan.SetFilter("Shortcut Dimension 6 Code", CalcUnit."Dimension 6 Filter")
         else
             if SystemFilter."Shortcut Dimension 6" <> '' then
-                Loan.SetRange("Shortcut Dimension 6 Code", SystemFilter."Shortcut Dimension 6");
+                Loan.SetFilter("Shortcut Dimension 6 Code", SystemFilter."Shortcut Dimension 6");
         if CalcUnit."Dimension 7 Filter" <> '' then
-            Loan.SetRange("Shortcut Dimension 7 Code", CalcUnit."Dimension 7 Filter")
+            Loan.SetFilter("Shortcut Dimension 7 Code", CalcUnit."Dimension 7 Filter")
         else
             if SystemFilter."Shortcut Dimension 7" <> '' then
-                Loan.SetRange("Shortcut Dimension 7 Code", SystemFilter."Shortcut Dimension 7");
+                Loan.SetFilter("Shortcut Dimension 7 Code", SystemFilter."Shortcut Dimension 7");
         if CalcUnit."Dimension 8 Filter" <> '' then
-            Loan.SetRange("Shortcut Dimension 8 Code", CalcUnit."Dimension 8 Filter")
+            Loan.SetFilter("Shortcut Dimension 8 Code", CalcUnit."Dimension 8 Filter")
         else
             if SystemFilter."Shortcut Dimension 8" <> '' then
-                Loan.SetRange("Shortcut Dimension 8 Code", SystemFilter."Shortcut Dimension 8");
+                Loan.SetFilter("Shortcut Dimension 8 Code", SystemFilter."Shortcut Dimension 8");
         if CalcUnit."Business Unit Filter" <> '' then
-            Loan.SetRange("Business Unit Code", CalcUnit."Business Unit Filter")
+            Loan.SetFilter("Business Unit Code", CalcUnit."Business Unit Filter")
         else
             if SystemFilter."Business Unit" <> '' then
-                Loan.SetRange("Business Unit Code", SystemFilter."Business Unit");
+                Loan.SetFilter("Business Unit Code", SystemFilter."Business Unit");
         case CalcUnit."Based On Date" of
             CalcUnit."Based On Date"::Application:
                 Loan.SetFilter("Application Date", SystemFilter."Date Filter");
@@ -180,50 +180,50 @@ codeunit 14135220 lvngPerformanceMgmt
         GLEntry.FilterGroup(2);
         GLEntry.SetFilter("G/L Account No.", CalcUnit."Account No. Filter");
         if CalcUnit."Dimension 1 Filter" <> '' then
-            GLEntry.SetRange("Global Dimension 1 Code", CalcUnit."Dimension 1 Filter")
+            GLEntry.SetFilter("Global Dimension 1 Code", CalcUnit."Dimension 1 Filter")
         else
-            if SystemFilter."Shortcut Dimension 1" <> '' then
-                GLEntry.SetRange("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
+            if SystemFilter."Global Dimension 1" <> '' then
+                GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
         if CalcUnit."Dimension 2 Filter" <> '' then
-            GLEntry.SetRange("Global Dimension 2 Code", CalcUnit."Dimension 2 Filter")
+            GLEntry.SetFilter("Global Dimension 2 Code", CalcUnit."Dimension 2 Filter")
         else
-            if SystemFilter."Shortcut Dimension 2" <> '' then
-                GLEntry.SetRange("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
+            if SystemFilter."Global Dimension 2" <> '' then
+                GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
         if CalcUnit."Dimension 3 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
+            GLEntry.SetFilter(lvngShortcutDimension3Code, CalcUnit."Dimension 3 Filter")
         else
             if SystemFilter."Shortcut Dimension 3" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
+                GLEntry.SetFilter(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
         if CalcUnit."Dimension 4 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
+            GLEntry.SetFilter(lvngShortcutDimension4Code, CalcUnit."Dimension 4 Filter")
         else
             if SystemFilter."Shortcut Dimension 4" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
+                GLEntry.SetFilter(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
         if CalcUnit."Dimension 5 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter")
+            GLEntry.SetFilter(lvngShortcutDimension5Code, CalcUnit."Dimension 5 Filter")
         else
             if SystemFilter."Shortcut Dimension 5" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension5Code, SystemFilter."Shortcut Dimension 5");
+                GLEntry.SetFilter(lvngShortcutDimension5Code, SystemFilter."Shortcut Dimension 5");
         if CalcUnit."Dimension 6 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter")
+            GLEntry.SetFilter(lvngShortcutDimension6Code, CalcUnit."Dimension 6 Filter")
         else
             if SystemFilter."Shortcut Dimension 6" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension6Code, SystemFilter."Shortcut Dimension 6");
+                GLEntry.SetFilter(lvngShortcutDimension6Code, SystemFilter."Shortcut Dimension 6");
         if CalcUnit."Dimension 7 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter")
+            GLEntry.SetFilter(lvngShortcutDimension7Code, CalcUnit."Dimension 7 Filter")
         else
             if SystemFilter."Shortcut Dimension 7" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension7Code, SystemFilter."Shortcut Dimension 7");
+                GLEntry.SetFilter(lvngShortcutDimension7Code, SystemFilter."Shortcut Dimension 7");
         if CalcUnit."Dimension 8 Filter" <> '' then
-            GLEntry.SetRange(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter")
+            GLEntry.SetFilter(lvngShortcutDimension8Code, CalcUnit."Dimension 8 Filter")
         else
             if SystemFilter."Shortcut Dimension 8" <> '' then
-                GLEntry.SetRange(lvngShortcutDimension8Code, SystemFilter."Shortcut Dimension 8");
+                GLEntry.SetFilter(lvngShortcutDimension8Code, SystemFilter."Shortcut Dimension 8");
         if CalcUnit."Business Unit Filter" <> '' then
-            GLEntry.SetRange("Business Unit Code", CalcUnit."Business Unit Filter")
+            GLEntry.SetFilter("Business Unit Code", CalcUnit."Business Unit Filter")
         else
             if SystemFilter."Business Unit" <> '' then
-                GLEntry.SetRange("Business Unit Code", SystemFilter."Business Unit");
+                GLEntry.SetFilter("Business Unit Code", SystemFilter."Business Unit");
         GLEntry.SetFilter("Posting Date", SystemFilter.GetGLPostingDateFilter());
         GLEntry.FilterGroup(0);
     end;
@@ -558,13 +558,13 @@ codeunit 14135220 lvngPerformanceMgmt
         if CalculationUnit."Dimension 1 Filter" <> '' then
             LoanAmountsByDimension.SetFilter(Dimension1Filter, CalculationUnit."Dimension 1 Filter")
         else
-            if SystemFilter."Shortcut Dimension 1" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension1Filter, SystemFilter."Shortcut Dimension 1");
+            if SystemFilter."Global Dimension 1" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension1Filter, SystemFilter."Global Dimension 1");
         if CalculationUnit."Dimension 2 Filter" <> '' then
             LoanAmountsByDimension.SetFilter(Dimension2Filter, CalculationUnit."Dimension 2 Filter")
         else
-            if SystemFilter."Shortcut Dimension 2" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension2Filter, SystemFilter."Shortcut Dimension 2");
+            if SystemFilter."Global Dimension 2" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension2Filter, SystemFilter."Global Dimension 2");
         if CalculationUnit."Dimension 3 Filter" <> '' then
             LoanAmountsByDimension.SetFilter(Dimension3Filter, CalculationUnit."Dimension 3 Filter")
         else
@@ -632,13 +632,13 @@ codeunit 14135220 lvngPerformanceMgmt
         if CalculationUnit."Dimension 1 Filter" <> '' then
             GLEntry.SetFilter("Global Dimension 1 Code", CalculationUnit."Dimension 1 Filter")
         else
-            if SystemFilter."Shortcut Dimension 1" <> '' then
-                GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Shortcut Dimension 1");
+            if SystemFilter."Global Dimension 1" <> '' then
+                GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
         if CalculationUnit."Dimension 2 Filter" <> '' then
             GLEntry.SetFilter("Global Dimension 2 Code", CalculationUnit."Dimension 2 Filter")
         else
-            if SystemFilter."Shortcut Dimension 2" <> '' then
-                GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Shortcut Dimension 2");
+            if SystemFilter."Global Dimension 2" <> '' then
+                GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
         if CalculationUnit."Dimension 3 Filter" <> '' then
             GLEntry.SetFilter("Shortcut Dimension 3 Code", CalculationUnit."Dimension 3 Filter")
         else
@@ -751,9 +751,9 @@ codeunit 14135220 lvngPerformanceMgmt
         DimensionValue.FindFirst();
         case DimensionValue."Global Dimension No." of
             1:
-                SystemFilter."Shortcut Dimension 1" := BandLine."Dimension Filter";
+                SystemFilter."Global Dimension 1" := BandLine."Dimension Filter";
             2:
-                SystemFilter."Shortcut Dimension 2" := BandLine."Dimension Filter";
+                SystemFilter."Global Dimension 2" := BandLine."Dimension Filter";
             3:
                 SystemFilter."Shortcut Dimension 3" := BandLine."Dimension Filter";
             4:

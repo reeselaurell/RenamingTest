@@ -1,16 +1,18 @@
 table 14135240 lvngLoanLevelReportSchemaLine
 {
+    Caption = 'Loan Level Report Schema Line';
     DataClassification = CustomerContent;
 
     fields
     {
-        field(1; "Report Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngLoanLevelReportSchema.Code; }
-        field(2; "Column No."; Integer) { DataClassification = CustomerContent; }
-        field(10; Description; Text[100]) { DataClassification = CustomerContent; }
-        field(11; Type; Enum lvngLoanLevelReportLineType) { DataClassification = CustomerContent; }
-        field(12; "G/L Filter"; Blob) { DataClassification = CustomerContent; }
+        field(1; "Report Code"; Code[20]) { Caption = 'Report Code'; DataClassification = CustomerContent; TableRelation = lvngLoanLevelReportSchema.Code; }
+        field(2; "Column No."; Integer) { Caption = 'Column No.'; DataClassification = CustomerContent; }
+        field(10; Description; Text[100]) { Caption = 'Description'; DataClassification = CustomerContent; }
+        field(11; Type; Enum lvngLoanLevelReportLineType) { Caption = 'Type'; DataClassification = CustomerContent; }
+        field(12; "G/L Filter"; Blob) { Caption = 'G/L Filter'; DataClassification = CustomerContent; }
         field(13; "Value Field No."; Integer)
         {
+            Caption = 'Value Field No.';
             DataClassification = CustomerContent;
 
             trigger OnLookup()
@@ -36,8 +38,8 @@ table 14135240 lvngLoanLevelReportSchemaLine
                 end;
             end;
         }
-        field(14; "Formula Code"; Code[20]) { DataClassification = CustomerContent; }
-        field(15; "Number Format Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngNumberFormat.Code; }
+        field(14; "Formula Code"; Code[20]) { Caption = 'Formula Code'; DataClassification = CustomerContent; }
+        field(15; "Number Format Code"; Code[20]) { Caption = 'Number Format Code'; DataClassification = CustomerContent; TableRelation = lvngNumberFormat.Code; }
     }
 
     keys

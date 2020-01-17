@@ -1,13 +1,14 @@
 table 14135229 lvngCalculationUnitLine
 {
+    Caption = 'Calculation Unit Line';
     DataClassification = CustomerContent;
 
     fields
     {
-        field(1; "Unit Code"; Code[20]) { DataClassification = CustomerContent; }
-        field(2; "Line no."; Integer) { DataClassification = CustomerContent; }
-        field(10; "Source Unit Code"; Code[20]) { DataClassification = CustomerContent; TableRelation = lvngCalculationUnit.Code; }
-        field(11; Description; Text[100]) { FieldClass = FlowField; CalcFormula = lookup (lvngCalculationUnit.Description where(Code = field("Source Unit Code"))); }
+        field(1; "Unit Code"; Code[20]) { Caption = 'Unit Code'; DataClassification = CustomerContent; }
+        field(2; "Line no."; Integer) { Caption = 'Line No.'; DataClassification = CustomerContent; }
+        field(10; "Source Unit Code"; Code[20]) { Caption = 'Source Unit Code'; DataClassification = CustomerContent; TableRelation = lvngCalculationUnit.Code; }
+        field(11; Description; Text[100]) { Caption = 'Description'; FieldClass = FlowField; CalcFormula = lookup (lvngCalculationUnit.Description where(Code = field("Source Unit Code"))); }
     }
 
     keys
