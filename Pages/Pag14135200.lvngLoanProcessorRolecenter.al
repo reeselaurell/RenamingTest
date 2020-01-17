@@ -67,20 +67,6 @@ page 14135200 lvngLoanProcessorRolecenter
                 ApplicationArea = All;
             }
 
-            action(LoanVisionSetup)
-            {
-                Caption = 'Loan Vision Setup';
-                ToolTip = 'Loan Vision Setup';
-                RunObject = Page lvngLoanVisionSetup;
-                ApplicationArea = All;
-            }
-            action(LoanServicingSetup)
-            {
-                Caption = 'Loan Servicing Setup';
-                ToolTip = 'Loan Servicing Setup';
-                RunObject = Page lvngLoanServicingSetup;
-                ApplicationArea = All;
-            }
         }
 
         area(Sections)
@@ -95,6 +81,7 @@ page 14135200 lvngLoanProcessorRolecenter
                 {
                     Caption = 'Warehouse Lines';
                     ToolTip = 'Warehouse Lines';
+                    RunPageMode = Edit;
                     RunObject = Page lvngWarehouseLines;
                     ApplicationArea = All;
                 }
@@ -102,6 +89,7 @@ page 14135200 lvngLoanProcessorRolecenter
                 {
                     Caption = 'Loan Fields Configuration';
                     ToolTip = 'Loan Fields Configuration';
+                    RunPageMode = Edit;
                     RunObject = Page lvngLoanFieldsConfiguration;
                     ApplicationArea = All;
                 }
@@ -109,6 +97,7 @@ page 14135200 lvngLoanProcessorRolecenter
                 {
                     Caption = 'Dimension Hierarchy';
                     ToolTip = 'Setup Dimension Hierarchy';
+                    RunPageMode = Edit;
                     RunObject = page lvngDimensionsHierarchy;
                     ApplicationArea = All;
                 }
@@ -116,6 +105,7 @@ page 14135200 lvngLoanProcessorRolecenter
                 {
                     Caption = 'Loan Journal Import Schemas';
                     ToolTip = 'Configure Loan Journal Import Schemas';
+                    RunPageMode = Edit;
                     RunObject = page lvngLoanImportSchemaList;
                     ApplicationArea = All;
                 }
@@ -123,6 +113,7 @@ page 14135200 lvngLoanProcessorRolecenter
                 {
                     Caption = 'Processing Schemas';
                     ToolTip = 'Configrue Processing Schemas';
+                    RunPageMode = Edit;
                     RunObject = page lvngLoanProcessingSchema;
                     ApplicationArea = All;
                 }
@@ -130,6 +121,7 @@ page 14135200 lvngLoanProcessorRolecenter
                 {
                     Caption = 'Escrow Fields Mapping';
                     ToolTip = 'Setup Servicing Escrow Fields Mapping';
+                    RunPageMode = Edit;
                     RunObject = page lvngEscrowFieldsMapping;
                     ApplicationArea = All;
                 }
@@ -137,6 +129,7 @@ page 14135200 lvngLoanProcessorRolecenter
                 {
                     Caption = 'Import Dimensions Mapping';
                     ToolTip = 'Configure Import Dimensions Mapping';
+                    RunPageMode = Edit;
                     RunObject = page lvngImportDimensionMapping;
                     ApplicationArea = all;
                 }
@@ -144,7 +137,26 @@ page 14135200 lvngLoanProcessorRolecenter
                 {
                     Caption = 'File Import Schemas';
                     ToolTip = 'Configure File Import Schemas';
+                    RunPageMode = Edit;
                     RunObject = page lvngFileImportSchemas;
+                    ApplicationArea = All;
+                }
+                action(LoanVisionSetup)
+                {
+                    Caption = 'Loan Vision Setup';
+                    ToolTip = 'Loan Vision Setup';
+                    RunPageMode = Edit;
+                    Image = Setup;
+                    RunObject = Page lvngLoanVisionSetup;
+                    ApplicationArea = All;
+                }
+                action(LoanServicingSetup)
+                {
+                    Caption = 'Loan Servicing Setup';
+                    ToolTip = 'Loan Servicing Setup';
+                    RunPageMode = Edit;
+                    Image = Setup;
+                    RunObject = Page lvngLoanServicingSetup;
                     ApplicationArea = All;
                 }
             }
