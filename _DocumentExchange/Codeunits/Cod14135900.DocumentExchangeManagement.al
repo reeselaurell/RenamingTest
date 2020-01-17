@@ -163,6 +163,9 @@ codeunit 14135900 lvngDocumentExchangeManagement
             if PlainFileName = '' then begin
                 PlainFileName := FileMgmt.GetFileNameWithoutExtension(DocumentExchangeLine."Original Name");
                 FileExtension := FileMgmt.GetExtension(DocumentExchangeLine."Original Name");
+                if FileExtension <> '' then
+                    if FileExtension[1] <> '.' then
+                        FileExtension := '.' + FileExtension;
             end;
             DocumentExchangeLine."Storage Name" := PlainFileName + ' (' + Format(Idx) + ')' + FileExtension;
             Idx := Idx + 1;
