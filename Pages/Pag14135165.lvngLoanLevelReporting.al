@@ -44,6 +44,8 @@ page 14135165 lvngLoanLevelReporting
                 Caption = 'Import Loans From File';
                 ApplicationArea = All;
                 Image = Import;
+                Promoted = true;
+                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -59,6 +61,8 @@ page 14135165 lvngLoanLevelReporting
                 Caption = 'Get Filtered Loans';
                 ApplicationArea = All;
                 Image = Allocations;
+                Promoted = true;
+                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -74,6 +78,8 @@ page 14135165 lvngLoanLevelReporting
                 Caption = 'Get Loans with Activity';
                 ApplicationArea = All;
                 Image = GeneralLedger;
+                Promoted = true;
+                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -82,6 +88,21 @@ page 14135165 lvngLoanLevelReporting
                     Clear(GetLoansWithActivity);
                     GetLoansWithActivity.RunModal();
                     GetLoansWithActivity.RetrieveData(Rec);
+                end;
+            }
+
+            action(ClearLoans)
+            {
+                Caption = 'Clear List';
+                ApplicationArea = All;
+                Image = ClearLog;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                begin
+                    DeleteAll();
+                    CurrPage.Update(false);
                 end;
             }
         }
