@@ -11,11 +11,10 @@ codeunit 14135115 lvngGenJnlFileImportManagement
         MainDimensionNo: Integer;
         ImportStream: InStream;
         FileName: Text;
-        ImportToStream: Boolean;
         OpenFileLbl: Label 'Open File for Import';
         ReadingToStreamErr: Label 'Error reading file to stream';
 
-    procedure CreateJournalLines(var GenJnlImportBuffer: Record lvngGenJnlImportBuffer; GenJnlTemplateCode: Code[10]; GenJnlBatchCode: Code[10])
+    procedure CreateJournalLines(var GenJnlImportBuffer: Record lvngGenJnlImportBuffer; GenJnlTemplateCode: Code[10]; GenJnlBatchCode: Code[10]; ImportID: Guid)
     var
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlLine: Record "Gen. Journal Line";
@@ -66,6 +65,7 @@ codeunit 14135115 lvngGenJnlFileImportManagement
             GenJnlLine."Recurring Frequency" := GenJnlImportBuffer."Recurring Frequency";
             GenJnlLine."Recurring Method" := GenJnlImportBuffer."Recurring Method";
             GenJnlLine.lvngLoanNo := GenJnlImportBuffer."Loan No.";
+            GenJnlLine.lvngImportID := ImportID;
             GenJnlLine.Validate("Reason Code", GenJnlImportBuffer."Reason Code");
             GenJnlLine."Shortcut Dimension 1 Code" := GenJnlImportBuffer."Global Dimension 1 Code";
             GenJnlLine."Shortcut Dimension 2 Code" := GenJnlImportBuffer."Global Dimension 2 Code";
@@ -114,6 +114,38 @@ codeunit 14135115 lvngGenJnlFileImportManagement
         end;
     end;
 
+    procedure AutoFileImport(SchemaCode: Code[20]; ContainerName: Text; FileName: Text; var GenJnlImportBuffer: Record lvngGenJnlImportBuffer; var ImportBufferError: Record lvngImportBufferError)
+    begin
+        FileImportSchema.Get(SchemaCode);
+        FileImportJnlLine.Reset();
+        FileImportJnlLine.SetRange(Code, FileImportSchema.Code);
+        FileImportJnlLine.FindSet();
+        repeat
+            Clear(TempFileImportJnlLine);
+            TempFileImportJnlLine := FileImportJnlLine;
+            TempFileImportJnlLine.Insert();
+        until FileImportJnlLine.Next() = 0;
+        ReadCSVStream(ContainerName, FileName);
+        ProcessImportCSVBuffer(GenJnlImportBuffer);
+        ValidateEntries(GenJnlImportBuffer, ImportBufferError);
+    end;
+
+    local procedure ReadCSVStream(ContainerName: Text; FileName: Text)
+    var
+        StorageMgmt: Codeunit lvngAzureBlobManagement;
+        TabChar: Char;
+        FieldSeparatorLbl: Label '<TAB>';
+    begin
+        TabChar := 9;
+        if FileImportSchema."Field Separator" = FieldSeparatorLbl then
+            FileImportSchema."Field Separator" := TabChar;
+        StorageMgmt.DownloadFile(ContainerName, FileName, ImportStream);
+        TempCSVBuffer.LoadDataFromStream(ImportStream, FileImportSchema."Field Separator");
+        TempCSVBuffer.ResetFilters();
+        TempCSVBuffer.SetRange("Line No.", 0, FileImportSchema."Skip Rows");
+        TempCSVBuffer.DeleteAll();
+    end;
+
     local procedure ReadCSVStream()
     var
         TabChar: Char;
@@ -122,8 +154,7 @@ codeunit 14135115 lvngGenJnlFileImportManagement
         TabChar := 9;
         if FileImportSchema."Field Separator" = FieldSeparatorLbl then
             FileImportSchema."Field Separator" := TabChar;
-        ImportToStream := UploadIntoStream(OpenFileLbl, '', '', FileName, ImportStream);
-        if ImportToStream then begin
+        if UploadIntoStream(OpenFileLbl, '', '', FileName, ImportStream) then begin
             TempCSVBuffer.LoadDataFromStream(ImportStream, FileImportSchema."Field Separator");
             TempCSVBuffer.ResetFilters();
             TempCSVBuffer.SetRange("Line No.", 0, FileImportSchema."Skip Rows");

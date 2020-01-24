@@ -82,7 +82,7 @@ page 14135901 lvngDocumentListFactbox
     }
 
     var
-        DeletePromptQst: Label 'File %1 will be deleted permanently. Are you sure?';
+        DeletePromptQst: Label 'File %1 will be deleted permanently. This action cannot be undone. Are you sure?';
         SaveDocumentLbl: Label 'Save document';
         DXCRecordNotConfiguredErr: Label 'Error: Document Exchange Id is not configured for this record';
         DXCSetupNotConfiguredErr: Label 'Error: Document Exchange is not configured';

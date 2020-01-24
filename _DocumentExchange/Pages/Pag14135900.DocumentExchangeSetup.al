@@ -4,7 +4,7 @@ page 14135900 lvngDocumentExchangeSetup
     UsageCategory = Administration;
     ApplicationArea = All;
     SourceTable = lvngDocumentExchangeSetup;
-    Caption = 'Document Exchange Setup';
+    Caption = 'Storage Setup';
     InsertAllowed = false;
     DeleteAllowed = false;
 

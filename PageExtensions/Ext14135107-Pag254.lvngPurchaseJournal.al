@@ -49,7 +49,7 @@ pageextension 14135107 lvngPurchaseJournal extends "Purchase Journal"
                         JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, "Journal Template Name", "Journal Batch Name");
+                        ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, "Journal Template Name", "Journal Batch Name", CreateGuid());
                     CurrPage.Update(false);
                 end;
             }

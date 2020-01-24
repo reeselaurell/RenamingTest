@@ -15,7 +15,6 @@ codeunit 14135101 lvngLoanJournalImport
         PostProcessingMgmt: Codeunit lvngPostProcessingMgmt;
         ImportStream: InStream;
         FileName: Text;
-        ImportToStream: Boolean;
 
     procedure ReadCSVStream(lvngLoanJournalBatchCode: Code[20]; lvngImportSchema: Record lvngLoanImportSchema)
     var
@@ -26,8 +25,7 @@ codeunit 14135101 lvngLoanJournalImport
         if TempLoanImportSchema."Field Separator Character" = '<TAB>' then
             TempLoanImportSchema."Field Separator Character" := Format(TabChar);
         LoanJournalBatch.Get(lvngLoanJournalBatchCode);
-        ImportToStream := UploadIntoStream(OpenFileLbl, '', '', FileName, ImportStream);
-        if ImportToStream then begin
+        if UploadIntoStream(OpenFileLbl, '', '', FileName, ImportStream) then begin
             TempCSVBuffer.LoadDataFromStream(ImportStream, TempLoanImportSchema."Field Separator Character");
             TempCSVBuffer.ResetFilters();
             TempCSVBuffer.SetRange("Line No.", 0, TempLoanImportSchema."Skip Lines");
@@ -37,6 +35,26 @@ codeunit 14135101 lvngLoanJournalImport
             PostProcessingMgmt.PostProcessBatch(lvngLoanJournalBatchCode);
         end else
             Error(ReadingToStreamErr);
+    end;
+
+    procedure ReadCSVStream(lvngLoanJournalBatchCode: Code[20]; lvngImportSchema: Record lvngLoanImportSchema; ContainerName: Text; FileName: Text)
+    var
+        StorageMgmt: Codeunit lvngAzureBlobManagement;
+        TabChar: Char;
+    begin
+        TabChar := 9;
+        TempLoanImportSchema := lvngImportSchema;
+        if TempLoanImportSchema."Field Separator Character" = '<TAB>' then
+            TempLoanImportSchema."Field Separator Character" := Format(TabChar);
+        LoanJournalBatch.Get(lvngLoanJournalBatchCode);
+        StorageMgmt.DownloadFile(ContainerName, FileName, ImportStream);
+        TempCSVBuffer.LoadDataFromStream(ImportStream, TempLoanImportSchema."Field Separator Character");
+        TempCSVBuffer.ResetFilters();
+        TempCSVBuffer.SetRange("Line No.", 0, TempLoanImportSchema."Skip Lines");
+        TempCSVBuffer.DeleteAll();
+        ProcessImportCSVBuffer();
+        Clear(PostProcessingMgmt);
+        PostProcessingMgmt.PostProcessBatch(lvngLoanJournalBatchCode);
     end;
 
     procedure ProcessImportCSVBuffer()

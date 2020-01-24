@@ -43,13 +43,13 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
                     clear(ImportGenJnlFile);
                     if not ImportGenJnlFile.ManualFileImport(GenJnlImportBuffer, ImportBufferError) then
                         exit;
-                    ImportBufferError.reset;
+                    ImportBufferError.Reset();
                     if not ImportBufferError.IsEmpty() then begin
                         Clear(JournalDataImport);
                         JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, "Journal Template Name", "Journal Batch Name");
+                        ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, "Journal Template Name", "Journal Batch Name", CreateGuid());
                     CurrPage.Update(false);
                 end;
             }
