@@ -472,123 +472,123 @@ page 14135163 lvngQuickTrace
         SalesInvHeaderLF.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesInvHeaderLF.SetRange(lvngLoanNo, LoanNo);
         SalesInvHeaderLF.SetFilter("Reason Code", '%1', LoanVisionSetup."Funded Reason Code");
-        FundedInvoices := SalesInvHeaderLF.Count;
+        FundedInvoices := SalesInvHeaderLF.Count();
 
         SalesCrMemoHeaderLF.Reset();
         SalesCrMemoHeaderLF.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesCrMemoHeaderLF.SetRange(lvngLoanNo, LoanNo);
         SalesCrMemoHeaderLF.SetFilter("Reason Code", '%1', LoanVisionSetup."Funded Reason Code");
-        FundedCreditMemos := SalesCrMemoHeaderLF.Count;
+        FundedCreditMemos := SalesCrMemoHeaderLF.Count();
 
         SalesInvHeaderLP.Reset();
         SalesInvHeaderLP.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesInvHeaderLP.SetRange(lvngLoanNo, LoanNo);
         SalesInvHeaderLP.SetFilter("Reason Code", '%1', LoanVisionSetup."Sold Reason Code");
-        SoldInvoices := SalesInvHeaderLP.Count;
+        SoldInvoices := SalesInvHeaderLP.Count();
 
         SalesCrMemoHeaderLP.Reset();
         SalesCrMemoHeaderLP.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesCrMemoHeaderLP.SetRange(lvngLoanNo, LoanNo);
         SalesCrMemoHeaderLP.SetFilter("Reason Code", '%1', LoanVisionSetup."Sold Reason Code");
-        SoldCreditMemos := SalesCrMemoHeaderLP.Count;
+        SoldCreditMemos := SalesCrMemoHeaderLP.Count();
 
         SalesInvHeaderLS.Reset();
         SalesInvHeaderLS.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesInvHeaderLS.SetRange(lvngLoanNo, LoanNo);
         SalesInvHeaderLS.SetFilter("Reason Code", '%1', LoanServicingSetup."Serviced Reason Code");
-        ServicedInvoices := SalesInvHeaderLS.Count;
+        ServicedInvoices := SalesInvHeaderLS.Count();
 
         SalesCrMemoHeaderLS.Reset();
         SalesCrMemoHeaderLS.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesCrMemoHeaderLS.SetRange(lvngLoanNo, LoanNo);
         SalesCrMemoHeaderLS.SetFilter("Reason Code", '%1', LoanServicingSetup."Serviced Reason Code");
-        ServicedCreditMemos := SalesCrMemoHeaderLS.Count;
+        ServicedCreditMemos := SalesCrMemoHeaderLS.Count();
 
         SalesHeaderInvoiceLF.Reset();
         SalesHeaderInvoiceLF.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesHeaderInvoiceLF.SetRange("Document Type", SalesHeaderInvoiceLF."Document Type"::Invoice);
         SalesHeaderInvoiceLF.SetRange(lvngLoanNo, LoanNo);
         SalesHeaderInvoiceLF.SetFilter("Reason Code", '%1', LoanVisionSetup."Funded Reason Code");
-        OpenFundedInvoices := SalesHeaderInvoiceLF.Count;
+        OpenFundedInvoices := SalesHeaderInvoiceLF.Count();
 
         SalesHeaderCreditLF.Reset();
         SalesHeaderCreditLF.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesHeaderCreditLF.SetRange("Document Type", SalesHeaderInvoiceLF."Document Type"::"Credit Memo");
         SalesHeaderCreditLF.SetRange(lvngLoanNo, LoanNo);
         SalesHeaderCreditLF.SetFilter("Reason Code", '%1', LoanVisionSetup."Funded Reason Code");
-        OpenFundedCrMemos := SalesHeaderCreditLF.Count;
+        OpenFundedCrMemos := SalesHeaderCreditLF.Count();
 
         SalesHeaderInvoiceLP.Reset();
         SalesHeaderInvoiceLP.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesHeaderInvoiceLP.SetRange("Document Type", SalesHeaderInvoiceLF."Document Type"::Invoice);
         SalesHeaderInvoiceLP.SetRange(lvngLoanNo, LoanNo);
         SalesHeaderInvoiceLP.SetFilter("Reason Code", '%1', LoanVisionSetup."Sold Reason Code");
-        OpenSoldInvoices := SalesHeaderInvoiceLP.Count;
+        OpenSoldInvoices := SalesHeaderInvoiceLP.Count();
 
         SalesHeaderCreditLP.Reset();
         SalesHeaderCreditLP.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesHeaderCreditLP.SetRange("Document Type", SalesHeaderInvoiceLF."Document Type"::"Credit Memo");
         SalesHeaderCreditLP.SetRange(lvngLoanNo, LoanNo);
         SalesHeaderCreditLP.SetFilter("Reason Code", '%1', LoanVisionSetup."Sold Reason Code");
-        OpenSoldCrMemos := SalesHeaderCreditLP.Count;
+        OpenSoldCrMemos := SalesHeaderCreditLP.Count();
 
         SalesHeaderInvoiceLS.Reset();
         SalesHeaderInvoiceLS.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesHeaderInvoiceLS.SetRange("Document Type", SalesHeaderInvoiceLF."Document Type"::Invoice);
         SalesHeaderInvoiceLS.SetRange(lvngLoanNo, LoanNo);
         SalesHeaderInvoiceLS.SetFilter("Reason Code", '%1', LoanServicingSetup."Serviced Reason Code");
-        OpenServInvoices := SalesHeaderInvoiceLS.Count;
+        OpenServInvoices := SalesHeaderInvoiceLS.Count();
 
         SalesHeaderCreditLS.Reset();
         SalesHeaderCreditLS.SetCurrentKey(lvngLoanNo, "Reason Code");
         SalesHeaderCreditLS.SetRange("Document Type", SalesHeaderInvoiceLF."Document Type"::"Credit Memo");
         SalesHeaderCreditLS.SetRange(lvngLoanNo, LoanNo);
         SalesHeaderCreditLS.SetFilter("Reason Code", '%1', LoanServicingSetup."Serviced Reason Code");
-        OpenServCrMemos := SalesHeaderCreditLS.Count;
+        OpenServCrMemos := SalesHeaderCreditLS.Count();
 
         LoanDocInvoiceLF.Reset();
         LoanDocInvoiceLF.SetCurrentKey("Loan No.", "Reason Code");
         LoanDocInvoiceLF.SetRange("Document Type", LoanDocInvoiceLF."Document Type"::Invoice);
         LoanDocInvoiceLF.SetRange("Loan No.", LoanNo);
-        FundedLoanDocInvoices := LoanDocInvoiceLF.Count;
+        FundedLoanDocInvoices := LoanDocInvoiceLF.Count();
 
         LoanDocCreditLF.Reset();
         LoanDocCreditLF.SetCurrentKey("Loan No.", "Reason Code");
         LoanDocCreditLF.SetRange("Document Type", LoanDocCreditLF."Document Type"::"Credit Memo");
         LoanDocCreditLF.SetRange("Loan No.", LoanNo);
-        FundedLoanDocCrMemos := LoanDocCreditLF.Count;
+        FundedLoanDocCrMemos := LoanDocCreditLF.Count();
 
         LoanDocInvoiceLP.Reset();
         LoanDocInvoiceLP.SetCurrentKey("Loan No.", "Reason Code");
         LoanDocInvoiceLP.SetRange("Document Type", LoanDocInvoiceLP."Document Type"::Invoice);
         LoanDocInvoiceLP.SetRange("Loan No.", LoanNo);
-        SoldLoanDocInvoices := LoanDocInvoiceLP.Count;
+        SoldLoanDocInvoices := LoanDocInvoiceLP.Count();
 
         LoanDocCreditLP.Reset();
         LoanDocCreditLP.SetCurrentKey("Loan No.", "Reason Code");
         LoanDocCreditLP.SetRange("Document Type", LoanDocCreditLP."Document Type"::"Credit Memo");
         LoanDocCreditLP.SetRange("Loan No.", LoanNo);
-        SoldLoanDocCrMemos := LoanDocCreditLP.Count;
+        SoldLoanDocCrMemos := LoanDocCreditLP.Count();
 
         BankLedgEntry.Reset();
         BankLedgEntry.SetCurrentKey(lvngLoanNo);
         BankLedgEntry.SetRange(lvngLoanNo, LoanNo);
-        BankTransactions := BankLedgEntry.Count;
+        BankTransactions := BankLedgEntry.Count();
 
         CustLedgerEntry.Reset();
         CustLedgerEntry.SetCurrentKey(lvngLoanNo);
         CustLedgerEntry.SetRange(lvngLoanNo, LoanNo);
-        CustomerTransactions := CustLedgerEntry.Count;
+        CustomerTransactions := CustLedgerEntry.Count();
 
         VendLedgerEntry.Reset();
         VendLedgerEntry.SetCurrentKey(lvngLoanNo);
         VendLedgerEntry.SetRange(lvngLoanNo, LoanNo);
-        VendorTransactions := VendLedgerEntry.Count;
+        VendorTransactions := VendLedgerEntry.Count();
 
         GLEntry.Reset();
         GLEntry.SetCurrentKey(lvngLoanNo);
         GLEntry.SetRange(lvngLoanNo, LoanNo);
-        GeneralLedgerTransactions := GLEntry.Count;
+        GeneralLedgerTransactions := GLEntry.Count();
 
         CurrPage.Update(false);
     end;

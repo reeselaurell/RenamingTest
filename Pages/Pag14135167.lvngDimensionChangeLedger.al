@@ -10,8 +10,6 @@ page 14135167 lvngDimensionChangeLedger
         {
             repeater(Group)
             {
-                Caption = 'Group';
-
                 field("Entry No."; "Entry No.") { ApplicationArea = All; }
                 field("Old Dimension 1 Code"; "Old Dimension 1 Code") { ApplicationArea = All; }
                 field("New Dimension 1 Code"; "New Dimension 1 Code") { ApplicationArea = All; }

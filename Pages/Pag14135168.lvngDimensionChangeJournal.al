@@ -90,10 +90,10 @@ page 14135168 lvngDimensionChangeJournal
 
                 trigger OnAction()
                 var
-                    DimensionChangeSetImportRep: Report lvngDimensionChangeSetImport;
+                    DimensionChangeSetImport: Report lvngDimensionChangeSetImport;
                 begin
-                    DimensionChangeSetImportRep.SetParams("Change Set ID");
-                    DimensionChangeSetImportRep.Run();
+                    DimensionChangeSetImport.SetParams("Change Set ID");
+                    DimensionChangeSetImport.Run();
                     CurrPage.Update(false);
                 end;
             }

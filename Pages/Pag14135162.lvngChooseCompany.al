@@ -38,7 +38,7 @@ page 14135162 lvngChooseCompany
     begin
         SetRange(Name, CompanyName);
         if FindFirst() then;
-        WarnIfRecordExists := false
+        WarnIfRecordExists := false;
     end;
 
     procedure GetParameters(var pWarnIfRecordExists: Boolean)

@@ -60,7 +60,7 @@ report 14135109 lvngDimensionChangeSetImport
 
     trigger OnPreReport()
     begin
-        Total := GLEntry.Count;
+        Total := GLEntry.Count();
         Current := 0;
         if Total >= 50000 then
             if not Confirm(LargeCountMsg, false, Total) then

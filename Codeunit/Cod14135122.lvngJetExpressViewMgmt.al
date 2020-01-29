@@ -1,12 +1,14 @@
 codeunit 14135122 lvngJetExpressViewMgmt
 {
-    procedure RefreshJetExpressView(ViewCode: Code[20])
     var
         ProcessingMsg: Label 'Processing #1######### of #2###########';
+
+    procedure RefreshJetExpressView(ViewCode: Code[20])
+    var
         LoanCustomNormViewSetup: Record lvngLoanNormalizedViewSetup;
         LoanCustomNormView: Record lvngLoanNormalizedView;
         LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
-        Loans: Record lvngLoan;
+        Loan: Record lvngLoan;
         Counter: Integer;
         Progress: Dialog;
     begin
@@ -18,50 +20,50 @@ codeunit 14135122 lvngJetExpressViewMgmt
         LoanCustomNormView.SetRange("View Code", ViewCode);
         LoanCustomNormView.DeleteAll();
         Progress.Open(ProcessingMsg);
-        if Loans.FindSet() then begin
-            Progress.Update(2, Loans.Count);
+        if Loan.FindSet() then begin
+            Progress.Update(2, Loan.Count());
             repeat
                 Counter := Counter + 1;
                 Progress.Update(1, Counter);
                 LoanCustomNormView."View Code" := ViewCode;
-                LoanCustomNormView."Loan No." := Loans."No.";
-                LoanCustomNormView."Custom Text 1" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 1");
-                LoanCustomNormView."Custom Text 2" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 2");
-                LoanCustomNormView."Custom Text 3" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 3");
-                LoanCustomNormView."Custom Text 4" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 4");
-                LoanCustomNormView."Custom Text 5" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 5");
-                LoanCustomNormView."Custom Text 6" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 6");
-                LoanCustomNormView."Custom Text 7" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 7");
-                LoanCustomNormView."Custom Text 8" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 8");
-                LoanCustomNormView."Custom Text 9" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 9");
-                LoanCustomNormView."Custom Text 10" := GetTextValue(Loans."No.", LoanCustomNormViewSetup."Custom Text 10");
-                LoanCustomNormView."Custom Decimal 1" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 1");
-                LoanCustomNormView."Custom Decimal 2" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 2");
-                LoanCustomNormView."Custom Decimal 3" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 3");
-                LoanCustomNormView."Custom Decimal 4" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 4");
-                LoanCustomNormView."Custom Decimal 5" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 5");
-                LoanCustomNormView."Custom Decimal 6" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 6");
-                LoanCustomNormView."Custom Decimal 7" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 7");
-                LoanCustomNormView."Custom Decimal 8" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 8");
-                LoanCustomNormView."Custom Decimal 9" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 9");
-                LoanCustomNormView."Custom Decimal 10" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 10");
-                LoanCustomNormView."Custom Decimal 11" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 11");
-                LoanCustomNormView."Custom Decimal 12" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 12");
-                LoanCustomNormView."Custom Decimal 13" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 13");
-                LoanCustomNormView."Custom Decimal 14" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 14");
-                LoanCustomNormView."Custom Decimal 15" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 15");
-                LoanCustomNormView."Custom Decimal 16" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 16");
-                LoanCustomNormView."Custom Decimal 17" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 17");
-                LoanCustomNormView."Custom Decimal 18" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 18");
-                LoanCustomNormView."Custom Decimal 19" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 19");
-                LoanCustomNormView."Custom Decimal 20" := GetDecimalValue(Loans."No.", LoanCustomNormViewSetup."Custom Decimal 20");
-                LoanCustomNormView."Custom Date 1" := GetDateValue(Loans."No.", LoanCustomNormViewSetup."Custom Date 1");
-                LoanCustomNormView."Custom Date 2" := GetDateValue(Loans."No.", LoanCustomNormViewSetup."Custom Date 2");
-                LoanCustomNormView."Custom Date 3" := GetDateValue(Loans."No.", LoanCustomNormViewSetup."Custom Date 3");
-                LoanCustomNormView."Custom Date 4" := GetDateValue(Loans."No.", LoanCustomNormViewSetup."Custom Date 4");
-                LoanCustomNormView."Custom Date 5" := GetDateValue(Loans."No.", LoanCustomNormViewSetup."Custom Date 5");
+                LoanCustomNormView."Loan No." := Loan."No.";
+                LoanCustomNormView."Custom Text 1" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 1");
+                LoanCustomNormView."Custom Text 2" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 2");
+                LoanCustomNormView."Custom Text 3" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 3");
+                LoanCustomNormView."Custom Text 4" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 4");
+                LoanCustomNormView."Custom Text 5" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 5");
+                LoanCustomNormView."Custom Text 6" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 6");
+                LoanCustomNormView."Custom Text 7" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 7");
+                LoanCustomNormView."Custom Text 8" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 8");
+                LoanCustomNormView."Custom Text 9" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 9");
+                LoanCustomNormView."Custom Text 10" := GetTextValue(Loan."No.", LoanCustomNormViewSetup."Custom Text 10");
+                LoanCustomNormView."Custom Decimal 1" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 1");
+                LoanCustomNormView."Custom Decimal 2" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 2");
+                LoanCustomNormView."Custom Decimal 3" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 3");
+                LoanCustomNormView."Custom Decimal 4" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 4");
+                LoanCustomNormView."Custom Decimal 5" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 5");
+                LoanCustomNormView."Custom Decimal 6" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 6");
+                LoanCustomNormView."Custom Decimal 7" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 7");
+                LoanCustomNormView."Custom Decimal 8" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 8");
+                LoanCustomNormView."Custom Decimal 9" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 9");
+                LoanCustomNormView."Custom Decimal 10" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 10");
+                LoanCustomNormView."Custom Decimal 11" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 11");
+                LoanCustomNormView."Custom Decimal 12" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 12");
+                LoanCustomNormView."Custom Decimal 13" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 13");
+                LoanCustomNormView."Custom Decimal 14" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 14");
+                LoanCustomNormView."Custom Decimal 15" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 15");
+                LoanCustomNormView."Custom Decimal 16" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 16");
+                LoanCustomNormView."Custom Decimal 17" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 17");
+                LoanCustomNormView."Custom Decimal 18" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 18");
+                LoanCustomNormView."Custom Decimal 19" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 19");
+                LoanCustomNormView."Custom Decimal 20" := GetDecimalValue(Loan."No.", LoanCustomNormViewSetup."Custom Decimal 20");
+                LoanCustomNormView."Custom Date 1" := GetDateValue(Loan."No.", LoanCustomNormViewSetup."Custom Date 1");
+                LoanCustomNormView."Custom Date 2" := GetDateValue(Loan."No.", LoanCustomNormViewSetup."Custom Date 2");
+                LoanCustomNormView."Custom Date 3" := GetDateValue(Loan."No.", LoanCustomNormViewSetup."Custom Date 3");
+                LoanCustomNormView."Custom Date 4" := GetDateValue(Loan."No.", LoanCustomNormViewSetup."Custom Date 4");
+                LoanCustomNormView."Custom Date 5" := GetDateValue(Loan."No.", LoanCustomNormViewSetup."Custom Date 5");
                 LoanCustomNormView.Insert(true);
-            until Loans.Next() = 0;
+            until Loan.Next() = 0;
         end;
         Progress.Close();
     end;

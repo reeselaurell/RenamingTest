@@ -12,8 +12,6 @@ page 14135166 lvngDimensionChangeList
         {
             repeater(Group)
             {
-                Caption = 'Group';
-
                 field("Change Set ID"; "Change Set ID") { ApplicationArea = All; }
                 field(Date; Date) { ApplicationArea = All; }
                 field("User ID"; "User ID") { ApplicationArea = All; }
@@ -35,7 +33,7 @@ page 14135166 lvngDimensionChangeList
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ShortcutKey = return;
+                ShortcutKey = Return;
 
                 trigger OnAction()
                 var
@@ -50,7 +48,7 @@ page 14135166 lvngDimensionChangeList
                     DimensionChangeLedgerEntry.FilterGroup(2);
                     DimensionChangeLedgerEntry.SetRange("Change Set ID", "Change Set ID");
                     DimensionChangeLedgerEntry.FilterGroup(0);
-                    if not DimensionChangeLedgerEntry.IsEmpty then begin
+                    if not DimensionChangeLedgerEntry.IsEmpty() then begin
                         DimensionChangeLedger.SetTableView(DimensionChangeLedgerEntry);
                         DimensionChangeLedger.Run();
                     end else begin
@@ -71,6 +69,7 @@ page 14135166 lvngDimensionChangeList
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                Enabled = HasJournalEntries;
 
                 trigger OnAction()
                 var
@@ -94,6 +93,7 @@ page 14135166 lvngDimensionChangeList
 
     var
         CommentBlankErr: Label 'Comment cannot be blank!';
+        [InDataSet]
         HasJournalEntries: Boolean;
 
     trigger OnNewRecord(BelowxRec: Boolean)
@@ -106,6 +106,6 @@ page 14135166 lvngDimensionChangeList
         DimensionChangeJnlEntry: Record lvngDimensionChangeJnlEntry;
     begin
         DimensionChangeJnlEntry.SetRange("Change Set ID", "Change Set ID");
-        HasJournalEntries := not DimensionChangeJnlEntry.IsEmpty;
+        HasJournalEntries := not DimensionChangeJnlEntry.IsEmpty();
     end;
 }

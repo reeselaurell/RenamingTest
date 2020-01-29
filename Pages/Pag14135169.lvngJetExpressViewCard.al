@@ -1,7 +1,7 @@
 page 14135169 lvngJetExpressViewCard
 {
     Caption = 'Jet Express View Card';
-    PageType = List;
+    PageType = Card;
     SourceTable = lvngLoanNormalizedViewSetup;
 
     layout

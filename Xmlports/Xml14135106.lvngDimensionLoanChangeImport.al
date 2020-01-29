@@ -18,6 +18,7 @@ xmlport 14135106 lvngDimensionLoanChangeImport
     }
 
     var
+        ProgressLbl: Label '#1############## of #2###########';
         ChangeSetId: Guid;
 
     trigger OnPostXmlPort()
@@ -25,15 +26,15 @@ xmlport 14135106 lvngDimensionLoanChangeImport
         DimensionChangeJnlEntry: Record lvngDimensionChangeJnlEntry;
         GLEntry: Record "G/L Entry";
         Progress: Dialog;
-        index: Integer;
+        Index: Integer;
     begin
         LoanBuffer.Reset();
         LoanBuffer.FindSet();
-        Progress.Open('#1############## of #2###########');
+        Progress.Open(ProgressLbl);
         Progress.Update(2, LoanBuffer.Count);
         repeat
-            index += 1;
-            Progress.Update(1, index);
+            Index += 1;
+            Progress.Update(1, Index);
             GLEntry.Reset();
             GLEntry.SetRange(lvngLoanNo, LoanBuffer."Loan No.");
             if GLEntry.FindSet() then begin

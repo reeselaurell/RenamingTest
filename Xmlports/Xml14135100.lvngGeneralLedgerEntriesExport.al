@@ -18,182 +18,182 @@ xmlport 14135100 lvngGeneralLedgerEntriesExport
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        EntryNoCapt := 'Entry No.';
+                        EntryNoCapt := GLEntry.FieldCaption("Entry No.");
                     end;
                 }
                 textelement(PostingDateCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        PostingDateCapt := 'Posting Date';
+                        PostingDateCapt := GLEntry.FieldCaption("Posting Date");
                     end;
                 }
                 textelement(EntryDateCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        EntryDateCapt := 'Entry Date';
+                        EntryDateCapt := GLEntry.FieldCaption(lvngEntryDate);
                     end;
                 }
                 textelement(DocumentTypeCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        DocumentTypeCapt := 'Document Type';
+                        DocumentTypeCapt := GLEntry.FieldCaption("Document Type");
                     end;
                 }
                 textelement(DocumentNoCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        DocumentNoCapt := 'Document No.';
+                        DocumentNoCapt := GLEntry.FieldCaption("Document No.");
                     end;
                 }
                 textelement(GLAccountNoCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        GLAccountNoCapt := 'G/L Account No.';
+                        GLAccountNoCapt := GLEntry.FieldCaption("G/L Account No.");
                     end;
                 }
                 textelement(GLAccountNameCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        GLAccountNameCapt := 'G/L Account Name';
+                        GLAccountNameCapt := GLEntry.FieldCaption("G/L Account Name");
                     end;
                 }
                 textelement(DescriptionCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        DescriptionCapt := 'Description';
+                        DescriptionCapt := GLEntry.FieldCaption(Description);
                     end;
                 }
                 textelement(AmountCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        AmountCapt := 'Amount';
+                        AmountCapt := GLEntry.FieldCaption(Amount);
                     end;
                 }
                 textelement(ReasonCodeCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        ReasonCodeCapt := 'Reason Code';
+                        ReasonCodeCapt := GLEntry.FieldCaption("Reason Code");
                     end;
                 }
                 textelement(BalAccountTypeCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        BalAccountTypeCapt := 'Bal. Account Type';
+                        BalAccountTypeCapt := GLEntry.FieldCaption("Bal. Account Type");
                     end;
                 }
                 textelement(BalAccountNoCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        BalAccountNoCapt := 'Bal. Account No.';
+                        BalAccountNoCapt := GLEntry.FieldCaption("Bal. Account No.");
                     end;
                 }
                 textelement(LoanNoCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        LoanNoCapt := 'Loan No.';
+                        LoanNoCapt := GLEntry.FieldCaption(lvngLoanNo);
                     end;
                 }
                 textelement(SourceTypeCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        SourceTypeCapt := 'Source Type';
+                        SourceTypeCapt := GLEntry.FieldCaption("Source Type");
                     end;
                 }
                 textelement(SourceNoCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        SourceNoCapt := 'Source No.';
+                        SourceNoCapt := GLEntry.FieldCaption("Source No.");
                     end;
                 }
                 textelement(SourceNameCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        SourceNameCapt := 'Source Name';
+                        SourceNameCapt := GLEntry.FieldCaption(lvngSourceName);
                     end;
                 }
                 textelement(ReversedCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        ReversedCapt := 'Reversed';
+                        ReversedCapt := GLEntry.FieldCaption(Reversed);
                     end;
                 }
                 textelement(UserIdCapt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        UserIdCapt := 'User ID';
+                        UserIdCapt := GLEntry.FieldCaption("User ID");
                     end;
                 }
                 textelement(Dim1Capt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        Dim1Capt := GeneralLedgerSetup."Shortcut Dimension 1 Code";
+                        Dim1Capt := DimensionNames[1];
                     end;
                 }
                 textelement(Dim2Capt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        Dim2Capt := GeneralLedgerSetup."Shortcut Dimension 2 Code";
+                        Dim2Capt := DimensionNames[2];
                     end;
                 }
                 textelement(Dim3Capt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        Dim3Capt := GeneralLedgerSetup."Shortcut Dimension 3 Code";
+                        Dim3Capt := DimensionNames[3];
                     end;
                 }
                 textelement(Dim4Capt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        Dim4Capt := GeneralLedgerSetup."Shortcut Dimension 4 Code";
+                        Dim4Capt := DimensionNames[4];
                     end;
                 }
                 textelement(Dim5Capt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        Dim5Capt := GeneralLedgerSetup."Shortcut Dimension 5 Code";
+                        Dim5Capt := DimensionNames[5];
                     end;
                 }
                 textelement(Dim6Capt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        Dim6Capt := GeneralLedgerSetup."Shortcut Dimension 6 Code";
+                        Dim6Capt := DimensionNames[6];
                     end;
                 }
                 textelement(Dim7Capt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        Dim7Capt := GeneralLedgerSetup."Shortcut Dimension 7 Code";
+                        Dim7Capt := DimensionNames[7];
                     end;
                 }
                 textelement(Dim8Capt)
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        Dim8Capt := GeneralLedgerSetup."Shortcut Dimension 8 Code";
+                        Dim8Capt := DimensionNames[8];
                     end;
                 }
             }
@@ -209,13 +209,7 @@ xmlport 14135100 lvngGeneralLedgerEntriesExport
                 fieldelement(DocumentType; GLEntry."Document Type") { }
                 fieldelement(DocumentNo; GLEntry."Document No.") { }
                 fieldelement(GLAccountNo; GLEntry."G/L Account No.") { }
-                textelement(GLAccountName)
-                {
-                    trigger OnBeforePassVariable()
-                    begin
-                        GLAccountName := GLAccount.Name;
-                    end;
-                }
+                fieldelement(GLAccountName;GLEntry."G/L Account Name") { }
                 fieldelement(Description; GLEntry.Description) { }
                 fieldelement(Amount; GLEntry.Amount) { }
                 fieldelement(ReasonCode; GLEntry."Reason Code") { }
@@ -235,21 +229,17 @@ xmlport 14135100 lvngGeneralLedgerEntriesExport
                 fieldelement(Dim6; GLEntry.lvngShortcutDimension6Code) { }
                 fieldelement(Dim7; GLEntry.lvngShortcutDimension7Code) { }
                 fieldelement(Dim8; GLEntry.lvngShortcutDimension8Code) { }
-
-                trigger OnAfterGetRecord()
-                begin
-                    GLAccount.Get(GLEntry."G/L Account No.");
-                end;
             }
         }
     }
 
     var
-        GeneralLedgerSetup: Record "General Ledger Setup";
-        GLAccount: Record "G/L Account";
+        DimensionNames: array[8] of Text;
 
     trigger OnPreXmlPort()
+    var
+        DimensionMgmt: Codeunit lvngDimensionsManagement;
     begin
-        GeneralLedgerSetup.Get();
+        DimensionMgmt.GetDimensionNames(DimensionNames);
     end;
 }

@@ -15,88 +15,83 @@ codeunit 14135120 lvngCreateNewCompany
         WorkingOnTableMsg: Label 'Working on table     #1################# #130#of#140#\';
         NoRecords: Label 'No. of records       #2###';
         CompanyCopyItselfErr: Label 'Company can not be copied into it self';
-        CompanyExistErr: Label 'Company does not exist: ';
         NoTablesSelectedErr: Label 'No Tables have been selected in "Create New Company Setup"';
         TablesCopiedMsg: Label '%1 tables were copied';
         RecordsExistMsg: Label 'Records already exist in table: "%1" for Company: "%2". Do you want to proceed anyway?';
-        Companies: Record Company;
+        Company: Record Company;
         CompanyDataTransfer: Record lvngCompanyDataTransfer;
         ChooseCompany: Page lvngChooseCompany;
         Progress: Dialog;
-        fromRecRef: RecordRef;
-        toRecRef: RecordRef;
-        fromFieldRef: FieldRef;
-        toFieldRef: FieldRef;
-        iFieldCount: Integer;
-        iFieldNo: Integer;
+        FromRecRef: RecordRef;
+        ToRecRef: RecordRef;
+        FromFieldRef: FieldRef;
+        ToFieldRef: FieldRef;
+        TableFieldCount: Integer;
+        TableFieldNo: Integer;
         TablesCount: Integer;
         Counter: Integer;
-        CompanyNameValue: Text[50];
+        NewCompanyName: Text[50];
         ShowWarnings: Boolean;
     begin
         CompanyDataTransfer.SetRange(Active, true);
-        if CompanyDataTransfer.Count = 0 then
+        if CompanyDataTransfer.IsEmpty() then
             Error(NoTablesSelectedErr);
-        Companies.Reset();
-        ChooseCompany.SetTableView(Companies);
+        Company.Reset();
+        ChooseCompany.SetTableView(Company);
         ChooseCompany.LookupMode := true;
         if ChooseCompany.RunModal() = Action::LookupOK then begin
-            ChooseCompany.GetRecord(Companies);
-            CompanyNameValue := Companies.Name;
-        end;
+            ChooseCompany.GetRecord(Company);
+            NewCompanyName := Company.Name;
+        end else
+            exit;
+        if NewCompanyName = CompanyName() then
+            Error(CompanyCopyItselfErr);
         ChooseCompany.GetParameters(ShowWarnings);
         Progress.Open(CopyCompanyMsg + WorkingOnTableMsg + NoRecords);
-        Progress.Update(3, CompanyNameValue);
-        if CompanyNameValue = CompanyName then
-            Error(CompanyCopyItselfErr);
-        if not Companies.Get(CompanyNameValue) then begin
-            Companies.Init();
-            Companies.Name := CompanyNameValue;
-            Companies.Insert(true);
+        Progress.Update(3, NewCompanyName);
+        if not Company.Get(NewCompanyName) then begin
+            Company.Init();
+            Company.Name := NewCompanyName;
+            Company.Insert(true);
         end;
-        if Companies.Get(CompanyNameValue) then begin
-            CompanyDataTransfer.SetRange(Active, true);
-            Progress.Update(140, Format(CompanyDataTransfer.Count));
-            if CompanyDataTransfer.FindSet() then
-                repeat
-                    TablesCount := TablesCount + 1;
-                    Clear(fromRecRef);
-                    Clear(toRecRef);
-                    fromRecRef.Open(CompanyDataTransfer."Table ID");
-                    toRecRef.Open(CompanyDataTransfer."Table ID", FALSE, CompanyNameValue);
-                    if ShowWarnings then
-                        if not toRecRef.IsEmpty then begin
-                            CompanyDataTransfer.CalcFields("Table Name");
-                            if not Confirm(RecordsExistMsg, false, CompanyDataTransfer."Table Name", CompanyNameValue) then
-                                exit;
-                        end;
-                    Progress.Update(1, fromRecRef.Name);
-                    Progress.Update(130, Format(TablesCount));
-                    iFieldCount := fromRecRef.FieldCount;
-                    if fromRecRef.FindSet() then
-                        repeat
-                            for iFieldNo := 1 to iFieldCount do begin
-                                fromFieldRef := fromRecRef.FieldIndex(iFieldNo);
-                                toFieldRef := toRecRef.FieldIndex(iFieldNo);
-                                if Format(fromFieldRef.Type) <> 'BLOB' then
-                                    toFieldRef.Value := fromFieldRef.Value
-                                else begin
-                                    fromFieldRef.CalcField();
-                                    toFieldRef.Value := fromFieldRef.Value;
-                                end;
+        Progress.Update(140, Format(CompanyDataTransfer.Count));
+        if CompanyDataTransfer.FindSet() then
+            repeat
+                TablesCount := TablesCount + 1;
+                Clear(FromRecRef);
+                Clear(ToRecRef);
+                FromRecRef.Open(CompanyDataTransfer."Table ID");
+                ToRecRef.Open(CompanyDataTransfer."Table ID", false, NewCompanyName);
+                if ShowWarnings then
+                    if not ToRecRef.IsEmpty() then begin
+                        CompanyDataTransfer.CalcFields("Table Name");
+                        if not Confirm(RecordsExistMsg, false, CompanyDataTransfer."Table Name", NewCompanyName) then
+                            exit;
+                    end;
+                Progress.Update(1, FromRecRef.Name);
+                Progress.Update(130, Format(TablesCount));
+                TableFieldCount := FromRecRef.FieldCount();
+                if FromRecRef.FindSet() then
+                    repeat
+                        for TableFieldNo := 1 to TableFieldCount do begin
+                            FromFieldRef := FromRecRef.FieldIndex(TableFieldNo);
+                            ToFieldRef := ToRecRef.FieldIndex(TableFieldNo);
+                            if Format(FromFieldRef.Type) <> 'BLOB' then
+                                ToFieldRef.Value := FromFieldRef.Value
+                            else begin
+                                FromFieldRef.CalcField();
+                                ToFieldRef.Value := FromFieldRef.Value;
                             end;
-                            if not toRecRef.Insert() then
-                                toRecRef.Modify();
-                            Counter := Counter + 1;
-                            if Counter mod 10 = 0 then
-                                Progress.Update(2, Counter);
-                        until (fromRecRef.Next() = 0);
-                until (CompanyDataTransfer.Next() = 0);
-            Commit();
-            Message(TablesCopiedMsg, TablesCount);
-            exit;
-        end else
-            Error(CompanyExistErr + CompanyNameValue);
+                        end;
+                        if not ToRecRef.Insert() then
+                            ToRecRef.Modify();
+                        Counter := Counter + 1;
+                        if Counter mod 10 = 0 then
+                            Progress.Update(2, Counter);
+                    until (FromRecRef.Next() = 0);
+            until (CompanyDataTransfer.Next() = 0);
+        Commit();
+        Message(TablesCopiedMsg, TablesCount);
         Progress.Close();
     end;
 }

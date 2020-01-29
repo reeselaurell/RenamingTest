@@ -52,6 +52,8 @@ table 14135156 lvngLoanNormalizedView
         key(PK; "View Code", "Loan No.") { Clustered = true; }
     }
 
+    var
+        ViewTxt: Label 'MYVIEW';
 
     trigger OnDelete()
     var
@@ -64,7 +66,6 @@ table 14135156 lvngLoanNormalizedView
 
     local procedure GetCaption(ViewFieldNo: Integer): Text
     var
-        ViewTxt: Label 'MYVIEW';
         LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
         LoanCustomNormViewSetup: Record lvngLoanNormalizedViewSetup;
         LoanFieldConfigurationFieldNo: Integer;

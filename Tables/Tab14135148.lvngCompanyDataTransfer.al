@@ -22,7 +22,6 @@ table 14135148 lvngCompanyDataTransfer
                 repeat
                     TableMetadata.Mark(true);
                 until TableMetadata.Next() = 0;
-                TableMetadata.Reset();
                 TableMetadata.SetFilter(ID, '%1..%2', 1, 99999999);
                 TableMetadata.SetFilter(Name, '*Setup*');
                 TableMetadata.FindSet();
@@ -39,17 +38,9 @@ table 14135148 lvngCompanyDataTransfer
                     TablesListPage.GetRecord(TableMetadata);
                     Validate("Table ID", TableMetadata.ID);
                 end;
-                TableMetadata.MarkedOnly(false);
-                TableMetadata.ClearMarks();
             end;
         }
-        field(10; "Table Name"; Text[50])
-        {
-            Caption = 'Table Name';
-            FieldClass = FlowField;
-            CalcFormula = lookup (AllObj."Object Name" where("Object Type" = const(Table), "Object ID" = field("Table ID")));
-            Editable = false;
-        }
+        field(10; "Table Name"; Text[50]) { Caption = 'Table Name'; FieldClass = FlowField; CalcFormula = lookup (AllObj."Object Name" where("Object Type" = const(Table), "Object ID" = field("Table ID"))); Editable = false; }
         field(11; Active; Boolean) { Caption = 'Active'; DataClassification = CustomerContent; InitValue = true; }
     }
 

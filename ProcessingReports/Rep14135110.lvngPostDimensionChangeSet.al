@@ -36,7 +36,7 @@ report 14135110 lvngPostDimensionChangeSet
                     DimCode := "New Dimension 1 Code";
                     DimMgmt.ValidateShortcutDimValues(1, DimCode, DimSetId);
                     GLEntry."Global Dimension 1 Code" := DimCode;
-                    DimensionChangeLedgerEntry."New Dimension 1 Code" := "New Dimension 1 Code";
+                    DimensionChangeLedgerEntry."New Dimension 1 Code" := DimCode;
                 end else
                     DimensionChangeLedgerEntry."New Dimension 1 Code" := GLEntry."Global Dimension 1 Code";
                 DimensionChangeLedgerEntry."Old Dimension 2 Code" := GLEntry."Global Dimension 2 Code";
@@ -44,7 +44,7 @@ report 14135110 lvngPostDimensionChangeSet
                     DimCode := "New Dimension 2 Code";
                     DimMgmt.ValidateShortcutDimValues(2, DimCode, DimSetId);
                     GLEntry."Global Dimension 2 Code" := DimCode;
-                    DimensionChangeLedgerEntry."New Dimension 2 Code" := "New Dimension 2 Code";
+                    DimensionChangeLedgerEntry."New Dimension 2 Code" := DimCode;
                 end else
                     DimensionChangeLedgerEntry."New Dimension 2 Code" := GLEntry."Global Dimension 2 Code";
                 DimensionChangeLedgerEntry."Old Dimension 3 Code" := GLEntry.lvngShortcutDimension3Code;
@@ -52,7 +52,7 @@ report 14135110 lvngPostDimensionChangeSet
                     DimCode := "New Dimension 3 Code";
                     DimMgmt.ValidateShortcutDimValues(3, DimCode, DimSetId);
                     GLEntry.lvngShortcutDimension3Code := DimCode;
-                    DimensionChangeLedgerEntry."New Dimension 3 Code" := "New Dimension 3 Code";
+                    DimensionChangeLedgerEntry."New Dimension 3 Code" := DimCode;
                 end else
                     DimensionChangeLedgerEntry."New Dimension 3 Code" := GLEntry.lvngShortcutDimension3Code;
                 DimensionChangeLedgerEntry."Old Dimension 4 Code" := GLEntry.lvngShortcutDimension4Code;
@@ -60,7 +60,7 @@ report 14135110 lvngPostDimensionChangeSet
                     DimCode := "New Dimension 4 Code";
                     DimMgmt.ValidateShortcutDimValues(4, DimCode, DimSetId);
                     GLEntry.lvngShortcutDimension4Code := DimCode;
-                    DimensionChangeLedgerEntry."New Dimension 4 Code" := "New Dimension 4 Code";
+                    DimensionChangeLedgerEntry."New Dimension 4 Code" := DimCode;
                 end else
                     DimensionChangeLedgerEntry."New Dimension 4 Code" := GLEntry.lvngShortcutDimension4Code;
                 DimensionChangeLedgerEntry."Old Dimension 5 Code" := GLEntry.lvngShortcutDimension5Code;
@@ -68,7 +68,7 @@ report 14135110 lvngPostDimensionChangeSet
                     DimCode := "New Dimension 5 Code";
                     DimMgmt.ValidateShortcutDimValues(5, DimCode, DimSetId);
                     GLEntry.lvngShortcutDimension5Code := DimCode;
-                    DimensionChangeLedgerEntry."New Dimension 5 Code" := "New Dimension 5 Code";
+                    DimensionChangeLedgerEntry."New Dimension 5 Code" := DimCode;
                 end else
                     DimensionChangeLedgerEntry."New Dimension 5 Code" := GLEntry.lvngShortcutDimension5Code;
                 DimensionChangeLedgerEntry."Old Dimension 6 Code" := GLEntry.lvngShortcutDimension6Code;
@@ -76,7 +76,7 @@ report 14135110 lvngPostDimensionChangeSet
                     DimCode := "New Dimension 6 Code";
                     DimMgmt.ValidateShortcutDimValues(6, DimCode, DimSetId);
                     GLEntry.lvngShortcutDimension6Code := DimCode;
-                    DimensionChangeLedgerEntry."New Dimension 6 Code" := "New Dimension 6 Code";
+                    DimensionChangeLedgerEntry."New Dimension 6 Code" := DimCode;
                 end else
                     DimensionChangeLedgerEntry."New Dimension 6 Code" := GLEntry.lvngShortcutDimension6Code;
                 DimensionChangeLedgerEntry."Old Dimension 7 Code" := GLEntry.lvngShortcutDimension7Code;
@@ -84,7 +84,7 @@ report 14135110 lvngPostDimensionChangeSet
                     DimCode := "New Dimension 7 Code";
                     DimMgmt.ValidateShortcutDimValues(7, DimCode, DimSetId);
                     GLEntry.lvngShortcutDimension7Code := DimCode;
-                    DimensionChangeLedgerEntry."New Dimension 7 Code" := "New Dimension 7 Code";
+                    DimensionChangeLedgerEntry."New Dimension 7 Code" := DimCode;
                 end else
                     DimensionChangeLedgerEntry."New Dimension 7 Code" := GLEntry.lvngShortcutDimension7Code;
                 DimensionChangeLedgerEntry."Old Dimension 8 Code" := GLEntry.lvngShortcutDimension8Code;
@@ -92,7 +92,7 @@ report 14135110 lvngPostDimensionChangeSet
                     DimCode := "New Dimension 8 Code";
                     DimMgmt.ValidateShortcutDimValues(8, DimCode, DimSetId);
                     GLEntry.lvngShortcutDimension8Code := DimCode;
-                    DimensionChangeLedgerEntry."New Dimension 8 Code" := "New Dimension 8 Code";
+                    DimensionChangeLedgerEntry."New Dimension 8 Code" := DimCode;
                 end else
                     DimensionChangeLedgerEntry."New Dimension 8 Code" := GLEntry.lvngShortcutDimension8Code;
                 DimensionChangeLedgerEntry."Old Business Unit Code" := GLEntry."Business Unit Code";
@@ -174,6 +174,6 @@ report 14135110 lvngPostDimensionChangeSet
     trigger OnPreReport()
     begin
         Current := 0;
-        Total := DimensionChangeJnlEntry.Count
+        Total := DimensionChangeJnlEntry.Count();
     end;
 }

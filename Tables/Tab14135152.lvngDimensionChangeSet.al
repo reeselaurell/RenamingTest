@@ -16,23 +16,26 @@ table 14135152 lvngDimensionChangeSet
         key(PK; "Change Set ID") { Clustered = true; }
     }
 
+    var
+        DeleteChangeSetErr: Label 'Unable to delete posted change set.';
+
     trigger OnInsert()
     begin
         "Change Set ID" := CreateGuid();
-        Date := Today;
-        "User ID" := UserId;
+        Date := Today();
+        "User ID" := UserId();
     end;
 
     trigger OnDelete()
     var
-        DeleteChangeSetErr: Label 'Unable to delete posted change set.';
         DimensionChangeLedgerEntry: Record lvngDimensionChangeLedgerEntry;
         DimensionChangeJnlEntry: Record lvngDimensionChangeJnlEntry;
     begin
         DimensionChangeLedgerEntry.Reset();
         DimensionChangeLedgerEntry.SetRange("Change Set ID", "Change Set ID");
-        if not DimensionChangeLedgerEntry.IsEmpty then
+        if not DimensionChangeLedgerEntry.IsEmpty() then
             Error(DeleteChangeSetErr);
+        DimensionChangeJnlEntry.Reset();
         DimensionChangeJnlEntry.SetRange("Change Set ID", "Change Set ID");
         DimensionChangeJnlEntry.DeleteAll();
     end;

@@ -15,9 +15,9 @@ page 14135161 lvngCompanyDataTransfer
             {
                 Caption = 'Group';
 
-                field("Table ID"; "Table ID") { ApplicationArea = All; }
-                field("Table Name"; "Table Name") { ApplicationArea = All; }
-                field(Active; Active) { ApplicationArea = All; }
+                field("Table ID"; "Table ID") { Caption = 'Table ID'; ApplicationArea = All; }
+                field("Table Name"; "Table Name") { Caption = 'Table Name'; ApplicationArea = All; }
+                field(Active; Active) { Caption = 'Active'; ApplicationArea = All; }
             }
         }
     }
@@ -34,12 +34,9 @@ page 14135161 lvngCompanyDataTransfer
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-
-                trigger OnAction()
-                begin
-                    Codeunit.Run(Codeunit::lvngCreateNewCompany);
-                end;
+                RunObject = codeunit lvngCreateNewCompany;
             }
+
             action(GetLoanVisionObjects)
             {
                 ApplicationArea = All;

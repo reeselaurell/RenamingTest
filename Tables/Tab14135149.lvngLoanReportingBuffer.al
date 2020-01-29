@@ -15,70 +15,14 @@ table 14135149 lvngLoanReportingBuffer
         field(22; "Date Funded"; Date) { Caption = 'Date Funded'; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Date Funded" where("No." = field("Loan No."))); Editable = false; }
         field(23; "Date Sold"; Date) { Caption = 'Date Sold'; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Date Sold" where("No." = field("Loan No."))); Editable = false; }
         field(25; "Loan Amount"; Decimal) { Caption = 'Loan Amount'; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Loan Amount" where("No." = field("Loan No."))); Editable = false; }
-        field(80; "Global Dimension 1 Code"; Code[20])
-        {
-            FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Global Dimension 1 Code" where("No." = field("Loan No.")));
-            Editable = false;
-            Caption = 'Global Dimension 1 Code';
-            CaptionClass = '1,1,1';
-        }
-        field(81; "Global Dimension 2 Code"; Code[20])
-        {
-            FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Global Dimension 2 Code" where("No." = field("Loan No.")));
-            Editable = false;
-            Caption = 'Global Dimension 2 Code';
-            CaptionClass = '1,1,2';
-        }
-        field(82; "Shortcut Dimension 3 Code"; Code[20])
-        {
-            FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Shortcut Dimension 3 Code" where("No." = field("Loan No.")));
-            Editable = false;
-            Caption = 'Shortcut Dimension 3 Code';
-            CaptionClass = '1,2,3';
-        }
-        field(83; "Shortcut Dimension 4 Code"; Code[20])
-        {
-            FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Shortcut Dimension 4 Code" where("No." = field("Loan No.")));
-            Editable = false;
-            Caption = 'Shortcut Dimension 4 Code';
-            CaptionClass = '1,2,4';
-        }
-        field(84; "Shortcut Dimension 5 Code"; Code[20])
-        {
-            FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Shortcut Dimension 5 Code" where("No." = field("Loan No.")));
-            Editable = false;
-            Caption = 'Shortcut Dimension 5 Code';
-            CaptionClass = '1,2,5';
-        }
-        field(85; "Shortcut Dimension 6 Code"; Code[20])
-        {
-            FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Shortcut Dimension 6 Code" where("No." = field("Loan No.")));
-            Editable = false;
-            Caption = 'Shortcut Dimension 6 Code';
-            CaptionClass = '1,2,6';
-        }
-        field(86; "Shortcut Dimension 7 Code"; Code[20])
-        {
-            FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Shortcut Dimension 7 Code" where("No." = field("Loan No.")));
-            Editable = false;
-            Caption = 'Shortcut Dimension 7 Code';
-            CaptionClass = '1,2,7';
-        }
-        field(87; "Shortcut Dimension 8 Code"; Code[20])
-        {
-            FieldClass = FlowField;
-            CalcFormula = lookup (lvngLoan."Shortcut Dimension 8 Code" where("No." = field("Loan No.")));
-            Editable = false;
-            Caption = 'Shortcut Dimension 8 Code';
-            CaptionClass = '1,2,8';
-        }
+        field(80; "Global Dimension 1 Code"; Code[20]) { FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Global Dimension 1 Code" where("No." = field("Loan No."))); Editable = false; Caption = 'Global Dimension 1 Code'; CaptionClass = '1,1,1'; }
+        field(81; "Global Dimension 2 Code"; Code[20]) { FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Global Dimension 2 Code" where("No." = field("Loan No."))); Editable = false; Caption = 'Global Dimension 2 Code'; CaptionClass = '1,1,2'; }
+        field(82; "Shortcut Dimension 3 Code"; Code[20]) { FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Shortcut Dimension 3 Code" where("No." = field("Loan No."))); Editable = false; Caption = 'Shortcut Dimension 3 Code'; CaptionClass = '1,2,3'; }
+        field(83; "Shortcut Dimension 4 Code"; Code[20]) { FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Shortcut Dimension 4 Code" where("No." = field("Loan No."))); Editable = false; Caption = 'Shortcut Dimension 4 Code'; CaptionClass = '1,2,4'; }
+        field(84; "Shortcut Dimension 5 Code"; Code[20]) { FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Shortcut Dimension 5 Code" where("No." = field("Loan No."))); Editable = false; Caption = 'Shortcut Dimension 5 Code'; CaptionClass = '1,2,5'; }
+        field(85; "Shortcut Dimension 6 Code"; Code[20]) { FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Shortcut Dimension 6 Code" where("No." = field("Loan No."))); Editable = false; Caption = 'Shortcut Dimension 6 Code'; CaptionClass = '1,2,6'; }
+        field(86; "Shortcut Dimension 7 Code"; Code[20]) { FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Shortcut Dimension 7 Code" where("No." = field("Loan No."))); Editable = false; Caption = 'Shortcut Dimension 7 Code'; CaptionClass = '1,2,7'; }
+        field(87; "Shortcut Dimension 8 Code"; Code[20]) { FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Shortcut Dimension 8 Code" where("No." = field("Loan No."))); Editable = false; Caption = 'Shortcut Dimension 8 Code'; CaptionClass = '1,2,8'; }
         field(88; "Business Unit Code"; Code[10]) { Caption = 'Business Unit Code'; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Business Unit Code" where("No." = field("Loan No."))); Editable = false; }
     }
 
