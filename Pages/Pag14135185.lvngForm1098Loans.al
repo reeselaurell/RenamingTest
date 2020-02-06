@@ -1,5 +1,6 @@
 page 14135185 lvngForm1098Loans
 {
+    Caption = 'Form 1098 Loans';
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;

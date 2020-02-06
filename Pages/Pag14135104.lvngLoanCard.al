@@ -14,6 +14,7 @@ page 14135104 lvngLoanCard
 
                 field("No."; "No.") { ApplicationArea = All; }
                 field("Alternative Loan No."; "Alternative Loan No.") { ApplicationArea = All; }
+                field("Loan Amount"; "Loan Amount") { ApplicationArea = All; }
                 field("Warehouse Line Code"; "Warehouse Line Code") { ApplicationArea = All; }
                 field(Blocked; Blocked) { ApplicationArea = All; }
                 field("Search Name"; "Search Name") { ApplicationArea = All; }

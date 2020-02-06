@@ -71,6 +71,7 @@ codeunit 14135113 lvngCreateSoldDocuments
         TempDocumentTok: Label 'XXXXXXXX';
         LineNo: Integer;
         DocumentAmount: Decimal;
+        FieldSequenceNo: Integer;
     begin
         GetLoanVisionSetup();
         if LoanVisionSetup."Sold Void Reason Code" <> '' then begin
@@ -115,7 +116,23 @@ codeunit 14135113 lvngCreateSoldDocuments
         LoanJournalBatch.Get(LoanJournalLine."Loan Journal Batch Code");
         ExpressionValueBuffer.Reset();
         ExpressionValueBuffer.DeleteAll();
-        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine);
+        FieldSequenceNo := 0;
+        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
+        Clear(ExpressionValueBuffer);
+        FieldSequenceNo += 1;
+        ExpressionValueBuffer.Number := FieldSequenceNo;
+        ExpressionValueBuffer.Name := '!CalculationParameter';
+        ExpressionValueBuffer.Value := '0';
+        ExpressionValueBuffer.Type := 'Decimal';
+        ExpressionValueBuffer.Insert();
+        Clear(ExpressionValueBuffer);
+        FieldSequenceNo += 1;
+        ExpressionValueBuffer.Number := FieldSequenceNo;
+        ExpressionValueBuffer.Name := '!ProcessingParameter';
+        ExpressionValueBuffer.Value := '';
+        ExpressionValueBuffer.Type := 'Text';
+        ExpressionValueBuffer.Insert();
+
         LineNo := 10000;
         clear(LoanDocument);
         LoanDocument.Init();
@@ -239,6 +256,14 @@ codeunit 14135113 lvngCreateSoldDocuments
         AccountNo: Code[20];
         DecimalValue: Decimal;
     begin
+        ExpressionValueBuffer.Reset();
+        ExpressionValueBuffer.Ascending(false);
+        ExpressionValueBuffer.FindSet(true);
+        ExpressionValueBuffer.Value := LoanProcessingSchemaLine."Processing Parameter";
+        ExpressionValueBuffer.Modify();
+        ExpressionValueBuffer.Next();
+        ExpressionValueBuffer.Value := Format(LoanProcessingSchemaLine."Calculation Parameter", 0, 9);
+        ExpressionValueBuffer.Modify();
         if CheckCondition(LoanProcessingSchemaLine."Condition Code") then begin
             Clear(LoanDocumentLine);
             LoanDocumentLine.Init();

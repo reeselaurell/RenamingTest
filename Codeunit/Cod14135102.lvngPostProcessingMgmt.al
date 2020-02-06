@@ -256,15 +256,16 @@ codeunit 14135102 lvngPostProcessingMgmt
 
     local procedure CalculateSwitch(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        ConditionsMgmt: Codeunit lvngConditionsMgmt;
-        ExpressionEngine: Codeunit lvngExpressionEngine;
+        SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
         ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
         ExpressionHeader: Record lvngExpressionHeader;
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        ExpressionEngine: Codeunit lvngExpressionEngine;
         Value: Text;
-        SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
+        FieldSequenceNo: Integer;
     begin
         PostProcessingSchemaLine.TestField("Expression Code");
-        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine);
+        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
         ExpressionHeader.Get(PostProcessingSchemaLine."Expression Code", ConditionsMgmt.GetConditionsMgmtConsumerId());
         if not ExpressionEngine.SwitchCase(ExpressionHeader, Value, ExpressionValueBuffer) then
             Error(SwitchCaseErr, PostProcessingSchemaLine."Expression Code");
@@ -273,14 +274,15 @@ codeunit 14135102 lvngPostProcessingMgmt
 
     local procedure CalculateFormula(PostProcessingSchemaLine: Record lvngPostProcessingSchemaLine; var LoanJournalLine: Record lvngLoanJournalLine)
     var
-        ConditionsMgmt: Codeunit lvngConditionsMgmt;
-        ExpressionEngine: Codeunit lvngExpressionEngine;
         ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
         ExpressionHeader: Record lvngExpressionHeader;
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        ExpressionEngine: Codeunit lvngExpressionEngine;
         Value: Text;
+        FieldSequenceNo: Integer;
     begin
         PostProcessingSchemaLine.TestField("Expression Code");
-        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine);
+        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
         ExpressionHeader.Get(PostProcessingSchemaLine."Expression Code", ConditionsMgmt.GetConditionsMgmtConsumerId());
         Value := ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer);
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);

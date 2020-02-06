@@ -134,14 +134,25 @@ codeunit 14135108 lvngConditionsMgmt
             ExpressionValueBuffer.Type := TableFields."Type Name";
             ExpressionValueBuffer.Insert();
         until TableFields.Next() = 0;
+        Clear(ExpressionValueBuffer);
+        FieldSequenceNo += 1;
+        ExpressionValueBuffer.Number := FieldSequenceNo;
+        ExpressionValueBuffer.Name := '!CalculationParameter';
+        ExpressionValueBuffer.Type := 'Decimal';
+        ExpressionValueBuffer.Insert();
+        Clear(ExpressionValueBuffer);
+        FieldSequenceNo += 1;
+        ExpressionValueBuffer.Number := FieldSequenceNo;
+        ExpressionValueBuffer.Name := '!ProcessingParameter';
+        ExpressionValueBuffer.Type := 'Text';
+        ExpressionValueBuffer.Insert();
     end;
 
-    procedure FillJournalFieldValues(var ExpressionValueBuffer: Record lvngExpressionValueBuffer; var LoanJournalLine: Record lvngLoanJournalLine)
+    procedure FillJournalFieldValues(var ExpressionValueBuffer: Record lvngExpressionValueBuffer; var LoanJournalLine: Record lvngLoanJournalLine; var FieldSequenceNo: Integer)
     var
         LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
         LoanJournalValue: Record lvngLoanJournalValue;
         TableFields: Record Field;
-        FieldSequenceNo: Integer;
         RecordReference: RecordRef;
         FieldReference: FieldRef;
     begin

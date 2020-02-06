@@ -21,9 +21,10 @@ codeunit 14135114 lvngValidateLoanJournal
 
     local procedure ValidateSingleJournalLine(var LoanJournalLine: record lvngLoanJournalLine)
     var
+        LoanNoEmptyErr: Label 'Loan No. can not be blank';
         JournalValidationRule: Record lvngJournalValidationRule;
         ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
-        LoanNoEmptyErr: Label 'Loan No. can not be blank';
+        FieldSequenceNo: Integer;
     begin
         if LoanJournalLine."Loan No." = '' then
             LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, LoanNoEmptyErr);
@@ -34,7 +35,7 @@ codeunit 14135114 lvngValidateLoanJournal
         JournalValidationRule.Reset();
         JournalValidationRule.SetRange("Journal Batch Code", LoanJournalLine."Loan Journal Batch Code");
         if JournalValidationRule.FindSet() then begin
-            ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine);
+            ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
             repeat
                 if not ValidateConditionLine(ExpressionValueBuffer, JournalValidationRule."Condition Code") then
                     LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, JournalValidationRule."Error Message");

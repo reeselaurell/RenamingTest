@@ -63,6 +63,8 @@ table 14135113 lvngLoanProcessingSchemaLine
         field(20; "Reverse Sign"; Boolean) { Caption = 'Reverse Sign'; DataClassification = CustomerContent; }
         field(21; "Balancing Entry"; Boolean) { Caption = 'Balancing Entry'; DataClassification = CustomerContent; }
         field(22; "Override Reason Code"; Code[10]) { Caption = 'Override Reason Code'; DataClassification = CustomerContent; TableRelation = "Reason Code"; }
+        field(23; "Calculation Parameter"; Decimal) { Caption = 'Calculation Parameter'; DataClassification = CustomerContent; DecimalPlaces = 2 : 5; }
+        field(24; "Processing Parameter"; Text[250]) { Caption = 'Processing Parameter'; DataClassification = CustomerContent; }
         field(80; "Global Dimension 1 Code"; Code[20]) { Caption = 'Global Dimension 1 Code'; DataClassification = CustomerContent; CaptionClass = '1,1,1'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1)); }
         field(81; "Global Dimension 2 Code"; Code[20]) { Caption = 'Global Dimension 2 Code'; DataClassification = CustomerContent; CaptionClass = '1,1,2'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2)); }
         field(82; "Shortcut Dimension 3 Code"; Code[20]) { Caption = 'Shortcut Dimension 3 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,3'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3)); }

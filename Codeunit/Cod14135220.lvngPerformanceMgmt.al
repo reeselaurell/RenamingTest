@@ -532,10 +532,14 @@ codeunit 14135220 lvngPerformanceMgmt
                 Result := CalculationUnit."Constant Value";
             CalculationUnit.Type::"Amount Lookup", CalculationUnit.Type::"Count Lookup":
                 begin
-                    if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::"Loan Card" then
-                        Result := LookupLoanCard(CalculationUnit, SystemFilter)
-                    else
-                        Result := LookupGeneralLedger(CalculationUnit, SystemFilter);
+                    case CalculationUnit."Lookup Source" of
+                        CalculationUnit."Lookup Source"::"Loan Card":
+                            Result := LookupLoanCard(CalculationUnit, SystemFilter);
+                        CalculationUnit."Lookup Source"::"Ledger Entries":
+                            Result := LookupGeneralLedger(CalculationUnit, SystemFilter);
+                        CalculationUnit."Lookup Source"::"Loan Values":
+                            Result := LookupLoanValue(CalculationUnit, SystemFilter);
+                    end;
                 end;
             CalculationUnit.Type::Expression:
                 begin
@@ -621,6 +625,88 @@ codeunit 14135220 lvngPerformanceMgmt
         else
             Result := LoanAmountsByDimension.LoanCount;
         LoanAmountsByDimension.Close();
+    end;
+
+    local procedure LookupLoanValue(var CalculationUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter) Result: Decimal
+    var
+        LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
+        LoanValuesByDimension: Query lvngLoanValuesByDimension;
+    begin
+        if not LoanFieldsConfiguration.Get(CalculationUnit."Field No.") then
+            exit(0);
+        if CalculationUnit."Dimension 1 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension1Filter, CalculationUnit."Dimension 1 Filter")
+        else
+            if SystemFilter."Global Dimension 1" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension1Filter, SystemFilter."Global Dimension 1");
+        if CalculationUnit."Dimension 2 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension2Filter, CalculationUnit."Dimension 2 Filter")
+        else
+            if SystemFilter."Global Dimension 2" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension2Filter, SystemFilter."Global Dimension 2");
+        if CalculationUnit."Dimension 3 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension3Filter, CalculationUnit."Dimension 3 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 3" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension3Filter, SystemFilter."Shortcut Dimension 3");
+        if CalculationUnit."Dimension 4 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension4Filter, CalculationUnit."Dimension 4 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 4" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension4Filter, SystemFilter."Shortcut Dimension 4");
+        if CalculationUnit."Dimension 5 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension5Filter, CalculationUnit."Dimension 5 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 5" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension5Filter, SystemFilter."Shortcut Dimension 5");
+        if CalculationUnit."Dimension 6 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension6Filter, CalculationUnit."Dimension 6 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 6" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension6Filter, SystemFilter."Shortcut Dimension 6");
+        if CalculationUnit."Dimension 7 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension7Filter, CalculationUnit."Dimension 7 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 7" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension7Filter, SystemFilter."Shortcut Dimension 7");
+        if CalculationUnit."Dimension 8 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension8Filter, CalculationUnit."Dimension 8 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 8" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension8Filter, SystemFilter."Shortcut Dimension 8");
+        if CalculationUnit."Business Unit Filter" <> '' then
+            LoanValuesByDimension.SetFilter(BusinessUnitFilter, CalculationUnit."Business Unit Filter")
+        else
+            if SystemFilter."Business Unit" <> '' then
+                LoanValuesByDimension.SetFilter(BusinessUnitFilter, SystemFilter."Business Unit");
+        case CalculationUnit."Based On Date" of
+            CalculationUnit."Based On Date"::Application:
+                LoanValuesByDimension.SetFilter(DateApplicationFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Closed:
+                LoanValuesByDimension.SetFilter(DateClosedFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Funded:
+                LoanValuesByDimension.SetFilter(DateFundedFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Locked:
+                LoanValuesByDimension.SetFilter(DateLockedFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Sold:
+                LoanValuesByDimension.SetFilter(DateSoldFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Commission:
+                LoanValuesByDimension.SetFilter(DateCommissionFilter, SystemFilter."Date Filter");
+        end;
+        LoanValuesByDimension.Open();
+        LoanValuesByDimension.Read();
+        if CalculationUnit.Type = CalculationUnit.Type::"Count Lookup" then
+            Result := LoanValuesByDimension.Count
+        else
+            case LoanFieldsConfiguration."Value Type" of
+                LoanFieldsConfiguration."Value Type"::Integer:
+                    Result := LoanValuesByDimension.IntegerValue;
+                LoanFieldsConfiguration."Value Type"::Decimal:
+                    Result := LoanValuesByDimension.DecimalValue
+                else
+                    Result := 0;
+            end;
+        LoanValuesByDimension.Close();
     end;
 
     local procedure LookupGeneralLedger(var CalculationUnit: Record lvngCalculationUnit; var SystemFilter: Record lvngSystemCalculationFilter) Result: Decimal

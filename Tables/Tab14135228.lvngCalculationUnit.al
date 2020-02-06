@@ -18,6 +18,8 @@ table 14135228 lvngCalculationUnit
         //For "Lookup Source"::"Ledger Entries"
         field(32; "Account No. Filter"; Text[250]) { Caption = 'Account No. Filter'; DataClassification = CustomerContent; TableRelation = "G/L Account"."No."; ValidateTableRelation = false; }
         field(33; "Amount Type"; Enum lvngPerformanceAmountType) { Caption = 'Amount Type'; DataClassification = CustomerContent; }
+        //For "Lookup Source"::"Loan Values"
+        field(34; "Field No."; Integer) { Caption = 'Field No.'; DataClassification = CustomerContent; TableRelation = lvngLoanFieldsConfiguration."Field No." where("Value Type" = filter(Decimal | Integer)); }
         //For Type::Expression
         field(40; "Expression Code"; Code[20]) { Caption = 'Expression Code'; DataClassification = CustomerContent; }
         //For Type::"Provider Value"

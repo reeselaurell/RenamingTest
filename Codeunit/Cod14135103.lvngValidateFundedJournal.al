@@ -22,15 +22,6 @@ codeunit 14135103 lvngValidateFundedJournal
 
     local procedure ValidateSingleJournalLine(var LoanJournalLine: record lvngLoanJournalLine)
     var
-        JournalValidationRule: Record lvngJournalValidationRule;
-        ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
-        Customer: Record Customer;
-        LoanDocument: Record lvngLoanDocument;
-        LoanFundedDocument: Record lvngLoanFundedDocument;
-        TempLoanDocument: Record lvngLoanDocument temporary;
-        TempLoanDocumentLine: Record lvngLoanDocumentLine temporary;
-        VoidedDocumentsCount: Integer;
-        FundedDocumentsCount: Integer;
         LoanNoEmptyErr: Label 'Loan No. can not be blank';
         FundedDateBlankErr: Label 'Funded Date can not be blank';
         SearchNameBlankErr: Label 'Search Name can not be compiled';
@@ -42,6 +33,16 @@ codeunit 14135103 lvngValidateFundedJournal
         NonPostedDocumentExistsErr: Label 'Non-Posted Funded document already exists %1';
         PostedDocumentExistsErr: Label 'Posted Funded document already exists %1';
         NothingToVoidErr: Label 'There is nothing to void';
+        JournalValidationRule: Record lvngJournalValidationRule;
+        ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
+        Customer: Record Customer;
+        LoanDocument: Record lvngLoanDocument;
+        LoanFundedDocument: Record lvngLoanFundedDocument;
+        TempLoanDocument: Record lvngLoanDocument temporary;
+        TempLoanDocumentLine: Record lvngLoanDocumentLine temporary;
+        VoidedDocumentsCount: Integer;
+        FundedDocumentsCount: Integer;
+        FieldSequenceNo: Integer;
     begin
         GetLoanVisionSetup();
         if LoanJournalLine."Loan No." = '' then
@@ -110,7 +111,7 @@ codeunit 14135103 lvngValidateFundedJournal
         JournalValidationRule.Reset();
         JournalValidationRule.SetRange("Journal Batch Code", LoanJournalLine."Loan Journal Batch Code");
         if JournalValidationRule.FindSet() then begin
-            ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine);
+            ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
             repeat
                 if not ValidateConditionLine(ExpressionValueBuffer, JournalValidationRule."Condition Code") then
                     LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, JournalValidationRule."Error Message");

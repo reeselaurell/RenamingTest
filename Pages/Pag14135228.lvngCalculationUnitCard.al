@@ -10,6 +10,8 @@ page 14135228 lvngCalculationUnitCard
         {
             group(General)
             {
+                Caption = 'General';
+
                 field(Code; Code) { ApplicationArea = All; }
                 field(Description; Description) { ApplicationArea = All; }
                 field(Type; Type) { ApplicationArea = All; }
@@ -17,26 +19,38 @@ page 14135228 lvngCalculationUnitCard
             group(Constant)
             {
                 Visible = Type = Type::Constant;
+                Caption = 'Constant';
 
                 field("Constant Value"; "Constant Value") { ApplicationArea = All; }
             }
             group(Lookup)
             {
                 Visible = (Type = Type::"Amount Lookup") or (Type = Type::"Count Lookup");
+                Caption = 'Lookup';
 
                 field("Lookup Source"; "Lookup Source") { ApplicationArea = All; }
-                group("Loan Card")
+                group(LoanCard)
                 {
                     Visible = "Lookup Source" = "Lookup Source"::"Loan Card";
+                    Caption = 'Loan Card';
 
-                    field("Based On Date"; "Based On Date") { ApplicationArea = All; }
+                    field(CardBasedOnDate; "Based On Date") { ApplicationArea = All; }
                 }
-                group("Ledger Entries")
+                group(LedgerEntries)
                 {
                     Visible = "Lookup Source" = "Lookup Source"::"Ledger Entries";
+                    Caption = 'Ledger Entries';
 
                     field("Account No. Filter"; "Account No. Filter") { ApplicationArea = All; }
                     field("Amount Type"; "Amount Type") { ApplicationArea = All; }
+                }
+                group(LoanValues)
+                {
+                    Visible = "Lookup Source" = "Lookup Source"::"Loan Values";
+                    Caption = 'Loan Values';
+
+                    field(ValueBasedOnDate; "Based On Date") { ApplicationArea = All; }
+                    field("Field No."; "Field No.") { ApplicationArea = All; }
                 }
             }
             group(Expression)
