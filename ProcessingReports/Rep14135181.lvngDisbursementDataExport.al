@@ -2,6 +2,8 @@ report 14135181 "lvngDisbursementDataExport"
 {
     Caption = 'Disbursement Data Export';
     ProcessingOnly = true;
+    ApplicationArea = All;
+    UsageCategory = Tasks;
 
     dataset
     {
