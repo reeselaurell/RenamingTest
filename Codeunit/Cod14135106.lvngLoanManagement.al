@@ -8,7 +8,7 @@ codeunit 14135106 lvngLoanManagement
         LoanVisionSetupRetrieved: Boolean;
         CompletedMsg: Label 'Completed';
 
-    procedure LoanNumberBatch(LoanNo: Code[20]; LoanNoMatchPattern: Record lvngLoanNoMatchPattern): Boolean
+    procedure LoanNumberMatch(LoanNo: Code[20]; LoanNoMatchPattern: Record lvngLoanNoMatchPattern): Boolean
     begin
         if LoanNoMatchPattern."Max. Field Length" > 0 then
             if StrLen(LoanNo) > LoanNoMatchPattern."Max. Field Length" then
