@@ -8,7 +8,24 @@ codeunit 14135106 lvngLoanManagement
         LoanVisionSetupRetrieved: Boolean;
         CompletedMsg: Label 'Completed';
 
+    procedure IsValidLoanNo(LoanNo: Code[20]): Boolean
+    var
+        LoanNoMatchPattern: Record lvngLoanNoMatchPattern;
+    begin
+        LoanNoMatchPattern.Reset();
+        if LoanNoMatchPattern.IsEmpty() then
+            exit(true);
+        LoanNoMatchPattern.FindSet();
+        repeat
+            if LoanNumberMatch(LoanNo, LoanNoMatchPattern) then
+                exit(true);
+        until LoanNoMatchPattern.Next() = 0;
+        exit(false);
+    end;
+
     procedure LoanNumberMatch(LoanNo: Code[20]; LoanNoMatchPattern: Record lvngLoanNoMatchPattern): Boolean
+    var
+        RegEx: Codeunit DotNet_Regex;
     begin
         if LoanNoMatchPattern."Max. Field Length" > 0 then
             if StrLen(LoanNo) > LoanNoMatchPattern."Max. Field Length" then
@@ -16,8 +33,10 @@ codeunit 14135106 lvngLoanManagement
         if LoanNoMatchPattern."Min. Field Length" <> 0 then
             if LoanNoMatchPattern."Min. Field Length" > StrLen(LoanNo) then
                 exit(false);
-        //TODO: Issues with Regex not available in Codeunit 10. Requires implementation
-        exit(true);
+        if LoanNoMatchPattern."Match Pattern" = '' then
+            exit(true)
+        else
+            exit(RegEx.IsMatch(LoanNo, LoanNoMatchPattern."Match Pattern"));
     end;
 
     procedure UpdateLoans(JournalBatchCode: Code[20])

@@ -1,9 +1,22 @@
 codeunit 14135112 lvngValidateSoldJournal
 {
     var
+        LoanNoEmptyErr: Label 'Loan No. can not be blank';
+        LoanNoDoesNotMatchPatternErr: Label 'Loan No. does not match any of defined patterns';
+        SoldDateBlankErr: Label 'Sold Date can not be blank';
+        SearchNameBlankErr: Label 'Search Name can not be compiled';
+        ProcessingSchemaBlankErr: Label 'Processing Schema Code can not be blank';
+        InvestorCustomerNoMissingErr: Label 'Investor Customer No. is missing';
+        ReasonCodeMissingOnLineErr: Label 'Reason Code is mandatory for Transaction, Line No. %1';
+        AccountNoMissingOnLineErr: Label 'Account No. is mandatory for Transaction, Line No. %1';
+        NonPostedVoidDocumentExistsErr: Label 'Non-Posted Sold Void document already exists %1';
+        NonPostedDocumentExistsErr: Label 'Non-Posted Sold document already exists %1';
+        PostedDocumentExistsErr: Label 'Posted Sold document already exists %1';
+        NothingToVoidErr: Label 'There is nothing to void';
         LoanVisionSetup: Record lvngLoanVisionSetup;
         CreateSoldDocuments: Codeunit lvngCreateSoldDocuments;
         LoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
+        LoanMgmt: Codeunit lvngLoanManagement;
         ConditionsMgmt: Codeunit lvngConditionsMgmt;
 
     procedure ValidateSoldLines(JournalBatchCode: Code[20])
@@ -22,17 +35,6 @@ codeunit 14135112 lvngValidateSoldJournal
 
     local procedure ValidateSingleJournalLine(var LoanJournalLine: record lvngLoanJournalLine)
     var
-        LoanNoEmptyErr: Label 'Loan No. can not be blank';
-        SoldDateBlankErr: Label 'Sold Date can not be blank';
-        SearchNameBlankErr: Label 'Search Name can not be compiled';
-        ProcessingSchemaBlankErr: Label 'Processing Schema Code can not be blank';
-        InvestorCustomerNoMissingErr: Label 'Investor Customer No. is missing';
-        ReasonCodeMissingOnLineErr: Label 'Reason Code is mandatory for Transaction, Line No. %1';
-        AccountNoMissingOnLineErr: Label 'Account No. is mandatory for Transaction, Line No. %1';
-        NonPostedVoidDocumentExistsErr: Label 'Non-Posted Sold Void document already exists %1';
-        NonPostedDocumentExistsErr: Label 'Non-Posted Sold document already exists %1';
-        PostedDocumentExistsErr: Label 'Posted Sold document already exists %1';
-        NothingToVoidErr: Label 'There is nothing to void';
         JournalValidationRule: Record lvngJournalValidationRule;
         ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
         Customer: Record Customer;
@@ -46,6 +48,8 @@ codeunit 14135112 lvngValidateSoldJournal
     begin
         if LoanJournalLine."Loan No." = '' then
             LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, LoanNoEmptyErr);
+        if not LoanMgmt.IsValidLoanNo(LoanJournalLine."Loan No.") then
+            LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, LoanNoDoesNotMatchPatternErr);
         if (LoanVisionSetup."Sold Void Reason Code" <> '') and (LoanVisionSetup."Sold Void Reason Code" = LoanJournalLine."Reason Code") then begin
             LoanDocument.Reset();
             LoanDocument.SetRange(Void, true);

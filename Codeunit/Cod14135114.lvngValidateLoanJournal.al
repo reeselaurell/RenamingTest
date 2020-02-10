@@ -1,9 +1,12 @@
 codeunit 14135114 lvngValidateLoanJournal
 {
     var
+        LoanNoEmptyErr: Label 'Loan No. can not be blank';
+        LoanNoDoesNotMatchPatternErr: Label 'Loan No. does not match any of defined patterns';
         LoanVisionSetup: Record lvngLoanVisionSetup;
         LoanJournalErrorMgmt: Codeunit lvngLoanJournalErrorMgmt;
         ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        LoanMgmt: Codeunit lvngLoanManagement;
 
     procedure ValidateLoanLines(JournalBatchCode: Code[20])
     var
@@ -21,13 +24,14 @@ codeunit 14135114 lvngValidateLoanJournal
 
     local procedure ValidateSingleJournalLine(var LoanJournalLine: record lvngLoanJournalLine)
     var
-        LoanNoEmptyErr: Label 'Loan No. can not be blank';
         JournalValidationRule: Record lvngJournalValidationRule;
         ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
         FieldSequenceNo: Integer;
     begin
         if LoanJournalLine."Loan No." = '' then
             LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, LoanNoEmptyErr);
+        if not LoanMgmt.IsValidLoanNo(LoanJournalLine."Loan No.") then
+            LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, LoanNoDoesNotMatchPatternErr);
         if LoanJournalLine."Search Name" = '' then begin
             LoanJournalLine."Search Name" := StrSubstNo(LoanVisionSetup."Search Name Template", LoanJournalLine."Borrower First Name", LoanJournalLine."Borrower Last Name", LoanJournalLine."Borrower Middle Name");
             LoanJournalLine.Modify();
