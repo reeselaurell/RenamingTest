@@ -22,6 +22,33 @@ pageextension 14135108 lvngPaymentJournal extends "Payment Journal"
 
     actions
     {
+        modify(SuggestVendorPayments)
+        {
+            Visible = false;
+        }
+        addafter(SuggestVendorPayments)
+        {
+            action(lvngSuggestVendorPayments)
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Suggest Vendor Payments';
+                Ellipsis = true;
+                Image = SuggestVendorPayments;
+                Promoted = true;
+                PromotedCategory = Category5;
+                PromotedIsBig = true;
+                ToolTip = 'Create payment suggestions as lines in the payment journal.';
+
+                trigger OnAction()
+                var
+                    SuggestVendorPayments: Report lvngSuggestVendorPayments;
+                begin
+                    Clear(SuggestVendorPayments);
+                    SuggestVendorPayments.SetGenJnlLine(Rec);
+                    SuggestVendorPayments.RunModal;
+                end;
+            }
+        }
         addafter("Insert Conv. LCY Rndg. Lines")
         {
             action(lvngFileImport)
