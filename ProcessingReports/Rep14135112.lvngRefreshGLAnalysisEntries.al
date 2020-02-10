@@ -1,4 +1,4 @@
-report 14135112 "lvngRefreshGLAnalysisEntries"
+report 14135112 lvngRefreshGLAnalysisEntries
 {
     Caption = 'Refresh G/L Analysis Entries';
     ProcessingOnly = true;
@@ -46,11 +46,11 @@ report 14135112 "lvngRefreshGLAnalysisEntries"
         if LastEntryNo > LoanVisionSetup."Last Analysis Entry No." then begin
             GLEntryGroupedEntriesQuery.Open();
             GLEntryGroupedEntriesQuery.SetRange(EntryNo, LoanVisionSetup."Last Analysis Entry No." + 1, LastEntryNo);
-            if GuiAllowed then
+            if GuiAllowed() then
                 ProgressDialog.Open(ProcessingGLEntriesLbl);
             while GLEntryGroupedEntriesQuery.Read() do begin
                 Counter := Counter + 1;
-                if GuiAllowed then
+                if GuiAllowed() then
                     ProgressDialog.Update(1, Counter);
                 if GroupedGLEntry.Get(
                         GLEntryGroupedEntriesQuery.Posting_Date,
@@ -126,7 +126,7 @@ report 14135112 "lvngRefreshGLAnalysisEntries"
                 end;
             end;
             GLEntryGroupedEntriesQuery.Close();
-            if GuiAllowed then
+            if GuiAllowed() then
                 ProgressDialog.Close();
             LoanVisionSetup."Last Analysis Entry No." := LastEntryNo;
             LoanVisionSetup.Modify();

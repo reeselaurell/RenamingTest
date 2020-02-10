@@ -92,6 +92,20 @@ page 14135246 lvngLoanValuesView
     }
 
     var
+        LoanNoLbl: Label 'Loan No.';
+        DateFundedLbl: Label 'Date Funded';
+        DateSoldLbl: Label 'Date Sold';
+        PostingDateLbl: Label 'Posting Date';
+        LONameLbl: Label 'LO Name';
+        YesTxt: Label 'Yes';
+        NoTxt: Label 'No';
+        TotalsTxt: Label 'Totals';
+        NotAvailableTxt: Label 'N/A';
+        LoanLevelExportFileNameTxt: Label 'Loan Level Report';
+        BusinessUnitFilterTxt: Label 'Business Unit Filter';
+        BaseDateText: Label 'Base Date';
+        DateFilterTxt: Label 'Date Filter';
+        IntranslatableRowFormulaErr: Label 'Row formula cannot be translated';
         LoanVisionSetup: Record lvngLoanVisionSetup;
         LoanLevelReportSchema: Record lvngLoanLevelReportSchema;
         SystemFilter: Record lvngSystemCalculationFilter temporary;
@@ -110,20 +124,6 @@ page 14135246 lvngLoanValuesView
         Dim4Visible: Boolean;
         BusinessUnitVisible: Boolean;
         TotalsRowVisible: Boolean;
-        LoanNoLbl: Label 'Loan No.';
-        DateFundedLbl: Label 'Date Funded';
-        DateSoldLbl: Label 'Date Sold';
-        PostingDateLbl: Label 'Posting Date';
-        LONameLbl: Label 'LO Name';
-        YesTxt: Label 'Yes';
-        NoTxt: Label 'No';
-        TotalsTxt: Label 'Totals';
-        NotAvailableTxt: Label 'N/A';
-        LoanLevelExportFileNameTxt: Label 'Loan Level Report';
-        BusinessUnitFilterTxt: Label 'Business Unit Filter';
-        BaseDateText: Label 'Base Date';
-        DateFilterTxt: Label 'Date Filter';
-        IntranslatableRowFormulaErr: Label 'Row formula cannot be translated';
 
     trigger OnOpenPage()
     begin
@@ -240,9 +240,9 @@ page 14135246 lvngLoanValuesView
     var
         DefaultDimension: Record "Default Dimension";
         DimensionValue: Record "Dimension Value";
-        GLEntry: Record "G/L Entry";
+        GroupedLoanGLEntry: Record lvngGroupedLoanGLEntry;
         LoanLevelReportSchemaLine: Record lvngLoanLevelReportSchemaLine;
-        TempGLEntry: Record "G/L Entry" temporary;
+        TempGroupedLoanGLEntry: Record lvngGroupedLoanGLEntry temporary;
         RecordReference: RecordRef;
         CalculatedValue: Text;
         CurrentTotal: Decimal;
@@ -250,26 +250,26 @@ page 14135246 lvngLoanValuesView
         if DefaultDimension.Get(Database::lvngLoan, Loan."No.", LoanVisionSetup."Loan Officer Dimension Code") then
             if DimensionValue.Get(DefaultDimension."Dimension Code", DefaultDimension."Dimension Value Code") then
                 RowBuffer."Value Long" := DimensionValue.Name;
-        TempGLEntry.Reset();
-        TempGLEntry.DeleteAll();
-        GLEntry.Reset();
-        GLEntry.SetCurrentKey(lvngLoanNo);
-        GLEntry.SetRange(lvngLoanNo, Loan."No.");
+        TempGroupedLoanGLEntry.Reset();
+        TempGroupedLoanGLEntry.DeleteAll();
+        GroupedLoanGLEntry.Reset();
+        GroupedLoanGLEntry.SetRange("Loan No.", Loan."No.");
         if SystemFilter."Global Dimension 1" <> '' then
-            GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
+            GroupedLoanGLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
         if SystemFilter."Global Dimension 2" <> '' then
-            GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
+            GroupedLoanGLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
         if SystemFilter."Shortcut Dimension 3" <> '' then
-            GLEntry.SetFilter(lvngShortcutDimension3Code, SystemFilter."Shortcut Dimension 3");
+            GroupedLoanGLEntry.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
         if SystemFilter."Shortcut Dimension 4" <> '' then
-            GLEntry.SetFilter(lvngShortcutDimension4Code, SystemFilter."Shortcut Dimension 4");
+            GroupedLoanGLEntry.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
         if SystemFilter."Business Unit" <> '' then
-            GLEntry.SetFilter("Business Unit Code", SystemFilter."Business Unit");
-        if GLEntry.FindSet() then
+            GroupedLoanGLEntry.SetFilter("Business Unit Code", SystemFilter."Business Unit");
+        if GroupedLoanGLEntry.FindSet() then
             repeat
-                TempGLEntry := GLEntry;
-                TempGLEntry.Insert();
-            until GLEntry.Next() = 0;
+                //Still using temp because schema line filters may conflict with global filters
+                TempGroupedLoanGLEntry := GroupedLoanGLEntry;
+                TempGroupedLoanGLEntry.Insert();
+            until GroupedLoanGLEntry.Next() = 0;
         RecordReference.GetTable(Loan);
         LoanLevelReportSchemaLine.Reset();
         LoanLevelReportSchemaLine.SetRange("Report Code", LoanLevelReportSchema.Code);
@@ -280,7 +280,7 @@ page 14135246 lvngLoanValuesView
             ValueBuffer."Row No." := RowBuffer.ID;
             ValueBuffer."Column No." := LoanLevelReportSchemaLine."Column No.";
             ValueBuffer."Number Format Code" := LoanLevelReportSchemaLine."Number Format Code";
-            CalculatePlainValue(LoanLevelReportSchemaLine, TempGLEntry, Loan, RecordReference);
+            CalculatePlainValue(LoanLevelReportSchemaLine, TempGroupedLoanGLEntry, Loan, RecordReference);
             ValueBuffer.Insert();
         until LoanLevelReportSchemaLine.Next() = 0;
         LoanLevelReportSchemaLine.Reset();
@@ -321,7 +321,7 @@ page 14135246 lvngLoanValuesView
         end;
     end;
 
-    local procedure CalculatePlainValue(var LoanLevelReportSchemaLine: Record lvngLoanLevelReportSchemaLine; var TempGLEntry: Record "G/L Entry"; var Loan: Record lvngLoan; var LoanRef: RecordRef)
+    local procedure CalculatePlainValue(var LoanLevelReportSchemaLine: Record lvngLoanLevelReportSchemaLine; var GroupedLoanGLEntry: Record lvngGroupedLoanGLEntry; var Loan: Record lvngLoan; var LoanRef: RecordRef)
     var
         LoanValue: Record lvngLoanValue;
         LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
@@ -332,15 +332,12 @@ page 14135246 lvngLoanValuesView
             LoanLevelReportSchemaLine.Type::"G/L Entry":
                 begin
                     ValueBuffer."Value Type" := ValueBuffer."Value Type"::Number;
-                    ValueBuffer."Numeric Value" := 0;
-                    TempGLEntry.Reset();
-                    if GLFilterCache.Get(LoanLevelReportSchemaLine."Column No.", GLFilter) then begin
-                        TempGLEntry.SetView(GLFilter);
-                        if TempGLEntry.FindSet() then
-                            repeat
-                                ValueBuffer."Numeric Value" += TempGLEntry.Amount;
-                            until TempGLEntry.Next() = 0;
-                    end;
+                    //Possible bug (was): Value was always set to 0 if no filter is specified
+                    GroupedLoanGLEntry.Reset();
+                    if GLFilterCache.Get(LoanLevelReportSchemaLine."Column No.", GLFilter) then
+                        GroupedLoanGLEntry.SetView(GLFilter);
+                    GroupedLoanGLEntry.CalcSums(Amount);
+                    ValueBuffer."Numeric Value" := GroupedLoanGLEntry.Amount;
                     ValueBuffer."Raw Value" := Format(ValueBuffer."Numeric Value");
                 end;
             LoanLevelReportSchemaLine.Type::"Variable Field":

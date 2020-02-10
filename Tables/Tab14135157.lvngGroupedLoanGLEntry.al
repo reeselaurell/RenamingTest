@@ -1,4 +1,4 @@
-table 14135157 "lvngGroupedLoanGLEntry"
+table 14135157 lvngGroupedLoanGLEntry
 {
     Caption = 'Grouped Loan G/L Entry';
     DataClassification = CustomerContent;
@@ -24,7 +24,7 @@ table 14135157 "lvngGroupedLoanGLEntry"
 
     keys
     {
-        key(PK; "Posting Date", "G/L Account No.", "Global Dimension 1 Code", "Global Dimension 2 Code", "Shortcut Dimension 3 Code", "Shortcut Dimension 4 Code", "Shortcut Dimension 5 Code", "Shortcut Dimension 6 Code", "Shortcut Dimension 7 Code", "Shortcut Dimension 8 Code", "Business Unit Code", "Loan No.") { Clustered = true; }
+        key(PK; "Posting Date", "G/L Account No.", "Global Dimension 1 Code", "Global Dimension 2 Code", "Shortcut Dimension 3 Code", "Shortcut Dimension 4 Code", "Shortcut Dimension 5 Code", "Shortcut Dimension 6 Code", "Shortcut Dimension 7 Code", "Shortcut Dimension 8 Code", "Business Unit Code", "Loan No.") { Clustered = true; SumIndexFields = Amount, "Credit Amount", "Debit Amount"; }
     }
 
 }
