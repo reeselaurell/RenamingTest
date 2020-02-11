@@ -106,6 +106,11 @@ codeunit 14135119 lvngServicingManagement
     begin
         GetLoanServicingSetup();
         Loan.Get(ServicingWorksheet."Loan No.");
+        if Loan."Date Sold" <> 0D then begin
+            if Date2DMY(Loan."Date Sold", 1) > LoanServicingSetup."Last Servicing Month Day" then
+                ServicingWorksheet."Payable to Investor" := true else
+                ServicingWorksheet."Last Servicing Period" := true;
+        end;
         Clear(ServicingWorksheet."Error Message");
         if LoanServicingSetup."Test Escrow Totals" then
             if Loan."Monthly Escrow Amount" <> ServicingWorksheet."Escrow Amount" then

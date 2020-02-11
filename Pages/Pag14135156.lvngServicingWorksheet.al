@@ -21,6 +21,8 @@ page 14135156 lvngServicingWorksheet
                 field("First Payment Due"; "First Payment Due") { ApplicationArea = All; DrillDown = false; }
                 field("Next Payment Date"; "Next Payment Date") { ApplicationArea = All; DrillDown = false; }
                 field("First Payment Due To Investor"; "First Payment Due To Investor") { ApplicationArea = All; DrillDown = false; }
+                field("Last Servicing Period"; "Last Servicing Period") { ApplicationArea = All; }
+                field("Payable to Investor"; "Payable to Investor") { ApplicationArea = All; Editable = false; }
                 field("Date Sold"; "Date Sold") { ApplicationArea = All; DrillDown = false; }
                 field("Interest Amount"; "Interest Amount") { ApplicationArea = All; Editable = false; }
                 field("Principal Amount"; "Principal Amount") { ApplicationArea = All; Editable = false; }

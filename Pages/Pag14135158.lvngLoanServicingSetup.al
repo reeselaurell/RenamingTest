@@ -24,6 +24,7 @@ page 14135158 lvngLoanServicingSetup
                 field("Serviced No. Series"; "Serviced No. Series") { ApplicationArea = All; }
                 field("Void Serviced No. Series"; "Void Serviced No. Series") { ApplicationArea = All; }
                 field("Test Escrow Totals"; "Test Escrow Totals") { ApplicationArea = All; }
+                field("Last Servicing Month Day"; "Last Servicing Month Day") { ApplicationArea = All; }
 
                 group(Interest)
                 {
@@ -55,7 +56,8 @@ page 14135158 lvngLoanServicingSetup
                     field("Additional Escrow Reason Code"; "Additional Escrow Reason Code") { ApplicationArea = All; }
                     field("Late Payment G/L Account No."; "Late Payment G/L Account No.") { ApplicationArea = All; }
                     field("Late Payment Reason Code"; "Late Payment Reason Code") { ApplicationArea = All; }
-                    field("Late Fee Rule"; "Late Fee Rule") { ApplicationArea = All; }
+                    field("Late Fee Amount Rule"; "Late Fee Amount Rule") { ApplicationArea = All; }
+                    field("Late Fee Date Formula"; "Late Fee Date Formula") { ApplicationArea = All; }
                 }
 
             }

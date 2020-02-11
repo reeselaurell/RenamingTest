@@ -27,6 +27,8 @@ table 14135132 lvngServicingWorksheet
         field(20; "Interest Amount"; Decimal) { Caption = 'Interest Amount'; DataClassification = CustomerContent; }
         field(21; "Principal Amount"; Decimal) { Caption = 'Principal Amount'; DataClassification = CustomerContent; }
         field(22; "Escrow Amount"; Decimal) { Caption = 'Escrow Amount'; DataClassification = CustomerContent; }
+        field(30; "Last Servicing Period"; Boolean) { Caption = 'Last Servicing Period'; DataClassification = CustomerContent; }
+        field(31; "Payable to Investor"; Boolean) { Caption = 'Payable to Investor'; DataClassification = CustomerContent; }
         field(100; "Error Message"; Text[250]) { Caption = 'Error Message'; DataClassification = CustomerContent; }
     }
 
