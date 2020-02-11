@@ -1,7 +1,7 @@
 page 14135127 lvngFundedDocument
 {
     Caption = 'Funded Document';
-    PageType = Card;
+    PageType = Document;
     SourceTable = lvngLoanDocument;
 
     layout

@@ -1,7 +1,7 @@
 page 14135136 lvngSoldDocument
 {
     Caption = 'Sold Document';
-    PageType = Card;
+    PageType = Document;
     SourceTable = lvngLoanDocument;
 
     layout
