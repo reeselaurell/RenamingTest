@@ -1,7 +1,7 @@
 page 14135134 lvngPostedSoldDocument
 {
     Caption = 'Posted Sold Document';
-    PageType = Card;
+    PageType = Document;
     SourceTable = lvngLoanSoldDocument;
     Editable = false;
     DeleteAllowed = false;

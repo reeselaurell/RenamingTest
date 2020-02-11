@@ -1,6 +1,6 @@
-page 14135151 lvngServicingDocuments
+page 14135151 lvngPostedServicingDocuments
 {
-    Caption = 'Servicing Documents';
+    Caption = 'Posted Servicing Documents';
     PageType = List;
     UsageCategory = Lists;
     ApplicationArea = All;
@@ -38,9 +38,9 @@ page 14135151 lvngServicingDocuments
                 trigger OnAction()
                 begin
                     if "Servicing Document Type" = "Servicing Document Type"::Invoice then
-                        Page.Run(Page::lvngServicingInvoice, Rec);
+                        Page.Run(Page::lvngPostedServicingInvoice, Rec);
                     if "Servicing Document Type" = "Servicing Document Type"::"Credit Memo" then
-                        Page.Run(Page::lvngServicingCrMemo, Rec);
+                        Page.Run(Page::lvngPostedServicingCrMemo, Rec);
                 end;
             }
 

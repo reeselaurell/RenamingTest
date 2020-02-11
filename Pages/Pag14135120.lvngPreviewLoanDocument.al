@@ -1,6 +1,6 @@
 page 14135120 lvngPreviewLoanDocument
 {
-    PageType = Card;
+    PageType = Document;
     SourceTable = lvngLoanDocument;
     SourceTableTemporary = true;
     Caption = 'Document Preview';

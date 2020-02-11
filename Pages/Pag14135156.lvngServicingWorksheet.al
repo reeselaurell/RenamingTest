@@ -21,6 +21,8 @@ page 14135156 lvngServicingWorksheet
                 field("First Payment Due"; "First Payment Due") { ApplicationArea = All; DrillDown = false; }
                 field("Next Payment Date"; "Next Payment Date") { ApplicationArea = All; DrillDown = false; }
                 field("First Payment Due To Investor"; "First Payment Due To Investor") { ApplicationArea = All; DrillDown = false; }
+                field("Last Servicing Period"; "Last Servicing Period") { ApplicationArea = All; }
+                field("Payable to Investor"; "Payable to Investor") { ApplicationArea = All; Editable = false; }
                 field("Date Sold"; "Date Sold") { ApplicationArea = All; DrillDown = false; }
                 field("Interest Amount"; "Interest Amount") { ApplicationArea = All; Editable = false; }
                 field("Principal Amount"; "Principal Amount") { ApplicationArea = All; Editable = false; }
@@ -76,6 +78,8 @@ page 14135156 lvngServicingWorksheet
                 PromotedIsBig = true;
 
                 trigger OnAction()
+                var
+                    ValidationCompletedMsg: Label 'Validation completed';
                 begin
                     ServicingManagement.ValidateServicingWorksheet();
                     Message(ValidationCompletedMsg);
@@ -91,9 +95,12 @@ page 14135156 lvngServicingWorksheet
                 PromotedIsBig = true;
 
                 trigger OnAction()
+                var
+                    BorrowerCustomersCreatedlbl: Label 'Borrower Customers Created';
                 begin
                     ServicingManagement.CreateBorrowerCustomers();
                     ServicingManagement.ValidateServicingWorksheet();
+                    Message(BorrowerCustomersCreatedlbl);
                     CurrPage.Update(false);
                 end;
             }
@@ -102,7 +109,6 @@ page 14135156 lvngServicingWorksheet
 
     var
         ServicingManagement: Codeunit lvngServicingManagement;
-        ValidationCompletedMsg: Label 'Validation completed';
 
     trigger OnAfterGetCurrRecord()
     begin

@@ -43,9 +43,12 @@ table 14135137 lvngLoanServicingSetup
         field(44; "Late Payment G/L Account No."; Code[20]) { Caption = 'Late Payment G/L Account No.'; DataClassification = CustomerContent; TableRelation = "G/L Account"."No." where("Account Type" = const(Posting)); }
         field(52; "Serviced No. Series"; Code[20]) { Caption = 'Serviced No. Series'; DataClassification = CustomerContent; TableRelation = "No. Series".Code; }
         field(55; "Void Serviced No. Series"; Code[20]) { Caption = 'Serviced Void No. Series'; DataClassification = CustomerContent; TableRelation = "No. Series".Code; }
-        field(56; "Late Fee Rule"; enum lvngServicingLateFeeRule) { Caption = 'Late Fee Rule'; DataClassification = CustomerContent; }
+        field(56; "Late Fee Amount Rule"; enum lvngServicingLateFeeRule) { Caption = 'Late Fee Amount Rule'; DataClassification = CustomerContent; }
+        field(57; "Late Fee Date Formula"; DateFormula) { Caption = 'Late Fee Date Formula'; DataClassification = CustomerContent; }
         field(60; "Borrower Customer Template"; Code[20]) { Caption = 'Borrower Customer Template'; DataClassification = CustomerContent; TableRelation = "Customer Template".Code; }
         field(100; "Test Escrow Totals"; Boolean) { Caption = 'Test Escrow Total Amount'; DataClassification = CustomerContent; }
+        field(120; "Last Servicing Month Day"; Integer) { Caption = 'Last Servicing Month Day'; DataClassification = CustomerContent; }
+
     }
 
     keys

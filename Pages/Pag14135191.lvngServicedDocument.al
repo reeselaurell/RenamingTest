@@ -1,11 +1,8 @@
-page 14135130 lvngPostedFundedDocument
+page 14135191 "lvngServicedDocument"
 {
-    Caption = 'Posted Funded Document';
+    Caption = 'Serviced Document';
     PageType = Document;
-    SourceTable = lvngLoanFundedDocument;
-    Editable = false;
-    DeleteAllowed = false;
-    InsertAllowed = false;
+    SourceTable = lvngLoanDocument;
 
     layout
     {
@@ -20,9 +17,12 @@ page 14135130 lvngPostedFundedDocument
                 field("Posting Date"; "Posting Date") { ApplicationArea = All; }
                 field("Reason Code"; "Reason Code") { ApplicationArea = All; }
                 field(Void; Void) { ApplicationArea = All; }
+                field("Void Document No."; "Void Document No.") { ApplicationArea = All; }
                 field("Customer No."; "Customer No.") { ApplicationArea = All; }
                 field("Loan No."; "Loan No.") { ApplicationArea = All; }
+                field("Warehouse Line Code"; "Warehouse Line Code") { ApplicationArea = All; }
                 field("Borrower Search Name"; "Borrower Search Name") { ApplicationArea = All; }
+                field("Last Servicing Period"; "Last Servicing Period") { ApplicationArea = All; }
 
                 group(Dimensions)
                 {
@@ -40,10 +40,10 @@ page 14135130 lvngPostedFundedDocument
                 }
             }
 
-            part(PostedFundedDocSubpage; lvngPostedFundedDocSubpage)
+            part(lvngServicedDocumentSubpage; lvngServicedDocumentSubpage)
             {
                 Caption = 'Lines';
-                SubPageLink = "Document No." = field("Document No.");
+                SubPageLink = "Transaction Type" = field("Transaction Type"), "Document No." = field("Document No.");
                 ApplicationArea = All;
             }
         }
@@ -53,20 +53,20 @@ page 14135130 lvngPostedFundedDocument
     {
         area(Processing)
         {
-            action(CreateVoidDocument)
+            action(Post)
             {
-                Caption = 'Create Void Document';
-                Image = VoidElectronicDocument;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
+                Caption = 'Post';
                 ApplicationArea = All;
+                Promoted = true;
+                Image = PostDocument;
 
-                trigger OnAction();
+                trigger OnAction()
                 var
-                    LoanVoidDocument: Codeunit lvngLoanVoidDocument;
+                    PostLoanDocument: Codeunit lvngPostLoanDocument;
+                    PostConfirmationQst: Label 'Do You want to Post Document?';
                 begin
-                    LoanVoidDocument.CreateFundedVoidDocument(Rec, true);
+                    if Confirm(PostConfirmationQst, false) then
+                        PostLoanDocument.Run(Rec);
                 end;
             }
 
@@ -81,13 +81,13 @@ page 14135130 lvngPostedFundedDocument
 
                 trigger OnAction()
                 var
-                    LoanFundedDocumentView: Record lvngLoanFundedDocument;
-                    LoanFundedDocumentReport: Report lvngLoanFundedDocument;
+                    LoanDocumentView: Record lvngLoanDocument;
+                    LoanDocumentReport: Report lvngLoanDocument;
                 begin
-                    LoanFundedDocumentView := Rec;
-                    LoanFundedDocumentView.SetRecFilter();
-                    LoanFundedDocumentReport.SetTableView(LoanFundedDocumentView);
-                    LoanFundedDocumentReport.Run();
+                    LoanDocumentView := Rec;
+                    LoanDocumentView.SetRecFilter();
+                    LoanDocumentReport.SetTableView(LoanDocumentView);
+                    LoanDocumentReport.Run();
                 end;
             }
         }

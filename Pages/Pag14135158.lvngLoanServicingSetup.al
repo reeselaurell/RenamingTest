@@ -24,25 +24,26 @@ page 14135158 lvngLoanServicingSetup
                 field("Serviced No. Series"; "Serviced No. Series") { ApplicationArea = All; }
                 field("Void Serviced No. Series"; "Void Serviced No. Series") { ApplicationArea = All; }
                 field("Test Escrow Totals"; "Test Escrow Totals") { ApplicationArea = All; }
+                field("Last Servicing Month Day"; "Last Servicing Month Day") { ApplicationArea = All; }
 
                 group(Interest)
                 {
                     Caption = 'Interest';
 
-                    field("Interest G/L Account No."; "Interest G/L Account No.") { ApplicationArea = All; }
-                    field("Interest G/L Acc. Switch Code"; "Interest G/L Acc. Switch Code") { ApplicationArea = All; }
-                    field("Interest Cost Center Option"; "Interest Cost Center Option") { ApplicationArea = All; }
-                    field("Interest Cost Center"; "Interest Cost Center") { ApplicationArea = All; }
+                    field("Interest G/L Account No."; "Interest G/L Account No.") { Caption = 'G/L Account No.'; ApplicationArea = All; }
+                    field("Interest G/L Acc. Switch Code"; "Interest G/L Acc. Switch Code") { Caption = 'G/L Switch Code'; ApplicationArea = All; }
+                    field("Interest Cost Center Option"; "Interest Cost Center Option") { Caption = 'Cost Center Option'; ApplicationArea = All; }
+                    field("Interest Cost Center"; "Interest Cost Center") { Caption = 'Cost Center'; ApplicationArea = All; }
                 }
 
                 group(Principal)
                 {
                     Caption = 'Principal';
 
-                    field("Principal G/L Account No."; "Principal G/L Account No.") { ApplicationArea = All; }
-                    field("Principal G/L Acc. Switch Code"; "Principal G/L Acc. Switch Code") { ApplicationArea = All; }
-                    field("Principal Cost Center Option"; "Principal Cost Center Option") { ApplicationArea = All; }
-                    field("Principal Cost Center"; "Principal Cost Center") { ApplicationArea = All; }
+                    field("Principal G/L Account No."; "Principal G/L Account No.") { Caption = 'G/L Account No.'; ApplicationArea = All; }
+                    field("Principal G/L Acc. Switch Code"; "Principal G/L Acc. Switch Code") { Caption = 'G/L Switch Code'; ApplicationArea = All; }
+                    field("Principal Cost Center Option"; "Principal Cost Center Option") { Caption = 'Cost Center Option'; ApplicationArea = All; }
+                    field("Principal Cost Center"; "Principal Cost Center") { Caption = 'Cost Center'; ApplicationArea = All; }
                     field("Principal Red. G/L Account No."; "Principal Red. G/L Account No.") { ApplicationArea = All; }
                     field("Principal Red. Reason Code"; "Principal Red. Reason Code") { ApplicationArea = All; }
                 }
@@ -55,7 +56,8 @@ page 14135158 lvngLoanServicingSetup
                     field("Additional Escrow Reason Code"; "Additional Escrow Reason Code") { ApplicationArea = All; }
                     field("Late Payment G/L Account No."; "Late Payment G/L Account No.") { ApplicationArea = All; }
                     field("Late Payment Reason Code"; "Late Payment Reason Code") { ApplicationArea = All; }
-                    field("Late Fee Rule"; "Late Fee Rule") { ApplicationArea = All; }
+                    field("Late Fee Amount Rule"; "Late Fee Amount Rule") { ApplicationArea = All; }
+                    field("Late Fee Date Formula"; "Late Fee Date Formula") { ApplicationArea = All; }
                 }
 
             }

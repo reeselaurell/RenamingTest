@@ -1,6 +1,6 @@
-page 14135154 lvngServicingCrMemo
+page 14135152 lvngPostedServicingInvoice
 {
-    Caption = 'Servicing Credit Memo';
+    Caption = 'Posted Servicing Invoice';
     PageType = Document;
     SourceTable = lvngServiceHeader;
 
@@ -35,7 +35,7 @@ page 14135154 lvngServicingCrMemo
                 }
             }
 
-            part(ServicingCrMemoSubform; lvngServicingCrMemoSubform)
+            part(ServicingInvoiceSubform; lvngPostedServInvoiceSubform)
             {
                 Caption = 'Lines';
                 SubPageLink = "Servicing Document Type" = field("Servicing Document Type"), "Document No." = field("No.");

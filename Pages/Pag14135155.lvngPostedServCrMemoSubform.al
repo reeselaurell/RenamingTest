@@ -1,4 +1,4 @@
-page 14135153 lvngServicingInvoiceSubform
+page 14135155 lvngPostedServCrMemoSubform
 {
     Caption = 'Lines';
     PageType = ListPart;
