@@ -45,21 +45,9 @@ page 14135234 lvngPerformanceGLEntries
 
             }
         }
-    }
-
-    actions
-    {
-        area(Processing)
+        area(FactBoxes)
         {
-            action(ShowDocument)
-            {
-                ApplicationArea = All;
-
-                trigger OnAction();
-                begin
-                    Error('Not Implemented');
-                end;
-            }
+            part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
         }
     }
 
@@ -67,6 +55,8 @@ page 14135234 lvngPerformanceGLEntries
         GLAcc: Record "G/L Account";
         Loan: Record lvngLoan;
         DimensionManagement: Codeunit DimensionManagement;
+        CostCenterDimNo: Integer;
+        UseCostCenterFiltering: Boolean;
         InvestorName: Text;
         DimensionVisible1: Boolean;
         DimensionVisible2: Boolean;
@@ -78,9 +68,16 @@ page 14135234 lvngPerformanceGLEntries
         DimensionVisible8: Boolean;
 
     trigger OnOpenPage()
+    var
+        LoanVisionSetup: Record lvngLoanVisionSetup;
+        DimMgmt: Codeunit lvngDimensionsManagement;
     begin
-        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6,
-        DimensionVisible7, DimensionVisible8);
+        if UseCostCenterFiltering then begin
+            LoanVisionSetup.Get();
+            if LoanVisionSetup."Cost Center Dimension Code" <> '' then
+                CostCenterDimNo := DimMgmt.GetDimensionNo(LoanVisionSetup."Cost Center Dimension Code");
+        end;
+        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6, DimensionVisible7, DimensionVisible8);
     end;
 
     trigger OnAfterGetRecord()
@@ -94,6 +91,59 @@ page 14135234 lvngPerformanceGLEntries
             if Loan."Investor Customer No." <> '' then
                 if Customer.Get(Loan."Investor Customer No.") then
                     InvestorName := Customer.Name;
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    var
+        GLEntry: Record "G/L Entry";
+        OriginalCostCenter: Code[20];
+    begin
+        if CostCenterDimNo <> 0 then begin
+            OriginalCostCenter := GetCostCenter(Rec);
+            if OriginalCostCenter <> '' then begin
+                GLEntry.Reset();
+                GLEntry.SetCurrentKey("Transaction No.");
+                GLEntry.SetRange("Transaction No.", "Transaction No.");
+                if GLEntry.FindSet() then begin
+                    repeat
+                        if GetCostCenter(GLEntry) <> OriginalCostCenter then begin
+                            CurrPage.DocumentExchange.Page.ReloadDocuments(CreateGuid());
+                            exit;
+                        end;
+                    until GLEntry.Next() = 0;
+                end;
+            end;
+        end;
+        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+    end;
+
+    procedure EnableCostCenterDocumentFiltering()
+    begin
+        UseCostCenterFiltering := true;
+    end;
+
+    local procedure GetCostCenter(var GLEntry: Record "G/L Entry"): Code[20];
+    begin
+        case CostCenterDimNo of
+            1:
+                exit(GLEntry."Global Dimension 1 Code");
+            2:
+                exit(GLEntry."Global Dimension 2 Code");
+            3:
+                exit(GLEntry.lvngShortcutDimension3Code);
+            4:
+                exit(GLEntry.lvngShortcutDimension4Code);
+            5:
+                exit(GLEntry.lvngShortcutDimension5Code);
+            6:
+                exit(GLEntry.lvngShortcutDimension6Code);
+            7:
+                exit(GLEntry.lvngShortcutDimension7Code);
+            8:
+                exit(GLEntry.lvngShortcutDimension8Code);
+            else
+                exit('');
+        end;
     end;
 
     local procedure GetCaption(): Text
