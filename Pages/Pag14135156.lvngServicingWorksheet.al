@@ -76,6 +76,8 @@ page 14135156 lvngServicingWorksheet
                 PromotedIsBig = true;
 
                 trigger OnAction()
+                var
+                    ValidationCompletedMsg: Label 'Validation completed';
                 begin
                     ServicingManagement.ValidateServicingWorksheet();
                     Message(ValidationCompletedMsg);
@@ -105,7 +107,6 @@ page 14135156 lvngServicingWorksheet
 
     var
         ServicingManagement: Codeunit lvngServicingManagement;
-        ValidationCompletedMsg: Label 'Validation completed';
 
     trigger OnAfterGetCurrRecord()
     begin
