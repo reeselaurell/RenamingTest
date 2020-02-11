@@ -12,16 +12,8 @@ page 14135190 lvngStates
         {
             repeater(Group)
             {
-                field(Code; Code)
-                {
-                    ApplicationArea = All;
-                }
-                field(Name; Name)
-                {
-                    ApplicationArea = All;
-                }
-
-
+                field(Code; Code) { ApplicationArea = All; }
+                field(Name; Name) { ApplicationArea = All; }
             }
         }
     }
