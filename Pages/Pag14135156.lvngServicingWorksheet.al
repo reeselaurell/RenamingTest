@@ -91,9 +91,12 @@ page 14135156 lvngServicingWorksheet
                 PromotedIsBig = true;
 
                 trigger OnAction()
+                var
+                    BorrowerCustomersCreatedlbl: Label 'Borrower Customers Created';
                 begin
                     ServicingManagement.CreateBorrowerCustomers();
                     ServicingManagement.ValidateServicingWorksheet();
+                    Message(BorrowerCustomersCreatedlbl);
                     CurrPage.Update(false);
                 end;
             }
