@@ -37,7 +37,7 @@ table 14135128 lvngGenJnlImportBuffer
         field(85; "Shortcut Dimension 6 Code"; Code[20]) { Caption = 'Shortcut Dimension 6 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,6'; }
         field(86; "Shortcut Dimension 7 Code"; Code[20]) { Caption = 'Shortcut Dimension 7 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,7'; }
         field(87; "Shortcut Dimension 8 Code"; Code[20]) { Caption = 'Shortcut Dimension 8 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,8'; }
-        field(88; "Business Unit Code"; Code[10]) { Caption = 'Business Unit Code'; DataClassification = CustomerContent; }
+        field(88; "Business Unit Code"; Code[20]) { Caption = 'Business Unit Code'; DataClassification = CustomerContent; }
         field(90; "Global Dimension 1 Value"; Text[50]) { Caption = 'Global Dimension 1 Value'; DataClassification = CustomerContent; }
         field(91; "Global Dimension 2 Value"; Text[50]) { Caption = 'Global Dimension 2 Value'; DataClassification = CustomerContent; }
         field(92; "Shortcut Dimension 3 Value"; Text[50]) { Caption = 'Shortcut Dimension 3 Value'; DataClassification = CustomerContent; }
@@ -48,7 +48,11 @@ table 14135128 lvngGenJnlImportBuffer
         field(97; "Shortcut Dimension 8 Value"; Text[50]) { Caption = 'Shortcut Dimension 8 Value'; DataClassification = CustomerContent; }
         field(98; "Account Value"; Text[50]) { Caption = 'Account Value'; DataClassification = CustomerContent; }
         field(99; "Bal. Account Value"; Text[50]) { Caption = 'Bal. Account Value'; DataClassification = CustomerContent; }
+        field(100; "Business Unit Value"; Text[50]) { Caption = 'Business Unit Code'; DataClassification = CustomerContent; }
+        field(101; "Flexible Line No."; Integer) { Caption = 'Flexible Line No.'; DataClassification = CustomerContent; }
+        field(102; "Use Dimension Hierarchy"; Boolean) { Caption = 'Use Dimension Hierarchy'; DataClassification = CustomerContent; }
         field(14135100; "Loan No."; Code[20]) { Caption = 'Loan No.'; DataClassification = CustomerContent; }
+        field(14135108; "Servicing Type"; enum lvngServicingType) { Caption = 'Servicing Type'; DataClassification = CustomerContent; }
     }
 
     keys

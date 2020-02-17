@@ -24,9 +24,9 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
     {
         addafter(GetStandardJournals)
         {
-            action(lvngFileImport)
+            action(lvngMappedImport)
             {
-                Caption = 'Import From File';
+                Caption = 'Import (Mapped)';
                 ApplicationArea = All;
                 Image = Import;
                 Promoted = true;
@@ -40,7 +40,7 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
                     ImportBufferError: Record lvngImportBufferError temporary;
                     JournalDataImport: Page lvngJournalDataImport;
                 begin
-                    clear(ImportGenJnlFile);
+                    Clear(ImportGenJnlFile);
                     if not ImportGenJnlFile.ManualFileImport(GenJnlImportBuffer, ImportBufferError) then
                         exit;
                     ImportBufferError.Reset();
@@ -50,6 +50,34 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
                         JournalDataImport.Run();
                     end else
                         ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, "Journal Template Name", "Journal Batch Name", CreateGuid());
+                    CurrPage.Update(false);
+                end;
+            }
+            action(lvngFlexibleImport)
+            {
+                Caption = 'Import (Flexible)';
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = Import;
+
+                trigger OnAction()
+                var
+                    GenJnlImportBuffer: Record lvngGenJnlImportBuffer temporary;
+                    ImportBufferError: Record lvngImportBufferError temporary;
+                    GenJnlFlexImportMgmt: Codeunit lvngGenJnlFlexImportManagement;
+                    JournalDataImport: Page lvngJournalDataImport;
+                begin
+                    Clear(GenJnlFlexImportMgmt);
+                    if not GenJnlFlexImportMgmt.ManualFileImport(GenJnlImportBuffer, ImportBufferError) then
+                        exit;
+                    if not ImportBufferError.IsEmpty() then begin
+                        Clear(JournalDataImport);
+                        JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
+                        JournalDataImport.Run();
+                    end else
+                        GenJnlFlexImportMgmt.CreateJournalLines(GenJnlImportBuffer, "Journal Template Name", "Journal Batch Name", CreateGuid());
                     CurrPage.Update(false);
                 end;
             }

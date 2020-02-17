@@ -236,4 +236,41 @@ codeunit 14135104 lvngDimensionsManagement
             exit(8);
         exit(-1);
     end;
+
+    procedure ValidateDimensionHierarchyGenJnlLine(var Sender: Record "Gen. Journal Line")
+    var
+        DimensionHierarchy: Record lvngDimensionHierarchy;
+        GetShortcutDimensionValues: Codeunit "Get Shortcut Dimension Values";
+        ShortcutDimensions: array[8] of Code[20];
+        MainDimensionNo: Integer;
+        ShortcutDimCode: Code[20];
+        DimensionUsage: array[5] of Boolean;
+    begin
+        MainDimensionNo := GetMainHierarchyDimensionNo();
+        if (MainDimensionNo < 1) or (MainDimensionNo > 8) then
+            exit;
+        Clear(ShortcutDimensions);
+        GetShortcutDimensionValues.GetShortcutDimensions(Sender."Dimension Set ID", ShortcutDimensions);
+        ShortcutDimCode := ShortcutDimensions[MainDimensionNo];
+        GetHierarchyDimensionsUsage(DimensionUsage);
+        DimensionHierarchy.Reset();
+        DimensionHierarchy.Ascending(false);
+        if Sender."Posting Date" <> 0D then
+            DimensionHierarchy.SetFilter(Date, '..%1', Sender."Posting Date")
+        else
+            DimensionHierarchy.SetRange(Date, 0D);
+        DimensionHierarchy.SetRange(Code, ShortcutDimCode);
+        if DimensionHierarchy.FindFirst() then begin
+            if DimensionUsage[1] and (MainDimensionNo <> 1) then
+                Sender.Validate("Shortcut Dimension 1 Code", DimensionHierarchy."Global Dimension 1 Code");
+            if DimensionUsage[2] and (MainDimensionNo <> 2) then
+                Sender.Validate("Shortcut Dimension 2 Code", DimensionHierarchy."Global Dimension 1 Code");
+            if DimensionUsage[3] and (MainDimensionNo <> 3) then
+                Sender.ValidateShortcutDimCode(3, DimensionHierarchy."Shortcut Dimension 3 Code");
+            if DimensionUsage[4] and (MainDimensionNo <> 4) then
+                Sender.ValidateShortcutDimCode(4, DimensionHierarchy."Shortcut Dimension 4 Code");
+            if DimensionUsage[5] then
+                Sender.Validate("Business Unit Code", DimensionHierarchy."Business Unit Code");
+        end;
+    end;
 }
