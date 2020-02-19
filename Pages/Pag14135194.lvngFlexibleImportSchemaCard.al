@@ -1,8 +1,6 @@
 page 14135194 lvngFlexibleImportSchemaCard
 {
     PageType = Card;
-    ApplicationArea = All;
-    UsageCategory = Administration;
     SourceTable = lvngFlexibleImportSchema;
     Caption = 'Flexible Import Schema Card';
 
@@ -39,7 +37,7 @@ page 14135194 lvngFlexibleImportSchemaCard
                 field("Dimension 7 Code Column No."; "Dimension 7 Code Column No.") { ApplicationArea = All; }
                 field("Dimension 8 Code Column No."; "Dimension 8 Code Column No.") { ApplicationArea = All; }
             }
-            part(SchemaLine; lvngFlexibleImportSchemaLine) { ApplicationArea = All; SubPageLink = "Schema Code" = field(Code); ShowFilter = false; }
+            part(SchemaLine; lvngFlexibleImportSchemaLine) { Caption = 'Schema Lines'; ApplicationArea = All; SubPageLink = "Schema Code" = field(Code); ShowFilter = false; }
         }
     }
 }
