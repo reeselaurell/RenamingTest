@@ -11,67 +11,6 @@
       <rd:DataSourceID>ad9f40e7-42a3-4d5b-92f5-fc282ab9ccc2</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="DeliveryState">
-          <DataField>DeliveryState</DataField>
-        </Field>
-        <Field Name="VendorNo">
-          <DataField>VendorNo</DataField>
-        </Field>
-        <Field Name="VendorName">
-          <DataField>VendorName</DataField>
-        </Field>
-        <Field Name="DocumentNo">
-          <DataField>DocumentNo</DataField>
-        </Field>
-        <Field Name="ExtDocumentNo">
-          <DataField>ExtDocumentNo</DataField>
-        </Field>
-        <Field Name="PostingDate">
-          <DataField>PostingDate</DataField>
-        </Field>
-        <Field Name="LineAmount">
-          <DataField>LineAmount</DataField>
-        </Field>
-        <Field Name="LineAmountFormat">
-          <DataField>LineAmountFormat</DataField>
-        </Field>
-        <Field Name="GLAccount">
-          <DataField>GLAccount</DataField>
-        </Field>
-        <Field Name="TaxRate">
-          <DataField>TaxRate</DataField>
-        </Field>
-        <Field Name="TaxRateFormat">
-          <DataField>TaxRateFormat</DataField>
-        </Field>
-        <Field Name="TaxAmount">
-          <DataField>TaxAmount</DataField>
-        </Field>
-        <Field Name="TaxAmountFormat">
-          <DataField>TaxAmountFormat</DataField>
-        </Field>
-        <Field Name="TaxFrequency">
-          <DataField>TaxFrequency</DataField>
-        </Field>
-        <Field Name="CostCenter">
-          <DataField>CostCenter</DataField>
-        </Field>
-        <Field Name="DimName">
-          <DataField>DimName</DataField>
-        </Field>
-        <Field Name="Filters">
-          <DataField>Filters</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -2368,12 +2307,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -2413,4 +2346,65 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="DeliveryState">
+          <DataField>DeliveryState</DataField>
+        </Field>
+        <Field Name="VendorNo">
+          <DataField>VendorNo</DataField>
+        </Field>
+        <Field Name="VendorName">
+          <DataField>VendorName</DataField>
+        </Field>
+        <Field Name="DocumentNo">
+          <DataField>DocumentNo</DataField>
+        </Field>
+        <Field Name="ExtDocumentNo">
+          <DataField>ExtDocumentNo</DataField>
+        </Field>
+        <Field Name="PostingDate">
+          <DataField>PostingDate</DataField>
+        </Field>
+        <Field Name="LineAmount">
+          <DataField>LineAmount</DataField>
+        </Field>
+        <Field Name="LineAmountFormat">
+          <DataField>LineAmountFormat</DataField>
+        </Field>
+        <Field Name="GLAccount">
+          <DataField>GLAccount</DataField>
+        </Field>
+        <Field Name="TaxRate">
+          <DataField>TaxRate</DataField>
+        </Field>
+        <Field Name="TaxRateFormat">
+          <DataField>TaxRateFormat</DataField>
+        </Field>
+        <Field Name="TaxAmount">
+          <DataField>TaxAmount</DataField>
+        </Field>
+        <Field Name="TaxAmountFormat">
+          <DataField>TaxAmountFormat</DataField>
+        </Field>
+        <Field Name="TaxFrequency">
+          <DataField>TaxFrequency</DataField>
+        </Field>
+        <Field Name="CostCenter">
+          <DataField>CostCenter</DataField>
+        </Field>
+        <Field Name="DimName">
+          <DataField>DimName</DataField>
+        </Field>
+        <Field Name="Filters">
+          <DataField>Filters</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

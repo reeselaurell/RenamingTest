@@ -2,6 +2,7 @@ page 14135195 lvngFlexibleImportSchemaLine
 {
     PageType = ListPart;
     SourceTable = lvngFlexibleImportSchemaLine;
+    Caption = 'Flexible Import Schema Line';
 
     layout
     {

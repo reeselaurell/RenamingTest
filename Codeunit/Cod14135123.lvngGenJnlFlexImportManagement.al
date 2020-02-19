@@ -8,8 +8,8 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
         SchemaEmptyErr: Label 'Import schema is empty';
         PostingDateIsBlankErr: Label 'Posting Date is Blank';
         PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
-        AccountNoBlankErr: Label 'Account %1 %2 is blank';
-        BalAccountNoBlankErr: Label 'Bal. Account %1 %2 is blank';
+        AccountNoBlankOrMissingErr: Label 'Account %1 %2 is blank or missing';
+        BalAccountNoBlankOrMissingErr: Label 'Bal. Account %1 %2 is blank or missing';
         LoanNoNotFoundErr: Label 'Loan No. %1 not found';
         DimensionValueCodeMissingErr: Label 'Dimension Value Code %1 is missing';
         DimensionValueCodeBlockedErr: Label 'Dimension Value Code %1 is blocked';
@@ -137,15 +137,15 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
                 GenJnlImportBuffer."Account No." := FlexibleImportSchemaLine."Account No.";
                 if LoanExists then
                     CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Account No.", GenJnlImportBuffer."Account No.");
-                if GenJnlImportBuffer."Account No." = '' then
-                    AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(AccountNoBlankErr, GenJnlImportBuffer."Account Type", GenJnlImportBuffer."Account No."));
+                if not CheckAccountNo(GenJnlImportBuffer."Account Type", GenJnlImportBuffer."Account No.") then
+                    AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(AccountNoBlankOrMissingErr, GenJnlImportBuffer."Account Type", GenJnlImportBuffer."Account No."));
                 //Bal. Account Type and Bal. Account No.
                 GenJnlImportBuffer."Bal. Account Type" := FlexibleImportSchemaLine."Bal. Account Type";
                 GenJnlImportBuffer."Bal. Account No." := FlexibleImportSchemaLine."Bal. Account No.";
                 if LoanExists then
                     CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Bal. Account No.", GenJnlImportBuffer."Bal. Account No.");
-                if GenJnlImportBuffer."Bal. Account No." = '' then
-                    AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(BalAccountNoBlankErr, GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No."));
+                if not CheckAccountNo(GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No.") then
+                    AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(BalAccountNoBlankOrMissingErr, GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No."));
                 //Dimensions
                 GenJnlImportBuffer."Servicing Type" := FlexibleImportSchemaLine."Servicing Type";
                 case FlexibleImportSchemaLine."Dimension Validation Rule" of
@@ -230,6 +230,35 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
                 GenJnlImportBuffer.Modify();
 
             until GenJnlImportBuffer.Next() = 0;
+    end;
+
+    local procedure CheckAccountNo(GenJnlAccountType: Enum lvngGenJnlAccountType; AccountNo: Code[20]): Boolean
+    var
+        GLAccount: Record "G/L Account";
+        Vendor: Record Vendor;
+        Customer: Record Customer;
+        FixedAsset: Record "Fixed Asset";
+        BankAccount: Record "Bank Account";
+        ICPartner: Record "IC Partner";
+    begin
+        if AccountNo = '' then
+            exit(false);
+        case GenJnlAccountType of
+            GenJnlAccountType::"G/L Account":
+                exit(GLAccount.Get(AccountNo) and (GLAccount."Account Type" = GLAccount."Account Type"::Posting));
+            GenJnlAccountType::"Bank Account":
+                exit(BankAccount.Get(AccountNo));
+            GenJnlAccountType::Customer:
+                exit(Customer.Get(AccountNo));
+            GenJnlAccountType::Vendor:
+                exit(Vendor.Get(AccountNo));
+            GenJnlAccountType::"Fixed Asset":
+                exit(FixedAsset.Get(AccountNo));
+            GenJnlAccountType::"IC Partner":
+                exit(ICPartner.Get(AccountNo));
+            else
+                exit(false);
+        end;
     end;
 
     local procedure ValidateDimension(var GenJnlImportBuffer: Record lvngGenJnlImportBuffer; DimensionNo: Integer; DimensionValueCode: Code[20]; var ImportBufferError: Record lvngImportBufferError)

@@ -29,7 +29,7 @@ page 14135194 lvngFlexibleImportSchemaCard
                 field("Posting Date Column No."; "Posting Date Column No.") { ApplicationArea = All; }
                 field("Document Date Column No."; "Document Date Column No.") { ApplicationArea = All; }
                 field("Comment Column No."; "Comment Column No.") { ApplicationArea = All; }
-                field("External Document Column No."; "External Document Column No.") { ApplicationArea = All; }
+                field("External Document Column No."; "External Document Column No.") { ApplicationArea = All; Caption = 'External Document No. Column No.'; }
                 field("Dimension 1 Code Column No."; "Dimension 1 Code Column No.") { ApplicationArea = All; }
                 field("Dimension 2 Code Column No."; "Dimension 2 Code Column No.") { ApplicationArea = All; }
                 field("Dimension 3 Code Column No."; "Dimension 3 Code Column No.") { ApplicationArea = All; }
@@ -38,8 +38,8 @@ page 14135194 lvngFlexibleImportSchemaCard
                 field("Dimension 6 Code Column No."; "Dimension 6 Code Column No.") { ApplicationArea = All; }
                 field("Dimension 7 Code Column No."; "Dimension 7 Code Column No.") { ApplicationArea = All; }
                 field("Dimension 8 Code Column No."; "Dimension 8 Code Column No.") { ApplicationArea = All; }
-                part(SchemaLine; lvngFlexibleImportSchemaLine) { ApplicationArea = All; SubPageLink = "Schema Code" = field(Code); ShowFilter = false; }
             }
+            part(SchemaLine; lvngFlexibleImportSchemaLine) { ApplicationArea = All; SubPageLink = "Schema Code" = field(Code); ShowFilter = false; }
         }
     }
 }

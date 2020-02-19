@@ -31,7 +31,7 @@
             "enableSqlInformationDebugger": true,
             "schemaUpdateMode": "ForceSync",
             "startupObjectType": "Page",
-            "startupObjectId": 22
+            "startupObjectId": 39
         },
         {
             "type": "al",
