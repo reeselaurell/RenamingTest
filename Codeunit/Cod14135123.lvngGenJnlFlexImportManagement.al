@@ -9,7 +9,7 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
         PostingDateIsBlankErr: Label 'Posting Date is Blank';
         PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
         AccountNoBlankOrMissingErr: Label 'Account %1 %2 is blank or missing';
-        BalAccountNoBlankOrMissingErr: Label 'Bal. Account %1 %2 is blank or missing';
+        BalAccountNoBlankOrMissingErr: Label 'Bal. Account %1 %2 is missing';
         LoanNoNotFoundErr: Label 'Loan No. %1 not found';
         DimensionValueCodeMissingErr: Label 'Dimension Value Code %1 is missing';
         DimensionValueCodeBlockedErr: Label 'Dimension Value Code %1 is blocked';
@@ -83,6 +83,10 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
             GenJnlLine.ValidateShortcutDimCode(7, GenJnlImportBuffer."Shortcut Dimension 7 Code");
             GenJnlLine.ValidateShortcutDimCode(8, GenJnlImportBuffer."Shortcut Dimension 8 Code");
             GenJnlLine.Validate("Business Unit Code", GenJnlImportBuffer."Business Unit Code");
+            if GenJnlImportBuffer.Amount > 0 then
+                GenJnlLine.Validate("Debit Amount", GenJnlImportBuffer.Amount)
+            else
+                GenJnlLine.Validate("Credit Amount", GenJnlImportBuffer.Amount);
             if GenJnlImportBuffer."Use Dimension Hierarchy" then
                 DimensionMgmt.ValidateDimensionHierarchyGenJnlLine(GenJnlLine);
             if FlexibleImportSchema."Use Document No. From Series" then
@@ -144,8 +148,9 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
                 GenJnlImportBuffer."Bal. Account No." := FlexibleImportSchemaLine."Bal. Account No.";
                 if LoanExists then
                     CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Bal. Account No.", GenJnlImportBuffer."Bal. Account No.");
-                if not CheckAccountNo(GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No.") then
-                    AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(BalAccountNoBlankOrMissingErr, GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No."));
+                if GenJnlImportBuffer."Bal. Account No." <> '' then
+                    if not CheckAccountNo(GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No.") then
+                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(BalAccountNoBlankOrMissingErr, GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No."));
                 //Dimensions
                 GenJnlImportBuffer."Servicing Type" := FlexibleImportSchemaLine."Servicing Type";
                 case FlexibleImportSchemaLine."Dimension Validation Rule" of
