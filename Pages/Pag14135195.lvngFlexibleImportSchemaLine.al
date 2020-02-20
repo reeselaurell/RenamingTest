@@ -16,7 +16,9 @@ page 14135195 lvngFlexibleImportSchemaLine
                 field("Custom Description"; "Custom Description") { ApplicationArea = All; }
                 field("Bal. Account Type"; "Bal. Account Type") { ApplicationArea = All; }
                 field("Bal. Account No."; "Bal. Account No.") { ApplicationArea = All; }
-                field("Dimension Validation Rule"; "Dimension Validation Rule") { ApplicationArea = All; }
+                field("Dimension Validation Rule 1"; "Dimension Validation Rule 1") { ApplicationArea = All; Caption = 'First Take Dim. Value'; }
+                field("Dimension Validation Rule 2"; "Dimension Validation Rule 2") { ApplicationArea = All; Caption = 'Then Take Dim. Value'; }
+                field("Dimension Validation Rule 3"; "Dimension Validation Rule 3") { ApplicationArea = All; Caption = 'Finally Take Dim. Value'; }
                 field("Reverse Amount"; "Reverse Amount") { ApplicationArea = All; }
                 field("Business Unit Code"; "Business Unit Code") { ApplicationArea = All; }
                 field("Global Dimension 1 Code"; "Global Dimension 1 Code") { ApplicationArea = All; }

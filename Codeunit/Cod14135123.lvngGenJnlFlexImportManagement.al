@@ -153,64 +153,10 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
                         AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(BalAccountNoBlankOrMissingErr, GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No."));
                 //Dimensions
                 GenJnlImportBuffer."Servicing Type" := FlexibleImportSchemaLine."Servicing Type";
-                case FlexibleImportSchemaLine."Dimension Validation Rule" of
-                    FlexibleImportSchemaLine."Dimension Validation Rule"::"Dimension From File":
-                        begin
-                            GenJnlImportBuffer."Global Dimension 1 Code" := CopyStr(GenJnlImportBuffer."Global Dimension 1 Value", 1, MaxStrLen(GenJnlImportBuffer."Global Dimension 1 Code"));
-                            GenJnlImportBuffer."Global Dimension 2 Code" := CopyStr(GenJnlImportBuffer."Global Dimension 2 Value", 1, MaxStrLen(GenJnlImportBuffer."Global Dimension 2 Code"));
-                            GenJnlImportBuffer."Shortcut Dimension 3 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 3 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 3 Code"));
-                            GenJnlImportBuffer."Shortcut Dimension 4 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 4 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 4 Code"));
-                            GenJnlImportBuffer."Shortcut Dimension 5 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 5 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 5 Code"));
-                            GenJnlImportBuffer."Shortcut Dimension 6 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 6 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 6 Code"));
-                            GenJnlImportBuffer."Shortcut Dimension 7 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 7 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 7 Code"));
-                            GenJnlImportBuffer."Shortcut Dimension 8 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 8 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 8 Code"));
-                            GenJnlImportBuffer."Business Unit Code" := CopyStr(GenJnlImportBuffer."Business Unit Value", 1, MaxStrLen(GenJnlImportBuffer."Business Unit Code"));
-                            GenJnlImportBuffer."Use Dimension Hierarchy" := FlexibleImportSchemaLine."Validate From Hierarchy";
-                        end;
-                    FlexibleImportSchemaLine."Dimension Validation Rule"::"Dimension From Related Loan":
-                        begin
-                            if not LoanExists then
-                                AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(LoanNoNotFoundErr, GenJnlImportBuffer."Loan No."));
-                            CopyDimensionsFromLoan(GenJnlImportBuffer, Loan);
-                        end;
-                    FlexibleImportSchemaLine."Dimension Validation Rule"::Predefined:
-                        begin
-                            if not LoanExists then
-                                AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(LoanNoNotFoundErr, GenJnlImportBuffer."Loan No."));
-                            CopyDimensionsFromLoan(GenJnlImportBuffer, Loan);
-                            if FlexibleImportSchemaLine."Global Dimension 1 Code" <> '' then
-                                GenJnlImportBuffer."Global Dimension 1 Code" := FlexibleImportSchemaLine."Global Dimension 1 Code";
-                            if FlexibleImportSchemaLine."Global Dimension 2 Code" <> '' then
-                                GenJnlImportBuffer."Global Dimension 2 Code" := FlexibleImportSchemaLine."Global Dimension 2 Code";
-                            if FlexibleImportSchemaLine."Shortcut Dimension 3 Code" <> '' then
-                                GenJnlImportBuffer."Shortcut Dimension 3 Code" := FlexibleImportSchemaLine."Shortcut Dimension 3 Code";
-                            if FlexibleImportSchemaLine."Shortcut Dimension 4 Code" <> '' then
-                                GenJnlImportBuffer."Shortcut Dimension 4 Code" := FlexibleImportSchemaLine."Shortcut Dimension 4 Code";
-                            if FlexibleImportSchemaLine."Shortcut Dimension 5 Code" <> '' then
-                                GenJnlImportBuffer."Shortcut Dimension 5 Code" := FlexibleImportSchemaLine."Shortcut Dimension 5 Code";
-                            if FlexibleImportSchemaLine."Shortcut Dimension 6 Code" <> '' then
-                                GenJnlImportBuffer."Shortcut Dimension 6 Code" := FlexibleImportSchemaLine."Shortcut Dimension 6 Code";
-                            if FlexibleImportSchemaLine."Shortcut Dimension 7 Code" <> '' then
-                                GenJnlImportBuffer."Shortcut Dimension 7 Code" := FlexibleImportSchemaLine."Shortcut Dimension 7 Code";
-                            if FlexibleImportSchemaLine."Shortcut Dimension 8 Code" <> '' then
-                                GenJnlImportBuffer."Shortcut Dimension 8 Code" := FlexibleImportSchemaLine."Shortcut Dimension 8 Code";
-                            if FlexibleImportSchemaLine."Business Unit Code" <> '' then
-                                GenJnlImportBuffer."Business Unit Code" := FlexibleImportSchemaLine."Business Unit Code";
-                            GenJnlImportBuffer."Use Dimension Hierarchy" := FlexibleImportSchemaLine."Validate From Hierarchy";
-                        end;
-                    FlexibleImportSchemaLine."Dimension Validation Rule"::"Blank Dimension":
-                        begin
-                            GenJnlImportBuffer."Global Dimension 1 Code" := FlexibleImportSchemaLine."Global Dimension 1 Code";
-                            GenJnlImportBuffer."Global Dimension 2 Code" := FlexibleImportSchemaLine."Global Dimension 2 Code";
-                            GenJnlImportBuffer."Shortcut Dimension 3 Code" := FlexibleImportSchemaLine."Shortcut Dimension 3 Code";
-                            GenJnlImportBuffer."Shortcut Dimension 4 Code" := FlexibleImportSchemaLine."Shortcut Dimension 4 Code";
-                            GenJnlImportBuffer."Shortcut Dimension 5 Code" := FlexibleImportSchemaLine."Shortcut Dimension 5 Code";
-                            GenJnlImportBuffer."Shortcut Dimension 6 Code" := FlexibleImportSchemaLine."Shortcut Dimension 6 Code";
-                            GenJnlImportBuffer."Shortcut Dimension 7 Code" := FlexibleImportSchemaLine."Shortcut Dimension 7 Code";
-                            GenJnlImportBuffer."Shortcut Dimension 8 Code" := FlexibleImportSchemaLine."Shortcut Dimension 8 Code";
-                            GenJnlImportBuffer."Business Unit Code" := FlexibleImportSchemaLine."Business Unit Code";
-                        end;
-                end;
+
+                AssignDimensionValues(FlexibleImportSchemaLine."Dimension Validation Rule 1", GenJnlImportBuffer, FlexibleImportSchemaLine, LoanExists, Loan, ImportBufferError);
+                AssignDimensionValues(FlexibleImportSchemaLine."Dimension Validation Rule 2", GenJnlImportBuffer, FlexibleImportSchemaLine, LoanExists, Loan, ImportBufferError);
+                AssignDimensionValues(FlexibleImportSchemaLine."Dimension Validation Rule 3", GenJnlImportBuffer, FlexibleImportSchemaLine, LoanExists, Loan, ImportBufferError);
                 if LoanExists then begin
                     CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 1", GenJnlImportBuffer."Global Dimension 1 Code");
                     CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 2", GenJnlImportBuffer."Global Dimension 2 Code");
@@ -235,6 +181,75 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
                 GenJnlImportBuffer.Modify();
 
             until GenJnlImportBuffer.Next() = 0;
+    end;
+
+    local procedure AssignDimensionValues(Source: Enum lvngFlexImportDimValidationRule; var GenJnlImportBuffer: Record lvngGenJnlImportBuffer; var FlexibleImportSchemaLine: Record lvngFlexibleImportSchemaLine; LoanExists: Boolean; var Loan: Record lvngLoan; var ImportBufferError: Record lvngImportBufferError)
+    begin
+        case Source of
+            Source::"From File":
+                begin
+                    if GenJnlImportBuffer."Global Dimension 1 Code" = '' then
+                        GenJnlImportBuffer."Global Dimension 1 Code" := CopyStr(GenJnlImportBuffer."Global Dimension 1 Value", 1, MaxStrLen(GenJnlImportBuffer."Global Dimension 1 Code"));
+                    if GenJnlImportBuffer."Global Dimension 2 Code" = '' then
+                        GenJnlImportBuffer."Global Dimension 2 Code" := CopyStr(GenJnlImportBuffer."Global Dimension 2 Value", 1, MaxStrLen(GenJnlImportBuffer."Global Dimension 2 Code"));
+                    if GenJnlImportBuffer."Shortcut Dimension 3 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 3 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 3 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 3 Code"));
+                    if GenJnlImportBuffer."Shortcut Dimension 4 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 4 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 4 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 4 Code"));
+                    if GenJnlImportBuffer."Shortcut Dimension 5 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 5 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 5 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 5 Code"));
+                    if GenJnlImportBuffer."Shortcut Dimension 6 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 6 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 6 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 6 Code"));
+                    if GenJnlImportBuffer."Shortcut Dimension 7 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 7 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 7 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 7 Code"));
+                    if GenJnlImportBuffer."Shortcut Dimension 8 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 8 Code" := CopyStr(GenJnlImportBuffer."Shortcut Dimension 8 Value", 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 8 Code"));
+                    if GenJnlImportBuffer."Business Unit Code" = '' then
+                        GenJnlImportBuffer."Business Unit Code" := CopyStr(GenJnlImportBuffer."Business Unit Value", 1, MaxStrLen(GenJnlImportBuffer."Business Unit Code"));
+                end;
+            Source::"From Schema":
+                begin
+                    if GenJnlImportBuffer."Global Dimension 1 Code" = '' then
+                        GenJnlImportBuffer."Global Dimension 1 Code" := FlexibleImportSchemaLine."Global Dimension 1 Code";
+                    if GenJnlImportBuffer."Global Dimension 2 Code" = '' then
+                        GenJnlImportBuffer."Global Dimension 2 Code" := FlexibleImportSchemaLine."Global Dimension 2 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 3 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 3 Code" := FlexibleImportSchemaLine."Shortcut Dimension 3 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 4 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 4 Code" := FlexibleImportSchemaLine."Shortcut Dimension 4 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 5 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 5 Code" := FlexibleImportSchemaLine."Shortcut Dimension 5 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 6 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 6 Code" := FlexibleImportSchemaLine."Shortcut Dimension 6 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 7 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 7 Code" := FlexibleImportSchemaLine."Shortcut Dimension 7 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 8 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 8 Code" := FlexibleImportSchemaLine."Shortcut Dimension 8 Code";
+                    if GenJnlImportBuffer."Business Unit Code" = '' then
+                        GenJnlImportBuffer."Business Unit Code" := FlexibleImportSchemaLine."Business Unit Code";
+                end;
+            Source::"From Loan":
+                begin
+                    if not LoanExists then
+                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(LoanNoNotFoundErr, GenJnlImportBuffer."Loan No."));
+                    if GenJnlImportBuffer."Global Dimension 1 Code" = '' then
+                        GenJnlImportBuffer."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
+                    if GenJnlImportBuffer."Global Dimension 2 Code" = '' then
+                        GenJnlImportBuffer."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 3 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 4 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 5 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 6 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 7 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
+                    if GenJnlImportBuffer."Shortcut Dimension 8 Code" = '' then
+                        GenJnlImportBuffer."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
+                end;
+        end;
     end;
 
     local procedure CheckAccountNo(GenJnlAccountType: Enum lvngGenJnlAccountType; AccountNo: Code[20]): Boolean
@@ -280,20 +295,6 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
                 if DimensionValue.Blocked then
                     AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(DimensionValueCodeBlockedErr, DimensionValueCode));
         end;
-    end;
-
-
-    local procedure CopyDimensionsFromLoan(var GenJnlImportBuffer: Record lvngGenJnlImportBuffer; var Loan: Record lvngLoan)
-    begin
-        GenJnlImportBuffer."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
-        GenJnlImportBuffer."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
-        GenJnlImportBuffer."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
-        GenJnlImportBuffer."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
-        GenJnlImportBuffer."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
-        GenJnlImportBuffer."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
-        GenJnlImportBuffer."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
-        GenJnlImportBuffer."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
-        GenJnlImportBuffer."Business Unit Code" := loan."Business Unit Code";
     end;
 
     local procedure CheckConditionAssignments(var FlexibleImportSchemaLine: Record lvngFlexibleImportSchemaLine; var Loan: Record lvngLoan; var ValueBuffer: Record lvngExpressionValueBuffer; AssignValueType: Enum lvngFlexImportAssignTarget; var ValueToAssign: Code[20])

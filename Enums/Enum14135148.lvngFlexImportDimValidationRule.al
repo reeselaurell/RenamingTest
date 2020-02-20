@@ -2,8 +2,8 @@ enum 14135148 lvngFlexImportDimValidationRule
 {
     Extensible = false;
 
-    value(0; "Blank Dimension") { Caption = 'Blank Dimension'; }
-    value(1; "Dimension From File") { Caption = 'Dimension From File'; }
-    value(2; "Dimension From Related Loan") { Caption = 'Dimension From Related Loan'; }
-    value(3; Predefined) { Caption = 'Predefined'; }
+    value(0; Blank) { Caption = 'Blank'; }
+    value(1; "From File") { Caption = 'From File'; }
+    value(2; "From Loan") { Caption = 'From Loan'; }
+    value(3; "From Schema") { Caption = 'From Schema'; }
 }
