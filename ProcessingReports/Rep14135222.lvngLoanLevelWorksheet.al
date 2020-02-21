@@ -46,6 +46,7 @@ report 14135222 lvngLoanLevelWorksheet
     }
 
     var
+        AnalysisEntryUpdatePromptQst: Label 'Analysis entries required to view this report are outdated. Do you want to refresh them?';
         SystemFilter: Record lvngSystemCalculationFilter;
         BaseDate: Enum lvngLoanLevelReportBaseDate;
         ShowTotals: Boolean;
@@ -53,8 +54,19 @@ report 14135222 lvngLoanLevelWorksheet
 
     trigger OnPostReport()
     var
+        LoanVisionSetup: Record lvngLoanVisionSetup;
+        GLEntry: Record "G/L Entry";
         LoanValuesView: Page lvngLoanValuesView;
+        RefreshGLAnalysisEntries: Report lvngRefreshGLAnalysisEntries;
     begin
+        GLEntry.Reset();
+        GLEntry.FindLast();
+        if GLEntry."Entry No." > LoanVisionSetup."Last Analysis Entry No." then
+            if Confirm(AnalysisEntryUpdatePromptQst, true) then begin
+                Clear(RefreshGLAnalysisEntries);
+                RefreshGLAnalysisEntries.UseRequestPage(false);
+                RefreshGLAnalysisEntries.RunModal();
+            end;
         Clear(LoanValuesView);
         LoanValuesView.SetParams(ColSchemaCode, BaseDate, SystemFilter, ShowTotals);
         LoanValuesView.RunModal();

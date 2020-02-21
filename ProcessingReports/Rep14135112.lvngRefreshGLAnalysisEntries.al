@@ -33,13 +33,14 @@ report 14135112 lvngRefreshGLAnalysisEntries
         ConfirmContinueMsg: Label 'This procedure will erase previously generated G/L Analysis entries. Do you want to continue?';
     begin
         LoanVisionSetup.Get();
-        if Confirm(ConfirmContinueMsg, false) then begin
-            GroupedGLEntry.Reset();
-            GroupedGLEntry.DeleteAll();
-            GroupedLoanGLEntry.Reset();
-            GroupedLoanGLEntry.DeleteAll();
-            LoanVisionSetup."Last Analysis Entry No." := 0;
-        end;
+        if CompleteRefresh and GuiAllowed() then
+            if Confirm(ConfirmContinueMsg, false) then begin
+                GroupedGLEntry.Reset();
+                GroupedGLEntry.DeleteAll();
+                GroupedLoanGLEntry.Reset();
+                GroupedLoanGLEntry.DeleteAll();
+                LoanVisionSetup."Last Analysis Entry No." := 0;
+            end;
         GLEntry.Reset();
         GLEntry.FindLast();
         LastEntryNo := GLEntry."Entry No.";

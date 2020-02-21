@@ -201,7 +201,15 @@ page 14135246 lvngLoanValuesView
                     RowBuffer.Name := Loan."No.";
                     RowBuffer.Value := Format(GLLoansPerPeriod.PostingDate);
                     CalculateRowData(Loan);
-                    RowBuffer.Insert();
+                    if LoanLevelReportSchema."Skip Zero Balance Lines" then begin
+                        ValueBuffer.Reset();
+                        ValueBuffer.SetRange("Row No.", RowBuffer.ID);
+                        ValueBuffer.SetRange("Value Type", ValueBuffer."Value Type"::Number);
+                        ValueBuffer.SetFilter("Numeric Value", '<>%1', 0);
+                        if not ValueBuffer.IsEmpty() then
+                            RowBuffer.Insert();
+                    end else
+                        RowBuffer.Insert();
                 end;
             GLLoansPerPeriod.Close();
         end else begin

@@ -148,11 +148,11 @@ report 14135110 lvngPostDimensionChangeSet
 
         trigger OnQueryClosePage(CloseAction: Action): Boolean
         var
-            index: Integer;
+            Index: Integer;
         begin
             if CloseAction = Action::OK then begin
-                for index := 1 to 9 do
-                    if DimensionTransferFlag[index] then
+                for Index := 1 to 9 do
+                    if DimensionTransferFlag[Index] then
                         exit(true);
                 if LoanChangeFlag then
                     exit(true);
@@ -163,6 +163,7 @@ report 14135110 lvngPostDimensionChangeSet
     }
 
     var
+        AnalysisEntriesRegenMsg: Label 'Note: All analysis entries will be deleted and should be regenerated.';
         SelectDimensionMsg: Label 'Please, select at least one dimension to transfer';
         ProcessingMsg: Label 'Processing entry #1####### of #2#######';
         DimensionTransferFlag: array[9] of Boolean;
@@ -172,7 +173,12 @@ report 14135110 lvngPostDimensionChangeSet
         Progress: Dialog;
 
     trigger OnPreReport()
+    var
+        LoanVisionSetup: Record lvngLoanVisionSetup;
     begin
+        LoanVisionSetup.Get();
+        if LoanVisionSetup."Last Analysis Entry No." > 0 then
+            Message(AnalysisEntriesRegenMsg);
         Current := 0;
         Total := DimensionChangeJnlEntry.Count();
     end;
