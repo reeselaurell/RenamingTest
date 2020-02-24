@@ -83,10 +83,7 @@ codeunit 14135123 lvngGenJnlFlexImportManagement
             GenJnlLine.ValidateShortcutDimCode(7, GenJnlImportBuffer."Shortcut Dimension 7 Code");
             GenJnlLine.ValidateShortcutDimCode(8, GenJnlImportBuffer."Shortcut Dimension 8 Code");
             GenJnlLine.Validate("Business Unit Code", GenJnlImportBuffer."Business Unit Code");
-            if GenJnlImportBuffer.Amount > 0 then
-                GenJnlLine.Validate("Debit Amount", GenJnlImportBuffer.Amount)
-            else
-                GenJnlLine.Validate("Credit Amount", GenJnlImportBuffer.Amount);
+            GenJnlLine.Validate(Amount, GenJnlImportBuffer.Amount);
             if GenJnlImportBuffer."Use Dimension Hierarchy" then
                 DimensionMgmt.ValidateDimensionHierarchyGenJnlLine(GenJnlLine);
             if FlexibleImportSchema."Use Document No. From Series" then
