@@ -12,8 +12,42 @@ table 14135137 lvngLoanServicingSetup
         field(13; "Late Payment Reason Code"; Code[10]) { Caption = 'Late Payment Reason Code'; DataClassification = CustomerContent; TableRelation = "Reason Code"; }
         field(16; "Serviced Void Reason Code"; code[10]) { DataClassification = CustomerContent; Caption = 'Serviced Void Reason Code'; TableRelation = "Reason Code"; }
         field(19; "Serviced Source Code"; Code[20]) { DataClassification = CustomerContent; Caption = 'Serviced Source Code'; TableRelation = "Source Code".Code; }
-        field(30; "Interest G/L Acc. Switch Code"; Code[20]) { DataClassification = CustomerContent; /* TableRelation = lvngExpressionHeader.Code where (Type = const(Switch)); //TODO: This one is not good, needed lookup with consumer id included. However this field is unused as of 11/19/19 */ Caption = 'Interest G/L Account Switch Code'; }
-        field(31; "Principal G/L Acc. Switch Code"; Code[20]) { DataClassification = CustomerContent; /* TableRelation = lvngExpressionHeader.Code where (Type = const(Switch)); //TODO: This one is not good, needed lookup with consumer id included. However this field is unused as of 11/19/19 */ Caption = 'Principal G/L Account Switch Code'; }
+        field(30; "Interest G/L Acc. Switch Code"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Interest G/L Account Switch Code';
+
+            trigger OnLookup()
+            var
+                ConditionsMgmt: Codeunit lvngConditionsMgmt;
+                ExpressionList: page lvngExpressionList;
+                SelectedExpressionCode: Code[20];
+                ExpressionType: Enum lvngExpressionType;
+            begin
+                Clear(ExpressionList);
+                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', "Interest G/L Acc. Switch Code", ExpressionType::Switch);
+                if SelectedExpressionCode <> '' then
+                    "Interest G/L Acc. Switch Code" := SelectedExpressionCode;
+            end;
+        }
+        field(31; "Principal G/L Acc. Switch Code"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Principal G/L Account Switch Code';
+
+            trigger OnLookup()
+            var
+                ConditionsMgmt: Codeunit lvngConditionsMgmt;
+                ExpressionList: page lvngExpressionList;
+                SelectedExpressionCode: Code[20];
+                ExpressionType: Enum lvngExpressionType;
+            begin
+                Clear(ExpressionList);
+                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', "Principal G/L Acc. Switch Code", ExpressionType::Switch);
+                if SelectedExpressionCode <> '' then
+                    "Principal G/L Acc. Switch Code" := SelectedExpressionCode;
+            end;
+        }
         field(35; "Interest Cost Center Option"; enum lvngServDimSelectionType) { Caption = 'Interest Cost Center Option'; DataClassification = CustomerContent; }
         field(36; "Principal Cost Center Option"; enum lvngServDimSelectionType) { Caption = 'Principal Cost Center Option'; DataClassification = CustomerContent; }
         field(37; "Interest Cost Center"; Code[20])

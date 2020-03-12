@@ -28,7 +28,7 @@ table 14135112 lvngPostProcessingSchemaLine
                 ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(ExpressionList);
-                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), "Expression Code", 'JOURNAL', ExpressionType::Switch);
+                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'JOURNAL', "Expression Code", ExpressionType::Switch);
                 if SelectedExpressionCode <> '' then
                     "Expression Code" := SelectedExpressionCode;
             end;

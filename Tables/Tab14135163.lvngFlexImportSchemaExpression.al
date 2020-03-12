@@ -22,7 +22,7 @@ table 14135163 lvngFlexImportSchemaExpression
                 ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(ExpressionList);
-                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), "Expression Code", 'LOAN', "Expression Type");
+                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', "Expression Code", "Expression Type");
                 if SelectedExpressionCode <> '' then
                     "Expression Code" := SelectedExpressionCode;
             end;

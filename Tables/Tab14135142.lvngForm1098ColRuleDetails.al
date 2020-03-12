@@ -23,7 +23,7 @@ table 14135142 lvngForm1098ColRuleDetails
                 ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(ExpressionList);
-                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), "Condition Code", 'LOAN', ExpressionType::Condition);
+                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', "Condition Code", ExpressionType::Condition);
                 if SelectedExpressionCode <> '' then
                     "Condition Code" := SelectedExpressionCode;
             end;
@@ -42,7 +42,7 @@ table 14135142 lvngForm1098ColRuleDetails
                 ExpressionType: Enum lvngExpressionType;
             begin
                 Clear(ExpressionList);
-                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), "Formula Code", 'LOAN', ExpressionType::Condition);
+                SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', "Formula Code", ExpressionType::Condition);
                 if SelectedExpressionCode <> '' then
                     "Formula Code" := SelectedExpressionCode;
             end;
