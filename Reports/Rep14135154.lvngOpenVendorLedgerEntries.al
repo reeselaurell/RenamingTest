@@ -1,10 +1,10 @@
-report 14135153 lvngOpenVendorLedgerEntries
+report 14135154 lvngOpenVendorLedgerEntries
 {
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = All;
     Caption = 'Open Vendor Ledger Entries';
     DefaultLayout = RDLC;
-    RDLCLayout = 'Reports\Layouts\Rep14135153.rdl';
+    RDLCLayout = 'Reports\Layouts\Rep14135154.rdl';
 
     dataset
     {
