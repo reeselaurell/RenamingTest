@@ -20,6 +20,7 @@ table 14135136 lvngGLEntryBuffer
         field(20; "G/L Entry No."; Integer) { Caption = 'G/L Entry No.'; DataClassification = CustomerContent; }
         field(21; "Date Sold"; Date) { Caption = 'Date Funded'; DataClassification = CustomerContent; }
         field(22; "Loan Search Name"; Code[100]) { Caption = 'Loan Search Name'; DataClassification = CustomerContent; }
+        field(23; "Source Code"; Code[20]) { Caption = 'Source Code'; DataClassification = CustomerContent; }
         field(30; "Investor Name"; Text[100]) { Caption = 'Investor Name'; DataClassification = CustomerContent; }
         field(31; "Shortcut Dimension 1 Code"; Code[20]) { Caption = 'Shortcut Dimension 1 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,1'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1)); }
         field(32; "Shortcut Dimension 2 Code"; Code[20]) { Caption = 'Shortcut Dimension 2 Code'; DataClassification = CustomerContent; CaptionClass = '1,4,2'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2)); }
