@@ -62,9 +62,9 @@ page 14135206 lvngReverseSalesDocuments
                     FPBuilder.AddFieldNo(InvoiceDocTxt, 20);
                     FPBuilder.AddFieldNo(InvoiceDocTxt, 73);
                     FPBuilder.AddFieldNo(InvoiceDocTxt, 100);
-                    FPBuilder.AddFieldNo(InvoiceDocTxt, 14135100);//CHECK
-                    // FPBuilder.AddFieldNo(InvoiceDocTxt, 14135102);//CHECK
-                    // FPBuilder.AddFieldNo(InvoiceDocTxt, 14135104);//CHECK
+                    FPBuilder.AddFieldNo(InvoiceDocTxt, 14135100);
+                    // FPBuilder.AddFieldNo(InvoiceDocTxt, 14135102);
+                    // FPBuilder.AddFieldNo(InvoiceDocTxt, 14135104);
                     if FPBuilder.RunModal() then begin
                         SalesInvHeader.Reset();
                         SalesInvHeader.SetView(FPBuilder.GetView(InvoiceDocTxt, false));
