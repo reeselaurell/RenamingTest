@@ -29,6 +29,11 @@ pageextension 14135110 lvngPurchaseCrMemo extends "Purchase Credit Memo"
             field(lvngDocumentTotalCheck; lvngDocumentTotalCheck) { ApplicationArea = All; }
         }
 
+        addlast(General)
+        {
+            field(lvngTotalAmount; lvngTotalAmount) { ApplicationArea = All; }
+        }
+
         addfirst(factboxes)
         {
             part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }

@@ -6,6 +6,11 @@ pageextension 14135111 lvngSalesInvoice extends "Sales Invoice"
         {
             part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
         }
+
+        addlast(General)
+        {
+            field(lvngTotalAmount; lvngTotalAmount) { ApplicationArea = All; }
+        }
     }
 
     actions

@@ -30,6 +30,11 @@ pageextension 14135109 lvngPurchaseInvoice extends "Purchase Invoice"
             field(lvngDocumentTotalCheck; lvngDocumentTotalCheck) { ApplicationArea = All; }
         }
 
+        addlast(General)
+        {
+            field(lvngTotalAmount; lvngTotalAmount) { ApplicationArea = All; }
+        }
+
         addfirst(factboxes)
         {
             part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }

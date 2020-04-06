@@ -1,4 +1,4 @@
-pageextension 14135105 lvngSalesInvoiceSubpage extends "Sales Invoice Subform"
+pageextension 14135143 lvngSalesCrSubform extends "Sales Cr. Memo Subform"
 {
     layout
     {
@@ -13,19 +13,6 @@ pageextension 14135105 lvngSalesInvoiceSubpage extends "Sales Invoice Subform"
             field(lvngDeliveryState; lvngDeliveryState) { ApplicationArea = All; }
             field(lvngUseSalesTax; lvngUseSalesTax) { ApplicationArea = All; }
         }
-
-        modify(Control39) { Visible = false; }
-        modify("Location Code") { Visible = false; }
-        modify("Line Discount %") { Visible = false; }
-        modify("Unit of Measure Code") { Visible = false; }
-        modify("Tax Area Code") { Visible = false; }
-        modify("Tax Group Code") { Visible = false; }
-        modify("Qty. Assigned") { Visible = false; }
-        modify("Qty. to Assign") { Visible = false; }
-        modify("Deferral Code") { Visible = true; }
-        modify("Tax Liable") { Visible = true; }
-        modify("Line No.") { Visible = true; }
-        modify("Document No.") { Visible = true; }
     }
 
     var

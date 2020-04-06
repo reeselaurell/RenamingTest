@@ -6,6 +6,11 @@ pageextension 14135112 lvngSalesCrMemo extends "Sales Credit Memo"
         {
             part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }
         }
+
+        addlast(General)
+        {
+            field(lvngTotalAmount; lvngTotalAmount) { ApplicationArea = All; }
+        }
     }
 
     actions
