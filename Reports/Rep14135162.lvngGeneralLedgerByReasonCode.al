@@ -8,7 +8,7 @@ report 14135162 lvngGeneralLedgerByReasonCode
 
     dataset
     {
-        dataitem(ReasonCode; "Reason Code")
+        dataitem(ReasonCodeLoop; "Reason Code")
         {
             DataItemTableView = sorting(Code);
             RequestFilterFields = Code;
@@ -124,7 +124,7 @@ report 14135162 lvngGeneralLedgerByReasonCode
         DateFilter := GLAccount.GetFilter("Date Filter");
         if DateFilter = '' then
             Error(DateFilterErr);
-        ReasonFilter := ReasonCode.GetFilter(Code);
+        ReasonFilter := ReasonCodeLoop.GetFilter(Code);
         GLAccountFilter := GLAccount.GetFilter("No.");
         MaxDate := GLAccount.GetRangeMin("Date Filter");
         if DateOption = DateOption::"Posting Date" then

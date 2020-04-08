@@ -99,9 +99,9 @@ codeunit 14135221 lvngExcelExport
         Instruction.Add('p', Params);
         Script.Add(Instruction);
         if Horizontal <> Horizontal::Default then
-            Params.Add('h', Horizontal - 1);
+            Params.Add('h', Horizontal.AsInteger() - 1);
         if Vertical <> Vertical::Default then
-            Params.Add('v', Vertical - 1);
+            Params.Add('v', Vertical.AsInteger() - 1);
         if Indent > 0 then
             Params.Add('i', Indent);
         if Rotation > 0 then

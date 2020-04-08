@@ -39,7 +39,7 @@
             "name": "Reese",
             "server": "http://localhost:8080",
             "port": 7049,
-            "serverInstance": "BC150",
+            "serverInstance": "BC160",
             "authentication": "Windows",
             "breakOnError": true,
             "launchBrowser": true,

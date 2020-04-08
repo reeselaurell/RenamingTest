@@ -76,7 +76,7 @@ codeunit 14135104 lvngDimensionsManagement
         if HierarchyLevels = HierarchyLevels::"Business Unit" then
             exit(5)
         else
-            exit(HierarchyLevels);
+            exit(HierarchyLevels.AsInteger());
     end;
 
     procedure LookupCostCenter(var DimensionValueCode: Code[20])

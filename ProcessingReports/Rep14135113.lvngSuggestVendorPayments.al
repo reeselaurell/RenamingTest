@@ -330,7 +330,6 @@ report 14135113 lvngSuggestVendorPayments
                             ApplicationArea = Basic, Suite;
                             Caption = 'Bal. Account Type';
                             Importance = Additional;
-                            OptionCaption = 'G/L Account,,,Bank Account';
                             ToolTip = 'Specifies the balancing account type that payments on the payment journal are posted to.';
 
                             trigger OnValidate()
@@ -382,7 +381,7 @@ report 14135113 lvngSuggestVendorPayments
                             trigger OnValidate()
                             begin
                                 if (GenJnlLine2."Bal. Account Type" <> GenJnlLine2."Bal. Account Type"::"Bank Account") and
-                                   (GenJnlLine2."Bank Payment Type" > 0)
+                                   (GenJnlLine2."Bank Payment Type".AsInteger() > 0)
                                 then
                                     Error(
                                       Text010,
@@ -508,8 +507,8 @@ report 14135113 lvngSuggestVendorPayments
         UseDueDateAsPostingDate: Boolean;
         StopPayments: Boolean;
         DocNoPerLine: Boolean;
-        BankPmtType: Option;
-        BalAccType: Option "G/L Account",Customer,Vendor,"Bank Account";
+        BankPmtType: Enum "Bank Payment Type";
+        BalAccType: Enum "Gen. Journal Account Type";
         BalAccNo: Code[20];
         MessageText: Text;
         PaymentMethodFilter: Text;
@@ -549,7 +548,7 @@ report 14135113 lvngSuggestVendorPayments
         end;
     end;
 
-    procedure InitializeRequest(LastPmtDate: Date; FindPmtDisc: Boolean; NewAvailableAmount: Decimal; NewSkipExportedPayments: Boolean; NewPostingDate: Date; NewStartDocNo: Code[20]; NewSummarizePerVend: Boolean; BalAccType: Option "G/L Account",Customer,Vendor,"Bank Account"; BalAccNo: Code[20]; BankPmtType: Option)
+    procedure InitializeRequest(LastPmtDate: Date; FindPmtDisc: Boolean; NewAvailableAmount: Decimal; NewSkipExportedPayments: Boolean; NewPostingDate: Date; NewStartDocNo: Code[20]; NewSummarizePerVend: Boolean; BalAccType: Enum "Gen. Journal Account Type"; BalAccNo: Code[20]; BankPmtType: Enum "Bank Payment Type")
     begin
         LastDueDateToPayReq := LastPmtDate;
         UsePaymentDisc := FindPmtDisc;
@@ -618,7 +617,7 @@ report 14135113 lvngSuggestVendorPayments
             "Document Type" := "Document Type"::Payment;
             "Account Type" := "Account Type"::Vendor;
             Vend2.Get(VendLedgEntry."Vendor No.");
-            Vend2.CheckBlockedVendOnJnls(Vend2, "Document Type", false);
+            Vend2.CheckBlockedVendOnJnls(Vend2, "Document Type".AsInteger(), false);
             Description := Vend2.Name;
             "Posting Group" := Vend2."Vendor Posting Group";
             "Salespers./Purch. Code" := Vend2."Purchaser Code";
@@ -881,8 +880,8 @@ report 14135113 lvngSuggestVendorPayments
                 "Dimension Set ID" := NewDimensionID;
             end;
             CreateDim(
-              DimMgt.TypeToTableID1("Account Type"), "Account No.",
-              DimMgt.TypeToTableID1("Bal. Account Type"), "Bal. Account No.",
+              DimMgt.TypeToTableID1("Account Type".AsInteger()), "Account No.",
+              DimMgt.TypeToTableID1("Bal. Account Type".AsInteger()), "Bal. Account No.",
               DATABASE::Job, "Job No.",
               DATABASE::"Salesperson/Purchaser", "Salespers./Purch. Code",
               DATABASE::Campaign, "Campaign No.");
@@ -903,7 +902,7 @@ report 14135113 lvngSuggestVendorPayments
         end;
     end;
 
-    local procedure SetBankAccCurrencyFilter(BalAccType: Option "G/L Account",Customer,Vendor,"Bank Account"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
+    local procedure SetBankAccCurrencyFilter(BalAccType: Enum "Gen. Journal Account Type"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
     var
         BankAcc: Record "Bank Account";
     begin
@@ -925,7 +924,7 @@ report 14135113 lvngSuggestVendorPayments
         end;
     end;
 
-    local procedure CheckCurrencies(BalAccType: Option "G/L Account",Customer,Vendor,"Bank Account"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
+    local procedure CheckCurrencies(BalAccType: Enum "Gen. Journal Account Type"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
     var
         BankAcc: Record "Bank Account";
         TmpPayableVendLedgEntry2: Record "Payable Vendor Ledger Entry" temporary;

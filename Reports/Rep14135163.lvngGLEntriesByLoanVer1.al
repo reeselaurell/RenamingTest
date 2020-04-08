@@ -73,8 +73,8 @@ report 14135163 lvngGLEntriesByLoanVer1
                 TempGLEntryBuffer."G/L Account No." := "G/L Account No.";
                 TempGLEntryBuffer."Loan No." := lvngLoanNo;
                 TempGLEntryBuffer.Insert();
-                if not TempLoan.Get(LoanNo) then
-                    if Loan.Get(LoanNo) then begin
+                if not TempLoan.Get(lvngLoanNo) then
+                    if Loan.Get(lvngLoanNo) then begin
                         TempLoan := Loan;
                         TempLoan."Loan Amount" := 0;
                         TempLoan."Commission Base Amount" := Amount;
@@ -124,7 +124,7 @@ report 14135163 lvngGLEntriesByLoanVer1
             end;
         }
 
-        dataitem(LoanNo; Integer)
+        dataitem(LoanNoLoop; Integer)
         {
             DataItemTableView = sorting(Number);
 
