@@ -4,7 +4,7 @@ report 14135155 lvngUseTaxPayableReport
     ApplicationArea = All;
     UsageCategory = ReportsAndAnalysis;
     DefaultLayout = RDLC;
-    RDLCLayout = 'Layouts/Rep14135155.rdl';
+    RDLCLayout = 'Reports/Layouts/Rep14135155.rdl';
 
     dataset
     {
