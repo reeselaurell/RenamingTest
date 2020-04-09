@@ -17,10 +17,8 @@ page 14135191 "lvngServicedDocument"
                 field("Posting Date"; "Posting Date") { ApplicationArea = All; }
                 field("Reason Code"; "Reason Code") { ApplicationArea = All; }
                 field(Void; Void) { ApplicationArea = All; }
-                field("Void Document No."; "Void Document No.") { ApplicationArea = All; }
                 field("Customer No."; "Customer No.") { ApplicationArea = All; }
                 field("Loan No."; "Loan No.") { ApplicationArea = All; }
-                field("Warehouse Line Code"; "Warehouse Line Code") { ApplicationArea = All; }
                 field("Borrower Search Name"; "Borrower Search Name") { ApplicationArea = All; }
                 field("Last Servicing Period"; "Last Servicing Period") { ApplicationArea = All; }
 
