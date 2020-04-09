@@ -1,4 +1,4 @@
-tableextension 14135140 lvngPaymentBuffer extends "Payment Buffer" //MyTargetTableId
+tableextension 14135140 "lvngPaymentBuffer" extends "Payment Buffer" //MyTargetTableId
 {
     fields
     {
