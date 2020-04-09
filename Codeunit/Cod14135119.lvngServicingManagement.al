@@ -163,6 +163,8 @@ codeunit 14135119 lvngServicingManagement
         LoanDocumentLine: Record lvngLoanDocumentLine;
         NoSeriesManagement: Codeunit NoSeriesManagement;
         LineNo: Integer;
+        InterestLbl: Label 'Interest';
+        PrincipalLbl: Label 'Principal';
     begin
         ValidateServicingWorksheet();
         GetLoanServicingSetup();
@@ -178,20 +180,56 @@ codeunit 14135119 lvngServicingManagement
                 LoanDocument.Validate("Transaction Type", LoanDocument."Transaction Type"::Serviced);
                 LoanDocument.Validate("Document Type", LoanDocument."Document Type"::Invoice);
                 LoanDocument.Validate("Document No.", NoSeriesManagement.DoGetNextNo(LoanServicingSetup."Serviced No. Series", TODAY, true, false));
+                ServicingWorksheet.CalcFields("Next Payment Date", "First Payment Due", "Customer No.");
                 LoanDocument.Validate("Customer No.", ServicingWorksheet."Customer No.");
                 LoanDocument.Validate("Loan No.", ServicingWorksheet."Loan No.");
-                LoanDocument.Validate("Posting Date", ServicingWorksheet."Next Payment Date");
+                if ServicingWorksheet."Next Payment Date" <> 0D then
+                    LoanDocument.Validate("Posting Date", ServicingWorksheet."Next Payment Date") else
+                    LoanDocument.Validate("Posting Date", ServicingWorksheet."First Payment Due");
                 LoanDocument.Validate("Reason Code", LoanServicingSetup."Serviced Reason Code");
                 LoanDocument.Insert(true);
                 Clear(LoanDocumentLine);
                 LoanDocumentLine.Validate("Transaction Type", LoanDocument."Transaction Type");
                 LoanDocumentLine.Validate("Document No.", LoanDocument."Document No.");
                 LoanDocumentLine.Validate("Account Type", LoanDocumentLine."Account Type"::"G/L Account");
+                LoanDocumentLine.Validate("Account No.", LoanServicingSetup."Interest G/L Account No."); //add switch
+                LoanDocumentLine.Description := InterestLbl;
                 LoanDocumentLine."Line No." := LineNo;
                 LoanDocumentLine.Amount := ServicingWorksheet."Interest Amount";
                 LoanDocumentLine."Servicing Type" := LoanDocumentLine."Servicing Type"::Interest;
                 LoanDocumentLine.Insert(true);
                 LineNo := LineNo + 1000;
+                Clear(LoanDocumentLine);
+                LoanDocumentLine.Validate("Transaction Type", LoanDocument."Transaction Type");
+                LoanDocumentLine.Validate("Document No.", LoanDocument."Document No.");
+                LoanDocumentLine.Validate("Account Type", LoanDocumentLine."Account Type"::"G/L Account");
+                LoanDocumentLine.Validate("Account No.", LoanServicingSetup."Principal G/L Account No."); //add switch
+                LoanDocumentLine.Description := PrincipalLbl;
+                LoanDocumentLine."Line No." := LineNo;
+                LoanDocumentLine.Amount := ServicingWorksheet."Principal Amount";
+                LoanDocumentLine."Servicing Type" := LoanDocumentLine."Servicing Type"::Principal;
+                LoanDocumentLine.Insert(true);
+                LineNo := LineNo + 1000;
+                EscrowFieldsMapping.Reset();
+                EscrowFieldsMapping.SetFilter("Map-To G/L Account No.", '<>%1', '');
+                if EscrowFieldsMapping.FindSet() then begin
+                    repeat
+                        if LoanValue.Get(ServicingWorksheet."Loan No.", EscrowFieldsMapping."Field No.") then begin
+                            Clear(LoanDocumentLine);
+                            LoanDocumentLine.Validate("Transaction Type", LoanDocument."Transaction Type");
+                            LoanDocumentLine.Validate("Document No.", LoanDocument."Document No.");
+                            LoanDocumentLine.Validate("Account Type", LoanDocumentLine."Account Type"::"G/L Account");
+                            LoanDocumentLine.Validate("Account No.", EscrowFieldsMapping."Map-To G/L Account No."); //add switch
+                            LoanDocumentLine."Line No." := LineNo;
+                            LoanDocumentLine.Description := CopyStr(EscrowFieldsMapping.Description, 1, MaxStrLen(LoanDocumentLine.Description));
+                            LoanDocumentLine.Amount := LoanValue."Decimal Value";
+                            LoanDocumentLine."Servicing Type" := LoanDocumentLine."Servicing Type"::Escrow;
+                            LoanDocumentLine.Insert(true);
+                            LineNo := LineNo + 1000;
+                        end;
+                    until EscrowFieldsMapping.Next() = 0;
+                end;
+
             end;
         until ServicingWorksheet.Next() = 0;
     end;

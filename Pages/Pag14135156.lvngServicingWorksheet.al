@@ -104,6 +104,23 @@ page 14135156 lvngServicingWorksheet
                     CurrPage.Update(false);
                 end;
             }
+            action(CreateServicingDocuments)
+            {
+                Caption = 'Create Servicing Documents';
+                ApplicationArea = All;
+                Image = CreateDocuments;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                var
+                    ServicingDocumentsCreatedLbl: Label 'Servicing Documents Created';
+                begin
+                    ServicingManagement.CreateServicingDocuments();
+                    Message(ServicingDocumentsCreatedLbl);
+                end;
+            }
         }
     }
 

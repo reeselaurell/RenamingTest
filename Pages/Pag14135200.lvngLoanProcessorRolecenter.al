@@ -56,6 +56,15 @@ page 14135200 lvngLoanProcessorRolecenter
                 RunObject = page lvngServicingWorksheet;
                 ApplicationArea = All;
             }
+            action(ServicingDocuments)
+            {
+                RunPageMode = Edit;
+                Caption = 'Servicing Documents';
+                ToolTip = 'Edit and Post Servicing Documents';
+                Image = DocumentEdit;
+                RunObject = page lvngLoanServDocumentsList;
+                ApplicationArea = All;
+            }
             action(SoldDocuments)
             {
                 RunPageMode = Edit;

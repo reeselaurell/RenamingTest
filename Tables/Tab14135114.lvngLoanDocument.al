@@ -115,7 +115,8 @@ table 14135114 lvngLoanDocument
         field(89; "Dimension Set ID"; Integer) { Caption = 'Dimension Set ID'; DataClassification = CustomerContent; }
         field(200; "Warehouse Line Code"; Code[50]) { Caption = 'Warehouse Line Code'; DataClassification = CustomerContent; TableRelation = lvngWarehouseLine.Code; }
         field(1000; "Void Document No."; Code[20]) { Caption = 'Void Document No.'; DataClassification = CustomerContent; }
-        field(10000; "Borrower Search Name"; Code[50]) { Caption = 'Borrower Search Name'; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Search Name" where("No." = field("Loan No."))); Editable = false; }
+        field(10000; "Borrower Search Name"; Code[50]) { Caption = 'Borrower Search Name'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Search Name" where("No." = field("Loan No."))); }
+        field(10001; "Document Amount"; Decimal) { Caption = 'Document Amount'; Editable = false; FieldClass = FlowField; CalcFormula = sum (lvngLoanDocumentLine.Amount where("Document No." = field("Document No."), "Transaction Type" = field("Transaction Type"))); }
     }
 
     keys

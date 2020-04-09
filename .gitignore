@@ -1,3 +1,4 @@
 *.app
 Todo.txt
 rad.json
+.alcache
