@@ -11,7 +11,7 @@ page 14135205 lvngLVAccountantRoleCenter
             part(Headline; "Headline RC Accountant") { ApplicationArea = Basic, Suite; }
             part(GeneralActivities; lvngLVAccountantFinanceAct) { ApplicationArea = Basic, Suite; }
             part(LoanActivitites; lvngLVAccountantLoanActivities) { ApplicationArea = Basic, Suite; }
-            // part(CloseManagerActivities;lvngCloseManagerActivities){ApplicationArea = Basic, Suite;}
+            part(CloseManagerActivities; lvngCloseManagerActivities) { ApplicationArea = Basic, Suite; }
         }
     }
 
