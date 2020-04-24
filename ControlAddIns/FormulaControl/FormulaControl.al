@@ -1,7 +1,7 @@
 controladdin FormulaControl
 {
     Scripts = 'ControlAddIns/FormulaControl/js/FormulaControl.js',
-        'CommonResources/js/jquery.min.js',
+        'Resources/js/jquery.min.js',
         'ControlAddIns/FormulaControl/js/rangyinputs-jquery-1.1.2.min.js',
         'ControlAddIns/FormulaControl/js/script.js';
     StartupScript = 'ControlAddIns/FormulaControl/js/init.js';

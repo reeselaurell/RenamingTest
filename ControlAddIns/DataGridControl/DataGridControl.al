@@ -1,14 +1,14 @@
 controladdin DataGridControl
 {
-    Scripts = 'CommonResources/js/jquery.min.js',
-        //'CommonResources/js/globalize.min.js',
-        'CommonResources/js/dx.all.js',
+    Scripts = 'Resources/js/jquery.min.js',
+        //'Resources/js/globalize.min.js',
+        'Resources/js/dx.all.js',
         'ControlAddIns/DataGridControl/js/jss.min.js',
         'ControlAddIns/DataGridControl/js/jszip.min.js',
         'ControlAddIns/DataGridControl/js/script.js';
     StartupScript = 'ControlAddIns/DataGridControl/js/init.js';
-    StyleSheets = 'CommonResources/css/dx.common.css',
-        'CommonResources/css/dx.light.css',
+    StyleSheets = 'Resources/css/dx.common.css',
+        'Resources/css/dx.light.css',
         'ControlAddIns/DataGridControl/css/style.css';
     VerticalStretch = false;
     HorizontalStretch = true;

@@ -1,6 +1,6 @@
 controladdin DocumentListControl
 {
-    Scripts = 'CommonResources/js/jquery.min.js',
+    Scripts = 'Resources/js/jquery.min.js',
         'ControlAddIns/DocumentListControl/js/DocumentListControl.js',
         'ControlAddIns/DocumentListControl/js/script.js';
     StartupScript = 'ControlAddIns/DocumentListControl/js/init.js';

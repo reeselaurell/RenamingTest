@@ -1,6 +1,6 @@
 controladdin SwitchControl
 {
-    Scripts = 'CommonResources/js/jquery.min.js',
+    Scripts = 'Resources/js/jquery.min.js',
         'ControlAddIns/SwitchControl/js/script.js',
         'ControlAddIns/SwitchControl/js/SwitchControl.js';
     StartupScript = 'ControlAddIns/SwitchControl/js/init.js';

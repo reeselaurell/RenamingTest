@@ -1,11 +1,11 @@
 controladdin ColorPickerControl
 {
-    Scripts = 'CommonResources/js/jquery.min.js',
-        'CommonResources/js/dx.all.js',
+    Scripts = 'Resources/js/jquery.min.js',
+        'Resources/js/dx.all.js',
         'ControlAddIns/ColorPickerControl/js/script.js';
     StartupScript = 'ControlAddIns/ColorPickerControl/js/init.js';
-    StyleSheets = 'CommonResources/css/dx.common.css',
-        'CommonResources/css/dx.light.css';
+    StyleSheets = 'Resources/css/dx.common.css',
+        'Resources/css/dx.light.css';
     VerticalStretch = false;
     HorizontalStretch = true;
     RequestedHeight = 400;
