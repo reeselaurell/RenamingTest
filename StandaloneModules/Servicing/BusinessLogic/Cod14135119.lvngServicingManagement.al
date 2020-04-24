@@ -2,7 +2,11 @@ codeunit 14135119 lvngServicingManagement
 {
     var
         LoanServicingSetup: Record lvngLoanServicingSetup;
+        Loan: Record lvngLoan;
+        lvngDimensionManagement: Codeunit lvngDimensionsManagement;
         LoanServicingSetupRetrieved: Boolean;
+        MainDimensionNo: Integer;
+        DimensionsUsed: array[5] of Boolean;
 
     procedure GetPrincipalAndInterest(Loan: Record lvngLoan; var NextPaymentDate: Date; var PrincipalAmount: Decimal; var InterestAmount: Decimal)
     var
@@ -23,7 +27,7 @@ codeunit 14135119 lvngServicingManagement
             Loan."First Payment Due" := CalcDate('<CM + 1D - 1M>', Loan."Date Funded");
         if CalcDate(StrSubstNo('<+%1M>', Loan."Loan Term (Months)" + 1), Loan."First Payment Due") < NextPaymentDate then
             exit;
-        GetLoanServicingSetup();
+        GetSetupData();
         LoanServicingSetup.TestField("Principal Red. Reason Code");
         LoanServicingSetup.TestField("Principal Red. G/L Account No.");
         GLEntry.Reset();
@@ -104,8 +108,8 @@ codeunit 14135119 lvngServicingManagement
         EscrowsDoesntMatchErr: Label 'Total escrow amount doesn''t match';
         BorrowerCustomerMissingErr: Label 'Borrower Customer is empty or doesn''t exist';
     begin
-        GetLoanServicingSetup();
-        Loan.Get(ServicingWorksheet."Loan No.");
+        GetSetupData();
+        GetLoan(ServicingWorksheet."Loan No.");
         if Loan."Date Sold" <> 0D then begin
             if Date2DMY(Loan."Date Sold", 1) > LoanServicingSetup."Last Servicing Month Day" then
                 ServicingWorksheet."Payable to Investor" := true else
@@ -120,10 +124,12 @@ codeunit 14135119 lvngServicingManagement
                 ServicingWorksheet."Error Message" := CopyStr(BorrowerCustomerMissingErr, 1, MaxStrLen(ServicingWorksheet."Error Message"));
     end;
 
-    local procedure GetLoanServicingSetup()
+    local procedure GetSetupData()
     begin
         if not LoanServicingSetupRetrieved then begin
             LoanServicingSetup.Get();
+            lvngDimensionManagement.GetHierarchyDimensionsUsage(DimensionsUsed);
+            MainDimensionNo := lvngDimensionManagement.GetMainHierarchyDimensionNo();
             LoanServicingSetupRetrieved := true;
         end;
     end;
@@ -131,17 +137,16 @@ codeunit 14135119 lvngServicingManagement
     procedure CreateBorrowerCustomers()
     var
         ServicingWorksheet: Record lvngServicingWorksheet;
-        Loan: Record lvngLoan;
         Customer: Record Customer;
         CustomerTemplate: Record "Customer Template";
     begin
-        GetLoanServicingSetup();
+        GetSetupData();
         LoanServicingSetup.TestField("Borrower Customer Template");
         CustomerTemplate.Get(LoanServicingSetup."Borrower Customer Template");
         ServicingWorksheet.Reset();
         ServicingWorksheet.FindSet();
         repeat
-            Loan.get(ServicingWorksheet."Loan No.");
+            GetLoan(ServicingWorksheet."Loan No.");
             if Loan."Borrower Customer No" = '' then begin
                 Customer."No." := Loan."No.";
                 Customer.Name := copystr(Loan."Search Name", 1, MaxStrLen(Customer.Name));
@@ -162,12 +167,13 @@ codeunit 14135119 lvngServicingManagement
         LoanValue: Record lvngLoanValue;
         LoanDocumentLine: Record lvngLoanDocumentLine;
         NoSeriesManagement: Codeunit NoSeriesManagement;
+        GLAccountCode: Code[20];
         LineNo: Integer;
         InterestLbl: Label 'Interest';
         PrincipalLbl: Label 'Principal';
     begin
         ValidateServicingWorksheet();
-        GetLoanServicingSetup();
+        GetSetupData();
         LoanServicingSetup.TestField("Serviced No. Series");
         LoanServicingSetup.TestField("Serviced Reason Code");
         ServicingWorksheet.Reset();
@@ -192,22 +198,36 @@ codeunit 14135119 lvngServicingManagement
                 LoanDocumentLine.Validate("Transaction Type", LoanDocument."Transaction Type");
                 LoanDocumentLine.Validate("Document No.", LoanDocument."Document No.");
                 LoanDocumentLine.Validate("Account Type", LoanDocumentLine."Account Type"::"G/L Account");
-                LoanDocumentLine.Validate("Account No.", LoanServicingSetup."Interest G/L Account No."); //add switch
+                if LoanServicingSetup."Interest G/L Acc. Switch Code" <> '' then begin
+                    GLAccountCode := CalculateSwitch(LoanServicingSetup."Interest G/L Acc. Switch Code", ServicingWorksheet."Loan No.");
+                    if GLAccountCode = '' then
+                        GLAccountCode := LoanServicingSetup."Interest G/L Account No.";
+                    LoanDocumentLine.Validate("Account No.", GLAccountCode);
+                end else
+                    LoanDocumentLine.Validate("Account No.", LoanServicingSetup."Interest G/L Account No."); //add switch
                 LoanDocumentLine.Description := InterestLbl;
                 LoanDocumentLine."Line No." := LineNo;
                 LoanDocumentLine.Amount := ServicingWorksheet."Interest Amount";
                 LoanDocumentLine."Servicing Type" := LoanDocumentLine."Servicing Type"::Interest;
+                FillDimensions(ServicingWorksheet."Loan No.", LoanDocumentLine, LoanServicingSetup."Interest Cost Center Option", LoanServicingSetup."Interest Cost Center", LoanDocument."Posting Date");
                 LoanDocumentLine.Insert(true);
                 LineNo := LineNo + 1000;
                 Clear(LoanDocumentLine);
                 LoanDocumentLine.Validate("Transaction Type", LoanDocument."Transaction Type");
                 LoanDocumentLine.Validate("Document No.", LoanDocument."Document No.");
                 LoanDocumentLine.Validate("Account Type", LoanDocumentLine."Account Type"::"G/L Account");
-                LoanDocumentLine.Validate("Account No.", LoanServicingSetup."Principal G/L Account No."); //add switch
+                if LoanServicingSetup."Principal G/L Acc. Switch Code" <> '' then begin
+                    GLAccountCode := CalculateSwitch(LoanServicingSetup."Principal G/L Acc. Switch Code", ServicingWorksheet."Loan No.");
+                    if GLAccountCode = '' then
+                        GLAccountCode := LoanServicingSetup."Principal G/L Account No.";
+                    LoanDocumentLine.Validate("Account No.", GLAccountCode);
+                end else
+                    LoanDocumentLine.Validate("Account No.", LoanServicingSetup."Principal G/L Account No.");
                 LoanDocumentLine.Description := PrincipalLbl;
                 LoanDocumentLine."Line No." := LineNo;
                 LoanDocumentLine.Amount := ServicingWorksheet."Principal Amount";
                 LoanDocumentLine."Servicing Type" := LoanDocumentLine."Servicing Type"::Principal;
+                FillDimensions(ServicingWorksheet."Loan No.", LoanDocumentLine, LoanServicingSetup."Principal Cost Center Option", LoanServicingSetup."Principal Cost Center", LoanDocument."Posting Date");
                 LoanDocumentLine.Insert(true);
                 LineNo := LineNo + 1000;
                 EscrowFieldsMapping.Reset();
@@ -233,4 +253,146 @@ codeunit 14135119 lvngServicingManagement
             end;
         until ServicingWorksheet.Next() = 0;
     end;
+
+    local procedure CalculateSwitch(SwitchCode: Code[20]; LoanNo: Code[20]): Text
+    var
+        SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
+        ExpressionValueBuffer: Record lvngExpressionValueBuffer temporary;
+        ExpressionHeader: Record lvngExpressionHeader;
+        ConditionsMgmt: Codeunit lvngConditionsMgmt;
+        ExpressionEngine: Codeunit lvngExpressionEngine;
+        Value: Text;
+        FieldSequenceNo: Integer;
+    begin
+        GetLoan(LoanNo);
+        ConditionsMgmt.FillLoanFieldValues(ExpressionValueBuffer, Loan);
+        ExpressionHeader.Get(SwitchCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
+        if not ExpressionEngine.SwitchCase(ExpressionHeader, Value, ExpressionValueBuffer) then
+            Error(SwitchCaseErr, SwitchCode);
+        exit(Value);
+    end;
+
+    local procedure FillDimensions(LoanNo: Code[20]; var LoanDocumentLine: Record lvngLoanDocumentLine; DimensionRule: enum lvngServDimSelectionType; DefaultCostCenter: Code[20]; AsOfDate: Date)
+    begin
+        GetLoan(LoanNo);
+        case DimensionRule of
+            DimensionRule::Blank:
+                begin
+                    LoanDocumentLine."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
+                    LoanDocumentLine."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
+                    LoanDocumentLine."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
+                    LoanDocumentLine."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
+                    LoanDocumentLine."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
+                    LoanDocumentLine."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
+                    LoanDocumentLine."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
+                    LoanDocumentLine."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
+                    LoanDocumentLine."Business Unit Code" := Loan."Business Unit Code";
+                    ClearDimensionsUsage(LoanDocumentLine);
+                end;
+            DimensionRule::"Loan Card":
+                begin
+                    LoanDocumentLine."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
+                    LoanDocumentLine."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
+                    LoanDocumentLine."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
+                    LoanDocumentLine."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
+                    LoanDocumentLine."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
+                    LoanDocumentLine."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
+                    LoanDocumentLine."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
+                    LoanDocumentLine."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
+                    LoanDocumentLine."Business Unit Code" := Loan."Business Unit Code";
+                    ClearDimensionsUsage(LoanDocumentLine);
+                    case MainDimensionNo of
+                        1:
+                            DefaultCostCenter := Loan."Global Dimension 1 Code";
+                        2:
+                            DefaultCostCenter := Loan."Global Dimension 2 Code";
+                        3:
+                            DefaultCostCenter := Loan."Shortcut Dimension 3 Code";
+                        4:
+                            DefaultCostCenter := Loan."Shortcut Dimension 4 Code";
+                        5:
+                            DefaultCostCenter := Loan."Business Unit Code";
+                    end;
+                    ValidateDimensionFromHierarchy(LoanDocumentLine, DefaultCostCenter, AsOfDate);
+                end;
+            DimensionRule::"Cost Center Predefined":
+                begin
+                    LoanDocumentLine."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
+                    LoanDocumentLine."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
+                    LoanDocumentLine."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
+                    LoanDocumentLine."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
+                    LoanDocumentLine."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
+                    LoanDocumentLine."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
+                    LoanDocumentLine."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
+                    LoanDocumentLine."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
+                    LoanDocumentLine."Business Unit Code" := Loan."Business Unit Code";
+                    ClearDimensionsUsage(LoanDocumentLine);
+                    ValidateDimensionFromHierarchy(LoanDocumentLine, DefaultCostCenter, AsOfDate);
+                end;
+        end;
+        LoanDocumentLine.GenerateDimensionSetId();
+    end;
+
+    local procedure ClearDimensionsUsage(var LoanDocumentLine: Record lvngLoanDocumentLine)
+    begin
+        if DimensionsUsed[1] then
+            Clear(LoanDocumentLine."Global Dimension 1 Code");
+        if DimensionsUsed[2] then
+            Clear(LoanDocumentLine."Global Dimension 2 Code");
+        if DimensionsUsed[3] then
+            Clear(LoanDocumentLine."Shortcut Dimension 3 Code");
+        if DimensionsUsed[4] then
+            Clear(LoanDocumentLine."Shortcut Dimension 4 Code");
+        if DimensionsUsed[5] then
+            Clear(LoanDocumentLine."Business Unit Code");
+    end;
+
+    procedure ValidateDimensionFromHierarchy(var LoanDocumentLine: Record lvngLoanDocumentLine; ShortcutDimCode: Code[20]; AsOfDate: Date)
+    var
+        DimensionHierarchy: Record lvngDimensionHierarchy;
+        GetShortcutDimensionValues: Codeunit "Get Shortcut Dimension Values";
+        MainDimensionNo: Integer;
+    begin
+
+        if (MainDimensionNo < 1) or (MainDimensionNo > 8) then
+            exit;
+        DimensionHierarchy.Reset();
+        DimensionHierarchy.Ascending(false);
+        if AsOfDate <> 0D then
+            DimensionHierarchy.SetFilter(Date, '..%1', AsOfDate)
+        else
+            DimensionHierarchy.SetRange(Date, 0D);
+        DimensionHierarchy.SetRange(Code, ShortcutDimCode);
+        if DimensionHierarchy.FindFirst() then begin
+            if DimensionsUsed[1] and (MainDimensionNo <> 1) then
+                LoanDocumentLine."Global Dimension 1 Code" := DimensionHierarchy."Global Dimension 1 Code";
+            if DimensionsUsed[2] and (MainDimensionNo <> 2) then
+                LoanDocumentLine."Global Dimension 2 Code" := DimensionHierarchy."Global Dimension 2 Code";
+            if DimensionsUsed[3] and (MainDimensionNo <> 3) then
+                LoanDocumentLine."Shortcut Dimension 3 Code" := DimensionHierarchy."Shortcut Dimension 3 Code";
+            if DimensionsUsed[4] and (MainDimensionNo <> 4) then
+                LoanDocumentLine."Shortcut Dimension 4 Code" := DimensionHierarchy."Shortcut Dimension 4 Code";
+            if DimensionsUsed[5] then
+                LoanDocumentLine."Business Unit Code" := DimensionHierarchy."Business Unit Code";
+            case MainDimensionNo of
+                1:
+                    LoanDocumentLine."Global Dimension 1 Code" := ShortcutDimCode;
+                2:
+                    LoanDocumentLine."Global Dimension 2 Code" := ShortcutDimCode;
+                3:
+                    LoanDocumentLine."Shortcut Dimension 3 Code" := ShortcutDimCode;
+                4:
+                    LoanDocumentLine."Shortcut Dimension 4 Code" := ShortcutDimCode;
+                5:
+                    LoanDocumentLine."Business Unit Code" := ShortcutDimCode;
+            end;
+        end;
+    end;
+
+    local procedure GetLoan(LoanNo: Code[20])
+    begin
+        if Loan."No." <> LoanNo then
+            Loan.Get(LoanNo);
+    end;
+
 }
