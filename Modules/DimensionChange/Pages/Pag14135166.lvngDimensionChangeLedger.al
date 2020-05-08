@@ -11,6 +11,9 @@ page 14135166 lvngDimensionChangeLedger
             repeater(Group)
             {
                 field("Entry No."; "Entry No.") { ApplicationArea = All; }
+                field("Posting Date"; "Posting Date") { ApplicationArea = All; }
+                field("G/L Account Name"; "G/L Account Name") { ApplicationArea = All; }
+                field(Description; Description) { ApplicationArea = All; }
                 field("Old Dimension 1 Code"; "Old Dimension 1 Code") { ApplicationArea = All; }
                 field("New Dimension 1 Code"; "New Dimension 1 Code") { ApplicationArea = All; }
                 field("Old Dimension 2 Code"; "Old Dimension 2 Code") { ApplicationArea = All; }
