@@ -30,9 +30,9 @@ table 14135150 lvngDimensionChangeLedgerEntry
         field(50; "New Loan No."; Code[20]) { Caption = 'New Loan No.'; DataClassification = CustomerContent; }
         field(51; "Old Loan No."; Code[20]) { Caption = 'Old Loan No.'; DataClassification = CustomerContent; }
         field(100; Change; Boolean) { Caption = 'Change'; DataClassification = CustomerContent; }
-        field(101; "G/L Account Name"; Text[50]) { Caption = 'G/L Account Name'; FieldClass = FlowField; CalcFormula = lookup ("G/L Entry"."G/L Account Name" where("Entry No." = field("Entry No."))); Editable = false; }
-        field(102; Description; Text[50]) { Caption = 'Description'; FieldClass = FlowField; CalcFormula = lookup ("G/L Entry".Description where("Entry No." = field("Entry No."))); Editable = false; }
-        field(103; "Posting Date"; Date) { Caption = 'Posting Date'; FieldClass = FlowField; CalcFormula = lookup ("G/L Entry"."Posting Date" where("Entry No." = field("Entry No."))); Editable = false; }
+        field(200; Description; Text[100]) { Caption = 'Description'; FieldClass = FlowField; CalcFormula = lookup ("G/L Entry".Description where("Entry No." = field("Entry No."))); Editable = false; }
+        field(201; "Posting Date"; Date) { Caption = 'Posting Date'; FieldClass = FlowField; CalcFormula = lookup ("G/L Entry"."Posting Date" where("Entry No." = field("Entry No."))); Editable = false; }
+        field(202; "G/L Account No."; Code[20]) { Caption = 'Description'; FieldClass = FlowField; CalcFormula = lookup ("G/L Entry"."G/L Account No." where("Entry No." = field("Entry No."))); Editable = false; }
     }
 
     keys

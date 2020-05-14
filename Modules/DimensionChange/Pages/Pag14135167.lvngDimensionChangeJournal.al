@@ -12,7 +12,8 @@ page 14135167 lvngDimensionChangeJournal
             {
                 field("Entry No."; "Entry No.") { ApplicationArea = All; }
                 field("Posting Date"; "Posting Date") { ApplicationArea = All; }
-                field("G/L Account Name"; "G/L Account Name") { ApplicationArea = All; }
+                field("G/L Account No."; "G/L Account No.") { ApplicationArea = All; }
+                field(GLAccountName; GLAccountName) { ApplicationArea = All; Editable = false; Caption = 'G/L Account Name'; }
                 field(Description; Description) { ApplicationArea = All; }
                 field("Old Dimension 1 Code"; "Old Dimension 1 Code") { ApplicationArea = All; }
                 field("New Dimension 1 Code"; "New Dimension 1 Code") { ApplicationArea = All; }
@@ -131,4 +132,17 @@ page 14135167 lvngDimensionChangeJournal
             }
         }
     }
+
+    trigger OnAfterGetRecord()
+    begin
+        Clear(GLAccountName);
+        if GLAccount."No." <> "G/L Account No." then begin
+            if GLAccount.Get("G/L Account No.") then
+                GLAccountName := GLAccount.Name;
+        end;
+    end;
+
+    var
+        GLAccount: Record "G/L Account";
+        GLAccountName: Text;
 }

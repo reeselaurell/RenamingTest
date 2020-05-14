@@ -50,7 +50,7 @@ report 14135109 lvngDimensionChangeSetImport
 
     var
         LargeCountMsg: Label 'Your selection contains very large number of entries (%1)\This may lock database for all users for a long time\Are you sure you want to proceed?';
-        ImportingMsg: Label 'Importing entry #1##### of #2#####';
+        ImportingMsg: Label 'Importing entry #1######## of #2########';
         DimensionChangeJnlEntry: Record lvngDimensionChangeJnlEntry;
         Overwrite: Boolean;
         ChangeSetID: Guid;
