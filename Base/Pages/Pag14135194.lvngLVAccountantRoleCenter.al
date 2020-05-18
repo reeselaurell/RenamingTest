@@ -48,10 +48,10 @@ page 14135194 lvngLVAccountantRoleCenter
             {
                 action(PaymentJournalPayables) { Caption = 'Payment Journal'; ApplicationArea = All; RunObject = page "Payment Journal"; }
                 action(PurchaseJournal) { Caption = 'Purchase Journal'; ApplicationArea = All; RunObject = page "Purchase Journal"; }
-                action(PurchaseCrMemo) { Caption = 'Purchase Cr. Memo'; ApplicationArea = All; RunObject = page "Purchase Credit Memo"; RunPageMode = Create; }
                 action(PurchaseInvoice) { Caption = 'Purchase Invoice'; ApplicationArea = All; RunPageMode = Create; RunObject = page "Purchase Invoice"; }
-                action(PostedPurchCrMemos) { Caption = 'Posted Purchase Cr. Memos'; ApplicationArea = All; RunObject = page "Posted Purchase Credit Memos"; }
                 action(PostedPurchInvoices) { Caption = 'Posted Purchase Invoices'; ApplicationArea = All; RunObject = page "Posted Purchase Invoices"; }
+                action(PurchaseCrMemo) { Caption = 'Purchase Cr. Memo'; ApplicationArea = All; RunObject = page "Purchase Credit Memo"; RunPageMode = Create; }
+                action(PostedPurchCrMemos) { Caption = 'Posted Purchase Cr. Memos'; ApplicationArea = All; RunObject = page "Posted Purchase Credit Memos"; }
             }
 
             group(LoanManagement)
