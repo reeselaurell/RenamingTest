@@ -40,4 +40,9 @@ pageextension 14135140 lvngPurchCrMemoSubform extends "Purch. Cr. Memo Subform"
             if Loan.Get(lvngLoanNo) then
                 BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
     end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        Type := Type::"G/L Account";
+    end;
 }

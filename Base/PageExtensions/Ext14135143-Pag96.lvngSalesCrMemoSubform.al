@@ -27,4 +27,9 @@ pageextension 14135143 lvngSalesCrSubform extends "Sales Cr. Memo Subform"
             if Loan.Get(lvngLoanNo) then
                 BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
     end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        Type := Type::"G/L Account";
+    end;
 }

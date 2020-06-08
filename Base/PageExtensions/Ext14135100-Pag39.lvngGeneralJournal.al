@@ -8,6 +8,14 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
         modify(ShortcutDimCode6) { Visible = true; }
         modify(ShortcutDimCode7) { Visible = true; }
         modify(ShortcutDimCode8) { Visible = true; }
+        modify("Currency Code") { Visible = false; }
+        modify("Gen. Bus. Posting Group") { Visible = false; }
+        modify("Gen. Posting Type") { Visible = false; }
+        modify("Gen. Prod. Posting Group") { Visible = false; }
+        modify("Bal. Gen. Bus. Posting Group") { Visible = false; }
+        modify("Bal. Gen. Posting Type") { Visible = false; }
+        modify("Bal. Gen. Prod. Posting Group") { Visible = false; }
+        modify("Reason Code") { Visible = true; }
 
         addlast(Control1)
         {

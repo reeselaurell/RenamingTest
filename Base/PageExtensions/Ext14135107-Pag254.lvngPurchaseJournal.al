@@ -8,6 +8,8 @@ pageextension 14135107 lvngPurchaseJournal extends "Purchase Journal"
         modify(ShortcutDimCode6) { Visible = true; }
         modify(ShortcutDimCode7) { Visible = true; }
         modify(ShortcutDimCode8) { Visible = true; }
+        modify("Reason Code") { Visible = true; }
+        modify("Currency Code") { Visible = false; }
 
         addlast(Control1)
         {

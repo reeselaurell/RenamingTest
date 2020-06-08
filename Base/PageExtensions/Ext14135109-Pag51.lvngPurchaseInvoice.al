@@ -17,12 +17,21 @@ pageextension 14135109 lvngPurchaseInvoice extends "Purchase Invoice"
         modify("Payment Discount %") { Visible = false; }
         modify("Expected Receipt Date") { Visible = false; }
         modify("Currency Code") { Visible = false; }
+        modify("VAT Bus. Posting Group") { Visible = false; }
+        modify("Tax Exemption No.") { Visible = false; }
+        modify("Provincial Tax Area Code") { Visible = false; }
+        modify("Payment Reference") { Visible = false; }
         modify("Due Date") { Importance = Additional; }
         modify("Assigned User ID") { Importance = Standard; }
         modify("Buy-from Vendor No.") { Importance = Standard; }
         modify("Purchaser Code") { Importance = Standard; }
         modify(Status) { Importance = Standard; }
         modify("Payment Method Code") { Importance = Standard; }
+
+        moveafter("Purchaser Code"; "Payment Terms Code")
+        moveafter("Payment Terms Code"; "Payment Method Code")
+        moveafter("Payment Method Code"; "Shortcut Dimension 1 Code")
+        moveafter("Shortcut Dimension 1 Code"; "Shortcut Dimension 2 Code")
 
         addafter("Job Queue Status")
         {

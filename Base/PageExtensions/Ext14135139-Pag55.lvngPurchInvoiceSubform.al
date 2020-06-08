@@ -44,4 +44,9 @@ pageextension 14135139 lvngPurchInvoiceSubform extends "Purch. Invoice Subform"
             if Loan.Get(lvngLoanNo) then
                 BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
     end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        Type := Type::"G/L Account";
+    end;
 }

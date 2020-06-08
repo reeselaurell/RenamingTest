@@ -8,6 +8,9 @@ pageextension 14135108 lvngPaymentJournal extends "Payment Journal"
         modify(ShortcutDimCode6) { Visible = true; }
         modify(ShortcutDimCode7) { Visible = true; }
         modify(ShortcutDimCode8) { Visible = true; }
+        modify("Reason Code") { Visible = true; }
+        modify("Currency Code") { Visible = false; }
+
 
         addlast(Control1)
         {
@@ -78,6 +81,28 @@ pageextension 14135108 lvngPaymentJournal extends "Payment Journal"
                     end else
                         ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, "Journal Template Name", "Journal Batch Name", CreateGuid());
                     CurrPage.Update(false);
+                end;
+            }
+        }
+
+        addafter("Void &All Checks")
+        {
+            action(OneOffChecks)
+            {
+                Caption = 'Import One Off Checks';
+                ApplicationArea = All;
+                Image = ImportLog;
+                Promoted = true;
+                PromotedCategory = Category11;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                var
+                    OneOffCheckImport: XmlPort lvngOneOffChecksImport;
+                begin
+                    Clear(OneOffCheckImport);
+                    OneOffCheckImport.SetParams(Rec."Journal Template Name", Rec."Journal Batch Name");
+                    OneOffCheckImport.Run();
                 end;
             }
         }

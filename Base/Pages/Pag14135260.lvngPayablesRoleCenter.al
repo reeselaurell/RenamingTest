@@ -9,7 +9,7 @@ page 14135260 lvngPayablesRoleCenter
     {
         area(Rolecenter)
         {
-            part(Headline; "Headline RC Accountant") { ApplicationArea = Basic, Suite; }
+            part(Headline; lvngPayablesHeadline) { ApplicationArea = Basic, Suite; }
             part(PayablesFinanceAct; lvngPayablesFinanceActivites) { ApplicationArea = All; }
             part(PayablesApprovalActivities; lvngPayablesApprovalActivities) { ApplicationArea = All; }
         }

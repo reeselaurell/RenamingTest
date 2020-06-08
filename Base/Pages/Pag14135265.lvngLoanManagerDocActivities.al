@@ -10,7 +10,6 @@ page 14135265 lvngLoanManagerDocActivities
         {
             cuegroup(Totals)
             {
-                Caption = '';
                 CuegroupLayout = Wide;
 
                 field(TtlFundedLastBusDay; CalculateFundedLastBusDay())
@@ -93,6 +92,7 @@ page 14135265 lvngLoanManagerDocActivities
                     end;
                 }
             }
+
             cuegroup(Group)
             {
                 Caption = 'Unproccessed Loan Fundings';
@@ -106,14 +106,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Funding Jnl 1";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 1";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
                 field(UnproccessedFunding2; UnprocessedFundingCount(2))
@@ -125,14 +125,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Funding Jnl 2";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 2";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
                 field(UnproccessedFunding3; UnprocessedFundingCount(3))
@@ -144,14 +144,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Funding Jnl 3";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 3";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
                 field(UnproccessedFunding4; UnprocessedFundingCount(4))
@@ -163,14 +163,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Funding Jnl 4";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 4";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
                 field(UnproccessedFunding5; UnprocessedFundingCount(5))
@@ -182,14 +182,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Funding Jnl 5";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 5";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
             }
@@ -207,14 +207,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Sold Jnl 1";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 1";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
                 field(UnprocessedSold2; UnprocessedSoldCount(2))
@@ -226,14 +226,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Sold Jnl 2";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 2";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
                 field(UnprocessedSold3; UnprocessedSoldCount(3))
@@ -245,14 +245,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Sold Jnl 3";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 3";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
                 field(UnprocessedSold4; UnprocessedSoldCount(4))
@@ -264,14 +264,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Sold Jnl 4";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 4";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
                 field(UnprocessedSold5; UnprocessedSoldCount(5))
@@ -283,14 +283,14 @@ page 14135265 lvngLoanManagerDocActivities
 
                     trigger OnDrillDown()
                     var
-                        GenJnlLine: Record "Gen. Journal Line";
-                        JnlBatchName: Code[10];
+                        LoanJnlLine: Record lvngLoanJournalLine;
+                        LoanJnlBatchCode: Code[10];
                     begin
-                        JnlBatchName := ActSetup."Unprocessed Sold Jnl 5";
-                        GenJnlLine.Reset();
-                        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-                        if GenJnlLine.FindSet() then
-                            Page.Run(Page::"Gen. Journal Line Entity", GenJnlLine);
+                        LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 5";
+                        LoanJnlLine.Reset();
+                        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+                        if LoanJnlLine.FindSet() then
+                            Page.Run(Page::lvngLoanJournalLines, LoanJnlLine);
                     end;
                 }
             }
@@ -467,47 +467,47 @@ page 14135265 lvngLoanManagerDocActivities
 
     local procedure UnprocessedFundingCount(JnlNo: Integer): Integer
     var
-        GenJnlLine: Record "Gen. Journal Line";
-        JnlBatchName: Code[10];
+        LoanJnlLine: Record lvngLoanJournalLine;
+        LoanJnlBatchCode: Code[10];
     begin
         GetActSetup();
         case JnlNo of
             1:
-                JnlBatchName := ActSetup."Unprocessed Funding Jnl 1";
+                LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 1";
             2:
-                JnlBatchName := ActSetup."Unprocessed Funding Jnl 2";
+                LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 2";
             3:
-                JnlBatchName := ActSetup."Unprocessed Funding Jnl 3";
+                LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 3";
             4:
-                JnlBatchName := ActSetup."Unprocessed Funding Jnl 4";
+                LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 4";
             5:
-                JnlBatchName := ActSetup."Unprocessed Funding Jnl 5";
+                LoanJnlBatchCode := ActSetup."Unprocessed Funding Jnl 5";
         end;
-        GenJnlLine.Reset();
-        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-        exit(GenJnlLine.Count());
+        LoanJnlLine.Reset();
+        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+        exit(LoanJnlLine.Count());
     end;
 
     local procedure UnprocessedSoldCount(JnlNo: Integer): Integer
     var
-        GenJnlLine: Record "Gen. Journal Line";
-        JnlBatchName: Code[10];
+        LoanJnlLine: Record lvngLoanJournalLine;
+        LoanJnlBatchCode: Code[10];
     begin
         GetActSetup();
         case JnlNo of
             1:
-                JnlBatchName := ActSetup."Unprocessed Sold Jnl 1";
+                LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 1";
             2:
-                JnlBatchName := ActSetup."Unprocessed Sold Jnl 2";
+                LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 2";
             3:
-                JnlBatchName := ActSetup."Unprocessed Sold Jnl 3";
+                LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 3";
             4:
-                JnlBatchName := ActSetup."Unprocessed Sold Jnl 4";
+                LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 4";
             5:
-                JnlBatchName := ActSetup."Unprocessed Sold Jnl 5";
+                LoanJnlBatchCode := ActSetup."Unprocessed Sold Jnl 5";
         end;
-        GenJnlLine.Reset();
-        GenJnlLine.SetRange("Journal Batch Name", JnlBatchName);
-        exit(GenJnlLine.Count());
+        LoanJnlLine.Reset();
+        LoanJnlLine.SetRange("Loan Journal Batch Code", LoanJnlBatchCode);
+        exit(LoanJnlLine.Count());
     end;
 }

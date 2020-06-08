@@ -1,7 +1,9 @@
-pageextension 14135116 "lvngDeposit" extends Deposit
+pageextension 14135116 lvngDeposit extends Deposit
 {
     layout
     {
+        modify("Currency Code") { Visible = false; }
+
         addfirst(factboxes)
         {
             part(DocumentExchange; lvngDocumentListFactbox) { ApplicationArea = All; }

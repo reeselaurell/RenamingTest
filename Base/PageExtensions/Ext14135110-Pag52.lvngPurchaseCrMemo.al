@@ -23,6 +23,11 @@ pageextension 14135110 lvngPurchaseCrMemo extends "Purchase Credit Memo"
         modify("Payment Method Code") { Importance = Standard; }
         modify("Vendor Authorization No.") { Visible = false; }
 
+        moveafter("Purchaser Code"; "Payment Terms Code")
+        moveafter("Payment Terms Code"; "Payment Method Code")
+        moveafter("Payment Method Code"; "Shortcut Dimension 1 Code")
+        moveafter("Shortcut Dimension 1 Code"; "Shortcut Dimension 2 Code")
+
         addafter("Job Queue Status")
         {
             field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }

@@ -1,6 +1,6 @@
 page 14135267 lvngLoanManagerWarehouseAct
 {
-    Caption = 'Total Funded Last Business by Warehouse Line';
+    Caption = 'Total Funded Last Business Day by Warehouse Line';
     PageType = CardPart;
     RefreshOnActivate = true;
 

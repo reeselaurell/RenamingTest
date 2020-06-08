@@ -2,8 +2,6 @@ page 14135264 lvngLoanManagerRoleCenter
 {
     Caption = 'Loan Manager';
     PageType = RoleCenter;
-    ApplicationArea = All;
-    UsageCategory = Administration;
 
     layout
     {
@@ -11,7 +9,7 @@ page 14135264 lvngLoanManagerRoleCenter
         {
             group(Group)
             {
-                part(Headline; "Headline RC Accountant") { ApplicationArea = Basic, Suite; }
+                part(Headline; lvngLoanManagerHeadline) { ApplicationArea = Basic, Suite; }
                 part(DocumentActivities; lvngLoanManagerDocActivities) { ApplicationArea = Basic, Suite; }
                 part(LoanManagerWarehouseAct; lvngLoanManagerWarehouseAct) { ApplicationArea = Basic, Suite; }
             }
