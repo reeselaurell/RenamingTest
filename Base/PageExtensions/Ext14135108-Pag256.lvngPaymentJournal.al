@@ -10,6 +10,8 @@ pageextension 14135108 lvngPaymentJournal extends "Payment Journal"
         modify(ShortcutDimCode8) { Visible = true; }
         modify("Reason Code") { Visible = true; }
         modify("Currency Code") { Visible = false; }
+        modify("Debit Amount") { Visible = true; }
+        modify("Credit Amount") { Visible = true; }
 
 
         addlast(Control1)

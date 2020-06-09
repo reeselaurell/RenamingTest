@@ -16,6 +16,8 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
         modify("Bal. Gen. Posting Type") { Visible = false; }
         modify("Bal. Gen. Prod. Posting Group") { Visible = false; }
         modify("Reason Code") { Visible = true; }
+        modify("Credit Amount") { Visible = true; }
+        modify("Debit Amount") { Visible = true; }
 
         addlast(Control1)
         {

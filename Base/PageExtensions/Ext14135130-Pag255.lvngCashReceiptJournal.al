@@ -3,6 +3,8 @@ pageextension 14135130 lvngCashReceiptJournal extends "Cash Receipt Journal"
     layout
     {
         modify("Reason Code") { Visible = true; }
+        modify("Credit Amount") { Visible = true; }
+        modify("Debit Amount") { Visible = true; }
 
         addfirst(factboxes)
         {
