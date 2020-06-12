@@ -2,8 +2,6 @@ page 14135260 lvngPayablesRoleCenter
 {
     Caption = 'Payables';
     PageType = RoleCenter;
-    ApplicationArea = All;
-    UsageCategory = Administration;
 
     layout
     {

@@ -1,4 +1,4 @@
-profile lvngLVAccountantProfile
+profile "LV Accountant"
 {
     Caption = 'LV Accountant';
     Description = 'Loan Vision Accountant';

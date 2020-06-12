@@ -8,7 +8,7 @@ page 14135194 lvngLVAccountantRoleCenter
     {
         area(RoleCenter)
         {
-            part(Headline; "Headline RC Accountant") { ApplicationArea = Basic, Suite; }
+            part(Headline; lvngLVAccountantHeadline) { ApplicationArea = Basic, Suite; }
             part(GeneralActivities; lvngLVAccountantFinanceAct) { ApplicationArea = Basic, Suite; }
             part(LoanActivitites; lvngLVAccountantLoanActivities) { ApplicationArea = Basic, Suite; }
             part(CloseManagerActivities; lvngCloseManagerActivities) { ApplicationArea = Basic, Suite; }
@@ -17,6 +17,19 @@ page 14135194 lvngLVAccountantRoleCenter
 
     actions
     {
+        area(Creation)
+        {
+            action(HeadlineSetup)
+            {
+                ApplicationArea = All;
+                Caption = 'Headline Setup';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                RunObject = page lvngAcctRCHeadlineSetup;
+            }
+        }
+
         area(Sections)
         {
             group(Finance)
@@ -36,6 +49,7 @@ page 14135194 lvngLVAccountantRoleCenter
             {
                 Caption = 'Cash Management';
 
+                action(QuickPay) { Caption = 'Quick Pay'; ApplicationArea = All; RunObject = page lvngQuickPayWorksheet; }
                 action(PaymentJournal) { Caption = 'Payment Journal'; ApplicationArea = All; RunObject = page "Payment Journal"; }
                 action(CashReceiptJournal) { Caption = 'Cash Receipt Journal'; ApplicationArea = All; RunObject = page "Cash Receipt Journal"; }
                 action(BankAccStatements) { Caption = 'Bank Acc. Statements'; ApplicationArea = All; RunObject = page "Bank Account Statement List"; }

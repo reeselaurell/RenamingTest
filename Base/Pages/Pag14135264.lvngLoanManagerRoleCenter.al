@@ -7,12 +7,9 @@ page 14135264 lvngLoanManagerRoleCenter
     {
         area(RoleCenter)
         {
-            group(Group)
-            {
-                part(Headline; lvngLoanManagerHeadline) { ApplicationArea = Basic, Suite; }
-                part(DocumentActivities; lvngLoanManagerDocActivities) { ApplicationArea = Basic, Suite; }
-                part(LoanManagerWarehouseAct; lvngLoanManagerWarehouseAct) { ApplicationArea = Basic, Suite; }
-            }
+            part(Headline; lvngLoanManagerHeadline) { ApplicationArea = Basic, Suite; }
+            part(DocumentActivities; lvngLoanManagerDocActivities) { ApplicationArea = Basic, Suite; }
+            part(LoanManagerWarehouseAct; lvngLoanManagerWarehouseAct) { ApplicationArea = Basic, Suite; }
         }
     }
 

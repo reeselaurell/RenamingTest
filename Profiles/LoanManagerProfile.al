@@ -1,4 +1,4 @@
-profile LoanManagerProfile
+profile "Loan Manager"
 {
     Caption = 'Loan Manager';
     Description = 'Loan Manager';

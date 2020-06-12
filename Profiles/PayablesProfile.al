@@ -1,7 +1,7 @@
-profile PayablesProfile
+profile "Payables Manager"
 {
-    Caption = 'Payables';
-    Description = 'Payables';
+    Caption = 'Payables Manager';
+    Description = 'Payables Manager';
     RoleCenter = lvngPayablesRoleCenter;
     Customizations = lvngPurchInvSubform, lvngPurchCrMemoSubform, lvngSalesInvoiceSubform, lvngSalesCrMemoSubform;
 }

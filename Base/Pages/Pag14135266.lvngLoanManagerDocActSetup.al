@@ -3,6 +3,8 @@ page 14135266 lvngLoanManagerDocActSetup
     Caption = 'Loan Manager Document Activities Setup';
     PageType = Card;
     SourceTable = lvngLoanManagerDocActSetup;
+    InsertAllowed = false;
+    DeleteAllowed = false;
 
     layout
     {
