@@ -9,6 +9,22 @@ tableextension 14135108 lvngSalesLine extends "Sales Line"
         field(14135105; lvngShortcutDimension2Name; Text[30]) { CaptionClass = GetDimensionName(2); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(2), Code = field("Shortcut Dimension 2 Code"))); }
         field(14135106; lvngDeliveryState; Code[20]) { Caption = 'Delivery State'; DataClassification = CustomerContent; TableRelation = lvngState; }
         field(14135107; lvngUseSalesTax; Boolean) { Caption = 'Use Sales Tax'; DataClassification = CustomerContent; }
+
+        modify("Shortcut Dimension 1 Code")
+        {
+            trigger OnAfterValidate()
+            begin
+                CalcFields(lvngShortcutDimension1Name);
+            end;
+        }
+
+        modify("Shortcut Dimension 2 Code")
+        {
+            trigger OnAfterValidate()
+            begin
+                CalcFields(lvngShortcutDimension2Name);
+            end;
+        }
     }
     local procedure GetDimensionName(DimensionNo: Integer): Text
     var
