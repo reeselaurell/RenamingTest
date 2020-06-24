@@ -24,7 +24,7 @@ page 14135268 lvngLVAccountantHeadline
                         GLAccount: Record "G/L Account";
                     begin
                         GLAccount.Reset();
-                        GLAccount.SetFilter("Date Filter", HeadlineSetup."Branch Performace Date Range");
+                        GLAccount.SetFilter("Date Filter", BranchDateFilter);
                         SetGLAccountDimFilter(GLAccount, LVSetup."Cost Center Dimension Code", GreatestBranchCode);
                         if GLAccount.FindSet() then
                             Page.Run(Page::"Chart of Accounts", GLAccount);
@@ -41,7 +41,7 @@ page 14135268 lvngLVAccountantHeadline
                         GLAccount: Record "G/L Account";
                     begin
                         GLAccount.Reset();
-                        GLAccount.SetFilter("Date Filter", HeadlineSetup."LO Performace Date Range");
+                        GLAccount.SetFilter("Date Filter", LODateFilter);
                         SetGLAccountDimFilter(GLAccount, LVSetup."Loan Officer Dimension Code", GreatestLOCode);
                         if GLAccount.FindSet() then
                             Page.Run(Page::"Chart of Accounts", GLAccount);
@@ -53,6 +53,10 @@ page 14135268 lvngLVAccountantHeadline
 
     var
         LoanVisionLbl: Label '<qualifier>Welcome</qualifier><payload>Welcome to Loan Vision</payload>';
+        YTDInsightLbl: Label 'Year to Date Insight';
+        QTDInsightLbl: Label 'Quarter to Date Insight';
+        MTDInsightLbl: Label 'Month to Date Insight';
+        WTDInsightLbl: Label 'Week to Date Insight';
         LVSetup: Record lvngLoanVisionSetup;
         HeadlineSetup: Record lvngLVAcctRCHeadlineSetup;
         BranchProfitText: Text;
@@ -65,11 +69,14 @@ page 14135268 lvngLVAccountantHeadline
         GreatestLOProfit: Decimal;
         GreatestLOName: Text[50];
         GreatestLOCode: Code[20];
+        LODateFilter: Text;
+        BranchDateFilter: Text;
 
     trigger OnOpenPage()
     begin
         HeadlineSetup.Get();
         LVSetup.Get();
+        SetDateFilters();
         GetTopPerformingLO();
         GetTopPerformingBranch();
         BranchProfitText := StrSubstNo('<qualifier>%1 </qualifier><payload>%2 was the top performing Branch with <emphasize>$%3</emphasize> in profit</payload>', GetBranchInsightText(), GreatestBranchName, GreatestBranchProfit);
@@ -89,7 +96,7 @@ page 14135268 lvngLVAccountantHeadline
             if DimensionValue.FindSet() then
                 repeat
                     GLAccount.Reset();
-                    GLAccount.SetFilter("Date Filter", HeadlineSetup."Branch Performace Date Range");
+                    GLAccount.SetFilter("Date Filter", BranchDateFilter);
                     SetGLAccountDimFilter(GLAccount, LVSetup."Cost Center Dimension Code", DimensionValue.Code);
                     GLAccount.SetRange("No.", HeadlineSetup."Net Income G/L Account No.");
                     if GLAccount.FindSet() then begin
@@ -124,7 +131,7 @@ page 14135268 lvngLVAccountantHeadline
             if DimensionValue.FindSet() then
                 repeat
                     GLAccount.Reset();
-                    GLAccount.SetFilter("Date Filter", HeadlineSetup."LO Performace Date Range");
+                    GLAccount.SetFilter("Date Filter", LODateFilter);
                     SetGLAccountDimFilter(GLAccount, LVSetup."Loan Officer Dimension Code", DimensionValue.Code);
                     GLAccount.SetRange("No.", HeadlineSetup."Net Income G/L Account No.");
                     if GLAccount.FindSet() then begin
@@ -162,23 +169,53 @@ page 14135268 lvngLVAccountantHeadline
 
     local procedure GetBranchInsightText(): Text
     begin
-        if HeadlineSetup."Branch Performace Date Range" = '' then
-            exit('ITD')
-        else
-            if HeadlineSetup."Branch Performace Date Range".Contains('..') then
-                exit('From ' + HeadlineSetup."Branch Performace Date Range".Replace('..', ' to '))
-            else
-                exit('On ' + HeadlineSetup."Branch Performace Date Range");
+        case HeadlineSetup."Branch Performace Date Range" of
+            HeadlineSetup."Branch Performace Date Range"::"Year to Date":
+                exit(YTDInsightLbl);
+            HeadlineSetup."Branch Performace Date Range"::"Quarter to Date":
+                exit(QTDInsightLbl);
+            HeadlineSetup."Branch Performace Date Range"::"Month to Date":
+                exit(MTDInsightLbl);
+            HeadlineSetup."Branch Performace Date Range"::"Week to Date":
+                exit(WTDInsightLbl);
+        end;
     end;
 
     local procedure GetLOInsightText(): Text
     begin
-        if HeadlineSetup."LO Performace Date Range" = '' then
-            exit('ITD')
-        else
-            if HeadlineSetup."LO Performace Date Range".Contains('..') then
-                exit('From ' + HeadlineSetup."LO Performace Date Range".Replace('..', ' to '))
-            else
-                exit('On ' + HeadlineSetup."LO Performace Date Range");
+        case HeadlineSetup."LO Performace Date Range" of
+            HeadlineSetup."LO Performace Date Range"::"Year to Date":
+                exit(YTDInsightLbl);
+            HeadlineSetup."LO Performace Date Range"::"Quarter to Date":
+                exit(QTDInsightLbl);
+            HeadlineSetup."LO Performace Date Range"::"Month to Date":
+                exit(MTDInsightLbl);
+            HeadlineSetup."LO Performace Date Range"::"Week to Date":
+                exit(WTDInsightLbl);
+        end;
+    end;
+
+    local procedure SetDateFilters()
+    begin
+        case HeadlineSetup."Branch Performace Date Range" of
+            HeadlineSetup."Branch Performace Date Range"::"Year to Date":
+                BranchDateFilter := '-CY..t';
+            HeadlineSetup."Branch Performace Date Range"::"Quarter to Date":
+                BranchDateFilter := '-CQ..t';
+            HeadlineSetup."Branch Performace Date Range"::"Month to Date":
+                BranchDateFilter := '-CM..t';
+            HeadlineSetup."Branch Performace Date Range"::"Week to Date":
+                BranchDateFilter := '-CW..t';
+        end;
+        case HeadlineSetup."LO Performace Date Range" of
+            HeadlineSetup."LO Performace Date Range"::"Year to Date":
+                LODateFilter := '-CY..t';
+            HeadlineSetup."LO Performace Date Range"::"Quarter to Date":
+                LODateFilter := '-CQ..t';
+            HeadlineSetup."LO Performace Date Range"::"Month to Date":
+                LODateFilter := '-CM..t';
+            HeadlineSetup."LO Performace Date Range"::"Week to Date":
+                LODateFilter := '-CW..t';
+        end;
     end;
 }
