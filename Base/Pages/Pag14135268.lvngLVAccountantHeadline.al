@@ -3,219 +3,132 @@ page 14135268 lvngLVAccountantHeadline
     PageType = HeadlinePart;
     RefreshOnActivate = true;
     Caption = 'LV Headline';
+    SourceTable = lvngLVAcctRCHeadline;
 
     layout
     {
         area(Content)
         {
-            group("LV Accountant Headline")
+            field(LoanVisionLbl; LoanVisionLbl) { Caption = 'Welcome'; ApplicationArea = All; }
+            field(TopBranch; BranchProfitText)
             {
-                Editable = false;
+                ApplicationArea = All;
 
-                field(WelcomeMsg; LoanVisionLbl) { ApplicationArea = All; }
+                trigger OnDrillDown()
+                var
+                    GLAccount: Record "G/L Account";
+                begin
 
-                field(BranchProfit; BranchProfitText)
-                {
-                    ApplicationArea = Basic, Suite;
-                    Visible = BranchInfoVisible;
+                    GLAccount.Reset();
+                    GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
+                    SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", GreatestBranchCode);
+                    if GLAccount.FindSet() then
+                        Page.Run(Page::"Chart of Accounts", GLAccount);
+                end;
+            }
+            field(TopLO; LOProfitText)
+            {
+                ApplicationArea = All;
 
-                    trigger OnDrillDown()
-                    var
-                        GLAccount: Record "G/L Account";
-                    begin
-                        GLAccount.Reset();
-                        GLAccount.SetFilter("Date Filter", BranchDateFilter);
-                        SetGLAccountDimFilter(GLAccount, LVSetup."Cost Center Dimension Code", GreatestBranchCode);
-                        if GLAccount.FindSet() then
-                            Page.Run(Page::"Chart of Accounts", GLAccount);
-                    end;
-                }
+                trigger OnDrillDown()
+                var
+                    GLAccount: Record "G/L Account";
+                begin
+                    GLAccount.Reset();
+                    GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
+                    SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", GreatestLOCode);
+                    if GLAccount.FindSet() then
+                        Page.Run(Page::"Chart of Accounts", GLAccount);
+                end;
+            }
+            field(BottomBranch; LowBranchProfitText)
+            {
+                ApplicationArea = All;
 
-                field(LOProfit; LOProfitText)
-                {
-                    ApplicationArea = Basic, Suite;
-                    Visible = LOInfoVisible;
+                trigger OnDrillDown()
+                var
+                    GLAccount: Record "G/L Account";
+                begin
+                    GLAccount.Reset();
+                    GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
+                    SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", BottomBranchCode);
+                    if GLAccount.FindSet() then
+                        Page.Run(Page::"Chart of Accounts", GLAccount);
+                end;
+            }
+            field(BottomLO; LowLOProfitText)
+            {
+                ApplicationArea = All;
 
-                    trigger OnDrillDown()
-                    var
-                        GLAccount: Record "G/L Account";
-                    begin
-                        GLAccount.Reset();
-                        GLAccount.SetFilter("Date Filter", LODateFilter);
-                        SetGLAccountDimFilter(GLAccount, LVSetup."Loan Officer Dimension Code", GreatestLOCode);
-                        if GLAccount.FindSet() then
-                            Page.Run(Page::"Chart of Accounts", GLAccount);
-                    end;
-                }
+                trigger OnDrillDown()
+                var
+                    GLAccount: Record "G/L Account";
+                begin
+                    GLAccount.Reset();
+                    GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
+                    SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", BottomLOCode);
+                    if GLAccount.FindSet() then
+                        Page.Run(Page::"Chart of Accounts", GLAccount);
+                end;
             }
         }
     }
 
     var
         LoanVisionLbl: Label '<qualifier>Welcome</qualifier><payload>Welcome to Loan Vision</payload>';
-        YTDInsightLbl: Label 'Year to Date Insight';
-        QTDInsightLbl: Label 'Quarter to Date Insight';
-        MTDInsightLbl: Label 'Month to Date Insight';
-        WTDInsightLbl: Label 'Week to Date Insight';
         LVSetup: Record lvngLoanVisionSetup;
         HeadlineSetup: Record lvngLVAcctRCHeadlineSetup;
         BranchProfitText: Text;
         LOProfitText: Text;
-        BranchInfoVisible: Boolean;
-        LOInfoVisible: Boolean;
-        GreatestBranchProfit: Decimal;
-        GreatestBranchName: Text[50];
+        LowBranchProfitText: Text;
+        LowLOProfitText: Text;
         GreatestBranchCode: Code[20];
-        GreatestLOProfit: Decimal;
-        GreatestLOName: Text[50];
+        BottomBranchCode: Code[20];
         GreatestLOCode: Code[20];
-        LODateFilter: Text;
-        BranchDateFilter: Text;
+        BottomLOCode: Code[20];
 
     trigger OnOpenPage()
+    var
+        GreatestBranchProfit: Decimal;
+        GreatestBranchName: Text[50];
+        BottomBranchName: Text[50];
+        BottomBranchProfit: Decimal;
+        GreatestLOProfit: Decimal;
+        GreatestLOName: Text[50];
+        BottomLOProfit: Decimal;
+        BottomLOName: Text[50];
     begin
         HeadlineSetup.Get();
         LVSetup.Get();
-        SetDateFilters();
-        GetTopPerformingLO();
-        GetTopPerformingBranch();
+        FillDimensions();
+        SetNetChange();
+        Reset();
+        SetRange("Dimension Code", LVSetup."Loan Officer Dimension Code");
+        SetCurrentKey("Net Change");
+        Ascending(false);
+        FindFirst();
+        GreatestLOName := Name;
+        GreatestLOProfit := "Net Change";
+        GreatestLOCode := Code;
+        FindLast();
+        BottomLOName := Name;
+        BottomLOProfit := "Net Change";
+        BottomLOCode := Code;
+        Reset();
+        SetRange("Dimension Code", LVSetup."Cost Center Dimension Code");
+        SetCurrentKey("Net Change");
+        Ascending(false);
+        FindFirst();
+        GreatestBranchName := Name;
+        GreatestBranchProfit := "Net Change";
+        GreatestBranchCode := Code;
+        FindLast();
+        BottomBranchName := Name;
+        BottomBranchProfit := "Net Change";
+        BottomBranchCode := Code;
         BranchProfitText := StrSubstNo('<qualifier>%1 </qualifier><payload>%2 was the top performing Branch with <emphasize>$%3</emphasize> in profit</payload>', GetBranchInsightText(), GreatestBranchName, GreatestBranchProfit);
         LOProfitText := StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the top performing LO with <emphasize>$%3</emphasize> in profit</payload>', GetLOInsightText(), GreatestLOName, GreatestLOProfit);
-    end;
-
-    local procedure GetTopPerformingBranch()
-    var
-        GLAccount: Record "G/L Account";
-        DimensionValue: Record "Dimension Value";
-        First: Boolean;
-    begin
-        First := true;
-        if LVSetup.Get() then begin
-            DimensionValue.Reset();
-            DimensionValue.SetRange("Dimension Code", LVSetup."Cost Center Dimension Code");
-            if DimensionValue.FindSet() then
-                repeat
-                    GLAccount.Reset();
-                    GLAccount.SetFilter("Date Filter", BranchDateFilter);
-                    SetGLAccountDimFilter(GLAccount, LVSetup."Cost Center Dimension Code", DimensionValue.Code);
-                    GLAccount.SetRange("No.", HeadlineSetup."Net Income G/L Account No.");
-                    if GLAccount.FindSet() then begin
-                        BranchInfoVisible := true;
-                        GLAccount.CalcFields("Net Change");
-                        if First then begin
-                            GreatestBranchProfit := GLAccount."Net Change";
-                            GreatestBranchName := DimensionValue.Name;
-                            GreatestBranchCode := DimensionValue.Code;
-                            First := false;
-                        end else
-                            if GLAccount."Net Change" > GreatestBranchProfit then begin
-                                GreatestBranchProfit := GLAccount."Net Change";
-                                GreatestBranchName := DimensionValue.Name;
-                                GreatestBranchCode := DimensionValue.Code;
-                            end;
-                    end;
-                until DimensionValue.Next() = 0;
-        end;
-    end;
-
-    local procedure GetTopPerformingLO()
-    var
-        GLAccount: Record "G/L Account";
-        DimensionValue: Record "Dimension Value";
-        First: Boolean;
-    begin
-        First := true;
-        if LVSetup.Get() then begin
-            DimensionValue.Reset();
-            DimensionValue.SetRange("Dimension Code", LVSetup."Loan Officer Dimension Code");
-            if DimensionValue.FindSet() then
-                repeat
-                    GLAccount.Reset();
-                    GLAccount.SetFilter("Date Filter", LODateFilter);
-                    SetGLAccountDimFilter(GLAccount, LVSetup."Loan Officer Dimension Code", DimensionValue.Code);
-                    GLAccount.SetRange("No.", HeadlineSetup."Net Income G/L Account No.");
-                    if GLAccount.FindSet() then begin
-                        LOInfoVisible := true;
-                        GLAccount.CalcFields("Net Change");
-                        if First then begin
-                            GreatestLOProfit := GLAccount."Net Change";
-                            GreatestLOName := DimensionValue.Name;
-                            GreatestLOCode := DimensionValue.Code;
-                            First := false;
-                        end else
-                            if GLAccount."Net Change" > GreatestLOProfit then begin
-                                GreatestLOProfit := GLAccount."Net Change";
-                                GreatestLOName := DimensionValue.Name;
-                                GreatestLOCode := DimensionValue.Code;
-                            end;
-                    end;
-                until DimensionValue.Next() = 0;
-        end;
-    end;
-
-    local procedure SetGLAccountDimFilter(var GLAccount: Record "G/L Account"; DimCode: Code[20]; DimValueCode: Code[20])
-    var
-        DimensionMgmt: Codeunit lvngDimensionsManagement;
-        DimNo: Integer;
-    begin
-        DimNo := DimensionMgmt.GetDimensionNo(DimCode);
-        case DimNo of
-            1:
-                GLAccount.SetFilter("Global Dimension 1 Filter", DimValueCode);
-            2:
-                GLAccount.SetFilter("Global Dimension 2 Filter", DimValueCode);
-        end;
-    end;
-
-    local procedure GetBranchInsightText(): Text
-    begin
-        case HeadlineSetup."Branch Performace Date Range" of
-            HeadlineSetup."Branch Performace Date Range"::"Year to Date":
-                exit(YTDInsightLbl);
-            HeadlineSetup."Branch Performace Date Range"::"Quarter to Date":
-                exit(QTDInsightLbl);
-            HeadlineSetup."Branch Performace Date Range"::"Month to Date":
-                exit(MTDInsightLbl);
-            HeadlineSetup."Branch Performace Date Range"::"Week to Date":
-                exit(WTDInsightLbl);
-        end;
-    end;
-
-    local procedure GetLOInsightText(): Text
-    begin
-        case HeadlineSetup."LO Performace Date Range" of
-            HeadlineSetup."LO Performace Date Range"::"Year to Date":
-                exit(YTDInsightLbl);
-            HeadlineSetup."LO Performace Date Range"::"Quarter to Date":
-                exit(QTDInsightLbl);
-            HeadlineSetup."LO Performace Date Range"::"Month to Date":
-                exit(MTDInsightLbl);
-            HeadlineSetup."LO Performace Date Range"::"Week to Date":
-                exit(WTDInsightLbl);
-        end;
-    end;
-
-    local procedure SetDateFilters()
-    begin
-        case HeadlineSetup."Branch Performace Date Range" of
-            HeadlineSetup."Branch Performace Date Range"::"Year to Date":
-                BranchDateFilter := '-CY..t';
-            HeadlineSetup."Branch Performace Date Range"::"Quarter to Date":
-                BranchDateFilter := '-CQ..t';
-            HeadlineSetup."Branch Performace Date Range"::"Month to Date":
-                BranchDateFilter := '-CM..t';
-            HeadlineSetup."Branch Performace Date Range"::"Week to Date":
-                BranchDateFilter := '-CW..t';
-        end;
-        case HeadlineSetup."LO Performace Date Range" of
-            HeadlineSetup."LO Performace Date Range"::"Year to Date":
-                LODateFilter := '-CY..t';
-            HeadlineSetup."LO Performace Date Range"::"Quarter to Date":
-                LODateFilter := '-CQ..t';
-            HeadlineSetup."LO Performace Date Range"::"Month to Date":
-                LODateFilter := '-CM..t';
-            HeadlineSetup."LO Performace Date Range"::"Week to Date":
-                LODateFilter := '-CW..t';
-        end;
+        LowBranchProfitText := StrSubstNo('<qualifier>%1 </qualifier><payload>%2 was the worst performing Branch with <emphasize>$%3</emphasize> in profit</payload>', GetBranchInsightText(), BottomBranchName, BottomBranchProfit);
+        LowLOProfitText := StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the worst performing LO with <emphasize>$%3</emphasize> in profit</payload>', GetLOInsightText(), BottomLOName, BottomLOProfit);
     end;
 }

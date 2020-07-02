@@ -12,6 +12,13 @@ page 14135194 lvngLVAccountantRoleCenter
             part(GeneralActivities; lvngLVAccountantFinanceAct) { ApplicationArea = Basic, Suite; }
             part(LoanActivitites; lvngLVAccountantLoanActivities) { ApplicationArea = Basic, Suite; }
             part(CloseManagerActivities; lvngCloseManagerActivities) { ApplicationArea = Basic, Suite; }
+            group(PerformanceData)
+            {
+                part(TopBranch; lvngLVAcctBranchTopPerfPart) { ApplicationArea = Basic, Suite; }
+                part(TopLO; lvngLVAcctLOTopPerfPart) { ApplicationArea = Basic, Suite; }
+                part(BotBranch; lvngLVAcctBranchBotPerfPart) { ApplicationArea = Basic, Suite; }
+                part(BotLO; lvngLVAcctLOBotPerfPart) { ApplicationArea = Basic, Suite; }
+            }
         }
     }
 
@@ -45,6 +52,7 @@ page 14135194 lvngLVAccountantRoleCenter
 
                 action(GeneralJournal) { Caption = 'General Journal'; ApplicationArea = All; RunObject = page "General Journal"; }
             }
+
             group(CashManagement)
             {
                 Caption = 'Cash Management';
@@ -102,12 +110,7 @@ page 14135194 lvngLVAccountantRoleCenter
                         ApplicationArea = All;
                         //NEEDS IMPLEMENTED 
                     }
-                    action(LoanLevelValuesFinancial)
-                    {
-                        Caption = 'Loan Level Values';
-                        ApplicationArea = All;
-                        //NEEDS IMPLEMENTED
-                    }
+                    action(LoanLevelValuesFinancial) { Caption = 'Loan Level Worksheet'; ApplicationArea = All; RunObject = report lvngLoanLevelWorksheet; }
                     action(TrialBalanceDetailSummary) { Caption = 'Trail Balance Detail/Summary'; ApplicationArea = All; RunObject = report "Trial Balance Detail/Summary"; }
                     action(TrialBalanceByPeriod) { Caption = 'Trial Balance by Period'; ApplicationArea = All; RunObject = report "Trial Balance by Period"; }
                     action(ReportGeneratorBatchList) { Caption = 'Report Generator Batch List'; ApplicationArea = All; RunObject = page lvngReportGeneratorBatchList; }
@@ -126,12 +129,7 @@ page 14135194 lvngLVAccountantRoleCenter
                     action(LoanProfitability) { Caption = 'Loan Profitability'; ApplicationArea = All; RunObject = report lvngLoanProfitability; }
                     action(LoanFileReconciliationWorksheetAction) { Caption = 'Loan File Reconciliation Worksheet'; ApplicationArea = All; RunObject = page lvngLoanFileReconWorksheet; }
                     action(LoanFeesReport) { Caption = 'Loan Fees Report'; ApplicationArea = All; RunObject = report lvngLoanFeesReport; }
-                    action(LoanLevelValuesLoanLevel)
-                    {
-                        Caption = 'Loan Level Values';
-                        ApplicationArea = All;
-                        //NEEDS IMPLEMENTED
-                    }
+                    action(LoanLevelValuesLoanLevel) { Caption = 'Loan Level Worksheet'; ApplicationArea = All; RunObject = report lvngLoanLevelWorksheet; }
                 }
 
                 group(PayablesReports)
@@ -145,12 +143,7 @@ page 14135194 lvngLVAccountantRoleCenter
                     action(VendorAccountDetail) { Caption = 'Vendor Account Detail'; ApplicationArea = All; RunObject = report "Vendor Account Detail"; }
                     action(Vendor1099Information) { Caption = 'Vendor 1099 Information'; ApplicationArea = All; RunObject = report "Vendor 1099 Information"; }
                     action(UseTaxPayable) { Caption = 'Use Tax Payable'; ApplicationArea = All; RunObject = report lvngUseTaxPayableReport; }
-                    action(LoanLevelValuesPayables)
-                    {
-                        Caption = 'Loan Level Values';
-                        ApplicationArea = All;
-                        //NEEDS IMPLEMENTED
-                    }
+                    action(LoanLevelValuesPayables) { Caption = 'Loan Level Worksheet'; ApplicationArea = All; RunObject = report lvngLoanLevelWorksheet; }
                     action(CashReqByDueDate) { Caption = 'Cash Requirement by Due Date'; ApplicationArea = All; RunObject = report "Cash Requirements by Due Date"; }
                     action(VendorCheckApplication) { Caption = 'Vendor Check Application Report'; ApplicationArea = All; RunObject = report lvngVendCheckApplicationReport; }
                 }
