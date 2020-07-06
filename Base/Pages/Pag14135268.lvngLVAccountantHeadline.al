@@ -18,10 +18,14 @@ page 14135268 lvngLVAccountantHeadline
                 var
                     GLAccount: Record "G/L Account";
                 begin
-
+                    Reset();
+                    SetRange("Dimension Code", LVSetup."Cost Center Dimension Code");
+                    SetCurrentKey("Net Change");
+                    Ascending(false);
+                    FindFirst();
                     GLAccount.Reset();
                     GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
-                    SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", GreatestBranchCode);
+                    SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", Code);
                     if GLAccount.FindSet() then
                         Page.Run(Page::"Chart of Accounts", GLAccount);
                 end;
@@ -34,9 +38,14 @@ page 14135268 lvngLVAccountantHeadline
                 var
                     GLAccount: Record "G/L Account";
                 begin
+                    Reset();
+                    SetRange("Dimension Code", LVSetup."Loan Officer Dimension Code");
+                    SetCurrentKey("Net Change");
+                    Ascending(false);
+                    FindFirst();
                     GLAccount.Reset();
                     GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
-                    SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", GreatestLOCode);
+                    SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", Code);
                     if GLAccount.FindSet() then
                         Page.Run(Page::"Chart of Accounts", GLAccount);
                 end;
@@ -49,9 +58,14 @@ page 14135268 lvngLVAccountantHeadline
                 var
                     GLAccount: Record "G/L Account";
                 begin
+                    Reset();
+                    SetRange("Dimension Code", LVSetup."Cost Center Dimension Code");
+                    SetCurrentKey("Net Change");
+                    Ascending(true);
+                    FindFirst();
                     GLAccount.Reset();
                     GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
-                    SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", BottomBranchCode);
+                    SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", Code);
                     if GLAccount.FindSet() then
                         Page.Run(Page::"Chart of Accounts", GLAccount);
                 end;
@@ -64,9 +78,14 @@ page 14135268 lvngLVAccountantHeadline
                 var
                     GLAccount: Record "G/L Account";
                 begin
+                    Reset();
+                    SetRange("Dimension Code", LVSetup."Loan Officer Dimension Code");
+                    SetCurrentKey("Net Change");
+                    Ascending(true);
+                    FindFirst();
                     GLAccount.Reset();
                     GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
-                    SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", BottomLOCode);
+                    SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", Code);
                     if GLAccount.FindSet() then
                         Page.Run(Page::"Chart of Accounts", GLAccount);
                 end;
@@ -82,53 +101,41 @@ page 14135268 lvngLVAccountantHeadline
         LOProfitText: Text;
         LowBranchProfitText: Text;
         LowLOProfitText: Text;
-        GreatestBranchCode: Code[20];
-        BottomBranchCode: Code[20];
-        GreatestLOCode: Code[20];
-        BottomLOCode: Code[20];
 
     trigger OnOpenPage()
-    var
-        GreatestBranchProfit: Decimal;
-        GreatestBranchName: Text[50];
-        BottomBranchName: Text[50];
-        BottomBranchProfit: Decimal;
-        GreatestLOProfit: Decimal;
-        GreatestLOName: Text[50];
-        BottomLOProfit: Decimal;
-        BottomLOName: Text[50];
     begin
         HeadlineSetup.Get();
         LVSetup.Get();
         FillDimensions();
         SetNetChange();
+        BranchProfitText := GetText(LVSetup."Cost Center Dimension Code", false);
+        LOProfitText := GetText(LVSetup."Loan Officer Dimension Code", false);
+        LowBranchProfitText := GetText(LVSetup."Cost Center Dimension Code", true);
+        LowLOProfitText := GetText(LVSetup."Loan Officer Dimension Code", true);
+    end;
+
+    local procedure GetText(DimensionCode: Code[20]; isAscending: Boolean): Text
+    var
+        DimensionType: Text;
+        PerformanceTxt: Text;
+        InsightTxt: Text;
+    begin
         Reset();
-        SetRange("Dimension Code", LVSetup."Loan Officer Dimension Code");
+        SetRange("Dimension Code", DimensionCode);
         SetCurrentKey("Net Change");
-        Ascending(false);
+        Ascending(isAscending);
         FindFirst();
-        GreatestLOName := Name;
-        GreatestLOProfit := "Net Change";
-        GreatestLOCode := Code;
-        FindLast();
-        BottomLOName := Name;
-        BottomLOProfit := "Net Change";
-        BottomLOCode := Code;
-        Reset();
-        SetRange("Dimension Code", LVSetup."Cost Center Dimension Code");
-        SetCurrentKey("Net Change");
-        Ascending(false);
-        FindFirst();
-        GreatestBranchName := Name;
-        GreatestBranchProfit := "Net Change";
-        GreatestBranchCode := Code;
-        FindLast();
-        BottomBranchName := Name;
-        BottomBranchProfit := "Net Change";
-        BottomBranchCode := Code;
-        BranchProfitText := StrSubstNo('<qualifier>%1 </qualifier><payload>%2 was the top performing Branch with <emphasize>$%3</emphasize> in profit</payload>', GetBranchInsightText(), GreatestBranchName, GreatestBranchProfit);
-        LOProfitText := StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the top performing LO with <emphasize>$%3</emphasize> in profit</payload>', GetLOInsightText(), GreatestLOName, GreatestLOProfit);
-        LowBranchProfitText := StrSubstNo('<qualifier>%1 </qualifier><payload>%2 was the worst performing Branch with <emphasize>$%3</emphasize> in profit</payload>', GetBranchInsightText(), BottomBranchName, BottomBranchProfit);
-        LowLOProfitText := StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the worst performing LO with <emphasize>$%3</emphasize> in profit</payload>', GetLOInsightText(), BottomLOName, BottomLOProfit);
+        if not isAscending then
+            PerformanceTxt := 'top'
+        else
+            PerformanceTxt := 'worst';
+        if DimensionCode = LVSetup."Cost Center Dimension Code" then begin
+            DimensionType := 'Branch';
+            InsightTxt := GetBranchInsightText();
+        end else begin
+            DimensionType := 'LO';
+            InsightTxt := GetLOInsightText();
+        end;
+        exit(StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the %3 performing %4 with <emphasize>$%5</emphasize> in profit</payload>', InsightTxt, Name, PerformanceTxt, DimensionType, "Net Change"));
     end;
 }

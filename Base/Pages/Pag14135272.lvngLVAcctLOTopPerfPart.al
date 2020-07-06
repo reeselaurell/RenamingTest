@@ -48,17 +48,58 @@ page 14135272 lvngLVAcctLOTopPerfPart
             }
         }
     }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(ShowAll)
+            {
+                Caption = 'Show All';
+                ApplicationArea = All;
+                Image = ClearFilter;
+
+                trigger OnAction()
+                begin
+                    Reset();
+                    SetCurrentKey("Net Change");
+                    SetRange("Dimension Code", LoanVisionSetup."Loan Officer Dimension Code");
+                    Ascending(false);
+                    CurrPage.Update();
+                end;
+            }
+
+            action(ShowTopFiveAction)
+            {
+                Caption = 'Show Top Five';
+                ApplicationArea = All;
+                Image = UseFilters;
+
+                trigger OnAction()
+                begin
+                    ShowTopFive();
+                end;
+            }
+        }
+    }
+
     var
+        LoanVisionSetup: Record lvngLoanVisionSetup;
         DateRange: Text;
 
     trigger OnOpenPage()
     var
-        LoanVisionSetup: Record lvngLoanVisionSetup;
         Headline: Record lvngLVAcctRCHeadline;
-        Counter: Integer;
     begin
         DateRange := Headline.GetLOInsightText();
         LoanVisionSetup.Get();
+        ShowTopFive();
+    end;
+
+    local procedure ShowTopFive()
+    var
+        Counter: Integer;
+    begin
         Reset();
         SetRange("Dimension Code", LoanVisionSetup."Loan Officer Dimension Code");
         SetCurrentKey("Net Change");

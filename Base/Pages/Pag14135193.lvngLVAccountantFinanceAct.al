@@ -1,7 +1,7 @@
 page 14135193 lvngLVAccountantFinanceAct
 {
     PageType = CardPart;
-    Caption = 'Activities';
+    Caption = 'Financial Activities';
     SourceTable = "Finance Cue";
     RefreshOnActivate = true;
 
