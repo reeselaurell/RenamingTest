@@ -16,7 +16,7 @@ page 14135265 lvngLoanManagerDocActivities
                 {
                     Caption = 'Total Funded Last Business Day';
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total loans funded amount from previous business day';
+                    ToolTip = 'Specifies the Total Loans Funded Amount From Previous Business Day';
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
 
@@ -33,7 +33,7 @@ page 14135265 lvngLoanManagerDocActivities
                 {
                     Caption = 'Total Sold Last Business Day';
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total loans sold amount from previous business day';
+                    ToolTip = 'Specifies the Total Loans Sold Amount From Previous Business Day';
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
 
@@ -52,7 +52,7 @@ page 14135265 lvngLoanManagerDocActivities
                     ApplicationArea = All;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
-
+                    ToolTip = 'Total Funded Clearing Account Balance';
 
                     trigger OnDrillDown()
                     var
@@ -75,6 +75,7 @@ page 14135265 lvngLoanManagerDocActivities
                     ApplicationArea = All;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Total Sold Clearing Account Balance';
 
                     trigger OnDrillDown()
                     var
@@ -103,6 +104,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = FundedCaption[1];
                     ApplicationArea = All;
                     Visible = FundedVisible1;
+                    ToolTip = 'Unprocessed Loan Funding Journal Information';
 
                     trigger OnDrillDown()
                     var
@@ -122,6 +124,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = FundedCaption[2];
                     ApplicationArea = All;
                     Visible = FundedVisible2;
+                    ToolTip = 'Unprocessed Loan Funding Journal Information';
 
                     trigger OnDrillDown()
                     var
@@ -141,6 +144,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = FundedCaption[3];
                     ApplicationArea = All;
                     Visible = FundedVisible3;
+                    ToolTip = 'Unprocessed Loan Funding Journal Information';
 
                     trigger OnDrillDown()
                     var
@@ -160,6 +164,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = FundedCaption[4];
                     ApplicationArea = All;
                     Visible = FundedVisible4;
+                    ToolTip = 'Unprocessed Loan Funding Journal Information';
 
                     trigger OnDrillDown()
                     var
@@ -179,6 +184,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = FundedCaption[5];
                     ApplicationArea = All;
                     Visible = FundedVisible5;
+                    ToolTip = 'Unprocessed Loan Funding Journal Information';
 
                     trigger OnDrillDown()
                     var
@@ -204,6 +210,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = SoldCaption[1];
                     ApplicationArea = All;
                     Visible = SoldVisible1;
+                    ToolTip = 'Unprocessed Loan Sold Journal Information';
 
                     trigger OnDrillDown()
                     var
@@ -223,6 +230,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = SoldCaption[2];
                     ApplicationArea = All;
                     Visible = SoldVisible2;
+                    ToolTip = 'Unprocessed Loan Sold Journal Information';
 
                     trigger OnDrillDown()
                     var
@@ -242,6 +250,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = SoldCaption[3];
                     ApplicationArea = All;
                     Visible = SoldVisible3;
+                    ToolTip = 'Unprocessed Loan Sold Journal Information';
 
                     trigger OnDrillDown()
                     var
@@ -261,6 +270,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = SoldCaption[4];
                     ApplicationArea = All;
                     Visible = SoldVisible4;
+                    ToolTip = 'Unprocessed Loan Sold Journal Information';
 
                     trigger OnDrillDown()
                     var
@@ -280,6 +290,7 @@ page 14135265 lvngLoanManagerDocActivities
                     CaptionClass = SoldCaption[5];
                     ApplicationArea = All;
                     Visible = SoldVisible5;
+                    ToolTip = 'Unprocessed Loan Sold Journal Information';
 
                     trigger OnDrillDown()
                     var

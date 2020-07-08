@@ -16,6 +16,7 @@ page 14135192 lvngLVAccountantLoanActivities
                 {
                     Caption = 'Unposted Fundings';
                     ApplicationArea = All;
+                    ToolTip = 'Unposted Loan Funding Documents';
 
                     trigger OnDrillDown()
                     var
@@ -31,6 +32,7 @@ page 14135192 lvngLVAccountantLoanActivities
                 {
                     Caption = 'Unposted Sales';
                     ApplicationArea = All;
+                    ToolTip = 'Unposted Loan Sold Documents';
 
                     trigger OnDrillDown()
                     var
@@ -50,6 +52,7 @@ page 14135192 lvngLVAccountantLoanActivities
                 {
                     Caption = 'Open Invoices';
                     ApplicationArea = All;
+                    ToolTip = 'Open Purchase Invoices Count';
 
                     trigger OnDrillDown()
                     var
@@ -64,9 +67,10 @@ page 14135192 lvngLVAccountantLoanActivities
                 }
                 field(InvoicesPendingApproval; InvoicesPendingApprovalCount())
                 {
-                    Caption = 'Invoices Pending Approval';
+                    Caption = 'Pending Approval';
                     ApplicationArea = All;
                     Visible = ApprovalsIDExists;
+                    ToolTip = 'Purchase Invoices Pending Approval Count';
 
                     trigger OnDrillDown()
                     var
@@ -84,6 +88,7 @@ page 14135192 lvngLVAccountantLoanActivities
                     Caption = 'Approved not Posted';
                     ApplicationArea = All;
                     Visible = ApprovalsIDExists;
+                    ToolTip = 'Purchase Invoices Approved, but not Posted Count';
 
                     trigger OnDrillDown()
                     var
@@ -100,6 +105,7 @@ page 14135192 lvngLVAccountantLoanActivities
                 {
                     Caption = 'Invoices Paid Today';
                     ApplicationArea = All;
+                    ToolTip = 'Purchase Invoices Paid Today Count';
 
                     trigger OnDrillDown()
                     var
@@ -120,6 +126,7 @@ page 14135192 lvngLVAccountantLoanActivities
                 {
                     Caption = 'General Journal';
                     ApplicationArea = All;
+                    ToolTip = 'General Journal Entries Count';
 
                     trigger OnDrillDown()
                     begin
@@ -133,6 +140,7 @@ page 14135192 lvngLVAccountantLoanActivities
                 {
                     Caption = 'Payment Journal';
                     ApplicationArea = All;
+                    ToolTip = 'Payment Journal Entries Count';
 
                     trigger OnDrillDown()
                     begin
@@ -146,6 +154,7 @@ page 14135192 lvngLVAccountantLoanActivities
                 {
                     Caption = 'Purchase Journal';
                     ApplicationArea = All;
+                    ToolTip = 'Purchase Journal Entries Count';
 
                     trigger OnDrillDown()
                     begin
@@ -159,6 +168,7 @@ page 14135192 lvngLVAccountantLoanActivities
                 {
                     Caption = 'Cash Receipt Journal';
                     ApplicationArea = All;
+                    ToolTip = 'Cash Receipt Journal Entries Count';
 
                     trigger OnDrillDown()
                     begin

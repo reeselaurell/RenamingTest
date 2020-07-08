@@ -19,7 +19,7 @@ page 14135193 lvngLVAccountantFinanceAct
                     Caption = 'Cash Account Balance';
                     ApplicationArea = All;
                     DrillDownPageID = "Chart of Accounts";
-                    ToolTip = 'Specifies the sum of the accounts that have the cash account category.';
+                    ToolTip = 'Specifies the Sum of the Accounts that have the Cash Account Category.';
 
                     trigger OnDrillDown()
                     var
@@ -34,6 +34,7 @@ page 14135193 lvngLVAccountantFinanceAct
                     ApplicationArea = All;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Sum of the Accounts that have the Loans Held for Sale Account Category.';
 
                     trigger OnDrillDown()
                     var
@@ -57,6 +58,7 @@ page 14135193 lvngLVAccountantFinanceAct
                     ApplicationArea = All;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Sum of the Accounts that have the Payables Account Category.';
 
                     trigger OnDrillDown()
                     var
@@ -78,7 +80,7 @@ page 14135193 lvngLVAccountantFinanceAct
                 {
                     Caption = 'Total Funded Last Business Day';
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total loans funded amount from previous business day';
+                    ToolTip = 'Specifies the Total Loans Funded Amount From Previous Business Day';
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
 
@@ -95,7 +97,7 @@ page 14135193 lvngLVAccountantFinanceAct
                 {
                     Caption = 'Total Sold Last Business Day';
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the total loans sold amount from previous business day';
+                    ToolTip = 'Specifies the Total Loans Sold Amount From Previous Business Day';
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
 
@@ -128,9 +130,7 @@ page 14135193 lvngLVAccountantFinanceAct
 
     var
         ActivitiesSetupErr: Label 'Activities Setup does not exist';
-        ActivitiesSetupMsg: Label 'Setup Balance fields in the Activities Setup page';
         ActSetup: Record lvngLVAccountantFinActSetup;
-        CashAccountBal: Decimal;
         FundedDocFilter: Text;
         SoldDocFilter: Text;
         ActSetupRetrieved: Boolean;

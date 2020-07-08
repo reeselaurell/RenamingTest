@@ -20,6 +20,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                     Visible = LineVisible1;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Total Loan Funded Amount by Warehouse Line From Previous Business Day';
 
                     trigger OnDrillDown()
                     var
@@ -39,6 +40,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                     Visible = LineVisible2;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Total Loan Funded Amount by Warehouse Line From Previous Business Day';
 
                     trigger OnDrillDown()
                     var
@@ -58,6 +60,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                     Visible = LineVisible3;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Total Loan Funded Amount by Warehouse Line From Previous Business Day';
 
                     trigger OnDrillDown()
                     var
@@ -77,6 +80,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                     Visible = LineVisible4;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Total Loan Funded Amount by Warehouse Line From Previous Business Day';
 
                     trigger OnDrillDown()
                     var
@@ -96,6 +100,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                     Visible = LineVisible5;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Total Loan Funded Amount by Warehouse Line From Previous Business Day';
 
                     trigger OnDrillDown()
                     var
@@ -115,6 +120,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                     Visible = LineVisible6;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Total Loan Funded Amount by Warehouse Line From Previous Business Day';
 
                     trigger OnDrillDown()
                     var
@@ -134,6 +140,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                     Visible = LineVisible7;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Total Loan Funded Amount by Warehouse Line From Previous Business Day';
 
                     trigger OnDrillDown()
                     var
@@ -153,6 +160,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                     Visible = LineVisible8;
                     AutoFormatExpression = '$<precision, 0:0><standard format, 0>';
                     AutoFormatType = 10;
+                    ToolTip = 'Specifies the Total Loan Funded Amount by Warehouse Line from Previous Business Day';
 
                     trigger OnDrillDown()
                     var

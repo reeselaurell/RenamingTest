@@ -202,17 +202,17 @@ page 14135190 lvngLoanActivities
     var
         Idx: Integer;
     begin
-        Clear(FundedDocumentVisible1);
-        Clear(FundedDocumentVisible2);
-        Clear(FundedDocumentVisible3);
-        Clear(FundedDocumentVisible4);
-        Clear(FundedDocumentVisible5);
-        Clear(FundedDocumentVisible6);
-        Clear(FundedDocumentVisible7);
-        Clear(FundedDocumentVisible8);
+        FundedDocumentVisible1 := false;
+        FundedDocumentVisible2 := false;
+        FundedDocumentVisible3 := false;
+        FundedDocumentVisible4 := false;
+        FundedDocumentVisible5 := false;
+        FundedDocumentVisible6 := false;
+        FundedDocumentVisible7 := false;
+        FundedDocumentVisible8 := false;
         Clear(FundedDocumentsCount);
         Clear(FundedDocumentsWarehouseLineCaptions);
-        WarehouseLine.reset;
+        WarehouseLine.Reset();
         WarehouseLine.SetRange("Show In Rolecenter", true);
         if WarehouseLine.FindSet() then begin
             repeat

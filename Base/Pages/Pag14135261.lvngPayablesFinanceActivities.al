@@ -16,6 +16,7 @@ page 14135261 lvngPayablesFinanceActivites
                 {
                     Caption = 'Open Invoices Today';
                     ApplicationArea = All;
+                    ToolTip = 'Today''s Open Purchase Invoices Count';
 
                     trigger OnDrillDown()
                     var
@@ -37,6 +38,7 @@ page 14135261 lvngPayablesFinanceActivites
                 {
                     Caption = 'Open Cr. Memos Today';
                     ApplicationArea = All;
+                    ToolTip = 'Today''s Open Purchase Cr. Memos Count';
 
                     trigger OnDrillDown()
                     var
@@ -58,6 +60,7 @@ page 14135261 lvngPayablesFinanceActivites
                 {
                     Caption = 'Posted Invoices Today';
                     ApplicationArea = All;
+                    ToolTip = 'Purchase Invoices Posted Today Count';
 
                     trigger OnDrillDown()
                     var
@@ -77,6 +80,7 @@ page 14135261 lvngPayablesFinanceActivites
                 {
                     Caption = 'Posted Cr. Memos Today';
                     ApplicationArea = All;
+                    ToolTip = 'Purchase Cr. Memos Posted Today Count';
 
                     trigger OnDrillDown()
                     var

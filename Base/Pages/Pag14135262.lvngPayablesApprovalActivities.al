@@ -4,7 +4,6 @@ page 14135262 lvngPayablesApprovalActivities
     Caption = 'Approval Activities';
     RefreshOnActivate = true;
 
-
     layout
     {
         area(Content)
@@ -17,6 +16,7 @@ page 14135262 lvngPayablesApprovalActivities
                 {
                     Caption = 'Invoices Due Today';
                     ApplicationArea = All;
+                    ToolTip = 'Purchase Invoices Due Today Count';
 
                     trigger OnDrillDown()
                     var
@@ -30,9 +30,10 @@ page 14135262 lvngPayablesApprovalActivities
                 }
                 field(InvoicesPendingApproval; InvoicesPendingApprovalCount())
                 {
-                    Caption = 'Invoices Pending Approval';
+                    Caption = 'Pending Approval';
                     ApplicationArea = All;
                     Visible = ApprovalsIDExists;
+                    ToolTip = 'Purchase Invoices Pending Approval Count';
 
                     trigger OnDrillDown()
                     var
@@ -50,6 +51,7 @@ page 14135262 lvngPayablesApprovalActivities
                     Caption = 'Approved not Posted';
                     ApplicationArea = All;
                     Visible = ApprovalsIDExists;
+                    ToolTip = 'Purchase Invoices Approved, but not Posted Count';
 
                     trigger OnDrillDown()
                     var
@@ -62,11 +64,11 @@ page 14135262 lvngPayablesApprovalActivities
                             Page.Run(Page::"Purchase Invoices", PurchHeader);
                     end;
                 }
-
                 field(BlockedVendors; BlockedVendorsCount())
                 {
                     Caption = 'Blocked Vendors';
                     ApplicationArea = All;
+                    ToolTip = 'Blocked Vendors Count';
 
                     trigger OnDrillDown()
                     var
@@ -136,6 +138,4 @@ page 14135262 lvngPayablesApprovalActivities
         Vendor.SetRange(Blocked, Vendor.Blocked::All);
         exit(Vendor.Count());
     end;
-
-
 }
