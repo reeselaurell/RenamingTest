@@ -136,6 +136,15 @@ page 14135268 lvngLVAccountantHeadline
             DimensionType := 'LO';
             InsightTxt := GetLOInsightText();
         end;
-        exit(StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the %3 performing %4 with <emphasize>$%5</emphasize> in profit</payload>', InsightTxt, Name, PerformanceTxt, DimensionType, "Net Change"));
+        exit(StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the %3 performing %4 with <emphasize>%5</emphasize> in profit</payload>', InsightTxt, Name, PerformanceTxt, DimensionType, GetNetChangeText("Net Change")));
+    end;
+
+    local procedure GetNetChangeText(NetChange: Decimal): Text
+    begin
+        if NetChange < 0 then begin
+            NetChange := NetChange * -1;
+            exit('-$' + Format(NetChange));
+        end else
+            exit('$' + Format(NetChange));
     end;
 }

@@ -94,6 +94,8 @@ table 14135255 lvngLVAcctRCHeadline
                     exit('-CM..t');
                 HeadlineSetup."Branch Performace Date Range"::"Week to Date":
                     exit('-CW..t');
+                else
+                    exit('');
             end
         else
             case HeadlineSetup."LO Performace Date Range" of
@@ -105,6 +107,8 @@ table 14135255 lvngLVAcctRCHeadline
                     exit('-CM..t');
                 HeadlineSetup."LO Performace Date Range"::"Week to Date":
                     exit('-CW..t');
+                else
+                    exit('');
             end;
     end;
 
@@ -122,6 +126,8 @@ table 14135255 lvngLVAcctRCHeadline
                 exit('MTD');
             HeadlineSetup."Branch Performace Date Range"::"Week to Date":
                 exit('WTD');
+            else
+                exit('ALL TIME');
         end;
     end;
 
@@ -139,6 +145,8 @@ table 14135255 lvngLVAcctRCHeadline
                 exit('MTD');
             HeadlineSetup."LO Performace Date Range"::"Week to Date":
                 exit('WTD');
+            else
+                exit('ALL TIME');
         end;
     end;
 

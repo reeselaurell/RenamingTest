@@ -47,12 +47,7 @@ page 14135264 lvngLoanManagerRoleCenter
                 action(LoanProfitability) { Caption = 'Loan Profitability'; ApplicationArea = All; RunObject = report lvngLoanProfitability; }
                 action(LoanFileReconciliationWorksheetAction) { Caption = 'Loan File Reconciliation Worksheet'; ApplicationArea = All; RunObject = page lvngLoanFileReconWorksheet; }
                 action(LoanFeesReport) { Caption = 'Loan Fees Report'; ApplicationArea = All; RunObject = report lvngLoanFeesReport; }
-                action(LoanLevelValuesLoanLevel)
-                {
-                    Caption = 'Loan Level Values';
-                    ApplicationArea = All;
-                    //NEEDS IMPLEMENTED
-                }
+                action(LoanLevelValuesLoanLevel) { Caption = 'Loan Level Worksheet'; ApplicationArea = All; RunObject = report lvngLoanLevelWorksheet; }
             }
         }
 
