@@ -25,7 +25,7 @@ page 14135274 lvngLVAcctLOBotPerfPart
             }
             repeater(Group)
             {
-                ShowCaption = false;
+                IndentationColumn = 0;
 
                 field(Name; Name) { Caption = 'Name'; ApplicationArea = All; }
                 field("Net Change"; "Net Change")

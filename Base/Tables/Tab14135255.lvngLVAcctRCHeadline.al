@@ -16,10 +16,6 @@ table 14135255 lvngLVAcctRCHeadline
         key(Name; Name) { }
     }
 
-    var
-        BranchDateFilter: Text;
-        LODateFilter: Text;
-
     procedure FillDimensions()
     var
         DimensionValue: Record "Dimension Value";
@@ -29,6 +25,8 @@ table 14135255 lvngLVAcctRCHeadline
         DeleteAll();
         LoanVisionSetup.Get();
         DimensionValue.Reset();
+        DimensionValue.SetRange(Blocked, false);
+        DimensionValue.SetRange(Totaling, '');
         DimensionValue.SetFilter("Dimension Code", '%1|%2', LoanVisionSetup."Cost Center Dimension Code", LoanVisionSetup."Loan Officer Dimension Code");
         if DimensionValue.FindSet() then
             repeat

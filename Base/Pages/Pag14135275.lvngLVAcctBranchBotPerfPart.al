@@ -25,6 +25,8 @@ page 14135275 lvngLVAcctBranchBotPerfPart
             }
             repeater(Group)
             {
+                IndentationColumn = 0;
+
                 field(Name; Name) { Caption = 'Name'; ApplicationArea = All; }
                 field("Net Change"; "Net Change")
                 {
