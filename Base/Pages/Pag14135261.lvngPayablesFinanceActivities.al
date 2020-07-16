@@ -10,7 +10,7 @@ page 14135261 lvngPayablesFinanceActivites
         {
             cuegroup(Group)
             {
-                Caption = ' ';
+                ShowCaption = false;
 
                 field(OpenInvoices; OpenInvoicesCount())
                 {
@@ -115,7 +115,6 @@ page 14135261 lvngPayablesFinanceActivites
 
     var
         ActSetup: Record lvngPayablesFinActSetup;
-        SetupRetrieved: Boolean;
         UserName: Code[50];
 
     local procedure OpenInvoicesCount(): Integer
@@ -170,11 +169,10 @@ page 14135261 lvngPayablesFinanceActivites
     var
         User: Record User;
     begin
-        if not SetupRetrieved then
-            if ActSetup.Get() then begin
-                SetupRetrieved := true;
+        if ActSetup.Get() then begin
+            if ActSetup."Filter by User" <> '' then
                 if User.Get(ActSetup."Filter by User") then
-                    UserName := User."User Name";
-            end;
+                    UserName := User."User Name"
+        end;
     end;
 }

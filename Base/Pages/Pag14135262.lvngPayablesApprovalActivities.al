@@ -10,7 +10,7 @@ page 14135262 lvngPayablesApprovalActivities
         {
             cuegroup(Group)
             {
-                Caption = ' ';
+                ShowCaption = false;
 
                 field(InvoicesDueToday; InvoicesDueTodayCount())
                 {

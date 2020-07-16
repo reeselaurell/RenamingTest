@@ -10,7 +10,7 @@ page 14135267 lvngLoanManagerWarehouseAct
         {
             cuegroup(Group)
             {
-                Caption = '';
+                ShowCaption = false;
                 CuegroupLayout = Wide;
 
                 field(WarehouseLine1; WarehouseLineFund[1])
@@ -27,7 +27,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                         FundedDoc: Record lvngLoanFundedDocument;
                     begin
                         FundedDoc.Reset();
-                        FundedDoc.SetFilter("Document No.", FundedDocFilter);
+                        FundedDoc.SetFilter("Document No.", FundedDocFilter[1]);
                         FundedDoc.SetRange("Warehouse Line Code", WarehouseLineCodes[1]);
                         if FundedDoc.FindSet() then
                             Page.Run(Page::lvngPostedFundedDocuments, FundedDoc);
@@ -47,7 +47,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                         FundedDoc: Record lvngLoanFundedDocument;
                     begin
                         FundedDoc.Reset();
-                        FundedDoc.SetFilter("Document No.", FundedDocFilter);
+                        FundedDoc.SetFilter("Document No.", FundedDocFilter[2]);
                         FundedDoc.SetRange("Warehouse Line Code", WarehouseLineCodes[2]);
                         if FundedDoc.FindSet() then
                             Page.Run(Page::lvngPostedFundedDocuments, FundedDoc);
@@ -67,7 +67,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                         FundedDoc: Record lvngLoanFundedDocument;
                     begin
                         FundedDoc.Reset();
-                        FundedDoc.SetFilter("Document No.", FundedDocFilter);
+                        FundedDoc.SetFilter("Document No.", FundedDocFilter[3]);
                         FundedDoc.SetRange("Warehouse Line Code", WarehouseLineCodes[3]);
                         if FundedDoc.FindSet() then
                             Page.Run(Page::lvngPostedFundedDocuments, FundedDoc);
@@ -87,7 +87,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                         FundedDoc: Record lvngLoanFundedDocument;
                     begin
                         FundedDoc.Reset();
-                        FundedDoc.SetFilter("Document No.", FundedDocFilter);
+                        FundedDoc.SetFilter("Document No.", FundedDocFilter[4]);
                         FundedDoc.SetRange("Warehouse Line Code", WarehouseLineCodes[4]);
                         if FundedDoc.FindSet() then
                             Page.Run(Page::lvngPostedFundedDocuments, FundedDoc);
@@ -107,7 +107,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                         FundedDoc: Record lvngLoanFundedDocument;
                     begin
                         FundedDoc.Reset();
-                        FundedDoc.SetFilter("Document No.", FundedDocFilter);
+                        FundedDoc.SetFilter("Document No.", FundedDocFilter[5]);
                         FundedDoc.SetRange("Warehouse Line Code", WarehouseLineCodes[5]);
                         if FundedDoc.FindSet() then
                             Page.Run(Page::lvngPostedFundedDocuments, FundedDoc);
@@ -127,7 +127,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                         FundedDoc: Record lvngLoanFundedDocument;
                     begin
                         FundedDoc.Reset();
-                        FundedDoc.SetFilter("Document No.", FundedDocFilter);
+                        FundedDoc.SetFilter("Document No.", FundedDocFilter[6]);
                         FundedDoc.SetRange("Warehouse Line Code", WarehouseLineCodes[6]);
                         if FundedDoc.FindSet() then
                             Page.Run(Page::lvngPostedFundedDocuments, FundedDoc);
@@ -147,7 +147,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                         FundedDoc: Record lvngLoanFundedDocument;
                     begin
                         FundedDoc.Reset();
-                        FundedDoc.SetFilter("Document No.", FundedDocFilter);
+                        FundedDoc.SetFilter("Document No.", FundedDocFilter[7]);
                         FundedDoc.SetRange("Warehouse Line Code", WarehouseLineCodes[7]);
                         if FundedDoc.FindSet() then
                             Page.Run(Page::lvngPostedFundedDocuments, FundedDoc);
@@ -167,7 +167,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                         FundedDoc: Record lvngLoanFundedDocument;
                     begin
                         FundedDoc.Reset();
-                        FundedDoc.SetFilter("Document No.", FundedDocFilter);
+                        FundedDoc.SetFilter("Document No.", FundedDocFilter[8]);
                         FundedDoc.SetRange("Warehouse Line Code", WarehouseLineCodes[8]);
                         if FundedDoc.FindSet() then
                             Page.Run(Page::lvngPostedFundedDocuments, FundedDoc);
@@ -194,7 +194,7 @@ page 14135267 lvngLoanManagerWarehouseAct
         LineVisible6: Boolean;
         LineVisible7: Boolean;
         LineVisible8: Boolean;
-        FundedDocFilter: Text;
+        FundedDocFilter: array[8] of Text;
 
     local procedure CalculateWarehouseLineValues()
     var
@@ -238,7 +238,7 @@ page 14135267 lvngLoanManagerWarehouseAct
                         LineVisible8 := true;
                 end;
                 FundedDoc.SetRange("Warehouse Line Code", WarehouseLine.Code);
-                FundedDocFilter := '';
+                FundedDocFilter[Idx] := '';
                 FundedDoc.SetFilter("Posting Date", '<>%1', CalcDate('0D'));
                 FundedDoc.SetCurrentKey("Posting Date");
                 FundedDoc.SetAscending("Posting Date", false);
@@ -246,10 +246,10 @@ page 14135267 lvngLoanManagerWarehouseAct
                     FundedDoc.SetRange("Posting Date", FundedDoc."Posting Date");
                     if FundedDoc.FindSet() then
                         repeat
-                            if FundedDocFilter = '' then
-                                FundedDocFilter := FundedDoc."Document No."
+                            if FundedDocFilter[Idx] = '' then
+                                FundedDocFilter[Idx] := FundedDoc."Document No."
                             else
-                                FundedDocFilter := FundedDocFilter + '|' + FundedDoc."Document No.";
+                                FundedDocFilter[Idx] := FundedDocFilter[Idx] + '|' + FundedDoc."Document No.";
                             FundedDocLine.SetRange("Document No.", FundedDoc."Document No.");
                             if FundedDocLine.FindSet() then begin
                                 FundedDocLine.CalcSums(Amount);
