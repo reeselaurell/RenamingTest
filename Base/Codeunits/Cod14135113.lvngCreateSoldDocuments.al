@@ -66,6 +66,7 @@ codeunit 14135113 lvngCreateSoldDocuments
         LoanJournalBatch: Record lvngLoanJournalBatch;
         LoanSoldDocument: Record lvngLoanSoldDocument;
         LoanSoldDocumentLine: Record lvngLoanSoldDocumentLine;
+        LoanJournalValue: Record lvngLoanJournalValue;
         TempLoanDocumentLine: Record lvngLoanDocumentLine temporary;
         NoSeriesManagement: Codeunit NoSeriesManagement;
         TempDocumentTok: Label 'XXXXXXXX';
@@ -158,6 +159,11 @@ codeunit 14135113 lvngCreateSoldDocuments
         AssignDimensions(LoanDocument."Shortcut Dimension 8 Code", LoanProcessingSchema."Shortcut Dimension 8 Code", LoanJournalLine."Shortcut Dimension 8 Code", LoanProcessingSchema."Dimension 8 Rule");
         AssignDimensions(LoanDocument."Business Unit Code", LoanProcessingSchema."Business Unit Code", LoanJournalLine."Business Unit Code", LoanProcessingSchema."Business Unit Rule");
         LoanDocument.GenerateDimensionSetId();
+        if LoanProcessingSchema."External Document No. Field" <> 0 then begin
+            if LoanJournalValue.Get(LoanJournalLine."Loan Journal Batch Code", LoanJournalLine."Line No.", LoanProcessingSchema."External Document No. Field") then begin
+                LoanDocument."External Document No." := CopyStr(LoanJournalValue."Field Value", 1, MaxStrLen(LoanDocument."External Document No."));
+            end;
+        end;
         LoanDocument.Modify(true);
         if LoanProcessingSchema."Use Global Schema Code" <> '' then begin
             LoanProcessingSchemaLine.Reset();

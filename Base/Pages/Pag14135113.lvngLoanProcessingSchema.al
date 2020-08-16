@@ -16,6 +16,7 @@ page 14135113 lvngLoanProcessingSchema
                 field(Description; Description) { ApplicationArea = All; }
                 field("No. Series"; "No. Series") { ApplicationArea = All; }
                 field("Document Type Option"; "Document Type Option") { ApplicationArea = All; }
+                field("External Document No. Field"; "External Document No. Field") { ApplicationArea = All; }
                 field("Global Schema"; "Global Schema") { ApplicationArea = All; }
                 field("Use Global Schema Code"; "Use Global Schema Code") { ApplicationArea = All; }
                 field("Dimension 1 Rule"; "Dimension 1 Rule") { ApplicationArea = All; Visible = DimensionVisible1; }

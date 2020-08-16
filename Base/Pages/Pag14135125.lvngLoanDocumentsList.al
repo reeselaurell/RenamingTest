@@ -16,6 +16,7 @@ page 14135125 lvngLoanDocumentsList
                 field("Transaction Type"; "Transaction Type") { ApplicationArea = All; }
                 field("Document Type"; "Document Type") { ApplicationArea = All; }
                 field("Document No."; "Document No.") { ApplicationArea = All; }
+                field("External Document No."; "External Document No.") { ApplicationArea = All; }
                 field("Customer No."; "Customer No.") { ApplicationArea = All; }
                 field("Loan No."; "Loan No.") { ApplicationArea = All; }
                 field("Warehouse Line Code"; "Warehouse Line Code") { ApplicationArea = All; }

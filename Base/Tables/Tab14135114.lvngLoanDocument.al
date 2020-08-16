@@ -15,6 +15,7 @@ table 14135114 lvngLoanDocument
         field(14; "Reason Code"; Code[10]) { Caption = 'Reason Code'; DataClassification = CustomerContent; TableRelation = "Reason Code"; }
         field(15; "Document Type"; enum lvngLoanDocumentType) { Caption = 'Document Type'; DataClassification = CustomerContent; }
         field(30; "Last Servicing Period"; Boolean) { Caption = 'Last Servicing Period'; DataClassification = CustomerContent; }
+        field(56; "External Document No."; Code[35]) { Caption = 'External Document No.'; DataClassification = CustomerContent; }
         field(80; "Global Dimension 1 Code"; Code[20])
         {
             DataClassification = CustomerContent;

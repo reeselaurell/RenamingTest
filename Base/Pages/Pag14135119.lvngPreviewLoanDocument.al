@@ -19,6 +19,7 @@ page 14135119 lvngPreviewLoanDocument
                 field("Transaction Type"; "Transaction Type") { ApplicationArea = All; }
                 field("Document Type"; "Document Type") { ApplicationArea = All; }
                 field("Document No."; "Document No.") { ApplicationArea = All; }
+                field("External Document No."; "External Document No.") { ApplicationArea = All; }
                 field("Posting Date"; "Posting Date") { ApplicationArea = All; }
                 field("Reason Code"; "Reason Code") { ApplicationArea = All; }
                 field(Void; Void) { ApplicationArea = All; }

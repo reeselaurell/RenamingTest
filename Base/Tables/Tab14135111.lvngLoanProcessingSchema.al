@@ -12,6 +12,7 @@ table 14135111 lvngLoanProcessingSchema
         field(12; "Global Schema"; Boolean) { Caption = 'Global Schema'; DataClassification = CustomerContent; }
         field(13; "Use Global Schema Code"; Code[20]) { Caption = 'Use Global Schema Code'; DataClassification = CustomerContent; TableRelation = lvngLoanProcessingSchema.Code where("Global Schema" = const(true)); }
         field(14; "Document Type Option"; Enum lvngDocumentTypeOption) { Caption = 'Document Type Option'; DataClassification = CustomerContent; }
+        field(15; "External Document No. Field"; Integer) { Caption = 'External Document No. Field'; DataClassification = CustomerContent; TableRelation = lvngLoanFieldsConfiguration."Field No."; }
         field(80; "Global Dimension 1 Code"; Code[20]) { Caption = 'Global Dimension 1 Code'; DataClassification = CustomerContent; CaptionClass = '1,1,1'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1)); }
         field(81; "Global Dimension 2 Code"; Code[20]) { Caption = 'Global Dimension 2 Code'; DataClassification = CustomerContent; CaptionClass = '1,1,2'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2)); }
         field(82; "Shortcut Dimension 3 Code"; Code[20]) { Caption = 'Shortcut Dimension 3 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,3'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3)); }

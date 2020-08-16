@@ -13,6 +13,7 @@ table 14135124 lvngLoanSoldDocument
         field(13; "Posting Date"; Date) { Caption = 'Posting Date'; DataClassification = CustomerContent; }
         field(14; "Reason Code"; Code[10]) { Caption = 'Reason Code'; DataClassification = CustomerContent; TableRelation = "Reason Code"; }
         field(15; "Document Type"; enum lvngLoanDocumentType) { Caption = 'Document Type'; DataClassification = CustomerContent; }
+        field(56; "External Document No."; Code[35]) { Caption = 'External Document No.'; DataClassification = CustomerContent; }
         field(80; "Global Dimension 1 Code"; Code[20]) { Caption = 'Global Dimension 1 Code'; DataClassification = CustomerContent; CaptionClass = '1,1,1'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1)); }
         field(81; "Global Dimension 2 Code"; Code[20]) { Caption = 'Global Dimension 2 Code'; DataClassification = CustomerContent; CaptionClass = '1,1,2'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2)); }
         field(82; "Shortcut Dimension 3 Code"; Code[20]) { Caption = 'Shortcut Dimension 3 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,3'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3)); }

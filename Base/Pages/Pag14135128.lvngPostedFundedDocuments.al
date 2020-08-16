@@ -18,6 +18,7 @@ page 14135128 lvngPostedFundedDocuments
             {
                 field("Document Type"; "Document Type") { ApplicationArea = All; }
                 field("Document No."; "Document No.") { ApplicationArea = All; }
+                field("External Document No."; "External Document No.") { ApplicationArea = All; }
                 field("Posting Date"; "Posting Date") { ApplicationArea = All; }
                 field("Customer No."; "Customer No.") { ApplicationArea = All; }
                 field("Loan No."; "Loan No.") { ApplicationArea = All; }

@@ -131,6 +131,7 @@ codeunit 14135110 lvngPostLoanDocument
         GenJnlLine.Amount := Amount;
         GenJnlLine."Source Code" := SourceCode;
         GenJnlLine."System-Created Entry" := true;
+        GenJnlLine."External Document No." := lvngLoanDocument."External Document No.";
     end;
 
 
@@ -159,6 +160,7 @@ codeunit 14135110 lvngPostLoanDocument
         GenJnlLine.lvngLoanNo := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
         GenJnlLine.lvngServicingType := lvngLoanDocumentLine."Servicing Type";
+        GenJnlLine."External Document No." := lvngLoanDocument."External Document No.";
     end;
 
     local procedure CreateBalancingGenJnlLine(lvngLoanDocument: Record lvngLoanDocument; lvngLoanDocumentLine: Record lvngLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line"; SourceCode: Code[20])
@@ -190,6 +192,7 @@ codeunit 14135110 lvngPostLoanDocument
         GenJnlLine."Source Code" := SourceCode;
         GenJnlLine.lvngLoanNo := lvngLoanDocument."Loan No.";
         GenJnlLine."Reason Code" := lvngLoanDocument."Reason Code";
+        GenJnlLine."External Document No." := lvngLoanDocument."External Document No.";
     end;
 
     local procedure TransferDocumentHeaderToPosted(lvngLoanDocument: Record lvngLoanDocument)
