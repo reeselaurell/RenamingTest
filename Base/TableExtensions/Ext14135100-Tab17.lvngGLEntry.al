@@ -11,7 +11,8 @@ tableextension 14135100 lvngGLEntry extends "G/L Entry"
         field(14135106; lvngShortcutDimension8Code; Code[20]) { Caption = 'Shortcut Dimension 8 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,8'; TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8)); }
         field(14135107; lvngEntryDate; Date) { Caption = 'Entry Date'; DataClassification = CustomerContent; }
         field(14135108; lvngServicingType; enum lvngServicingType) { Caption = 'Servicing Type'; DataClassification = CustomerContent; }
-        field(14135109; lvngSourceName; Text[50]) { }
+        field(14135109; lvngSourceName; Text[50]) { Caption = 'Source Name'; DataClassification = CustomerContent; }
+        field(14135110; lvngComment; Text[250]) { Caption = 'Comment'; DataClassification = CustomerContent; }
         field(14135150; lvngWarehouseLineCode; Code[50]) { Caption = 'Warehouse Line Code'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Warehouse Line Code" where("No." = field(lvngLoanNo))); }
         field(14135151; lvngBorrowerSearchName; Code[100]) { Caption = 'Borrower Search Name'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Search Name" where("No." = field(lvngLoanNo))); }
         field(14135220; lvngGlobalDimension1Name; Text[50]) { Caption = 'Global Dimension 1 Name'; CaptionClass = GetDimensionName(1); Editable = false; FieldClass = FlowField; CalcFormula = lookup ("Dimension Value".Name where("Global Dimension No." = const(1), Code = field("Global Dimension 1 Code"))); }
@@ -30,6 +31,7 @@ tableextension 14135100 lvngGLEntry extends "G/L Entry"
     keys
     {
         key(LoanNo; lvngLoanNo) { }
+        key(EntryDate; lvngEntryDate) { }
     }
 
     var

@@ -191,6 +191,37 @@ codeunit 14135104 lvngDimensionsManagement
         DimensionCodes[8] := Loan."Shortcut Dimension 8 Code";
     end;
 
+    procedure GetDimensionName(DimensionNo: Integer): Text
+    var
+        DimensionCode: Code[20];
+        Dimension: Record Dimension;
+    begin
+        GetGLSetup();
+        case DimensionNo of
+            1:
+                DimensionCode := GLSetup."Shortcut Dimension 1 Code";
+            2:
+                DimensionCode := GLSetup."Shortcut Dimension 2 Code";
+            3:
+                DimensionCode := GLSetup."Shortcut Dimension 3 Code";
+            4:
+                DimensionCode := GLSetup."Shortcut Dimension 4 Code";
+            5:
+                DimensionCode := GLSetup."Shortcut Dimension 5 Code";
+            6:
+                DimensionCode := GLSetup."Shortcut Dimension 6 Code";
+            7:
+                DimensionCode := GLSetup."Shortcut Dimension 7 Code";
+            8:
+                DimensionCode := GLSetup."Shortcut Dimension 8 Code";
+        end;
+        if DimensionCode = '' then
+            exit('');
+        if not Dimension.Get(DimensionCode) then
+            exit('');
+        exit(Dimension."Code Caption");
+    end;
+
     procedure GetDimensionNames(var DimensionNames: array[8] of Text)
     var
         Dimension: Record Dimension;

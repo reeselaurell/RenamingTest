@@ -17,6 +17,7 @@ codeunit 14135100 lvngGLEntryEventsSubscriber
         GLEntry.lvngShortcutDimension8Code := ShortcutDimValues[8];
         GLEntry.lvngLoanNo := GenJournalLine.lvngLoanNo;
         GLEntry.lvngServicingType := GenJournalLine.lvngServicingType;
+        GLEntry.lvngComment := GenJournalLine.Comment;
         GLEntry.lvngEntryDate := Today();
     end;
 
@@ -27,6 +28,7 @@ codeunit 14135100 lvngGLEntryEventsSubscriber
         InvoicePostBuffer.lvngLoanNo := PurchaseLine.lvngLoanNo;
         InvoicePostBuffer.lvngDescription := PurchaseLine.Description;
         InvoicePostBuffer.lvngReasonCode := PurchaseLine.lvngReasonCode;
+        InvoicePostBuffer.lvngComment := PurchaseLine.lvngComment;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Invoice Post. Buffer", 'OnAfterInvPostBufferPrepareSales', '', false, false)]
@@ -37,6 +39,7 @@ codeunit 14135100 lvngGLEntryEventsSubscriber
         InvoicePostBuffer.lvngDescription := SalesLine.Description;
         InvoicePostBuffer.lvngServicingType := SalesLine.lvngServicingType;
         InvoicePostBuffer.lvngReasonCode := SalesLine.lvngReasonCode;
+        InvoicePostBuffer.lvngComment := SalesLine.lvngComment;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterCopyGenJnlLineFromInvPostBuffer', '', false, false)]
@@ -47,5 +50,6 @@ codeunit 14135100 lvngGLEntryEventsSubscriber
         GenJournalLine.Description := InvoicePostBuffer.lvngDescription;
         if InvoicePostBuffer.lvngReasonCode <> '' then
             GenJournalLine."Reason Code" := InvoicePostBuffer.lvngReasonCode;
+        GenJournalLine.Comment := InvoicePostBuffer.lvngComment;
     end;
 }

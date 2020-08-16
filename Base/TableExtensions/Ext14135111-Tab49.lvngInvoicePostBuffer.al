@@ -6,6 +6,7 @@ tableextension 14135111 lvngInvoicePostBuffer extends "Invoice Post. Buffer"
         field(14135101; lvngDescription; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
         field(14135102; lvngServicingType; enum lvngServicingType) { Caption = 'Servicing Type'; DataClassification = CustomerContent; }
         field(14135103; lvngReasonCode; Code[10]) { Caption = 'Reason Code'; DataClassification = CustomerContent; }
+        field(14135110; lvngComment; Text[250]) { Caption = 'Comment'; DataClassification = CustomerContent; }
     }
 }
 //TODO: Check if this table is not superceeded by our own buffer table
