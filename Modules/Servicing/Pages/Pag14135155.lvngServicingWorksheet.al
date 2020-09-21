@@ -116,9 +116,16 @@ page 14135155 lvngServicingWorksheet
                 trigger OnAction()
                 var
                     ServicingDocumentsCreatedLbl: Label 'Servicing Documents Created';
+                    DeleteWorksheetDataLbl: Label 'Do You want to remove worksheet entries?';
                 begin
                     ServicingManagement.CreateServicingDocuments();
                     Message(ServicingDocumentsCreatedLbl);
+                    Commit();
+                    if Confirm(DeleteWorksheetDataLbl) then begin
+                        Rec.Reset();
+                        Rec.DeleteAll(true);
+                    end;
+                    CurrPage.Update(false);
                 end;
             }
         }

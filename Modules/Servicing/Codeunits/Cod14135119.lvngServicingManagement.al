@@ -103,7 +103,6 @@ codeunit 14135119 lvngServicingManagement
 
     procedure ValidateServicingLine(var ServicingWorksheet: Record lvngServicingWorksheet)
     var
-        Loan: Record lvngLoan;
         Customer: Record Customer;
         EscrowsDoesntMatchErr: Label 'Total escrow amount doesn''t match';
         BorrowerCustomerMissingErr: Label 'Borrower Customer is empty or doesn''t exist';
@@ -120,7 +119,7 @@ codeunit 14135119 lvngServicingManagement
             if Loan."Monthly Escrow Amount" <> ServicingWorksheet."Escrow Amount" then
                 ServicingWorksheet."Error Message" := CopyStr(EscrowsDoesntMatchErr, 1, MaxStrLen(ServicingWorksheet."Error Message"));
         if ServicingWorksheet."Error Message" = '' then
-            if not Customer.Get(Loan."Borrower Customer No") then
+            if not Customer.Get(Loan."Borrower Customer No.") then
                 ServicingWorksheet."Error Message" := CopyStr(BorrowerCustomerMissingErr, 1, MaxStrLen(ServicingWorksheet."Error Message"));
     end;
 
@@ -147,12 +146,12 @@ codeunit 14135119 lvngServicingManagement
         ServicingWorksheet.FindSet();
         repeat
             GetLoan(ServicingWorksheet."Loan No.");
-            if Loan."Borrower Customer No" = '' then begin
+            if Loan."Borrower Customer No." = '' then begin
                 Customer."No." := Loan."No.";
                 Customer.Name := copystr(Loan."Search Name", 1, MaxStrLen(Customer.Name));
                 Customer.CopyFromCustomerTemplate(CustomerTemplate);
                 Customer.Insert(true);
-                Loan."Borrower Customer No" := Customer."No.";
+                Loan."Borrower Customer No." := Customer."No.";
                 Loan.Modify(true);
             end;
         until ServicingWorksheet.Next() = 0;
@@ -163,7 +162,6 @@ codeunit 14135119 lvngServicingManagement
         ServicingWorksheet: Record lvngServicingWorksheet;
         LoanDocument: Record lvngLoanDocument;
         EscrowFieldsMapping: Record lvngEscrowFieldsMapping;
-        Loan: Record lvngLoan;
         LoanValue: Record lvngLoanValue;
         LoanDocumentLine: Record lvngLoanDocumentLine;
         NoSeriesManagement: Codeunit NoSeriesManagement;
@@ -181,6 +179,7 @@ codeunit 14135119 lvngServicingManagement
         repeat
             if ServicingWorksheet."Error Message" = '' then begin
                 LineNo := 1000;
+                GetLoan(ServicingWorksheet."Loan No.");
                 Clear(LoanDocument);
                 LoanDocument.Init();
                 LoanDocument.Validate("Transaction Type", LoanDocument."Transaction Type"::Serviced);
@@ -193,6 +192,15 @@ codeunit 14135119 lvngServicingManagement
                     LoanDocument.Validate("Posting Date", ServicingWorksheet."Next Payment Date") else
                     LoanDocument.Validate("Posting Date", ServicingWorksheet."First Payment Due");
                 LoanDocument.Validate("Reason Code", LoanServicingSetup."Serviced Reason Code");
+                LoanDocument.Validate("Global Dimension 1 Code", Loan."Global Dimension 1 Code");
+                LoanDocument.Validate("Global Dimension 2 Code", Loan."Global Dimension 2 Code");
+                LoanDocument.Validate("Shortcut Dimension 3 Code", Loan."Shortcut Dimension 3 Code");
+                LoanDocument.Validate("Shortcut Dimension 4 Code", Loan."Shortcut Dimension 4 Code");
+                LoanDocument.Validate("Shortcut Dimension 5 Code", Loan."Shortcut Dimension 5 Code");
+                LoanDocument.Validate("Shortcut Dimension 6 Code", Loan."Shortcut Dimension 6 Code");
+                LoanDocument.Validate("Shortcut Dimension 7 Code", Loan."Shortcut Dimension 7 Code");
+                LoanDocument.Validate("Shortcut Dimension 8 Code", Loan."Shortcut Dimension 8 Code");
+                LoanDocument.Validate("Business Unit Code", Loan."Business Unit Code");
                 LoanDocument.Insert(true);
                 Clear(LoanDocumentLine);
                 LoanDocumentLine.Validate("Transaction Type", LoanDocument."Transaction Type");
@@ -244,6 +252,7 @@ codeunit 14135119 lvngServicingManagement
                             LoanDocumentLine.Description := CopyStr(EscrowFieldsMapping.Description, 1, MaxStrLen(LoanDocumentLine.Description));
                             LoanDocumentLine.Amount := LoanValue."Decimal Value";
                             LoanDocumentLine."Servicing Type" := LoanDocumentLine."Servicing Type"::Escrow;
+                            FillDimensions(ServicingWorksheet."Loan No.", LoanDocumentLine, EscrowFieldsMapping."Cost Center Option", EscrowFieldsMapping."Cost Center", LoanDocument."Posting Date");
                             LoanDocumentLine.Insert(true);
                             LineNo := LineNo + 1000;
                         end;

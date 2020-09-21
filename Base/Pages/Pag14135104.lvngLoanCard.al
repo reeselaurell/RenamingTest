@@ -25,7 +25,7 @@ page 14135104 lvngLoanCard
                 {
                     Caption = 'Borrower';
 
-                    field("Borrower Customer No"; "Borrower Customer No") { ApplicationArea = All; }
+                    field("Borrower Customer No"; "Borrower Customer No.") { ApplicationArea = All; }
                     field("Borrower First Name"; "Borrower First Name") { ApplicationArea = All; }
                     field("Borrower Middle Name"; "Borrower Middle Name") { ApplicationArea = All; }
                     field("Borrower Last Name"; "Borrower Last Name") { ApplicationArea = All; }

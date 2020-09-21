@@ -15,7 +15,7 @@ table 14135102 lvngLoan
         field(13; "Borrower Middle Name"; Text[30]) { Caption = 'Borrower Middle Name'; DataClassification = CustomerContent; }
         field(14; "Title Customer No."; Code[20]) { Caption = 'Title Customer No.'; DataClassification = CustomerContent; TableRelation = Customer."No."; }
         field(15; "Investor Customer No."; Code[20]) { Caption = 'Investor Customer No.'; DataClassification = CustomerContent; TableRelation = Customer."No."; }
-        field(16; "Borrower Customer No"; Code[20]) { Caption = 'Borrower Customer No.'; DataClassification = CustomerContent; TableRelation = Customer."No."; }
+        field(16; "Borrower Customer No."; Code[20]) { Caption = 'Borrower Customer No.'; DataClassification = CustomerContent; TableRelation = Customer."No."; }
         field(17; "Alternative Loan No."; Code[50]) { Caption = 'Alternative Loan No.'; DataClassification = CustomerContent; }
         field(20; "Application Date"; Date) { Caption = 'Application Date'; DataClassification = CustomerContent; }
         field(21; "Date Closed"; Date) { Caption = 'Date Closed'; DataClassification = CustomerContent; }

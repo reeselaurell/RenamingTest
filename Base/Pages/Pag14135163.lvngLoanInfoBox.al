@@ -8,7 +8,7 @@ page 14135163 lvngLoanInfoBox
         area(Content)
         {
             field("No."; "No.") { ApplicationArea = All; }
-            field("Borrower Customer No"; "Borrower Customer No") { ApplicationArea = All; }
+            field("Borrower Customer No."; "Borrower Customer No.") { ApplicationArea = All; }
             field("Investor Customer No."; "Investor Customer No.") { ApplicationArea = All; }
             field("Title Customer No."; "Title Customer No.") { ApplicationArea = All; }
             field("Date Funded"; "Date Funded") { ApplicationArea = All; }

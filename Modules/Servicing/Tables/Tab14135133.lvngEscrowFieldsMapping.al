@@ -40,6 +40,19 @@ table 14135133 lvngEscrowFieldsMapping
                     "Switch Code" := SelectedExpressionCode;
             end;
         }
+        field(30; "Cost Center Option"; enum lvngServDimSelectionType) { Caption = 'Cost Center Option'; DataClassification = CustomerContent; }
+        field(31; "Cost Center"; Code[20])
+        {
+            Caption = 'Cost Center';
+            DataClassification = CustomerContent;
+
+            trigger OnLookup()
+            var
+                DimensionsManagement: Codeunit lvngDimensionsManagement;
+            begin
+                DimensionsManagement.LookupCostCenter("Cost Center");
+            end;
+        }
     }
 
     keys

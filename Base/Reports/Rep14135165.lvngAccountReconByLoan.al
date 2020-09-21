@@ -174,7 +174,7 @@ report 14135165 lvngAccountReconByLoan
         dataitem(LoanFilters; lvngLoan)
         {
             DataItemTableView = sorting("No.");
-            RequestFilterFields = "No.", "Date Funded", "Global Dimension 2 Code", "Borrower Customer No", "Borrower Last Name";
+            RequestFilterFields = "No.", "Date Funded", "Global Dimension 2 Code", "Borrower Customer No.", "Borrower Last Name";
 
             trigger OnPreDataItem()
             begin

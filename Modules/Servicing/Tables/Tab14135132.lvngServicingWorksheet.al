@@ -17,7 +17,7 @@ table 14135132 lvngServicingWorksheet
                 ServicingManagement.ValidateServicingLine(Rec);
             end;
         }
-        field(10; "Customer No."; Code[20]) { Caption = 'Customer No.'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Borrower Customer No" where("No." = field("Loan No."))); }
+        field(10; "Customer No."; Code[20]) { Caption = 'Customer No.'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Borrower Customer No." where("No." = field("Loan No."))); }
         field(11; "Date Funded"; Date) { Caption = 'Date Funded'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Date Funded" where("No." = field("Loan No."))); }
         field(12; "Date Sold"; Date) { Caption = 'Date Sold'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."Date Sold" where("No." = field("Loan No."))); }
         field(13; "First Payment Due"; Date) { Caption = 'First Payment Due'; Editable = false; FieldClass = FlowField; CalcFormula = lookup (lvngLoan."First Payment Due" where("No." = field("Loan No."))); }

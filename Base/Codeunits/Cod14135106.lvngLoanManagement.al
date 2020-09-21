@@ -239,13 +239,13 @@ codeunit 14135106 lvngLoanManagement
                             if LoanUpdateSchema."Field No." = 16 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvngAlways:
-                                        Loan."Borrower Customer No" := LoanJournalLine."Borrower Customer No.";
+                                        Loan."Borrower Customer No." := LoanJournalLine."Borrower Customer No.";
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
-                                        if Loan."Borrower Customer No" = '' then
-                                            Loan."Borrower Customer No" := LoanJournalLine."Borrower Customer No.";
+                                        if Loan."Borrower Customer No." = '' then
+                                            Loan."Borrower Customer No." := LoanJournalLine."Borrower Customer No.";
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Borrower Customer No." <> '' then
-                                            Loan."Borrower Customer No" := LoanJournalLine."Borrower Customer No.";
+                                            Loan."Borrower Customer No." := LoanJournalLine."Borrower Customer No.";
                                 end;
                             //Alternative Loan No.
                             if LoanUpdateSchema."Field No." = 17 then
@@ -1093,7 +1093,7 @@ codeunit 14135106 lvngLoanManagement
         Loan."Alternative Loan No." := LoanJournalLine."Alternative Loan No.";
         Loan."Application Date" := LoanJournalLine."Application Date";
         Loan.Blocked := LoanJournalLine.Blocked;
-        Loan."Borrower Customer No" := LoanJournalLine."Borrower Customer No.";
+        Loan."Borrower Customer No." := LoanJournalLine."Borrower Customer No.";
         Loan."Business Unit Code" := LoanJournalLine."Business Unit Code";
         Loan."Commission Base Amount" := LoanJournalLine."Commission Base Amount";
         Loan."Commission Date" := LoanJournalLine."Commission Date";
