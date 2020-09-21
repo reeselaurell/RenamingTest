@@ -360,7 +360,6 @@ codeunit 14135119 lvngServicingManagement
     var
         DimensionHierarchy: Record lvngDimensionHierarchy;
         GetShortcutDimensionValues: Codeunit "Get Shortcut Dimension Values";
-        MainDimensionNo: Integer;
     begin
 
         if (MainDimensionNo < 1) or (MainDimensionNo > 8) then
