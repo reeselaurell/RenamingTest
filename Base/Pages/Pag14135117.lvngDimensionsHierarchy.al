@@ -12,7 +12,7 @@ page 14135117 lvngDimensionsHierarchy
         {
             repeater(Group)
             {
-                field(Code; Code)
+                field(Code; Rec.Code)
                 {
                     ApplicationArea = All;
 
@@ -27,23 +27,23 @@ page 14135117 lvngDimensionsHierarchy
                         if DimensionCode = '' then begin
                             BusinessUnit.reset;
                             if page.RunModal(0, BusinessUnit) = Action::LookupOK then begin
-                                Code := BusinessUnit.Code;
+                                Rec.Code := BusinessUnit.Code;
                             end;
                         end else begin
                             DimensionValue.reset;
                             DimensionValue.SetRange("Dimension Code", DimensionCode);
                             if page.RunModal(0, DimensionValue) = Action::LookupOK then begin
-                                Code := DimensionValue.Code;
+                                Rec.Code := DimensionValue.Code;
                             end;
                         end;
                     end;
                 }
-                field(Date; Date) { ApplicationArea = All; }
-                field("Shortcut Dimension 4 Code"; "Shortcut Dimension 4 Code") { Visible = Dimension4Visible; ApplicationArea = All; }
-                field("Shortcut Dimension 3 Code"; "Shortcut Dimension 3 Code") { Visible = Dimension3Visible; ApplicationArea = All; }
-                field("Global Dimension 2 Code"; "Global Dimension 2 Code") { Visible = Dimension2Visible; ApplicationArea = All; }
-                field("Global Dimension 1 Code"; "Global Dimension 1 Code") { Visible = Dimension1Visible; ApplicationArea = All; }
-                field("Business Unit Code"; "Business Unit Code") { Visible = BusinessUnitVisible; ApplicationArea = All; }
+                field(Date; Rec.Date) { ApplicationArea = All; }
+                field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code") { Visible = Dimension4Visible; ApplicationArea = All; }
+                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code") { Visible = Dimension3Visible; ApplicationArea = All; }
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code") { Visible = Dimension2Visible; ApplicationArea = All; }
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code") { Visible = Dimension1Visible; ApplicationArea = All; }
+                field("Business Unit Code"; Rec."Business Unit Code") { Visible = BusinessUnitVisible; ApplicationArea = All; }
             }
         }
     }

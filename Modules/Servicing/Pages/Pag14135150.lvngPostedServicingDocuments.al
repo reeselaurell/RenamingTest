@@ -14,13 +14,13 @@ page 14135150 lvngPostedServicingDocuments
         {
             repeater(Group)
             {
-                field("Servicing Document Type"; "Servicing Document Type") { ApplicationArea = All; }
-                field("No."; "No.") { ApplicationArea = All; }
-                field("Borrower Customer No."; "Borrower Customer No.") { ApplicationArea = All; }
-                field("Loan No."; "Loan No.") { ApplicationArea = All; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; }
-                field("Due Date"; "Due Date") { ApplicationArea = All; }
-                field("Reason Code"; "Reason Code") { ApplicationArea = All; }
+                field("Servicing Document Type"; Rec."Servicing Document Type") { ApplicationArea = All; }
+                field("No."; Rec."No.") { ApplicationArea = All; }
+                field("Borrower Customer No."; Rec."Borrower Customer No.") { ApplicationArea = All; }
+                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
+                field("Due Date"; Rec."Due Date") { ApplicationArea = All; }
+                field("Reason Code"; Rec."Reason Code") { ApplicationArea = All; }
             }
         }
     }
@@ -37,9 +37,9 @@ page 14135150 lvngPostedServicingDocuments
 
                 trigger OnAction()
                 begin
-                    if "Servicing Document Type" = "Servicing Document Type"::Invoice then
+                    if Rec."Servicing Document Type" = Rec."Servicing Document Type"::Invoice then
                         Page.Run(Page::lvngPostedServicingInvoice, Rec);
-                    if "Servicing Document Type" = "Servicing Document Type"::"Credit Memo" then
+                    if Rec."Servicing Document Type" = Rec."Servicing Document Type"::"Credit Memo" then
                         Page.Run(Page::lvngPostedServicingCrMemo, Rec);
                 end;
             }

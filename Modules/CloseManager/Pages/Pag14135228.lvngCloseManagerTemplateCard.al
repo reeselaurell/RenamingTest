@@ -12,8 +12,8 @@ page 14135228 lvngCloseManagerTemplateCard
             {
                 Caption = 'General';
 
-                field("No."; "No.") { ApplicationArea = All; }
-                field(Name; Name) { ApplicationArea = All; }
+                field("No."; Rec."No.") { ApplicationArea = All; }
+                field(Name; Rec.Name) { ApplicationArea = All; }
             }
 
             part(Lines; lvngCloseManagerTemplateLines)

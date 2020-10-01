@@ -12,8 +12,8 @@ page 14135173 lvngForm1098Rules
         {
             repeater(Group)
             {
-                field("Box No."; "Box No.") { ApplicationArea = All; Caption = 'Box No.'; }
-                field(Description; Description) { ApplicationArea = All; Caption = 'Description'; }
+                field("Box No."; Rec."Box No.") { ApplicationArea = All; Caption = 'Box No.'; }
+                field(Description; Rec.Description) { ApplicationArea = All; Caption = 'Description'; }
             }
         }
     }

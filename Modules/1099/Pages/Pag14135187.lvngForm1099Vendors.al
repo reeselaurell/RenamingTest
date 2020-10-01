@@ -12,32 +12,32 @@ page 14135187 lvngForm1099Vendors
         {
             repeater(Group)
             {
-                field("Federal ID No."; "Federal ID No.") { ApplicationArea = All; }
-                field("No."; "No.") { ApplicationArea = All; }
-                field(Name; Name) { ApplicationArea = All; }
-                field("Legal Name"; "Legal Name") { ApplicationArea = All; }
-                field("Legal Address"; "Legal Address") { ApplicationArea = All; }
-                field("Legal Address City"; "Legal Address City") { ApplicationArea = All; }
-                field("Legal Address State"; "Legal Address State") { ApplicationArea = All; }
-                field("Legal Address ZIP Code"; "Legal Address ZIP Code") { ApplicationArea = All; }
-                field("Total Payments Amount"; "Total Payments Amount") { ApplicationArea = All; }
-                field("Not Assigned Amount"; "Not Assigned Amount") { ApplicationArea = All; }
-                field("Default MISC"; "Default MISC") { ApplicationArea = All; }
-                field("MISC-01"; "MISC-01") { ApplicationArea = All; }
-                field("MISC-02"; "MISC-02") { ApplicationArea = All; }
-                field("MISC-03"; "MISC-03") { ApplicationArea = All; }
-                field("MISC-04"; "MISC-04") { ApplicationArea = All; }
-                field("MISC-05"; "MISC-05") { ApplicationArea = All; }
-                field("MISC-06"; "MISC-06") { ApplicationArea = All; }
-                field("MISC-07"; "MISC-07") { ApplicationArea = All; }
-                field("MISC-08"; "MISC-08") { ApplicationArea = All; }
-                field("MISC-09"; "MISC-09") { ApplicationArea = All; }
-                field("MISC-10"; "MISC-10") { ApplicationArea = All; }
-                field("MISC-13"; "MISC-13") { ApplicationArea = All; }
-                field("MISC-14"; "MISC-14") { ApplicationArea = All; }
-                field("MISC-15-A"; "MISC-15-A") { ApplicationArea = All; }
-                field("MISC-15-B"; "MISC-15-B") { ApplicationArea = All; }
-                field("MISC-16"; "MISC-16") { ApplicationArea = All; }
+                field("Federal ID No."; Rec."Federal ID No.") { ApplicationArea = All; }
+                field("No."; Rec."No.") { ApplicationArea = All; }
+                field(Name; Rec.Name) { ApplicationArea = All; }
+                field("Legal Name"; Rec."Legal Name") { ApplicationArea = All; }
+                field("Legal Address"; Rec."Legal Address") { ApplicationArea = All; }
+                field("Legal Address City"; Rec."Legal Address City") { ApplicationArea = All; }
+                field("Legal Address State"; Rec."Legal Address State") { ApplicationArea = All; }
+                field("Legal Address ZIP Code"; Rec."Legal Address ZIP Code") { ApplicationArea = All; }
+                field("Total Payments Amount"; Rec."Total Payments Amount") { ApplicationArea = All; }
+                field("Not Assigned Amount"; Rec."Not Assigned Amount") { ApplicationArea = All; }
+                field("Default MISC"; Rec."Default MISC") { ApplicationArea = All; }
+                field("MISC-01"; Rec."MISC-01") { ApplicationArea = All; }
+                field("MISC-02"; Rec."MISC-02") { ApplicationArea = All; }
+                field("MISC-03"; Rec."MISC-03") { ApplicationArea = All; }
+                field("MISC-04"; Rec."MISC-04") { ApplicationArea = All; }
+                field("MISC-05"; Rec."MISC-05") { ApplicationArea = All; }
+                field("MISC-06"; Rec."MISC-06") { ApplicationArea = All; }
+                field("MISC-07"; Rec."MISC-07") { ApplicationArea = All; }
+                field("MISC-08"; Rec."MISC-08") { ApplicationArea = All; }
+                field("MISC-09"; Rec."MISC-09") { ApplicationArea = All; }
+                field("MISC-10"; Rec."MISC-10") { ApplicationArea = All; }
+                field("MISC-13"; Rec."MISC-13") { ApplicationArea = All; }
+                field("MISC-14"; Rec."MISC-14") { ApplicationArea = All; }
+                field("MISC-15-A"; Rec."MISC-15-A") { ApplicationArea = All; }
+                field("MISC-15-B"; Rec."MISC-15-B") { ApplicationArea = All; }
+                field("MISC-16"; Rec."MISC-16") { ApplicationArea = All; }
             }
         }
     }
@@ -60,28 +60,28 @@ page 14135187 lvngForm1099Vendors
                     Vendor: Record Vendor;
                 begin
                     Clear(FedID);
-                    Reset();
-                    if FindSet() then
+                    Rec.Reset();
+                    if Rec.FindSet() then
                         if Confirm(ConfirmMsg) then begin
-                            ModifyAll("Total Payments Amount", 0);
-                            DeleteAll();
+                            Rec.ModifyAll("Total Payments Amount", 0);
+                            Rec.DeleteAll();
                         end else
                             Error('');
                     Vendor.Reset();
                     Vendor.SetFilter("Federal ID No.", '<>%1', '');
                     if Vendor.FindSet() then
                         repeat
-                            "No." := Vendor."No.";
-                            Name := Vendor.Name;
-                            "Federal ID No." := Vendor."Federal ID No.";
-                            "Legal Address" := Vendor.lvngLegalAddress;
-                            "Legal Address City" := Vendor.lvngLegalCity;
-                            "Legal Address State" := Vendor.lvngLegalState;
-                            "Legal Address ZIP Code" := Vendor.lvngLegalZIPCode;
-                            "Default MISC" := Vendor."IRS 1099 Code";
-                            "FATCA Filing Requirement" := Vendor."FATCA filing requirement";
-                            "Total Payments Amount" := 0;
-                            if Insert() then;
+                            Rec."No." := Vendor."No.";
+                            Rec.Name := Vendor.Name;
+                            Rec."Federal ID No." := Vendor."Federal ID No.";
+                            Rec."Legal Address" := Vendor.lvngLegalAddress;
+                            Rec."Legal Address City" := Vendor.lvngLegalCity;
+                            Rec."Legal Address State" := Vendor.lvngLegalState;
+                            Rec."Legal Address ZIP Code" := Vendor.lvngLegalZIPCode;
+                            Rec."Default MISC" := Vendor."IRS 1099 Code";
+                            Rec."FATCA Filing Requirement" := Vendor."FATCA filing requirement";
+                            Rec."Total Payments Amount" := 0;
+                            if Rec.Insert() then;
                         until Vendor.Next() = 0;
                 end;
             }
@@ -100,10 +100,10 @@ page 14135187 lvngForm1099Vendors
                     Vendor: Record Vendor;
                 begin
                     Clear(FedID);
-                    Reset();
-                    if FindSet() then
+                    Rec.Reset();
+                    if Rec.FindSet() then
                         if Confirm(ConfirmMsg) then
-                            DeleteAll()
+                            Rec.DeleteAll()
                         else
                             Error('');
                     Vendor.Reset();
@@ -111,16 +111,16 @@ page 14135187 lvngForm1099Vendors
                     if Vendor.FindSet() then
                         repeat
                             if not FedID.ContainsKey(Vendor."Federal ID No.") then begin
-                                "No." := Vendor."No.";
-                                Name := Vendor.Name;
-                                "Federal ID No." := Vendor."Federal ID No.";
-                                "Legal Address" := Vendor.lvngLegalAddress;
-                                "Legal Address City" := Vendor.lvngLegalCity;
-                                "Legal Address State" := Vendor.lvngLegalState;
-                                "Legal Address ZIP Code" := Vendor.lvngLegalZIPCode;
-                                "Default MISC" := Vendor."IRS 1099 Code";
-                                "FATCA Filing Requirement" := Vendor."FATCA filing requirement";
-                                if Insert() then;
+                                Rec."No." := Vendor."No.";
+                                Rec.Name := Vendor.Name;
+                                Rec."Federal ID No." := Vendor."Federal ID No.";
+                                Rec."Legal Address" := Vendor.lvngLegalAddress;
+                                Rec."Legal Address City" := Vendor.lvngLegalCity;
+                                Rec."Legal Address State" := Vendor.lvngLegalState;
+                                Rec."Legal Address ZIP Code" := Vendor.lvngLegalZIPCode;
+                                Rec."Default MISC" := Vendor."IRS 1099 Code";
+                                Rec."FATCA Filing Requirement" := Vendor."FATCA filing requirement";
+                                if Rec.Insert() then;
                                 // if "Federal ID No." <> '' then
                                 FedID.Add(Vendor."Federal ID No.", Format(Vendor."No."));
                             end else
@@ -165,11 +165,11 @@ page 14135187 lvngForm1099Vendors
                     MagMedia1099: Report lvngForm1099MagneticMedia;
                 begin
                     Rec.FindFirst();
-                    Year := Rec.Year;
-                    if Year = 0 then
+                    Rec.Year := Rec.Year;
+                    if Rec.Year = 0 then
                         Error(CalcErr);
                     Commit();
-                    MagMedia1099.SetParams(Year);
+                    MagMedia1099.SetParams(Rec.Year);
                     MagMedia1099.Run();
                 end;
             }
@@ -188,11 +188,11 @@ page 14135187 lvngForm1099Vendors
                     Printout: Report lvngForm1099Printout;
                 begin
                     Rec.FindFirst();
-                    Year := Rec.Year;
-                    if Year = 0 then
+                    Rec.Year := Rec.Year;
+                    if Rec.Year = 0 then
                         Error(CalcErr);
                     Commit();
-                    Printout.SetYear(Year);
+                    Printout.SetYear(Rec.Year);
                     Printout.Run();
                 end;
             }
@@ -210,7 +210,7 @@ page 14135187 lvngForm1099Vendors
                 var
                     Export1099: Report lvngForm1099ExcelExport;
                 begin
-                    if Year = 0 then
+                    if Rec.Year = 0 then
                         Error(CalcErr);
                     Commit();
                     Export1099.Run();

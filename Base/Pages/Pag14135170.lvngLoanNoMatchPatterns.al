@@ -10,11 +10,11 @@ page 14135170 lvngLoanNoMatchPatterns
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Min. Field Length"; "Min. Field Length") { ApplicationArea = All; }
-                field("Max. Field Length"; "Max. Field Length") { ApplicationArea = All; }
-                field("Match Pattern"; "Match Pattern") { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Min. Field Length"; Rec."Min. Field Length") { ApplicationArea = All; }
+                field("Max. Field Length"; Rec."Max. Field Length") { ApplicationArea = All; }
+                field("Match Pattern"; Rec."Match Pattern") { ApplicationArea = All; }
             }
         }
     }

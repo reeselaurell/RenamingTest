@@ -12,11 +12,11 @@ page 14135109 lvngLoanImportSchemaList
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Loan Journal Batch Type"; "Loan Journal Batch Type") { ApplicationArea = All; }
-                field("Field Separator Character"; "Field Separator Character") { ApplicationArea = All; }
-                field("Skip Lines"; "Skip Lines") { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Loan Journal Batch Type"; Rec."Loan Journal Batch Type") { ApplicationArea = All; }
+                field("Field Separator Character"; Rec."Field Separator Character") { ApplicationArea = All; }
+                field("Skip Lines"; Rec."Skip Lines") { ApplicationArea = All; }
             }
         }
     }

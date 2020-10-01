@@ -14,11 +14,11 @@ pageextension 14135130 lvngCashReceiptJournal extends "Cash Receipt Journal"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        lvngDocumentGuid := CreateGuid();
+        Rec.lvngDocumentGuid := CreateGuid();
     end;
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+        CurrPage.DocumentExchange.Page.ReloadDocuments(Rec.lvngDocumentGuid);
     end;
 }

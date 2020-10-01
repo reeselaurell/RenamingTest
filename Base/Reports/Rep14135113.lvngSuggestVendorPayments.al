@@ -611,36 +611,34 @@ report 14135113 lvngSuggestVendorPayments
     var
         PaymentToleranceMgt: Codeunit "Payment Tolerance Management";
     begin
-        with GenJnlLine do begin
-            Init;
-            SetPostingDate(GenJnlLine, VendLedgEntry."Due Date", PostingDate);
-            "Document Type" := "Document Type"::Payment;
-            "Account Type" := "Account Type"::Vendor;
-            Vend2.Get(VendLedgEntry."Vendor No.");
-            Vend2.CheckBlockedVendOnJnls(Vend2, "Document Type".AsInteger(), false);
-            Description := Vend2.Name;
-            "Posting Group" := Vend2."Vendor Posting Group";
-            "Salespers./Purch. Code" := Vend2."Purchaser Code";
-            "Payment Terms Code" := Vend2."Payment Terms Code";
-            Validate("Bill-to/Pay-to No.", "Account No.");
-            Validate("Sell-to/Buy-from No.", "Account No.");
-            "Gen. Posting Type" := 0;
-            "Gen. Bus. Posting Group" := '';
-            "Gen. Prod. Posting Group" := '';
-            "VAT Bus. Posting Group" := '';
-            "VAT Prod. Posting Group" := '';
-            Validate("Currency Code", VendLedgEntry."Currency Code");
-            Validate("Payment Terms Code");
-            "Posting Group" := VendLedgEntry."Vendor Posting Group";
-            Comment := VendLedgEntry.Description;
-            "Payment Method Code" := VendLedgEntry."Payment Method Code";
-            VendLedgEntry.CalcFields("Remaining Amount");
-            if PaymentToleranceMgt.CheckCalcPmtDiscGenJnlVend(GenJnlLine, VendLedgEntry, 0, false) then
-                Amount := -(VendLedgEntry."Remaining Amount" - VendLedgEntry."Remaining Pmt. Disc. Possible")
-            else
-                Amount := -VendLedgEntry."Remaining Amount";
-            Validate(Amount);
-        end;
+        GenJnlLine.Init;
+        SetPostingDate(GenJnlLine, VendLedgEntry."Due Date", PostingDate);
+        GenJnlLine."Document Type" := GenJnlLine."Document Type"::Payment;
+        GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;
+        Vend2.Get(VendLedgEntry."Vendor No.");
+        Vend2.CheckBlockedVendOnJnls(Vend2, GenJnlLine."Document Type", false);
+        GenJnlLine.Description := Vend2.Name;
+        GenJnlLine."Posting Group" := Vend2."Vendor Posting Group";
+        GenJnlLine."Salespers./Purch. Code" := Vend2."Purchaser Code";
+        GenJnlLine."Payment Terms Code" := Vend2."Payment Terms Code";
+        GenJnlLine.Validate("Bill-to/Pay-to No.", GenJnlLine."Account No.");
+        GenJnlLine.Validate("Sell-to/Buy-from No.", GenJnlLine."Account No.");
+        GenJnlLine."Gen. Posting Type" := GenJnlLine."Gen. Posting Type"::" ";
+        GenJnlLine."Gen. Bus. Posting Group" := '';
+        GenJnlLine."Gen. Prod. Posting Group" := '';
+        GenJnlLine."VAT Bus. Posting Group" := '';
+        GenJnlLine."VAT Prod. Posting Group" := '';
+        GenJnlLine.Validate("Currency Code", VendLedgEntry."Currency Code");
+        GenJnlLine.Validate("Payment Terms Code");
+        GenJnlLine."Posting Group" := VendLedgEntry."Vendor Posting Group";
+        GenJnlLine.Comment := VendLedgEntry.Description;
+        GenJnlLine."Payment Method Code" := VendLedgEntry."Payment Method Code";
+        VendLedgEntry.CalcFields("Remaining Amount");
+        if PaymentToleranceMgt.CheckCalcPmtDiscGenJnlVend(GenJnlLine, VendLedgEntry, 0, false) then
+            GenJnlLine.Amount := -(VendLedgEntry."Remaining Amount" - VendLedgEntry."Remaining Pmt. Disc. Possible")
+        else
+            GenJnlLine.Amount := -VendLedgEntry."Remaining Amount";
+        GenJnlLine.Validate(Amount);
 
         if UsePriority then
             PayableVendLedgEntry.Priority := Vendor.Priority
@@ -787,70 +785,68 @@ report 14135113 lvngSuggestVendorPayments
     var
         Vendor: Record Vendor;
     begin
-        with GenJnlLine do begin
-            Init;
-            Window2.Update(1, TempPaymentBuffer."Vendor No.");
-            LastLineNo := LastLineNo + 10000;
-            "Line No." := LastLineNo;
-            "Document Type" := "Document Type"::Payment;
-            "Posting No. Series" := GenJnlBatch."Posting No. Series";
-            if SummarizePerVend then
-                "Document No." := TempPaymentBuffer."Document No."
-            else
-                if DocNoPerLine then begin
-                    if TempPaymentBuffer.Amount < 0 then
-                        "Document Type" := "Document Type"::Refund;
+        GenJnlLine.Init;
+        Window2.Update(1, TempPaymentBuffer."Vendor No.");
+        LastLineNo := LastLineNo + 10000;
+        GenJnlLine."Line No." := LastLineNo;
+        GenJnlLine."Document Type" := GenJnlLine."Document Type"::Payment;
+        GenJnlLine."Posting No. Series" := GenJnlBatch."Posting No. Series";
+        if SummarizePerVend then
+            GenJnlLine."Document No." := TempPaymentBuffer."Document No."
+        else
+            if DocNoPerLine then begin
+                if TempPaymentBuffer.Amount < 0 then
+                    GenJnlLine."Document Type" := GenJnlLine."Document Type"::Refund;
 
-                    "Document No." := NextDocNo;
+                GenJnlLine."Document No." := NextDocNo;
+                NextDocNo := IncStr(NextDocNo);
+            end else
+                if (TempPaymentBuffer."Vendor No." = OldTempPaymentBuffer."Vendor No.") and
+                   (TempPaymentBuffer."Currency Code" = OldTempPaymentBuffer."Currency Code")
+                then
+                    GenJnlLine."Document No." := OldTempPaymentBuffer."Document No."
+                else begin
+                    GenJnlLine."Document No." := NextDocNo;
                     NextDocNo := IncStr(NextDocNo);
-                end else
-                    if (TempPaymentBuffer."Vendor No." = OldTempPaymentBuffer."Vendor No.") and
-                       (TempPaymentBuffer."Currency Code" = OldTempPaymentBuffer."Currency Code")
-                    then
-                        "Document No." := OldTempPaymentBuffer."Document No."
-                    else begin
-                        "Document No." := NextDocNo;
-                        NextDocNo := IncStr(NextDocNo);
-                        OldTempPaymentBuffer := TempPaymentBuffer;
-                        OldTempPaymentBuffer."Document No." := "Document No.";
-                    end;
-            "Account Type" := "Account Type"::Vendor;
-            SetHideValidation(true);
-            ShowPostingDateWarning := ShowPostingDateWarning or
-              SetPostingDate(GenJnlLine, GetApplDueDate(TempPaymentBuffer."Vendor Ledg. Entry No."), PostingDate);
-            Validate("Account No.", TempPaymentBuffer."Vendor No.");
-            Vendor.Get(TempPaymentBuffer."Vendor No.");
-            if (Vendor."Pay-to Vendor No." <> '') and (Vendor."Pay-to Vendor No." <> "Account No.") then
-                Message(Text025, Vendor.TableCaption, Vendor."No.", Vendor.FieldCaption("Pay-to Vendor No."),
-                  Vendor."Pay-to Vendor No.");
-            "Bal. Account Type" := BalAccType;
-            Validate("Bal. Account No.", BalAccNo);
-            Validate("Currency Code", TempPaymentBuffer."Currency Code");
-            "Message to Recipient" := GetMessageToRecipient(SummarizePerVend);
-            "Bank Payment Type" := BankPmtType;
-            if SummarizePerVend then
-                "Applies-to ID" := "Document No.";
-            Description := Vendor.Name;
-            "Source Line No." := TempPaymentBuffer."Vendor Ledg. Entry No.";
-            if not SummarizePerVend then
-                if VendLedgEntry.Get("Source Line No.") then
-                    Description := VendLedgEntry.Description;
-            "Shortcut Dimension 1 Code" := TempPaymentBuffer."Global Dimension 1 Code";
-            "Shortcut Dimension 2 Code" := TempPaymentBuffer."Global Dimension 2 Code";
-            "Dimension Set ID" := TempPaymentBuffer."Dimension Set ID";
-            "Source Code" := GenJnlTemplate."Source Code";
-            "Reason Code" := GenJnlBatch."Reason Code";
-            Validate(Amount, TempPaymentBuffer.Amount);
-            "Applies-to Doc. Type" := TempPaymentBuffer."Vendor Ledg. Entry Doc. Type";
-            "Applies-to Doc. No." := TempPaymentBuffer."Vendor Ledg. Entry Doc. No.";
-            "Payment Method Code" := TempPaymentBuffer."Payment Method Code";
+                    OldTempPaymentBuffer := TempPaymentBuffer;
+                    OldTempPaymentBuffer."Document No." := GenJnlLine."Document No.";
+                end;
+        GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;
+        GenJnlLine.SetHideValidation(true);
+        ShowPostingDateWarning := ShowPostingDateWarning or
+          SetPostingDate(GenJnlLine, GetApplDueDate(TempPaymentBuffer."Vendor Ledg. Entry No."), PostingDate);
+        GenJnlLine.Validate("Account No.", TempPaymentBuffer."Vendor No.");
+        Vendor.Get(TempPaymentBuffer."Vendor No.");
+        if (Vendor."Pay-to Vendor No." <> '') and (Vendor."Pay-to Vendor No." <> GenJnlLine."Account No.") then
+            Message(Text025, Vendor.TableCaption, Vendor."No.", Vendor.FieldCaption("Pay-to Vendor No."),
+              Vendor."Pay-to Vendor No.");
+        GenJnlLine."Bal. Account Type" := BalAccType;
+        GenJnlLine.Validate("Bal. Account No.", BalAccNo);
+        GenJnlLine.Validate("Currency Code", TempPaymentBuffer."Currency Code");
+        GenJnlLine."Message to Recipient" := GetMessageToRecipient(SummarizePerVend);
+        GenJnlLine."Bank Payment Type" := BankPmtType;
+        if SummarizePerVend then
+            GenJnlLine."Applies-to ID" := GenJnlLine."Document No.";
+        GenJnlLine.Description := Vendor.Name;
+        GenJnlLine."Source Line No." := TempPaymentBuffer."Vendor Ledg. Entry No.";
+        if not SummarizePerVend then
+            if VendLedgEntry.Get(GenJnlLine."Source Line No.") then
+                GenJnlLine.Description := VendLedgEntry.Description;
+        GenJnlLine."Shortcut Dimension 1 Code" := TempPaymentBuffer."Global Dimension 1 Code";
+        GenJnlLine."Shortcut Dimension 2 Code" := TempPaymentBuffer."Global Dimension 2 Code";
+        GenJnlLine."Dimension Set ID" := TempPaymentBuffer."Dimension Set ID";
+        GenJnlLine."Source Code" := GenJnlTemplate."Source Code";
+        GenJnlLine."Reason Code" := GenJnlBatch."Reason Code";
+        GenJnlLine.Validate(Amount, TempPaymentBuffer.Amount);
+        GenJnlLine."Applies-to Doc. Type" := TempPaymentBuffer."Vendor Ledg. Entry Doc. Type";
+        GenJnlLine."Applies-to Doc. No." := TempPaymentBuffer."Vendor Ledg. Entry Doc. No.";
+        GenJnlLine."Payment Method Code" := TempPaymentBuffer."Payment Method Code";
 
-            CopyFieldsToGenJournalLine(TempPaymentBuffer, GenJnlLine);
+        CopyFieldsToGenJournalLine(TempPaymentBuffer, GenJnlLine);
 
-            UpdateDimensions(GenJnlLine);
-            Insert;
-            GenJnlLineInserted := true;
-        end;
+        UpdateDimensions(GenJnlLine);
+        GenJnlLine.Insert;
+        GenJnlLineInserted := true;
     end;
 
     local procedure UpdateDimensions(var GenJnlLine: Record "Gen. Journal Line")
@@ -862,43 +858,41 @@ report 14135113 lvngSuggestVendorPayments
         NewDimensionID: Integer;
         DimSetIDArr: array[10] of Integer;
     begin
-        with GenJnlLine do begin
-            NewDimensionID := "Dimension Set ID";
-            if SummarizePerVend then begin
-                DimBuf.Reset;
-                DimBuf.DeleteAll;
-                DimBufMgt.GetDimensions(TempPaymentBuffer."Dimension Entry No.", DimBuf);
-                if DimBuf.FindSet then
-                    repeat
-                        DimVal.Get(DimBuf."Dimension Code", DimBuf."Dimension Value Code");
-                        TempDimSetEntry."Dimension Code" := DimBuf."Dimension Code";
-                        TempDimSetEntry."Dimension Value Code" := DimBuf."Dimension Value Code";
-                        TempDimSetEntry."Dimension Value ID" := DimVal."Dimension Value ID";
-                        TempDimSetEntry.Insert;
-                    until DimBuf.Next = 0;
-                NewDimensionID := DimMgt.GetDimensionSetID(TempDimSetEntry);
-                "Dimension Set ID" := NewDimensionID;
-            end;
-            CreateDim(
-              DimMgt.TypeToTableID1("Account Type".AsInteger()), "Account No.",
-              DimMgt.TypeToTableID1("Bal. Account Type".AsInteger()), "Bal. Account No.",
-              DATABASE::Job, "Job No.",
-              DATABASE::"Salesperson/Purchaser", "Salespers./Purch. Code",
-              DATABASE::Campaign, "Campaign No.");
-            if NewDimensionID <> "Dimension Set ID" then begin
-                DimSetIDArr[1] := "Dimension Set ID";
-                DimSetIDArr[2] := NewDimensionID;
-                "Dimension Set ID" :=
-                  DimMgt.GetCombinedDimensionSetID(DimSetIDArr, "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code");
-            end;
+        NewDimensionID := GenJnlLine."Dimension Set ID";
+        if SummarizePerVend then begin
+            DimBuf.Reset;
+            DimBuf.DeleteAll;
+            DimBufMgt.GetDimensions(TempPaymentBuffer."Dimension Entry No.", DimBuf);
+            if DimBuf.FindSet then
+                repeat
+                    DimVal.Get(DimBuf."Dimension Code", DimBuf."Dimension Value Code");
+                    TempDimSetEntry."Dimension Code" := DimBuf."Dimension Code";
+                    TempDimSetEntry."Dimension Value Code" := DimBuf."Dimension Value Code";
+                    TempDimSetEntry."Dimension Value ID" := DimVal."Dimension Value ID";
+                    TempDimSetEntry.Insert;
+                until DimBuf.Next = 0;
+            NewDimensionID := DimMgt.GetDimensionSetID(TempDimSetEntry);
+            GenJnlLine."Dimension Set ID" := NewDimensionID;
+        end;
+        GenJnlLine.CreateDim(
+          DimMgt.TypeToTableID1(GenJnlLine."Account Type".AsInteger()), GenJnlLine."Account No.",
+          DimMgt.TypeToTableID1(GenJnlLine."Bal. Account Type".AsInteger()), GenJnlLine."Bal. Account No.",
+          DATABASE::Job, GenJnlLine."Job No.",
+          DATABASE::"Salesperson/Purchaser", GenJnlLine."Salespers./Purch. Code",
+          DATABASE::Campaign, GenJnlLine."Campaign No.");
+        if NewDimensionID <> GenJnlLine."Dimension Set ID" then begin
+            DimSetIDArr[1] := GenJnlLine."Dimension Set ID";
+            DimSetIDArr[2] := NewDimensionID;
+            GenJnlLine."Dimension Set ID" :=
+              DimMgt.GetCombinedDimensionSetID(DimSetIDArr, GenJnlLine."Shortcut Dimension 1 Code", GenJnlLine."Shortcut Dimension 2 Code");
+        end;
 
-            if SummarizePerVend then begin
-                DimMgt.GetDimensionSet(TempDimSetEntry, "Dimension Set ID");
-                if AdjustAgainstSelectedDim(TempDimSetEntry, TempDimSetEntry2) then
-                    "Dimension Set ID" := DimMgt.GetDimensionSetID(TempDimSetEntry2);
-                DimMgt.UpdateGlobalDimFromDimSetID("Dimension Set ID", "Shortcut Dimension 1 Code",
-                  "Shortcut Dimension 2 Code");
-            end;
+        if SummarizePerVend then begin
+            DimMgt.GetDimensionSet(TempDimSetEntry, GenJnlLine."Dimension Set ID");
+            if AdjustAgainstSelectedDim(TempDimSetEntry, TempDimSetEntry2) then
+                GenJnlLine."Dimension Set ID" := DimMgt.GetDimensionSetID(TempDimSetEntry2);
+            DimMgt.UpdateGlobalDimFromDimSetID(GenJnlLine."Dimension Set ID", GenJnlLine."Shortcut Dimension 1 Code",
+              GenJnlLine."Shortcut Dimension 2 Code");
         end;
     end;
 
@@ -1114,15 +1108,13 @@ report 14135113 lvngSuggestVendorPayments
     var
         PaymentGenJournalLine: Record "Gen. Journal Line";
     begin
-        with PaymentGenJournalLine do begin
-            SetRange("Journal Template Name", GenJournalLine."Journal Template Name");
-            SetRange("Journal Batch Name", GenJournalLine."Journal Batch Name");
-            SetRange("Account Type", GenJournalLine."Account Type"::Vendor);
-            SetRange("Account No.", VendorLedgerEntry."Vendor No.");
-            SetRange("Applies-to Doc. Type", VendorLedgerEntry."Document Type");
-            SetRange("Applies-to Doc. No.", VendorLedgerEntry."Document No.");
-            exit(IsEmpty);
-        end;
+        PaymentGenJournalLine.SetRange("Journal Template Name", GenJournalLine."Journal Template Name");
+        PaymentGenJournalLine.SetRange("Journal Batch Name", GenJournalLine."Journal Batch Name");
+        PaymentGenJournalLine.SetRange("Account Type", GenJournalLine."Account Type"::Vendor);
+        PaymentGenJournalLine.SetRange("Account No.", VendorLedgerEntry."Vendor No.");
+        PaymentGenJournalLine.SetRange("Applies-to Doc. Type", VendorLedgerEntry."Document Type");
+        PaymentGenJournalLine.SetRange("Applies-to Doc. No.", VendorLedgerEntry."Document No.");
+        exit(PaymentGenJournalLine.IsEmpty);
     end;
 
     local procedure IsNotAppliedToOtherBatchLine(GenJournalLine: Record "Gen. Journal Line"; VendorLedgerEntry: Record "Vendor Ledger Entry"): Boolean
@@ -1132,24 +1124,22 @@ report 14135113 lvngSuggestVendorPayments
         if not CheckOtherJournalBatches then
             exit(true);
 
-        with PaymentGenJournalLine do begin
-            SetRange("Document Type", "Document Type"::Payment);
-            SetRange("Account Type", "Account Type"::Vendor);
-            SetRange("Account No.", VendorLedgerEntry."Vendor No.");
-            SetRange("Applies-to Doc. Type", VendorLedgerEntry."Document Type");
-            SetRange("Applies-to Doc. No.", VendorLedgerEntry."Document No.");
-            if IsEmpty then
-                exit(true);
+        PaymentGenJournalLine.SetRange("Document Type", PaymentGenJournalLine."Document Type"::Payment);
+        PaymentGenJournalLine.SetRange("Account Type", PaymentGenJournalLine."Account Type"::Vendor);
+        PaymentGenJournalLine.SetRange("Account No.", VendorLedgerEntry."Vendor No.");
+        PaymentGenJournalLine.SetRange("Applies-to Doc. Type", VendorLedgerEntry."Document Type");
+        PaymentGenJournalLine.SetRange("Applies-to Doc. No.", VendorLedgerEntry."Document No.");
+        if PaymentGenJournalLine.IsEmpty then
+            exit(true);
 
-            if FindSet then begin
-                repeat
-                    if ("Journal Batch Name" <> GenJournalLine."Journal Batch Name") or
-                       ("Journal Template Name" <> GenJournalLine."Journal Template Name")
-                    then
-                        LogNotSuggestedPaymentMessage(PaymentGenJournalLine);
-                until Next = 0;
-                exit(TempErrorMessage.IsEmpty);
-            end;
+        if PaymentGenJournalLine.FindSet then begin
+            repeat
+                if (PaymentGenJournalLine."Journal Batch Name" <> GenJournalLine."Journal Batch Name") or
+                   (PaymentGenJournalLine."Journal Template Name" <> GenJournalLine."Journal Template Name")
+                then
+                    LogNotSuggestedPaymentMessage(PaymentGenJournalLine);
+            until PaymentGenJournalLine.Next = 0;
+            exit(TempErrorMessage.IsEmpty);
         end;
     end;
 
@@ -1179,13 +1169,11 @@ report 14135113 lvngSuggestVendorPayments
 
     local procedure CopyFieldsFromVendorLedgerEntry(var PaymentBuffer: Record "Payment Buffer"; VendorLedgerEntry: Record "Vendor Ledger Entry")
     begin
-        with PaymentBuffer do begin
-            "Creditor No." := VendorLedgerEntry."Creditor No.";
-            "Payment Reference" := VendorLedgerEntry."Payment Reference";
-            "Exported to Payment File" := VendorLedgerEntry."Exported to Payment File";
-            "Applies-to Ext. Doc. No." := VendorLedgerEntry."External Document No.";
-            lvngPostingGroupCode := VendorLedgerEntry."Vendor Posting Group";
-        end;
+        PaymentBuffer."Creditor No." := VendorLedgerEntry."Creditor No.";
+        PaymentBuffer."Payment Reference" := VendorLedgerEntry."Payment Reference";
+        PaymentBuffer."Exported to Payment File" := VendorLedgerEntry."Exported to Payment File";
+        PaymentBuffer."Applies-to Ext. Doc. No." := VendorLedgerEntry."External Document No.";
+        PaymentBuffer.lvngPostingGroupCode := VendorLedgerEntry."Vendor Posting Group";
     end;
 
     local procedure CopyFieldsToGenJournalLine(PaymentBuffer: record "Payment Buffer"; var GenJournalLine: Record "Gen. Journal Line")
@@ -1194,35 +1182,32 @@ report 14135113 lvngSuggestVendorPayments
         lvngLoanReportingBuffer: Record lvngLoanReportingBuffer temporary;
         MultipleLoans: Boolean;
     begin
-        with PaymentBuffer do begin
-            GenJournalLine."Creditor No." := "Creditor No.";
-            GenJournalLine."Payment Reference" := "Payment Reference";
-            GenJournalLine."Exported to Payment File" := "Exported to Payment File";
-            GenJournalLine."Applies-to Ext. Doc. No." := "Applies-to Ext. Doc. No.";
-            GenJournalLine."Posting Group" := lvngPostingGroupCode;
-            if VendLedgEntry.Get(GenJournalLine."Source Line No.") then begin
-                GenJournalLine."External Document No." := VendLedgEntry."External Document No.";
-                GenJournalLine.lvngLoanNo := VendLedgEntry.lvngLoanNo;
-                GenJournalLine."Reason Code" := VendLedgEntry."Reason Code";
-                GenJournalLine.Comment := VendLedgEntry.Description;
-                if (GenJournalLine.lvngLoanNo = '') and (VendLedgEntry."Document Type" = VendLedgEntry."Document Type"::Invoice) then begin
-                    PurchInvLine.Reset();
-                    PurchInvLine.SetRange("Document No.", VendLedgEntry."Document No.");
-                    PurchInvLine.SetFilter(lvngLoanNo, '<>%1', '');
-                    if PurchInvLine.FindSet() then begin
-                        repeat
-                            Clear(lvngLoanReportingBuffer);
-                            lvngLoanReportingBuffer."Loan No." := PurchInvLine.lvngLoanNo;
-                            if lvngLoanReportingBuffer.Insert(false) then;
-                            MultipleLoans := lvngLoanReportingBuffer.Count() > 1;
-                        until (PurchInvLine.Next() = 0) or (MultipleLoans);
-                        if not MultipleLoans then begin
-                            lvngLoanReportingBuffer.Reset();
-                            if lvngLoanReportingBuffer.FindFirst() then
-                                GenJournalLine.lvngLoanNo := lvngLoanReportingBuffer."Loan No.";
-                        end;
+        GenJournalLine."Creditor No." := PaymentBuffer."Creditor No.";
+        GenJournalLine."Payment Reference" := PaymentBuffer."Payment Reference";
+        GenJournalLine."Exported to Payment File" := PaymentBuffer."Exported to Payment File";
+        GenJournalLine."Applies-to Ext. Doc. No." := PaymentBuffer."Applies-to Ext. Doc. No.";
+        GenJournalLine."Posting Group" := PaymentBuffer.lvngPostingGroupCode;
+        if VendLedgEntry.Get(GenJournalLine."Source Line No.") then begin
+            GenJournalLine."External Document No." := VendLedgEntry."External Document No.";
+            GenJournalLine.lvngLoanNo := VendLedgEntry.lvngLoanNo;
+            GenJournalLine."Reason Code" := VendLedgEntry."Reason Code";
+            GenJournalLine.Comment := VendLedgEntry.Description;
+            if (GenJournalLine.lvngLoanNo = '') and (VendLedgEntry."Document Type" = VendLedgEntry."Document Type"::Invoice) then begin
+                PurchInvLine.Reset();
+                PurchInvLine.SetRange("Document No.", VendLedgEntry."Document No.");
+                PurchInvLine.SetFilter(lvngLoanNo, '<>%1', '');
+                if PurchInvLine.FindSet() then begin
+                    repeat
+                        Clear(lvngLoanReportingBuffer);
+                        lvngLoanReportingBuffer."Loan No." := PurchInvLine.lvngLoanNo;
+                        if lvngLoanReportingBuffer.Insert(false) then;
+                        MultipleLoans := lvngLoanReportingBuffer.Count() > 1;
+                    until (PurchInvLine.Next() = 0) or (MultipleLoans);
+                    if not MultipleLoans then begin
+                        lvngLoanReportingBuffer.Reset();
+                        if lvngLoanReportingBuffer.FindFirst() then
+                            GenJournalLine.lvngLoanNo := lvngLoanReportingBuffer."Loan No.";
                     end;
-
                 end;
             end;
         end;

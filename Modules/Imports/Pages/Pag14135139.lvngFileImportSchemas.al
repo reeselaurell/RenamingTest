@@ -12,11 +12,11 @@ page 14135139 lvngFileImportSchemas
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field("File Import Type"; "File Import Type") { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Field Separator"; "Field Separator") { ApplicationArea = All; ToolTip = 'Use <TAB> for Tab or any other symbol'; }
-                field("Skip Rows"; "Skip Rows") { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field("File Import Type"; Rec."File Import Type") { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Field Separator"; Rec."Field Separator") { ApplicationArea = All; ToolTip = 'Use <TAB> for Tab or any other symbol'; }
+                field("Skip Rows"; Rec."Skip Rows") { ApplicationArea = All; }
             }
         }
     }
@@ -41,23 +41,23 @@ page 14135139 lvngFileImportSchemas
                     SalesLinesImportSchema: Page lvngSalesLinesImportSchema;
                     DepositImportSchema: Page lvngDepositImportSchema;
                 begin
-                    case "File Import Type" of
-                        "File Import Type"::"General Journal":
+                    case Rec."File Import Type" of
+                        Rec."File Import Type"::"General Journal":
                             begin
                                 GenJnlImportSchema.SetRecord(Rec);
                                 GenJnlImportSchema.Run();
                             end;
-                        "File Import Type"::"Purchase Line":
+                        Rec."File Import Type"::"Purchase Line":
                             begin
                                 PurchaseLinesImportSchema.SetRecord(Rec);
                                 PurchaseLinesImportSchema.Run();
                             end;
-                        "File Import Type"::"Sales Line":
+                        Rec."File Import Type"::"Sales Line":
                             begin
                                 SalesLinesImportSchema.SetRecord(Rec);
                                 SalesLinesImportSchema.Run();
                             end;
-                        "File Import Type"::"Deposit Lines":
+                        Rec."File Import Type"::"Deposit Lines":
                             begin
                                 DepositImportSchema.SetRecord(Rec);
                                 DepositImportSchema.Run();

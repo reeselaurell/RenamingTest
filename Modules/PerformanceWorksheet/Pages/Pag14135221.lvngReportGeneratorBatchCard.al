@@ -12,8 +12,8 @@ page 14135221 lvngReportGeneratorBatchCard
         {
             group(General)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
             }
             part(Details; lvngRptGeneratorSequencePart)
             {

@@ -20,18 +20,18 @@ page 14135244 lvngDocumentExchangeSetup
             // }
             group(Azure)
             {
-                field("Azure Base Url"; "Azure Base Url") { ApplicationArea = All; }
-                field("Access Key"; "Access Key") { ApplicationArea = All; }
+                field("Azure Base Url"; Rec."Azure Base Url") { ApplicationArea = All; }
+                field("Access Key"; Rec."Access Key") { ApplicationArea = All; }
             }
         }
     }
 
     trigger OnOpenPage()
     begin
-        Reset();
-        if not Get() then begin
-            Init();
-            Insert();
+        Rec.Reset();
+        if not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
         end;
     end;
 }

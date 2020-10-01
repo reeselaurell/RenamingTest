@@ -25,26 +25,26 @@ page 14135197 lvngGLReconciliation
 
             repeater(Group)
             {
-                field("Loan No."; "Loan No.") { ApplicationArea = All; }
-                field("G/L Account No."; "G/L Account No.") { ApplicationArea = All; }
-                field("Date Funded"; "Date Funded") { ApplicationArea = All; }
-                field("Date Sold"; "Date Sold") { ApplicationArea = All; }
-                field("Investor Name"; "Investor Name") { ApplicationArea = All; }
-                field("Last Transaction Date"; "Last Transaction Date") { ApplicationArea = All; }
-                field(Name; Name) { ApplicationArea = All; }
-                field("Loan Card Value"; "Loan Card Value") { ApplicationArea = All; }
-                field("Debit Amount"; "Debit Amount") { ApplicationArea = All; }
-                field("Credit Amount"; "Credit Amount") { ApplicationArea = All; }
-                field("Current Balance"; "Current Balance") { ApplicationArea = All; }
-                field("Includes Multi-Payment"; "Includes Multi-Payment") { ApplicationArea = All; }
-                field("Shortcut Dimension 1"; "Shortcut Dimension 1") { ApplicationArea = All; }
-                field("Shortcut Dimension 2"; "Shortcut Dimension 2") { ApplicationArea = All; }
-                field("Shortcut Dimension 3"; "Shortcut Dimension 3") { ApplicationArea = All; }
-                field("Shortcut Dimension 4"; "Shortcut Dimension 4") { ApplicationArea = All; }
-                field("Shortcut Dimension 5"; "Shortcut Dimension 5") { ApplicationArea = All; }
-                field("Shortcut Dimension 6"; "Shortcut Dimension 6") { ApplicationArea = All; }
-                field("Shortcut Dimension 7"; "Shortcut Dimension 7") { ApplicationArea = All; }
-                field("Shortcut Dimension 8"; "Shortcut Dimension 8") { ApplicationArea = All; }
+                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; }
+                field("G/L Account No."; Rec."G/L Account No.") { ApplicationArea = All; }
+                field("Date Funded"; Rec."Date Funded") { ApplicationArea = All; }
+                field("Date Sold"; Rec."Date Sold") { ApplicationArea = All; }
+                field("Investor Name"; Rec."Investor Name") { ApplicationArea = All; }
+                field("Last Transaction Date"; Rec."Last Transaction Date") { ApplicationArea = All; }
+                field(Name; Rec.Name) { ApplicationArea = All; }
+                field("Loan Card Value"; Rec."Loan Card Value") { ApplicationArea = All; }
+                field("Debit Amount"; Rec."Debit Amount") { ApplicationArea = All; }
+                field("Credit Amount"; Rec."Credit Amount") { ApplicationArea = All; }
+                field("Current Balance"; Rec."Current Balance") { ApplicationArea = All; }
+                field("Includes Multi-Payment"; Rec."Includes Multi-Payment") { ApplicationArea = All; }
+                field("Shortcut Dimension 1"; Rec."Shortcut Dimension 1") { ApplicationArea = All; }
+                field("Shortcut Dimension 2"; Rec."Shortcut Dimension 2") { ApplicationArea = All; }
+                field("Shortcut Dimension 3"; Rec."Shortcut Dimension 3") { ApplicationArea = All; }
+                field("Shortcut Dimension 4"; Rec."Shortcut Dimension 4") { ApplicationArea = All; }
+                field("Shortcut Dimension 5"; Rec."Shortcut Dimension 5") { ApplicationArea = All; }
+                field("Shortcut Dimension 6"; Rec."Shortcut Dimension 6") { ApplicationArea = All; }
+                field("Shortcut Dimension 7"; Rec."Shortcut Dimension 7") { ApplicationArea = All; }
+                field("Shortcut Dimension 8"; Rec."Shortcut Dimension 8") { ApplicationArea = All; }
             }
 
             group(Lines)
@@ -71,8 +71,8 @@ page 14135197 lvngGLReconciliation
                 var
                     RetrieveData: Report lvngGeneralLedgerRecGen;
                 begin
-                    Reset();
-                    DeleteAll();
+                    Rec.Reset();
+                    Rec.DeleteAll();
                     Clear(RetrieveData);
                     RetrieveData.RunModal();
                     RetrieveData.GetData(Rec);
@@ -97,7 +97,7 @@ page 14135197 lvngGLReconciliation
                     GLEntry: Record "G/L Entry";
                 begin
                     GLEntry.SetCurrentKey(lvngLoanNo, "Posting Date");
-                    GLEntry.SetRange(lvngLoanNo, "Loan No.");
+                    GLEntry.SetRange(lvngLoanNo, Rec."Loan No.");
                     GLEntry.SetFilter("G/L Account No.", GLAccountNo);
                     GLEntry.SetFilter("Posting Date", DateFilter);
                     Page.RunModal(Page::"General Ledger Entries", GLEntry);
@@ -117,7 +117,7 @@ page 14135197 lvngGLReconciliation
                 var
                     Loan: Record lvngLoan;
                 begin
-                    Loan.Get("Loan No.");
+                    Loan.Get(Rec."Loan No.");
                     Page.RunModal(Page::lvngLoanCard, Loan);
                 end;
             }
@@ -136,7 +136,7 @@ page 14135197 lvngGLReconciliation
                     QuickTrace: Page lvngQuickTrace;
                 begin
                     Clear(QuickTrace);
-                    QuickTrace.AssignLoanNo("Loan No.");
+                    QuickTrace.AssignLoanNo(Rec."Loan No.");
                     QuickTrace.RunModal();
                 end;
             }
@@ -167,8 +167,8 @@ page 14135197 lvngGLReconciliation
 
     trigger OnOpenPage()
     begin
-        Reset();
-        DeleteAll();
+        Rec.Reset();
+        Rec.DeleteAll();
     end;
 
     trigger OnAfterGetRecord()
@@ -176,13 +176,13 @@ page 14135197 lvngGLReconciliation
         GLAccount: Record "G/L Account";
         LoanValue: Record lvngLoanValue;
     begin
-        Clear("Loan Card Value");
-        if "Loan No." <> '' then
-            if GLAccount."No." <> "G/L Account No." then begin
-                GLAccount.Get("G/L Account No.");
+        Clear(Rec."Loan Card Value");
+        if Rec."Loan No." <> '' then
+            if GLAccount."No." <> Rec."G/L Account No." then begin
+                GLAccount.Get(Rec."G/L Account No.");
                 if GLAccount.lvngReconciliationFieldNo <> 0 then
-                    if LoanValue.Get("Loan No.", GLAccount.lvngReconciliationFieldNo) then
-                        "Loan Card Value" := LoanValue."Decimal Value";
+                    if LoanValue.Get(Rec."Loan No.", GLAccount.lvngReconciliationFieldNo) then
+                        Rec."Loan Card Value" := LoanValue."Decimal Value";
             end;
     end;
 }

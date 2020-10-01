@@ -9,7 +9,7 @@ pageextension 14135111 lvngSalesInvoice extends "Sales Invoice"
 
         addlast(General)
         {
-            field(lvngTotalAmount; lvngTotalAmount) { ApplicationArea = All; }
+            field(lvngTotalAmount; Rec.lvngTotalAmount) { ApplicationArea = All; }
         }
     }
 
@@ -43,7 +43,7 @@ pageextension 14135111 lvngSalesInvoice extends "Sales Invoice"
                         JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        SalesFileImportManagement.CreateSalesLines(GenJnlImportBuffer, DocumentType::Invoice, "No.");
+                        SalesFileImportManagement.CreateSalesLines(GenJnlImportBuffer, DocumentType::Invoice, Rec."No.");
                     CurrPage.Update(false);
                 end;
             }
@@ -52,11 +52,11 @@ pageextension 14135111 lvngSalesInvoice extends "Sales Invoice"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        lvngDocumentGuid := CreateGuid();
+        Rec.lvngDocumentGuid := CreateGuid();
     end;
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+        CurrPage.DocumentExchange.Page.ReloadDocuments(Rec.lvngDocumentGuid);
     end;
 }

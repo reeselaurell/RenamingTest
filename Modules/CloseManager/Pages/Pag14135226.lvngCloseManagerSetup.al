@@ -16,16 +16,16 @@ page 14135226 lvngCloseManagerSetup
             {
                 Caption = 'General';
 
-                field("Quick Entry Archive Nos."; "Quick Entry Archive Nos.") { ApplicationArea = All; }
+                field("Quick Entry Archive Nos."; Rec."Quick Entry Archive Nos.") { ApplicationArea = All; }
             }
         }
     }
 
     trigger OnOpenPage()
     begin
-        if not Get() then begin
-            Init();
-            Insert();
+        if not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
         end;
     end;
 }

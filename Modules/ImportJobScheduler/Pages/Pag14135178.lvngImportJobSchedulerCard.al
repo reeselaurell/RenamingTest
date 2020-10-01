@@ -12,28 +12,28 @@ page 14135178 lvngImportJobSchedulerCard
             {
                 Caption = 'General';
 
-                field(Code; Code) { Caption = 'Code'; ApplicationArea = All; }
-                field(Type; Type) { Caption = 'Type'; ApplicationArea = All; }
-                field("Import Folder"; "Import Folder") { Caption = 'Import Folder'; ApplicationArea = All; }
-                field("Archive Folder"; "Archive Folder") { Caption = 'Archive Folder'; ApplicationArea = All; }
-                field("Error Folder"; "Error Folder") { Caption = 'Error Folder'; ApplicationArea = All; }
+                field(Code; Rec.Code) { Caption = 'Code'; ApplicationArea = All; }
+                field(Type; Rec.Type) { Caption = 'Type'; ApplicationArea = All; }
+                field("Import Folder"; Rec."Import Folder") { Caption = 'Import Folder'; ApplicationArea = All; }
+                field("Archive Folder"; Rec."Archive Folder") { Caption = 'Archive Folder'; ApplicationArea = All; }
+                field("Error Folder"; Rec."Error Folder") { Caption = 'Error Folder'; ApplicationArea = All; }
             }
 
             group(LoanJournal)
             {
                 Caption = 'Loan Journal';
 
-                field("Loan Journal Type"; "Loan Journal Type") { Caption = 'Loan Journal Type'; ApplicationArea = All; }
-                field("Loan Journal Batch"; "Loan Journal Batch") { Caption = 'Loan Journal Batch'; ApplicationArea = All; }
+                field("Loan Journal Type"; Rec."Loan Journal Type") { Caption = 'Loan Journal Type'; ApplicationArea = All; }
+                field("Loan Journal Batch"; Rec."Loan Journal Batch") { Caption = 'Loan Journal Batch'; ApplicationArea = All; }
             }
 
             group(GeneralJournal)
             {
                 Caption = 'General Journal';
 
-                field("Gen. Journal Template"; "Gen. Journal Template") { Caption = 'Gen. Journal Template'; ApplicationArea = All; }
-                field("Gen. Journal Batch"; "Gen. Journal Batch") { Caption = 'Gen. Journal Batch'; ApplicationArea = All; }
-                field(Post; Post) { Caption = 'Post'; ApplicationArea = All; }
+                field("Gen. Journal Template"; Rec."Gen. Journal Template") { Caption = 'Gen. Journal Template'; ApplicationArea = All; }
+                field("Gen. Journal Batch"; Rec."Gen. Journal Batch") { Caption = 'Gen. Journal Batch'; ApplicationArea = All; }
+                field(Post; Rec.Post) { Caption = 'Post'; ApplicationArea = All; }
             }
         }
     }

@@ -11,50 +11,50 @@ page 14135137 lvngSoldJournalLines
         {
             repeater(Group)
             {
-                field("Loan No."; "Loan No.") { ApplicationArea = All; Style = Unfavorable; StyleExpr = "Error Exists"; }
-                field("Alternative Loan No."; "Alternative Loan No.") { ApplicationArea = All; }
-                field("Investor Customer No."; "Investor Customer No.") { ApplicationArea = All; }
-                field("Search Name"; "Search Name") { Width = 50; ApplicationArea = All; }
-                field("Borrower First Name"; "Borrower First Name") { Width = 30; ApplicationArea = All; }
-                field("Borrower Middle Name"; "Borrower Middle Name") { Width = 10; ApplicationArea = All; }
-                field("Borrower Last Name"; "Borrower Last Name") { Width = 30; ApplicationArea = All; }
-                field("Co-Borrower First Name"; "Co-Borrower First Name") { ApplicationArea = All; Visible = False; }
-                field("Co-Borrower Middle Name"; "Co-Borrower Middle Name") { ApplicationArea = All; Visible = False; }
-                field("Co-Borrower Last Name"; "Co-Borrower Last Name") { ApplicationArea = All; Visible = False; }
-                field("203K Contractor Name"; "203K Contractor Name") { ApplicationArea = All; Visible = False; }
-                field("203K Inspector Name"; "203K Inspector Name") { ApplicationArea = All; Visible = False; }
-                field("Loan Amount"; "Loan Amount") { ApplicationArea = All; }
-                field("Application Date"; "Application Date") { ApplicationArea = All; Visible = False; }
-                field("Date Locked"; "Date Locked") { ApplicationArea = All; Visible = False; }
-                field("Date Closed"; "Date Closed") { ApplicationArea = All; Visible = False; }
-                field("Date Sold"; "Date Sold") { ApplicationArea = All; }
-                field("Loan Term (Months)"; "Loan Term (Months)") { ApplicationArea = All; Visible = False; }
-                field("Interest Rate"; "Interest Rate") { ApplicationArea = All; Visible = False; }
-                field("Constr. Interest Rate"; "Constr. Interest Rate") { ApplicationArea = All; Visible = False; }
-                field("Monthly Escrow Amount"; "Monthly Escrow Amount") { ApplicationArea = All; Visible = False; }
-                field("Monthly Payment Amount"; "Monthly Payment Amount") { ApplicationArea = All; Visible = False; }
-                field("First Payment Due"; "First Payment Due") { ApplicationArea = All; Visible = False; }
-                field("Next Payment Date"; "Next Payment Date") { ApplicationArea = All; Visible = False; }
-                field("Commission Date"; "Commission Date") { ApplicationArea = All; Visible = False; }
-                field("Commission Base Amount"; "Commission Base Amount") { ApplicationArea = All; Visible = False; }
-                field("Commission Bps"; "Commission Bps") { ApplicationArea = All; }
-                field("Commission Amount"; "Commission Amount") { ApplicationArea = All; }
-                field("Warehouse Line Code"; "Warehouse Line Code") { ApplicationArea = All; }
-                field("Business Unit Code"; "Business Unit Code") { ApplicationArea = All; }
-                field("Global Dimension 1 Code"; "Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
-                field("Global Dimension 2 Code"; "Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
-                field("Shortcut Dimension 3 Code"; "Shortcut Dimension 3 Code") { ApplicationArea = All; Visible = DimensionVisible3; }
-                field("Shortcut Dimension 4 Code"; "Shortcut Dimension 4 Code") { ApplicationArea = All; Visible = DimensionVisible4; }
-                field("Shortcut Dimension 5 Code"; "Shortcut Dimension 5 Code") { ApplicationArea = All; Visible = DimensionVisible5; }
-                field("Shortcut Dimension 6 Code"; "Shortcut Dimension 6 Code") { ApplicationArea = All; Visible = DimensionVisible6; }
-                field("Shortcut Dimension 7 Code"; "Shortcut Dimension 7 Code") { ApplicationArea = All; Visible = DimensionVisible7; }
-                field("Shortcut Dimension 8 Code"; "Shortcut Dimension 8 Code") { ApplicationArea = All; Visible = DimensionVisible8; }
-                field("Line No."; "Line No.") { ApplicationArea = All; }
-                field("Processing Schema Code"; "Processing Schema Code") { ApplicationArea = All; }
-                field("Reason Code"; "Reason Code") { ApplicationArea = All; }
-                field("Calculated Document Amount"; "Calculated Document Amount") { ApplicationArea = All; }
-                field(Blocked; Blocked) { ApplicationArea = All; }
-                field("First Payment Due To Investor"; "First Payment Due To Investor") { ApplicationArea = All; }
+                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; Style = Unfavorable; StyleExpr = Rec."Error Exists"; }
+                field("Alternative Loan No."; Rec."Alternative Loan No.") { ApplicationArea = All; }
+                field("Investor Customer No."; Rec."Investor Customer No.") { ApplicationArea = All; }
+                field("Search Name"; Rec."Search Name") { Width = 50; ApplicationArea = All; }
+                field("Borrower First Name"; Rec."Borrower First Name") { Width = 30; ApplicationArea = All; }
+                field("Borrower Middle Name"; Rec."Borrower Middle Name") { Width = 10; ApplicationArea = All; }
+                field("Borrower Last Name"; Rec."Borrower Last Name") { Width = 30; ApplicationArea = All; }
+                field("Co-Borrower First Name"; Rec."Co-Borrower First Name") { ApplicationArea = All; Visible = False; }
+                field("Co-Borrower Middle Name"; Rec."Co-Borrower Middle Name") { ApplicationArea = All; Visible = False; }
+                field("Co-Borrower Last Name"; Rec."Co-Borrower Last Name") { ApplicationArea = All; Visible = False; }
+                field("203K Contractor Name"; Rec."203K Contractor Name") { ApplicationArea = All; Visible = False; }
+                field("203K Inspector Name"; Rec."203K Inspector Name") { ApplicationArea = All; Visible = False; }
+                field("Loan Amount"; Rec."Loan Amount") { ApplicationArea = All; }
+                field("Application Date"; Rec."Application Date") { ApplicationArea = All; Visible = False; }
+                field("Date Locked"; Rec."Date Locked") { ApplicationArea = All; Visible = False; }
+                field("Date Closed"; Rec."Date Closed") { ApplicationArea = All; Visible = False; }
+                field("Date Sold"; Rec."Date Sold") { ApplicationArea = All; }
+                field("Loan Term (Months)"; Rec."Loan Term (Months)") { ApplicationArea = All; Visible = False; }
+                field("Interest Rate"; Rec."Interest Rate") { ApplicationArea = All; Visible = False; }
+                field("Constr. Interest Rate"; Rec."Constr. Interest Rate") { ApplicationArea = All; Visible = False; }
+                field("Monthly Escrow Amount"; Rec."Monthly Escrow Amount") { ApplicationArea = All; Visible = False; }
+                field("Monthly Payment Amount"; Rec."Monthly Payment Amount") { ApplicationArea = All; Visible = False; }
+                field("First Payment Due"; Rec."First Payment Due") { ApplicationArea = All; Visible = False; }
+                field("Next Payment Date"; Rec."Next Payment Date") { ApplicationArea = All; Visible = False; }
+                field("Commission Date"; Rec."Commission Date") { ApplicationArea = All; Visible = False; }
+                field("Commission Base Amount"; Rec."Commission Base Amount") { ApplicationArea = All; Visible = False; }
+                field("Commission Bps"; Rec."Commission Bps") { ApplicationArea = All; }
+                field("Commission Amount"; Rec."Commission Amount") { ApplicationArea = All; }
+                field("Warehouse Line Code"; Rec."Warehouse Line Code") { ApplicationArea = All; }
+                field("Business Unit Code"; Rec."Business Unit Code") { ApplicationArea = All; }
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
+                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code") { ApplicationArea = All; Visible = DimensionVisible3; }
+                field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code") { ApplicationArea = All; Visible = DimensionVisible4; }
+                field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code") { ApplicationArea = All; Visible = DimensionVisible5; }
+                field("Shortcut Dimension 6 Code"; Rec."Shortcut Dimension 6 Code") { ApplicationArea = All; Visible = DimensionVisible6; }
+                field("Shortcut Dimension 7 Code"; Rec."Shortcut Dimension 7 Code") { ApplicationArea = All; Visible = DimensionVisible7; }
+                field("Shortcut Dimension 8 Code"; Rec."Shortcut Dimension 8 Code") { ApplicationArea = All; Visible = DimensionVisible8; }
+                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
+                field("Processing Schema Code"; Rec."Processing Schema Code") { ApplicationArea = All; }
+                field("Reason Code"; Rec."Reason Code") { ApplicationArea = All; }
+                field("Calculated Document Amount"; Rec."Calculated Document Amount") { ApplicationArea = All; }
+                field(Blocked; Rec.Blocked) { ApplicationArea = All; }
+                field("First Payment Due To Investor"; Rec."First Payment Due To Investor") { ApplicationArea = All; }
             }
         }
 
@@ -99,9 +99,9 @@ page 14135137 lvngSoldJournalLines
                     LoanImportSchema.SetRange("Loan Journal Batch Type", LoanImportSchema."Loan Journal Batch Type"::Sold);
                     if Page.RunModal(0, LoanImportSchema) = Action::LookupOk then begin
                         Clear(LoanJournalImport);
-                        LoanJournalImport.ReadCSVStream("Loan Journal Batch Code", LoanImportSchema);
+                        LoanJournalImport.ReadCSVStream(Rec."Loan Journal Batch Code", LoanImportSchema);
                         Commit();
-                        ValidateSoldJournal.ValidateSoldLines("Loan Journal Batch Code");
+                        ValidateSoldJournal.ValidateSoldLines(Rec."Loan Journal Batch Code");
                         CurrPage.Update(false);
                     end;
                 end;
@@ -120,7 +120,7 @@ page 14135137 lvngSoldJournalLines
                 var
                     ValidateSoldJournal: Codeunit lvngValidateSoldJournal;
                 begin
-                    ValidateSoldJournal.ValidateSoldLines("Loan Journal Batch Code");
+                    ValidateSoldJournal.ValidateSoldLines(Rec."Loan Journal Batch Code");
                     CurrPage.Update(false);
                 end;
             }
@@ -156,7 +156,7 @@ page 14135137 lvngSoldJournalLines
                 var
                     CreateSoldDocuments: Codeunit lvngCreateSoldDocuments;
                 begin
-                    CreateSoldDocuments.CreateDocuments("Loan Journal Batch Code");
+                    CreateSoldDocuments.CreateDocuments(Rec."Loan Journal Batch Code");
                 end;
             }
             action(CreateLoanCards)
@@ -172,7 +172,7 @@ page 14135137 lvngSoldJournalLines
                 var
                     LoanManagement: Codeunit lvngLoanManagement;
                 begin
-                    LoanManagement.UpdateLoans("Loan Journal Batch Code");
+                    LoanManagement.UpdateLoans(Rec."Loan Journal Batch Code");
                 end;
             }
 
@@ -198,7 +198,7 @@ page 14135137 lvngSoldJournalLines
 
                 trigger OnAction()
                 begin
-                    SetRange("Error Exists", true);
+                    Rec.SetRange("Error Exists", true);
                     CurrPage.Update(false);
                 end;
             }
@@ -213,7 +213,7 @@ page 14135137 lvngSoldJournalLines
 
                 trigger OnAction()
                 begin
-                    SetRange("Error Exists");
+                    Rec.SetRange("Error Exists");
                     CurrPage.Update(false);
                 end;
             }
@@ -239,6 +239,6 @@ page 14135137 lvngSoldJournalLines
 
     trigger OnAfterGetRecord()
     begin
-        CalcFields("Error Exists");
+        Rec.CalcFields("Error Exists");
     end;
 }

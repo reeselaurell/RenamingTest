@@ -14,21 +14,21 @@ page 14135155 lvngServicingWorksheet
             {
                 FreezeColumn = "Borrower Name";
 
-                field("Loan No."; "Loan No.") { ApplicationArea = All; DrillDown = false; Style = Attention; StyleExpr = "Error Message" <> ''; }
-                field("Borrower Name"; "Borrower Name") { ApplicationArea = All; DrillDown = false; }
-                field("Customer No."; "Customer No.") { ApplicationArea = All; DrillDown = false; }
-                field("Date Funded"; "Date Funded") { ApplicationArea = All; DrillDown = false; }
-                field("First Payment Due"; "First Payment Due") { ApplicationArea = All; DrillDown = false; }
-                field("Next Payment Date"; "Next Payment Date") { ApplicationArea = All; DrillDown = false; }
-                field("First Payment Due To Investor"; "First Payment Due To Investor") { ApplicationArea = All; DrillDown = false; }
-                field("Last Servicing Period"; "Last Servicing Period") { ApplicationArea = All; }
-                field("Payable to Investor"; "Payable to Investor") { ApplicationArea = All; Editable = false; }
-                field("Date Sold"; "Date Sold") { ApplicationArea = All; DrillDown = false; }
-                field("Interest Amount"; "Interest Amount") { ApplicationArea = All; Editable = false; }
-                field("Principal Amount"; "Principal Amount") { ApplicationArea = All; Editable = false; }
-                field("Escrow Amount"; "Escrow Amount") { ApplicationArea = All; Editable = false; }
-                field(TotalAmount; "Interest Amount" + "Principal Amount" + "Escrow Amount") { ApplicationArea = All; Editable = false; Caption = 'Total Amount'; }
-                field("Error Message"; "Error Message") { ApplicationArea = All; Editable = false; }
+                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; DrillDown = false; Style = Attention; StyleExpr = Rec."Error Message" <> ''; }
+                field("Borrower Name"; Rec."Borrower Name") { ApplicationArea = All; DrillDown = false; }
+                field("Customer No."; Rec."Customer No.") { ApplicationArea = All; DrillDown = false; }
+                field("Date Funded"; Rec."Date Funded") { ApplicationArea = All; DrillDown = false; }
+                field("First Payment Due"; Rec."First Payment Due") { ApplicationArea = All; DrillDown = false; }
+                field("Next Payment Date"; Rec."Next Payment Date") { ApplicationArea = All; DrillDown = false; }
+                field("First Payment Due To Investor"; Rec."First Payment Due To Investor") { ApplicationArea = All; DrillDown = false; }
+                field("Last Servicing Period"; Rec."Last Servicing Period") { ApplicationArea = All; }
+                field("Payable to Investor"; Rec."Payable to Investor") { ApplicationArea = All; Editable = false; }
+                field("Date Sold"; Rec."Date Sold") { ApplicationArea = All; DrillDown = false; }
+                field("Interest Amount"; Rec."Interest Amount") { ApplicationArea = All; Editable = false; }
+                field("Principal Amount"; Rec."Principal Amount") { ApplicationArea = All; Editable = false; }
+                field("Escrow Amount"; Rec."Escrow Amount") { ApplicationArea = All; Editable = false; }
+                field(TotalAmount; Rec."Interest Amount" + Rec."Principal Amount" + Rec."Escrow Amount") { ApplicationArea = All; Editable = false; Caption = 'Total Amount'; }
+                field("Error Message"; Rec."Error Message") { ApplicationArea = All; Editable = false; }
             }
         }
 
@@ -136,6 +136,6 @@ page 14135155 lvngServicingWorksheet
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.Escrows.Page.SetParams("Loan No.");
+        CurrPage.Escrows.Page.SetParams(Rec."Loan No.");
     end;
 }

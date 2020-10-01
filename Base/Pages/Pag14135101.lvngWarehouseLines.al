@@ -12,9 +12,9 @@ page 14135101 lvngWarehouseLines
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Show In Rolecenter"; "Show In Rolecenter") { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Show In Rolecenter"; Rec."Show In Rolecenter") { ApplicationArea = All; }
             }
         }
     }

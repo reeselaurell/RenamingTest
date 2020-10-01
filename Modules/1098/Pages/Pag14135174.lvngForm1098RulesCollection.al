@@ -10,15 +10,15 @@ page 14135174 lvngForm1098RulesCollection
         {
             repeater(Group)
             {
-                field("Line No."; "Line No.") { ApplicationArea = All; Caption = 'Line No.'; }
-                field(Description; Description) { ApplicationArea = All; Caption = 'Description'; }
-                field(Type; Type) { ApplicationArea = All; Caption = 'Type'; }
-                field("Condition Code"; "Condition Code") { ApplicationArea = All; Caption = 'Condition Code'; }
-                field("Formula Code"; "Formula Code") { ApplicationArea = All; Caption = 'Formula Code'; Editable = Type = Type::"Loan Card"; }
-                field("G/L Filter"; "G/L Filter".HasValue()) { ApplicationArea = All; Caption = 'G/L Entry Filters'; }
-                field("Document Paid"; "Document Paid") { ApplicationArea = All; Caption = 'Document Paid'; }
-                field("Paid Before Current Year"; "Paid Before Current Year") { ApplicationArea = All; Caption = 'Paid Before Current Year'; }
-                field("Reverse Amount"; "Reverse Amount") { ApplicationArea = All; Caption = 'Reverse Amount'; }
+                field("Line No."; Rec."Line No.") { ApplicationArea = All; Caption = 'Line No.'; }
+                field(Description; Rec.Description) { ApplicationArea = All; Caption = 'Description'; }
+                field(Type; Rec.Type) { ApplicationArea = All; Caption = 'Type'; }
+                field("Condition Code"; Rec."Condition Code") { ApplicationArea = All; Caption = 'Condition Code'; }
+                field("Formula Code"; Rec."Formula Code") { ApplicationArea = All; Caption = 'Formula Code'; Editable = Rec.Type = Rec.Type::"Loan Card"; }
+                field("G/L Filter"; Rec."G/L Filter".HasValue()) { ApplicationArea = All; Caption = 'G/L Entry Filters'; }
+                field("Document Paid"; Rec."Document Paid") { ApplicationArea = All; Caption = 'Document Paid'; }
+                field("Paid Before Current Year"; Rec."Paid Before Current Year") { ApplicationArea = All; Caption = 'Paid Before Current Year'; }
+                field("Reverse Amount"; Rec."Reverse Amount") { ApplicationArea = All; Caption = 'Reverse Amount'; }
             }
         }
     }
@@ -56,7 +56,7 @@ page 14135174 lvngForm1098RulesCollection
         OStream: OutStream;
         ViewText: Text;
     begin
-        CalcFields("G/L Filter");
+        Rec.CalcFields("G/L Filter");
         FPBuilder.AddRecord(GLEntryLbl, GLEntry);
         FPBuilder.AddFieldNo(GLEntryLbl, 3);
         FPBuilder.AddFieldNo(GLEntryLbl, 4);
@@ -70,16 +70,16 @@ page 14135174 lvngForm1098RulesCollection
         FPBuilder.AddFieldNo(GLEntryLbl, 14135103);
         FPBuilder.AddFieldNo(GLEntryLbl, 14135105);
         FPBuilder.AddFieldNo(GLEntryLbl, 14135106);
-        if "G/L Filter".HasValue() then begin
-            "G/L Filter".CreateInStream(IStream);
+        if Rec."G/L Filter".HasValue() then begin
+            Rec."G/L Filter".CreateInStream(IStream);
             IStream.ReadText(ViewText);
             FPBuilder.SetView(GLEntryLbl, ViewText);
         end;
         if FPBuilder.RunModal() then begin
-            Clear("G/L Filter");
-            "G/L Filter".CreateOutStream(OStream);
+            Clear(Rec."G/L Filter");
+            Rec."G/L Filter".CreateOutStream(OStream);
             OStream.WriteText(FPBuilder.GetView(GLEntryLbl, false));
-            Modify();
+            Rec.Modify();
         end;
     end;
 }

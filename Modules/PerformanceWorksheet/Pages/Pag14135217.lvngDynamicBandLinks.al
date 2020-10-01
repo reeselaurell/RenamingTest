@@ -10,12 +10,12 @@ page 14135217 lvngDynamicBandLinks
         {
             repeater(Group)
             {
-                field("Dimension Value Code"; "Dimension Value Code") { ApplicationArea = All; }
-                field("Global Dimension 1 Code"; "Global Dimension 1 Code") { ApplicationArea = All; }
-                field("Global Dimension 2 Code"; "Global Dimension 2 Code") { ApplicationArea = All; }
-                field("Shortcut Dimension 3 Code"; "Shortcut Dimension 3 Code") { ApplicationArea = All; }
-                field("Shortcut Dimension 4 Code"; "Shortcut Dimension 4 Code") { ApplicationArea = All; }
-                field("Business Unit Code"; "Business Unit Code") { ApplicationArea = All; }
+                field("Dimension Value Code"; Rec."Dimension Value Code") { ApplicationArea = All; }
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code") { ApplicationArea = All; }
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code") { ApplicationArea = All; }
+                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code") { ApplicationArea = All; }
+                field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code") { ApplicationArea = All; }
+                field("Business Unit Code"; Rec."Business Unit Code") { ApplicationArea = All; }
             }
         }
     }
@@ -39,11 +39,11 @@ page 14135217 lvngDynamicBandLinks
                     DynamicBandLink: Record lvngDynamicBandLink;
                 begin
                     DimensionValue.Reset();
-                    DimensionValue.SetRange("Dimension Code", "Dimension Code");
+                    DimensionValue.SetRange("Dimension Code", Rec."Dimension Code");
                     DimensionValue.FindSet();
                     repeat
                         Clear(DynamicBandLink);
-                        DynamicBandLink."Dimension Code" := "Dimension Code";
+                        DynamicBandLink."Dimension Code" := Rec."Dimension Code";
                         DynamicBandLink."Dimension Value Code" := DimensionValue.Code;
                         if DynamicBandLink.Insert() then;
                         CurrPage.Update(false);

@@ -13,11 +13,11 @@ page 14135201 lvngPerformanceRowSchemaLines
         {
             repeater(Group)
             {
-                field("Line No."; "Line No.") { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Row Type"; "Row Type") { ApplicationArea = All; }
-                field("Row Style"; "Row Style") { ApplicationArea = All; }
-                field("Hide Zero Line"; "Hide Zero Line") { ApplicationArea = All; }
+                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Row Type"; Rec."Row Type") { ApplicationArea = All; }
+                field("Row Style"; Rec."Row Style") { ApplicationArea = All; }
+                field("Hide Zero Line"; Rec."Hide Zero Line") { ApplicationArea = All; }
             }
             part(SubList; lvngPerfRowSchemaSubLines) { ApplicationArea = All; SubPageLink = "Schema Code" = field("Schema Code"), "Line No." = field("Line No."); }
         }
@@ -31,12 +31,12 @@ page 14135201 lvngPerformanceRowSchemaLines
         PerformanceRowSchemaLine: Record lvngPerformanceRowSchemaLine;
     begin
         PerformanceRowSchemaLine.Reset();
-        PerformanceRowSchemaLine.SetRange("Schema Code", "Schema Code");
+        PerformanceRowSchemaLine.SetRange("Schema Code", Rec."Schema Code");
         PerformanceRowSchemaLine.SetRange("Column No.", 1);
         if PerformanceRowSchemaLine.FindLast() then
-            "Line No." := PerformanceRowSchemaLine."Line No." + 10
+            Rec."Line No." := PerformanceRowSchemaLine."Line No." + 10
         else
-            "Line No." := 10;
+            Rec."Line No." := 10;
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
@@ -50,8 +50,8 @@ page 14135201 lvngPerformanceRowSchemaLines
         ColLine.TestField("Column No.", 1);
         while ColLine.Next() <> 0 do begin
             Clear(RowLine);
-            RowLine."Schema Code" := "Schema Code";
-            RowLine."Line No." := "Line No.";
+            RowLine."Schema Code" := Rec."Schema Code";
+            RowLine."Line No." := Rec."Line No.";
             RowLine."Column No." := ColLine."Column No.";
             RowLine.Insert();
         end;

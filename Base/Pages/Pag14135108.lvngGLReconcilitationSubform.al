@@ -10,24 +10,24 @@ page 14135108 lvngGLReconcilitationSubform
         {
             repeater(Group)
             {
-                field("Entry No."; "Entry No.") { ApplicationArea = All; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; }
-                field("Document Type"; "Document Type") { ApplicationArea = All; }
-                field("Document No."; "Document No.") { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field(Amount; Amount) { ApplicationArea = All; }
-                field("Global Dimension 1 Code"; "Global Dimension 1 Code") { ApplicationArea = All; }
-                field("Global Dimension 2 Code"; "Global Dimension 2 Code") { ApplicationArea = All; }
-                field("Reason Code"; "Reason Code") { ApplicationArea = All; }
-                field("Debit Amount"; "Debit Amount") { ApplicationArea = All; }
-                field("Credit Amount"; "Credit Amount") { ApplicationArea = All; }
-                field(lvngShortcutDimension3Code; lvngShortcutDimension3Code) { ApplicationArea = All; }
-                field(lvngShortcutDimension4Code; lvngShortcutDimension4Code) { ApplicationArea = All; }
-                field(lvngShortcutDimension5Code; lvngShortcutDimension5Code) { ApplicationArea = All; }
-                field(lvngShortcutDimension6Code; lvngShortcutDimension6Code) { ApplicationArea = All; }
-                field(lvngShortcutDimension7Code; lvngShortcutDimension7Code) { ApplicationArea = All; }
-                field(lvngShortcutDimension8Code; lvngShortcutDimension8Code) { ApplicationArea = All; }
-                field(lvngSourceName; lvngSourceName) { ApplicationArea = All; }
+                field("Entry No."; Rec."Entry No.") { ApplicationArea = All; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
+                field("Document Type"; Rec."Document Type") { ApplicationArea = All; }
+                field("Document No."; Rec."Document No.") { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Amount; Rec.Amount) { ApplicationArea = All; }
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code") { ApplicationArea = All; }
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code") { ApplicationArea = All; }
+                field("Reason Code"; Rec."Reason Code") { ApplicationArea = All; }
+                field("Debit Amount"; Rec."Debit Amount") { ApplicationArea = All; }
+                field("Credit Amount"; Rec."Credit Amount") { ApplicationArea = All; }
+                field(lvngShortcutDimension3Code; Rec.lvngShortcutDimension3Code) { ApplicationArea = All; }
+                field(lvngShortcutDimension4Code; Rec.lvngShortcutDimension4Code) { ApplicationArea = All; }
+                field(lvngShortcutDimension5Code; Rec.lvngShortcutDimension5Code) { ApplicationArea = All; }
+                field(lvngShortcutDimension6Code; Rec.lvngShortcutDimension6Code) { ApplicationArea = All; }
+                field(lvngShortcutDimension7Code; Rec.lvngShortcutDimension7Code) { ApplicationArea = All; }
+                field(lvngShortcutDimension8Code; Rec.lvngShortcutDimension8Code) { ApplicationArea = All; }
+                field(lvngSourceName; Rec.lvngSourceName) { ApplicationArea = All; }
             }
         }
     }
@@ -47,7 +47,7 @@ page 14135108 lvngGLReconcilitationSubform
                 var
                     Navigate: page Navigate;
                 begin
-                    Navigate.SetDoc("Posting Date", "Document No.");
+                    Navigate.SetDoc(Rec."Posting Date", Rec."Document No.");
                     Navigate.Run();
                 end;
             }
@@ -60,7 +60,7 @@ page 14135108 lvngGLReconcilitationSubform
 
                 trigger OnAction()
                 begin
-                    ShowDimensions();
+                    Rec.ShowDimensions();
                     CurrPage.SaveRecord();
                 end;
             }

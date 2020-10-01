@@ -15,25 +15,25 @@ page 14135195 lvngReverseSalesDocuments
         {
             repeater(Group)
             {
-                field("Document Type"; "Document Type") { ApplicationArea = All; Editable = false; }
-                field("No."; "No.") { ApplicationArea = All; Editable = false; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; Editable = false; }
-                field(NewPostingDate; "Shipment Date")
+                field("Document Type"; Rec."Document Type") { ApplicationArea = All; Editable = false; }
+                field("No."; Rec."No.") { ApplicationArea = All; Editable = false; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; Editable = false; }
+                field(NewPostingDate; Rec."Shipment Date")
                 {
                     ApplicationArea = All;
                     Caption = 'New Posting Date';
 
                     trigger OnValidate()
                     begin
-                        "Shipment Date" := "Shipment Date";
+                        Rec."Shipment Date" := Rec."Shipment Date";
                     end;
                 }
-                field("Sell-to Customer No."; "Sell-to Customer No.") { ApplicationArea = All; Editable = false; }
-                field("Bill-to Customer No."; "Bill-to Customer No.") { ApplicationArea = All; Editable = false; }
-                field("Bill-to Name"; "Bill-to Name") { ApplicationArea = All; Editable = false; }
-                field("Reason Code"; "Reason Code") { ApplicationArea = All; Editable = false; }
+                field("Sell-to Customer No."; Rec."Sell-to Customer No.") { ApplicationArea = All; Editable = false; }
+                field("Bill-to Customer No."; Rec."Bill-to Customer No.") { ApplicationArea = All; Editable = false; }
+                field("Bill-to Name"; Rec."Bill-to Name") { ApplicationArea = All; Editable = false; }
+                field("Reason Code"; Rec."Reason Code") { ApplicationArea = All; Editable = false; }
                 //Borrower Name
-                field(ReverseTransaction; Correction) { ApplicationArea = All; Caption = 'Reverse Transaction'; }
+                field(ReverseTransaction; Rec.Correction) { ApplicationArea = All; Caption = 'Reverse Transaction'; }
             }
         }
     }
@@ -140,32 +140,33 @@ page 14135195 lvngReverseSalesDocuments
                     Progress: Dialog;
                     LoanNoLength: Integer;
                     LastSymbolOfLoanNo: Text;
+                    SalesDocTypeFrom: Enum "Sales Document Type From";
                 begin
-                    Reset();
-                    SetRange(Correction, true);
+                    Rec.Reset();
+                    Rec.SetRange(Correction, true);
                     RecordsCount := 0;
-                    if Count() > 10 then begin
+                    if Rec.Count() > 10 then begin
                         GetLoanVisionSetup();
                         if not LoanVisionSetup."Maintenance Mode" then
                             Error(ReverseErr);
                     end;
                     Progress.Open(ProgressMsg);
-                    if FindSet() then
+                    if Rec.FindSet() then
                         repeat
                             RecordsCount := RecordsCount + 1;
-                            Progress.Update(1, "No.");
-                            if "Document Type" = "Document Type"::"Credit Memo" then begin
+                            Progress.Update(1, Rec."No.");
+                            if Rec."Document Type" = Rec."Document Type"::"Credit Memo" then begin
                                 Clear(CopyDocumentMgt);
                                 Clear(SalesHeader);
                                 SalesHeader."Document Type" := SalesHeader."Document Type"::Invoice;
                                 SalesHeader.Insert(true);
                                 CopyDocumentMgt.SetPropertiesForInvoiceCorrection(false);
-                                CopyDocumentMgt.CopySalesDoc(9, "No.", SalesHeader);
-                                SalesCrMemoHeader.Get("No.");
+                                CopyDocumentMgt.CopySalesDoc(SalesDocTypeFrom::"Posted Credit Memo", Rec."No.", SalesHeader);
+                                SalesCrMemoHeader.Get(Rec."No.");
                                 LoanNoLength := StrLen(SalesCrMemoHeader.lvngLoanNo);
                                 LastSymbolOfLoanNo := CopyStr(SalesCrMemoHeader.lvngLoanNo, LoanNoLength, 1);
                                 if LastSymbolOfLoanNo = 'X' then
-                                    if not Confirm(ReverseConfirmMsg, false, "No.") then
+                                    if not Confirm(ReverseConfirmMsg, false, Rec."No.") then
                                         Error(CancelledErr);
                                 SalesCrMemoHeader.lvngLoanNo := SalesCrMemoHeader.lvngLoanNo + 'X';
                                 SalesCrMemoHeader.Modify();
@@ -180,10 +181,10 @@ page 14135195 lvngReverseSalesDocuments
                                     until SalesCrMemoLine.Next() = 0;
                                 GLEntry.Reset();
                                 GLEntry.SetCurrentKey("Document No.", "Posting Date");
-                                GLEntry.SetRange("Posting Date", "Posting Date");
+                                GLEntry.SetRange("Posting Date", Rec."Posting Date");
                                 GLEntry.SetFilter("Document Type", '%1|%2', GLEntry."Document Type"::"Credit Memo", GLEntry."Document Type"::Refund);
                                 GLEntry.SetRange("Document No.", SalesCrMemoHeader."No.");
-                                GLEntry.SetRange("Reason Code", "Reason Code");
+                                GLEntry.SetRange("Reason Code", Rec."Reason Code");
                                 if GLEntry.FindSet(true) then
                                     repeat
                                         if GLEntry.lvngLoanNo <> '' then begin
@@ -193,26 +194,26 @@ page 14135195 lvngReverseSalesDocuments
                                     until GLEntry.Next() = 0;
                                 CustLedgEntry.Reset();
                                 CustLedgEntry.SetRange("Document No.", SalesCrMemoHeader."No.");
-                                CustLedgEntry.SetRange("Posting Date", "Posting Date");
-                                CustLedgEntry.SetRange("Reason Code", "Reason Code");
+                                CustLedgEntry.SetRange("Posting Date", Rec."Posting Date");
+                                CustLedgEntry.SetRange("Reason Code", Rec."Reason Code");
                                 if CustLedgEntry.FindSet(true) then
                                     repeat
-                                        CustLedgEntry.lvngLoanNo := lvngLoanNo + 'X';
+                                        CustLedgEntry.lvngLoanNo := Rec.lvngLoanNo + 'X';
                                         CustLedgEntry.Modify();
                                     until CustLedgEntry.Next() = 0;
                             end;
-                            if "Document Type" = "Document Type"::Invoice then begin
+                            if Rec."Document Type" = Rec."Document Type"::Invoice then begin
                                 Clear(CopyDocumentMgt);
                                 Clear(SalesHeader);
                                 SalesHeader."Document Type" := SalesHeader."Document Type"::"Credit Memo";
                                 SalesHeader.Insert(true);
                                 CopyDocumentMgt.SetPropertiesForCreditMemoCorrection;
-                                CopyDocumentMgt.CopySalesDoc(7, "No.", SalesHeader);
-                                SalesInvHeader.Get("No.");
+                                CopyDocumentMgt.CopySalesDoc(SalesDocTypeFrom::"Posted Invoice", Rec."No.", SalesHeader);
+                                SalesInvHeader.Get(Rec."No.");
                                 LoanNoLength := StrLen(SalesInvHeader.lvngLoanNo);
                                 LastSymbolOfLoanNo := CopyStr(SalesInvHeader.lvngLoanNo, LoanNoLength, 1);
                                 if LastSymbolOfLoanNo = 'X' then
-                                    if not Confirm(ReverseConfirmMsg, false, "No.") then
+                                    if not Confirm(ReverseConfirmMsg, false, Rec."No.") then
                                         Error(CancelledErr);
                                 SalesInvHeader.lvngLoanNo := SalesInvHeader.lvngLoanNo + 'X';
                                 SalesInvHeader.Modify();
@@ -227,10 +228,10 @@ page 14135195 lvngReverseSalesDocuments
                                     until SalesInvLine.Next() = 0;
                                 GLEntry.Reset();
                                 GLEntry.SetCurrentKey("Document No.", "Posting Date");
-                                GLEntry.SetRange("Posting Date", "Posting Date");
+                                GLEntry.SetRange("Posting Date", Rec."Posting Date");
                                 GLEntry.SetFilter("Document Type", '%1|%2', GLEntry."Document Type"::Invoice, GLEntry."Document Type"::Payment);
                                 GLEntry.SetRange("Document No.", SalesInvHeader."No.");
-                                GLEntry.SetRange("Reason Code", "Reason Code");
+                                GLEntry.SetRange("Reason Code", Rec."Reason Code");
                                 if GLEntry.FindSet(true) then
                                     repeat
                                         if GLEntry.lvngLoanNo <> '' then begin
@@ -240,11 +241,11 @@ page 14135195 lvngReverseSalesDocuments
                                     until GLEntry.Next() = 0;
                                 CustLedgEntry.Reset();
                                 CustLedgEntry.SetRange("Document No.", SalesInvHeader."No.");
-                                CustLedgEntry.SetRange("Posting Date", "Posting Date");
-                                CustLedgEntry.SetRange("Reason Code", "Reason Code");
+                                CustLedgEntry.SetRange("Posting Date", Rec."Posting Date");
+                                CustLedgEntry.SetRange("Reason Code", Rec."Reason Code");
                                 if CustLedgEntry.FindSet(true) then
                                     repeat
-                                        CustLedgEntry.lvngLoanNo := lvngLoanNo + 'X';
+                                        CustLedgEntry.lvngLoanNo := Rec.lvngLoanNo + 'X';
                                         CustLedgEntry.Modify();
                                     until CustLedgEntry.Next() = 0;
                             end;
@@ -261,19 +262,19 @@ page 14135195 lvngReverseSalesDocuments
                                     end;
                                 until SalesLine.Next() = 0;
                             SalesHeader.Invoice := true;
-                            if "Posting Date" <> "Shipment Date" then begin
-                                SalesHeader."Posting Date" := "Shipment Date";
+                            if Rec."Posting Date" <> Rec."Shipment Date" then begin
+                                SalesHeader."Posting Date" := Rec."Shipment Date";
                                 SalesHeader.Modify();
                                 SalesLine.Reset();
                                 SalesLine.SetRange("Document Type", SalesHeader."Document Type");
                                 SalesLine.SetRange("Document No.", SalesHeader."No.");
-                                SalesLine.ModifyAll("Shipment Date", "Shipment Date");
+                                SalesLine.ModifyAll("Shipment Date", Rec."Shipment Date");
                             end;
                             Codeunit.Run(Codeunit::"Sales-Post", SalesHeader);
-                        until Next() = 0;
+                        until Rec.Next() = 0;
                     Progress.Close();
-                    DeleteAll();
-                    Reset();
+                    Rec.DeleteAll();
+                    Rec.Reset();
                     CurrPage.Update(false);
                     Message(CompleteMsg, RecordsCount);
                 end;
@@ -298,10 +299,10 @@ page 14135195 lvngReverseSalesDocuments
                     if DateTimeDialog.RunModal() = Action::LookupOK then begin
                         NewDate := DT2Date(DateTimeDialog.GetDateTime());
                         if NewDate <> 0D then begin
-                            Reset();
-                            SetRange(Correction, true);
-                            ModifyAll("Shipment Date", NewDate);
-                            Reset();
+                            Rec.Reset();
+                            Rec.SetRange(Correction, true);
+                            Rec.ModifyAll("Shipment Date", NewDate);
+                            Rec.Reset();
                         end;
                     end;
                 end;

@@ -35,13 +35,13 @@ pageextension 14135109 lvngPurchaseInvoice extends "Purchase Invoice"
 
         addafter("Job Queue Status")
         {
-            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
-            field(lvngDocumentTotalCheck; lvngDocumentTotalCheck) { ApplicationArea = All; }
+            field(lvngLoanNo; Rec.lvngLoanNo) { ApplicationArea = All; }
+            field(lvngDocumentTotalCheck; Rec.lvngDocumentTotalCheck) { ApplicationArea = All; }
         }
 
         addlast(General)
         {
-            field(lvngTotalAmount; lvngTotalAmount) { ApplicationArea = All; }
+            field(lvngTotalAmount; Rec.lvngTotalAmount) { ApplicationArea = All; }
         }
 
         addfirst(factboxes)
@@ -81,7 +81,7 @@ pageextension 14135109 lvngPurchaseInvoice extends "Purchase Invoice"
                         JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        PurchFileImportManagement.CreatePurchaseLines(GenJnlImportBuffer, DocumentType::Invoice, "No.");
+                        PurchFileImportManagement.CreatePurchaseLines(GenJnlImportBuffer, DocumentType::Invoice, Rec."No.");
                     CurrPage.Update(false);
                 end;
             }
@@ -90,11 +90,11 @@ pageextension 14135109 lvngPurchaseInvoice extends "Purchase Invoice"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        lvngDocumentGuid := CreateGuid();
+        Rec.lvngDocumentGuid := CreateGuid();
     end;
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+        CurrPage.DocumentExchange.Page.ReloadDocuments(Rec.lvngDocumentGuid);
     end;
 }

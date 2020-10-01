@@ -15,13 +15,13 @@ page 14135229 lvngCloseManagerTemplateLines
             {
                 Caption = 'Group';
 
-                field("Task Category"; "Task Category") { ApplicationArea = All; }
-                field("Task Name"; "Task Name") { ApplicationArea = All; }
-                field("Account No."; "Account No.") { ApplicationArea = All; }
-                field("Due Date Calculation"; "Due Date Calculation") { ApplicationArea = All; }
-                field("Assigned To"; "Assigned To") { ApplicationArea = All; }
-                field("Assigned Approver"; "Assigned Approver") { ApplicationArea = All; }
-                field(Instructions; Instructions) { ApplicationArea = All; }
+                field("Task Category"; Rec."Task Category") { ApplicationArea = All; }
+                field("Task Name"; Rec."Task Name") { ApplicationArea = All; }
+                field("Account No."; Rec."Account No.") { ApplicationArea = All; }
+                field("Due Date Calculation"; Rec."Due Date Calculation") { ApplicationArea = All; }
+                field("Assigned To"; Rec."Assigned To") { ApplicationArea = All; }
+                field("Assigned Approver"; Rec."Assigned Approver") { ApplicationArea = All; }
+                field(Instructions; Rec.Instructions) { ApplicationArea = All; }
             }
         }
     }

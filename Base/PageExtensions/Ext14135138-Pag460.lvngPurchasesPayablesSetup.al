@@ -8,8 +8,8 @@ pageextension 14135138 lvngPurchasesPayablesSetup extends "Purchases & Payables 
             {
                 Caption = 'Loan Vision';
 
-                field(lvngQuickPayDefaultBatch; lvngQuickPayDefaultBatch) { ApplicationArea = All; Caption = 'Quick Pay Default Batch'; }
-                field(lvngQuickPayBatchSelection; lvngQuickPayBatchSelection) { ApplicationArea = All; Caption = 'Quick Pay Batch Selection'; }
+                field(lvngQuickPayDefaultBatch; Rec.lvngQuickPayDefaultBatch) { ApplicationArea = All; Caption = 'Quick Pay Default Batch'; }
+                field(lvngQuickPayBatchSelection; Rec.lvngQuickPayBatchSelection) { ApplicationArea = All; Caption = 'Quick Pay Batch Selection'; }
             }
         }
     }

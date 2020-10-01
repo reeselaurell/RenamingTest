@@ -6,14 +6,14 @@ pageextension 14135139 lvngPurchInvoiceSubform extends "Purch. Invoice Subform"
         // Add changes to page layout here
         addlast(PurchDetailLine)
         {
-            field(lvngReasonCode; lvngReasonCode) { ApplicationArea = All; Visible = false; }
-            field(lnvgServicingType; lnvgServicingType) { ApplicationArea = All; }
-            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
+            field(lvngReasonCode; Rec.lvngReasonCode) { ApplicationArea = All; Visible = false; }
+            field(lvngServicingType; Rec.lvngServicingType) { ApplicationArea = All; }
+            field(lvngLoanNo; Rec.lvngLoanNo) { ApplicationArea = All; }
             field(BorrowerName; BorrowerName) { Caption = 'Borrower Name'; ApplicationArea = All; Editable = false; }
-            field(lvngDeliveryState; lvngDeliveryState) { ApplicationArea = All; }
-            field(lvngUseSalesTax; lvngUseSalesTax) { ApplicationArea = All; }
-            field(lvngShortcutDimension1Name; lvngShortcutDimension1Name) { ApplicationArea = All; }
-            field(lvngShortcutDimension2Name; lvngShortcutDimension2Name) { ApplicationArea = All; }
+            field(lvngDeliveryState; Rec.lvngDeliveryState) { ApplicationArea = All; }
+            field(lvngUseSalesTax; Rec.lvngUseSalesTax) { ApplicationArea = All; }
+            field(lvngShortcutDimension1Name; Rec.lvngShortcutDimension1Name) { ApplicationArea = All; }
+            field(lvngShortcutDimension2Name; Rec.lvngShortcutDimension2Name) { ApplicationArea = All; }
         }
 
         modify(Control39) { Visible = false; }
@@ -40,13 +40,13 @@ pageextension 14135139 lvngPurchInvoiceSubform extends "Purch. Invoice Subform"
         Loan: Record lvngLoan;
     begin
         BorrowerName := '';
-        if lvngLoanNo <> '' then
-            if Loan.Get(lvngLoanNo) then
+        if Rec.lvngLoanNo <> '' then
+            if Loan.Get(Rec.lvngLoanNo) then
                 BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Type := Type::"G/L Account";
+        Rec.Type := Rec.Type::"G/L Account";
     end;
 }

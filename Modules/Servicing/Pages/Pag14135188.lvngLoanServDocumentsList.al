@@ -14,12 +14,12 @@ page 14135188 lvngLoanServDocumentsList
         {
             repeater(Group)
             {
-                field("Document Type"; "Document Type") { ApplicationArea = All; }
-                field("Document No."; "Document No.") { ApplicationArea = All; }
-                field("Customer No."; "Customer No.") { ApplicationArea = All; }
-                field("Loan No."; "Loan No.") { ApplicationArea = All; }
-                field("Borrower Search Name"; "Borrower Search Name") { ApplicationArea = All; }
-                field("Document Amount"; "Document Amount") { ApplicationArea = All; }
+                field("Document Type"; Rec."Document Type") { ApplicationArea = All; }
+                field("Document No."; Rec."Document No.") { ApplicationArea = All; }
+                field("Customer No."; Rec."Customer No.") { ApplicationArea = All; }
+                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; }
+                field("Borrower Search Name"; Rec."Borrower Search Name") { ApplicationArea = All; }
+                field("Document Amount"; Rec."Document Amount") { ApplicationArea = All; }
             }
         }
     }

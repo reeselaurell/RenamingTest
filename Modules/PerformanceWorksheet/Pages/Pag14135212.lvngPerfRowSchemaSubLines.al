@@ -13,10 +13,10 @@ page 14135212 lvngPerfRowSchemaSubLines
             repeater(Group)
             {
                 field(Description; ColumnDescription) { ApplicationArea = All; Caption = 'Column'; Editable = false; }
-                field("Calculation Unit Code"; "Calculation Unit Code") { ApplicationArea = All; LookupPageId = lvngCalculationUnitList; }
-                field("Number Format Code"; "Number Format Code") { ApplicationArea = All; LookupPageId = lvngNumberFormatList; }
-                field("Style Code"; "Style Code") { ApplicationArea = All; LookupPageId = lvngStyleList; }
-                field("Neg. Style Code"; "Neg. Style Code") { ApplicationArea = All; LookupPageId = lvngStyleList; }
+                field("Calculation Unit Code"; Rec."Calculation Unit Code") { ApplicationArea = All; LookupPageId = lvngCalculationUnitList; }
+                field("Number Format Code"; Rec."Number Format Code") { ApplicationArea = All; LookupPageId = lvngNumberFormatList; }
+                field("Style Code"; Rec."Style Code") { ApplicationArea = All; LookupPageId = lvngStyleList; }
+                field("Neg. Style Code"; Rec."Neg. Style Code") { ApplicationArea = All; LookupPageId = lvngStyleList; }
             }
         }
     }
@@ -29,7 +29,7 @@ page 14135212 lvngPerfRowSchemaSubLines
     var
         ColSchemaLine: Record lvngPerformanceColSchemaLine;
     begin
-        if ColSchemaLine.Get(UnderlyingColumnSchemaCode, "Column No.") then
+        if ColSchemaLine.Get(UnderlyingColumnSchemaCode, Rec."Column No.") then
             ColumnDescription := ColSchemaLine.Description
         else
             ColumnDescription := '';

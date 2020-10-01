@@ -12,12 +12,12 @@ page 14135105 lvngLoanAddressCard
             {
                 Caption = 'General';
 
-                field("Address Type"; "Address Type") { Editable = false; }
-                field(Address; Address) { ApplicationArea = All; }
-                field("Address 2"; "Address 2") { ApplicationArea = All; }
-                field(City; City) { ApplicationArea = All; }
-                field("ZIP Code"; "ZIP Code") { ApplicationArea = All; }
-                field(State; State) { ApplicationArea = All; }
+                field("Address Type"; Rec."Address Type") { Editable = false; }
+                field(Address; Rec.Address) { ApplicationArea = All; }
+                field("Address 2"; Rec."Address 2") { ApplicationArea = All; }
+                field(City; Rec.City) { ApplicationArea = All; }
+                field("ZIP Code"; Rec."ZIP Code") { ApplicationArea = All; }
+                field(State; Rec.State) { ApplicationArea = All; }
             }
         }
     }

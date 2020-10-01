@@ -12,8 +12,8 @@ page 14135171 lvngQuickPayPresets
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; Caption = 'Code'; }
-                field(Description; Description) { ApplicationArea = All; Caption = 'Description'; }
+                field(Code; Rec.Code) { ApplicationArea = All; Caption = 'Code'; }
+                field(Description; Rec.Description) { ApplicationArea = All; Caption = 'Description'; }
             }
         }
     }
@@ -33,7 +33,7 @@ page 14135171 lvngQuickPayPresets
 
                 trigger OnAction();
                 begin
-                    MakeFilter();
+                    Rec.MakeFilter();
                     CurrPage.Update(true);
                 end;
             }

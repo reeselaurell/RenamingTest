@@ -15,8 +15,8 @@ page 14135227 lvngCloseManagerTemplateList
             {
                 Caption = 'Group';
 
-                field("No."; "No.") { ApplicationArea = All; }
-                field(Name; Name) { ApplicationArea = All; }
+                field("No."; Rec."No.") { ApplicationArea = All; }
+                field(Name; Rec.Name) { ApplicationArea = All; }
             }
         }
     }

@@ -31,10 +31,10 @@ page 14135162 lvngQuickTrace
 
                     trigger OnValidate()
                     begin
-                        DeleteAll();
-                        "Loan No." := LoanNo;
-                        Insert();
-                        FindFirst();
+                        Rec.DeleteAll();
+                        Rec."Loan No." := LoanNo;
+                        Rec.Insert();
+                        Rec.FindFirst();
                         CurrPage.Update(false);
                         DoSearch();
                     end;
@@ -595,11 +595,11 @@ page 14135162 lvngQuickTrace
 
     procedure AssignLoanNo(pLoanNo: Code[20])
     begin
-        DeleteAll();
+        Rec.DeleteAll();
         LoanNo := pLoanNo;
-        "Loan No." := LoanNo;
-        Insert();
-        FindFirst();
+        Rec."Loan No." := LoanNo;
+        Rec.Insert();
+        Rec.FindFirst();
         CurrPage.Update(false);
         DoSearch();
     end;

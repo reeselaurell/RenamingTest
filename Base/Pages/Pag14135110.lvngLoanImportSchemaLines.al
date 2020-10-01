@@ -10,9 +10,9 @@ page 14135110 lvngLoanImportSchemaLines
         {
             repeater(Group)
             {
-                field("Line No."; "Line No.") { ApplicationArea = All; }
-                field("Field Type"; "Field Type") { ApplicationArea = All; }
-                field("Field No."; "Field No.")
+                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
+                field("Field Type"; Rec."Field Type") { ApplicationArea = All; }
+                field("Field No."; Rec."Field No.")
                 {
                     ApplicationArea = All;
 
@@ -21,32 +21,32 @@ page 14135110 lvngLoanImportSchemaLines
                         FieldRec: Record Field;
                         LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
-                        case "Field Type" of
-                            "Field Type"::Table:
+                        case Rec."Field Type" of
+                            Rec."Field Type"::Table:
                                 begin
                                     FieldRec.Reset();
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
-                                    FieldRec.SetRange("No.", "Field No.");
+                                    FieldRec.SetRange("No.", Rec."Field No.");
                                     FieldRec.FindFirst();
-                                    "Field Name" := FieldRec."Field Caption";
+                                    Rec."Field Name" := FieldRec."Field Caption";
                                     case FieldRec.Type of
                                         Fieldrec.Type::Integer:
-                                            "Value Type" := "Value Type"::Integer;
+                                            Rec."Value Type" := Rec."Value Type"::Integer;
                                         FieldRec.Type::Boolean:
-                                            "Value Type" := "Value Type"::Boolean;
+                                            Rec."Value Type" := Rec."Value Type"::Boolean;
                                         FieldRec.Type::Decimal:
-                                            "Value Type" := "Value Type"::Decimal;
+                                            Rec."Value Type" := Rec."Value Type"::Decimal;
                                         FieldRec.Type::Date:
-                                            "Value Type" := "Value Type"::Date;
+                                            Rec."Value Type" := Rec."Value Type"::Date;
                                         else
-                                            "Value Type" := "Value Type"::Text;
+                                            Rec."Value Type" := Rec."Value Type"::Text;
                                     end;
                                 end;
-                            "Field Type"::Variable:
+                            Rec."Field Type"::Variable:
                                 begin
-                                    LoanFieldsConfiguration.Get("Field No.");
-                                    "Field Name" := LoanFieldsConfiguration."Field Name";
-                                    "Value Type" := LoanFieldsConfiguration."Value Type";
+                                    LoanFieldsConfiguration.Get(Rec."Field No.");
+                                    Rec."Field Name" := LoanFieldsConfiguration."Field Name";
+                                    Rec."Value Type" := LoanFieldsConfiguration."Value Type";
                                 end;
                         end;
                     end;
@@ -57,8 +57,8 @@ page 14135110 lvngLoanImportSchemaLines
                         FieldRec: Record Field;
                         LoanFieldsConfiguration: Record lvngLoanFieldsConfiguration;
                     begin
-                        case "Field Type" of
-                            "Field Type"::Table:
+                        case Rec."Field Type" of
+                            Rec."Field Type"::Table:
                                 begin
                                     FieldRec.Reset();
                                     FieldRec.SetRange(TableNo, Database::lvngLoanJournalLine);
@@ -68,41 +68,41 @@ page 14135110 lvngLoanImportSchemaLines
                                     FieldsListPage.LookupMode(true);
                                     if FieldsListPage.RunModal() = Action::LookupOK then begin
                                         FieldsListPage.GetRecord(FieldRec);
-                                        "Field No." := FieldRec."No.";
-                                        "Field Name" := FieldRec."Field Caption";
+                                        Rec."Field No." := FieldRec."No.";
+                                        Rec."Field Name" := FieldRec."Field Caption";
                                         case FieldRec.Type of
                                             Fieldrec.Type::Integer:
-                                                "Value Type" := "Value Type"::Integer;
+                                                Rec."Value Type" := Rec."Value Type"::Integer;
                                             FieldRec.Type::Boolean:
-                                                "Value Type" := "Value Type"::Boolean;
+                                                Rec."Value Type" := Rec."Value Type"::Boolean;
                                             FieldRec.Type::Decimal:
-                                                "Value Type" := "Value Type"::Decimal;
+                                                Rec."Value Type" := Rec."Value Type"::Decimal;
                                             FieldRec.Type::Date:
-                                                "Value Type" := "Value Type"::Date;
+                                                Rec."Value Type" := Rec."Value Type"::Date;
                                             else
-                                                "Value Type" := "Value Type"::Text;
+                                                Rec."Value Type" := Rec."Value Type"::Text;
                                         end;
                                     end;
                                 end;
-                            "Field Type"::Variable:
+                            Rec."Field Type"::Variable:
                                 begin
                                     if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
-                                        "Field No." := LoanFieldsConfiguration."Field No.";
-                                        "Field Name" := LoanFieldsConfiguration."Field Name";
-                                        "Value Type" := LoanFieldsConfiguration."Value Type";
+                                        Rec."Field No." := LoanFieldsConfiguration."Field No.";
+                                        Rec."Field Name" := LoanFieldsConfiguration."Field Name";
+                                        Rec."Value Type" := LoanFieldsConfiguration."Value Type";
                                     end;
                                 end;
                         end;
                     end;
                 }
-                field("Field Name"; "Field Name") { ApplicationArea = All; }
-                field("Field Size"; "Field Size") { ApplicationArea = All; }
-                field("Numeric Format"; "Numeric Format") { ApplicationArea = All; }
-                field("Value Type"; "Value Type") { ApplicationArea = All; }
-                field("Padding Side"; "Padding Side") { ApplicationArea = All; }
-                field("Padding Character"; "Padding Character") { ApplicationArea = All; }
-                field(Trimming; Trimming) { ApplicationArea = All; }
-                field("Boolean Format"; "Boolean Format") { ApplicationArea = All; }
+                field("Field Name"; Rec."Field Name") { ApplicationArea = All; }
+                field("Field Size"; Rec."Field Size") { ApplicationArea = All; }
+                field("Numeric Format"; Rec."Numeric Format") { ApplicationArea = All; }
+                field("Value Type"; Rec."Value Type") { ApplicationArea = All; }
+                field("Padding Side"; Rec."Padding Side") { ApplicationArea = All; }
+                field("Padding Character"; Rec."Padding Character") { ApplicationArea = All; }
+                field(Trimming; Rec.Trimming) { ApplicationArea = All; }
+                field("Boolean Format"; Rec."Boolean Format") { ApplicationArea = All; }
             }
         }
     }

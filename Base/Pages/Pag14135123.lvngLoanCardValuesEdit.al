@@ -11,13 +11,13 @@ page 14135123 lvngLoanCardValuesEdit
         {
             repeater(Group)
             {
-                field("Field No."; "Field No.") { ApplicationArea = All; }
+                field("Field No."; Rec."Field No.") { ApplicationArea = All; }
                 field(lvngFieldName; FieldDescription) { ApplicationArea = All; Editable = false; Caption = 'Field Name'; }
-                field("Field Value"; "Field Value") { ApplicationArea = All; }
-                field("Boolean Value"; "Boolean Value") { ApplicationArea = All; Editable = false; }
-                field("Date Value"; "Date Value") { ApplicationArea = All; Editable = false; }
-                field("Decimal Value"; "Decimal Value") { ApplicationArea = All; Editable = false; }
-                field("Integer Value"; "Integer Value") { ApplicationArea = All; Editable = false; }
+                field("Field Value"; Rec."Field Value") { ApplicationArea = All; }
+                field("Boolean Value"; Rec."Boolean Value") { ApplicationArea = All; Editable = false; }
+                field("Date Value"; Rec."Date Value") { ApplicationArea = All; Editable = false; }
+                field("Decimal Value"; Rec."Decimal Value") { ApplicationArea = All; Editable = false; }
+                field("Integer Value"; Rec."Integer Value") { ApplicationArea = All; Editable = false; }
             }
         }
     }
@@ -42,7 +42,7 @@ page 14135123 lvngLoanCardValuesEdit
     trigger OnAfterGetRecord()
     begin
         FieldDescription := '';
-        if TempLoanFieldsConfiguration.Get("Field No.") then begin
+        if TempLoanFieldsConfiguration.Get(Rec."Field No.") then begin
             FieldDescription := TempLoanFieldsConfiguration."Field Name";
         end;
     end;

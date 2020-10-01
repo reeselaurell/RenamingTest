@@ -12,18 +12,18 @@ page 14135191 lvngLVAccountantFinActSetup
         {
             group(Group)
             {
-                field("Loans Held, for Sale Accounts"; "Loans Held, for Sale Accounts") { Caption = 'Loans Held, for Sale Accounts'; ApplicationArea = All; }
-                field("Accounts Payable Accounts"; "Accounts Payable Accounts") { Caption = 'Accounts Payable Accounts'; ApplicationArea = All; }
+                field("Loans Held, for Sale Accounts"; Rec."Loans Held, for Sale Accounts") { Caption = 'Loans Held, for Sale Accounts'; ApplicationArea = All; }
+                field("Accounts Payable Accounts"; Rec."Accounts Payable Accounts") { Caption = 'Accounts Payable Accounts'; ApplicationArea = All; }
             }
         }
     }
 
     trigger OnOpenPage()
     begin
-        Reset();
-        if not Get() then begin
-            Init();
-            Insert();
+        Rec.Reset();
+        if not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
         end;
     end;
 }

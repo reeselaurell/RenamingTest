@@ -186,10 +186,10 @@ page 14135190 lvngLoanActivities
 
     trigger OnOpenPage()
     begin
-        Reset();
-        If not Get() then begin
-            Init();
-            Insert();
+        Rec.Reset();
+        If not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
         end;
     end;
 
@@ -219,9 +219,9 @@ page 14135190 lvngLoanActivities
                 Idx := Idx + 1;
                 FundedDocumentsWarehouseLineCaptions[Idx] := WarehouseLine.Description;
                 FundedDocumentsWarehouseLineCodes[Idx] := WarehouseLine.Code;
-                SetRange("Warehouse Line Code Filter", WarehouseLine.Code);
-                CalcFields("Funded Documents");
-                FundedDocumentsCount[Idx] := "Funded Documents";
+                Rec.SetRange("Warehouse Line Code Filter", WarehouseLine.Code);
+                Rec.CalcFields("Funded Documents");
+                FundedDocumentsCount[Idx] := Rec."Funded Documents";
                 case Idx of
                     1:
                         FundedDocumentVisible1 := true;

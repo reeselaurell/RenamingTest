@@ -12,8 +12,8 @@ page 14135183 lvngFlexibleImportSchemaList
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
             }
         }
     }
@@ -36,7 +36,7 @@ page 14135183 lvngFlexibleImportSchemaList
                     FlexibleImportSchema: Record lvngFlexibleImportSchema;
                 begin
                     FlexibleImportSchema.Reset();
-                    FlexibleImportSchema.SetRange(Code, Code);
+                    FlexibleImportSchema.SetRange(Code, Rec.Code);
                     Page.RunModal(Page::lvngFlexibleImportSchemaCard, FlexibleImportSchema)
                 end;
             }

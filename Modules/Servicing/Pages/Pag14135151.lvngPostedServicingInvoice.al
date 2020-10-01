@@ -12,26 +12,26 @@ page 14135151 lvngPostedServicingInvoice
             {
                 Caption = 'General';
 
-                field("No."; "No.") { ApplicationArea = All; }
-                field("Borrower Customer No."; "Borrower Customer No.") { ApplicationArea = All; }
-                field("Loan No."; "Loan No.") { ApplicationArea = All; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; }
-                field("Due Date"; "Due Date") { ApplicationArea = All; }
-                field("Reason Code"; "Reason Code") { ApplicationArea = All; }
+                field("No."; Rec."No.") { ApplicationArea = All; }
+                field("Borrower Customer No."; Rec."Borrower Customer No.") { ApplicationArea = All; }
+                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
+                field("Due Date"; Rec."Due Date") { ApplicationArea = All; }
+                field("Reason Code"; Rec."Reason Code") { ApplicationArea = All; }
 
                 group(Dimensions)
                 {
                     Caption = 'Dimensions';
 
-                    field("Global Dimension 1 Code"; "Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
-                    field("Global Dimension 2 Code"; "Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
-                    field("Shortcut Dimension 3 Code"; "Shortcut Dimension 3 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible3; }
-                    field("Shortcut Dimension 4 Code"; "Shortcut Dimension 4 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible4; }
-                    field("Shortcut Dimension 5 Code"; "Shortcut Dimension 5 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible5; }
-                    field("Shortcut Dimension 6 Code"; "Shortcut Dimension 6 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible6; }
-                    field("Shortcut Dimension 7 Code"; "Shortcut Dimension 7 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible7; }
-                    field("Shortcut Dimension 8 Code"; "Shortcut Dimension 8 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible8; }
-                    field("Business Unit Code"; "Business Unit Code") { Importance = Additional; ApplicationArea = All; }
+                    field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
+                    field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
+                    field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible3; }
+                    field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible4; }
+                    field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible5; }
+                    field("Shortcut Dimension 6 Code"; Rec."Shortcut Dimension 6 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible6; }
+                    field("Shortcut Dimension 7 Code"; Rec."Shortcut Dimension 7 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible7; }
+                    field("Shortcut Dimension 8 Code"; Rec."Shortcut Dimension 8 Code") { Importance = Additional; ApplicationArea = All; Visible = DimensionVisible8; }
+                    field("Business Unit Code"; Rec."Business Unit Code") { Importance = Additional; ApplicationArea = All; }
                 }
             }
 

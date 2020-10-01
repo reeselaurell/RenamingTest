@@ -15,31 +15,31 @@ page 14135198 lvngLoanFileReconWorksheet
         {
             repeater(Group)
             {
-                field("Loan No."; "Loan No.") { ApplicationArea = All; Editable = false; }
-                field(Reclass; Reclass) { ApplicationArea = All; }
-                field("G/L Account No."; "G/L Account No.") { ApplicationArea = All; Editable = false; }
-                field("Date Closed"; "Date Closed") { ApplicationArea = All; Editable = false; }
-                field("Application Date"; "Application Date") { ApplicationArea = All; Editable = false; }
-                field("Bank Account No."; "Bank Account No.") { ApplicationArea = All; Editable = false; }
-                field("Date Funded"; "Date Funded") { ApplicationArea = All; Editable = false; }
-                field("Date Sold"; "Date Sold") { ApplicationArea = All; Editable = false; }
-                field("Borrower First Name"; "Borrower First Name") { ApplicationArea = All; Editable = false; }
-                field("Borrower Middle Name"; "Borrower Middle Name") { ApplicationArea = All; Editable = false; }
-                field("Borrower Last Name"; "Borrower Last Name") { ApplicationArea = All; Editable = false; }
-                field("Warehouse Line Code"; "Warehouse Line Code") { ApplicationArea = All; Editable = false; }
-                field("Loan Amount"; "Loan Amount") { ApplicationArea = All; Editable = false; }
-                field("Global Dimension 1 Code"; "Global Dimension 1 Code") { ApplicationArea = All; Editable = false; }
-                field("Global Dimension 2 Code"; "Global Dimension 2 Code") { ApplicationArea = All; Editable = false; }
-                field("Shortcut Dimension 3 Code"; "Shortcut Dimension 3 Code") { ApplicationArea = All; Editable = false; }
-                field("Shortcut Dimension 4 Code"; "Shortcut Dimension 4 Code") { ApplicationArea = All; Editable = false; }
-                field("Shortcut Dimension 5 Code"; "Shortcut Dimension 5 Code") { ApplicationArea = All; Editable = false; }
-                field("Shortcut Dimension 6 Code"; "Shortcut Dimension 6 Code") { ApplicationArea = All; Editable = false; }
-                field("Shortcut Dimension 7 Code"; "Shortcut Dimension 7 Code") { ApplicationArea = All; Editable = false; }
-                field("Shortcut Dimension 8 Code"; "Shortcut Dimension 8 Code") { ApplicationArea = All; Editable = false; }
-                field("Business Unit Code"; "Business Unit Code") { ApplicationArea = All; Editable = false; }
-                field("Debit Amount"; "Debit Amount") { ApplicationArea = All; Editable = false; }
-                field("Credit Amount"; "Credit Amount") { ApplicationArea = All; Editable = false; }
-                field(Amount; Amount)
+                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; Editable = false; }
+                field(Reclass; Rec.Reclass) { ApplicationArea = All; }
+                field("G/L Account No."; Rec."G/L Account No.") { ApplicationArea = All; Editable = false; }
+                field("Date Closed"; Rec."Date Closed") { ApplicationArea = All; Editable = false; }
+                field("Application Date"; Rec."Application Date") { ApplicationArea = All; Editable = false; }
+                field("Bank Account No."; Rec."Bank Account No.") { ApplicationArea = All; Editable = false; }
+                field("Date Funded"; Rec."Date Funded") { ApplicationArea = All; Editable = false; }
+                field("Date Sold"; Rec."Date Sold") { ApplicationArea = All; Editable = false; }
+                field("Borrower First Name"; Rec."Borrower First Name") { ApplicationArea = All; Editable = false; }
+                field("Borrower Middle Name"; Rec."Borrower Middle Name") { ApplicationArea = All; Editable = false; }
+                field("Borrower Last Name"; Rec."Borrower Last Name") { ApplicationArea = All; Editable = false; }
+                field("Warehouse Line Code"; Rec."Warehouse Line Code") { ApplicationArea = All; Editable = false; }
+                field("Loan Amount"; Rec."Loan Amount") { ApplicationArea = All; Editable = false; }
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code") { ApplicationArea = All; Editable = false; }
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code") { ApplicationArea = All; Editable = false; }
+                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code") { ApplicationArea = All; Editable = false; }
+                field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code") { ApplicationArea = All; Editable = false; }
+                field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code") { ApplicationArea = All; Editable = false; }
+                field("Shortcut Dimension 6 Code"; Rec."Shortcut Dimension 6 Code") { ApplicationArea = All; Editable = false; }
+                field("Shortcut Dimension 7 Code"; Rec."Shortcut Dimension 7 Code") { ApplicationArea = All; Editable = false; }
+                field("Shortcut Dimension 8 Code"; Rec."Shortcut Dimension 8 Code") { ApplicationArea = All; Editable = false; }
+                field("Business Unit Code"; Rec."Business Unit Code") { ApplicationArea = All; Editable = false; }
+                field("Debit Amount"; Rec."Debit Amount") { ApplicationArea = All; Editable = false; }
+                field("Credit Amount"; Rec."Credit Amount") { ApplicationArea = All; Editable = false; }
+                field(Amount; Rec.Amount)
                 {
                     ApplicationArea = All;
                     DrillDown = true;
@@ -51,16 +51,16 @@ page 14135198 lvngLoanFileReconWorksheet
                     begin
                         GLEntry.Reset();
                         GLEntry.CopyFilters(TempGLFilter);
-                        GLEntry.SetRange(lvngLoanNo, "Loan No.");
-                        GLEntry.SetRange("G/L Account No.", "G/L Account No.");
-                        if "G/L Account No." <> '' then
-                            GLEntry.SetRange("G/L Account No.", "G/L Account No.");
+                        GLEntry.SetRange(lvngLoanNo, Rec."Loan No.");
+                        GLEntry.SetRange("G/L Account No.", Rec."G/L Account No.");
+                        if Rec."G/L Account No." <> '' then
+                            GLEntry.SetRange("G/L Account No.", Rec."G/L Account No.");
                         Page.Run(0, GLEntry);
                     end;
                 }
-                field("File Amount"; "File Amount") { ApplicationArea = All; Editable = false; }
-                field(Difference; Difference) { ApplicationArea = All; Editable = false; }
-                field(Unbalanced; Unbalanced) { ApplicationArea = All; Editable = false; }
+                field("File Amount"; Rec."File Amount") { ApplicationArea = All; Editable = false; }
+                field(Difference; Rec.Difference) { ApplicationArea = All; Editable = false; }
+                field(Unbalanced; Rec.Unbalanced) { ApplicationArea = All; Editable = false; }
             }
 
             group(Totals)
@@ -95,14 +95,14 @@ page 14135198 lvngLoanFileReconWorksheet
                 begin
                     TempLoanReconBuffer.Reset();
                     TempLoanReconBuffer.DeleteAll();
-                    Reset();
-                    DeleteAll();
+                    Rec.Reset();
+                    Rec.DeleteAll();
                     Clear(LoanFileImport);
                     LoanFileImport.Run();
                     LoanFileImport.GetData(Rec);
                     LoanFileImport.GetData(TempLoanReconBuffer);
                     LoanFileImport.GetFilters(TempGLFilter);
-                    Reset();
+                    Rec.Reset();
                     CalculateTotals();
                 end;
             }
@@ -135,8 +135,8 @@ page 14135198 lvngLoanFileReconWorksheet
 
                 trigger OnAction()
                 begin
-                    Reset();
-                    ModifyAll(Reclass, true);
+                    Rec.Reset();
+                    Rec.ModifyAll(Reclass, true);
                     CurrPage.Update(false);
                 end;
             }
@@ -151,8 +151,8 @@ page 14135198 lvngLoanFileReconWorksheet
 
                 trigger OnAction()
                 begin
-                    Reset();
-                    ModifyAll(Reclass, false);
+                    Rec.Reset();
+                    Rec.ModifyAll(Reclass, false);
                     CurrPage.Update(false);
                 end;
             }
@@ -168,7 +168,7 @@ page 14135198 lvngLoanFileReconWorksheet
 
     trigger OnDeleteRecord(): Boolean
     begin
-        TempLoanReconBuffer.Get("Loan No.", "G/L Account No.");
+        TempLoanReconBuffer.Get(Rec."Loan No.", Rec."G/L Account No.");
         TempLoanReconBuffer.Delete();
         CalculateTotals();
         CurrPage.Update(false);

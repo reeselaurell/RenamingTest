@@ -13,8 +13,8 @@ page 14135220 lvngReportGeneratorBatchList
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
             }
         }
     }
@@ -36,7 +36,7 @@ page 14135220 lvngReportGeneratorBatchList
                 var
                     Report: Report lvngRptGeneratorBatchProcess;
                 begin
-                    Report.SetParams(Code);
+                    Report.SetParams(Rec.Code);
                     Report.Run();
                 end;
             }

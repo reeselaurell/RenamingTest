@@ -16,11 +16,11 @@ page 14135169 lvngJetExpressViewList
             {
                 Caption = 'Group';
 
-                field(Code; Code) { ApplicationArea = All; Editable = false; Lookup = true; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Last Update Date Time"; "Last Update DateTime") { ApplicationArea = All; }
-                field("Last Updated By"; "Last Updated By") { ApplicationArea = All; }
-                field("Entries Count"; "Entries Count") { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; Editable = false; Lookup = true; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Last Update Date Time"; Rec."Last Update DateTime") { ApplicationArea = All; }
+                field("Last Updated By"; Rec."Last Updated By") { ApplicationArea = All; }
+                field("Entries Count"; Rec."Entries Count") { ApplicationArea = All; }
             }
         }
     }
@@ -43,7 +43,7 @@ page 14135169 lvngJetExpressViewList
                     RefreshJetExpressView: Report lvngRefreshJetExpressView;
                 begin
                     Clear(RefreshJetExpressView);
-                    RefreshJetExpressView.SetView(Code);
+                    RefreshJetExpressView.SetView(Rec.Code);
                     RefreshJetExpressView.RunModal();
                 end;
             }

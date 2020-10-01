@@ -4,7 +4,7 @@ pageextension 14135400 lvngAccountingPeriodsExtension extends "Accounting Period
     {
         addafter("New Fiscal Year")
         {
-            field(lvngFiscalQuarter; lvngFiscalQuarter) { Caption = 'Fiscal Quarter'; }
+            field(lvngFiscalQuarter; Rec.lvngFiscalQuarter) { Caption = 'Fiscal Quarter'; }
         }
     }
 }

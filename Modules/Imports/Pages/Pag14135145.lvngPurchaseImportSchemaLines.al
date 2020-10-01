@@ -10,12 +10,12 @@ page 14135145 lvngPurchaseImportSchemaLines
         {
             repeater(Group)
             {
-                field("Column No."; "Column No.") { ApplicationArea = All; }
-                field("Purchase Import Field Type"; "Purchase Import Field Type") { ApplicationArea = All; }
-                field("Description Sequence"; "Description Sequence") { ApplicationArea = All; }
-                field("Dimension Split"; "Dimension Split") { ApplicationArea = All; }
-                field("Dimension Split Character"; "Dimension Split Character") { ApplicationArea = All; }
-                field("Split Dimension No."; "Split Dimension No.") { ApplicationArea = All; }
+                field("Column No."; Rec."Column No.") { ApplicationArea = All; }
+                field("Purchase Import Field Type"; Rec."Purchase Import Field Type") { ApplicationArea = All; }
+                field("Description Sequence"; Rec."Description Sequence") { ApplicationArea = All; }
+                field("Dimension Split"; Rec."Dimension Split") { ApplicationArea = All; }
+                field("Dimension Split Character"; Rec."Dimension Split Character") { ApplicationArea = All; }
+                field("Split Dimension No."; Rec."Split Dimension No.") { ApplicationArea = All; }
             }
         }
     }

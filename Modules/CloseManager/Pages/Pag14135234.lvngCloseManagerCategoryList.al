@@ -14,8 +14,8 @@ page 14135234 lvngCloseManagerCategoryList
             {
                 Caption = 'Group';
 
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
             }
         }
     }

@@ -13,7 +13,7 @@ page 14135254 lvngPurchInvLineErrorDetails
         {
             repeater(Group)
             {
-                field("Error Text"; "Error Text") { ApplicationArea = All; }
+                field("Error Text"; Rec."Error Text") { ApplicationArea = All; }
             }
         }
     }

@@ -10,11 +10,11 @@ pageextension 14135121 lvngVendorLedgerEntries extends "Vendor Ledger Entries"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        lvngDocumentGuid := CreateGuid();
+        Rec.lvngDocumentGuid := CreateGuid();
     end;
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+        CurrPage.DocumentExchange.Page.ReloadDocuments(Rec.lvngDocumentGuid);
     end;
 }

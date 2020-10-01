@@ -12,50 +12,50 @@ page 14135207 lvngCalculationUnitCard
             {
                 Caption = 'General';
 
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field(Type; Type) { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Type; Rec.Type) { ApplicationArea = All; }
             }
             group(Constant)
             {
-                Visible = Type = Type::Constant;
+                Visible = Rec.Type = Rec.Type::Constant;
                 Caption = 'Constant';
 
-                field("Constant Value"; "Constant Value") { ApplicationArea = All; }
+                field("Constant Value"; Rec."Constant Value") { ApplicationArea = All; }
             }
             group(Lookup)
             {
-                Visible = (Type = Type::"Amount Lookup") or (Type = Type::"Count Lookup");
+                Visible = (Rec.Type = Rec.Type::"Amount Lookup") or (Rec.Type = Rec.Type::"Count Lookup");
                 Caption = 'Lookup';
 
-                field("Lookup Source"; "Lookup Source") { ApplicationArea = All; }
+                field("Lookup Source"; Rec."Lookup Source") { ApplicationArea = All; }
                 group(LoanCard)
                 {
-                    Visible = "Lookup Source" = "Lookup Source"::"Loan Card";
+                    Visible = Rec."Lookup Source" = Rec."Lookup Source"::"Loan Card";
                     Caption = 'Loan Card';
 
-                    field(CardBasedOnDate; "Based On Date") { ApplicationArea = All; }
+                    field(CardBasedOnDate; Rec."Based On Date") { ApplicationArea = All; }
                 }
                 group(LedgerEntries)
                 {
-                    Visible = "Lookup Source" = "Lookup Source"::"Ledger Entries";
+                    Visible = Rec."Lookup Source" = Rec."Lookup Source"::"Ledger Entries";
                     Caption = 'Ledger Entries';
 
-                    field("Account No. Filter"; "Account No. Filter") { ApplicationArea = All; }
-                    field("Amount Type"; "Amount Type") { ApplicationArea = All; }
+                    field("Account No. Filter"; Rec."Account No. Filter") { ApplicationArea = All; }
+                    field("Amount Type"; Rec."Amount Type") { ApplicationArea = All; }
                 }
                 group(LoanValues)
                 {
-                    Visible = "Lookup Source" = "Lookup Source"::"Loan Values";
+                    Visible = Rec."Lookup Source" = Rec."Lookup Source"::"Loan Values";
                     Caption = 'Loan Values';
 
-                    field(ValueBasedOnDate; "Based On Date") { ApplicationArea = All; }
-                    field("Field No."; "Field No.") { ApplicationArea = All; }
+                    field(ValueBasedOnDate; Rec."Based On Date") { ApplicationArea = All; }
+                    field("Field No."; Rec."Field No.") { ApplicationArea = All; }
                 }
             }
             group(Expression)
             {
-                Visible = Type = Type::Expression;
+                Visible = Rec.Type = Rec.Type::Expression;
 
                 grid(ExpressionCode)
                 {
@@ -65,7 +65,7 @@ page 14135207 lvngCalculationUnitCard
                     {
                         ShowCaption = false;
 
-                        field("Expression Code"; "Expression Code")
+                        field("Expression Code"; Rec."Expression Code")
                         {
                             ApplicationArea = All;
                             AssistEdit = true;
@@ -78,9 +78,9 @@ page 14135207 lvngCalculationUnitCard
                                 ExpressiontType: Enum lvngExpressionType;
                                 NewCode: Code[20];
                             begin
-                                NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetBandExpressionConsumerId(), Code, "Expression Code", ExpressiontType::Formula);
+                                NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetBandExpressionConsumerId(), Rec.Code, Rec."Expression Code", ExpressiontType::Formula);
                                 if NewCode <> '' then
-                                    "Expression Code" := NewCode;
+                                    Rec."Expression Code" := NewCode;
                             end;
                         }
                         part("Data Source"; lvngCalculationUnitLines) { ApplicationArea = All; SubPageLink = "Unit Code" = field(Code); }
@@ -89,21 +89,21 @@ page 14135207 lvngCalculationUnitCard
             }
             group("Provider Value")
             {
-                Visible = Type = Type::"Provider Value";
+                Visible = Rec.Type = Rec.Type::"Provider Value";
 
-                field("Provider Metadata"; "Provider Metadata") { ApplicationArea = All; }
+                field("Provider Metadata"; Rec."Provider Metadata") { ApplicationArea = All; }
             }
             group(Filters)
             {
-                field("Dimension 1 Filter"; "Dimension 1 Filter") { ApplicationArea = All; CaptionClass = '1,3,1'; }
-                field("Dimension 2 Filter"; "Dimension 2 Filter") { ApplicationArea = All; CaptionClass = '1,3,2'; }
-                field("Dimension 3 Filter"; "Dimension 3 Filter") { ApplicationArea = All; CaptionClass = '1,4,3'; }
-                field("Dimension 4 Filter"; "Dimension 4 Filter") { ApplicationArea = All; CaptionClass = '1,4,4'; }
-                field("Dimension 5 Filter"; "Dimension 5 Filter") { ApplicationArea = All; CaptionClass = '1,4,5'; }
-                field("Dimension 6 Filter"; "Dimension 6 Filter") { ApplicationArea = All; CaptionClass = '1,4,6'; }
-                field("Dimension 7 Filter"; "Dimension 7 Filter") { ApplicationArea = All; CaptionClass = '1,4,7'; }
-                field("Dimension 8 Filter"; "Dimension 8 Filter") { ApplicationArea = All; CaptionClass = '1,4,8'; }
-                field("Business Unit Filter"; "Business Unit Filter") { ApplicationArea = All; }
+                field("Dimension 1 Filter"; Rec."Dimension 1 Filter") { ApplicationArea = All; CaptionClass = '1,3,1'; }
+                field("Dimension 2 Filter"; Rec."Dimension 2 Filter") { ApplicationArea = All; CaptionClass = '1,3,2'; }
+                field("Dimension 3 Filter"; Rec."Dimension 3 Filter") { ApplicationArea = All; CaptionClass = '1,4,3'; }
+                field("Dimension 4 Filter"; Rec."Dimension 4 Filter") { ApplicationArea = All; CaptionClass = '1,4,4'; }
+                field("Dimension 5 Filter"; Rec."Dimension 5 Filter") { ApplicationArea = All; CaptionClass = '1,4,5'; }
+                field("Dimension 6 Filter"; Rec."Dimension 6 Filter") { ApplicationArea = All; CaptionClass = '1,4,6'; }
+                field("Dimension 7 Filter"; Rec."Dimension 7 Filter") { ApplicationArea = All; CaptionClass = '1,4,7'; }
+                field("Dimension 8 Filter"; Rec."Dimension 8 Filter") { ApplicationArea = All; CaptionClass = '1,4,8'; }
+                field("Business Unit Filter"; Rec."Business Unit Filter") { ApplicationArea = All; }
             }
         }
     }

@@ -15,13 +15,13 @@ page 14135196 lvngReversePurchaseDocuments
         {
             repeater(Group)
             {
-                field("Document Type"; "Document Type") { ApplicationArea = All; Editable = false; }
-                field("No."; "No.") { ApplicationArea = All; Editable = false; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; Editable = false; }
-                field("Sell-to Customer No."; "Sell-to Customer No.") { ApplicationArea = All; Editable = false; }
-                field("Buy-from Vendor No."; "Buy-from Vendor No.") { ApplicationArea = All; Editable = false; }
-                field("Buy-from Vendor Name"; "Buy-from Vendor Name") { ApplicationArea = All; Editable = false; }
-                field(ReverseTransaction; Correction) { ApplicationArea = All; Caption = 'Reverse Transaction'; }
+                field("Document Type"; Rec."Document Type") { ApplicationArea = All; Editable = false; }
+                field("No."; Rec."No.") { ApplicationArea = All; Editable = false; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; Editable = false; }
+                field("Sell-to Customer No."; Rec."Sell-to Customer No.") { ApplicationArea = All; Editable = false; }
+                field("Buy-from Vendor No."; Rec."Buy-from Vendor No.") { ApplicationArea = All; Editable = false; }
+                field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name") { ApplicationArea = All; Editable = false; }
+                field(ReverseTransaction; Rec.Correction) { ApplicationArea = All; Caption = 'Reverse Transaction'; }
             }
         }
     }
@@ -83,29 +83,30 @@ page 14135196 lvngReversePurchaseDocuments
                     Progress: Dialog;
                     LoanNoLength: Integer;
                     LastSymbolOfLoanNo: Text;
+                    PurchDocTypeFrom: Enum "Purchase Document Type From";
                 begin
-                    Reset();
-                    SetRange(Correction, true);
+                    Rec.Reset();
+                    Rec.SetRange(Correction, true);
                     RecordsCount := 0;
                     Progress.Open(ProgressMsg);
-                    if FindSet() then
+                    if Rec.FindSet() then
                         repeat
                             RecordsCount := RecordsCount + 1;
-                            Progress.Update(1, "No.");
-                            if "Document Type" = "Document Type"::Invoice then begin
+                            Progress.Update(1, Rec."No.");
+                            if Rec."Document Type" = Rec."Document Type"::Invoice then begin
                                 Clear(CopyDocumentMgt);
                                 Clear(PurchHeader);
                                 PurchHeader."Document Type" := PurchHeader."Document Type"::"Credit Memo";
                                 PurchHeader.Insert(true);
                                 CopyDocumentMgt.SetPropertiesForCreditMemoCorrection;
-                                CopyDocumentMgt.CopyPurchDoc(7, "No.", PurchHeader);
-                                PurchHeader."Vendor Cr. Memo No." := "Vendor Invoice No.";
+                                CopyDocumentMgt.CopyPurchDoc(PurchDocTypeFrom::"Posted Invoice", Rec."No.", PurchHeader);
+                                PurchHeader."Vendor Cr. Memo No." := Rec."Vendor Invoice No.";
                                 PurchHeader.Modify();
                             end;
-                        until Next() = 0;
+                        until Rec.Next() = 0;
                     Progress.Close();
-                    DeleteAll();
-                    Reset();
+                    Rec.DeleteAll();
+                    Rec.Reset();
                     CurrPage.Update(false);
                     Message(CompleteMsg, RecordsCount);
                 end;

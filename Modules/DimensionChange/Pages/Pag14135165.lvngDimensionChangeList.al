@@ -12,10 +12,10 @@ page 14135165 lvngDimensionChangeList
         {
             repeater(Group)
             {
-                field("Change Set ID"; "Change Set ID") { ApplicationArea = All; }
-                field(Date; Date) { ApplicationArea = All; }
-                field("User ID"; "User ID") { ApplicationArea = All; }
-                field(Comment; Comment) { ApplicationArea = All; }
+                field("Change Set ID"; Rec."Change Set ID") { ApplicationArea = All; }
+                field(Date; Rec.Date) { ApplicationArea = All; }
+                field("User ID"; Rec."User ID") { ApplicationArea = All; }
+                field(Comment; Rec.Comment) { ApplicationArea = All; }
             }
 
         }
@@ -42,11 +42,11 @@ page 14135165 lvngDimensionChangeList
                     DimensionChangeLedger: Page lvngDimensionChangeLedger;
                     DimensionChangeJournal: Page lvngDimensionChangeJournal;
                 begin
-                    if Comment = '' then
+                    if Rec.Comment = '' then
                         Error(CommentBlankErr);
                     DimensionChangeLedgerEntry.Reset();
                     DimensionChangeLedgerEntry.FilterGroup(2);
-                    DimensionChangeLedgerEntry.SetRange("Change Set ID", "Change Set ID");
+                    DimensionChangeLedgerEntry.SetRange("Change Set ID", Rec."Change Set ID");
                     DimensionChangeLedgerEntry.FilterGroup(0);
                     if not DimensionChangeLedgerEntry.IsEmpty() then begin
                         DimensionChangeLedger.SetTableView(DimensionChangeLedgerEntry);
@@ -54,7 +54,7 @@ page 14135165 lvngDimensionChangeList
                     end else begin
                         DimensionChangeJnlEntry.Reset();
                         DimensionChangeJnlEntry.FilterGroup(2);
-                        DimensionChangeJnlEntry.SetRange("Change Set ID", "Change Set ID");
+                        DimensionChangeJnlEntry.SetRange("Change Set ID", Rec."Change Set ID");
                         DimensionChangeJnlEntry.FilterGroup(0);
                         DimensionChangeJournal.SetTableView(DimensionChangeJnlEntry);
                         DimensionChangeJournal.Run();
@@ -78,11 +78,11 @@ page 14135165 lvngDimensionChangeList
                     DimensionChangeLedger: Page lvngDimensionChangeLedger;
                     PostDimensionChangeSet: Report lvngPostDimensionChangeSet;
                 begin
-                    DimensionChangeJnlEntry.SetRange("Change Set ID", "Change Set ID");
+                    DimensionChangeJnlEntry.SetRange("Change Set ID", Rec."Change Set ID");
                     PostDimensionChangeSet.SetTableView(DimensionChangeJnlEntry);
                     PostDimensionChangeSet.RunModal();
                     DimensionChangeLedgerEntry.FilterGroup(2);
-                    DimensionChangeLedgerEntry.SetRange("Change Set ID", "Change Set ID");
+                    DimensionChangeLedgerEntry.SetRange("Change Set ID", Rec."Change Set ID");
                     DimensionChangeLedgerEntry.FilterGroup(0);
                     DimensionChangeLedger.SetTableView(DimensionChangeLedgerEntry);
                     DimensionChangeLedger.Run();
@@ -105,7 +105,7 @@ page 14135165 lvngDimensionChangeList
     var
         DimensionChangeJnlEntry: Record lvngDimensionChangeJnlEntry;
     begin
-        DimensionChangeJnlEntry.SetRange("Change Set ID", "Change Set ID");
+        DimensionChangeJnlEntry.SetRange("Change Set ID", Rec."Change Set ID");
         HasJournalEntries := not DimensionChangeJnlEntry.IsEmpty();
     end;
 }

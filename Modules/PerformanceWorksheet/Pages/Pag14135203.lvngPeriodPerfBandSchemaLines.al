@@ -10,16 +10,16 @@ page 14135203 lvngPeriodPerfBandSchemaLines
         {
             repeater(Group)
             {
-                field("Line No."; "Band No.") { ApplicationArea = All; Caption = 'Band No.'; }
-                field("Period Type"; "Period Type") { ApplicationArea = All; }
-                field("Period Offset"; "Period Offset") { ApplicationArea = All; }
-                field("Period Length Formula"; "Period Length Formula") { ApplicationArea = All; }
-                field("Band Type"; "Band Type") { ApplicationArea = All; }
-                field("Header Description"; "Header Description") { ApplicationArea = All; }
-                field("Dynamic Date Description"; "Dynamic Date Description") { ApplicationArea = All; }
-                field("Date From"; "Date From") { ApplicationArea = All; }
-                field("Date To"; "Date To") { ApplicationArea = All; }
-                field("Row Formula Code"; "Row Formula Code")
+                field("Line No."; Rec."Band No.") { ApplicationArea = All; Caption = 'Band No.'; }
+                field("Period Type"; Rec."Period Type") { ApplicationArea = All; }
+                field("Period Offset"; Rec."Period Offset") { ApplicationArea = All; }
+                field("Period Length Formula"; Rec."Period Length Formula") { ApplicationArea = All; }
+                field("Band Type"; Rec."Band Type") { ApplicationArea = All; }
+                field("Header Description"; Rec."Header Description") { ApplicationArea = All; }
+                field("Dynamic Date Description"; Rec."Dynamic Date Description") { ApplicationArea = All; }
+                field("Date From"; Rec."Date From") { ApplicationArea = All; }
+                field("Date To"; Rec."Date To") { ApplicationArea = All; }
+                field("Row Formula Code"; Rec."Row Formula Code")
                 {
                     ApplicationArea = All;
                     AssistEdit = true;
@@ -32,9 +32,9 @@ page 14135203 lvngPeriodPerfBandSchemaLines
                         ExpressiontType: Enum lvngExpressionType;
                         NewCode: Code[20];
                     begin
-                        NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetPeriodRowExpressionConsumerId(), "Schema Code", "Row Formula Code", ExpressiontType::Formula);
+                        NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetPeriodRowExpressionConsumerId(), Rec."Schema Code", Rec."Row Formula Code", ExpressiontType::Formula);
                         if NewCode <> '' then
-                            "Row Formula Code" := NewCode;
+                            Rec."Row Formula Code" := NewCode;
                     end;
                 }
             }
@@ -46,10 +46,10 @@ page 14135203 lvngPeriodPerfBandSchemaLines
         PeriodPerfSchemaLine: Record lvngPeriodPerfBandSchemaLine;
     begin
         PeriodPerfSchemaLine.Reset();
-        PeriodPerfSchemaLine.SetRange("Schema Code", "Schema Code");
+        PeriodPerfSchemaLine.SetRange("Schema Code", Rec."Schema Code");
         if PeriodPerfSchemaLine.FindLast() then
-            "Band No." := PeriodPerfSchemaLine."Band No." + 10
+            Rec."Band No." := PeriodPerfSchemaLine."Band No." + 10
         else
-            "Band No." := 10;
+            Rec."Band No." := 10;
     end;
 }

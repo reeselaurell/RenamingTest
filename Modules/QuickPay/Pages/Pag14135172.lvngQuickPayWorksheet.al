@@ -59,14 +59,14 @@ page 14135172 lvngQuickPayWorksheet
             }
             repeater(Group)
             {
-                field(Pay; Pay)
+                field(Pay; Rec.Pay)
                 {
                     ApplicationArea = All;
                     Caption = 'Pay';
 
                     trigger OnValidate()
                     begin
-                        Buffer.Get("Entry No.");
+                        Buffer.Get(Rec."Entry No.");
                         Buffer := Rec;
                         Buffer.Modify();
                         Buffer.Reset();
@@ -74,25 +74,25 @@ page 14135172 lvngQuickPayWorksheet
                         TotalAmountToPay := Buffer."Amount to Pay";
                     end;
                 }
-                field("Vendor No."; "Vendor No.") { ApplicationArea = All; Caption = 'Vendor No.'; Editable = false; }
-                field("Due Date"; "Due Date") { ApplicationArea = All; Caption = 'Due Date'; Editable = false; }
-                field("Document No."; "Document No.") { ApplicationArea = All; Caption = 'Document No.'; Editable = false; }
-                field("External Document No."; "External Document No.") { ApplicationArea = All; Caption = 'External Document No.'; Editable = false; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; Caption = 'Posting Date'; Editable = false; }
-                field("Vendor Name"; "Vendor Name") { ApplicationArea = All; Caption = 'Vendor Name'; Editable = false; }
-                field(Description; Description) { ApplicationArea = All; Caption = 'Description'; Editable = false; }
-                field("Payment Method Code"; "Payment Method Code") { ApplicationArea = All; Caption = 'Payment Method Code'; }
-                field("Loan No."; "Loan No.") { ApplicationArea = All; Caption = 'Loan No.'; }
-                field("Remaining Amount"; "Remaining Amount") { ApplicationArea = All; Caption = 'Remaining Amount'; Editable = false; }
-                field("Amount to Pay"; "Amount to Pay")
+                field("Vendor No."; Rec."Vendor No.") { ApplicationArea = All; Caption = 'Vendor No.'; Editable = false; }
+                field("Due Date"; Rec."Due Date") { ApplicationArea = All; Caption = 'Due Date'; Editable = false; }
+                field("Document No."; Rec."Document No.") { ApplicationArea = All; Caption = 'Document No.'; Editable = false; }
+                field("External Document No."; Rec."External Document No.") { ApplicationArea = All; Caption = 'External Document No.'; Editable = false; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; Caption = 'Posting Date'; Editable = false; }
+                field("Vendor Name"; Rec."Vendor Name") { ApplicationArea = All; Caption = 'Vendor Name'; Editable = false; }
+                field(Description; Rec.Description) { ApplicationArea = All; Caption = 'Description'; Editable = false; }
+                field("Payment Method Code"; Rec."Payment Method Code") { ApplicationArea = All; Caption = 'Payment Method Code'; }
+                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; Caption = 'Loan No.'; }
+                field("Remaining Amount"; Rec."Remaining Amount") { ApplicationArea = All; Caption = 'Remaining Amount'; Editable = false; }
+                field("Amount to Pay"; Rec."Amount to Pay")
                 {
                     ApplicationArea = All;
                     Caption = 'Amount to Pay';
-                    Editable = Pay;
+                    Editable = Rec.Pay;
 
                     trigger OnValidate()
                     begin
-                        Buffer.Get("Entry No.");
+                        Buffer.Get(Rec."Entry No.");
                         Buffer := Rec;
                         Buffer.Modify();
                         Buffer.Reset();
@@ -244,7 +244,7 @@ page 14135172 lvngQuickPayWorksheet
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.Documents.Page.ReloadDocuments("Document GUID");
+        CurrPage.Documents.Page.ReloadDocuments(Rec."Document GUID");
     end;
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean
@@ -276,7 +276,7 @@ page 14135172 lvngQuickPayWorksheet
         repeat
             Rec.Validate(Pay, true);
             Rec.Modify();
-            Buffer.Get("Entry No.");
+            Buffer.Get(Rec."Entry No.");
             Buffer := Rec;
             Buffer.Modify();
         until Rec.Next() = 0;
@@ -294,7 +294,7 @@ page 14135172 lvngQuickPayWorksheet
         repeat
             Rec.Validate(Pay, false);
             Rec.Modify();
-            Buffer.Get("Entry No.");
+            Buffer.Get(Rec."Entry No.");
             Buffer := Rec;
             Buffer.Modify();
         until Rec.Next() = 0;
@@ -379,7 +379,7 @@ page 14135172 lvngQuickPayWorksheet
             end;
         end;
         QuickPayData.Close();
-        Reset();
+        Rec.Reset();
         Buffer.Reset();
         Buffer.DeleteAll();
         if Rec.FindSet() then

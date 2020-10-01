@@ -10,12 +10,12 @@ page 14135224 lvngLoanLevelReportSchemaLines
         {
             repeater(Group)
             {
-                field("Column No."; "Column No.") { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field(Type; Type) { ApplicationArea = All; }
-                field("G/L Filter"; "G/L Filter".HasValue) { ApplicationArea = All; Caption = 'G/L Filters Applied'; }
-                field("Value Field No."; "Value Field No.") { ApplicationArea = All; }
-                field("Formula Code"; "Formula Code")
+                field("Column No."; Rec."Column No.") { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Type; Rec.Type) { ApplicationArea = All; }
+                field("G/L Filter"; Rec."G/L Filter".HasValue) { ApplicationArea = All; Caption = 'G/L Filters Applied'; }
+                field("Value Field No."; Rec."Value Field No.") { ApplicationArea = All; }
+                field("Formula Code"; Rec."Formula Code")
                 {
                     ApplicationArea = All;
 
@@ -26,12 +26,12 @@ page 14135224 lvngLoanLevelReportSchemaLines
                         ExpressiontType: Enum lvngExpressionType;
                         NewCode: Code[20];
                     begin
-                        NewCode := ExpressionList.SelectExpression(LoanLevelMgmt.GetLoanLevelFormulaConsumerId(), "Report Code", "Formula Code", ExpressiontType::Formula);
+                        NewCode := ExpressionList.SelectExpression(LoanLevelMgmt.GetLoanLevelFormulaConsumerId(), Rec."Report Code", Rec."Formula Code", ExpressiontType::Formula);
                         if NewCode <> '' then
-                            "Formula Code" := NewCode;
+                            Rec."Formula Code" := NewCode;
                     end;
                 }
-                field("Number Format Code"; "Number Format Code") { ApplicationArea = All; }
+                field("Number Format Code"; Rec."Number Format Code") { ApplicationArea = All; }
             }
         }
     }
@@ -66,21 +66,21 @@ page 14135224 lvngLoanLevelReportSchemaLines
                     FPBuilder.AddFieldNo(GLEntryTxt, 5);    // Shortcut Dimension 4 Code
                     FPBuilder.AddFieldNo(GLEntryTxt, 10);   // Business Unit Code
 
-                    CalcFields("G/L Filter");
-                    if "G/L Filter".HasValue then begin
-                        "G/L Filter".CreateInStream(IStream);
+                    Rec.CalcFields("G/L Filter");
+                    if Rec."G/L Filter".HasValue then begin
+                        Rec."G/L Filter".CreateInStream(IStream);
                         IStream.ReadText(ViewText);
                         FPBuilder.SetView(GLEntryTxt, ViewText);
                     end;
                     if FPBuilder.RunModal() then begin
-                        Clear("G/L Filter");
-                        "G/L Filter".CreateOutStream(OStream);
+                        Clear(Rec."G/L Filter");
+                        Rec."G/L Filter".CreateOutStream(OStream);
                         ViewText := FPBuilder.GetView(GLEntryTxt, false);
                         GroupedLoanGLEntry.Reset();
                         GroupedLoanGLEntry.SetView(ViewText);
                         if GroupedLoanGLEntry.GetFilters() <> '' then
                             OStream.WriteText(ViewText);
-                        Modify();
+                        Rec.Modify();
                     end;
                 end;
             }

@@ -12,19 +12,19 @@ page 14135271 lvngAcctRCHeadlineSetup
         {
             group(Filters)
             {
-                field("Net Income G/L Account"; "Net Income G/L Account No.") { ApplicationArea = All; Importance = Promoted; }
-                field("Branch Performace Date Filter"; "Branch Performace Date Range") { ApplicationArea = All; Importance = Promoted; }
-                field("LO Performace Date Filter"; "LO Performace Date Range") { ApplicationArea = All; Importance = Promoted; }
+                field("Net Income G/L Account"; Rec."Net Income G/L Account No.") { ApplicationArea = All; Importance = Promoted; }
+                field("Branch Performace Date Filter"; Rec."Branch Performace Date Range") { ApplicationArea = All; Importance = Promoted; }
+                field("LO Performace Date Filter"; Rec."LO Performace Date Range") { ApplicationArea = All; Importance = Promoted; }
             }
         }
     }
 
     trigger OnOpenPage()
     begin
-        Reset();
-        if not Get() then begin
-            Init();
-            Insert();
+        Rec.Reset();
+        if not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
         end;
     end;
 }

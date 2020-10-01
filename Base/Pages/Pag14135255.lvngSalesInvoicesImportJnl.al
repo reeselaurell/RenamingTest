@@ -14,13 +14,13 @@ page 14135255 lvngSalesInvoicesImportJnl
         {
             repeater(Group)
             {
-                field("No."; "No.") { ApplicationArea = All; Style = Attention; StyleExpr = ErrorStyle; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; }
-                field("Document Date"; "Document Date") { ApplicationArea = All; }
-                field("Payment Method Code"; "Payment Method Code") { ApplicationArea = All; }
-                field("Due Date"; "Due Date") { ApplicationArea = All; }
-                field("Posting Description"; "Posting Description") { ApplicationArea = All; }
-                field("Sell-to Customer No."; "Sell-to Customer No.") { ApplicationArea = All; }
+                field("No."; Rec."No.") { ApplicationArea = All; Style = Attention; StyleExpr = ErrorStyle; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
+                field("Document Date"; Rec."Document Date") { ApplicationArea = All; }
+                field("Payment Method Code"; Rec."Payment Method Code") { ApplicationArea = All; }
+                field("Due Date"; Rec."Due Date") { ApplicationArea = All; }
+                field("Posting Description"; Rec."Posting Description") { ApplicationArea = All; }
+                field("Sell-to Customer No."; Rec."Sell-to Customer No.") { ApplicationArea = All; }
             }
         }
 
@@ -122,7 +122,7 @@ page 14135255 lvngSalesInvoicesImportJnl
     begin
         ErrorStyle := false;
         InvoiceErrorDetail.Reset();
-        InvoiceErrorDetail.SetRange("Document No.", "No.");
+        InvoiceErrorDetail.SetRange("Document No.", Rec."No.");
         if InvoiceErrorDetail.FindSet() then
             ErrorStyle := true;
     end;

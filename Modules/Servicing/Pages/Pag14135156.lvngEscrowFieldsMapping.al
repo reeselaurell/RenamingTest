@@ -12,12 +12,12 @@ page 14135156 lvngEscrowFieldsMapping
         {
             repeater(Group)
             {
-                field("Field No."; "Field No.") { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Map-To G/L Account No."; "Map-To G/L Account No.") { ApplicationArea = All; }
-                field("Switch Code"; "Switch Code") { ApplicationArea = All; }
-                field("Cost Center Option"; "Cost Center Option") { ApplicationArea = All; }
-                field("Cost Center"; "Cost Center") { ApplicationArea = All; }
+                field("Field No."; Rec."Field No.") { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Map-To G/L Account No."; Rec."Map-To G/L Account No.") { ApplicationArea = All; }
+                field("Switch Code"; Rec."Switch Code") { ApplicationArea = All; }
+                field("Cost Center Option"; Rec."Cost Center Option") { ApplicationArea = All; }
+                field("Cost Center"; Rec."Cost Center") { ApplicationArea = All; }
             }
         }
     }

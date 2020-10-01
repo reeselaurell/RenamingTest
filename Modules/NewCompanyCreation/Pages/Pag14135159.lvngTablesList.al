@@ -13,8 +13,8 @@ page 14135159 lvngTablesList
             {
                 Caption = 'Group';
 
-                field(ID; ID) { Caption = 'ID'; ApplicationArea = All; }
-                field(Name; Name) { Caption = 'Name'; ApplicationArea = All; }
+                field(ID; Rec.ID) { Caption = 'ID'; ApplicationArea = All; }
+                field(Name; Rec.Name) { Caption = 'Name'; ApplicationArea = All; }
             }
         }
     }

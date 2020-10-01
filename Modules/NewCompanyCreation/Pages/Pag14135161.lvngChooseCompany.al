@@ -22,8 +22,8 @@ page 14135161 lvngChooseCompany
 
                 trigger OnValidate()
                 begin
-                    SetRange(Name, CompanyNameVar);
-                    if FindFirst() then;
+                    Rec.SetRange(Name, CompanyNameVar);
+                    if Rec.FindFirst() then;
                 end;
             }
             field(WarnIfRecordExists; WarnIfRecordExists) { Caption = 'Warn if record already exists'; ApplicationArea = All; }
@@ -36,8 +36,8 @@ page 14135161 lvngChooseCompany
 
     trigger OnOpenPage()
     begin
-        SetRange(Name, CompanyName);
-        if FindFirst() then;
+        Rec.SetRange(Name, CompanyName);
+        if Rec.FindFirst() then;
         WarnIfRecordExists := false;
     end;
 

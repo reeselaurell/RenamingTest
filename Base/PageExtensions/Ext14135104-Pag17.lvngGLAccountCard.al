@@ -8,9 +8,9 @@ pageextension 14135104 lvngGLAccountCard extends "G/L Account Card"
             {
                 Caption = 'Loan Vision';
 
-                field(lvngReportingAccountName; lvngReportingAccountName) { ApplicationArea = All; }
-                field(lvngLoanNoMandatory; lvngLoanNoMandatory) { ApplicationArea = All; }
-                field(lvngReconciliationFieldNo; lvngReconciliationFieldNo) { ApplicationArea = All; }
+                field(lvngReportingAccountName; Rec.lvngReportingAccountName) { ApplicationArea = All; }
+                field(lvngLoanNoMandatory; Rec.lvngLoanNoMandatory) { ApplicationArea = All; }
+                field(lvngReconciliationFieldNo; Rec.lvngReconciliationFieldNo) { ApplicationArea = All; }
             }
         }
     }

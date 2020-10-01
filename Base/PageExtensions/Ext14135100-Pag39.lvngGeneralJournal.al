@@ -21,7 +21,7 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
 
         addlast(Control1)
         {
-            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
+            field(lvngLoanNo; Rec.lvngLoanNo) { ApplicationArea = All; }
         }
 
         addfirst(factboxes)
@@ -59,7 +59,7 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
                         JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, "Journal Template Name", "Journal Batch Name", CreateGuid());
+                        ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, Rec."Journal Template Name", Rec."Journal Batch Name", CreateGuid());
                     CurrPage.Update(false);
                 end;
             }
@@ -87,7 +87,7 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
                         JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        GenJnlFlexImportMgmt.CreateJournalLines(GenJnlImportBuffer, "Journal Template Name", "Journal Batch Name", CreateGuid());
+                        GenJnlFlexImportMgmt.CreateJournalLines(GenJnlImportBuffer, Rec."Journal Template Name", Rec."Journal Batch Name", CreateGuid());
                     CurrPage.Update(false);
                 end;
             }
@@ -96,11 +96,11 @@ pageextension 14135100 lvngGeneralJournal extends "General Journal"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        lvngDocumentGuid := CreateGuid();
+        Rec.lvngDocumentGuid := CreateGuid();
     end;
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+        CurrPage.DocumentExchange.Page.ReloadDocuments(Rec.lvngDocumentGuid);
     end;
 }

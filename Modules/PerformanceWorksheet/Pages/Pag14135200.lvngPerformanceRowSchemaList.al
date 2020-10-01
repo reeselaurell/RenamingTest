@@ -12,10 +12,10 @@ page 14135200 lvngPerformanceRowSchemaList
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Schema Type"; "Schema Type") { ApplicationArea = All; }
-                field("Column Schema"; "Column Schema") { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Schema Type"; Rec."Schema Type") { ApplicationArea = All; }
+                field("Column Schema"; Rec."Column Schema") { ApplicationArea = All; }
             }
         }
     }
@@ -38,11 +38,11 @@ page 14135200 lvngPerformanceRowSchemaList
                     RowLine: Record lvngPerformanceRowSchemaLine;
                     RowLines: Page lvngPerformanceRowSchemaLines;
                 begin
-                    TestField("Column Schema");
+                    Rec.TestField("Column Schema");
                     Clear(RowLines);
-                    RowLines.SetColumnSchemaCode("Column Schema");
+                    RowLines.SetColumnSchemaCode(Rec."Column Schema");
                     RowLine.Reset();
-                    RowLine.SetRange("Schema Code", Code);
+                    RowLine.SetRange("Schema Code", Rec.Code);
                     RowLine.SetRange("Column No.", 1);
                     RowLines.SetTableView(RowLine);
                     RowLines.Run();
@@ -70,7 +70,7 @@ page 14135200 lvngPerformanceRowSchemaList
                         FromRecordLine.FindSet();
                         repeat
                             ToRecordLine := FromRecordLine;
-                            ToRecordLine."Schema Code" := Code;
+                            ToRecordLine."Schema Code" := Rec.Code;
                             ToRecordLine.Insert();
                         until FromRecordLine.Next() = 0;
                     end;

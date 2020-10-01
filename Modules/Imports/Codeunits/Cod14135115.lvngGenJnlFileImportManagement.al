@@ -63,7 +63,7 @@ codeunit 14135115 lvngGenJnlFileImportManagement
             if GenJnlImportBuffer."Posting Group" <> '' then
                 GenjnlLine.Validate("Posting Group", GenJnlImportBuffer."Posting Group");
             GenJnlLine."Recurring Frequency" := GenJnlImportBuffer."Recurring Frequency";
-            GenJnlLine."Recurring Method" := GenJnlImportBuffer."Recurring Method".AsInteger();
+            GenJnlLine."Recurring Method" := GenJnlImportBuffer."Recurring Method";
             GenJnlLine.lvngLoanNo := GenJnlImportBuffer."Loan No.";
             GenJnlLine.lvngImportID := ImportID;
             GenJnlLine.Validate("Reason Code", GenJnlImportBuffer."Reason Code");
@@ -525,7 +525,7 @@ codeunit 14135115 lvngGenJnlFileImportManagement
         VendorLedgerEntry: Record "Vendor Ledger Entry";
     begin
         Clear(VendorMgt);
-        VendorMgt.SetFilterForExternalDocNo(VendorLedgerEntry, GenJnlImportBuffer."Document Type".AsInteger(), GenJnlImportBuffer."External Document No.", GenJnlImportBuffer."Account No.", GenJnlImportBuffer."Posting Date");
+        VendorMgt.SetFilterForExternalDocNo(VendorLedgerEntry, GenJnlImportBuffer."Document Type", GenJnlImportBuffer."External Document No.", GenJnlImportBuffer."Account No.", GenJnlImportBuffer."Posting Date");
         exit(VendorLedgerEntry.IsEmpty());
     end;
 

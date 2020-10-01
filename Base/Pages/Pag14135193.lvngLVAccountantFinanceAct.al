@@ -14,7 +14,7 @@ page 14135193 lvngLVAccountantFinanceAct
                 ShowCaption = false;
                 CuegroupLayout = Wide;
 
-                field("Cash Accounts Balance"; "Cash Accounts Balance")
+                field("Cash Accounts Balance"; Rec."Cash Accounts Balance")
                 {
                     Caption = 'Cash Account Balance';
                     ApplicationArea = All;
@@ -137,10 +137,10 @@ page 14135193 lvngLVAccountantFinanceAct
 
     trigger OnOpenPage()
     begin
-        Reset;
-        if not Get then begin
-            Init;
-            Insert;
+        Rec.Reset;
+        if not Rec.Get then begin
+            Rec.Init;
+            Rec.Insert;
             Commit;
         end;
         ActSetupRetrieved := false;
@@ -155,8 +155,8 @@ page 14135193 lvngLVAccountantFinanceAct
     var
         ActivitiesMgt: Codeunit "Activities Mgt.";
     begin
-        if FieldActive("Cash Accounts Balance") then
-            "Cash Accounts Balance" := ActivitiesMgt.CalcCashAccountsBalances;
+        if Rec.FieldActive("Cash Accounts Balance") then
+            Rec."Cash Accounts Balance" := ActivitiesMgt.CalcCashAccountsBalances;
     end;
 
     local procedure CalculateFundedLastBusDay(): Decimal

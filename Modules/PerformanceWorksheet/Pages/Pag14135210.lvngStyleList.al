@@ -12,12 +12,12 @@ page 14135210 lvngStyleList
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field(Bold; Bold) { ApplicationArea = All; }
-                field(Italic; Italic) { ApplicationArea = All; }
-                field(Underline; Underline) { ApplicationArea = All; }
-                field("Background Color"; "Background Color")
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Bold; Rec.Bold) { ApplicationArea = All; }
+                field(Italic; Rec.Italic) { ApplicationArea = All; }
+                field(Underline; Rec.Underline) { ApplicationArea = All; }
+                field("Background Color"; Rec."Background Color")
                 {
                     ApplicationArea = All;
 
@@ -33,7 +33,7 @@ page 14135210 lvngStyleList
                             exit(false);
                     end;
                 }
-                field("Font Color"; "Font Color")
+                field("Font Color"; Rec."Font Color")
                 {
                     ApplicationArea = All;
 
@@ -49,8 +49,8 @@ page 14135210 lvngStyleList
                             exit(false);
                     end;
                 }
-                field("Font Size"; "Font Size") { ApplicationArea = All; }
-                field("Font Name"; "Font Name") { ApplicationArea = All; }
+                field("Font Size"; Rec."Font Size") { ApplicationArea = All; }
+                field("Font Name"; Rec."Font Name") { ApplicationArea = All; }
             }
         }
     }

@@ -39,7 +39,7 @@ page 14135241 lvngSwitchEdit
 
                     trigger AddInReady()
                     begin
-                        LoadFields();
+                        RunLoadFields();
                         LoadCases();
                         AddInInitialized := true;
                     end;
@@ -62,8 +62,8 @@ page 14135241 lvngSwitchEdit
                         LineNo: Integer;
                     begin
                         ConditionLine.Reset();
-                        ConditionLine.SetRange("Expression Code", Code);
-                        ConditionLine.SetRange("Consumer Id", "Consumer Id");
+                        ConditionLine.SetRange("Expression Code", Rec.Code);
+                        ConditionLine.SetRange("Consumer Id", Rec."Consumer Id");
                         ConditionLine.DeleteAll();
                         LineNo := 1;
                         foreach Item in Data do begin
@@ -75,8 +75,8 @@ page 14135241 lvngSwitchEdit
                             SplitNo := 1;
                             while (Predicate <> '') and (Returns <> '') do begin
                                 Clear(ConditionLine);
-                                ConditionLine."Expression Code" := Code;
-                                ConditionLine."Consumer Id" := "Consumer Id";
+                                ConditionLine."Expression Code" := Rec.Code;
+                                ConditionLine."Consumer Id" := Rec."Consumer Id";
                                 ConditionLine."Line No." := LineNo;
                                 ConditionLine."Split No." := SplitNo;
                                 if Predicate <> '' then begin
@@ -144,7 +144,7 @@ page 14135241 lvngSwitchEdit
         Engine.CloneValueBuffer(FieldList, ConditionValueBuffer);
     end;
 
-    local procedure LoadFields()
+    local procedure RunLoadFields()
     var
         Object: JsonObject;
         Data: JsonArray;
@@ -169,8 +169,8 @@ page 14135241 lvngSwitchEdit
     begin
         SwitchValue := Engine.GetFormulaFromLines(Rec);
         ConditionLine.Reset();
-        ConditionLine.SetRange("Expression Code", Code);
-        ConditionLine.SetRange("Consumer Id", "Consumer Id");
+        ConditionLine.SetRange("Expression Code", Rec.Code);
+        ConditionLine.SetRange("Consumer Id", Rec."Consumer Id");
         ConditionLine.SetFilter("Line No.", '<>%1', 0);
         PrevNo := 0;
         if ConditionLine.FindSet() then begin

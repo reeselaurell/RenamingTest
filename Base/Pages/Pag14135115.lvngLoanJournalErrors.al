@@ -11,7 +11,7 @@ page 14135115 lvngLoanJournalErrors
         {
             repeater(Group)
             {
-                field(Description; Description) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
             }
         }
     }

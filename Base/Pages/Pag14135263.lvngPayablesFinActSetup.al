@@ -12,17 +12,17 @@ page 14135263 lvngPayablesFinActSetup
         {
             group(Group)
             {
-                field("Filter by User"; "Filter by User") { ApplicationArea = All; }
+                field("Filter by User"; Rec."Filter by User") { ApplicationArea = All; }
             }
         }
     }
 
     trigger OnOpenPage()
     begin
-        Reset();
-        if not Get() then begin
-            Init();
-            Insert();
+        Rec.Reset();
+        if not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
         end;
     end;
 }

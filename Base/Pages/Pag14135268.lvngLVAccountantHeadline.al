@@ -18,14 +18,14 @@ page 14135268 lvngLVAccountantHeadline
                 var
                     GLAccount: Record "G/L Account";
                 begin
-                    Reset();
-                    SetRange("Dimension Code", LVSetup."Cost Center Dimension Code");
-                    SetCurrentKey("Net Change");
-                    Ascending(false);
-                    FindFirst();
+                    Rec.Reset();
+                    Rec.SetRange("Dimension Code", LVSetup."Cost Center Dimension Code");
+                    Rec.SetCurrentKey("Net Change");
+                    Rec.Ascending(false);
+                    Rec.FindFirst();
                     GLAccount.Reset();
-                    GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
-                    SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", Code);
+                    GLAccount.SetFilter("Date Filter", Rec.GetDateFilter(Rec."Dimension Code"));
+                    Rec.SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", Rec.Code);
                     if GLAccount.FindSet() then
                         Page.Run(Page::"Chart of Accounts", GLAccount);
                 end;
@@ -38,14 +38,14 @@ page 14135268 lvngLVAccountantHeadline
                 var
                     GLAccount: Record "G/L Account";
                 begin
-                    Reset();
-                    SetRange("Dimension Code", LVSetup."Loan Officer Dimension Code");
-                    SetCurrentKey("Net Change");
-                    Ascending(false);
-                    FindFirst();
+                    Rec.Reset();
+                    Rec.SetRange("Dimension Code", LVSetup."Loan Officer Dimension Code");
+                    Rec.SetCurrentKey("Net Change");
+                    Rec.Ascending(false);
+                    Rec.FindFirst();
                     GLAccount.Reset();
-                    GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
-                    SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", Code);
+                    GLAccount.SetFilter("Date Filter", Rec.GetDateFilter(Rec."Dimension Code"));
+                    Rec.SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", Rec.Code);
                     if GLAccount.FindSet() then
                         Page.Run(Page::"Chart of Accounts", GLAccount);
                 end;
@@ -58,14 +58,14 @@ page 14135268 lvngLVAccountantHeadline
                 var
                     GLAccount: Record "G/L Account";
                 begin
-                    Reset();
-                    SetRange("Dimension Code", LVSetup."Cost Center Dimension Code");
-                    SetCurrentKey("Net Change");
-                    Ascending(true);
-                    FindFirst();
+                    Rec.Reset();
+                    Rec.SetRange("Dimension Code", LVSetup."Cost Center Dimension Code");
+                    Rec.SetCurrentKey("Net Change");
+                    Rec.Ascending(true);
+                    Rec.FindFirst();
                     GLAccount.Reset();
-                    GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
-                    SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", Code);
+                    GLAccount.SetFilter("Date Filter", Rec.GetDateFilter(Rec."Dimension Code"));
+                    Rec.SetGLAccountFilters(GLAccount, LVSetup."Cost Center Dimension Code", Rec.Code);
                     if GLAccount.FindSet() then
                         Page.Run(Page::"Chart of Accounts", GLAccount);
                 end;
@@ -78,14 +78,14 @@ page 14135268 lvngLVAccountantHeadline
                 var
                     GLAccount: Record "G/L Account";
                 begin
-                    Reset();
-                    SetRange("Dimension Code", LVSetup."Loan Officer Dimension Code");
-                    SetCurrentKey("Net Change");
-                    Ascending(true);
-                    FindFirst();
+                    Rec.Reset();
+                    Rec.SetRange("Dimension Code", LVSetup."Loan Officer Dimension Code");
+                    Rec.SetCurrentKey("Net Change");
+                    Rec.Ascending(true);
+                    Rec.FindFirst();
                     GLAccount.Reset();
-                    GLAccount.SetFilter("Date Filter", GetDateFilter("Dimension Code"));
-                    SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", Code);
+                    GLAccount.SetFilter("Date Filter", Rec.GetDateFilter(Rec."Dimension Code"));
+                    Rec.SetGLAccountFilters(GLAccount, LVSetup."Loan Officer Dimension Code", Rec.Code);
                     if GLAccount.FindSet() then
                         Page.Run(Page::"Chart of Accounts", GLAccount);
                 end;
@@ -106,8 +106,8 @@ page 14135268 lvngLVAccountantHeadline
     begin
         HeadlineSetup.Get();
         LVSetup.Get();
-        FillDimensions();
-        SetNetChange();
+        Rec.FillDimensions();
+        Rec.SetNetChange();
         BranchProfitText := GetText(LVSetup."Cost Center Dimension Code", false);
         LOProfitText := GetText(LVSetup."Loan Officer Dimension Code", false);
         LowBranchProfitText := GetText(LVSetup."Cost Center Dimension Code", true);
@@ -120,23 +120,23 @@ page 14135268 lvngLVAccountantHeadline
         PerformanceTxt: Text;
         InsightTxt: Text;
     begin
-        Reset();
-        SetRange("Dimension Code", DimensionCode);
-        SetCurrentKey("Net Change");
-        Ascending(isAscending);
-        FindFirst();
+        Rec.Reset();
+        Rec.SetRange("Dimension Code", DimensionCode);
+        Rec.SetCurrentKey("Net Change");
+        Rec.Ascending(isAscending);
+        Rec.FindFirst();
         if not isAscending then
             PerformanceTxt := 'top'
         else
             PerformanceTxt := 'worst';
         if DimensionCode = LVSetup."Cost Center Dimension Code" then begin
             DimensionType := 'Branch';
-            InsightTxt := GetBranchInsightText();
+            InsightTxt := Rec.GetBranchInsightText();
         end else begin
             DimensionType := 'LO';
-            InsightTxt := GetLOInsightText();
+            InsightTxt := Rec.GetLOInsightText();
         end;
-        exit(StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the %3 performing %4 with <emphasize>%5</emphasize> in profit</payload>', InsightTxt, Name, PerformanceTxt, DimensionType, GetNetChangeText("Net Change")));
+        exit(StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the %3 performing %4 with <emphasize>%5</emphasize> in profit</payload>', InsightTxt, Rec.Name, PerformanceTxt, DimensionType, GetNetChangeText(Rec."Net Change")));
     end;
 
     local procedure GetNetChangeText(NetChange: Decimal): Text

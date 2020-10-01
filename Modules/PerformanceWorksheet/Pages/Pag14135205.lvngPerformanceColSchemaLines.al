@@ -10,10 +10,10 @@ page 14135205 lvngPerformanceColSchemaLines
         {
             repeater(General)
             {
-                field("Column No."; "Column No.") { Editable = false; ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Primary Caption"; "Primary Caption") { ApplicationArea = All; }
-                field("Secondary Caption"; "Secondary Caption") { ApplicationArea = All; }
+                field("Column No."; Rec."Column No.") { Editable = false; ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Primary Caption"; Rec."Primary Caption") { ApplicationArea = All; }
+                field("Secondary Caption"; Rec."Secondary Caption") { ApplicationArea = All; }
             }
         }
     }

@@ -12,7 +12,7 @@ page 14135143 lvngImportBufferErrors
         {
             repeater(Group)
             {
-                field(Description; Description) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
             }
         }
     }

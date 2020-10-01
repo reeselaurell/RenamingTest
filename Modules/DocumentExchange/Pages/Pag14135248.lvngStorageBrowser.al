@@ -19,7 +19,7 @@ page 14135248 lvngStorageBrowser
         {
             repeater(Group)
             {
-                field(Name; Name) { ApplicationArea = All; CaptionClass = GetColumnName; }
+                field(Name; Rec.Name) { ApplicationArea = All; CaptionClass = GetColumnName; }
             }
         }
     }
@@ -72,15 +72,15 @@ page 14135248 lvngStorageBrowser
                     PromotedCategory = Process;
                     Image = ShowList;
                     Visible = not BrowsingFiles;
-                    Enabled = Name <> '';
+                    Enabled = Rec.Name <> '';
 
                     trigger OnAction()
                     var
                         StorageBrowser: Page lvngStorageBrowser;
                     begin
-                        if Name <> '' then begin
+                        if Rec.Name <> '' then begin
                             Clear(StorageBrowser);
-                            StorageBrowser.SetParams(Name);
+                            StorageBrowser.SetParams(Rec.Name);
                             StorageBrowser.Run();
                         end;
                     end;
@@ -95,13 +95,13 @@ page 14135248 lvngStorageBrowser
                     PromotedCategory = Process;
                     Image = Delete;
                     Visible = not BrowsingFiles;
-                    Enabled = Name <> '';
+                    Enabled = Rec.Name <> '';
 
                     trigger OnAction()
                     begin
-                        if Name <> '' then
-                            if Confirm(DeleteContainerPromptQst, false, Name) then begin
-                                AzureBlobMgmt.DeleteContainer(Name);
+                        if Rec.Name <> '' then
+                            if Confirm(DeleteContainerPromptQst, false, Rec.Name) then begin
+                                AzureBlobMgmt.DeleteContainer(Rec.Name);
                                 Refresh();
                             end;
                     end;
@@ -147,15 +147,15 @@ page 14135248 lvngStorageBrowser
                     PromotedCategory = Process;
                     Image = Close;
                     Visible = BrowsingFiles;
-                    Enabled = Name <> '';
+                    Enabled = Rec.Name <> '';
 
                     trigger OnAction()
                     var
                         IStream: InStream;
                         FileName: Text;
                     begin
-                        AzureBlobMgmt.DownloadFile(Container, Name, IStream);
-                        FileName := Name;
+                        AzureBlobMgmt.DownloadFile(Container, Rec.Name, IStream);
+                        FileName := Rec.Name;
                         DownloadFromStream(IStream, SaveFileLbl, '', FileMaskTxt, FileName);
                     end;
                 }
@@ -169,7 +169,7 @@ page 14135248 lvngStorageBrowser
                     PromotedCategory = Process;
                     Image = Copy;
                     Visible = BrowsingFiles;
-                    Enabled = Name <> '';
+                    Enabled = Rec.Name <> '';
 
                     trigger OnAction()
                     var
@@ -182,7 +182,7 @@ page 14135248 lvngStorageBrowser
                         if StorageBrowser.RunModal() = Action::LookupOK then begin
                             DstContainer := StorageBrowser.GetSelectedName();
                             if DstContainer <> '' then
-                                AzureBlobMgmt.CopyFile(Container, Name, DstContainer, Name);
+                                AzureBlobMgmt.CopyFile(Container, Rec.Name, DstContainer, Rec.Name);
                         end;
                     end;
                 }
@@ -196,7 +196,7 @@ page 14135248 lvngStorageBrowser
                     PromotedCategory = Process;
                     Image = CreateMovement;
                     Visible = BrowsingFiles;
-                    Enabled = Name <> '';
+                    Enabled = Rec.Name <> '';
 
                     trigger OnAction()
                     var
@@ -209,7 +209,7 @@ page 14135248 lvngStorageBrowser
                         if StorageBrowser.RunModal() = Action::LookupOK then begin
                             DstContainer := StorageBrowser.GetSelectedName();
                             if DstContainer <> '' then begin
-                                AzureBlobMgmt.MoveFile(Container, Name, DstContainer, Name);
+                                AzureBlobMgmt.MoveFile(Container, Rec.Name, DstContainer, Rec.Name);
                                 Refresh();
                             end;
                         end;
@@ -225,13 +225,13 @@ page 14135248 lvngStorageBrowser
                     PromotedCategory = Process;
                     Image = Delete;
                     Visible = BrowsingFiles;
-                    Enabled = Name <> '';
+                    Enabled = Rec.Name <> '';
 
                     trigger OnAction()
                     begin
-                        if Name <> '' then
-                            if Confirm(DeleteFilePromptQst, false, Name) then begin
-                                AzureBlobMgmt.DeleteFile(Container, Name);
+                        if Rec.Name <> '' then
+                            if Confirm(DeleteFilePromptQst, false, Rec.Name) then begin
+                                AzureBlobMgmt.DeleteFile(Container, Rec.Name);
                                 Refresh();
                             end;
                     end;
@@ -275,7 +275,7 @@ page 14135248 lvngStorageBrowser
 
     procedure GetSelectedName(): Text
     begin
-        exit(Name);
+        exit(Rec.Name);
     end;
 
     local procedure GetCaption(): Text
@@ -303,9 +303,9 @@ page 14135248 lvngStorageBrowser
         else
             AzureBlobMgmt.GetContainerList(Rec);
         if ExcludeName <> '' then begin
-            FilterGroup(2);
-            SetFilter(Name, '<>%1', ExcludeName);
-            FilterGroup(0);
+            Rec.FilterGroup(2);
+            Rec.SetFilter(Name, '<>%1', ExcludeName);
+            Rec.FilterGroup(0);
         end;
         CurrPage.Update(false);
     end;

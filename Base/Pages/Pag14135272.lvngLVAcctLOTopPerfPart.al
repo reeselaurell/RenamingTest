@@ -27,8 +27,8 @@ page 14135272 lvngLVAcctLOTopPerfPart
             {
                 IndentationColumn = 0;
 
-                field(Name; Name) { Caption = 'Name'; ApplicationArea = All; }
-                field("Net Change"; "Net Change")
+                field(Name; Rec.Name) { Caption = 'Name'; ApplicationArea = All; }
+                field("Net Change"; Rec."Net Change")
                 {
                     Caption = 'Net Change';
                     ApplicationArea = All;
@@ -39,8 +39,8 @@ page 14135272 lvngLVAcctLOTopPerfPart
                         Headline: Record lvngLVAcctRCHeadline;
                     begin
                         GLAccount.Reset();
-                        GLAccount.SetFilter("Date Filter", Headline.GetDateFilter("Dimension Code"));
-                        Headline.SetGLAccountFilters(GLAccount, "Dimension Code", Code);
+                        GLAccount.SetFilter("Date Filter", Headline.GetDateFilter(Rec."Dimension Code"));
+                        Headline.SetGLAccountFilters(GLAccount, Rec."Dimension Code", Rec.Code);
                         if GLAccount.FindSet() then
                             Page.Run(Page::"Chart of Accounts", GLAccount);
                     end;
@@ -61,10 +61,10 @@ page 14135272 lvngLVAcctLOTopPerfPart
 
                 trigger OnAction()
                 begin
-                    Reset();
-                    SetCurrentKey("Net Change");
-                    SetRange("Dimension Code", LoanVisionSetup."Loan Officer Dimension Code");
-                    Ascending(false);
+                    Rec.Reset();
+                    Rec.SetCurrentKey("Net Change");
+                    Rec.SetRange("Dimension Code", LoanVisionSetup."Loan Officer Dimension Code");
+                    Rec.Ascending(false);
                     CurrPage.Update();
                 end;
             }
@@ -100,16 +100,16 @@ page 14135272 lvngLVAcctLOTopPerfPart
     var
         Counter: Integer;
     begin
-        Reset();
-        SetRange("Dimension Code", LoanVisionSetup."Loan Officer Dimension Code");
-        SetCurrentKey("Net Change");
-        Ascending(false);
-        FindSet();
+        Rec.Reset();
+        Rec.SetRange("Dimension Code", LoanVisionSetup."Loan Officer Dimension Code");
+        Rec.SetCurrentKey("Net Change");
+        Rec.Ascending(false);
+        Rec.FindSet();
         repeat
-            Mark(true);
+            Rec.Mark(true);
             Counter += 1;
-            Next();
+            Rec.Next();
         until Counter = 5;
-        MarkedOnly(true);
+        Rec.MarkedOnly(true);
     end;
 }

@@ -9,7 +9,7 @@ pageextension 14135112 lvngSalesCrMemo extends "Sales Credit Memo"
 
         addlast(General)
         {
-            field(lvngTotalAmount; lvngTotalAmount) { ApplicationArea = All; }
+            field(lvngTotalAmount; Rec.lvngTotalAmount) { ApplicationArea = All; }
         }
     }
 
@@ -43,7 +43,7 @@ pageextension 14135112 lvngSalesCrMemo extends "Sales Credit Memo"
                         JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        SalesFileImportManagement.CreateSalesLines(GenJnlImportBuffer, DocumentType::"Credit Memo", "No.");
+                        SalesFileImportManagement.CreateSalesLines(GenJnlImportBuffer, DocumentType::"Credit Memo", Rec."No.");
                     CurrPage.Update(false);
                 end;
             }
@@ -52,11 +52,11 @@ pageextension 14135112 lvngSalesCrMemo extends "Sales Credit Memo"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        lvngDocumentGuid := CreateGuid();
+        Rec.lvngDocumentGuid := CreateGuid();
     end;
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+        CurrPage.DocumentExchange.Page.ReloadDocuments(Rec.lvngDocumentGuid);
     end;
 }

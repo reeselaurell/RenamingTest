@@ -4,13 +4,13 @@ pageextension 14135103 lvngDimensionValue extends "Dimension Values"
     {
         addbefore(Name)
         {
-            field(lvngFirstName; lvngFirstName) { ApplicationArea = All; Visible = LoanOfficerFieldsVisible; }
-            field(lvngLastName; lvngLastName) { ApplicationArea = All; Visible = LoanOfficerFieldsVisible; }
-            field(lvngMiddleName; lvngMiddleName) { ApplicationArea = All; Visible = LoanOfficerFieldsVisible; }
+            field(lvngFirstName; Rec.lvngFirstName) { ApplicationArea = All; Visible = LoanOfficerFieldsVisible; }
+            field(lvngLastName; Rec.lvngLastName) { ApplicationArea = All; Visible = LoanOfficerFieldsVisible; }
+            field(lvngMiddleName; Rec.lvngMiddleName) { ApplicationArea = All; Visible = LoanOfficerFieldsVisible; }
         }
         addafter(Code)
         {
-            field(lvngAdditionalCode; lvngAdditionalCode) { ApplicationArea = All; }
+            field(lvngAdditionalCode; Rec.lvngAdditionalCode) { ApplicationArea = All; }
         }
     }
 

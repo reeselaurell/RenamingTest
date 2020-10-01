@@ -12,17 +12,17 @@ page 14135107 lvngLoanJournalBatches
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field("Loan Journal Type"; "Loan Journal Type") { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Dimension Import Rule"; "Dimension Import Rule") { ApplicationArea = All; }
-                field("Map Dimensions Using Hierachy"; "Map Dimensions Using Hierachy") { ApplicationArea = All; }
-                field("Dimension Hierarchy Date"; "Dimension Hierarchy Date") { ApplicationArea = All; }
-                field("Default Title Customer No."; "Default Title Customer No.") { ApplicationArea = All; }
-                field("Default Investor Customer No."; "Default Investor Customer No.") { ApplicationArea = All; }
-                field("Default Reason Code"; "Default Reason Code") { ApplicationArea = All; }
-                field("Def. Processing Schema Code"; "Def. Processing Schema Code") { ApplicationArea = All; }
-                field("Loan Card Update Option"; "Loan Card Update Option") { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field("Loan Journal Type"; Rec."Loan Journal Type") { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Dimension Import Rule"; Rec."Dimension Import Rule") { ApplicationArea = All; }
+                field("Map Dimensions Using Hierachy"; Rec."Map Dimensions Using Hierachy") { ApplicationArea = All; }
+                field("Dimension Hierarchy Date"; Rec."Dimension Hierarchy Date") { ApplicationArea = All; }
+                field("Default Title Customer No."; Rec."Default Title Customer No.") { ApplicationArea = All; }
+                field("Default Investor Customer No."; Rec."Default Investor Customer No.") { ApplicationArea = All; }
+                field("Default Reason Code"; Rec."Default Reason Code") { ApplicationArea = All; }
+                field("Def. Processing Schema Code"; Rec."Def. Processing Schema Code") { ApplicationArea = All; }
+                field("Loan Card Update Option"; Rec."Loan Card Update Option") { ApplicationArea = All; }
             }
         }
     }
@@ -47,28 +47,28 @@ page 14135107 lvngLoanJournalBatches
                     SoldJournalLinesPage: Page lvngSoldJournalLines;
                     LoanJournalLinesPage: Page lvngLoanJournalLines;
                 begin
-                    case "Loan Journal Type" of
-                        "Loan Journal Type"::Funded:
+                    case Rec."Loan Journal Type" of
+                        Rec."Loan Journal Type"::Funded:
                             begin
                                 Clear(FundedJournalLinesPage);
                                 LoanJournalLine.Reset();
-                                LoanJournalLine.SetRange("Loan Journal Batch Code", Code);
+                                LoanJournalLine.SetRange("Loan Journal Batch Code", Rec.Code);
                                 FundedJournalLinesPage.SetTableView(LoanJournalLine);
                                 FundedJournalLinesPage.Run();
                             end;
-                        "Loan Journal Type"::Sold:
+                        Rec."Loan Journal Type"::Sold:
                             begin
                                 Clear(SoldJournalLinesPage);
                                 LoanJournalLine.Reset();
-                                LoanJournalLine.SetRange("Loan Journal Batch Code", Code);
+                                LoanJournalLine.SetRange("Loan Journal Batch Code", Rec.Code);
                                 SoldJournalLinesPage.SetTableView(LoanJournalLine);
                                 SoldJournalLinesPage.Run();
                             end;
-                        "Loan Journal Type"::Loan:
+                        Rec."Loan Journal Type"::Loan:
                             begin
                                 Clear(LoanJournalLinesPage);
                                 LoanJournalLine.Reset();
-                                LoanJournalLine.SetRange("Loan Journal Batch Code", Code);
+                                LoanJournalLine.SetRange("Loan Journal Batch Code", Rec.Code);
                                 LoanJournalLinesPage.SetTableView(LoanJournalLine);
                                 LoanJournalLinesPage.Run();
                             end;

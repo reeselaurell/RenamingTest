@@ -12,8 +12,8 @@ page 14135204 lvngPerformanceColSchemaList
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; ; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; ; }
             }
         }
     }

@@ -8,18 +8,18 @@ page 14135238 lvngCloseManagerActivities
     {
         area(Content)
         {
-            field("Filter By Assigned To"; "Filter By Assigned To") { ApplicationArea = All; }
-            field("Filter By Assigned Approver"; "Filter By Assigned Approver") { ApplicationArea = All; }
+            field("Filter By Assigned To"; Rec."Filter By Assigned To") { ApplicationArea = All; }
+            field("Filter By Assigned Approver"; Rec."Filter By Assigned Approver") { ApplicationArea = All; }
 
             cuegroup(CloseManagerStatus)
             {
                 Caption = 'Close Manager Status';
                 CuegroupLayout = Wide;
 
-                field("Total Tasks"; "Total Tasks") { ApplicationArea = All; }
-                field("Outstanding Reconcilliations"; "Outstanding Reconcilliations") { ApplicationArea = All; }
-                field("Tasks Awaiting Approval"; "Tasks Awaiting Approval") { ApplicationArea = All; }
-                field("Tasks Approved"; "Tasks Approved") { ApplicationArea = All; }
+                field("Total Tasks"; Rec."Total Tasks") { ApplicationArea = All; }
+                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations") { ApplicationArea = All; }
+                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval") { ApplicationArea = All; }
+                field("Tasks Approved"; Rec."Tasks Approved") { ApplicationArea = All; }
                 field(ItemDiscrepancy; ItemDiscrepancy) { ApplicationArea = All; Caption = 'Approved Item Discrepancy'; Editable = false; }
             }
         }
@@ -52,8 +52,8 @@ page 14135238 lvngCloseManagerActivities
 
                 trigger OnAction()
                 begin
-                    Validate("Filter By Assigned To", not "Filter By Assigned To");
-                    Modify(true);
+                    Rec.Validate("Filter By Assigned To", not Rec."Filter By Assigned To");
+                    Rec.Modify(true);
                     CurrPage.Update(true);
                 end;
             }
@@ -65,8 +65,8 @@ page 14135238 lvngCloseManagerActivities
 
                 trigger OnAction()
                 begin
-                    Validate("Filter By Assigned Approver", not "Filter By Assigned Approver");
-                    Modify(true);
+                    Rec.Validate("Filter By Assigned Approver", not Rec."Filter By Assigned Approver");
+                    Rec.Modify(true);
                     CurrPage.Update(true);
                 end;
             }
@@ -80,16 +80,16 @@ page 14135238 lvngCloseManagerActivities
     var
         CloseManagerEntryLine: Record lvngCloseManagerEntryLine;
     begin
-        Reset();
-        if not Get(UserId) then begin
-            Init();
-            Validate("User ID", UserId);
-            Insert(true);
+        Rec.Reset();
+        if not Rec.Get(UserId) then begin
+            Rec.Init();
+            Rec.Validate("User ID", UserId);
+            Rec.Insert(true);
         end;
-        if "Filter By Assigned To" then
-            SetFilter("Assigned To Filter", UserId);
-        if "Filter By Assigned Approver" then
-            SetFilter("Assigned Approver Filter", UserId);
+        if Rec."Filter By Assigned To" then
+            Rec.SetFilter("Assigned To Filter", UserId);
+        if Rec."Filter By Assigned Approver" then
+            Rec.SetFilter("Assigned Approver Filter", UserId);
         ItemDiscrepancy := 0;
         Clear(CloseManagerEntryLine);
         CloseManagerEntryLine.SetRange(Reconciled, true);

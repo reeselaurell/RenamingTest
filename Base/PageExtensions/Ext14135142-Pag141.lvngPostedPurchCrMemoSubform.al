@@ -5,10 +5,10 @@ pageextension 14135142 lvngPostedPurchCrMemoSubform extends "Posted Purch. Cr. M
         // Add changes to page layout here
         addlast(Control1)
         {
-            field(lvngReasonCode; lvngReasonCode) { ApplicationArea = All; }
-            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
-            field(lvngUseSalesTax; lvngUseSalesTax) { ApplicationArea = All; }
-            field(lvngDeliveryState; lvngDeliveryState) { ApplicationArea = All; }
+            field(lvngReasonCode; Rec.lvngReasonCode) { ApplicationArea = All; }
+            field(lvngLoanNo; Rec.lvngLoanNo) { ApplicationArea = All; }
+            field(lvngUseSalesTax; Rec.lvngUseSalesTax) { ApplicationArea = All; }
+            field(lvngDeliveryState; Rec.lvngDeliveryState) { ApplicationArea = All; }
         }
     }
 }

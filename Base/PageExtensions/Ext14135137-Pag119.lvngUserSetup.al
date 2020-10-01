@@ -4,7 +4,7 @@ pageextension 14135137 lvngUserSetup extends "User Setup"
     {
         addlast(Control1)
         {
-            field(lvngDefaultPaymentJournalBatch; lvngDefaultPaymentJournalBatch) { ApplicationArea = All; Caption = 'Default Payment Journal Batch'; }
+            field(lvngDefaultPaymentJournalBatch; Rec.lvngDefaultPaymentJournalBatch) { ApplicationArea = All; Caption = 'Default Payment Journal Batch'; }
         }
     }
 }

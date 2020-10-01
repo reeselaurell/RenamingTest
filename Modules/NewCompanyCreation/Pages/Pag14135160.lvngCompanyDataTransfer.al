@@ -15,9 +15,9 @@ page 14135160 lvngCompanyDataTransfer
             {
                 Caption = 'Group';
 
-                field("Table ID"; "Table ID") { Caption = 'Table ID'; ApplicationArea = All; }
-                field("Table Name"; "Table Name") { Caption = 'Table Name'; ApplicationArea = All; }
-                field(Active; Active) { Caption = 'Active'; ApplicationArea = All; }
+                field("Table ID"; Rec."Table ID") { Caption = 'Table ID'; ApplicationArea = All; }
+                field("Table Name"; Rec."Table Name") { Caption = 'Table Name'; ApplicationArea = All; }
+                field(Active; Rec.Active) { Caption = 'Active'; ApplicationArea = All; }
             }
         }
     }

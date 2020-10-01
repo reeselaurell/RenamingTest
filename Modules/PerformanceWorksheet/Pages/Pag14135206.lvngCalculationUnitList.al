@@ -12,9 +12,9 @@ page 14135206 lvngCalculationUnitList
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field(Type; Type) { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Type; Rec.Type) { ApplicationArea = All; }
             }
         }
     }

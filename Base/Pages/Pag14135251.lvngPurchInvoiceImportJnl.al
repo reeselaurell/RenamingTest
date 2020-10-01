@@ -11,13 +11,13 @@ page 14135251 lvngPurchInvoiceImportJnl
         {
             group(Group)
             {
-                field("No."; "No.") { ApplicationArea = All; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; }
-                field("Document Date"; "Document Date") { ApplicationArea = All; }
-                field("Payment Method Code"; "Payment Method Code") { ApplicationArea = All; }
-                field("Due Date"; "Due Date") { ApplicationArea = All; }
-                field("Posting Description"; "Posting Description") { ApplicationArea = All; }
-                field("Buy From Vendor No."; "Buy From Vendor No.") { ApplicationArea = All; }
+                field("No."; Rec."No.") { ApplicationArea = All; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
+                field("Document Date"; Rec."Document Date") { ApplicationArea = All; }
+                field("Payment Method Code"; Rec."Payment Method Code") { ApplicationArea = All; }
+                field("Due Date"; Rec."Due Date") { ApplicationArea = All; }
+                field("Posting Description"; Rec."Posting Description") { ApplicationArea = All; }
+                field("Buy From Vendor No."; Rec."Buy From Vendor No.") { ApplicationArea = All; }
             }
 
             part(PurchInvoiceImportSubform; lvngPurchInvoiceImportSubform) { ApplicationArea = All; SubPageLink = "Document No." = field("No."); }

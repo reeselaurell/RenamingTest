@@ -10,8 +10,8 @@ page 14135218 lvngDimPerfBandSchemaLines
         {
             repeater(Group)
             {
-                field("Band No."; "Band No.") { ApplicationArea = All; }
-                field("Dimension Filter"; "Dimension Filter")
+                field("Band No."; Rec."Band No.") { ApplicationArea = All; }
+                field("Dimension Filter"; Rec."Dimension Filter")
                 {
                     ApplicationArea = All;
 
@@ -23,15 +23,15 @@ page 14135218 lvngDimPerfBandSchemaLines
                         DimensionValue.SetRange("Dimension Code", DimensionCode);
                         if Page.RunModal(Page::"Dimension Values", DimensionValue) = Action::LookupOK then begin
                             Text := DimensionValue.Code;
-                            "Header Description" := DimensionValue.Name;
+                            Rec."Header Description" := DimensionValue.Name;
                             exit(true);
                         end else
                             exit(false);
                     end;
                 }
-                field("Header Description"; "Header Description") { ApplicationArea = All; }
-                field("Band Type"; "Band Type") { ApplicationArea = All; }
-                field("Row Formula Code"; "Row Formula Code")
+                field("Header Description"; Rec."Header Description") { ApplicationArea = All; }
+                field("Band Type"; Rec."Band Type") { ApplicationArea = All; }
+                field("Row Formula Code"; Rec."Row Formula Code")
                 {
                     ApplicationArea = All;
                     AssistEdit = true;
@@ -44,9 +44,9 @@ page 14135218 lvngDimPerfBandSchemaLines
                         ExpressiontType: Enum lvngExpressionType;
                         NewCode: Code[20];
                     begin
-                        NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetDimensionRowExpressionConsumerId(), "Schema Code", "Row Formula Code", ExpressiontType::Formula);
+                        NewCode := ExpressionList.SelectExpression(PerformanceMgmt.GetDimensionRowExpressionConsumerId(), Rec."Schema Code", Rec."Row Formula Code", ExpressiontType::Formula);
                         if NewCode <> '' then
-                            "Row Formula Code" := NewCode;
+                            Rec."Row Formula Code" := NewCode;
                     end;
                 }
 
@@ -62,11 +62,11 @@ page 14135218 lvngDimPerfBandSchemaLines
         DimPerfSchemaLine: Record lvngDimPerfBandSchemaLine;
     begin
         DimPerfSchemaLine.Reset();
-        DimPerfSchemaLine.SetRange("Schema Code", "Schema Code");
+        DimPerfSchemaLine.SetRange("Schema Code", Rec."Schema Code");
         if DimPerfSchemaLine.FindLast() then
-            "Band No." := DimPerfSchemaLine."Band No." + 10
+            Rec."Band No." := DimPerfSchemaLine."Band No." + 10
         else
-            "Band No." := 10;
+            Rec."Band No." := 10;
     end;
 
     procedure SetParams(DimCode: Code[20])

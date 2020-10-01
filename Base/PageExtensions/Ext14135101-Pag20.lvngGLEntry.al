@@ -7,17 +7,17 @@ pageextension 14135101 lvngGLEntry extends "General Ledger Entries"
 
         addlast(Control1)
         {
-            field(lvngShortcutDimension3Code; lvngShortcutDimension3Code) { ApplicationArea = All; }
-            field(lvngShortcutDimension4Code; lvngShortcutDimension4Code) { ApplicationArea = All; }
-            field(lvngShortcutDimension5Code; lvngShortcutDimension5Code) { ApplicationArea = All; }
-            field(lvngShortcutDimension6Code; lvngShortcutDimension6Code) { ApplicationArea = All; }
-            field(lvngShortcutDimension7Code; lvngShortcutDimension7Code) { ApplicationArea = All; }
-            field(lvngShortcutDimension8Code; lvngShortcutDimension8Code) { ApplicationArea = All; }
-            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
-            field(lvngServicingType; lvngServicingType) { ApplicationArea = All; }
-            field(lvngBorrowerSearchName; lvngBorrowerSearchName) { ApplicationArea = All; }
-            field(lvngEntryDate; lvngEntryDate) { ApplicationArea = All; }
-            field(lvngVoided; lvngVoided) { ApplicationArea = All; }
+            field(lvngShortcutDimension3Code; Rec.lvngShortcutDimension3Code) { ApplicationArea = All; }
+            field(lvngShortcutDimension4Code; Rec.lvngShortcutDimension4Code) { ApplicationArea = All; }
+            field(lvngShortcutDimension5Code; Rec.lvngShortcutDimension5Code) { ApplicationArea = All; }
+            field(lvngShortcutDimension6Code; Rec.lvngShortcutDimension6Code) { ApplicationArea = All; }
+            field(lvngShortcutDimension7Code; Rec.lvngShortcutDimension7Code) { ApplicationArea = All; }
+            field(lvngShortcutDimension8Code; Rec.lvngShortcutDimension8Code) { ApplicationArea = All; }
+            field(lvngLoanNo; Rec.lvngLoanNo) { ApplicationArea = All; }
+            field(lvngServicingType; Rec.lvngServicingType) { ApplicationArea = All; }
+            field(lvngBorrowerSearchName; Rec.lvngBorrowerSearchName) { ApplicationArea = All; }
+            field(lvngEntryDate; Rec.lvngEntryDate) { ApplicationArea = All; }
+            field(lvngVoided; Rec.lvngVoided) { ApplicationArea = All; }
         }
 
         addfirst(factboxes)
@@ -28,11 +28,11 @@ pageextension 14135101 lvngGLEntry extends "General Ledger Entries"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        lvngDocumentGuid := CreateGuid();
+        Rec.lvngDocumentGuid := CreateGuid();
     end;
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.DocumentExchange.Page.ReloadDocuments(lvngDocumentGuid);
+        CurrPage.DocumentExchange.Page.ReloadDocuments(Rec.lvngDocumentGuid);
     end;
 }

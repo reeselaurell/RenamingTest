@@ -10,19 +10,19 @@ page 14135182 lvngServicedDocumentSubpage
         {
             repeater(Group)
             {
-                field("Account No."; "Account No.") { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
-                field(Amount; Amount) { ApplicationArea = All; }
-                field("Global Dimension 1 Code"; "Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
-                field("Global Dimension 2 Code"; "Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
-                field("Shortcut Dimension 3 Code"; "Shortcut Dimension 3 Code") { ApplicationArea = All; Visible = DimensionVisible3; }
-                field("Shortcut Dimension 4 Code"; "Shortcut Dimension 4 Code") { ApplicationArea = All; Visible = DimensionVisible4; }
-                field("Shortcut Dimension 5 Code"; "Shortcut Dimension 5 Code") { ApplicationArea = All; Visible = DimensionVisible5; }
-                field("Shortcut Dimension 6 Code"; "Shortcut Dimension 6 Code") { ApplicationArea = All; Visible = DimensionVisible6; }
-                field("Shortcut Dimension 7 Code"; "Shortcut Dimension 7 Code") { ApplicationArea = All; Visible = DimensionVisible7; }
-                field("Shortcut Dimension 8 Code"; "Shortcut Dimension 8 Code") { ApplicationArea = All; Visible = DimensionVisible8; }
-                field("Business Unit Code"; "Business Unit Code") { ApplicationArea = All; }
-                field("Servicing Type"; "Servicing Type") { ApplicationArea = All; }
+                field("Account No."; Rec."Account No.") { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Amount; Rec.Amount) { ApplicationArea = All; }
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
+                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code") { ApplicationArea = All; Visible = DimensionVisible3; }
+                field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code") { ApplicationArea = All; Visible = DimensionVisible4; }
+                field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code") { ApplicationArea = All; Visible = DimensionVisible5; }
+                field("Shortcut Dimension 6 Code"; Rec."Shortcut Dimension 6 Code") { ApplicationArea = All; Visible = DimensionVisible6; }
+                field("Shortcut Dimension 7 Code"; Rec."Shortcut Dimension 7 Code") { ApplicationArea = All; Visible = DimensionVisible7; }
+                field("Shortcut Dimension 8 Code"; Rec."Shortcut Dimension 8 Code") { ApplicationArea = All; Visible = DimensionVisible8; }
+                field("Business Unit Code"; Rec."Business Unit Code") { ApplicationArea = All; }
+                field("Servicing Type"; Rec."Servicing Type") { ApplicationArea = All; }
             }
         }
     }
@@ -42,17 +42,17 @@ page 14135182 lvngServicedDocumentSubpage
     var
         LoanDocumentLine: Record lvngLoanDocumentLine;
     begin
-        "Account Type" := "Account Type"::"G/L Account";
+        Rec."Account Type" := Rec."Account Type"::"G/L Account";
         LoanDocumentLine.Reset();
-        LoanDocumentLine.SetRange("Transaction Type", "Transaction Type");
-        LoanDocumentLine.SetRange("Document No.", "Document No.");
+        LoanDocumentLine.SetRange("Transaction Type", Rec."Transaction Type");
+        LoanDocumentLine.SetRange("Document No.", Rec."Document No.");
         if LoanDocumentLine.FindLast() then
-            "Line No." := LoanDocumentLine."Line No." + 100
+            Rec."Line No." := LoanDocumentLine."Line No." + 100
         else
-            "Line No." := 100;
-        if (LoanDocument."Transaction Type" <> "Transaction Type") or (LoanDocument."Document No." <> "Document No.") then begin
-            LoanDocument.Get("Transaction Type", "Document No.");
-            "Reason Code" := LoanDocument."Reason Code";
+            Rec."Line No." := 100;
+        if (LoanDocument."Transaction Type" <> Rec."Transaction Type") or (LoanDocument."Document No." <> Rec."Document No.") then begin
+            LoanDocument.Get(Rec."Transaction Type", Rec."Document No.");
+            Rec."Reason Code" := LoanDocument."Reason Code";
         end;
     end;
 

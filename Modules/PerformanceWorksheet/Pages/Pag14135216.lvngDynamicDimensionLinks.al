@@ -14,8 +14,8 @@ page 14135216 lvngDynamicDimensionLinks
         {
             repeater(GroupName)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Name; Name) { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Name; Rec.Name) { ApplicationArea = All; }
             }
         }
     }

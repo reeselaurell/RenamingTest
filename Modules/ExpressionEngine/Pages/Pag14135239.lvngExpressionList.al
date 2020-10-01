@@ -10,9 +10,9 @@ page 14135239 lvngExpressionList
         {
             repeater(Group)
             {
-                field(Code; Code) { ApplicationArea = All; }
-                field(Type; Type) { ApplicationArea = All; }
-                field(Description; Description) { ApplicationArea = All; }
+                field(Code; Rec.Code) { ApplicationArea = All; }
+                field(Type; Rec.Type) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
             }
         }
     }
@@ -39,8 +39,8 @@ page 14135239 lvngExpressionList
                     IifEdit: Page lvngIifEdit;
                 begin
                     FillBuffer(Rec, Metadata, TempCondBuffer);
-                    case Type of
-                        Type::Formula:
+                    case Rec.Type of
+                        Rec.Type::Formula:
                             begin
                                 Clear(FormulaEdit);
                                 FormulaEdit.SetFieldList(TempCondBuffer);
@@ -50,7 +50,7 @@ page 14135239 lvngExpressionList
                                 if FormulaEdit.IsFormulaCreated() then
                                     Engine.SetFormulaToLines(Rec, FormulaEdit.GetFormula());
                             end;
-                        Type::"Switch":
+                        Rec.Type::"Switch":
                             begin
                                 Clear(SwitchEdit);
                                 ConditionHeader.Reset();
@@ -61,7 +61,7 @@ page 14135239 lvngExpressionList
                                 SwitchEdit.SetFieldList(TempCondBuffer);
                                 SwitchEdit.RunModal();
                             end;
-                        Type::Condition:
+                        Rec.Type::Condition:
                             begin
                                 Clear(ConditionEdit);
                                 ConditionHeader.Reset();
@@ -72,7 +72,7 @@ page 14135239 lvngExpressionList
                                 ConditionEdit.SetFieldList(TempCondBuffer);
                                 ConditionEdit.RunModal();
                             end;
-                        Type::Iif:
+                        Rec.Type::Iif:
                             begin
                                 Clear(IifEdit);
                                 ConditionHeader.Reset();
@@ -101,16 +101,16 @@ page 14135239 lvngExpressionList
                     ConditionLineTo: Record lvngExpressionLine;
                 begin
                     ConditionLineTo.Reset();
-                    ConditionLineTo.SetFilter("Expression Code", Code);
+                    ConditionLineTo.SetFilter("Expression Code", Rec.Code);
                     if not ConditionLineTo.IsEmpty() then
                         if not Confirm(DestinationExistsQst) then
                             exit;
                     ConditionHeader.Reset();
-                    ConditionHeader.SetRange(Type, Type);
-                    ConditionHeader.SetFilter(Code, '<>%1', Code);
+                    ConditionHeader.SetRange(Type, Rec.Type);
+                    ConditionHeader.SetFilter(Code, '<>%1', Rec.Code);
                     if Page.RunModal(0, ConditionHeader) = Action::LookupOK then begin
                         ConditionLineTo.Reset();
-                        ConditionLineTo.SetFilter("Expression Code", Code);
+                        ConditionLineTo.SetFilter("Expression Code", Rec.Code);
                         ConditionLineTo.DeleteAll();
                         ConditionLineFrom.Reset();
                         ConditionLineFrom.SetRange("Expression Code", ConditionHeader.Code);
@@ -118,7 +118,7 @@ page 14135239 lvngExpressionList
                             repeat
                                 Clear(ConditionLineTo);
                                 ConditionLineTo := ConditionLineFrom;
-                                ConditionLineTo."Expression Code" := Code;
+                                ConditionLineTo."Expression Code" := Rec.Code;
                                 ConditionLineTo.Insert();
                             until ConditionLineFrom.Next() = 0;
                     end;
@@ -173,7 +173,7 @@ page 14135239 lvngExpressionList
                 CurrPage.SetRecord(ExpressionHeader);
         CurrPage.LookupMode(true);
         if CurrPage.RunModal() = Action::LookupOK then
-            exit(Code)
+            exit(Rec.Code)
         else
             exit('');
     end;

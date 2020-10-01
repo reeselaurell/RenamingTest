@@ -4,14 +4,14 @@ pageextension 14135143 lvngSalesCrSubform extends "Sales Cr. Memo Subform"
     {
         addlast(Control1)
         {
-            field(lvngLoanNo; lvngLoanNo) { ApplicationArea = All; }
-            field(lvngReasonCode; lvngReasonCode) { ApplicationArea = All; Visible = false; }
+            field(lvngLoanNo; Rec.lvngLoanNo) { ApplicationArea = All; }
+            field(lvngReasonCode; Rec.lvngReasonCode) { ApplicationArea = All; Visible = false; }
             field(BorrowerName; BorrowerName) { Caption = 'Borrower Name'; ApplicationArea = All; Editable = false; }
-            field(lvngServicingType; lvngServicingType) { ApplicationArea = All; }
-            field(lvngShortcutDimension1Name; lvngShortcutDimension1Name) { ApplicationArea = All; }
-            field(lvngShortcutDimension2Name; lvngShortcutDimension2Name) { ApplicationArea = All; }
-            field(lvngDeliveryState; lvngDeliveryState) { ApplicationArea = All; }
-            field(lvngUseSalesTax; lvngUseSalesTax) { ApplicationArea = All; }
+            field(lvngServicingType; Rec.lvngServicingType) { ApplicationArea = All; }
+            field(lvngShortcutDimension1Name; Rec.lvngShortcutDimension1Name) { ApplicationArea = All; }
+            field(lvngShortcutDimension2Name; Rec.lvngShortcutDimension2Name) { ApplicationArea = All; }
+            field(lvngDeliveryState; Rec.lvngDeliveryState) { ApplicationArea = All; }
+            field(lvngUseSalesTax; Rec.lvngUseSalesTax) { ApplicationArea = All; }
         }
     }
 
@@ -23,13 +23,13 @@ pageextension 14135143 lvngSalesCrSubform extends "Sales Cr. Memo Subform"
         Loan: Record lvngLoan;
     begin
         BorrowerName := '';
-        if lvngLoanNo <> '' then
-            if Loan.Get(lvngLoanNo) then
+        if Rec.lvngLoanNo <> '' then
+            if Loan.Get(Rec.lvngLoanNo) then
                 BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Type := Type::"G/L Account";
+        Rec.Type := Rec.Type::"G/L Account";
     end;
 }

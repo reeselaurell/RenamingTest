@@ -11,10 +11,10 @@ page 14135186 lvngFlexImportSchemaConditions
         {
             repeater(Group)
             {
-                field("Expression Type"; "Expression Type") { ApplicationArea = All; }
-                field("Expression Code"; "Expression Code") { ApplicationArea = All; }
-                field(Value; Value) { ApplicationArea = All; }
-                field("Assign Result To Field"; "Assign Result To Field") { ApplicationArea = All; }
+                field("Expression Type"; Rec."Expression Type") { ApplicationArea = All; }
+                field("Expression Code"; Rec."Expression Code") { ApplicationArea = All; }
+                field(Value; Rec.Value) { ApplicationArea = All; }
+                field("Assign Result To Field"; Rec."Assign Result To Field") { ApplicationArea = All; }
             }
         }
     }

@@ -13,7 +13,7 @@ page 14135158 lvngLoanEscrowFields
         {
             repeater(Group)
             {
-                field(Description; Description) { Caption = 'Description'; ApplicationArea = All; }
+                field(Description; Rec.Description) { Caption = 'Description'; ApplicationArea = All; }
                 field(Amount; Amount) { Caption = 'Amount'; ApplicationArea = All; }
             }
         }
@@ -28,7 +28,7 @@ page 14135158 lvngLoanEscrowFields
         LoanValue: Record lvngLoanValue;
     begin
         Clear(Amount);
-        if LoanValue.Get(LoanNo, "Field No.") then
+        if LoanValue.Get(LoanNo, Rec."Field No.") then
             Amount := LoanValue."Decimal Value";
     end;
 

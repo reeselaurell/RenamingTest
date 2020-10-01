@@ -10,12 +10,12 @@ page 14135176 lvngForm1098Details
         {
             repeater(Group)
             {
-                field(Type; Type) { ApplicationArea = All; Caption = 'Type'; }
-                field(Description; Description) { ApplicationArea = All; Caption = 'Description'; }
-                field(Amount; Amount) { ApplicationArea = All; Caption = 'Amount'; }
-                field("Rule Description"; "Rule Description") { ApplicationArea = All; Caption = 'Rule Description'; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; Caption = 'Posting Date'; }
-                field("Closed at Date"; "Closed at Date") { ApplicationArea = All; Caption = 'Closed at Date'; }
+                field(Type; Rec.Type) { ApplicationArea = All; Caption = 'Type'; }
+                field(Description; Rec.Description) { ApplicationArea = All; Caption = 'Description'; }
+                field(Amount; Rec.Amount) { ApplicationArea = All; Caption = 'Amount'; }
+                field("Rule Description"; Rec."Rule Description") { ApplicationArea = All; Caption = 'Rule Description'; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; Caption = 'Posting Date'; }
+                field("Closed at Date"; Rec."Closed at Date") { ApplicationArea = All; Caption = 'Closed at Date'; }
             }
         }
     }
@@ -28,7 +28,7 @@ page 14135176 lvngForm1098Details
             {
                 ApplicationArea = All;
                 Caption = 'General Ledger Entries';
-                Enabled = Type = Type::"G/L Entry";
+                Enabled = Rec.Type = Rec.Type::"G/L Entry";
                 Image = GeneralLedger;
                 Promoted = true;
                 PromotedIsBig = true;

@@ -14,23 +14,23 @@ page 14135232 lvngCloseManagerEntrySubform
             {
                 Caption = 'Group';
 
-                field("Task Category"; "Task Category") { ApplicationArea = All; }
-                field("Task Name"; "Task Name") { ApplicationArea = All; }
+                field("Task Category"; Rec."Task Category") { ApplicationArea = All; }
+                field("Task Name"; Rec."Task Name") { ApplicationArea = All; }
                 field(DueDate; DueDate) { ApplicationArea = All; Caption = 'Due Date'; }
-                field("Assigned To"; "Assigned To") { ApplicationArea = All; }
-                field("Account Number"; "Account Number") { ApplicationArea = All; }
-                field("G/L Total"; "G/L Total") { ApplicationArea = All; }
-                field("Reconciled Total"; "Reconciled Total") { ApplicationArea = All; }
-                field(Reconciled; Reconciled) { ApplicationArea = All; }
-                field("Reconciled By"; "Reconciled By") { ApplicationArea = All; }
-                field("Reconciled Date"; "Reconciled Date") { ApplicationArea = All; }
-                field("Assigned Approver"; "Assigned Approver") { ApplicationArea = All; }
-                field("Awaiting Approval"; "Awaiting Approval") { ApplicationArea = All; }
-                field(Approved; Approved) { ApplicationArea = All; }
-                field("Approved By"; "Approved By") { ApplicationArea = All; }
-                field("Approved Date"; "Approved Date") { ApplicationArea = All; }
-                field(Note; Note) { ApplicationArea = All; }
-                field(Instructions; Instructions) { ApplicationArea = All; }
+                field("Assigned To"; Rec."Assigned To") { ApplicationArea = All; }
+                field("Account Number"; Rec."Account Number") { ApplicationArea = All; }
+                field("G/L Total"; Rec."G/L Total") { ApplicationArea = All; }
+                field("Reconciled Total"; Rec."Reconciled Total") { ApplicationArea = All; }
+                field(Reconciled; Rec.Reconciled) { ApplicationArea = All; }
+                field("Reconciled By"; Rec."Reconciled By") { ApplicationArea = All; }
+                field("Reconciled Date"; Rec."Reconciled Date") { ApplicationArea = All; }
+                field("Assigned Approver"; Rec."Assigned Approver") { ApplicationArea = All; }
+                field("Awaiting Approval"; Rec."Awaiting Approval") { ApplicationArea = All; }
+                field(Approved; Rec.Approved) { ApplicationArea = All; }
+                field("Approved By"; Rec."Approved By") { ApplicationArea = All; }
+                field("Approved Date"; Rec."Approved Date") { ApplicationArea = All; }
+                field(Note; Rec.Note) { ApplicationArea = All; }
+                field(Instructions; Rec.Instructions) { ApplicationArea = All; }
             }
         }
     }
@@ -43,14 +43,14 @@ page 14135232 lvngCloseManagerEntrySubform
         CloseManagerEntryHeader: Record lvngCloseManagerEntryHeader;
     begin
         CloseManagerEntryHeader.Get(Rec."Template No.");
-        SetFilter("Date Filter", '..%1', CloseManagerEntryHeader."Period Date");
-        CalcFields("Period Date");
-        if "Period Date" = 0D then
+        Rec.SetFilter("Date Filter", '..%1', CloseManagerEntryHeader."Period Date");
+        Rec.CalcFields("Period Date");
+        if Rec."Period Date" = 0D then
             DueDate := 0D
         else
-            if Format("Due Date Calculation") = '' then
-                DueDate := "Period Date"
+            if Format(Rec."Due Date Calculation") = '' then
+                DueDate := Rec."Period Date"
             else
-                DueDate := CalcDate("Due Date Calculation", "Period Date");
+                DueDate := CalcDate(Rec."Due Date Calculation", Rec."Period Date");
     end;
 }

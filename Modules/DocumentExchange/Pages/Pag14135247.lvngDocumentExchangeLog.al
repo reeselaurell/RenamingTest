@@ -3,7 +3,7 @@ page 14135247 lvngDocumentExchangeLog
     PageType = List;
     UsageCategory = Administration;
     SourceTable = lvngDocumentExchangeLog;
-    SourceTableView = where (Success = const (false));
+    SourceTableView = where(Success = const(false));
     Caption = 'Document Exchange Log';
 
     layout
@@ -12,10 +12,10 @@ page 14135247 lvngDocumentExchangeLog
         {
             repeater(Group)
             {
-                field("Creation Date/Time"; "Creation Date/Time") { ApplicationArea = All; }
-                field(Success; Success) { ApplicationArea = All; }
-                field("File Name"; "File Name") { ApplicationArea = All; }
-                field(Message; Message) { ApplicationArea = All; }
+                field("Creation Date/Time"; Rec."Creation Date/Time") { ApplicationArea = All; }
+                field(Success; Rec.Success) { ApplicationArea = All; }
+                field("File Name"; Rec."File Name") { ApplicationArea = All; }
+                field(Message; Rec.Message) { ApplicationArea = All; }
             }
         }
     }

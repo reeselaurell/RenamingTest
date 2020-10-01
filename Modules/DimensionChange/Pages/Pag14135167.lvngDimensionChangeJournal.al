@@ -10,32 +10,32 @@ page 14135167 lvngDimensionChangeJournal
         {
             repeater(Group)
             {
-                field("Entry No."; "Entry No.") { ApplicationArea = All; }
-                field("Posting Date"; "Posting Date") { ApplicationArea = All; }
-                field("G/L Account No."; "G/L Account No.") { ApplicationArea = All; }
+                field("Entry No."; Rec."Entry No.") { ApplicationArea = All; }
+                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
+                field("G/L Account No."; Rec."G/L Account No.") { ApplicationArea = All; }
                 field(GLAccountName; GLAccountName) { ApplicationArea = All; Editable = false; Caption = 'G/L Account Name'; }
-                field(Description; Description) { ApplicationArea = All; }
-                field("Old Dimension 1 Code"; "Old Dimension 1 Code") { ApplicationArea = All; }
-                field("New Dimension 1 Code"; "New Dimension 1 Code") { ApplicationArea = All; }
-                field("Old Dimension 2 Code"; "Old Dimension 2 Code") { ApplicationArea = All; }
-                field("New Dimension 2 Code"; "New Dimension 2 Code") { ApplicationArea = All; }
-                field("Old Dimension 3 Code"; "Old Dimension 3 Code") { ApplicationArea = All; }
-                field("New Dimension 3 Code"; "New Dimension 3 Code") { ApplicationArea = All; }
-                field("Old Dimension 4 Code"; "Old Dimension 4 Code") { ApplicationArea = All; }
-                field("New Dimension 4 Code"; "New Dimension 4 Code") { ApplicationArea = All; }
-                field("Old Dimension 5 Code"; "Old Dimension 5 Code") { ApplicationArea = All; }
-                field("New Dimension 5 Code"; "New Dimension 5 Code") { ApplicationArea = All; }
-                field("Old Dimension 6 Code"; "Old Dimension 6 Code") { ApplicationArea = All; }
-                field("New Dimension 6 Code"; "New Dimension 6 Code") { ApplicationArea = All; }
-                field("Old Dimension 7 Code"; "Old Dimension 7 Code") { ApplicationArea = All; }
-                field("New Dimension 7 Code"; "New Dimension 7 Code") { ApplicationArea = All; }
-                field("Old Dimension 8 Code"; "Old Dimension 8 Code") { ApplicationArea = All; }
-                field("New Dimension 8 Code"; "New Dimension 8 Code") { ApplicationArea = All; }
-                field("Old Business Unit Code"; "Old Business Unit Code") { ApplicationArea = All; }
-                field("New Business Unit Code"; "New Business Unit Code") { ApplicationArea = All; }
-                field("Old Loan No."; "Old Loan No.") { ApplicationArea = All; }
-                field("New Loan No."; "New Loan No.") { ApplicationArea = All; }
-                field(Change; Change) { ApplicationArea = All; }
+                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Old Dimension 1 Code"; Rec."Old Dimension 1 Code") { ApplicationArea = All; }
+                field("New Dimension 1 Code"; Rec."New Dimension 1 Code") { ApplicationArea = All; }
+                field("Old Dimension 2 Code"; Rec."Old Dimension 2 Code") { ApplicationArea = All; }
+                field("New Dimension 2 Code"; Rec."New Dimension 2 Code") { ApplicationArea = All; }
+                field("Old Dimension 3 Code"; Rec."Old Dimension 3 Code") { ApplicationArea = All; }
+                field("New Dimension 3 Code"; Rec."New Dimension 3 Code") { ApplicationArea = All; }
+                field("Old Dimension 4 Code"; Rec."Old Dimension 4 Code") { ApplicationArea = All; }
+                field("New Dimension 4 Code"; Rec."New Dimension 4 Code") { ApplicationArea = All; }
+                field("Old Dimension 5 Code"; Rec."Old Dimension 5 Code") { ApplicationArea = All; }
+                field("New Dimension 5 Code"; Rec."New Dimension 5 Code") { ApplicationArea = All; }
+                field("Old Dimension 6 Code"; Rec."Old Dimension 6 Code") { ApplicationArea = All; }
+                field("New Dimension 6 Code"; Rec."New Dimension 6 Code") { ApplicationArea = All; }
+                field("Old Dimension 7 Code"; Rec."Old Dimension 7 Code") { ApplicationArea = All; }
+                field("New Dimension 7 Code"; Rec."New Dimension 7 Code") { ApplicationArea = All; }
+                field("Old Dimension 8 Code"; Rec."Old Dimension 8 Code") { ApplicationArea = All; }
+                field("New Dimension 8 Code"; Rec."New Dimension 8 Code") { ApplicationArea = All; }
+                field("Old Business Unit Code"; Rec."Old Business Unit Code") { ApplicationArea = All; }
+                field("New Business Unit Code"; Rec."New Business Unit Code") { ApplicationArea = All; }
+                field("Old Loan No."; Rec."Old Loan No.") { ApplicationArea = All; }
+                field("New Loan No."; Rec."New Loan No.") { ApplicationArea = All; }
+                field(Change; Rec.Change) { ApplicationArea = All; }
             }
         }
     }
@@ -57,7 +57,7 @@ page 14135167 lvngDimensionChangeJournal
                 var
                     DimensionChangeSetImport: XmlPort lvngDimensionChangeSetImport;
                 begin
-                    DimensionChangeSetImport.SetParams("Change Set ID");
+                    DimensionChangeSetImport.SetParams(Rec."Change Set ID");
                     DimensionChangeSetImport.Run();
                     CurrPage.Update(false);
                 end;
@@ -76,7 +76,7 @@ page 14135167 lvngDimensionChangeJournal
                 var
                     DimensionLoanChangeSetImport: XmlPort lvngDimensionLoanChangeImport;
                 begin
-                    DimensionLoanChangeSetImport.SetParams("Change Set ID");
+                    DimensionLoanChangeSetImport.SetParams(Rec."Change Set ID");
                     DimensionLoanChangeSetImport.Run();
                     CurrPage.Update(false);
                 end;
@@ -95,7 +95,7 @@ page 14135167 lvngDimensionChangeJournal
                 var
                     DimensionChangeSetImport: Report lvngDimensionChangeSetImport;
                 begin
-                    DimensionChangeSetImport.SetParams("Change Set ID");
+                    DimensionChangeSetImport.SetParams(Rec."Change Set ID");
                     DimensionChangeSetImport.Run();
                     CurrPage.Update(false);
                 end;
@@ -117,12 +117,12 @@ page 14135167 lvngDimensionChangeJournal
                     DimensionChangeJnlEntry: Record lvngDimensionChangeJnlEntry;
                     PostDimensionChangeSet: Report lvngPostDimensionChangeSet;
                 begin
-                    if Count > 0 then begin
-                        DimensionChangeJnlEntry.SetRange("Change Set ID", "Change Set ID");
+                    if Rec.Count > 0 then begin
+                        DimensionChangeJnlEntry.SetRange("Change Set ID", Rec."Change Set ID");
                         PostDimensionChangeSet.SetTableview(DimensionChangeJnlEntry);
                         PostDimensionChangeSet.RunModal();
                         DimensionChangeLedgerEntry.FilterGroup(2);
-                        DimensionChangeLedgerEntry.SetRange("Change Set ID", "Change Set ID");
+                        DimensionChangeLedgerEntry.SetRange("Change Set ID", Rec."Change Set ID");
                         DimensionChangeLedgerEntry.FilterGroup(0);
                         DimensionChangeLedger.SetTableView(DimensionChangeLedgerEntry);
                         DimensionChangeLedger.Run();
@@ -136,8 +136,8 @@ page 14135167 lvngDimensionChangeJournal
     trigger OnAfterGetRecord()
     begin
         Clear(GLAccountName);
-        if GLAccount."No." <> "G/L Account No." then begin
-            if GLAccount.Get("G/L Account No.") then
+        if GLAccount."No." <> Rec."G/L Account No." then begin
+            if GLAccount.Get(Rec."G/L Account No.") then
                 GLAccountName := GLAccount.Name;
         end;
     end;

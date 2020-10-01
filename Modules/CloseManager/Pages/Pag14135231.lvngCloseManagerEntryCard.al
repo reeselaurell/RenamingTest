@@ -14,11 +14,11 @@ page 14135231 lvngCloseManagerEntryCard
             {
                 Caption = 'General';
 
-                field("Period Date"; "Period Date") { ApplicationArea = All; }
-                field("Total Tasks"; "Total Tasks") { ApplicationArea = All; }
-                field("Outstanding Reconcilliations"; "Outstanding Reconcilliations") { ApplicationArea = All; }
-                field("Tasks Awaiting Approval"; "Tasks Awaiting Approval") { ApplicationArea = All; }
-                field("Tasks Approved"; "Tasks Approved") { ApplicationArea = All; }
+                field("Period Date"; Rec."Period Date") { ApplicationArea = All; }
+                field("Total Tasks"; Rec."Total Tasks") { ApplicationArea = All; }
+                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations") { ApplicationArea = All; }
+                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval") { ApplicationArea = All; }
+                field("Tasks Approved"; Rec."Tasks Approved") { ApplicationArea = All; }
                 field(PercentComplete; PercentComplete) { ApplicationArea = All; Caption = 'Percent Complete'; }
             }
 
@@ -61,12 +61,12 @@ page 14135231 lvngCloseManagerEntryCard
                     Clear(CloseManagerSetup);
                     CloseManagerSetup.Get();
                     CloseManagerSetup.TestField("Quick Entry Archive Nos.");
-                    CalcFields("Tasks Awaiting Approval", "Outstanding Reconcilliations");
-                    if ("Tasks Awaiting Approval" > 0) or ("Outstanding Reconcilliations" > 0) then
+                    Rec.CalcFields("Tasks Awaiting Approval", "Outstanding Reconcilliations");
+                    if (Rec."Tasks Awaiting Approval" > 0) or (Rec."Outstanding Reconcilliations" > 0) then
                         if not Confirm(ArchiveIncompleteEntryQst, false) then
                             Error(UnableToArchiveIncompleteErr);
                     Clear(CloseManagerEntryHeader);
-                    CloseManagerEntryHeader.Get("Template No.");
+                    CloseManagerEntryHeader.Get(Rec."Template No.");
                     Clear(CloseManagerEntryHdrArchive);
                     CloseManagerEntryHdrArchive.TransferFields(CloseManagerEntryHeader);
                     CloseManagerEntryHdrArchive."No." := NoSeriesMgt.GetNextNo(CloseManagerSetup."Quick Entry Archive Nos.", 0D, true);
@@ -125,20 +125,20 @@ page 14135231 lvngCloseManagerEntryCard
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        "Document Guid" := CreateGuid();
+        Rec."Document Guid" := CreateGuid();
     end;
 
     trigger OnAfterGetRecord()
     begin
-        CalcFields("Total Tasks", "Tasks Approved");
-        if "Total Tasks" = 0 then
+        Rec.CalcFields("Total Tasks", "Tasks Approved");
+        if Rec."Total Tasks" = 0 then
             PercentComplete := 100
         else
-            PercentComplete := Round("Tasks Approved" / "Total Tasks" * 100, 1, '=');
+            PercentComplete := Round(Rec."Tasks Approved" / Rec."Total Tasks" * 100, 1, '=');
     end;
 
     trigger OnAfterGetCurrRecord()
     begin
-        CurrPage.DocumentsExchange.Page.ReloadDocuments("Document Guid");
+        CurrPage.DocumentsExchange.Page.ReloadDocuments(Rec."Document Guid");
     end;
 }

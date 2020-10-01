@@ -14,18 +14,18 @@ page 14135219 lvngExcelExportSetup
         {
             group(General)
             {
-                field("Base Url"; "Base Url") { ApplicationArea = All; }
-                field("Access Key"; "Access Key") { ApplicationArea = All; }
+                field("Base Url"; Rec."Base Url") { ApplicationArea = All; }
+                field("Access Key"; Rec."Access Key") { ApplicationArea = All; }
             }
         }
     }
 
     trigger OnOpenPage()
     begin
-        Reset();
-        if not Get() then begin
-            Init();
-            Insert();
+        Rec.Reset();
+        if not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
         end;
     end;
 }
