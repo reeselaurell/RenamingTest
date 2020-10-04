@@ -28,7 +28,7 @@ table 14135128 lvngGenJnlImportBuffer
         field(29; "Recurring Frequency"; DateFormula) { Caption = 'Recurring Frequency'; DataClassification = CustomerContent; }
         field(30; "Bank Payment Type"; enum lvngBankPaymentType) { Caption = 'Bank Payment Type'; DataClassification = CustomerContent; }
         field(31; "Depreciation Book Code"; Code[10]) { Caption = 'Depreciation Book Code'; DataClassification = CustomerContent; }
-        field(32; "FA Posting Type"; Enum lvngFAPostingType) { Caption = 'FA Posting Type'; DataClassification = CustomerContent; }
+        field(32; "FA Posting Type"; Enum "Gen. Journal Line FA Posting Type") { Caption = 'FA Posting Type'; DataClassification = CustomerContent; }
         field(80; "Global Dimension 1 Code"; Code[20]) { Caption = 'Global Dimension 1 Code'; DataClassification = CustomerContent; CaptionClass = '1,1,1'; }
         field(81; "Global Dimension 2 Code"; Code[20]) { Caption = 'Global Dimension 2 Code'; DataClassification = CustomerContent; CaptionClass = '1,1,2'; }
         field(82; "Shortcut Dimension 3 Code"; Code[20]) { Caption = 'Shortcut Dimension 3 Code'; DataClassification = CustomerContent; CaptionClass = '1,2,3'; }
