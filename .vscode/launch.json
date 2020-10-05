@@ -21,7 +21,7 @@
             "type": "al",
             "request": "launch",
             "name": "Mrak",
-            "server": "http://localhost:8080",
+            "server": "http://localhost",
             "port": 7249,
             "serverInstance": "BC170",
             "authentication": "Windows",
