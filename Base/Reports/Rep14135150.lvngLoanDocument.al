@@ -169,6 +169,7 @@ report 14135150 "lvngLoanDocument"
         DimensionValue.reset;
         DimensionValue.SetRange("Dimension Code", DimensionCode);
         DimensionValue.SetRange(Code, GetDimensionValueCode(DimensionCode));
+        DimensionValue.SetLoadFields(DimensionValue.Name);
         if DimensionValue.FindFirst() then
             exit(DimensionValue.Name);
         exit('');

@@ -196,12 +196,14 @@ report 14135157 lvngVendCheckApplicationReport
         DetVendLedgerEntry1.SetCurrentKey("Vendor Ledger Entry No.");
         DetVendLedgerEntry1.SetRange("Vendor Ledger Entry No.", MasterVendLedgerEntry."Entry No.");
         DetVendLedgerEntry1.SetRange(Unapplied, false);
+        DetVendLedgerEntry1.SetLoadFields("Vendor Ledger Entry No.", "Applied Vend. Ledger Entry No.");
         if DetVendLedgerEntry1.FindSet() then
             repeat
                 if DetVendLedgerEntry1."Vendor Ledger Entry No." = DetVendLedgerEntry1."Applied Vend. Ledger Entry No." then begin
                     DetVendLedgerEntry2.SetCurrentKey("Applied Vend. Ledger Entry No.", "Entry Type");
                     DetVendLedgerEntry2.SetRange("Applied Vend. Ledger Entry No.", DetVendLedgerEntry1."Applied Vend. Ledger Entry No.");
                     DetVendLedgerEntry2.SetRange(Unapplied, false);
+                    DetVendLedgerEntry2.SetLoadFields("Vendor Ledger Entry No.", "Applied Vend. Ledger Entry No.");
                     if DetVendLedgerEntry2.FindSet() then
                         repeat
                             if DetVendLedgerEntry2."Vendor Ledger Entry No." <> DetVendLedgerEntry2."Applied Vend. Ledger Entry No." then
