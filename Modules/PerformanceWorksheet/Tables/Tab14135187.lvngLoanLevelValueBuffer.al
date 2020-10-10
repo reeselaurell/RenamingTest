@@ -2,6 +2,7 @@ table 14135187 lvngLoanLevelValueBuffer
 {
     Caption = 'Loan Level Value Buffer';
     DataClassification = CustomerContent;
+    TableType = Temporary;
 
     fields
     {
