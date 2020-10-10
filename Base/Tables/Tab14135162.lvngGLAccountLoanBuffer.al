@@ -2,6 +2,7 @@ table 14135162 lvngGLAccountLoanBuffer
 {
     Caption = 'G/L Account Loan Buffer';
     DataClassification = CustomerContent;
+    TableType = Temporary;
 
     fields
     {
