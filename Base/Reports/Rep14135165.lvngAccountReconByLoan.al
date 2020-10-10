@@ -119,7 +119,9 @@ report 14135165 lvngAccountReconByLoan
                     CreditAmount := 0;
                     RecCounter := 0;
                     GLEntry.Reset();
-                    GLEntry.SetCurrentKey("G/L Account No.", "Posting Date", lvngLoanNo); //TODO: will not work, can't have composite key here from extension table and base, change to SetLoadFields, and repeat clause
+                    GLEntry.SetCurrentKey("G/L Account No.", "Posting Date", lvngLoanNo);
+                    //TODO: will not work, can't have composite key here from extension table and base, change to SetLoadFields, and repeat clause, should use buffer to get data from lvngGroupedLoanGLEntry
+
                     GLEntry.SetRange("G/L Account No.", "G/L Account"."No.");
                     GLEntry.SetFilter("Posting Date", DateFilter);
                     GLEntry.SetRange(lvngLoanNo, Loan."No.");

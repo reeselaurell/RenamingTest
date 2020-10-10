@@ -9,4 +9,3 @@ tableextension 14135111 lvngInvoicePostBuffer extends "Invoice Post. Buffer"
         field(14135110; lvngComment; Text[250]) { Caption = 'Comment'; DataClassification = CustomerContent; }
     }
 }
-//TODO: Check if this table is not superceeded by our own buffer table
