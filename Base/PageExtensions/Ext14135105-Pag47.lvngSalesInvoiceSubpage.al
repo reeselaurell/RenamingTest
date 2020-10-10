@@ -29,16 +29,17 @@ pageextension 14135105 lvngSalesInvoiceSubpage extends "Sales Invoice Subform"
     }
 
     var
-        BorrowerName: Text[250];
+        BorrowerName: Text;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
 
     trigger OnAfterGetRecord()
     var
-        Loan: Record lvngLoan;
+        lvngLoan: Record lvngLoan;
     begin
         BorrowerName := '';
         if Rec.lvngLoanNo <> '' then
-            if Loan.Get(Rec.lvngLoanNo) then
-                BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
+            if lvngLoan.Get(Rec.lvngLoanNo) then
+                BorrowerName := lvngLoanManagement.GetBorrowerName(lvngLoan);
     end;
 
     trigger OnNewRecord(BelowxRec: Boolean)

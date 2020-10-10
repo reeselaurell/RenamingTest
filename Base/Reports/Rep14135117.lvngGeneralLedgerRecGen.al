@@ -212,7 +212,7 @@ report 14135117 lvngGeneralLedgerRecGen
                                                                 TempGenRec."Payment Ledger Entry No." := VendorLedgerEntry."Entry No.";
                                                                 TempGenRec."Includes Multi-Payment" := true;
                                                                 if Loan.Get(GLEntry2.lvngLoanNo) then begin
-                                                                    TempGenRec.Name := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
+                                                                    TempGenRec.Name := lvngLoanManagement.GetBorrowerName(Loan);
                                                                     TempGenRec."Date Funded" := Loan."Date Funded";
                                                                     TempGenRec."Date Sold" := Loan."Date Sold";
                                                                     if Customer.Get(Loan."Investor Customer No.") then
@@ -297,6 +297,7 @@ report 14135117 lvngGeneralLedgerRecGen
         DefaultDimension: Record "Default Dimension";
         TempGenRec: Record lvngGenLedgerReconcile temporary;
         QuerySum: Query lvngGLEntriesByLoanSums;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
         DateFilter: Text;
         GLFilter: Text;
         LoanNoFilter: Text;

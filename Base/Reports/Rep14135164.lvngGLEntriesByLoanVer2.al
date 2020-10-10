@@ -118,7 +118,7 @@ report 14135164 lvngGLEntriesByLoanVer2
             column(CompanyName; CompanyInformation.Name) { }
             column(ReportFilters; Filters) { }
             column(LoanNo; TempLoan."No.") { }
-            column(BorrowerName; TempLoan."Borrower First Name" + ' ' + TempLoan."Borrower Middle Name" + ' ' + TempLoan."Borrower Last Name") { }
+            column(BorrowerName; BorrowerName) { }
             column(LoanBalanceStart; TempLoan."Loan Amount") { }
 
             dataitem(GLAccountLoanNo; Integer)
@@ -211,6 +211,8 @@ report 14135164 lvngGLEntriesByLoanVer2
                     TempLoan.FindSet()
                 else
                     TempLoan.Next();
+                Clear(BorrowerName);
+                BorrowerName := lvngLoanManagement.GetBorrowerName(TempLoan);
             end;
         }
     }
@@ -222,6 +224,7 @@ report 14135164 lvngGLEntriesByLoanVer2
         TempLoan: Record lvngLoan temporary;
         TempGenLedgBuffer: Record lvngGenLedgerReconcile temporary;
         TempGLAccountLoanBuffer: Record lvngGLAccountLoanBuffer temporary;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
         Filters: Text;
         EntryNo: Integer;
         Progress: Dialog;
@@ -229,6 +232,7 @@ report 14135164 lvngGLEntriesByLoanVer2
         DimensionNo: Integer;
         MinDate: Date;
         Description: Text;
+        BorrowerName: Text;
 
     trigger OnPreReport()
     var

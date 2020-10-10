@@ -70,7 +70,7 @@ report 14135157 lvngVendCheckApplicationReport
                                     TempPurchInvLine.Next();
                                 LineBorrowerName := '';
                                 if Loan.Get(TempPurchInvLine."No.") then
-                                    LineBorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
+                                    LineBorrowerName := lvngLoanManagement.GetBorrowerName(Loan);
                                 if Number > 1 then
                                     TempVendLedgerEntry."Closed by Amount" := 0;
                             end;
@@ -121,7 +121,7 @@ report 14135157 lvngVendCheckApplicationReport
                                     TempLoan.FindFirst();
                                     if Loan.Get(TempLoan."No.") then begin
                                         TempVendLedgerEntry.lvngLoanNo := Loan."No.";
-                                        BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
+                                        BorrowerName := lvngLoanManagement.GetBorrowerName(Loan);
                                     end;
                                     TempPurchInvLine.Reset();
                                     TempPurchInvLine.DeleteAll();
@@ -131,13 +131,13 @@ report 14135157 lvngVendCheckApplicationReport
                                         TempPurchInvLine.DeleteAll();
                                         if Loan.Get(TempVendLedgerEntry.lvngLoanNo) then begin
                                             TempVendLedgerEntry.lvngLoanNo := Loan."No.";
-                                            BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name";
+                                            BorrowerName := lvngLoanManagement.GetBorrowerName(Loan);
                                         end;
                                     end else
                                         TempVendLedgerEntry.lvngLoanNo := 'MULTIPLE';
                             end else
                                 if Loan.Get(TempVendLedgerEntry.lvngLoanNo) then
-                                    BorrowerName := Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name"
+                                    BorrowerName := lvngLoanManagement.GetBorrowerName(Loan);
                         end;
                     }
 
@@ -180,6 +180,7 @@ report 14135157 lvngVendCheckApplicationReport
     var
         TempVendLedgerEntry: Record "Vendor Ledger Entry" temporary;
         TempPurchInvLine: Record "Purch. Inv. Line" temporary;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
         BorrowerName: Text;
         VendorName: Text;
         LineBorrowerName: Text;

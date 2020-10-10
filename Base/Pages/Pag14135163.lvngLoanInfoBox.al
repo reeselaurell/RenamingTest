@@ -43,13 +43,12 @@ page 14135163 lvngLoanInfoBox
     var
         BorrowerName: Text;
         CoBorrowerName: Text;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
 
     trigger OnAfterGetCurrRecord()
     var
     begin
-        BorrowerName := '';
-        CoBorrowerName := '';
-        BorrowerName := Rec."Borrower First Name" + ' ' + Rec."Borrower Middle Name" + ' ' + Rec."Borrower Last Name";
-        CoBorrowerName := Rec."Co-Borrower First Name" + ' ' + Rec."Co-Borrower Middle Name" + ' ' + Rec."Co-Borrower Last Name";
+        BorrowerName := lvngLoanManagement.GetBorrowerName(Rec);
+        CoBorrowerName := lvngLoanManagement.GetCoBorrowerName(Rec);
     end;
 }

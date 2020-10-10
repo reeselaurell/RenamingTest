@@ -1295,6 +1295,22 @@ codeunit 14135106 lvngLoanManagement
         end;
     end;
 
+    procedure GetBorrowerName(lvngLoan: Record lvngLoan): Text
+    begin
+        exit(GetFirstLastMiddleName(lvngLoan."Borrower First Name", lvngLoan."Borrower Last Name", lvngLoan."Borrower Last Name"));
+    end;
+
+    procedure GetCoBorrowerName(lvngLoan: Record lvngLoan): Text
+    begin
+        exit(GetFirstLastMiddleName(lvngLoan."Co-Borrower First Name", lvngLoan."Co-Borrower Last Name", lvngLoan."Co-Borrower Last Name"));
+    end;
+
+    procedure GetFirstLastMiddleName(FirstName: Text; LastName: Text; MiddleName: Text): Text
+    begin
+        GetLoanVisionSetup();
+        exit(DelChr(StrSubstNo(LoanVisionSetup."Search Name Template", FirstName, LastName, MiddleName), '<>', ' '));
+    end;
+
     local procedure GetLoanVisionSetup()
     begin
         if not LoanVisionSetupRetrieved then begin

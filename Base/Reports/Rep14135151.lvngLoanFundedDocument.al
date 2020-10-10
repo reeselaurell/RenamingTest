@@ -115,7 +115,7 @@ report 14135151 "lvngLoanFundedDocument"
                 Clear(DimensionValues);
                 lvngLoan.Get(lvngLoanFundedDocument."Loan No.");
                 PropertyAddress := lvngLoan.GetLoanAddress(lvngLoanAddressTypeEnum::Property);
-                BorrowerName := StrSubstNo(lvngLoanVisionSetup."Search Name Template", lvngLoan."Borrower First Name", lvngloan."Borrower Last Name", lvngLoan."Borrower Middle Name");
+                BorrowerName := lvngLoanManagement.GetBorrowerName(lvngLoan);
                 lvngDimensionsManagement.FillDimensionsFromTable(lvngLoan, DimensionValues);
                 CostCenter := GetDimensionValueName(lvngLoanVisionSetup."Cost Center Dimension Code");
                 LoanType := GetDimensionValueName(lvngLoanVisionSetup."Loan Type Dimension Code");
@@ -203,6 +203,7 @@ report 14135151 "lvngLoanFundedDocument"
         DimensionValue: Record "Dimension Value";
         DimensionValues: array[8] of Code[20];
         lvngDimensionsManagement: Codeunit lvngDimensionsManagement;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
         lvngLoan: Record lvngLoan;
         lvngLoanAddressTypeEnum: Enum lvngAddressType;
         LoanOfficer: Text;

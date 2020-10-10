@@ -27,8 +27,8 @@ table 14135141 lvngForm1098Entry
                 if LoanValue.Get("Loan No.", LoanVisionSetup."Borrower E-Mail Field No.") then
                     "Borrower E-Mail" := LoanValue."Field Value";
                 "Box 3" := Loan."Date Funded";
-                "Borrower Name" := Loan."Borrower First Name" + ' ' + Loan."Borrower Last Name";
-                "Co-Borrower Name" := Loan."Co-Borrower First Name" + ' ' + Loan."Co-Borrower Last Name";
+                "Borrower Name" := CopyStr(lvngLoanManagement.GetBorrowerName(Loan), 1, MaxStrLen("Borrower Name"));
+                "Co-Borrower Name" := CopyStr(lvngLoanManagement.GetCoBorrowerName(Loan), 1, MaxStrLen("Co-Borrower Name"));
                 "Borrower SSN" := Loan."Borrower SSN";
                 "Co-Borrower SSN" := Loan."Co-Borrower SSN";
                 if EncryptedData.Get(Loan."Borrower SSN Key") then
@@ -107,6 +107,7 @@ table 14135141 lvngForm1098Entry
 
     var
         LoanVisionSetup: Record lvngLoanVisionSetup;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
         GotLoanVisionSetup: Boolean;
 
     trigger OnDelete()

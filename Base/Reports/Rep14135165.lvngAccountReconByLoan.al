@@ -27,7 +27,7 @@ report 14135165 lvngAccountReconByLoan
                 DataItemTableView = sorting(Number);
 
                 column(LoanNo; Loan."No.") { }
-                column(BorrowerName; Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name") { }
+                column(BorrowerName; BorrowerName) { }
                 column(DateFunded; Loan."Date Funded") { }
                 column(DateSold; Loan."Date Sold") { }
                 column(DebitAmount; DebitAmount) { }
@@ -111,6 +111,7 @@ report 14135165 lvngAccountReconByLoan
                     else
                         TempLoan.Next();
                     Loan.Get(TempLoan."No.");
+                    BorrowerName := lvngLoanManagement.GetBorrowerName(Loan);
                     CurrentBalance := 0;
                     GLStartingBalanceLoan := 0;
                     GLEndingBalanceLoan := 0;
@@ -118,7 +119,7 @@ report 14135165 lvngAccountReconByLoan
                     CreditAmount := 0;
                     RecCounter := 0;
                     GLEntry.Reset();
-                    GLEntry.SetCurrentKey("G/L Account No.", "Posting Date", lvngLoanNo);
+                    GLEntry.SetCurrentKey("G/L Account No.", "Posting Date", lvngLoanNo); //TODO: will not work, can't have composite key here from extension table and base, change to SetLoadFields, and repeat clause
                     GLEntry.SetRange("G/L Account No.", "G/L Account"."No.");
                     GLEntry.SetFilter("Posting Date", DateFilter);
                     GLEntry.SetRange(lvngLoanNo, Loan."No.");
@@ -209,6 +210,8 @@ report 14135165 lvngAccountReconByLoan
         Loan: Record lvngLoan;
         TempLoan: Record lvngLoan temporary;
         ExcelExport: Codeunit lvngExcelExport;
+        lvngLoanManagement: Codeunit lvngLoanManagement;
+        BorrowerName: Text;
         GLEntryFilters: Text;
         GLAccountFilters: Text;
         LoanCardFilters: Text;
@@ -303,7 +306,7 @@ report 14135165 lvngAccountReconByLoan
         WriteToExcel(Loan."No.", false, 0, false, '', false, false);
         WriteToExcel(Loan."Date Funded", false, 0, false, '', false, false);
         WriteToExcel(Loan."Date Sold", false, 0, false, '', false, false);
-        WriteToExcel(Loan."Borrower First Name" + ' ' + Loan."Borrower Middle Name" + ' ' + Loan."Borrower Last Name", false, 0, false, '', false, false);
+        WriteToExcel(BorrowerName, false, 0, false, '', false, false);
         WriteToExcel(Loan."Global Dimension 1 Code", false, 0, false, '', false, false);
         WriteToExcel(Loan."Global Dimension 2 Code", false, 0, false, '', false, false);
         WriteToExcel('', false, 0, false, '', false, false);
