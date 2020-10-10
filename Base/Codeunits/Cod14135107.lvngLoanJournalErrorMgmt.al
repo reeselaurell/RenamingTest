@@ -19,6 +19,7 @@ codeunit 14135107 lvngLoanJournalErrorMgmt
         LoanImportErrorLine.Reset();
         LoanImportErrorLine.SetRange("Loan Journal Batch Code", LoanJournalLine."Loan Journal Batch Code");
         LoanImportErrorLine.SetRange("Line No.", LoanJournalLine."Line No.");
+        LoanImportErrorLine.SetLoadFields("Error Line No.");
         if LoanImportErrorLine.FindLast() then
             ErrorLineNo := LoanImportErrorLine."Error Line No." + 100;
         Clear(LoanImportErrorLine);

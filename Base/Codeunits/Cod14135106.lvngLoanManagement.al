@@ -1176,6 +1176,7 @@ codeunit 14135106 lvngLoanManagement
         LoanJournalValue.Reset();
         LoanJournalValue.SetRange("Loan Journal Batch Code", LoanJournalLine."Loan Journal Batch Code");
         LoanJournalValue.SetRange("Line No.", LoanJournalLine."Line No.");
+        LoanJournalValue.SetLoadFields("Field No.", "Field Value");
         if LoanJournalValue.FindSet() then
             repeat
                 if LoanValue.Get(LoanJournalLine."Loan No.", LoanJournalValue."Field No.") then begin
@@ -1237,6 +1238,7 @@ codeunit 14135106 lvngLoanManagement
             LoanImportSchemaLine.Reset();
             LoanImportSchemaLine.SetRange(Code, LoanImportSchema.Code);
             LoanImportSchemaLine.SetFilter("Field Type", '<>%1', LoanImportSchemaLine."Field Type"::Dummy);
+            LoanImportSchemaLine.SetLoadFields("Field Type", "Field No.");
             if LoanImportSchemaLine.FindSet() then
                 repeat
                     Clear(LoanUpdateSchema);
