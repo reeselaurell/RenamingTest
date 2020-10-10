@@ -176,6 +176,7 @@ report 14135117 lvngGeneralLedgerRecGen
                                         DetVendLedgEntry.SetRange("Document No.", VendorLedgerEntry."Document No.");
                                         DetVendLedgEntry.SetFilter("Vendor Ledger Entry No.", '<>%1', VendorLedgerEntry."Entry No.");
                                         DetVendLedgEntry.SetRange(Unapplied, false);
+                                        DetVendLedgEntry.SetLoadFields("Vendor Ledger Entry No.");
                                         if DetVendLedgEntry.FindSet() then
                                             repeat
                                                 VendorLedgerEntry2.Get(DetVendLedgEntry."Vendor Ledger Entry No.");

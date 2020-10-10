@@ -39,6 +39,7 @@ report 14135181 "lvngDisbursementDataExport"
                 BankAccountLedgerEntry.SetRange("Transaction No.", "Transaction No.");
                 BankAccountLedgerEntry.SetRange("Document Type", "Document Type");
                 BankAccountLedgerEntry.SetRange("Document No.", "Document No.");
+                BankAccountLedgerEntry.SetLoadFields("Entry No.");
                 if BankAccountLedgerEntry.FindFirst() then begin
                     CheckLedgerEntry.Reset();
                     CheckLedgerEntry.SetCurrentKey("Bank Account Ledger Entry No.");
@@ -53,11 +54,12 @@ report 14135181 "lvngDisbursementDataExport"
                 DetailedVendLedgEntry.SetRange("Applied Vend. Ledger Entry No.", "Entry No.");
                 DetailedVendLedgEntry.SetRange("Entry Type", DetailedVendLedgEntry."Entry Type"::Application);
                 DetailedVendLedgEntry.SetRange("Initial Document Type", DetailedVendLedgEntry."Initial Document Type"::Invoice);
+                DetailedVendLedgEntry.SetLoadFields("Vendor Ledger Entry No.");
                 if DetailedVendLedgEntry.FindSet() then begin
                     repeat
                         NewRow;
                         VendorLedgerEntry.Get(DetailedVendLedgEntry."Vendor Ledger Entry No.");
-                        ExportDateColumn(DetailedVendLedgEntry."Posting Date");
+                        ExportDateColumn(VendorLedgerEntry."Posting Date");
                         ExportTextColumn(VendorLedgerEntry."External Document No.", false);
                         ExportTextColumn(VendorLedgerEntry.lvngLoanNo, false);
                         ExportTextColumn(VendorLedgerEntry."Vendor Posting Group", false);
