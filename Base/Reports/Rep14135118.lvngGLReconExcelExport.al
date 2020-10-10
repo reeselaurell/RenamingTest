@@ -108,7 +108,7 @@ report 14135188 lvngGLReconExcelExport
         end;
     end;
 
-    procedure SetParam(var pBuffer: Record lvngGenLedgerReconcile temporary)
+    procedure SetParam(var pBuffer: Record lvngGenLedgerReconcile)
     begin
         if pBuffer.FindSet() then
             repeat

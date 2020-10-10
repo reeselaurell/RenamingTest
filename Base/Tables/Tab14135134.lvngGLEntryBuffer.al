@@ -2,6 +2,7 @@ table 14135134 lvngGLEntryBuffer
 {
     Caption = 'G/L Entry Buffer';
     DataClassification = CustomerContent;
+    TableType = Temporary;
 
     fields
     {

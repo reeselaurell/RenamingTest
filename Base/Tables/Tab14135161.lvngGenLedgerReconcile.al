@@ -2,6 +2,7 @@ table 14135161 lvngGenLedgerReconcile
 {
     Caption = 'Gen. Ledger Reconile';
     DataClassification = CustomerContent;
+    TableType = Temporary;
 
     fields
     {

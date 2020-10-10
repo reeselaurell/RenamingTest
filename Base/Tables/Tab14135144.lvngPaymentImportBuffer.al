@@ -2,6 +2,7 @@ table 14135144 lvngPaymentImportBuffer
 {
     DataClassification = CustomerContent;
     Caption = 'Payment Import Buffer';
+    TableType = Temporary;
 
     fields
     {
