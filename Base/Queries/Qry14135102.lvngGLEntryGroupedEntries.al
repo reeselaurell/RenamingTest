@@ -23,7 +23,7 @@ query 14135102 lvngGLEntryGroupedEntries
             column(DebitAmount; "Debit Amount") { Method = Sum; }
             column(CreditAmount; "Credit Amount") { Method = Sum; }
 
-            filter(EntryNo; "Entry No.")
+            filter(EntryNoFilter; "Entry No.")
             {
 
             }

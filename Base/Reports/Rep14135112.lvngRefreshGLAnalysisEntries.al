@@ -46,7 +46,7 @@ report 14135112 lvngRefreshGLAnalysisEntries
         LastEntryNo := GLEntry."Entry No.";
         if LastEntryNo > LoanVisionSetup."Last Analysis Entry No." then begin
             GLEntryGroupedEntriesQuery.Open();
-            GLEntryGroupedEntriesQuery.SetRange(EntryNo, LoanVisionSetup."Last Analysis Entry No." + 1, LastEntryNo);
+            GLEntryGroupedEntriesQuery.SetRange(EntryNoFilter, LoanVisionSetup."Last Analysis Entry No." + 1, LastEntryNo);
             if GuiAllowed() then
                 ProgressDialog.Open(ProcessingGLEntriesLbl);
             while GLEntryGroupedEntriesQuery.Read() do begin
