@@ -2,6 +2,7 @@ table 14135212 lvngInvoiceErrorDetail
 {
     Caption = 'Invoice Errors';
     DataClassification = CustomerContent;
+    TableType = Temporary;
 
     fields
     {

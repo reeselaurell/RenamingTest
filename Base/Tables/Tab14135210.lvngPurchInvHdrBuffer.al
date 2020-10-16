@@ -2,6 +2,7 @@ table 14135210 lvngPurchInvHdrBuffer
 {
     Caption = 'Purchase Invoice Header Buffer';
     DataClassification = CustomerContent;
+    TableType = Temporary;
 
     fields
     {

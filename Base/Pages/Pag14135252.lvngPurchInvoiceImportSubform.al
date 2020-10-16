@@ -11,7 +11,7 @@ page 14135252 lvngPurchInvoiceImportSubform
         {
             repeater(Group)
             {
-                field("Line No."; Rec."Line No.") { ApplicationArea = All; Style = Attention; StyleExpr = ErrorStyle; }
+                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
                 field(Type; Rec.Type) { ApplicationArea = All; }
                 field("No."; Rec."No.") { ApplicationArea = All; }
                 field("Direct Unit Cost"; Rec."Direct Unit Cost") { ApplicationArea = All; }
@@ -31,42 +31,27 @@ page 14135252 lvngPurchInvoiceImportSubform
         }
     }
 
-    var
-        [InDataSet]
-        ErrorStyle: Boolean;
-
-    trigger OnModifyRecord(): Boolean
-    var
-        PurchInvImportMgmt: Codeunit lvngPurchInvoiceImportMgmt;
-        PurchInvError: Record lvngInvoiceErrorDetail;
+    procedure SetSubform(var pPurchInvLineBuffer: Record lvngPurchInvLineBuffer)
     begin
-        PurchInvError.Reset();
-        PurchInvError.DeleteAll();
-        PurchInvImportMgmt.ValidateLineEntries();
+        if pPurchInvLineBuffer.FindSet() then begin
+            Rec.Reset();
+            Rec.DeleteAll();
+            repeat
+                Rec := pPurchInvLineBuffer;
+                Rec.Insert();
+            until pPurchInvLineBuffer.Next() = 0;
+        end
     end;
 
-    trigger OnAfterGetRecord()
-    var
-        InvoiceErrorDetail: Record lvngInvoiceErrorDetail;
+    procedure UpdateLines(var pPurchInvLineBuffer: Record lvngPurchInvLineBuffer)
     begin
-        ErrorStyle := false;
-        InvoiceErrorDetail.Reset();
-        InvoiceErrorDetail.SetRange("Header Error", false);
-        InvoiceErrorDetail.SetRange("Document No.", Rec."Document No.");
-        InvoiceErrorDetail.SetRange("Line No.", Rec."Line No.");
-        if InvoiceErrorDetail.FindSet() then
-            ErrorStyle := true
-    end;
-
-    trigger OnAfterGetCurrRecord()
-    var
-        PurchInvImportMgmt: Codeunit lvngPurchInvoiceImportMgmt;
-        InvoiceErrorDetail: Record lvngInvoiceErrorDetail;
-    begin
-        InvoiceErrorDetail.Reset();
-        InvoiceErrorDetail.DeleteAll();
-        PurchInvImportMgmt.ValidateHeaderEntries();
-        PurchInvImportMgmt.ValidateLineEntries();
-        CurrPage.Update(false);
+        Rec.Reset();
+        pPurchInvLineBuffer.Reset();
+        pPurchInvLineBuffer.DeleteAll();
+        Rec.FindSet();
+        repeat
+            pPurchInvLineBuffer := Rec;
+            pPurchInvLineBuffer.Insert();
+        until Rec.Next() = 0;
     end;
 }

@@ -2,6 +2,7 @@ table 14135211 lvngPurchInvLineBuffer
 {
     Caption = 'Purchase Invoice Line Buffer';
     DataClassification = CustomerContent;
+    TableType = Temporary;
 
     fields
     {

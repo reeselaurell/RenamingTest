@@ -17,4 +17,17 @@ page 14135259 lvngSalesInvLineErrorDetails
             }
         }
     }
+
+
+    procedure SetLineErrors(var pInvoiceErrorDetails: Record lvngInvoiceErrorDetail)
+    begin
+        Rec.Reset();
+        Rec.DeleteAll();
+        if pInvoiceErrorDetails.FindSet() then
+            repeat
+                Rec := pInvoiceErrorDetails;
+                Rec.Insert();
+            until pInvoiceErrorDetails.Next() = 0;
+        if Rec.FindSet() then;
+    end;
 }

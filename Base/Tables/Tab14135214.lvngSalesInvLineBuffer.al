@@ -2,6 +2,7 @@ table 14135214 lvngSalesInvLineBuffer
 {
     Caption = 'Sales Invoice Line Buffer';
     DataClassification = CustomerContent;
+    TableType = Temporary;
 
     fields
     {

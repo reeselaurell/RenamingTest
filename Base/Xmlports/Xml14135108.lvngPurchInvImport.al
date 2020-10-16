@@ -38,7 +38,6 @@ xmlport 14135108 lvngPurchInvImport
 
                 trigger OnBeforeInsertRecord()
                 var
-                    PurchInLineBuffer2: Record lvngPurchInvLineBuffer;
                     Loan: Record lvngLoan;
                     DimensionHierarchy: Record lvngDimensionHierarchy;
                     DimensionMgmt: Codeunit lvngDimensionsManagement;
@@ -139,6 +138,8 @@ xmlport 14135108 lvngPurchInvImport
                                     end;
                                 end;
                         end;
+                        PurchInLineBuffer2 := PurchInvLineBuffer;
+                        PurchInLineBuffer2.Insert();
                         PurchInvLineBuffer.Insert();
                     end;
                     Dimension1Code := '';
@@ -175,6 +176,7 @@ xmlport 14135108 lvngPurchInvImport
     var
         PurchInvHdrBuffer: Record lvngPurchInvHdrBuffer;
         PurchInvLineBuffer: Record lvngPurchInvLineBuffer;
+        PurchInLineBuffer2: Record lvngPurchInvLineBuffer;
         DimensionValidation: Option "Dimensions from File","Dimensions from Loan","From Dimension Hierarchy";
         LoanNoValidation: Enum lvngLoanNoValidationRule;
 
@@ -190,11 +192,14 @@ xmlport 14135108 lvngPurchInvImport
     var
         InvoiceErrorDetail: Record lvngInvoiceErrorDetail;
         PurchInvImportMgmt: Codeunit lvngPurchInvoiceImportMgmt;
+        PurchInvoiceImportJnl: Page lvngPurchInvoiceImportJnl;
     begin
-        PurchInvImportMgmt.GroupLines();
-        InvoiceErrorDetail.Reset();
-        InvoiceErrorDetail.DeleteAll();
-        PurchInvImportMgmt.ValidateHeaderEntries();
-        PurchInvImportMgmt.ValidateLineEntries();
+        PurchInvImportMgmt.GroupLines(PurchInvHdrBuffer, PurchInvLineBuffer);
+        PurchInvImportMgmt.ValidateHeaderEntries(InvoiceErrorDetail, PurchInvHdrBuffer);
+        PurchInvImportMgmt.ValidateLineEntries(InvoiceErrorDetail, PurchInvLineBuffer);
+        PurchInvoiceImportJnl.SetHeaderBuffer(PurchInvHdrBuffer);
+        PurchInvoiceImportJnl.SetLineBuffer(PurchInvLineBuffer);
+        PurchInvoiceImportJnl.SetErrors(InvoiceErrorDetail);
+        PurchInvoiceImportJnl.Run();
     end;
 }

@@ -13,12 +13,12 @@ xmlport 14135109 lvngSalesInvImport
             {
                 SourceTableView = sorting(Number);
                 AutoReplace = false;
-                AutoSave = false;
                 AutoUpdate = false;
+                AutoSave = false;
 
                 textelement(DocNo) { }
                 textelement(PostingDate) { }
-                textelement(CustomerNo) { }
+                textelement(CustNo) { }
                 textelement(DocumentDate) { }
                 textelement(PaymentMethodCode) { MinOccurs = Zero; }
                 textelement(DueDate) { }
@@ -38,10 +38,8 @@ xmlport 14135109 lvngSalesInvImport
 
                 trigger OnBeforeInsertRecord()
                 var
-                    SalesInvLineBuffer2: Record lvngSalesInvLineBuffer;
                     Loan: Record lvngLoan;
                     DimensionHierarchy: Record lvngDimensionHierarchy;
-                    GenLedgSetup: Record "General Ledger Setup";
                     DimensionMgmt: Codeunit lvngDimensionsManagement;
                     DateHolder: Date;
                     MainDimensionNo: Integer;
@@ -52,7 +50,7 @@ xmlport 14135109 lvngSalesInvImport
                         SalesInvHdrBuffer."No." := DocNo;
                         Evaluate(DateHolder, PostingDate);
                         SalesInvHdrBuffer."Posting Date" := DateHolder;
-                        SalesInvHdrBuffer."Sell-to Customer No." := CustomerNo;
+                        SalesInvHdrBuffer."Bill-to Customer No." := CustNo;
                         Evaluate(DateHolder, DocumentDate);
                         SalesInvHdrBuffer."Document Date" := DateHolder;
                         SalesInvHdrBuffer."Payment Method Code" := PaymentMethodCode;
@@ -62,10 +60,10 @@ xmlport 14135109 lvngSalesInvImport
                         SalesInvHdrBuffer.Insert();
                     end else begin
                         SalesInvHdrBuffer.Reset();
-                        SalesInvLineBuffer2.Reset();
-                        SalesInvLineBuffer2.SetRange("Document No.", DocNo);
-                        if SalesInvLineBuffer2.FindSet() then;
-                        SalesInvLineBuffer."Line No." := SalesInvLineBuffer2.Count * 10000 + 10000;
+                        SalesInLineBuffer2.Reset();
+                        SalesInLineBuffer2.SetRange("Document No.", DocNo);
+                        if SalesInLineBuffer2.FindSet() then;
+                        SalesInvLineBuffer."Line No." := SalesInLineBuffer2.Count * 10000 + 10000;
                         SalesInvLineBuffer."Document No." := DocNo;
                         SalesInvLineBuffer."Loan No." := LoanNo;
                         SalesInvLineBuffer."No." := GLAccountNo;
@@ -140,6 +138,8 @@ xmlport 14135109 lvngSalesInvImport
                                     end;
                                 end;
                         end;
+                        SalesInLineBuffer2 := SalesInvLineBuffer;
+                        SalesInLineBuffer2.Insert();
                         SalesInvLineBuffer.Insert();
                     end;
                     Dimension1Code := '';
@@ -176,6 +176,7 @@ xmlport 14135109 lvngSalesInvImport
     var
         SalesInvHdrBuffer: Record lvngSalesInvHdrBuffer;
         SalesInvLineBuffer: Record lvngSalesInvLineBuffer;
+        SalesInLineBuffer2: Record lvngSalesInvLineBuffer;
         DimensionValidation: Option "Dimensions from File","Dimensions from Loan","From Dimension Hierarchy";
         LoanNoValidation: Enum lvngLoanNoValidationRule;
 
@@ -191,11 +192,14 @@ xmlport 14135109 lvngSalesInvImport
     var
         InvoiceErrorDetail: Record lvngInvoiceErrorDetail;
         SalesInvImportMgmt: Codeunit lvngSalesInvoiceImportMgmt;
+        SalesInvoiceImportJnl: Page lvngSalesInvoiceImportJnl;
     begin
-        SalesInvImportMgmt.GroupLines();
-        InvoiceErrorDetail.Reset();
-        InvoiceErrorDetail.DeleteAll();
-        SalesInvImportMgmt.ValidateHeaderEntries();
-        SalesInvImportMgmt.ValidateLineEntries();
+        SalesInvImportMgmt.GroupLines(SalesInvHdrBuffer, SalesInvLineBuffer);
+        SalesInvImportMgmt.ValidateHeaderEntries(InvoiceErrorDetail, SalesInvHdrBuffer);
+        SalesInvImportMgmt.ValidateLineEntries(InvoiceErrorDetail, SalesInvLineBuffer);
+        SalesInvoiceImportJnl.SetHeaderBuffer(SalesInvHdrBuffer);
+        SalesInvoiceImportJnl.SetLineBuffer(SalesInvLineBuffer);
+        SalesInvoiceImportJnl.SetErrors(InvoiceErrorDetail);
+        SalesInvoiceImportJnl.Run();
     end;
 }

@@ -11,7 +11,7 @@ page 14135257 lvngSalesInvoiceImportSubform
         {
             repeater(Group)
             {
-                field("Line No."; Rec."Line No.") { ApplicationArea = All; Style = Attention; StyleExpr = ErrorStyle; }
+                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
                 field(Type; Rec.Type) { ApplicationArea = All; }
                 field("No."; Rec."No.") { ApplicationArea = All; }
                 field("Unit Price"; Rec."Unit Price") { ApplicationArea = All; }
@@ -31,41 +31,27 @@ page 14135257 lvngSalesInvoiceImportSubform
         }
     }
 
-    var
-        ErrorStyle: Boolean;
-
-    trigger OnModifyRecord(): Boolean
-    var
-        SalesInvImportMgmt: Codeunit lvngSalesInvoiceImportMgmt;
-        SalesInvError: Record lvngInvoiceErrorDetail;
+    procedure SetSubform(var pSalesInvLineBuffer: Record lvngSalesInvLineBuffer)
     begin
-        SalesInvError.Reset();
-        SalesInvError.DeleteAll();
-        SalesInvImportMgmt.ValidateLineEntries();
+        if pSalesInvLineBuffer.FindSet() then begin
+            Rec.Reset();
+            Rec.DeleteAll();
+            repeat
+                Rec := pSalesInvLineBuffer;
+                Rec.Insert();
+            until pSalesInvLineBuffer.Next() = 0;
+        end
     end;
 
-    trigger OnAfterGetRecord()
-    var
-        InvoiceErrorDetail: Record lvngInvoiceErrorDetail;
+    procedure UpdateLines(var pSalesInvLineBuffer: Record lvngSalesInvLineBuffer)
     begin
-        ErrorStyle := false;
-        InvoiceErrorDetail.Reset();
-        InvoiceErrorDetail.SetRange("Header Error", false);
-        InvoiceErrorDetail.SetRange("Document No.", Rec."Document No.");
-        InvoiceErrorDetail.SetRange("Line No.", Rec."Line No.");
-        if InvoiceErrorDetail.FindSet() then
-            ErrorStyle := true
-    end;
-
-    trigger OnAfterGetCurrRecord()
-    var
-        PurchInvImportMgmt: Codeunit lvngPurchInvoiceImportMgmt;
-        InvoiceErrorDetail: Record lvngInvoiceErrorDetail;
-    begin
-        InvoiceErrorDetail.Reset();
-        InvoiceErrorDetail.DeleteAll();
-        PurchInvImportMgmt.ValidateHeaderEntries();
-        PurchInvImportMgmt.ValidateLineEntries();
-        CurrPage.Update(false);
+        Rec.Reset();
+        pSalesInvLineBuffer.Reset();
+        pSalesInvLineBuffer.DeleteAll();
+        if Rec.FindSet() then
+            repeat
+                pSalesInvLineBuffer := Rec;
+                pSalesInvLineBuffer.Insert();
+            until Rec.Next() = 0;
     end;
 }
