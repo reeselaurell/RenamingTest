@@ -33,7 +33,7 @@ page 14135241 "lvnSwitchEdit"
             }
             group("Switch Case List")
             {
-                usercontrol(SwitchControl; SwitchControl)
+                usercontrol(SwitchControl; lvnSwitchControl)
                 {
                     ApplicationArea = All;
 

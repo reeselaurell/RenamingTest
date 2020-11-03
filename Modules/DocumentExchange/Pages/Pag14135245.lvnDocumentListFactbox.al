@@ -7,7 +7,7 @@ page 14135245 "lvnDocumentListFactbox"
     {
         area(Content)
         {
-            usercontrol(AddIn; DocumentListControl)
+            usercontrol(AddIn; lvnDocumentListControl)
             {
                 ApplicationArea = All;
 

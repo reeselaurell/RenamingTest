@@ -9,7 +9,7 @@ page 14135240 "lvnFormulaEdit"
         {
             group(General)
             {
-                usercontrol(FormulaControl; FormulaControl)
+                usercontrol(FormulaControl; lvnFormulaControl)
                 {
                     ApplicationArea = All;
 

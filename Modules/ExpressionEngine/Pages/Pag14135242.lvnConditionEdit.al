@@ -41,7 +41,7 @@ page 14135242 "lvnConditionEdit"
             }
             group(List)
             {
-                usercontrol(ConditionControl; ConditionControl)
+                usercontrol(ConditionControl; lvnConditionControl)
                 {
                     ApplicationArea = All;
 

@@ -31,7 +31,7 @@ page 14135225 "lvnLoanValuesView"
                 }
                 field(DateFilter; SystemFilter."Date Filter") { ApplicationArea = All; Editable = false; Caption = 'Date Filter'; }
             }
-            usercontrol(DataGrid; DataGridControl)
+            usercontrol(DataGrid; lvnDataGridControl)
             {
                 ApplicationArea = All;
 

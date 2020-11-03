@@ -6,7 +6,7 @@ page 14135211 "lvnColorPicker"
     {
         area(Content)
         {
-            usercontrol(ColorPicker; ColorPickerControl)
+            usercontrol(ColorPicker; lvnColorPickerControl)
             {
                 ApplicationArea = All;
 

@@ -22,7 +22,7 @@ page 14135214 "lvnDimensionPerformanceView"
                 field(BusinessUnitFilter; SystemFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
                 field(DateFilter; DateFilter) { ApplicationArea = All; Caption = 'Date Filter'; Editable = false; }
             }
-            usercontrol(DataGrid; DataGridControl)
+            usercontrol(DataGrid; lvnDataGridControl)
             {
                 ApplicationArea = All;
 

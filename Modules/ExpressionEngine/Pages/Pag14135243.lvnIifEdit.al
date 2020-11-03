@@ -1,4 +1,4 @@
-page 14135243 "lvnIifEdit"
+page 14135243 lvnIifEdit
 {
     PageType = Card;
     SourceTable = lvnExpressionHeader;
@@ -11,7 +11,7 @@ page 14135243 "lvnIifEdit"
         {
             group(Predicate)
             {
-                usercontrol(PredicateControl; PredicateControl)
+                usercontrol(PredicateControl; lvnPredicateControl)
                 {
                     ApplicationArea = All;
 
@@ -79,7 +79,7 @@ page 14135243 "lvnIifEdit"
             }
             group("Return Value")
             {
-                usercontrol(SwitchControl; SwitchControl)
+                usercontrol(SwitchControl; lvnSwitchControl)
                 {
                     ApplicationArea = All;
 
