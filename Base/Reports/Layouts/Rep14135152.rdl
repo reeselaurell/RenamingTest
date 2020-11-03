@@ -549,14 +549,14 @@
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngAccountNo">
+                                          <Textbox Name="lvnAccountNo">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngAccountNo.Value</Value>
+                                                    <Value>=Fields!lvnAccountNo.Value</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -565,7 +565,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngAccountNo</rd:DefaultName>
+                                            <rd:DefaultName>lvnAccountNo</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -580,14 +580,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngDescription">
+                                          <Textbox Name="lvnDescription">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngDescription.Value</Value>
+                                                    <Value>=Fields!lvnDescription.Value</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -596,7 +596,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngDescription</rd:DefaultName>
+                                            <rd:DefaultName>lvnDescription</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -642,14 +642,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngServicingType">
+                                          <Textbox Name="lvnServicingType">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngServicingType.Value</Value>
+                                                    <Value>=Fields!lvnServicingType.Value</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -658,7 +658,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngServicingType</rd:DefaultName>
+                                            <rd:DefaultName>lvnServicingType</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -673,14 +673,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngAmount">
+                                          <Textbox Name="lvnAmount">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngAmount.Value</Value>
+                                                    <Value>=Fields!lvnAmount.Value</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                       <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -692,7 +692,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngAmount</rd:DefaultName>
+                                            <rd:DefaultName>lvnAmount</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -846,14 +846,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngAmount2">
+                                          <Textbox Name="lvnAmount2">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Sum(Fields!lvngAmount.Value)</Value>
+                                                    <Value>=Sum(Fields!lvnAmount.Value)</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                       <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -865,7 +865,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngAmount</rd:DefaultName>
+                                            <rd:DefaultName>lvnAmount</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -922,7 +922,7 @@
                               <DataSetName>DataSet_Result</DataSetName>
                               <Filters>
                                 <Filter>
-                                  <FilterExpression>=Fields!lvngBalancingEntry.Value</FilterExpression>
+                                  <FilterExpression>=Fields!lvnBalancingEntry.Value</FilterExpression>
                                   <Operator>Equal</Operator>
                                   <FilterValues>
                                     <FilterValue DataType="Boolean">false</FilterValue>
@@ -1209,14 +1209,14 @@
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngAccountNo2">
+                                          <Textbox Name="lvnAccountNo2">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngAccountNo.Value</Value>
+                                                    <Value>=Fields!lvnAccountNo.Value</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -1225,7 +1225,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngAccountNo</rd:DefaultName>
+                                            <rd:DefaultName>lvnAccountNo</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1240,14 +1240,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngDescription2">
+                                          <Textbox Name="lvnDescription2">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngDescription.Value</Value>
+                                                    <Value>=Fields!lvnDescription.Value</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -1256,7 +1256,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngDescription</rd:DefaultName>
+                                            <rd:DefaultName>lvnDescription</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1302,14 +1302,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngAmount3">
+                                          <Textbox Name="lvnAmount3">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!lvngAmount.Value</Value>
+                                                    <Value>=Fields!lvnAmount.Value</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                       <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -1321,7 +1321,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngAmount</rd:DefaultName>
+                                            <rd:DefaultName>lvnAmount</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1436,14 +1436,14 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngAmount4">
+                                          <Textbox Name="lvnAmount4">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Sum(Fields!lvngAmount.Value)</Value>
+                                                    <Value>=Sum(Fields!lvnAmount.Value)</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                       <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -1455,7 +1455,7 @@
                                                 </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngAmount</rd:DefaultName>
+                                            <rd:DefaultName>lvnAmount</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1505,7 +1505,7 @@
                               <DataSetName>DataSet_Result</DataSetName>
                               <Filters>
                                 <Filter>
-                                  <FilterExpression>=Fields!lvngBalancingEntry.Value</FilterExpression>
+                                  <FilterExpression>=Fields!lvnBalancingEntry.Value</FilterExpression>
                                   <Operator>Equal</Operator>
                                   <FilterValues>
                                     <FilterValue DataType="Boolean">true</FilterValue>
@@ -1549,7 +1549,7 @@
                 <TablixMember>
                   <Group Name="Details">
                     <GroupExpressions>
-                      <GroupExpression>=Fields!lvngDocumentNo.Value</GroupExpression>
+                      <GroupExpression>=Fields!lvnDocumentNo.Value</GroupExpression>
                     </GroupExpressions>
                     <PageBreak>
                       <BreakLocation>Between</BreakLocation>
@@ -2277,8 +2277,8 @@ LoanNo As String, BorrowerName As String, LoanType As String,
 CostCenter As String, LoanOfficer As String, State As String, PropertyAddress As String
 
 Public Function SetFields(ByVal fields As Fields)
-  DocumentNo = fields!lvngDocumentNo.Value
-  LoanNo = fields!lvngLoanNo.Value
+  DocumentNo = fields!lvnDocumentNo.Value
+  LoanNo = fields!lvnLoanNo.Value
   BorrowerName = fields!BorrowerName.Value
   LoanType = fields!LoanType.Value
   CostCenter = fields!CostCenter.Value
@@ -2298,29 +2298,29 @@ End Function
         <Field Name="DocumentType">
           <DataField>DocumentType</DataField>
         </Field>
-        <Field Name="lvngDocumentNo">
-          <DataField>lvngDocumentNo</DataField>
+        <Field Name="lvnDocumentNo">
+          <DataField>lvnDocumentNo</DataField>
         </Field>
-        <Field Name="lvngCustomerNo">
-          <DataField>lvngCustomerNo</DataField>
+        <Field Name="lvnCustomerNo">
+          <DataField>lvnCustomerNo</DataField>
         </Field>
-        <Field Name="lvngLoanNo">
-          <DataField>lvngLoanNo</DataField>
+        <Field Name="lvnLoanNo">
+          <DataField>lvnLoanNo</DataField>
         </Field>
         <Field Name="BorrowerName">
           <DataField>BorrowerName</DataField>
         </Field>
-        <Field Name="lvngPostingDate">
-          <DataField>lvngPostingDate</DataField>
+        <Field Name="lvnPostingDate">
+          <DataField>lvnPostingDate</DataField>
         </Field>
-        <Field Name="lvngVoid">
-          <DataField>lvngVoid</DataField>
+        <Field Name="lvnVoid">
+          <DataField>lvnVoid</DataField>
         </Field>
         <Field Name="PropertyAddress">
           <DataField>PropertyAddress</DataField>
         </Field>
-        <Field Name="lvngVoidDocumentNo">
-          <DataField>lvngVoidDocumentNo</DataField>
+        <Field Name="lvnVoidDocumentNo">
+          <DataField>lvnVoidDocumentNo</DataField>
         </Field>
         <Field Name="CostCenter">
           <DataField>CostCenter</DataField>
@@ -2334,26 +2334,26 @@ End Function
         <Field Name="State">
           <DataField>State</DataField>
         </Field>
-        <Field Name="lvngAccountNo">
-          <DataField>lvngAccountNo</DataField>
+        <Field Name="lvnAccountNo">
+          <DataField>lvnAccountNo</DataField>
         </Field>
-        <Field Name="lvngDescription">
-          <DataField>lvngDescription</DataField>
+        <Field Name="lvnDescription">
+          <DataField>lvnDescription</DataField>
         </Field>
-        <Field Name="lvngAmount">
-          <DataField>lvngAmount</DataField>
+        <Field Name="lvnAmount">
+          <DataField>lvnAmount</DataField>
         </Field>
-        <Field Name="lvngAmountFormat">
-          <DataField>lvngAmountFormat</DataField>
+        <Field Name="lvnAmountFormat">
+          <DataField>lvnAmountFormat</DataField>
         </Field>
-        <Field Name="lvngBalancingEntry">
-          <DataField>lvngBalancingEntry</DataField>
+        <Field Name="lvnBalancingEntry">
+          <DataField>lvnBalancingEntry</DataField>
         </Field>
-        <Field Name="lvngLineNo">
-          <DataField>lvngLineNo</DataField>
+        <Field Name="lvnLineNo">
+          <DataField>lvnLineNo</DataField>
         </Field>
-        <Field Name="lvngServicingType">
-          <DataField>lvngServicingType</DataField>
+        <Field Name="lvnServicingType">
+          <DataField>lvnServicingType</DataField>
         </Field>
         <Field Name="DocumentLineCostCenter">
           <DataField>DocumentLineCostCenter</DataField>

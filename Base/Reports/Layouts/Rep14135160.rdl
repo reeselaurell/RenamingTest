@@ -594,7 +594,7 @@
                                     <TablixCells>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngLoanNo">
+                                          <Textbox Name="lvnLoanNo">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
@@ -614,7 +614,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngLoanNo</rd:DefaultName>
+                                            <rd:DefaultName>lvnLoanNo</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -812,7 +812,7 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="lvngLoanAmount">
+                                          <Textbox Name="lvnLoanAmount">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
@@ -834,7 +834,7 @@
                                                 <Style />
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>lvngLoanAmount</rd:DefaultName>
+                                            <rd:DefaultName>lvnLoanAmount</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Color>Gray</Color>
