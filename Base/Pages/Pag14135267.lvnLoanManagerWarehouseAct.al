@@ -199,9 +199,9 @@ page 14135267 "lvnLoanManagerWarehouseAct"
     local procedure CalculateWarehouseLineValues()
     var
         WarehouseLine: Record lvnWarehouseLine;
-        Idx: Integer;
         FundedDoc: Record lvnLoanFundedDocument;
         FundedDocLine: Record lvnLoanFundedDocumentLine;
+        Idx: Integer;
     begin
         LineVisible1 := false;
         LineVisible2 := false;

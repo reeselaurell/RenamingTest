@@ -2,11 +2,16 @@ pageextension 14135116 "lvnDeposit" extends Deposit
 {
     layout
     {
-        modify("Currency Code") { Visible = false; }
-
+        modify("Currency Code")
+        {
+            Visible = false;
+        }
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 
@@ -25,9 +30,9 @@ pageextension 14135116 "lvnDeposit" extends Deposit
 
                 trigger OnAction()
                 var
-                    DepositFileImportMgmt: codeunit lvnDepositFileImportMgmt;
                     GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
                     ImportBufferError: Record lvnImportBufferError temporary;
+                    DepositFileImportMgmt: Codeunit lvnDepositFileImportMgmt;
                     JournalDataImport: Page lvnJournalDataImport;
                 begin
                     Clear(DepositFileImportMgmt);

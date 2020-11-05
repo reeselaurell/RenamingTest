@@ -12,10 +12,22 @@ page 14135200 "lvnPerformanceRowSchemaList"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Schema Type"; Rec."Schema Type") { ApplicationArea = All; }
-                field("Column Schema"; Rec."Column Schema") { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Schema Type"; Rec."Schema Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Column Schema"; Rec."Column Schema")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -48,7 +60,6 @@ page 14135200 "lvnPerformanceRowSchemaList"
                     RowLines.Run();
                 end;
             }
-
             action(CopyFrom)
             {
                 Caption = 'Copy From';
@@ -76,7 +87,6 @@ page 14135200 "lvnPerformanceRowSchemaList"
                     end;
                 end;
             }
-
         }
     }
 }

@@ -60,7 +60,7 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
             GenJnlLine."Applies-to Doc. Type" := GenJnlImportBuffer."Applies-To Doc. Type";
             GenJnlLine."Applies-to Doc. No." := GenJnlImportBuffer."Applies-To Doc. No.";
             GenJnlLine.lvnLoanNo := GenJnlImportBuffer."Loan No.";
-            GenJnlLine.validate("Reason Code", GenJnlImportBuffer."Reason Code");
+            GenJnlLine.Validate("Reason Code", GenJnlImportBuffer."Reason Code");
             GenJnlLine."Shortcut Dimension 1 Code" := GenJnlImportBuffer."Global Dimension 1 Code";
             GenJnlLine."Shortcut Dimension 2 Code" := GenJnlImportBuffer."Global Dimension 2 Code";
             GenJnlLine."Business Unit Code" := GenJnlImportBuffer."Business Unit Code";
@@ -85,7 +85,9 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
         until GenJnlImportBuffer.Next() = 0;
     end;
 
-    procedure ManualFileImport(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError): Boolean
+    procedure ManualFileImport(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError): Boolean
     begin
         FileImportSchema.Reset();
         FileImportSchema.SetRange("File Import Type", FileImportSchema."File Import Type"::"Deposit Lines");
@@ -181,8 +183,8 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
                                                 8:
                                                     GenJnlImportBuffer."Shortcut Dimension 8 Value" := Value2;
                                             end;
-                                        END;
-                                    END;
+                                        end;
+                                    end;
                             end;
                         TempFileImportJnlLine."Deposit Import Field Type"::"Account Type":
                             Evaluate(GenJnlImportBuffer."Account Type", Value);
@@ -213,15 +215,15 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
                         TempFileImportJnlLine."Deposit Import Field Type"::"Dimension 8 Code":
                             GenJnlImportBuffer."Shortcut Dimension 8 Value" := CopyStr(Value, 1, MaxStrLen(GenJnlImportBuffer."Shortcut Dimension 8 Value"));
                         TempFileImportJnlLine."Deposit Import Field Type"::"Document Date":
-                            evaluate(GenJnlImportBuffer."Document Date", Value);
+                            Evaluate(GenJnlImportBuffer."Document Date", Value);
                         TempFileImportJnlLine."Deposit Import Field Type"::"Document No.":
                             GenJnlImportBuffer."Document No." := CopyStr(Value, 1, MaxStrLen(GenJnlImportBuffer."Document No."));
                         TempFileImportJnlLine."Deposit Import Field Type"::"Document Type":
-                            evaluate(GenJnlImportBuffer."Document Type", Value);
+                            Evaluate(GenJnlImportBuffer."Document Type", Value);
                         TempFileImportJnlLine."Deposit Import Field Type"::"Loan No.":
                             GenJnlImportBuffer."Loan No." := CopyStr(Value, 1, MaxStrLen(GenJnlImportBuffer."Loan No."));
                         TempFileImportJnlLine."Deposit Import Field Type"::"Posting Date":
-                            evaluate(GenJnlImportBuffer."Posting Date", Value);
+                            Evaluate(GenJnlImportBuffer."Posting Date", Value);
                         TempFileImportJnlLine."Deposit Import Field Type"::"Reason Code":
                             GenJnlImportBuffer."Reason Code" := CopyStr(Value, 1, MaxStrLen(GenJnlImportBuffer."Reason Code"));
                     end;
@@ -232,11 +234,13 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
         until (StartLine > EndLine);
     end;
 
-    local procedure ValidateEntries(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError)
+    local procedure ValidateEntries(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError)
     var
+        GLAccount: Record "G/L Account";
         NoSeriesMgmt: Codeunit NoSeriesManagement;
         UserSetupMgmt: Codeunit "User Setup Management";
-        GLAccount: Record "G/L Account";
         DocumentNo: Code[20];
         PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
         AccountNoBlankOrMissingErr: Label 'Account %1 %2 is missing or blank';
@@ -262,7 +266,7 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
                 //Posting Date
                 if GenJnlImportBuffer."Posting Date" <> 0D then
                     if not UserSetupMgmt.IsPostingDateValid(GenJnlImportBuffer."Posting Date") then
-                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, strsubstno(PostingDateIsNotValidErr, GenJnlImportBuffer."Posting Date"));
+                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(PostingDateIsNotValidErr, GenJnlImportBuffer."Posting Date"));
                 //Account Type and Account No.
                 FindAccountNo(GenJnlImportBuffer."Account Type", GenJnlImportBuffer."Account Value", GenJnlImportBuffer."Account No.");
                 if FileImportSchema."Default Account No." <> '' then begin
@@ -306,7 +310,7 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
                     GenJnlImportBuffer."Reason Code" := FileImportSchema."Reason Code";
                 if GenJnlImportBuffer."Reason Code" <> '' then
                     if not CheckReasonCode(GenJnlImportBuffer) then
-                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, strsubstno(ReasonCodeMissingErr, GenJnlImportBuffer."Reason Code"));
+                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(ReasonCodeMissingErr, GenJnlImportBuffer."Reason Code"));
                 //Document No.
                 if FileImportSchema."Document No. Filling" = FileImportSchema."Document No. Filling"::"Sames As Loan No." then
                     GenJnlImportBuffer."Document No." := GenJnlImportBuffer."Loan No.";
@@ -317,10 +321,10 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
 
                 if FileImportSchema."Document No. Filling" = FileImportSchema."Document No. Filling"::"From Schema No. Series" then begin
                     if not FileImportSchema."Use Single Document No." then
-                        DocumentNo := NoSeriesMgmt.GetNextNo(FileImportSchema."Document No. Series", today, true)
+                        DocumentNo := NoSeriesMgmt.GetNextNo(FileImportSchema."Document No. Series", Today, true)
                     else
                         if DocumentNo = '' then
-                            DocumentNo := NoSeriesMgmt.GetNextNo(FileImportSchema."Document No. Series", today, true);
+                            DocumentNo := NoSeriesMgmt.GetNextNo(FileImportSchema."Document No. Series", Today, true);
                     GenJnlImportBuffer."Document No." := DocumentNo;
                 end;
                 //----
@@ -328,7 +332,12 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
             until GenJnlImportBuffer.Next() = 0;
     end;
 
-    local procedure ValidateDimension(LineNo: Integer; Mandatory: Boolean; DimensionNo: Integer; DimensionValueCode: Code[20]; var ImportBufferError: Record lvnImportBufferError)
+    local procedure ValidateDimension(
+        LineNo: Integer;
+        Mandatory: Boolean;
+        DimensionNo: Integer;
+        DimensionValueCode: Code[20];
+        var ImportBufferError: Record lvnImportBufferError)
     var
         DimensionValue: Record "Dimension Value";
         MandatoryDimensionBlankErr: Label 'Mandatory Dimension %1 is blank';
@@ -391,7 +400,11 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
         end;
     end;
 
-    local procedure SearchDimension(DimensionNo: Integer; DimensionMappingType: Enum lvnDimensionMappingType; DimensionValueText: Text; var DimensionValueCode: Code[20])
+    local procedure SearchDimension(
+        DimensionNo: Integer;
+        DimensionMappingType: Enum lvnDimensionMappingType;
+        DimensionValueText: Text;
+        var DimensionValueCode: Code[20])
     var
         DimensionValue: Record "Dimension Value";
     begin
@@ -415,7 +428,7 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
 
     local procedure CheckReasonCode(GenJnlImportBuffer: Record lvnGenJnlImportBuffer): Boolean
     var
-        ReasonCode: record "Reason Code";
+        ReasonCode: Record "Reason Code";
     begin
         exit(ReasonCode.Get(GenJnlImportBuffer."Reason Code"));
     end;
@@ -513,7 +526,10 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
         exit(true);
     end;
 
-    local procedure FindAccountNo(GenJnlAccountType: Enum lvnGenJnlAccountType; Value: Text; var AccountNo: Code[20])
+    local procedure FindAccountNo(
+        GenJnlAccountType: Enum lvnGenJnlAccountType;
+        Value: Text;
+        var AccountNo: Code[20])
     var
         GLAccount: Record "G/L Account";
         Vendor: Record Vendor;
@@ -644,7 +660,7 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
                         end;
                     GenJnlAccountType::"IC Partner":
                         begin
-                            ICPartner.reset;
+                            ICPartner.Reset;
                             ICPartner.SetFilter(Name, '@' + Value);
                             if ICPartner.FindFirst() then begin
                                 AccountNo := ICPartner.Code;
@@ -654,7 +670,10 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
         end;
     end;
 
-    local procedure AddErrorLine(GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError; ErrorText: Text)
+    local procedure AddErrorLine(
+        GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError;
+        ErrorText: Text)
     var
         ErrorLineNo: Integer;
     begin
@@ -671,7 +690,10 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
         ImportBufferError.Insert();
     end;
 
-    local procedure AddErrorLine(LineNo: Integer; var ImportBufferError: Record lvnImportBufferError; ErrorText: Text)
+    local procedure AddErrorLine(
+        LineNo: Integer;
+        var ImportBufferError: Record lvnImportBufferError;
+        ErrorText: Text)
     var
         ErrorLineNo: Integer;
     begin

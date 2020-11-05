@@ -75,9 +75,7 @@ page 14135189 "lvnLoanProcessorRolecenter"
                 RunPageView = sorting("Document No.") where("Transaction Type" = const(Sold));
                 ApplicationArea = All;
             }
-
         }
-
         area(Sections)
         {
             group(Setup)
@@ -171,5 +169,4 @@ page 14135189 "lvnLoanProcessorRolecenter"
             }
         }
     }
-
 }

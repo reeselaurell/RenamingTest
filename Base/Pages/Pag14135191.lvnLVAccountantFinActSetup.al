@@ -12,8 +12,16 @@ page 14135191 "lvnLVAccountantFinActSetup"
         {
             group(Group)
             {
-                field("Loans Held, for Sale Accounts"; Rec."Loans Held, for Sale Accounts") { Caption = 'Loans Held, for Sale Accounts'; ApplicationArea = All; }
-                field("Accounts Payable Accounts"; Rec."Accounts Payable Accounts") { Caption = 'Accounts Payable Accounts'; ApplicationArea = All; }
+                field("Loans Held, for Sale Accounts"; Rec."Loans Held, for Sale Accounts")
+                {
+                    Caption = 'Loans Held, for Sale Accounts';
+                    ApplicationArea = All;
+                }
+                field("Accounts Payable Accounts"; Rec."Accounts Payable Accounts")
+                {
+                    Caption = 'Accounts Payable Accounts';
+                    ApplicationArea = All;
+                }
             }
         }
     }

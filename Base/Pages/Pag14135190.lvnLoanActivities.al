@@ -14,6 +14,7 @@ page 14135190 "lvnLoanActivities"
             {
                 Caption = 'Funded by Warehouse Line';
                 ShowCaption = false;
+
                 field(lvnWarehouseLine1; FundedDocumentsCount[1])
                 {
                     Caption = 'Warehouse Line';
@@ -170,6 +171,20 @@ page 14135190 "lvnLoanActivities"
         }
     }
 
+    trigger OnOpenPage()
+    begin
+        Rec.Reset();
+        if not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
+        end;
+    end;
+
+    trigger OnAfterGetRecord()
+    begin
+        CalculateCueFieldValues();
+    end;
+
     var
         WarehouseLine: Record lvnWarehouseLine;
         FundedDocumentsCount: array[8] of Integer;
@@ -183,20 +198,6 @@ page 14135190 "lvnLoanActivities"
         FundedDocumentVisible6: Boolean;
         FundedDocumentVisible7: Boolean;
         FundedDocumentVisible8: Boolean;
-
-    trigger OnOpenPage()
-    begin
-        Rec.Reset();
-        If not Rec.Get() then begin
-            Rec.Init();
-            Rec.Insert();
-        end;
-    end;
-
-    trigger OnAfterGetRecord()
-    begin
-        CalculateCueFieldValues();
-    end;
 
     local procedure CalculateCueFieldValues()
     var

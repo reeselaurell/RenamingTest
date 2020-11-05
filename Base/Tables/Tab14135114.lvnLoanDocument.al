@@ -6,16 +6,60 @@ table 14135114 "lvnLoanDocument"
 
     fields
     {
-        field(1; "Transaction Type"; Enum lvnLoanTransactionType) { Caption = 'Transaction Type'; DataClassification = CustomerContent; }
-        field(2; "Document No."; code[20]) { Caption = 'Document No.'; DataClassification = CustomerContent; NotBlank = true; }
-        field(10; "Loan No."; Code[20]) { Caption = 'Loan No.'; DataClassification = CustomerContent; TableRelation = lvnLoan; }
-        field(11; "Customer No."; Code[20]) { Caption = 'Customer No.'; DataClassification = CustomerContent; TableRelation = Customer; }
-        field(12; Void; Boolean) { Caption = 'Void'; DataClassification = CustomerContent; }
-        field(13; "Posting Date"; Date) { Caption = 'Posting Date'; DataClassification = CustomerContent; }
-        field(14; "Reason Code"; Code[10]) { Caption = 'Reason Code'; DataClassification = CustomerContent; TableRelation = "Reason Code"; }
-        field(15; "Document Type"; enum lvnLoanDocumentType) { Caption = 'Document Type'; DataClassification = CustomerContent; }
-        field(30; "Last Servicing Period"; Boolean) { Caption = 'Last Servicing Period'; DataClassification = CustomerContent; }
-        field(56; "External Document No."; Code[35]) { Caption = 'External Document No.'; DataClassification = CustomerContent; }
+        field(1; "Transaction Type"; Enum lvnLoanTransactionType)
+        {
+            Caption = 'Transaction Type';
+            DataClassification = CustomerContent;
+        }
+        field(2; "Document No."; code[20])
+        {
+            Caption = 'Document No.';
+            DataClassification = CustomerContent;
+            NotBlank = true;
+        }
+        field(10; "Loan No."; Code[20])
+        {
+            Caption = 'Loan No.';
+            DataClassification = CustomerContent;
+            TableRelation = lvnLoan;
+        }
+        field(11; "Customer No."; Code[20])
+        {
+            Caption = 'Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer;
+        }
+        field(12; Void; Boolean)
+        {
+            Caption = 'Void';
+            DataClassification = CustomerContent;
+        }
+        field(13; "Posting Date"; Date)
+        {
+            Caption = 'Posting Date';
+            DataClassification = CustomerContent;
+        }
+        field(14; "Reason Code"; Code[10])
+        {
+            Caption = 'Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
+        }
+        field(15; "Document Type"; enum lvnLoanDocumentType)
+        {
+            Caption = 'Document Type';
+            DataClassification = CustomerContent;
+        }
+        field(30; "Last Servicing Period"; Boolean)
+        {
+            Caption = 'Last Servicing Period';
+            DataClassification = CustomerContent;
+        }
+        field(56; "External Document No."; Code[35])
+        {
+            Caption = 'External Document No.';
+            DataClassification = CustomerContent;
+        }
         field(80; "Global Dimension 1 Code"; Code[20])
         {
             DataClassification = CustomerContent;
@@ -112,21 +156,48 @@ table 14135114 "lvnLoanDocument"
                 DimensionManagement.ValidateShortcutDimValues(8, "Shortcut Dimension 8 Code", "Dimension Set ID");
             end;
         }
-        field(88; "Business Unit Code"; Code[10]) { Caption = 'Business Unit Code'; DataClassification = CustomerContent; TableRelation = "Business Unit"; }
-        field(89; "Dimension Set ID"; Integer) { Caption = 'Dimension Set ID'; DataClassification = CustomerContent; }
-        field(200; "Warehouse Line Code"; Code[50]) { Caption = 'Warehouse Line Code'; DataClassification = CustomerContent; TableRelation = lvnWarehouseLine.Code; }
-        field(1000; "Void Document No."; Code[20]) { Caption = 'Void Document No.'; DataClassification = CustomerContent; }
-        field(10000; "Borrower Search Name"; Code[50]) { Caption = 'Borrower Search Name'; Editable = false; FieldClass = FlowField; CalcFormula = lookup(lvnLoan."Search Name" where("No." = field("Loan No."))); }
-        field(10001; "Document Amount"; Decimal) { Caption = 'Document Amount'; Editable = false; FieldClass = FlowField; CalcFormula = sum(lvnLoanDocumentLine.Amount where("Document No." = field("Document No."), "Transaction Type" = field("Transaction Type"))); }
+        field(88; "Business Unit Code"; Code[10])
+        {
+            Caption = 'Business Unit Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Business Unit";
+        }
+        field(89; "Dimension Set ID"; Integer)
+        {
+            Caption = 'Dimension Set ID';
+            DataClassification = CustomerContent;
+        }
+        field(200; "Warehouse Line Code"; Code[50])
+        {
+            Caption = 'Warehouse Line Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvnWarehouseLine.Code;
+        }
+        field(1000; "Void Document No."; Code[20])
+        {
+            Caption = 'Void Document No.';
+            DataClassification = CustomerContent;
+        }
+        field(10000; "Borrower Search Name"; Code[50])
+        {
+            Caption = 'Borrower Search Name';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = lookup(lvnLoan."Search Name" where("No." = field("Loan No.")));
+        }
+        field(10001; "Document Amount"; Decimal)
+        {
+            Caption = 'Document Amount';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = sum(lvnLoanDocumentLine.Amount where("Document No." = field("Document No."), "Transaction Type" = field("Transaction Type")));
+        }
     }
 
     keys
     {
         key(PK; "Transaction Type", "Document No.") { Clustered = true; }
     }
-
-    var
-        DimensionManagement: Codeunit DimensionManagement;
 
     trigger OnDelete()
     var
@@ -137,6 +208,9 @@ table 14135114 "lvnLoanDocument"
         LoanDocumentLine.SetRange("Document No.", "Document No.");
         LoanDocumentLine.DeleteAll();
     end;
+
+    var
+        DimensionManagement: Codeunit DimensionManagement;
 
     procedure GenerateDimensionSetId()
     begin
@@ -149,5 +223,4 @@ table 14135114 "lvnLoanDocument"
         DimensionManagement.ValidateShortcutDimValues(7, "Shortcut Dimension 7 Code", "Dimension Set ID");
         DimensionManagement.ValidateShortcutDimValues(8, "Shortcut Dimension 8 Code", "Dimension Set ID");
     end;
-
 }

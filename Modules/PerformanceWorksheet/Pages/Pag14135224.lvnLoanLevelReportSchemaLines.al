@@ -10,19 +10,35 @@ page 14135224 "lvnLoanLevelReportSchemaLines"
         {
             repeater(Group)
             {
-                field("Column No."; Rec."Column No.") { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field(Type; Rec.Type) { ApplicationArea = All; }
-                field("G/L Filter"; Rec."G/L Filter".HasValue) { ApplicationArea = All; Caption = 'G/L Filters Applied'; }
-                field("Value Field No."; Rec."Value Field No.") { ApplicationArea = All; }
+                field("Column No."; Rec."Column No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field(Type; Rec.Type)
+                {
+                    ApplicationArea = All;
+                }
+                field("G/L Filter"; Rec."G/L Filter".HasValue)
+                {
+                    ApplicationArea = All;
+                    Caption = 'G/L Filters Applied';
+                }
+                field("Value Field No."; Rec."Value Field No.")
+                {
+                    ApplicationArea = All;
+                }
                 field("Formula Code"; Rec."Formula Code")
                 {
                     ApplicationArea = All;
 
                     trigger OnAssistEdit()
                     var
-                        ExpressionList: Page lvnExpressionList;
                         LoanLevelMgmt: Codeunit lvnLoanLevelReportManagement;
+                        ExpressionList: Page lvnExpressionList;
                         ExpressiontType: Enum lvnExpressionType;
                         NewCode: Code[20];
                     begin
@@ -31,7 +47,10 @@ page 14135224 "lvnLoanLevelReportSchemaLines"
                             Rec."Formula Code" := NewCode;
                     end;
                 }
-                field("Number Format Code"; Rec."Number Format Code") { ApplicationArea = All; }
+                field("Number Format Code"; Rec."Number Format Code")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

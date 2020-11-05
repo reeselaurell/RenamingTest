@@ -12,9 +12,18 @@ page 14135223 "lvnLoanLevelReportSchema"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Skip Zero Balance Lines"; Rec."Skip Zero Balance Lines") { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Skip Zero Balance Lines"; Rec."Skip Zero Balance Lines")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

@@ -20,8 +20,14 @@ page 14135244 "lvnDocumentExchangeSetup"
             // }
             group(Azure)
             {
-                field("Azure Base Url"; Rec."Azure Base Url") { ApplicationArea = All; }
-                field("Access Key"; Rec."Access Key") { ApplicationArea = All; }
+                field("Azure Base Url"; Rec."Azure Base Url")
+                {
+                    ApplicationArea = All;
+                }
+                field("Access Key"; Rec."Access Key")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

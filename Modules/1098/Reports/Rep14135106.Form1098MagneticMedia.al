@@ -48,7 +48,6 @@ report 14135106 "Form1098MagneticMedia"
                     WriteCRec();
                 end;
             }
-
             trigger OnAfterGetRecord()
             begin
                 CodeNos := '123456';
@@ -244,51 +243,6 @@ report 14135106 "Form1098MagneticMedia"
         end;
     }
 
-    var
-        ExportLbl: Label 'Export';
-        AllFileFilterTxt: Label 'All Files (*.*)|*.*';
-        DefaultFileNameTxt: Label '1098IRSTAX.txt';
-        ProgressMsg: Label 'Exporting...\\Table    #1####################';
-        InitialProgressTxt: Label 'IRSTAX';
-        InvalidYearErr: Label 'You must enter a valid year, eg 2013.';
-        InvalidTransCodeErr: Label 'You must enter the Transmitter Control Code assigned to you by the IRS.';
-        InvalidTransContactNameErr: Label 'You must enter the name of the person to be contacted if IRS/MCC encounters problems with the file or transmission.';
-        InvalidTransContactPhoneErr: Label 'You must enter the phone number of the person to be contacted if IRS/MCC encounters problems with the file or transmission.';
-        MissingVendorInfoErr: Label 'You must enter all software vendor address information.';
-        InvalidVendorContactNameErr: Label 'You must enter the name of the person to be contacted if IRS/MCC has any software questions.';
-        InvalidVendorContactPhoneErr: Label 'You must enter the phone number of the person to be contacted if IRS/MCC has any software questions.';
-        CompanyInfo: Record "Company Information";
-        TransmitterInfo: Record "Company Information" temporary;
-        VendorInfo: Record "Company Information" temporary;
-        IRSBlob: Codeunit "Temp Blob";
-        MagMediaManagement: Codeunit "A/P Magnetic Media Management";
-        IRSData: OutStream;
-        Progress: Dialog;
-        TestFile: Text[1];
-        PriorYear: Text[1];
-        Year: Integer;
-        TransCode: Code[5];
-        TransContactName: Text;
-        TransContactPhoneNo: Text;
-        TransContactEMail: Text;
-        VendIndicator: Enum lvnForm1098VendorIndicator;
-        VendContactName: Text;
-        VendContactPhoneNo: Text;
-        VendContactEMail: Text;
-        BorrowerName: Code[40];
-        BorrowerAddress: Code[40];
-        PayeeTotal: Integer;
-        PayeeNum: Integer;
-        ReturnType: Text[2];
-        PayerNameControl: Text[4];
-        CodeNos: Text[12];
-        SequenceNo: Integer;
-        Box1: Decimal;
-        Box2: Decimal;
-        Box4: Decimal;
-        Box5: Decimal;
-        Box6: Decimal;
-
     trigger OnInitReport()
     begin
         TestFile := ' ';
@@ -340,6 +294,51 @@ report 14135106 "Form1098MagneticMedia"
         FileName := DefaultFileNameTxt;
         DownloadFromStream(IStream, ExportLbl, '', AllFileFilterTxt, FileName);
     end;
+
+    var
+        CompanyInfo: Record "Company Information";
+        TransmitterInfo: Record "Company Information" temporary;
+        VendorInfo: Record "Company Information" temporary;
+        IRSBlob: Codeunit "Temp Blob";
+        MagMediaManagement: Codeunit "A/P Magnetic Media Management";
+        IRSData: OutStream;
+        Progress: Dialog;
+        TestFile: Text[1];
+        PriorYear: Text[1];
+        Year: Integer;
+        TransCode: Code[5];
+        TransContactName: Text;
+        TransContactPhoneNo: Text;
+        TransContactEMail: Text;
+        VendIndicator: Enum lvnForm1098VendorIndicator;
+        VendContactName: Text;
+        VendContactPhoneNo: Text;
+        VendContactEMail: Text;
+        BorrowerName: Code[40];
+        BorrowerAddress: Code[40];
+        PayeeTotal: Integer;
+        PayeeNum: Integer;
+        ReturnType: Text[2];
+        PayerNameControl: Text[4];
+        CodeNos: Text[12];
+        SequenceNo: Integer;
+        Box1: Decimal;
+        Box2: Decimal;
+        Box4: Decimal;
+        Box5: Decimal;
+        Box6: Decimal;
+        ExportLbl: Label 'Export';
+        AllFileFilterTxt: Label 'All Files (*.*)|*.*';
+        DefaultFileNameTxt: Label '1098IRSTAX.txt';
+        ProgressMsg: Label 'Exporting...\\Table    #1####################';
+        InitialProgressTxt: Label 'IRSTAX';
+        InvalidYearErr: Label 'You must enter a valid year, eg 2013.';
+        InvalidTransCodeErr: Label 'You must enter the Transmitter Control Code assigned to you by the IRS.';
+        InvalidTransContactNameErr: Label 'You must enter the name of the person to be contacted if IRS/MCC encounters problems with the file or transmission.';
+        InvalidTransContactPhoneErr: Label 'You must enter the phone number of the person to be contacted if IRS/MCC encounters problems with the file or transmission.';
+        MissingVendorInfoErr: Label 'You must enter all software vendor address information.';
+        InvalidVendorContactNameErr: Label 'You must enter the name of the person to be contacted if IRS/MCC has any software questions.';
+        InvalidVendorContactPhoneErr: Label 'You must enter the phone number of the person to be contacted if IRS/MCC has any software questions.';
 
     local procedure WriteTRec()
     begin

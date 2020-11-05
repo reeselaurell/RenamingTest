@@ -16,18 +16,6 @@ report 14135112 "lvnRefreshGLAnalysisEntries"
         }
     }
 
-    var
-        GroupedGLEntry: Record lvnGroupedGLEntry;
-        GroupedLoanGLEntry: Record lvnGroupedLoanGLEntry;
-        LoanVisionSetup: Record lvnLoanVisionSetup;
-        GLEntry: Record "G/L Entry";
-        GLEntryGroupedEntriesQuery: Query lvnGLEntryGroupedEntries;
-        CompleteRefresh: Boolean;
-        Counter: Integer;
-        LastEntryNo: Integer;
-        ProgressDialog: Dialog;
-        ProcessingGLEntriesLbl: Label 'Processing entry #1#############';
-
     trigger OnPreReport()
     var
         ConfirmContinueMsg: Label 'This procedure will erase previously generated G/L Analysis entries. Do you want to continue?';
@@ -134,4 +122,15 @@ report 14135112 "lvnRefreshGLAnalysisEntries"
         end;
     end;
 
+    var
+        GroupedGLEntry: Record lvnGroupedGLEntry;
+        GroupedLoanGLEntry: Record lvnGroupedLoanGLEntry;
+        LoanVisionSetup: Record lvnLoanVisionSetup;
+        GLEntry: Record "G/L Entry";
+        GLEntryGroupedEntriesQuery: Query lvnGLEntryGroupedEntries;
+        CompleteRefresh: Boolean;
+        Counter: Integer;
+        LastEntryNo: Integer;
+        ProgressDialog: Dialog;
+        ProcessingGLEntriesLbl: Label 'Processing entry #1#############';
 }

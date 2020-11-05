@@ -26,13 +26,13 @@ page 14135161 "lvnChooseCompany"
                     if Rec.FindFirst() then;
                 end;
             }
-            field(WarnIfRecordExists; WarnIfRecordExists) { Caption = 'Warn if record already exists'; ApplicationArea = All; }
+            field(WarnIfRecordExists; WarnIfRecordExists)
+            {
+                Caption = 'Warn if record already exists';
+                ApplicationArea = All;
+            }
         }
     }
-
-    var
-        CompanyNameVar: Text[50];
-        WarnIfRecordExists: Boolean;
 
     trigger OnOpenPage()
     begin
@@ -40,6 +40,10 @@ page 14135161 "lvnChooseCompany"
         if Rec.FindFirst() then;
         WarnIfRecordExists := false;
     end;
+
+    var
+        CompanyNameVar: Text[50];
+        WarnIfRecordExists: Boolean;
 
     procedure GetParameters(var pWarnIfRecordExists: Boolean)
     begin

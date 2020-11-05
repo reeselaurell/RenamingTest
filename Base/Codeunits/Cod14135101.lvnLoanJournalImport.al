@@ -1,20 +1,19 @@
 codeunit 14135101 "lvnLoanJournalImport"
 {
     var
+        TempCSVBuffer: Record "CSV Buffer" temporary;
+        TempLoanImportSchema: Record lvnLoanImportSchema temporary;
+        LoanJournalBatch: Record lvnLoanJournalBatch;
+        PostProcessingMgmt: Codeunit lvnPostProcessingMgmt;
+        ImportStream: InStream;
+        FileName: Text;
         BooleanStringWrongFormatErr: Label 'Boolean Value %1 has wrong format. Line No. %2, Field %3. Possible Values %4 %5';
         BooleanStringNoFormatDefinedErr: Label 'Boolean format is not defined for field %1';
         DateStringWrongFormatErr: Label 'Date Value %1 has wrong format. Line No. %2, Field %3';
         DecimalStringWrongFormatErr: Label 'Decimal Value %1 has wrong format. Line No. %2, Field %3';
         IntegerStringWrongFormatErr: Label 'Integer Value %1 has wrong format. Line No. %2, Field %3';
-
-        TempCSVBuffer: Record "CSV Buffer" temporary;
-        TempLoanImportSchema: Record lvnLoanImportSchema temporary;
-        LoanJournalBatch: Record lvnLoanJournalBatch;
         OpenFileLbl: Label 'Open File for Import';
         ReadingToStreamErr: Label 'Error reading file to stream';
-        PostProcessingMgmt: Codeunit lvnPostProcessingMgmt;
-        ImportStream: InStream;
-        FileName: Text;
 
     procedure ReadCSVStream(lvnLoanJournalBatchCode: Code[20]; lvnImportSchema: Record lvnLoanImportSchema)
     var
@@ -37,7 +36,11 @@ codeunit 14135101 "lvnLoanJournalImport"
             Error(ReadingToStreamErr);
     end;
 
-    procedure ReadCSVStream(lvnLoanJournalBatchCode: Code[20]; lvnImportSchema: Record lvnLoanImportSchema; ContainerName: Text; FileName: Text)
+    procedure ReadCSVStream(
+        lvnLoanJournalBatchCode: Code[20];
+        lvnImportSchema: Record lvnLoanImportSchema;
+        ContainerName: Text;
+        FileName: Text)
     var
         StorageMgmt: Codeunit lvnAzureBlobManagement;
         TabChar: Char;
@@ -78,7 +81,7 @@ codeunit 14135101 "lvnLoanJournalImport"
         repeat
             TempLoanImportSchemaLine := LoanImportSchemaLine;
             TempLoanImportSchemaLine.Insert();
-        until LoanImportSchemaLine.next = 0;
+        until LoanImportSchemaLine.Next = 0;
         TempCSVBuffer.ResetFilters();
         LoanJournalLine.Reset();
         LoanJournalLine.SetRange("Loan Journal Batch Code", LoanJournalBatch.Code);
@@ -118,7 +121,10 @@ codeunit 14135101 "lvnLoanJournalImport"
         until (StartLine > EndLine);
     end;
 
-    procedure AssignValueToVariableField(Value: Text; LoanJournalLine: Record lvnLoanJournalLine; LoanImportSchemaLine: Record lvnLoanImportSchemaLine)
+    procedure AssignValueToVariableField(
+        Value: Text;
+        LoanJournalLine: Record lvnLoanJournalLine;
+        LoanImportSchemaLine: Record lvnLoanImportSchemaLine)
     var
         LoanJournalValue: Record lvnLoanJournalValue;
         StringConversionManagement: Codeunit StringConversionManagement;
@@ -260,7 +266,11 @@ codeunit 14135101 "lvnLoanJournalImport"
         end;
     end;
 
-    procedure AssignValueToJournalField(LineNo: Integer; Value: Text; LoanImportSchemaLine: Record lvnLoanImportSchemaLine; var FieldReference: FieldRef)
+    procedure AssignValueToJournalField(
+        LineNo: Integer;
+        Value: Text;
+        LoanImportSchemaLine: Record lvnLoanImportSchemaLine;
+        var FieldReference: FieldRef)
     var
         StringConversionManagement: Codeunit StringConversionManagement;
         BooleanField: Boolean;

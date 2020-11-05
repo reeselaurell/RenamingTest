@@ -11,12 +11,32 @@ page 14135246 "lvnDocumentImportRules"
         {
             repeater(Group)
             {
-                field(Order; Rec.Order) { ApplicationArea = All; }
-                field(Prefix; Rec.Prefix) { ApplicationArea = All; }
-                field("Table No."; Rec."Table No.") { ApplicationArea = All; TableRelation = AllObj."Object ID" where("Object Type" = const(Table)); }
-                field("Field Name"; Rec."Field Name") { ApplicationArea = All; TableRelation = Field.FieldName where(TableNo = field("Table No.")); }
-                field("Table View"; Rec."Table View") { ApplicationArea = All; }
-                field("Fall Through"; Rec."Fall Through") { ApplicationArea = All; }
+                field(Order; Rec.Order)
+                {
+                    ApplicationArea = All;
+                }
+                field(Prefix; Rec.Prefix)
+                {
+                    ApplicationArea = All;
+                }
+                field("Table No."; Rec."Table No.")
+                {
+                    ApplicationArea = All;
+                    TableRelation = AllObj."Object ID" where("Object Type" = const(Table));
+                }
+                field("Field Name"; Rec."Field Name")
+                {
+                    ApplicationArea = All;
+                    TableRelation = field.FieldName where(TableNo = field("Table No."));
+                }
+                field("Table View"; Rec."Table View")
+                {
+                    ApplicationArea = All;
+                }
+                field("Fall Through"; Rec."Fall Through")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

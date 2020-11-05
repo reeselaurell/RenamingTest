@@ -4,10 +4,26 @@ table 14135255 "lvnLVAcctRCHeadline"
 
     fields
     {
-        field(1; "Dimension Code"; Code[20]) { Caption = 'Dimension Code'; DataClassification = CustomerContent; }
-        field(2; Code; Code[20]) { Caption = 'Code'; DataClassification = CustomerContent; }
-        field(3; Name; Text[50]) { Caption = 'Name'; DataClassification = CustomerContent; }
-        field(10; "Net Change"; Decimal) { Caption = 'Net Change'; DataClassification = CustomerContent; }
+        field(1; "Dimension Code"; Code[20])
+        {
+            Caption = 'Dimension Code';
+            DataClassification = CustomerContent;
+        }
+        field(2; Code; Code[20])
+        {
+            Caption = 'Code';
+            DataClassification = CustomerContent;
+        }
+        field(3; Name; Text[50])
+        {
+            Caption = 'Name';
+            DataClassification = CustomerContent;
+        }
+        field(10; "Net Change"; Decimal)
+        {
+            Caption = 'Net Change';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
@@ -147,5 +163,4 @@ table 14135255 "lvnLVAcctRCHeadline"
                 exit('ALL TIME');
         end;
     end;
-
 }

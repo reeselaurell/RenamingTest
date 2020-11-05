@@ -1,6 +1,8 @@
 codeunit 14135250 "lvnPurchInvoiceImportMgmt"
 {
     var
+        PurchInvImportLine2: Record lvnPurchInvLineBuffer;
+        PurchInvImportLine3: Record lvnPurchInvLineBuffer;
         InvCreatedMsg: Label 'Invoice(s) Created';
 
     procedure ValidateDocuments(): Boolean
@@ -11,13 +13,16 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
         exit(not InvoiceErrorDetail.FindSet());
     end;
 
-    procedure CreateInvoices(var PurchHeaderBuffer: Record lvnPurchInvHdrBuffer; var PurchLineBuffer: Record lvnPurchInvLineBuffer; Post: Boolean)
+    procedure CreateInvoices(
+        var PurchHeaderBuffer: Record lvnPurchInvHdrBuffer;
+        var PurchLineBuffer: Record lvnPurchInvLineBuffer;
+        Post: Boolean)
     var
-        EmptyJnlErr: Label 'Purchase Invoice Import Journal is empty';
         PurchaseHeader: Record "Purchase Header";
         TempPurchHeader: Record "Purchase Header" temporary;
         PurchaseLine: Record "Purchase Line";
         DocNo: Code[20];
+        EmptyJnlErr: Label 'Purchase Invoice Import Journal is empty';
     begin
         PurchHeaderBuffer.Reset();
         if PurchHeaderBuffer.FindSet() then begin
@@ -84,15 +89,17 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
             Error(EmptyJnlErr);
     end;
 
-    procedure ValidateHeaderEntries(var PurchInvJnlError: Record lvnInvoiceErrorDetail; var PurchInvHdrBuffer: Record lvnPurchInvHdrBuffer)
+    procedure ValidateHeaderEntries(
+        var PurchInvJnlError: Record lvnInvoiceErrorDetail;
+        var PurchInvHdrBuffer: Record lvnPurchInvHdrBuffer)
     var
+        Vendor: Record Vendor;
+        PaymentMethod: Record "Payment Method";
+        UserSetupMgmt: Codeunit "User Setup Management";
         PostingDateIsBlankErr: Label 'Posting Date is Blank';
         PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
         VendorNotFoundErr: Label 'Vendor with No.: %1 was not found in Vendor List';
         PaymentMethodNotFoundErr: Label 'Payment Method Code: %1 was not found in Payment Method Table';
-        Vendor: Record Vendor;
-        PaymentMethod: Record "Payment Method";
-        UserSetupMgmt: Codeunit "User Setup Management";
     begin
         PurchInvHdrBuffer.Reset();
         if PurchInvHdrBuffer.FindSet() then
@@ -110,13 +117,15 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
             until PurchInvHdrBuffer.Next() = 0;
     end;
 
-    procedure ValidateLineEntries(var PurchInvJnlError: Record lvnInvoiceErrorDetail; var PurchInvLineBuffer: Record lvnPurchInvLineBuffer)
+    procedure ValidateLineEntries(
+        var PurchInvJnlError: Record lvnInvoiceErrorDetail;
+        var PurchInvLineBuffer: Record lvnPurchInvLineBuffer)
     var
+        Loan: Record lvnLoan;
+        DimensionValue: Record "Dimension Value";
         AccountNoBlankOrMissingErr: Label 'Line %1: G/L Account is missing or blank';
         LoanNoMissingErr: Label 'Line %1: Loan No. is Missing';
         InvalidDimensionErr: Label 'Line %1: Dimension Value %2 does not exist for Dimension %3';
-        Loan: Record lvnLoan;
-        DimensionValue: Record "Dimension Value";
     begin
         PurchInvLineBuffer.Reset();
         if PurchInvLineBuffer.FindSet() then
@@ -194,28 +203,9 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
         PurchInvLineBuffer.Reset();
     end;
 
-    local procedure AddErrorLine(var PurchInvJnlError: Record lvnInvoiceErrorDetail; DocumentNo: Code[20]; isHeader: Boolean; LineNo: Integer; ErrorTxt: Text)
-    var
-        ErrorNo: Integer;
-    begin
-        PurchInvJnlError.Reset();
-        PurchInvJnlError.SetRange("Document No.", DocumentNo);
-        PurchInvJnlError.SetRange("Header Error", isHeader);
-        PurchInvJnlError.SetRange("Line No.", LineNo);
-        ErrorNo := PurchInvJnlError.Count() + 1;
-        PurchInvJnlError.SetRange("Error Text", ErrorTxt);
-        if not PurchInvJnlError.IsEmpty then
-            exit;
-        Clear(PurchInvJnlError);
-        PurchInvJnlError."Document No." := DocumentNo;
-        PurchInvJnlError."Header Error" := isHeader;
-        PurchInvJnlError."Line No." := LineNo;
-        PurchInvJnlError."Error No." := ErrorNo;
-        PurchInvJnlError."Error Text" := ErrorTxt;
-        if PurchInvJnlError.Insert() then;
-    end;
-
-    procedure GroupLines(var pPurchInvImportHdr: Record lvnPurchInvHdrBuffer; var pPurchInvImportLine: Record lvnPurchInvLineBuffer)
+    procedure GroupLines(
+        var pPurchInvImportHdr: Record lvnPurchInvHdrBuffer;
+        var pPurchInvImportLine: Record lvnPurchInvLineBuffer)
     var
         TotalAmount: Decimal;
         LineDescription: Text[250];
@@ -291,7 +281,29 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
         pPurchInvImportLine.Reset();
     end;
 
+    local procedure AddErrorLine(
+        var PurchInvJnlError: Record lvnInvoiceErrorDetail;
+        DocumentNo: Code[20];
+        isHeader: Boolean;
+        LineNo: Integer;
+        ErrorTxt: Text)
     var
-        PurchInvImportLine2: Record lvnPurchInvLineBuffer;
-        PurchInvImportLine3: Record lvnPurchInvLineBuffer;
+        ErrorNo: Integer;
+    begin
+        PurchInvJnlError.Reset();
+        PurchInvJnlError.SetRange("Document No.", DocumentNo);
+        PurchInvJnlError.SetRange("Header Error", isHeader);
+        PurchInvJnlError.SetRange("Line No.", LineNo);
+        ErrorNo := PurchInvJnlError.Count() + 1;
+        PurchInvJnlError.SetRange("Error Text", ErrorTxt);
+        if not PurchInvJnlError.IsEmpty then
+            exit;
+        Clear(PurchInvJnlError);
+        PurchInvJnlError."Document No." := DocumentNo;
+        PurchInvJnlError."Header Error" := isHeader;
+        PurchInvJnlError."Line No." := LineNo;
+        PurchInvJnlError."Error No." := ErrorNo;
+        PurchInvJnlError."Error Text" := ErrorTxt;
+        if PurchInvJnlError.Insert() then;
+    end;
 }

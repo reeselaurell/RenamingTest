@@ -12,12 +12,23 @@ page 14135165 "lvnDimensionChangeList"
         {
             repeater(Group)
             {
-                field("Change Set ID"; Rec."Change Set ID") { ApplicationArea = All; }
-                field(Date; Rec.Date) { ApplicationArea = All; }
-                field("User ID"; Rec."User ID") { ApplicationArea = All; }
-                field(Comment; Rec.Comment) { ApplicationArea = All; }
+                field("Change Set ID"; Rec."Change Set ID")
+                {
+                    ApplicationArea = All;
+                }
+                field(Date; Rec.Date)
+                {
+                    ApplicationArea = All;
+                }
+                field("User ID"; Rec."User ID")
+                {
+                    ApplicationArea = All;
+                }
+                field(Comment; Rec.Comment)
+                {
+                    ApplicationArea = All;
+                }
             }
-
         }
     }
 
@@ -61,7 +72,6 @@ page 14135165 "lvnDimensionChangeList"
                     end;
                 end;
             }
-
             action(Post)
             {
                 Caption = 'Post';
@@ -91,11 +101,6 @@ page 14135165 "lvnDimensionChangeList"
         }
     }
 
-    var
-        CommentBlankErr: Label 'Comment cannot be blank!';
-        [InDataSet]
-        HasJournalEntries: Boolean;
-
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
         HasJournalEntries := false;
@@ -108,4 +113,9 @@ page 14135165 "lvnDimensionChangeList"
         DimensionChangeJnlEntry.SetRange("Change Set ID", Rec."Change Set ID");
         HasJournalEntries := not DimensionChangeJnlEntry.IsEmpty();
     end;
+
+    var
+        [InDataSet]
+        HasJournalEntries: Boolean;
+        CommentBlankErr: Label 'Comment cannot be blank!';
 }

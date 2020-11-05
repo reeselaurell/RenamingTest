@@ -4,7 +4,10 @@ pageextension 14135125 "lvnPostedSalesCreditMemo" extends "Posted Sales Credit M
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

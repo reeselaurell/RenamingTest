@@ -10,12 +10,30 @@ page 14135114 "lvnLoanProcessingSchemaLines"
         {
             repeater(Group)
             {
-                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
-                field("Tag Code"; Rec."Tag Code") { ApplicationArea = All; }
-                field("Processing Source Type"; Rec."Processing Source Type") { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Condition Code"; Rec."Condition Code") { ApplicationArea = All; }
-                field("Account Type"; Rec."Account Type") { ApplicationArea = All; }
+                field("Line No."; Rec."Line No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Tag Code"; Rec."Tag Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Processing Source Type"; Rec."Processing Source Type")
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Condition Code"; Rec."Condition Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Account Type"; Rec."Account Type")
+                {
+                    ApplicationArea = All;
+                }
                 field("Account No."; Rec."Account No.")
                 {
                     ApplicationArea = All;
@@ -31,7 +49,7 @@ page 14135114 "lvnLoanProcessingSchemaLines"
                                     GLAccount.Reset();
                                     GLAccount.SetRange("Direct Posting", true);
                                     GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
-                                    if page.RunModal(0, GLAccount) = Action::LookupOK then
+                                    if Page.RunModal(0, GLAccount) = Action::LookupOK then
                                         Rec."Account No." := GLAccount."No.";
                                 end;
                             Rec."Account Type"::"Bank Account":
@@ -43,7 +61,10 @@ page 14135114 "lvnLoanProcessingSchemaLines"
                         end;
                     end;
                 }
-                field("Account No. Switch Code"; Rec."Account No. Switch Code") { ApplicationArea = All; }
+                field("Account No. Switch Code"; Rec."Account No. Switch Code")
+                {
+                    ApplicationArea = All;
+                }
                 field("Field No."; Rec."Field No.")
                 {
                     ApplicationArea = All;
@@ -72,9 +93,9 @@ page 14135114 "lvnLoanProcessingSchemaLines"
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsLookup: Page "Fields Lookup";
                         FieldRec: Record Field;
                         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
+                        FieldsLookup: Page "Fields Lookup";
                     begin
                         case Rec."Processing Source Type" of
                             Rec."Processing Source Type"::"Loan Journal Value":
@@ -101,31 +122,120 @@ page 14135114 "lvnLoanProcessingSchemaLines"
                         end;
                     end;
                 }
-                field("Function Code"; Rec."Function Code") { ApplicationArea = All; }
-                field("Override Reason Code"; Rec."Override Reason Code") { ApplicationArea = All; }
-                field("Reverse Sign"; Rec."Reverse Sign") { ApplicationArea = All; }
-                field("Balancing Entry"; Rec."Balancing Entry") { ApplicationArea = All; }
-                field("Dimension 1 Rule"; Rec."Dimension 1 Rule") { ApplicationArea = All; Visible = DimensionVisible1; }
-                field("Dimension 2 Rule"; Rec."Dimension 2 Rule") { ApplicationArea = All; Visible = DimensionVisible2; }
-                field("Dimension 3 Rule"; Rec."Dimension 3 Rule") { ApplicationArea = All; Visible = DimensionVisible3; }
-                field("Dimension 4 Rule"; Rec."Dimension 4 Rule") { ApplicationArea = All; Visible = DimensionVisible4; }
-                field("Dimension 5 Rule"; Rec."Dimension 5 Rule") { ApplicationArea = All; Visible = DimensionVisible5; }
-                field("Dimension 6 Rule"; Rec."Dimension 6 Rule") { ApplicationArea = All; Visible = DimensionVisible6; }
-                field("Dimension 7 Rule"; Rec."Dimension 7 Rule") { ApplicationArea = All; Visible = DimensionVisible7; }
-                field("Dimension 8 Rule"; Rec."Dimension 8 Rule") { ApplicationArea = All; Visible = DimensionVisible8; }
-                field("Business Unit Rule"; Rec."Business Unit Rule") { ApplicationArea = All; }
-                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
-                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
-                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code") { ApplicationArea = All; Visible = DimensionVisible3; }
-                field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code") { ApplicationArea = All; Visible = DimensionVisible4; }
-                field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code") { ApplicationArea = All; Visible = DimensionVisible5; }
-                field("Shortcut Dimension 6 Code"; Rec."Shortcut Dimension 6 Code") { ApplicationArea = All; Visible = DimensionVisible6; }
-                field("Shortcut Dimension 7 Code"; Rec."Shortcut Dimension 7 Code") { ApplicationArea = All; Visible = DimensionVisible7; }
-                field("Shortcut Dimension 8 Code"; Rec."Shortcut Dimension 8 Code") { ApplicationArea = All; Visible = DimensionVisible8; }
-                field("Business Unit Code"; Rec."Business Unit Code") { ApplicationArea = All; }
+                field("Function Code"; Rec."Function Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Override Reason Code"; Rec."Override Reason Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Reverse Sign"; Rec."Reverse Sign")
+                {
+                    ApplicationArea = All;
+                }
+                field("Balancing Entry"; Rec."Balancing Entry")
+                {
+                    ApplicationArea = All;
+                }
+                field("Dimension 1 Rule"; Rec."Dimension 1 Rule")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible1;
+                }
+                field("Dimension 2 Rule"; Rec."Dimension 2 Rule")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible2;
+                }
+                field("Dimension 3 Rule"; Rec."Dimension 3 Rule")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible3;
+                }
+                field("Dimension 4 Rule"; Rec."Dimension 4 Rule")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible4;
+                }
+                field("Dimension 5 Rule"; Rec."Dimension 5 Rule")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible5;
+                }
+                field("Dimension 6 Rule"; Rec."Dimension 6 Rule")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible6;
+                }
+                field("Dimension 7 Rule"; Rec."Dimension 7 Rule")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible7;
+                }
+                field("Dimension 8 Rule"; Rec."Dimension 8 Rule")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible8;
+                }
+                field("Business Unit Rule"; Rec."Business Unit Rule")
+                {
+                    ApplicationArea = All;
+                }
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible1;
+                }
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible2;
+                }
+                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible3;
+                }
+                field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible4;
+                }
+                field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible5;
+                }
+                field("Shortcut Dimension 6 Code"; Rec."Shortcut Dimension 6 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible6;
+                }
+                field("Shortcut Dimension 7 Code"; Rec."Shortcut Dimension 7 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible7;
+                }
+                field("Shortcut Dimension 8 Code"; Rec."Shortcut Dimension 8 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible8;
+                }
+                field("Business Unit Code"; Rec."Business Unit Code")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
+
+    trigger OnOpenPage()
+    var
+        DimensionManagement: Codeunit DimensionManagement;
+    begin
+        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6, DimensionVisible7, DimensionVisible8);
+    end;
 
     var
         DimensionVisible1: Boolean;
@@ -136,11 +246,4 @@ page 14135114 "lvnLoanProcessingSchemaLines"
         DimensionVisible6: Boolean;
         DimensionVisible7: Boolean;
         DimensionVisible8: Boolean;
-
-    trigger OnOpenPage()
-    var
-        DimensionManagement: Codeunit DimensionManagement;
-    begin
-        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6, DimensionVisible7, DimensionVisible8);
-    end;
 }

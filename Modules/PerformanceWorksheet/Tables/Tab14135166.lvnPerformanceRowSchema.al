@@ -5,10 +5,28 @@ table 14135166 "lvnPerformanceRowSchema"
 
     fields
     {
-        field(1; Code; Code[20]) { Caption = 'Code'; DataClassification = CustomerContent; NotBlank = true; }
-        field(10; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(11; "Schema Type"; Enum lvnPerformanceRowSchemaType) { Caption = 'Schema Type'; DataClassification = CustomerContent; }
-        field(12; "Column Schema"; Code[20]) { Caption = 'Column Schema'; DataClassification = CustomerContent; TableRelation = lvnPerformanceColSchema; }
+        field(1; Code; Code[20])
+        {
+            Caption = 'Code';
+            DataClassification = CustomerContent;
+            NotBlank = true;
+        }
+        field(10; Description; Text[50])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Schema Type"; Enum lvnPerformanceRowSchemaType)
+        {
+            Caption = 'Schema Type';
+            DataClassification = CustomerContent;
+        }
+        field(12; "Column Schema"; Code[20])
+        {
+            Caption = 'Column Schema';
+            DataClassification = CustomerContent;
+            TableRelation = lvnPerformanceColSchema;
+        }
     }
 
     keys
@@ -24,5 +42,4 @@ table 14135166 "lvnPerformanceRowSchema"
         PerformanceSchemaLine.SetRange("Schema Code", Code);
         PerformanceSchemaLine.DeleteAll();
     end;
-
 }

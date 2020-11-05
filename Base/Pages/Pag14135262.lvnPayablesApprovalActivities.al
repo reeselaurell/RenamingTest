@@ -84,13 +84,13 @@ page 14135262 "lvnPayablesApprovalActivities"
         }
     }
 
-    var
-        ApprovalsIDExists: Boolean;
-
     trigger OnOpenPage()
     begin
         CheckApprovals();
     end;
+
+    var
+        ApprovalsIDExists: Boolean;
 
     local procedure InvoicesDueTodayCount(): Integer
     var

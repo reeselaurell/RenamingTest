@@ -11,17 +11,43 @@ page 14135256 "lvnSalesInvoiceImportJnl"
         {
             repeater(Group)
             {
-                field("No."; Rec."No.") { ApplicationArea = All; Style = Attention; StyleExpr = ErrorStyle; }
-                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
-                field("Document Date"; Rec."Document Date") { ApplicationArea = All; }
-                field("Payment Method Code"; Rec."Payment Method Code") { ApplicationArea = All; }
-                field("Due Date"; Rec."Due Date") { ApplicationArea = All; }
-                field("Posting Description"; Rec."Posting Description") { ApplicationArea = All; }
-                field("Bill-to Customer No."; Rec."Bill-to Customer No.") { ApplicationArea = All; }
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                    Style = Attention;
+                    StyleExpr = ErrorStyle;
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Document Date"; Rec."Document Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Payment Method Code"; Rec."Payment Method Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Due Date"; Rec."Due Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Posting Description"; Rec."Posting Description")
+                {
+                    ApplicationArea = All;
+                }
+                field("Bill-to Customer No."; Rec."Bill-to Customer No.")
+                {
+                    ApplicationArea = All;
+                }
             }
-            part(SalesInvoiceImportSubform; lvnSalesInvoiceImportSubform) { ApplicationArea = All; SubPageLink = "Document No." = field("No."); }
+            part(SalesInvoiceImportSubform; lvnSalesInvoiceImportSubform)
+            {
+                ApplicationArea = All;
+                SubPageLink = "Document No." = field("No.");
+            }
         }
-
         area(FactBoxes)
         {
             part(HeaderError; lvnSalesInvHeaderErrorDetails)
@@ -30,7 +56,6 @@ page 14135256 "lvnSalesInvoiceImportJnl"
                 SubPageView = sorting("Document No.", "Header Error", "Line No.") where("Header Error" = const(true));
                 SubPageLink = "Document No." = field("No.");
             }
-
             part(LineError; lvnSalesInvLineErrorDetails)
             {
                 ApplicationArea = All;
@@ -73,7 +98,6 @@ page 14135256 "lvnSalesInvoiceImportJnl"
                     CurrPage.Close();
                 end;
             }
-
             action(CreateAndPost)
             {
                 ApplicationArea = All;
@@ -107,14 +131,6 @@ page 14135256 "lvnSalesInvoiceImportJnl"
             }
         }
     }
-
-    var
-        ConfirmMsg: Label 'Post %1 Invoices?';
-        ContainsErrorsErr: Label 'One or more Invoices contain errors. Correct entries and Validate to proceed';
-        SalesInvLineBuffer: Record lvnSalesInvLineBuffer;
-        InvoiceErrorDetail: Record lvnInvoiceErrorDetail;
-        [InDataSet]
-        ErrorStyle: Boolean;
 
     trigger OnOpenPage()
     begin
@@ -162,6 +178,14 @@ page 14135256 "lvnSalesInvoiceImportJnl"
         Rec.Reset();
         CurrPage.Update(false);
     end;
+
+    var
+        SalesInvLineBuffer: Record lvnSalesInvLineBuffer;
+        InvoiceErrorDetail: Record lvnInvoiceErrorDetail;
+        [InDataSet]
+        ErrorStyle: Boolean;
+        ConfirmMsg: Label 'Post %1 Invoices?';
+        ContainsErrorsErr: Label 'One or more Invoices contain errors. Correct entries and Validate to proceed';
 
     procedure SetHeaderBuffer(var pSalesInvHdrBuffer: Record lvnSalesInvHdrBuffer)
     begin

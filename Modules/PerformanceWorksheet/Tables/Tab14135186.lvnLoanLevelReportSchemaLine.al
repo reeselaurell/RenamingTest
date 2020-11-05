@@ -5,11 +5,32 @@ table 14135186 "lvnLoanLevelReportSchemaLine"
 
     fields
     {
-        field(1; "Report Code"; Code[20]) { Caption = 'Report Code'; DataClassification = CustomerContent; TableRelation = lvnLoanLevelReportSchema.Code; }
-        field(2; "Column No."; Integer) { Caption = 'Column No.'; DataClassification = CustomerContent; }
-        field(10; Description; Text[100]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(11; Type; Enum lvnLoanLevelReportLineType) { Caption = 'Type'; DataClassification = CustomerContent; }
-        field(12; "G/L Filter"; Blob) { Caption = 'G/L Filter'; DataClassification = CustomerContent; }
+        field(1; "Report Code"; Code[20])
+        {
+            Caption = 'Report Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvnLoanLevelReportSchema.Code;
+        }
+        field(2; "Column No."; Integer)
+        {
+            Caption = 'Column No.';
+            DataClassification = CustomerContent;
+        }
+        field(10; Description; Text[100])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(11; Type; Enum lvnLoanLevelReportLineType)
+        {
+            Caption = 'Type';
+            DataClassification = CustomerContent;
+        }
+        field(12; "G/L Filter"; Blob)
+        {
+            Caption = 'G/L Filter';
+            DataClassification = CustomerContent;
+        }
         field(13; "Value Field No."; Integer)
         {
             Caption = 'Value Field No.';
@@ -38,8 +59,17 @@ table 14135186 "lvnLoanLevelReportSchemaLine"
                 end;
             end;
         }
-        field(14; "Formula Code"; Code[20]) { Caption = 'Formula Code'; DataClassification = CustomerContent; }
-        field(15; "Number Format Code"; Code[20]) { Caption = 'Number Format Code'; DataClassification = CustomerContent; TableRelation = lvnNumberFormat.Code; }
+        field(14; "Formula Code"; Code[20])
+        {
+            Caption = 'Formula Code';
+            DataClassification = CustomerContent;
+        }
+        field(15; "Number Format Code"; Code[20])
+        {
+            Caption = 'Number Format Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvnNumberFormat.Code;
+        }
     }
 
     keys

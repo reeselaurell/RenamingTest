@@ -11,20 +11,43 @@ page 14135123 "lvnLoanCardValuesEdit"
         {
             repeater(Group)
             {
-                field("Field No."; Rec."Field No.") { ApplicationArea = All; }
-                field(lvnFieldName; FieldDescription) { ApplicationArea = All; Editable = false; Caption = 'Field Name'; }
-                field("Field Value"; Rec."Field Value") { ApplicationArea = All; }
-                field("Boolean Value"; Rec."Boolean Value") { ApplicationArea = All; Editable = false; }
-                field("Date Value"; Rec."Date Value") { ApplicationArea = All; Editable = false; }
-                field("Decimal Value"; Rec."Decimal Value") { ApplicationArea = All; Editable = false; }
-                field("Integer Value"; Rec."Integer Value") { ApplicationArea = All; Editable = false; }
+                field("Field No."; Rec."Field No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvnFieldName; FieldDescription)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Field Name';
+                }
+                field("Field Value"; Rec."Field Value")
+                {
+                    ApplicationArea = All;
+                }
+                field("Boolean Value"; Rec."Boolean Value")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Date Value"; Rec."Date Value")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Decimal Value"; Rec."Decimal Value")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Integer Value"; Rec."Integer Value")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
             }
         }
     }
-
-    var
-        TempLoanFieldsConfiguration: Record lvnLoanFieldsConfiguration temporary;
-        FieldDescription: Text;
 
     trigger OnOpenPage()
     var
@@ -46,4 +69,8 @@ page 14135123 "lvnLoanCardValuesEdit"
             FieldDescription := TempLoanFieldsConfiguration."Field Name";
         end;
     end;
+
+    var
+        TempLoanFieldsConfiguration: Record lvnLoanFieldsConfiguration temporary;
+        FieldDescription: Text;
 }

@@ -10,13 +10,13 @@ codeunit 14135105 "lvnCreateFundedDocuments"
     procedure CreateDocuments(LoanJournalBatchCode: Code[20])
     var
         LoanJournalLine: Record lvnLoanJournalLine;
-        LoanJournalErrorMgmt: Codeunit lvnLoanJournalErrorMgmt;
-        ValidateFundedJournal: Codeunit lvnValidateFundedJournal;
-        LoanManagement: Codeunit lvnLoanManagement;
         TempLoanDocument: Record lvnLoanDocument temporary;
         TempLoanDocumentLine: Record lvnLoanDocumentLine temporary;
         LoanDocument: Record lvnLoanDocument;
         LoanDocumentLine: Record lvnLoanDocumentLine;
+        LoanJournalErrorMgmt: Codeunit lvnLoanJournalErrorMgmt;
+        ValidateFundedJournal: Codeunit lvnValidateFundedJournal;
+        LoanManagement: Codeunit lvnLoanManagement;
         DocumentsCreated: Integer;
         TotalEntries: Integer;
         ProcessResultMsg: Label '%1 of %2 documents were created';
@@ -30,9 +30,9 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         if LoanJournalLine.FindSet() then
             repeat
                 if not LoanJournalErrorMgmt.HasError(LoanJournalLine) then begin
-                    TempLoanDocument.reset;
+                    TempLoanDocument.Reset;
                     TempLoanDocument.DeleteAll();
-                    TempLoanDocumentLine.reset;
+                    TempLoanDocumentLine.Reset;
                     TempLoanDocumentLine.DeleteAll();
                     CreateSingleDocument(LoanJournalLine, TempLoanDocument, TempLoanDocumentLine, false);
                     TempLoanDocument.Reset();
@@ -60,7 +60,11 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         Message(ProcessResultMsg, TotalEntries, DocumentsCreated);
     end;
 
-    procedure CreateSingleDocument(LoanJournalLine: Record lvnLoanJournalLine; var LoanDocument: record lvnLoanDocument; var LoanDocumentLine: Record lvnLoanDocumentLine; Preview: Boolean)
+    procedure CreateSingleDocument(
+        LoanJournalLine: Record lvnLoanJournalLine;
+        var LoanDocument: Record lvnLoanDocument;
+        var LoanDocumentLine: Record lvnLoanDocumentLine;
+        Preview: Boolean)
     var
         LoanProcessingSchema: Record lvnLoanProcessingSchema;
         LoanProcessingSchemaLine: Record lvnLoanProcessingSchemaLine;
@@ -70,16 +74,16 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         LoanJournalValue: Record lvnLoanJournalValue;
         ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         NoSeriesManagement: Codeunit NoSeriesManagement;
-        TempDocumentLbl: Label 'XXXXXXXX';
         LineNo: Integer;
         DocumentAmount: Decimal;
         FieldSequenceNo: Integer;
+        TempDocumentLbl: Label 'XXXXXXXX';
     begin
         GetLoanVisionSetup();
         if LoanVisionSetup."Funded Void Reason Code" <> '' then
             if (LoanVisionSetup."Funded Void Reason Code" = LoanJournalLine."Reason Code") then begin
                 LoanVisionSetup.TestField("Void Funded No. Series");
-                LoanFundedDocument.reset;
+                LoanFundedDocument.Reset;
                 LoanFundedDocument.SetRange("Loan No.", LoanJournalLine."Loan No.");
                 LoanFundedDocument.SetRange(Void, false);
                 LoanFundedDocument.FindLast();
@@ -98,7 +102,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
                 LoanDocument.Void := true;
                 LoanDocument."Void Document No." := LoanFundedDocument."Document No.";
                 LoanDocument.Insert();
-                LoanFundedDocumentLine.reset;
+                LoanFundedDocumentLine.Reset;
                 LoanFundedDocumentLine.SetRange("Document No.", LoanFundedDocument."Document No.");
                 LoanFundedDocumentLine.FindSet();
                 repeat
@@ -166,7 +170,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         if LoanProcessingSchema."Use Global Schema Code" <> '' then begin
             LoanProcessingSchemaLine.Reset();
             LoanProcessingSchemaLine.SetRange("Balancing Entry", false);
-            LoanProcessingSchemaLine.Setfilter("Processing Source Type", '<>%1', LoanProcessingSchemaLine."Processing Source Type"::Tag);
+            LoanProcessingSchemaLine.SetFilter("Processing Source Type", '<>%1', LoanProcessingSchemaLine."Processing Source Type"::Tag);
             LoanProcessingSchemaLine.SetRange("Processing Code", LoanProcessingSchema."Use Global Schema Code");
             if LoanProcessingSchemaLine.FindSet() then
                 repeat
@@ -176,7 +180,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         LoanProcessingSchemaLine.Reset();
         LoanProcessingSchemaLine.SetRange("Processing Code", LoanProcessingSchema.Code);
         LoanProcessingSchemaLine.SetRange("Balancing Entry", false);
-        LoanProcessingSchemaLine.Setfilter("Processing Source Type", '<>%1', LoanProcessingSchemaLine."Processing Source Type"::Tag);
+        LoanProcessingSchemaLine.SetFilter("Processing Source Type", '<>%1', LoanProcessingSchemaLine."Processing Source Type"::Tag);
         if LoanProcessingSchemaLine.FindSet() then
             repeat
                 CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo, ExpressionValueBuffer);
@@ -255,7 +259,13 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         LoanDocument.Modify();
     end;
 
-    local procedure CreateDocumentLine(var LoanDocumentLine: Record lvnLoanDocumentLine; LoanDocument: record lvnLoanDocument; LoanProcessingSchemaLine: Record lvnLoanProcessingSchemaLine; LoanJournalLine: Record lvnLoanJournalLine; var LineNo: Integer; var ExpressionValueBuffer: Record lvnExpressionValueBuffer)
+    local procedure CreateDocumentLine(
+        var LoanDocumentLine: Record lvnLoanDocumentLine;
+        LoanDocument: Record lvnLoanDocument;
+        LoanProcessingSchemaLine: Record lvnLoanProcessingSchemaLine;
+        LoanJournalLine: Record lvnLoanJournalLine;
+        var LineNo: Integer;
+        var ExpressionValueBuffer: Record lvnExpressionValueBuffer)
     var
         LoanJournalValue: Record lvnLoanJournalValue;
         RecordReference: RecordRef;
@@ -341,7 +351,11 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         end;
     end;
 
-    local procedure AssignDimensions(var AssignToDimension: Code[20]; ProcessingDimensionValueCode: Code[20]; JournalDimensionValueCode: Code[20]; ProcessingDimensionRule: enum lvnProcessingDimensionRule)
+    local procedure AssignDimensions(
+        var AssignToDimension: Code[20];
+        ProcessingDimensionValueCode: Code[20];
+        JournalDimensionValueCode: Code[20];
+        ProcessingDimensionRule: Enum lvnProcessingDimensionRule)
     begin
         case ProcessingDimensionRule of
             ProcessingDimensionRule::Defined:
@@ -351,10 +365,12 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         end;
     end;
 
-    local procedure CheckCondition(ConditionCode: code[20]; var ExpressionValueBuffer: Record lvnExpressionValueBuffer): Boolean
+    local procedure CheckCondition(
+        ConditionCode: Code[20];
+        var ExpressionValueBuffer: Record lvnExpressionValueBuffer): Boolean
     var
-        ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionHeader: Record lvnExpressionHeader;
+        ConditionsMgmt: Codeunit lvnConditionsMgmt;
     begin
         if ConditionCode = '' then
             exit(true);
@@ -362,19 +378,21 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));
     end;
 
-    local procedure GetFunctionValue(FunctionCode: code[20]; var ExpressionValueBuffer: Record lvnExpressionValueBuffer): Text
+    local procedure GetFunctionValue(
+        FunctionCode: Code[20];
+        var ExpressionValueBuffer: Record lvnExpressionValueBuffer): Text
     var
-        ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionHeader: Record lvnExpressionHeader;
+        ConditionsMgmt: Codeunit lvnConditionsMgmt;
     begin
         ExpressionHeader.Get(FunctionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
         exit(ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer));
     end;
 
-    local procedure GetSwitchValue(SwitchCode: code[20]; var ExpressionValueBuffer: Record lvnExpressionValueBuffer): Code[20]
+    local procedure GetSwitchValue(SwitchCode: Code[20]; var ExpressionValueBuffer: Record lvnExpressionValueBuffer): Code[20]
     var
-        ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionHeader: Record lvnExpressionHeader;
+        ConditionsMgmt: Codeunit lvnConditionsMgmt;
         Result: Text;
     begin
         ExpressionHeader.Get(SwitchCode, ConditionsMgmt.GetConditionsMgmtConsumerId());

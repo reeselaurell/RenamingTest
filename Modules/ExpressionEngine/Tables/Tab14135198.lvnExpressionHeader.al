@@ -4,10 +4,22 @@ table 14135198 "lvnExpressionHeader"
 
     fields
     {
-        field(1; Code; Code[20]) { DataClassification = CustomerContent; }
-        field(2; "Consumer Id"; Guid) { DataClassification = CustomerContent; }
-        field(10; Type; Enum lvnExpressionType) { DataClassification = CustomerContent; }
-        field(11; Description; Text[100]) { DataClassification = CustomerContent; }
+        field(1; Code; Code[20])
+        {
+            DataClassification = CustomerContent;
+        }
+        field(2; "Consumer Id"; Guid)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(10; Type; Enum lvnExpressionType)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(11; Description; Text[100])
+        {
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

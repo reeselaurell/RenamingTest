@@ -1,6 +1,8 @@
 codeunit 14135123 "lvnGenJnlFlexImportManagement"
 {
     var
+        FlexibleImportSchema: Record lvnFlexibleImportSchema;
+        TempCSVBuffer: Record "CSV Buffer" temporary;
         FieldSeparatorLbl: Label '<TAB>';
         OpenFileLbl: Label 'Open File for Import';
         ReadingToStreamErr: Label 'Error reading file to stream';
@@ -13,10 +15,10 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         LoanNoNotFoundErr: Label 'Loan No. %1 not found';
         DimensionValueCodeMissingErr: Label 'Dimension Value Code %1 is missing';
         DimensionValueCodeBlockedErr: Label 'Dimension Value Code %1 is blocked';
-        FlexibleImportSchema: Record lvnFlexibleImportSchema;
-        TempCSVBuffer: Record "CSV Buffer" temporary;
 
-    procedure ManualFileImport(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError): Boolean
+    procedure ManualFileImport(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError): Boolean
     var
         FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine;
     begin
@@ -36,7 +38,11 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
             exit(false);
     end;
 
-    procedure CreateJournalLines(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; GenJnlTemplateCode: Code[10]; GenJnlBatchCode: Code[10]; ImportID: Guid)
+    procedure CreateJournalLines(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        GenJnlTemplateCode: Code[10];
+        GenJnlBatchCode: Code[10];
+        ImportID: Guid)
     var
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlBatch: Record "Gen. Journal Batch";
@@ -102,7 +108,9 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         until GenJnlImportBuffer.Next() = 0;
     end;
 
-    local procedure ValidateEntries(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError)
+    local procedure ValidateEntries(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError)
     var
         FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine;
         ValueBuffer: Record lvnExpressionValueBuffer temporary;
@@ -130,7 +138,7 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
                     AddErrorLine(GenJnlImportBuffer, ImportBufferError, PostingDateIsBlankErr)
                 else
                     if not UserSetupMgmt.IsPostingDateValid(GenJnlImportBuffer."Posting Date") then
-                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, strsubstno(PostingDateIsNotValidErr, GenJnlImportBuffer."Posting Date"));
+                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(PostingDateIsNotValidErr, GenJnlImportBuffer."Posting Date"));
                 if GenJnlImportBuffer."Document Date" = 0D then
                     GenJnlImportBuffer."Document Date" := GenJnlImportBuffer."Posting Date";
                 //Account Type and Account No.
@@ -180,7 +188,13 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
             until GenJnlImportBuffer.Next() = 0;
     end;
 
-    local procedure AssignDimensionValues(Source: Enum lvnFlexImportDimValidationRule; var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine; LoanExists: Boolean; var Loan: Record lvnLoan; var ImportBufferError: Record lvnImportBufferError)
+    local procedure AssignDimensionValues(
+        Source: Enum lvnFlexImportDimValidationRule;
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine;
+        LoanExists: Boolean;
+        var Loan: Record lvnLoan;
+        var ImportBufferError: Record lvnImportBufferError)
     begin
         case Source of
             Source::"From File":
@@ -278,7 +292,11 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         end;
     end;
 
-    local procedure ValidateDimension(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; DimensionNo: Integer; DimensionValueCode: Code[20]; var ImportBufferError: Record lvnImportBufferError)
+    local procedure ValidateDimension(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        DimensionNo: Integer;
+        DimensionValueCode: Code[20];
+        var ImportBufferError: Record lvnImportBufferError)
     var
         DimensionValue: Record "Dimension Value";
     begin
@@ -294,7 +312,12 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         end;
     end;
 
-    local procedure CheckConditionAssignments(var FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine; var Loan: Record lvnLoan; var ValueBuffer: Record lvnExpressionValueBuffer; AssignValueType: Enum lvnFlexImportAssignTarget; var ValueToAssign: Code[20])
+    local procedure CheckConditionAssignments(
+        var FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine;
+        var Loan: Record lvnLoan;
+        var ValueBuffer: Record lvnExpressionValueBuffer;
+        AssignValueType: Enum lvnFlexImportAssignTarget;
+        var ValueToAssign: Code[20])
     var
         FlexImportSchemaExpression: Record lvnFlexImportSchemaExpression;
         ExpressionHeader: Record lvnExpressionHeader;
@@ -325,7 +348,10 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         end;
     end;
 
-    local procedure AddErrorLine(GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError; ErrorText: Text)
+    local procedure AddErrorLine(
+        GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError;
+        ErrorText: Text)
     var
         ErrorLineNo: Integer;
     begin
@@ -360,7 +386,7 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
             Error(ReadingToStreamErr);
     end;
 
-    local procedure ProcessImportCSVBuffer(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer);
+    local procedure ProcessImportCSVBuffer(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer)
     var
         FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine;
         BaseGenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;

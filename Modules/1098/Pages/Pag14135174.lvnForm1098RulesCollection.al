@@ -10,15 +10,52 @@ page 14135174 "lvnForm1098RulesCollection"
         {
             repeater(Group)
             {
-                field("Line No."; Rec."Line No.") { ApplicationArea = All; Caption = 'Line No.'; }
-                field(Description; Rec.Description) { ApplicationArea = All; Caption = 'Description'; }
-                field(Type; Rec.Type) { ApplicationArea = All; Caption = 'Type'; }
-                field("Condition Code"; Rec."Condition Code") { ApplicationArea = All; Caption = 'Condition Code'; }
-                field("Formula Code"; Rec."Formula Code") { ApplicationArea = All; Caption = 'Formula Code'; Editable = Rec.Type = Rec.Type::"Loan Card"; }
-                field("G/L Filter"; Rec."G/L Filter".HasValue()) { ApplicationArea = All; Caption = 'G/L Entry Filters'; }
-                field("Document Paid"; Rec."Document Paid") { ApplicationArea = All; Caption = 'Document Paid'; }
-                field("Paid Before Current Year"; Rec."Paid Before Current Year") { ApplicationArea = All; Caption = 'Paid Before Current Year'; }
-                field("Reverse Amount"; Rec."Reverse Amount") { ApplicationArea = All; Caption = 'Reverse Amount'; }
+                field("Line No."; Rec."Line No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Line No.';
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Description';
+                }
+                field(Type; Rec.Type)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Type';
+                }
+                field("Condition Code"; Rec."Condition Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Condition Code';
+                }
+                field("Formula Code"; Rec."Formula Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Formula Code';
+                    Editable = Rec.Type = Rec.Type::"Loan Card";
+                }
+                field("G/L Filter"; Rec."G/L Filter".HasValue())
+                {
+                    ApplicationArea = All;
+                    Caption = 'G/L Entry Filters';
+                }
+                field("Document Paid"; Rec."Document Paid")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Document Paid';
+                }
+                field("Paid Before Current Year"; Rec."Paid Before Current Year")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Paid Before Current Year';
+                }
+                field("Reverse Amount"; Rec."Reverse Amount")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Reverse Amount';
+                }
             }
         }
     }
@@ -36,7 +73,7 @@ page 14135174 "lvnForm1098RulesCollection"
                 PromotedIsBig = true;
                 PromotedCategory = Process;
 
-                trigger OnAction();
+                trigger OnAction()
                 begin
                     MakeFilter();
                     CurrPage.Update(true);

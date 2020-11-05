@@ -13,21 +13,48 @@ report 14135158 "lvnAverageDailyTrialBalance"
             DataItemTableView = sorting("No.");
             RequestFilterFields = "Date Filter", "Global Dimension 1 Filter", "Global Dimension 2 Filter", lvnShortcutDimension3Filter, lvnShortcutDimension4Filter, "Income/Balance";
 
-            column(GLAccountNo; "No.") { }
-            column(Name; Name) { }
-            column(NetChange; "Net Change") { }
-            column(BeginningBalance; BeginningBalance) { }
-            column(EndingBalance; EndingBalance) { }
-            column(DebitAmount; "Debit Amount") { }
-            column(CreditAmount; "Credit Amount") { }
-            column(AverageDailyBalance; AvgDailyBalance) { }
-            column(CompanyName; CompanyInformation.Name) { }
-            column(PostingAccount; ShowBold) { }
-            column(FiltersData; GetFilters) { }
-            column(FromDate; Format(DateFrom, 0, '<Month>/<Day,2>/<Year4>')) { }
-            column(ToDate; Format(DateTo, 0, '<Month>/<Day,2>/<Year4>')) { }
-            column(HideValues; HideValues) { }
-
+            column(GLAccountNo; "No.")
+            {
+            }
+            column(Name; Name)
+            {
+            }
+            column(NetChange; "Net Change")
+            {
+            }
+            column(BeginningBalance; BeginningBalance)
+            {
+            }
+            column(EndingBalance; EndingBalance)
+            {
+            }
+            column(DebitAmount; "Debit Amount")
+            {
+            }
+            column(CreditAmount; "Credit Amount")
+            {
+            }
+            column(AverageDailyBalance; AvgDailyBalance)
+            {
+            }
+            column(CompanyName; CompanyInformation.Name)
+            {
+            }
+            column(PostingAccount; ShowBold)
+            {
+            }
+            column(FiltersData; GetFilters)
+            {
+            }
+            column(FromDate; Format(DateFrom, 0, '<Month>/<Day,2>/<Year4>'))
+            {
+            }
+            column(ToDate; Format(DateTo, 0, '<Month>/<Day,2>/<Year4>'))
+            {
+            }
+            column(HideValues; HideValues)
+            {
+            }
             trigger OnAfterGetRecord()
             var
                 GLAccount: Record "G/L Account";
@@ -98,6 +125,14 @@ report 14135158 "lvnAverageDailyTrialBalance"
         }
     }
 
+    trigger OnPreReport()
+    begin
+        CompanyInformation.Get();
+        DateFrom := "G/L Account".GetRangeMin("Date Filter");
+        DateTo := "G/L Account".GetRangeMax("Date Filter");
+        TotalDays := DateTo - DateFrom + 1;
+    end;
+
     var
         CompanyInformation: Record "Company Information";
         BeginningBalance: Decimal;
@@ -109,12 +144,4 @@ report 14135158 "lvnAverageDailyTrialBalance"
         DateTo: Date;
         TotalDays: Integer;
         PrintType: Enum lvnDailyTrialBalancePrintType;
-
-    trigger OnPreReport()
-    begin
-        CompanyInformation.Get();
-        DateFrom := "G/L Account".GetRangeMin("Date Filter");
-        DateTo := "G/L Account".GetRangeMax("Date Filter");
-        TotalDays := DateTo - DateFrom + 1;
-    end;
 }

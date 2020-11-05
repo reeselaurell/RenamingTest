@@ -6,7 +6,13 @@ table 14135103 "lvnLoanFieldsConfiguration"
 
     fields
     {
-        field(1; "Field No."; Integer) { Caption = 'Field No.'; DataClassification = CustomerContent; NotBlank = true; MinValue = 1; }
+        field(1; "Field No."; Integer)
+        {
+            Caption = 'Field No.';
+            DataClassification = CustomerContent;
+            NotBlank = true;
+            MinValue = 1;
+        }
         field(10; "Field Name"; Text[100])
         {
             DataClassification = CustomerContent;
@@ -14,7 +20,7 @@ table 14135103 "lvnLoanFieldsConfiguration"
 
             trigger OnValidate()
             var
-                DataTypeManagement: codeunit "Data Type Management";
+                DataTypeManagement: Codeunit "Data Type Management";
                 TableReference: RecordRef;
                 FieldReference: FieldRef;
             begin
@@ -26,7 +32,11 @@ table 14135103 "lvnLoanFieldsConfiguration"
                 TableReference.Close();
             end;
         }
-        field(11; "Value Type"; Enum lvnLoanFieldValueType) { Caption = 'Value Type'; DataClassification = CustomerContent; }
+        field(11; "Value Type"; Enum lvnLoanFieldValueType)
+        {
+            Caption = 'Value Type';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

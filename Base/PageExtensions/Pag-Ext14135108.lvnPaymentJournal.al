@@ -2,26 +2,59 @@ pageextension 14135108 "lvnPaymentJournal" extends "Payment Journal"
 {
     layout
     {
-        modify(ShortcutDimCode3) { Visible = true; }
-        modify(ShortcutDimCode4) { Visible = true; }
-        modify(ShortcutDimCode5) { Visible = true; }
-        modify(ShortcutDimCode6) { Visible = true; }
-        modify(ShortcutDimCode7) { Visible = true; }
-        modify(ShortcutDimCode8) { Visible = true; }
-        modify("Reason Code") { Visible = true; }
-        modify("Currency Code") { Visible = false; }
-        modify("Debit Amount") { Visible = true; }
-        modify("Credit Amount") { Visible = true; }
-
-
+        modify(ShortcutDimCode3)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode4)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode5)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode6)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode7)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode8)
+        {
+            Visible = true;
+        }
+        modify("Reason Code")
+        {
+            Visible = true;
+        }
+        modify("Currency Code")
+        {
+            Visible = false;
+        }
+        modify("Debit Amount")
+        {
+            Visible = true;
+        }
+        modify("Credit Amount")
+        {
+            Visible = true;
+        }
         addlast(Control1)
         {
-            field(lvnLoanNo; Rec.lvnLoanNo) { ApplicationArea = All; }
+            field(lvnLoanNo; Rec.lvnLoanNo)
+            {
+                ApplicationArea = All;
+            }
         }
-
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 
@@ -67,9 +100,9 @@ pageextension 14135108 "lvnPaymentJournal" extends "Payment Journal"
 
                 trigger OnAction()
                 var
-                    ImportGenJnlFile: Codeunit lvnGenJnlFileImportManagement;
                     GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
                     ImportBufferError: Record lvnImportBufferError temporary;
+                    ImportGenJnlFile: Codeunit lvnGenJnlFileImportManagement;
                     JournalDataImport: Page lvnJournalDataImport;
                 begin
                     Clear(ImportGenJnlFile);
@@ -86,7 +119,6 @@ pageextension 14135108 "lvnPaymentJournal" extends "Payment Journal"
                 end;
             }
         }
-
         addafter("Void &All Checks")
         {
             action(OneOffChecks)
@@ -100,7 +132,7 @@ pageextension 14135108 "lvnPaymentJournal" extends "Payment Journal"
 
                 trigger OnAction()
                 var
-                    OneOffCheckImport: XmlPort lvnOneOffChecksImport;
+                    OneOffCheckImport: XMLport lvnOneOffChecksImport;
                 begin
                     Clear(OneOffCheckImport);
                     OneOffCheckImport.SetParams(Rec."Journal Template Name", Rec."Journal Batch Name");

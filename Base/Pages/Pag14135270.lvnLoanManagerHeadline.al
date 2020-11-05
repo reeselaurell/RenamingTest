@@ -12,8 +12,10 @@ page 14135270 "lvnLoanManagerHeadline"
             {
                 Editable = false;
 
-                field(WelcomeMsg; LoanVisionLbl) { ApplicationArea = All; }
-
+                field(WelcomeMsg; LoanVisionLbl)
+                {
+                    ApplicationArea = All;
+                }
                 field(TtlFundedLastBusDay; FundedText)
                 {
                     Caption = 'Total Funded Last Business Day';
@@ -29,7 +31,6 @@ page 14135270 "lvnLoanManagerHeadline"
                         Page.Run(Page::lvnPostedFundedDocuments, FundedDoc);
                     end;
                 }
-
                 field(TtlSoldLastBusDay; SoldText)
                 {
                     Caption = 'Total Sold Last Business Day';
@@ -49,20 +50,20 @@ page 14135270 "lvnLoanManagerHeadline"
         }
     }
 
-    var
-        LoanVisionLbl: Label '<qualifier>Welcome</qualifier><payload>Welcome to Loan Vision</payload>';
-        CompanyInfo: Record "Company Information";
-        FundedText: Text;
-        FundedDocFilter: Text;
-        SoldText: Text;
-        SoldDocFilter: Text;
-
     trigger OnOpenPage()
     begin
         CompanyInfo.CalcFields(Picture);
         FundedText := StrSubstNo('The Total Funded Amount for the Previous Business Day was %1', CalcTotalFundedAmountText());
         SoldText := StrSubstNo('The Total Sold Amount for the Previous Business Day was %1', CalcTotalSoldAmountText());
     end;
+
+    var
+        CompanyInfo: Record "Company Information";
+        FundedText: Text;
+        FundedDocFilter: Text;
+        SoldText: Text;
+        SoldDocFilter: Text;
+        LoanVisionLbl: Label '<qualifier>Welcome</qualifier><payload>Welcome to Loan Vision</payload>';
 
     local procedure CalcTotalFundedAmountText(): Text
     var

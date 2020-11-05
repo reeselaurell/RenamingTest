@@ -12,8 +12,14 @@ page 14135204 "lvnPerformanceColSchemaList"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; ; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

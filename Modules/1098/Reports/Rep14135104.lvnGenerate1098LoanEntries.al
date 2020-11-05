@@ -35,12 +35,6 @@ report 14135104 "lvnGenerate1098LoanEntries"
         }
     }
 
-    var
-        Form1098Entry: Record lvnForm1098Entry;
-        Loan: Record lvnLoan;
-        Form1098EligibleLoans: Query lvnForm1098EligibleLoans;
-        RemoveExistingData: Boolean;
-
     trigger OnPreReport()
     begin
         if RemoveExistingData then begin
@@ -63,4 +57,10 @@ report 14135104 "lvnGenerate1098LoanEntries"
                     end;
         Form1098EligibleLoans.Close();
     end;
+
+    var
+        Form1098Entry: Record lvnForm1098Entry;
+        Loan: Record lvnLoan;
+        Form1098EligibleLoans: Query lvnForm1098EligibleLoans;
+        RemoveExistingData: Boolean;
 }

@@ -8,41 +8,108 @@ report 14135156 "lvnForm1099Printout"
     {
         dataitem(VendorLine; lvn1099VendorLine)
         {
-            column(CompanyAddress1; CompanyAddress[1]) { }
-            column(CompanyAddress2; CompanyAddress[2]) { }
-            column(CompanyAddress3; CompanyAddress[3]) { }
-            column(CompanyAddress4; CompanyAddress[4]) { }
-            column(CompanyAddress5; CompanyAddress[5]) { }
-            column(CompanyFedID; CompanyInformation."Federal ID No.") { }
-            column(MISC1Amt; "MISC-01") { }
-            column(MISC2Amt; "MISC-02") { }
-            column(MISC3Amt; "MISC-03") { }
-            column(MISC4Amt; "MISC-04") { }
-            column(MISC5Amt; "MISC-05") { }
-            column(MISC6Amt; "MISC-06") { }
-            column(MISC7AmtMISC15BAmt; "MISC-07" + "MISC-15-B") { }
-            column(MISC8Amt; "MISC-08") { }
-            column(MISC9Amt; "MISC-09") { }
-            column(MISC10Amt; "MISC-10") { }
-            column(MISC13Amt; "MISC-13") { }
-            column(MISC14Amt; "MISC-14") { }
-            column(MISC15AAmt; "MISC-15-A") { }
-            column(MISC15BAmt; "MISC-15-B") { }
-            column(MISC16Amt; "MISC-16") { }
-            column(VendorName; "Legal Name") { }
-            column(VendorAddress; "Legal Address") { }
-            column(VendorCity; "Legal Address City") { }
-            column(VendorState; "Legal Address State") { }
-            column(VendorZip; "Legal Address ZIP Code") { }
-            column(VendorFedID; "Federal ID No.") { }
-            column(VendorNo; "No.") { }
-            column(AddressLine2; AddressLine2) { }
-            column(FATCA; FATCA) { }
-            column(Box9; Box9) { }
-            column(VoidBox; VoidBox) { }
-            column(PageGroupNo; PageGroupNo) { }
-            column(FormCounter; FormCounter) { }
-
+            column(CompanyAddress1; CompanyAddress[1])
+            {
+            }
+            column(CompanyAddress2; CompanyAddress[2])
+            {
+            }
+            column(CompanyAddress3; CompanyAddress[3])
+            {
+            }
+            column(CompanyAddress4; CompanyAddress[4])
+            {
+            }
+            column(CompanyAddress5; CompanyAddress[5])
+            {
+            }
+            column(CompanyFedID; CompanyInformation."Federal ID No.")
+            {
+            }
+            column(MISC1Amt; "MISC-01")
+            {
+            }
+            column(MISC2Amt; "MISC-02")
+            {
+            }
+            column(MISC3Amt; "MISC-03")
+            {
+            }
+            column(MISC4Amt; "MISC-04")
+            {
+            }
+            column(MISC5Amt; "MISC-05")
+            {
+            }
+            column(MISC6Amt; "MISC-06")
+            {
+            }
+            column(MISC7AmtMISC15BAmt; "MISC-07" + "MISC-15-B")
+            {
+            }
+            column(MISC8Amt; "MISC-08")
+            {
+            }
+            column(MISC9Amt; "MISC-09")
+            {
+            }
+            column(MISC10Amt; "MISC-10")
+            {
+            }
+            column(MISC13Amt; "MISC-13")
+            {
+            }
+            column(MISC14Amt; "MISC-14")
+            {
+            }
+            column(MISC15AAmt; "MISC-15-A")
+            {
+            }
+            column(MISC15BAmt; "MISC-15-B")
+            {
+            }
+            column(MISC16Amt; "MISC-16")
+            {
+            }
+            column(VendorName; "Legal Name")
+            {
+            }
+            column(VendorAddress; "Legal Address")
+            {
+            }
+            column(VendorCity; "Legal Address City")
+            {
+            }
+            column(VendorState; "Legal Address State")
+            {
+            }
+            column(VendorZip; "Legal Address ZIP Code")
+            {
+            }
+            column(VendorFedID; "Federal ID No.")
+            {
+            }
+            column(VendorNo; "No.")
+            {
+            }
+            column(AddressLine2; AddressLine2)
+            {
+            }
+            column(FATCA; FATCA)
+            {
+            }
+            column(Box9; Box9)
+            {
+            }
+            column(VoidBox; VoidBox)
+            {
+            }
+            column(PageGroupNo; PageGroupNo)
+            {
+            }
+            column(FormCounter; FormCounter)
+            {
+            }
             dataitem(Counter; Integer)
             {
                 DataItemTableView = sorting(Number);
@@ -53,7 +120,6 @@ report 14135156 "lvnForm1099Printout"
                     FormCounter += 1;
                 end;
             }
-
             trigger OnPreDataItem()
             begin
                 FirstVendor := true;
@@ -125,6 +191,12 @@ report 14135156 "lvnForm1099Printout"
         end;
     }
 
+    trigger OnPreReport()
+    begin
+        CompanyInformation.Get();
+        FormatAddress.Company(CompanyAddress, CompanyInformation);
+    end;
+
     var
         CompanyInformation: Record "Company Information";
         FormatAddress: Codeunit "Format Address";
@@ -139,12 +211,6 @@ report 14135156 "lvnForm1099Printout"
         FormCounter: Integer;
         TestPrint: Boolean;
         FirstVendor: Boolean;
-
-    trigger OnPreReport()
-    begin
-        CompanyInformation.Get();
-        FormatAddress.Company(CompanyAddress, CompanyInformation);
-    end;
 
     procedure SetYear(pYear: Integer)
     begin

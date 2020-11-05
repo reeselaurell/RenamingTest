@@ -13,7 +13,12 @@ codeunit 14135126 "lvnPerformanceDataExport"
         UnsupportedFormulaTypeErr: Label 'Formula type is not supported';
         IntranslatableRowFormulaErr: Label 'Row formula cannot be translated';
 
-    procedure ExportToExcel(var ExcelExport: Codeunit lvnExcelExport; var RowSchema: Record lvnPerformanceRowSchema; var Buffer: Record lvnPerformanceValueBuffer; var HeaderData: Record lvnSystemCalculationFilter; var BandInfo: Record lvnPerformanceBandLineInfo)
+    procedure ExportToExcel(
+        var ExcelExport: Codeunit lvnExcelExport;
+        var RowSchema: Record lvnPerformanceRowSchema;
+        var Buffer: Record lvnPerformanceValueBuffer;
+        var HeaderData: Record lvnSystemCalculationFilter;
+        var BandInfo: Record lvnPerformanceBandLineInfo)
     var
         ColLine: Record lvnPerformanceColSchemaLine;
         RowLine: Record lvnPerformanceRowSchemaLine;
@@ -111,7 +116,7 @@ codeunit 14135126 "lvnPerformanceDataExport"
         BandInfo.FindSet();
         //BandInfo also contains band index, however when we're writing data rows it will loop through band info, so need additional band index lookup
         repeat
-            BandIndexLookup.add(BandInfo."Band No.", BandInfo."Band Index");
+            BandIndexLookup.Add(BandInfo."Band No.", BandInfo."Band Index");
             if ColumnCount > 1 then
                 ExcelExport.BeginRange();
             ExcelExport.WriteString(BandInfo."Header Description");
@@ -221,7 +226,33 @@ codeunit 14135126 "lvnPerformanceDataExport"
         ExcelExport.AutoFit(false, true);
     end;
 
-    local procedure TranslateRowFormula(Formula: Text; RowIdx: Integer; ColIdx: Integer; DataRowOffset: Integer; DataColOffset: Integer; BandSize: Integer; var BandIndexLookup: Dictionary of [Integer, Integer]): Text
+    procedure GetExportFileName(Mode: Enum lvnGridExportMode; SchemaType: Enum lvnPerformanceRowSchemaType) OutputFileName: Text
+    begin
+        case SchemaType of
+            SchemaType::"Dimension Dynamic",
+            SchemaType::"Dimension Predefined":
+                OutputFileName := DimensionPerfExportFileNameTxt
+            else
+                OutputFileName := PeriodPerfExportFileNameTxt;
+        end;
+        case Mode of
+            Mode::Pdf:
+                OutputFileName += '.pdf';
+            Mode::Html:
+                OutputFileName += '.html'
+            else
+                OutputFileName += '.xlsx';
+        end;
+    end;
+
+    local procedure TranslateRowFormula(
+        Formula: Text;
+        RowIdx: Integer;
+        ColIdx: Integer;
+        DataRowOffset: Integer;
+        DataColOffset: Integer;
+        BandSize: Integer;
+        var BandIndexLookup: Dictionary of [Integer, Integer]): Text
     var
         FieldStart: Integer;
         FieldEnd: Integer;
@@ -241,7 +272,14 @@ codeunit 14135126 "lvnPerformanceDataExport"
         exit(Formula);
     end;
 
-    local procedure TranslateColFormula(Formula: Text; DataRowOffset: Integer; DataColOffset: Integer; BandIdx: Integer; BandSize: Integer; var Buffer: Record lvnPerformanceValueBuffer; var RowIndexLookup: Dictionary of [Integer, Integer]): Text
+    local procedure TranslateColFormula(
+        Formula: Text;
+        DataRowOffset: Integer;
+        DataColOffset: Integer;
+        BandIdx: Integer;
+        BandSize: Integer;
+        var Buffer: Record lvnPerformanceValueBuffer;
+        var RowIndexLookup: Dictionary of [Integer, Integer]): Text
     var
         FieldStart: Integer;
         FieldEnd: Integer;
@@ -257,7 +295,15 @@ codeunit 14135126 "lvnPerformanceDataExport"
         exit(Formula);
     end;
 
-    local procedure TranslateColSwitch(SwitchOn: Text; var ExpressionHeader: Record lvnExpressionHeader; DataRowOffset: Integer; DataColOffset: Integer; BandIdx: Integer; BandSize: Integer; var Buffer: Record lvnPerformanceValueBuffer; var RowIndexLookup: Dictionary of [Integer, Integer]) Result: Text;
+    local procedure TranslateColSwitch(
+        SwitchOn: Text;
+        var ExpressionHeader: Record lvnExpressionHeader;
+        DataRowOffset: Integer;
+        DataColOffset: Integer;
+        BandIdx: Integer;
+        BandSize: Integer;
+        var Buffer: Record lvnPerformanceValueBuffer;
+        var RowIndexLookup: Dictionary of [Integer, Integer]) Result: Text;
     var
         CaseLine: Record lvnExpressionLine;
         ExcelExport: Codeunit lvnExcelExport;
@@ -299,13 +345,20 @@ codeunit 14135126 "lvnPerformanceDataExport"
         Result := DelChr(Result, '>', ',');
     end;
 
-    local procedure TranslateColPredicate(var ExpressionHeader: Record lvnExpressionHeader; DataRowOffset: Integer; DataColOffset: Integer; BandIdx: Integer; BandSize: Integer; var Buffer: Record lvnPerformanceValueBuffer; var RowIndexLookup: Dictionary of [Integer, Integer]): Text
+    local procedure TranslateColPredicate(
+        var ExpressionHeader: Record lvnExpressionHeader;
+        DataRowOffset: Integer;
+        DataColOffset: Integer;
+        BandIdx: Integer;
+        BandSize: Integer;
+        var Buffer: Record lvnPerformanceValueBuffer;
+        var RowIndexLookup: Dictionary of [Integer, Integer]): Text
     var
         ExpressionLine: Record lvnExpressionLine;
+        ExcelExport: Codeunit lvnExcelExport;
         LeftHand: Text;
         RightHand: Text;
         Comparison: Enum lvnComparison;
-        ExcelExport: Codeunit lvnExcelExport;
     begin
         ExpressionLine.Reset();
         ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
@@ -337,7 +390,14 @@ codeunit 14135126 "lvnPerformanceDataExport"
         until ExpressionLine.Next() = 0;
     end;
 
-    local procedure TranslateColFormulaField(Field: Text; DataRowOffset: Integer; DataColOffset: Integer; BandIdx: Integer; BandSize: Integer; var Buffer: Record lvnPerformanceValueBuffer; var RowIndexLookup: Dictionary of [Integer, Integer]): Text
+    local procedure TranslateColFormulaField(
+        Field: Text;
+        DataRowOffset: Integer;
+        DataColOffset: Integer;
+        BandIdx: Integer;
+        BandSize: Integer;
+        var Buffer: Record lvnPerformanceValueBuffer;
+        var RowIndexLookup: Dictionary of [Integer, Integer]): Text
     var
         ExcelExport: Codeunit lvnExcelExport;
         RowIdx: Integer;
@@ -352,7 +412,14 @@ codeunit 14135126 "lvnPerformanceDataExport"
         exit(ExcelExport.GetExcelColumnName(DataColOffset + BandIdx * BandSize + Buffer."Column No." - 1) + Format(RowIdx + DataRowOffset + 1));
     end;
 
-    local procedure TranslateRowFormulaField(Field: Text; RowIdx: Integer; ColIdx: Integer; DataRowOffset: Integer; DataColOffset: Integer; BandSize: Integer; var BandIndexLookup: Dictionary of [Integer, Integer]): Text
+    local procedure TranslateRowFormulaField(
+        Field: Text;
+        RowIdx: Integer;
+        ColIdx: Integer;
+        DataRowOffset: Integer;
+        DataColOffset: Integer;
+        BandSize: Integer;
+        var BandIndexLookup: Dictionary of [Integer, Integer]): Text
     var
         ExcelExport: Codeunit lvnExcelExport;
         FieldIdx: Integer;
@@ -364,24 +431,5 @@ codeunit 14135126 "lvnPerformanceDataExport"
         if not BandIndexLookup.Get(FieldIdx, FieldIdx) then
             Error(IntranslatableRowFormulaErr);
         exit(ExcelExport.GetExcelColumnName(DataColOffset + FieldIdx * BandSize + ColIdx) + Format(RowIdx + DataRowOffset + 1));
-    end;
-
-    procedure GetExportFileName(Mode: Enum lvnGridExportMode; SchemaType: Enum lvnPerformanceRowSchemaType) OutputFileName: Text
-    begin
-        case SchemaType of
-            SchemaType::"Dimension Dynamic",
-            SchemaType::"Dimension Predefined":
-                OutputFileName := DimensionPerfExportFileNameTxt
-            else
-                OutputFileName := PeriodPerfExportFileNameTxt;
-        end;
-        case Mode of
-            Mode::Pdf:
-                OutputFileName += '.pdf';
-            Mode::Html:
-                OutputFileName += '.html'
-            else
-                OutputFileName += '.xlsx';
-        end;
     end;
 }

@@ -48,16 +48,6 @@ report 14135109 "lvnDimensionChangeSetImport"
         }
     }
 
-    var
-        LargeCountMsg: Label 'Your selection contains very large number of entries (%1)\This may lock database for all users for a long time\Are you sure you want to proceed?';
-        ImportingMsg: Label 'Importing entry #1######## of #2########';
-        DimensionChangeJnlEntry: Record lvnDimensionChangeJnlEntry;
-        Overwrite: Boolean;
-        ChangeSetID: Guid;
-        Progress: Dialog;
-        Total: Integer;
-        Current: Integer;
-
     trigger OnPreReport()
     begin
         Total := GLEntry.Count();
@@ -70,6 +60,16 @@ report 14135109 "lvnDimensionChangeSetImport"
             DimensionChangeJnlEntry.DeleteAll();
         end;
     end;
+
+    var
+        DimensionChangeJnlEntry: Record lvnDimensionChangeJnlEntry;
+        Overwrite: Boolean;
+        ChangeSetID: Guid;
+        Progress: Dialog;
+        Total: Integer;
+        Current: Integer;
+        LargeCountMsg: Label 'Your selection contains very large number of entries (%1)\This may lock database for all users for a long time\Are you sure you want to proceed?';
+        ImportingMsg: Label 'Importing entry #1######## of #2########';
 
     procedure SetParams(pChangeSetID: Guid)
     begin

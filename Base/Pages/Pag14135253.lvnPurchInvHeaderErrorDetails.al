@@ -13,7 +13,10 @@ page 14135253 "lvnPurchInvHeaderErrorDetails"
         {
             repeater(Group)
             {
-                field("Error Text"; Rec."Error Text") { ApplicationArea = All; }
+                field("Error Text"; Rec."Error Text")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

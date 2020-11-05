@@ -10,9 +10,18 @@ page 14135239 "lvnExpressionList"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Type; Rec.Type) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Type; Rec.Type)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

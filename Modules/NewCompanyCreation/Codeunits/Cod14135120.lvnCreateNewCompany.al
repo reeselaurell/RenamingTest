@@ -11,13 +11,6 @@ codeunit 14135120 "lvnCreateNewCompany"
 
     procedure CopyToComp()
     var
-        CopyCompanyMsg: Label 'Copy this company to #3#######################\';
-        WorkingOnTableMsg: Label 'Working on table     #1################# #130#of#140#\';
-        NoRecords: Label 'No. of records       #2###';
-        CompanyCopyItselfErr: Label 'Company can not be copied into it self';
-        NoTablesSelectedErr: Label 'No Tables have been selected in "Create New Company Setup"';
-        TablesCopiedMsg: Label '%1 tables were copied';
-        RecordsExistMsg: Label 'Records already exist in table: "%1" for Company: "%2". Do you want to proceed anyway?';
         Company: Record Company;
         CompanyDataTransfer: Record lvnCompanyDataTransfer;
         ChooseCompany: Page lvnChooseCompany;
@@ -32,6 +25,13 @@ codeunit 14135120 "lvnCreateNewCompany"
         Counter: Integer;
         NewCompanyName: Text[50];
         ShowWarnings: Boolean;
+        CopyCompanyMsg: Label 'Copy this company to #3#######################\';
+        WorkingOnTableMsg: Label 'Working on table     #1################# #130#of#140#\';
+        NoRecords: Label 'No. of records       #2###';
+        CompanyCopyItselfErr: Label 'Company can not be copied into it self';
+        NoTablesSelectedErr: Label 'No Tables have been selected in "Create New Company Setup"';
+        TablesCopiedMsg: Label '%1 tables were copied';
+        RecordsExistMsg: Label 'Records already exist in table: "%1" for Company: "%2". Do you want to proceed anyway?';
     begin
         CompanyDataTransfer.SetRange(Active, true);
         if CompanyDataTransfer.IsEmpty() then

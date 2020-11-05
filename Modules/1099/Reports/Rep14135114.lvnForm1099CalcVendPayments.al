@@ -138,24 +138,24 @@ report 14135114 "lvnForm1099CalcVendPayments"
         end;
     }
 
+    trigger OnPreReport()
+    begin
+        Form1099VendorLine.ModifyAll(Year, Year);
+        FromDate := DMY2Date(1, 1, Year);
+        ToDate := DMY2Date(31, 12, Year);
+    end;
+
     var
-        YearErr: Label 'You must enter a valid year, e.g. 2019.';
         FedID: Dictionary of [Text[30], Text];
         FromDate: Date;
         ToDate: Date;
         Year: Integer;
         PaymentTotal: Decimal;
         DefaultTotal: Decimal;
+        YearErr: Label 'You must enter a valid year, e.g. 2019.';
 
     procedure SetParams(pFedID: Dictionary of [Text[30], Text])
     begin
         FedID := pFedID;
-    end;
-
-    trigger OnPreReport()
-    begin
-        Form1099VendorLine.ModifyAll(Year, Year);
-        FromDate := DMY2Date(1, 1, Year);
-        ToDate := DMY2Date(31, 12, Year);
     end;
 }

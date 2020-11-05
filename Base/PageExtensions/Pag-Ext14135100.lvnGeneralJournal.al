@@ -2,31 +2,83 @@ pageextension 14135100 "lvnGeneralJournal" extends "General Journal"
 {
     layout
     {
-        modify(ShortcutDimCode3) { Visible = true; }
-        modify(ShortcutDimCode4) { Visible = true; }
-        modify(ShortcutDimCode5) { Visible = true; }
-        modify(ShortcutDimCode6) { Visible = true; }
-        modify(ShortcutDimCode7) { Visible = true; }
-        modify(ShortcutDimCode8) { Visible = true; }
-        modify("Currency Code") { Visible = false; }
-        modify("Gen. Bus. Posting Group") { Visible = false; }
-        modify("Gen. Posting Type") { Visible = false; }
-        modify("Gen. Prod. Posting Group") { Visible = false; }
-        modify("Bal. Gen. Bus. Posting Group") { Visible = false; }
-        modify("Bal. Gen. Posting Type") { Visible = false; }
-        modify("Bal. Gen. Prod. Posting Group") { Visible = false; }
-        modify("Reason Code") { Visible = true; }
-        modify("Credit Amount") { Visible = true; }
-        modify("Debit Amount") { Visible = true; }
-
+        modify(ShortcutDimCode3)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode4)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode5)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode6)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode7)
+        {
+            Visible = true;
+        }
+        modify(ShortcutDimCode8)
+        {
+            Visible = true;
+        }
+        modify("Currency Code")
+        {
+            Visible = false;
+        }
+        modify("Gen. Bus. Posting Group")
+        {
+            Visible = false;
+        }
+        modify("Gen. Posting Type")
+        {
+            Visible = false;
+        }
+        modify("Gen. Prod. Posting Group")
+        {
+            Visible = false;
+        }
+        modify("Bal. Gen. Bus. Posting Group")
+        {
+            Visible = false;
+        }
+        modify("Bal. Gen. Posting Type")
+        {
+            Visible = false;
+        }
+        modify("Bal. Gen. Prod. Posting Group")
+        {
+            Visible = false;
+        }
+        modify("Reason Code")
+        {
+            Visible = true;
+        }
+        modify("Credit Amount")
+        {
+            Visible = true;
+        }
+        modify("Debit Amount")
+        {
+            Visible = true;
+        }
         addlast(Control1)
         {
-            field(lvnLoanNo; Rec.lvnLoanNo) { ApplicationArea = All; }
+            field(lvnLoanNo; Rec.lvnLoanNo)
+            {
+                ApplicationArea = All;
+            }
         }
-
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 
@@ -45,9 +97,9 @@ pageextension 14135100 "lvnGeneralJournal" extends "General Journal"
 
                 trigger OnAction()
                 var
-                    ImportGenJnlFile: Codeunit lvnGenJnlFileImportManagement;
                     GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
                     ImportBufferError: Record lvnImportBufferError temporary;
+                    ImportGenJnlFile: Codeunit lvnGenJnlFileImportManagement;
                     JournalDataImport: Page lvnJournalDataImport;
                 begin
                     Clear(ImportGenJnlFile);

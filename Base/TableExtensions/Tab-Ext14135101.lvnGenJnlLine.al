@@ -2,12 +2,31 @@ tableextension 14135101 "lvnGenJnlLine" extends "Gen. Journal Line"
 {
     fields
     {
-        field(14135100; lvnLoanNo; Code[20]) { Caption = 'Loan No.'; DataClassification = CustomerContent; TableRelation = lvnLoan; }
-        field(14135101; lvnSourceName; Text[50]) { Caption = 'Source Name'; DataClassification = CustomerContent; }
-        field(14135108; lvnServicingType; enum lvnServicingType) { Caption = 'Servicing Type'; DataClassification = CustomerContent; }
-        field(14135500; lvnImportID; Guid) { Caption = 'Import ID'; DataClassification = CustomerContent; }
-        field(14135999; lvnDocumentGuid; Guid) { DataClassification = CustomerContent; }
-
+        field(14135100; lvnLoanNo; Code[20])
+        {
+            Caption = 'Loan No.';
+            DataClassification = CustomerContent;
+            TableRelation = lvnLoan;
+        }
+        field(14135101; lvnSourceName; Text[50])
+        {
+            Caption = 'Source Name';
+            DataClassification = CustomerContent;
+        }
+        field(14135108; lvnServicingType; enum lvnServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
+        field(14135500; lvnImportID; Guid)
+        {
+            Caption = 'Import ID';
+            DataClassification = CustomerContent;
+        }
+        field(14135999; lvnDocumentGuid; Guid)
+        {
+            DataClassification = CustomerContent;
+        }
         modify("Account No.")
         {
             trigger OnAfterValidate()

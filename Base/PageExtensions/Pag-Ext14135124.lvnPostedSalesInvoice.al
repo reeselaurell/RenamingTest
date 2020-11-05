@@ -4,7 +4,10 @@ pageextension 14135124 "lvnPostedSalesInvoice" extends "Posted Sales Invoice"
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

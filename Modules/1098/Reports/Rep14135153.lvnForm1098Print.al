@@ -20,43 +20,114 @@ report 14135153 "lvnForm1098Print"
         {
             DataItemTableView = sorting(Number);
 
-            column(LenderNameBox; LenderNameBox) { }
-            column(LenderEIN; LenderEIN) { }
-            column(LoanNo1; Form1098Entry1."Loan No.") { }
-            column(BorrowerSSN1; BorrowerSSN1) { }
-            column(BorrowerAddr11; BorrowerAddr1[1]) { }
-            column(BorrowerAddr12; BorrowerAddr1[2]) { }
-            column(BorrowerAddr13; BorrowerAddr1[3]) { }
-            column(BorrowerAddr14; BorrowerAddr1[4]) { }
-            column(BorrowerAddr15; BorrowerAddr1[5]) { }
-            column(Box11; Form1098Entry1."Box 1") { }
-            column(Box12; Form1098Entry1."Box 2") { }
-            column(Box13; Form1098Entry1."Box 3") { }
-            column(Box14; Form1098Entry1."Box 4") { }
-            column(Box15; Form1098Entry1."Box 5") { }
-            column(Box16; Form1098Entry1."Box 6") { }
-            column(Box17; Form1098Entry1."Box 7") { }
-            column(Box18; Form1098Entry1."Box 8") { }
-            column(Box19; Form1098Entry1."Box 9") { }
-            column(Box110; Form1098Entry1."Box 10") { }
-            column(LoanNo2; Form1098Entry1."Loan No.") { }
-            column(BorrowerSSN2; BorrowerSSN2) { }
-            column(BorrowerAddr21; BorrowerAddr2[1]) { }
-            column(BorrowerAddr22; BorrowerAddr2[2]) { }
-            column(BorrowerAddr23; BorrowerAddr2[3]) { }
-            column(BorrowerAddr24; BorrowerAddr2[4]) { }
-            column(BorrowerAddr25; BorrowerAddr2[5]) { }
-            column(Box21; Form1098Entry2."Box 1") { }
-            column(Box22; Form1098Entry2."Box 2") { }
-            column(Box23; Form1098Entry2."Box 3") { }
-            column(Box24; Form1098Entry2."Box 4") { }
-            column(Box25; Form1098Entry2."Box 5") { }
-            column(Box26; Form1098Entry2."Box 6") { }
-            column(Box27; Form1098Entry2."Box 7") { }
-            column(Box28; Form1098Entry2."Box 8") { }
-            column(Box29; Form1098Entry2."Box 9") { }
-            column(Box210; Form1098Entry2."Box 10") { }
-
+            column(LenderNameBox; LenderNameBox)
+            {
+            }
+            column(LenderEIN; LenderEIN)
+            {
+            }
+            column(LoanNo1; Form1098Entry1."Loan No.")
+            {
+            }
+            column(BorrowerSSN1; BorrowerSSN1)
+            {
+            }
+            column(BorrowerAddr11; BorrowerAddr1[1])
+            {
+            }
+            column(BorrowerAddr12; BorrowerAddr1[2])
+            {
+            }
+            column(BorrowerAddr13; BorrowerAddr1[3])
+            {
+            }
+            column(BorrowerAddr14; BorrowerAddr1[4])
+            {
+            }
+            column(BorrowerAddr15; BorrowerAddr1[5])
+            {
+            }
+            column(Box11; Form1098Entry1."Box 1")
+            {
+            }
+            column(Box12; Form1098Entry1."Box 2")
+            {
+            }
+            column(Box13; Form1098Entry1."Box 3")
+            {
+            }
+            column(Box14; Form1098Entry1."Box 4")
+            {
+            }
+            column(Box15; Form1098Entry1."Box 5")
+            {
+            }
+            column(Box16; Form1098Entry1."Box 6")
+            {
+            }
+            column(Box17; Form1098Entry1."Box 7")
+            {
+            }
+            column(Box18; Form1098Entry1."Box 8")
+            {
+            }
+            column(Box19; Form1098Entry1."Box 9")
+            {
+            }
+            column(Box110; Form1098Entry1."Box 10")
+            {
+            }
+            column(LoanNo2; Form1098Entry1."Loan No.")
+            {
+            }
+            column(BorrowerSSN2; BorrowerSSN2)
+            {
+            }
+            column(BorrowerAddr21; BorrowerAddr2[1])
+            {
+            }
+            column(BorrowerAddr22; BorrowerAddr2[2])
+            {
+            }
+            column(BorrowerAddr23; BorrowerAddr2[3])
+            {
+            }
+            column(BorrowerAddr24; BorrowerAddr2[4])
+            {
+            }
+            column(BorrowerAddr25; BorrowerAddr2[5])
+            {
+            }
+            column(Box21; Form1098Entry2."Box 1")
+            {
+            }
+            column(Box22; Form1098Entry2."Box 2")
+            {
+            }
+            column(Box23; Form1098Entry2."Box 3")
+            {
+            }
+            column(Box24; Form1098Entry2."Box 4")
+            {
+            }
+            column(Box25; Form1098Entry2."Box 5")
+            {
+            }
+            column(Box26; Form1098Entry2."Box 6")
+            {
+            }
+            column(Box27; Form1098Entry2."Box 7")
+            {
+            }
+            column(Box28; Form1098Entry2."Box 8")
+            {
+            }
+            column(Box29; Form1098Entry2."Box 9")
+            {
+            }
+            column(Box210; Form1098Entry2."Box 10")
+            {
+            }
             trigger OnPreDataItem()
             begin
                 BaseForm1098Entry.SetView(RequestEntry.GetView());
@@ -131,21 +202,6 @@ report 14135153 "lvnForm1098Print"
         }
     }
 
-    var
-        LenderBoxTxt: Label '%1, %2 %3%4%5, %6, US%7%8, %9';
-        SSNMaskTxt: Label '***-**-%1';
-        CompanyInformation: Record "Company Information";
-        BaseForm1098Entry: Record lvnForm1098Entry;
-        Form1098Entry1: Record lvnForm1098Entry temporary;
-        Form1098Entry2: Record lvnForm1098Entry temporary;
-        EncryptSSN: Boolean;
-        LenderNameBox: Text;
-        LenderEIN: Text;
-        BorrowerSSN1: Text;
-        BorrowerSSN2: Text;
-        BorrowerAddr1: array[8] of Text;
-        BorrowerAddr2: array[8] of Text;
-
     trigger OnPreReport()
     var
         NewLine: Text[2];
@@ -158,4 +214,19 @@ report 14135153 "lvnForm1098Print"
         LenderNameBox := StrSubstNo(LenderBoxTxt, CompanyInformation.Name, CompanyInformation.Address, CompanyInformation."Address 2", NewLine, CompanyInformation.City, CompanyInformation.County, NewLine, CompanyInformation."Post Code", CompanyInformation."Phone No.");
         LenderEIN := CompanyInformation."Federal ID No.";
     end;
+
+    var
+        CompanyInformation: Record "Company Information";
+        BaseForm1098Entry: Record lvnForm1098Entry;
+        Form1098Entry1: Record lvnForm1098Entry temporary;
+        Form1098Entry2: Record lvnForm1098Entry temporary;
+        EncryptSSN: Boolean;
+        LenderNameBox: Text;
+        LenderEIN: Text;
+        BorrowerSSN1: Text;
+        BorrowerSSN2: Text;
+        BorrowerAddr1: array[8] of Text;
+        BorrowerAddr2: array[8] of Text;
+        LenderBoxTxt: Label '%1, %2 %3%4%5, %6, US%7%8, %9';
+        SSNMaskTxt: Label '***-**-%1';
 }

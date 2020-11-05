@@ -1,12 +1,12 @@
 codeunit 14135114 "lvnValidateLoanJournal"
 {
     var
-        LoanNoEmptyErr: Label 'Loan No. can not be blank';
-        LoanNoDoesNotMatchPatternErr: Label 'Loan No. does not match any of defined patterns';
         LoanVisionSetup: Record lvnLoanVisionSetup;
         LoanJournalErrorMgmt: Codeunit lvnLoanJournalErrorMgmt;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
         LoanMgmt: Codeunit lvnLoanManagement;
+        LoanNoEmptyErr: Label 'Loan No. can not be blank';
+        LoanNoDoesNotMatchPatternErr: Label 'Loan No. does not match any of defined patterns';
 
     procedure ValidateLoanLines(JournalBatchCode: Code[20])
     var
@@ -22,7 +22,7 @@ codeunit 14135114 "lvnValidateLoanJournal"
         until LoanJournalLine.Next() = 0;
     end;
 
-    local procedure ValidateSingleJournalLine(var LoanJournalLine: record lvnLoanJournalLine)
+    local procedure ValidateSingleJournalLine(var LoanJournalLine: Record lvnLoanJournalLine)
     var
         JournalValidationRule: Record lvnJournalValidationRule;
         ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
@@ -47,10 +47,12 @@ codeunit 14135114 "lvnValidateLoanJournal"
         end;
     end;
 
-    local procedure ValidateConditionLine(var ExpressionValueBuffer: Record lvnExpressionValueBuffer; ConditionCode: Code[20]): Boolean
+    local procedure ValidateConditionLine(
+        var ExpressionValueBuffer: Record lvnExpressionValueBuffer;
+        ConditionCode: Code[20]): Boolean
     var
-        ExpressionEngine: Codeunit lvnExpressionEngine;
         ExpressionHeader: Record lvnExpressionHeader;
+        ExpressionEngine: Codeunit lvnExpressionEngine;
     begin
         ExpressionHeader.Get(ConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
         exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));

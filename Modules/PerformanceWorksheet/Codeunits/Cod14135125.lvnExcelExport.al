@@ -425,6 +425,4 @@ codeunit 14135125 "lvnExcelExport"
                 end;
         end;
     end;
-
-
 }

@@ -19,25 +19,49 @@ page 14135235 "lvnCloseManagerArchEntryList"
             {
                 Caption = 'Group';
 
-                field("No."; Rec."No.") { ApplicationArea = All; }
-                field("Template No."; Rec."Template No.") { ApplicationArea = All; }
-                field("Period Date"; Rec."Period Date") { ApplicationArea = All; }
-                field("Total Tasks"; Rec."Total Tasks") { ApplicationArea = All; }
-                field("Tasks Approved"; Rec."Tasks Approved") { ApplicationArea = All; }
-                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval") { ApplicationArea = All; }
-                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations") { ApplicationArea = All; }
-                field(PercentComplete; PercentComplete) { ApplicationArea = All; Caption = 'Percent Complete'; }
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Template No."; Rec."Template No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Period Date"; Rec."Period Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Total Tasks"; Rec."Total Tasks")
+                {
+                    ApplicationArea = All;
+                }
+                field("Tasks Approved"; Rec."Tasks Approved")
+                {
+                    ApplicationArea = All;
+                }
+                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval")
+                {
+                    ApplicationArea = All;
+                }
+                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations")
+                {
+                    ApplicationArea = All;
+                }
+                field(PercentComplete; PercentComplete)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Percent Complete';
+                }
             }
         }
-
         area(FactBoxes)
         {
-            part(DocumentsExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentsExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
-
-    var
-        PercentComplete: Integer;
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
@@ -57,4 +81,7 @@ page 14135235 "lvnCloseManagerArchEntryList"
     begin
         CurrPage.DocumentsExchange.Page.ReloadDocuments(Rec."Document Guid");
     end;
+
+    var
+        PercentComplete: Integer;
 }

@@ -3,8 +3,8 @@ codeunit 14135106 "lvnLoanManagement"
     var
         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
         TempLoanFieldsConfiguration: Record lvnLoanFieldsConfiguration temporary;
-        LoanFieldsConfigurationRetrieved: Boolean;
         LoanVisionSetup: Record lvnLoanVisionSetup;
+        LoanFieldsConfigurationRetrieved: Boolean;
         LoanVisionSetupRetrieved: Boolean;
         CompletedMsg: Label 'Completed';
 
@@ -101,7 +101,9 @@ codeunit 14135106 "lvnLoanManagement"
         end;
     end;
 
-    procedure UpdateLoan(LoanJournalLine: Record lvnLoanJournalLine; var LoanUpdateSchema: Record lvnLoanUpdateSchema)
+    procedure UpdateLoan(
+        LoanJournalLine: Record lvnLoanJournalLine;
+        var LoanUpdateSchema: Record lvnLoanUpdateSchema)
     var
         LoanJournalValue: Record lvnLoanJournalValue;
         LoanValue: Record lvnLoanValue;
@@ -419,109 +421,109 @@ codeunit 14135106 "lvnLoanManagement"
                             if LoanUpdateSchema."Field No." = 80 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvnAlways:
-                                        Loan.validate("Global Dimension 1 Code", LoanJournalLine."Global Dimension 1 Code");
+                                        Loan.Validate("Global Dimension 1 Code", LoanJournalLine."Global Dimension 1 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         if Loan."Global Dimension 1 Code" = '' then
-                                            Loan.validate("Global Dimension 1 Code", LoanJournalLine."Global Dimension 1 Code");
+                                            Loan.Validate("Global Dimension 1 Code", LoanJournalLine."Global Dimension 1 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Global Dimension 1 Code" <> '' then
-                                            Loan.validate("Global Dimension 1 Code", LoanJournalLine."Global Dimension 1 Code");
+                                            Loan.Validate("Global Dimension 1 Code", LoanJournalLine."Global Dimension 1 Code");
                                 end;
                             //Dimension 2 Code
                             if LoanUpdateSchema."Field No." = 81 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvnAlways:
-                                        Loan.validate("Global Dimension 2 Code", LoanJournalLine."Global Dimension 2 Code");
+                                        Loan.Validate("Global Dimension 2 Code", LoanJournalLine."Global Dimension 2 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         if Loan."Global Dimension 2 Code" = '' then
-                                            Loan.validate("Global Dimension 2 Code", LoanJournalLine."Global Dimension 2 Code");
+                                            Loan.Validate("Global Dimension 2 Code", LoanJournalLine."Global Dimension 2 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Global Dimension 2 Code" <> '' then
-                                            Loan.validate("Global Dimension 2 Code", LoanJournalLine."Global Dimension 2 Code");
+                                            Loan.Validate("Global Dimension 2 Code", LoanJournalLine."Global Dimension 2 Code");
                                 end;
                             //Dimension 3 Code
                             if LoanUpdateSchema."Field No." = 82 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvnAlways:
-                                        Loan.validate("Shortcut Dimension 3 Code", LoanJournalLine."Shortcut Dimension 3 Code");
+                                        Loan.Validate("Shortcut Dimension 3 Code", LoanJournalLine."Shortcut Dimension 3 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         if Loan."Shortcut Dimension 3 Code" = '' then
-                                            Loan.validate("Shortcut Dimension 3 Code", LoanJournalLine."Shortcut Dimension 3 Code");
+                                            Loan.Validate("Shortcut Dimension 3 Code", LoanJournalLine."Shortcut Dimension 3 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Shortcut Dimension 3 Code" <> '' then
-                                            Loan.validate("Shortcut Dimension 3 Code", LoanJournalLine."Shortcut Dimension 3 Code");
+                                            Loan.Validate("Shortcut Dimension 3 Code", LoanJournalLine."Shortcut Dimension 3 Code");
                                 end;
                             //Dimension 4 Code
                             if LoanUpdateSchema."Field No." = 83 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvnAlways:
-                                        Loan.validate("Shortcut Dimension 4 Code", LoanJournalLine."Shortcut Dimension 4 Code");
+                                        Loan.Validate("Shortcut Dimension 4 Code", LoanJournalLine."Shortcut Dimension 4 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         if Loan."Shortcut Dimension 4 Code" = '' then
-                                            Loan.validate("Shortcut Dimension 4 Code", LoanJournalLine."Shortcut Dimension 4 Code");
+                                            Loan.Validate("Shortcut Dimension 4 Code", LoanJournalLine."Shortcut Dimension 4 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Shortcut Dimension 4 Code" <> '' then
-                                            Loan.validate("Shortcut Dimension 4 Code", LoanJournalLine."Shortcut Dimension 4 Code");
+                                            Loan.Validate("Shortcut Dimension 4 Code", LoanJournalLine."Shortcut Dimension 4 Code");
                                 end;
                             //Dimension 5 Code
                             if LoanUpdateSchema."Field No." = 84 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvnAlways:
-                                        Loan.validate("Shortcut Dimension 5 Code", LoanJournalLine."Shortcut Dimension 5 Code");
+                                        Loan.Validate("Shortcut Dimension 5 Code", LoanJournalLine."Shortcut Dimension 5 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         if Loan."Shortcut Dimension 5 Code" = '' then
-                                            Loan.validate("Shortcut Dimension 5 Code", LoanJournalLine."Shortcut Dimension 5 Code");
+                                            Loan.Validate("Shortcut Dimension 5 Code", LoanJournalLine."Shortcut Dimension 5 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Shortcut Dimension 5 Code" <> '' then
-                                            Loan.validate("Shortcut Dimension 5 Code", LoanJournalLine."Shortcut Dimension 5 Code");
+                                            Loan.Validate("Shortcut Dimension 5 Code", LoanJournalLine."Shortcut Dimension 5 Code");
                                 end;
                             //Dimension 6 Code
                             if LoanUpdateSchema."Field No." = 85 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvnAlways:
-                                        Loan.validate("Shortcut Dimension 6 Code", LoanJournalLine."Shortcut Dimension 6 Code");
+                                        Loan.Validate("Shortcut Dimension 6 Code", LoanJournalLine."Shortcut Dimension 6 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         if Loan."Shortcut Dimension 6 Code" = '' then
-                                            Loan.validate("Shortcut Dimension 6 Code", LoanJournalLine."Shortcut Dimension 6 Code");
+                                            Loan.Validate("Shortcut Dimension 6 Code", LoanJournalLine."Shortcut Dimension 6 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Shortcut Dimension 6 Code" <> '' then
-                                            Loan.validate("Shortcut Dimension 6 Code", LoanJournalLine."Shortcut Dimension 6 Code");
+                                            Loan.Validate("Shortcut Dimension 6 Code", LoanJournalLine."Shortcut Dimension 6 Code");
                                 end;
                             //Dimension 7 Code
                             if LoanUpdateSchema."Field No." = 86 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvnAlways:
-                                        Loan.validate("Shortcut Dimension 7 Code", LoanJournalLine."Shortcut Dimension 7 Code");
+                                        Loan.Validate("Shortcut Dimension 7 Code", LoanJournalLine."Shortcut Dimension 7 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         if Loan."Shortcut Dimension 7 Code" = '' then
-                                            Loan.validate("Shortcut Dimension 7 Code", LoanJournalLine."Shortcut Dimension 7 Code");
+                                            Loan.Validate("Shortcut Dimension 7 Code", LoanJournalLine."Shortcut Dimension 7 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Shortcut Dimension 7 Code" <> '' then
-                                            Loan.validate("Shortcut Dimension 7 Code", LoanJournalLine."Shortcut Dimension 7 Code");
+                                            Loan.Validate("Shortcut Dimension 7 Code", LoanJournalLine."Shortcut Dimension 7 Code");
                                 end;
                             //Dimension 8 Code
                             if LoanUpdateSchema."Field No." = 87 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvnAlways:
-                                        Loan.validate("Shortcut Dimension 8 Code", LoanJournalLine."Shortcut Dimension 8 Code");
+                                        Loan.Validate("Shortcut Dimension 8 Code", LoanJournalLine."Shortcut Dimension 8 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         if Loan."Shortcut Dimension 8 Code" = '' then
-                                            Loan.validate("Shortcut Dimension 8 Code", LoanJournalLine."Shortcut Dimension 8 Code");
+                                            Loan.Validate("Shortcut Dimension 8 Code", LoanJournalLine."Shortcut Dimension 8 Code");
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Shortcut Dimension 8 Code" <> '' then
-                                            Loan.validate("Shortcut Dimension 8 Code", LoanJournalLine."Shortcut Dimension 8 Code");
+                                            Loan.Validate("Shortcut Dimension 8 Code", LoanJournalLine."Shortcut Dimension 8 Code");
                                 end;
                             //Business Unit Code
                             if LoanUpdateSchema."Field No." = 88 then
                                 case LoanUpdateSchema."Field Update Option" of
                                     LoanUpdateSchema."Field Update Option"::lvnAlways:
-                                        Loan.validate("Business Unit Code", LoanJournalLine."Business Unit Code");
+                                        Loan.Validate("Business Unit Code", LoanJournalLine."Business Unit Code");
                                     LoanUpdateSchema."Field Update Option"::"If Destination Blank":
                                         if Loan."Business Unit Code" = '' then
-                                            Loan.validate("Business Unit Code", LoanJournalLine."Business Unit Code");
+                                            Loan.Validate("Business Unit Code", LoanJournalLine."Business Unit Code");
                                     LoanUpdateSchema."Field Update Option"::"If Source Not Blank":
                                         if LoanJournalLine."Business Unit Code" <> '' then
-                                            Loan.validate("Business Unit Code", LoanJournalLine."Business Unit Code");
+                                            Loan.Validate("Business Unit Code", LoanJournalLine."Business Unit Code");
                                 end;
                             //Loan Term Months
                             if LoanUpdateSchema."Field No." = 100 then
@@ -1064,7 +1066,7 @@ codeunit 14135106 "lvnLoanManagement"
                                 end;
                                 LoanAddress.Modify();
                             end;
-                            Loan.modify(true);
+                            Loan.Modify(true);
                         end;
                 end;
             until LoanUpdateSchema.Next() = 0;
@@ -1073,7 +1075,7 @@ codeunit 14135106 "lvnLoanManagement"
 
     procedure UpdateLoanCard(LoanJournalLine: Record lvnLoanJournalLine)
     var
-        LoanJournalValue: record lvnLoanJournalValue;
+        LoanJournalValue: Record lvnLoanJournalValue;
         LoanValue: Record lvnLoanValue;
         Loan: Record lvnLoan;
         LoanAddress: Record lvnLoanAddress;
@@ -1258,7 +1260,7 @@ codeunit 14135106 "lvnLoanManagement"
         end;
     end;
 
-    procedure ModifyFieldUpdateOption(JournalBatchCode: code[20]; FieldUpdateOption: Enum lvnFieldUpdateCondition)
+    procedure ModifyFieldUpdateOption(JournalBatchCode: Code[20]; FieldUpdateOption: Enum lvnFieldUpdateCondition)
     var
         LoanUpdateSchema: Record lvnLoanUpdateSchema;
         ConfirmModificationQst: Label 'Do You want to update all entries to %1 update option?';
@@ -1280,21 +1282,6 @@ codeunit 14135106 "lvnLoanManagement"
         exit(LoanFieldsConfiguration."Field Name");
     end;
 
-    local procedure FillLoanFieldsConfigurationBuffer()
-    begin
-        if not LoanFieldsConfigurationRetrieved then begin
-            LoanFieldsConfigurationRetrieved := true;
-            LoanFieldsConfiguration.reset;
-            if LoanFieldsConfiguration.FindSet() then begin
-                repeat
-                    Clear(TempLoanFieldsConfiguration);
-                    TempLoanFieldsConfiguration := LoanFieldsConfiguration;
-                    TempLoanFieldsConfiguration.Insert();
-                until LoanFieldsConfiguration.Next() = 0;
-            end;
-        end;
-    end;
-
     procedure GetBorrowerName(lvnLoan: Record lvnLoan): Text
     begin
         exit(GetFirstLastMiddleName(lvnLoan."Borrower First Name", lvnLoan."Borrower Last Name", lvnLoan."Borrower Last Name"));
@@ -1311,19 +1298,34 @@ codeunit 14135106 "lvnLoanManagement"
         exit(DelChr(StrSubstNo(LoanVisionSetup."Search Name Template", FirstName, LastName, MiddleName), '<>', ' '));
     end;
 
-    local procedure GetLoanVisionSetup()
-    begin
-        if not LoanVisionSetupRetrieved then begin
-            LoanVisionSetupRetrieved := true;
-            LoanVisionSetup.Get();
-        end;
-    end;
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::DimensionManagement, 'OnAfterSetupObjectNoList', '', true, true)]
     local procedure OnDimensionAfterSetupObjectNoList(var TempAllObjWithCaption: Record AllObjWithCaption)
     var
         DimensionManagement: Codeunit DimensionManagement;
     begin
         DimensionManagement.InsertObject(TempAllObjWithCaption, Database::lvnLoan);
+    end;
+
+    local procedure FillLoanFieldsConfigurationBuffer()
+    begin
+        if not LoanFieldsConfigurationRetrieved then begin
+            LoanFieldsConfigurationRetrieved := true;
+            LoanFieldsConfiguration.Reset;
+            if LoanFieldsConfiguration.FindSet() then begin
+                repeat
+                    Clear(TempLoanFieldsConfiguration);
+                    TempLoanFieldsConfiguration := LoanFieldsConfiguration;
+                    TempLoanFieldsConfiguration.Insert();
+                until LoanFieldsConfiguration.Next() = 0;
+            end;
+        end;
+    end;
+
+    local procedure GetLoanVisionSetup()
+    begin
+        if not LoanVisionSetupRetrieved then begin
+            LoanVisionSetupRetrieved := true;
+            LoanVisionSetup.Get();
+        end;
     end;
 }

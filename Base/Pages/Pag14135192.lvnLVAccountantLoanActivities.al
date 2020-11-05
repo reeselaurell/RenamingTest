@@ -45,7 +45,6 @@ page 14135192 "lvnLVAccountantLoanActivities"
                     end;
                 }
             }
-
             cuegroup(Purchases)
             {
                 field(OpenInvoices; OpenInvoicesCount())
@@ -119,7 +118,6 @@ page 14135192 "lvnLVAccountantLoanActivities"
                     end;
                 }
             }
-
             cuegroup(Journals)
             {
                 field(GeneralJournal; CalculateGenJnlEntriesCount())
@@ -182,17 +180,17 @@ page 14135192 "lvnLVAccountantLoanActivities"
         }
     }
 
+    trigger OnOpenPage()
+    begin
+        CheckApprovals();
+    end;
+
     var
         GenJournalTemplate: Record "Gen. Journal Template";
         GenJournalLine: Record "Gen. Journal Line";
         GenJnlBatch: Record "Gen. Journal Batch";
         GenJnlMgmt: Codeunit GenJnlManagement;
         ApprovalsIDExists: Boolean;
-
-    trigger OnOpenPage()
-    begin
-        CheckApprovals();
-    end;
 
     local procedure CheckApprovals()
     var

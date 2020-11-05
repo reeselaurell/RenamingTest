@@ -4,33 +4,91 @@ pageextension 14135105 "lvnSalesInvoiceSubpage" extends "Sales Invoice Subform"
     {
         addlast(Control1)
         {
-            field(lvnLoanNo; Rec.lvnLoanNo) { ApplicationArea = All; }
-            field(lvnReasonCode; Rec.lvnReasonCode) { ApplicationArea = All; Visible = false; }
-            field(BorrowerName; BorrowerName) { Caption = 'Borrower Name'; ApplicationArea = All; Editable = false; }
-            field(lvnServicingType; Rec.lvnServicingType) { ApplicationArea = All; }
-            field(lvnShortcutDimension1Name; Rec.lvnShortcutDimension1Name) { ApplicationArea = All; }
-            field(lvnShortcutDimension2Name; Rec.lvnShortcutDimension2Name) { ApplicationArea = All; }
-            field(lvnDeliveryState; Rec.lvnDeliveryState) { ApplicationArea = All; }
-            field(lvnUseSalesTax; Rec.lvnUseSalesTax) { ApplicationArea = All; }
+            field(lvnLoanNo; Rec.lvnLoanNo)
+            {
+                ApplicationArea = All;
+            }
+            field(lvnReasonCode; Rec.lvnReasonCode)
+            {
+                ApplicationArea = All;
+                Visible = false;
+            }
+            field(BorrowerName; BorrowerName)
+            {
+                Caption = 'Borrower Name';
+                ApplicationArea = All;
+                Editable = false;
+            }
+            field(lvnServicingType; Rec.lvnServicingType)
+            {
+                ApplicationArea = All;
+            }
+            field(lvnShortcutDimension1Name; Rec.lvnShortcutDimension1Name)
+            {
+                ApplicationArea = All;
+            }
+            field(lvnShortcutDimension2Name; Rec.lvnShortcutDimension2Name)
+            {
+                ApplicationArea = All;
+            }
+            field(lvnDeliveryState; Rec.lvnDeliveryState)
+            {
+                ApplicationArea = All;
+            }
+            field(lvnUseSalesTax; Rec.lvnUseSalesTax)
+            {
+                ApplicationArea = All;
+            }
         }
-
-        modify(Control39) { Visible = false; }
-        modify("Location Code") { Visible = false; }
-        modify("Line Discount %") { Visible = false; }
-        modify("Unit of Measure Code") { Visible = false; }
-        modify("Tax Area Code") { Visible = false; }
-        modify("Tax Group Code") { Visible = false; }
-        modify("Qty. Assigned") { Visible = false; }
-        modify("Qty. to Assign") { Visible = false; }
-        modify("Deferral Code") { Visible = true; }
-        modify("Tax Liable") { Visible = true; }
-        modify("Line No.") { Visible = true; }
-        modify("Document No.") { Visible = true; }
+        modify(Control39)
+        {
+            Visible = false;
+        }
+        modify("Location Code")
+        {
+            Visible = false;
+        }
+        modify("Line Discount %")
+        {
+            Visible = false;
+        }
+        modify("Unit of Measure Code")
+        {
+            Visible = false;
+        }
+        modify("Tax Area Code")
+        {
+            Visible = false;
+        }
+        modify("Tax Group Code")
+        {
+            Visible = false;
+        }
+        modify("Qty. Assigned")
+        {
+            Visible = false;
+        }
+        modify("Qty. to Assign")
+        {
+            Visible = false;
+        }
+        modify("Deferral Code")
+        {
+            Visible = true;
+        }
+        modify("Tax Liable")
+        {
+            Visible = true;
+        }
+        modify("Line No.")
+        {
+            Visible = true;
+        }
+        modify("Document No.")
+        {
+            Visible = true;
+        }
     }
-
-    var
-        BorrowerName: Text;
-        lvnLoanManagement: Codeunit lvnLoanManagement;
 
     trigger OnAfterGetRecord()
     var
@@ -46,4 +104,8 @@ pageextension 14135105 "lvnSalesInvoiceSubpage" extends "Sales Invoice Subform"
     begin
         Rec.Type := Rec.Type::"G/L Account";
     end;
+
+    var
+        lvnLoanManagement: Codeunit lvnLoanManagement;
+        BorrowerName: Text;
 }

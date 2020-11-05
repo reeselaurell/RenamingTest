@@ -110,7 +110,7 @@ codeunit 14135130 "lvnAzureBlobManagement"
         LineNo := 1;
         foreach Token in Json do begin
             Clear(NameValueBuffer);
-            NameValueBuffer.ID := LineNo;
+            NameValueBuffer.Id := LineNo;
             LineNo += 1;
             NameValueBuffer.Name := Token.AsValue().AsText();
             NameValueBuffer.Insert();
@@ -137,19 +137,27 @@ codeunit 14135130 "lvnAzureBlobManagement"
         LineNo := 1;
         foreach Token in Json do begin
             Clear(NameValueBuffer);
-            NameValueBuffer.ID := LineNo;
+            NameValueBuffer.Id := LineNo;
             LineNo += 1;
             NameValueBuffer.Name := Token.AsValue().AsText();
             NameValueBuffer.Insert();
         end;
     end;
 
-    procedure CopyFile(FromContainerName: Text; FromFileName: Text; ToContainerName: Text; ToFileName: Text): Text
+    procedure CopyFile(
+        FromContainerName: Text;
+        FromFileName: Text;
+        ToContainerName: Text;
+        ToFileName: Text): Text
     begin
         exit(TransferFile(FromContainerName, FromFileName, ToContainerName, ToFileName, true));
     end;
 
-    procedure MoveFile(FromContainerName: Text; FromFileName: Text; ToContainerName: Text; ToFileName: Text): Text
+    procedure MoveFile(
+        FromContainerName: Text;
+        FromFileName: Text;
+        ToContainerName: Text;
+        ToFileName: Text): Text
     begin
         exit(TransferFile(FromContainerName, FromFileName, ToContainerName, ToFileName, false));
     end;
@@ -168,7 +176,12 @@ codeunit 14135130 "lvnAzureBlobManagement"
         exit(Output);
     end;
 
-    local procedure TransferFile(FromContainerName: Text; FromFileName: Text; ToContainerName: Text; ToFileName: Text; KeepCopy: Boolean): Text
+    local procedure TransferFile(
+        FromContainerName: Text;
+        FromFileName: Text;
+        ToContainerName: Text;
+        ToFileName: Text;
+        KeepCopy: Boolean): Text
     var
         Client: HttpClient;
         ResponseMsg: HttpResponseMessage;

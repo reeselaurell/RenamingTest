@@ -11,7 +11,7 @@ report 14135102 "lvnVoidPostedSoldDocuments"
 
             trigger OnPreDataItem()
             begin
-                lvnLoanSoldDocument.setrange(Void, false);
+                lvnLoanSoldDocument.SetRange(Void, false);
                 if not Confirm(DocumentsVoidCountLbl, false, Count()) then
                     CurrReport.Break();
             end;
@@ -31,7 +31,7 @@ report 14135102 "lvnVoidPostedSoldDocuments"
 
     var
         lvnLoanVoidDocument: Codeunit lvnLoanVoidDocument;
+        VoidsCreatedCount: Integer;
         DocumentsVoidCountLbl: Label 'Do You want to create %1 void documents?';
         DocumentsVoidResultLbl: Label '%1 void documents created';
-        VoidsCreatedCount: Integer;
 }

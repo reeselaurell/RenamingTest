@@ -12,9 +12,18 @@ page 14135215 "lvnDimPerfBandSchemaList"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Dimension Code"; Rec."Dimension Code") { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Dimension Code"; Rec."Dimension Code")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -35,8 +44,8 @@ page 14135215 "lvnDimPerfBandSchemaList"
 
                 trigger OnAction()
                 var
-                    DimPerfBandSchemaLines: Page lvnDimPerfBandSchemaLines;
                     DimPerfBandSchemaLine: Record lvnDimPerfBandSchemaLine;
+                    DimPerfBandSchemaLines: Page lvnDimPerfBandSchemaLines;
                 begin
                     DimPerfBandSchemaLine.Reset();
                     DimPerfBandSchemaLine.SetRange("Schema Code", Rec.Code);

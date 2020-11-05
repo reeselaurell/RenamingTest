@@ -4,7 +4,10 @@ pageextension 14135120 "lvnVendorCard" extends "Vendor Card"
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

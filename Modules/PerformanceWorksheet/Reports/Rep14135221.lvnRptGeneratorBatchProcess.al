@@ -29,18 +29,6 @@ report 14135221 "lvnRptGeneratorBatchProcess"
         }
     }
 
-    var
-        ReportGeneratorBatch: Record lvnReportGeneratorBatch;
-        PerformanceDataExport: Codeunit lvnPerformanceDataExport;
-        ToDate: Date;
-        ExportFormat: Enum lvnGridExportMode;
-        ProcessProgressMsg: Label 'Processing item #1#### of #2####';
-        HtmlExportWarningMsg: Label 'Warning: Html format will only process first entry in whole batch!';
-        ExportCallerLbl: Label 'ReportGeneratorBatchProcess';
-        RenamedSheetTemplateLbl: Label '%1 %2';
-        RenamedSubSeqSheetTemplateLbl: Label '%1.%2 %3 %4';
-        ProgressTemplateMsg: Label '%1.%2';
-
     trigger OnInitReport()
     begin
         ToDate := Today();
@@ -103,6 +91,18 @@ report 14135221 "lvnRptGeneratorBatchProcess"
         ExcelExport.Download(PerformanceDataExport.GetExportFileName(ExportFormat, SchemaType::Period));
     end;
 
+    var
+        ReportGeneratorBatch: Record lvnReportGeneratorBatch;
+        PerformanceDataExport: Codeunit lvnPerformanceDataExport;
+        ToDate: Date;
+        ExportFormat: Enum lvnGridExportMode;
+        ProcessProgressMsg: Label 'Processing item #1#### of #2####';
+        HtmlExportWarningMsg: Label 'Warning: Html format will only process first entry in whole batch!';
+        ExportCallerLbl: Label 'ReportGeneratorBatchProcess';
+        RenamedSheetTemplateLbl: Label '%1 %2';
+        RenamedSubSeqSheetTemplateLbl: Label '%1.%2 %3 %4';
+        ProgressTemplateMsg: Label '%1.%2';
+
     procedure SetParams(BatchCode: Code[20])
     begin
         ReportGeneratorBatch.Get(BatchCode);
@@ -140,7 +140,9 @@ report 14135221 "lvnRptGeneratorBatchProcess"
         end;
     end;
 
-    local procedure ProcessReportSequence(var ExcelExport: Codeunit lvnExcelExport; var ReportGeneratorSequence: Record lvnReportGeneratorSequence)
+    local procedure ProcessReportSequence(
+        var ExcelExport: Codeunit lvnExcelExport;
+        var ReportGeneratorSequence: Record lvnReportGeneratorSequence)
     var
         RowSchema: Record lvnPerformanceRowSchema;
         BandSchema: Record lvnPeriodPerfBandSchema;

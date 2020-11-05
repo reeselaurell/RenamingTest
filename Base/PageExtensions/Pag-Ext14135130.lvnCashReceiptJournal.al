@@ -2,13 +2,24 @@ pageextension 14135130 "lvnCashReceiptJournal" extends "Cash Receipt Journal"
 {
     layout
     {
-        modify("Reason Code") { Visible = true; }
-        modify("Credit Amount") { Visible = true; }
-        modify("Debit Amount") { Visible = true; }
-
+        modify("Reason Code")
+        {
+            Visible = true;
+        }
+        modify("Credit Amount")
+        {
+            Visible = true;
+        }
+        modify("Debit Amount")
+        {
+            Visible = true;
+        }
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

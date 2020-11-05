@@ -4,7 +4,10 @@ pageextension 14135121 "lvnVendorLedgerEntries" extends "Vendor Ledger Entries"
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

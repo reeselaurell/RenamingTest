@@ -16,11 +16,28 @@ page 14135169 "lvnJetExpressViewList"
             {
                 Caption = 'Group';
 
-                field(Code; Rec.Code) { ApplicationArea = All; Editable = false; Lookup = true; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Last Update Date Time"; Rec."Last Update DateTime") { ApplicationArea = All; }
-                field("Last Updated By"; Rec."Last Updated By") { ApplicationArea = All; }
-                field("Entries Count"; Rec."Entries Count") { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Lookup = true;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Last Update Date Time"; Rec."Last Update DateTime")
+                {
+                    ApplicationArea = All;
+                }
+                field("Last Updated By"; Rec."Last Updated By")
+                {
+                    ApplicationArea = All;
+                }
+                field("Entries Count"; Rec."Entries Count")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

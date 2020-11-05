@@ -18,54 +18,163 @@ page 14135213 "lvnPerformanceGLEntries"
         {
             repeater(Group)
             {
-                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
-                field("G/L Account No."; Rec."G/L Account No.") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field("G/L Account Name"; Rec."G/L Account Name") { ApplicationArea = All; Visible = false; DrillDown = false; }
-                field("Document Type"; Rec."Document Type") { ApplicationArea = All; }
-                field("Document No."; Rec."Document No.") { ApplicationArea = All; }
-                field("External Document No."; Rec."External Document No.") { ApplicationArea = All; }
-                field(lvnLoanNo; Rec.lvnLoanNo) { ApplicationArea = All; Caption = 'Loan No.'; DrillDown = false; Lookup = false; AssistEdit = false; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field(Amount; Rec.Amount) { ApplicationArea = All; }
-                field("Reason Code"; Rec."Reason Code") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field("Business Unit Code"; Rec."Business Unit Code") { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvnGlobalDimension1Name; Rec.lvnGlobalDimension1Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvnGlobalDimension2Name; Rec.lvnGlobalDimension2Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvnShortcutDimension3Name; Rec.lvnShortcutDimension3Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvnShortcutDimension4Name; Rec.lvnShortcutDimension4Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvnShortcutDimension5Name; Rec.lvnShortcutDimension5Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvnShortcutDimension6Name; Rec.lvnShortcutDimension6Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvnShortcutDimension7Name; Rec.lvnShortcutDimension7Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvnShortcutDimension8Name; Rec.lvnShortcutDimension8Name) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(lvnBorrowerSearchName; Rec.lvnBorrowerSearchName) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; Caption = 'Borrower Name'; }
-                field("Source Type"; Rec."Source Type") { ApplicationArea = All; }
-                field(lvnSourceName; Rec.lvnSourceName) { ApplicationArea = All; Caption = 'Source Name'; }
-                field(lvnWarehouseLineCode; Rec.lvnWarehouseLineCode) { ApplicationArea = All; Lookup = false; DrillDown = false; AssistEdit = false; }
-                field(InvestorCustomerNumber; Loan."Investor Customer No.") { ApplicationArea = All; Caption = 'Investor Customer No.'; Lookup = false; DrillDown = false; AssistEdit = false; }
-
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("G/L Account No."; Rec."G/L Account No.")
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field("G/L Account Name"; Rec."G/L Account Name")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                    DrillDown = false;
+                }
+                field("Document Type"; Rec."Document Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Document No."; Rec."Document No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("External Document No."; Rec."External Document No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvnLoanNo; Rec.lvnLoanNo)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Loan No.';
+                    DrillDown = false;
+                    Lookup = false;
+                    AssistEdit = false;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field(Amount; Rec.Amount)
+                {
+                    ApplicationArea = All;
+                }
+                field("Reason Code"; Rec."Reason Code")
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field("Business Unit Code"; Rec."Business Unit Code")
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(lvnGlobalDimension1Name; Rec.lvnGlobalDimension1Name)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(lvnGlobalDimension2Name; Rec.lvnGlobalDimension2Name)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(lvnShortcutDimension3Name; Rec.lvnShortcutDimension3Name)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(lvnShortcutDimension4Name; Rec.lvnShortcutDimension4Name)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(lvnShortcutDimension5Name; Rec.lvnShortcutDimension5Name)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(lvnShortcutDimension6Name; Rec.lvnShortcutDimension6Name)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(lvnShortcutDimension7Name; Rec.lvnShortcutDimension7Name)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(lvnShortcutDimension8Name; Rec.lvnShortcutDimension8Name)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(lvnBorrowerSearchName; Rec.lvnBorrowerSearchName)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                    Caption = 'Borrower Name';
+                }
+                field("Source Type"; Rec."Source Type")
+                {
+                    ApplicationArea = All;
+                }
+                field(lvnSourceName; Rec.lvnSourceName)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Source Name';
+                }
+                field(lvnWarehouseLineCode; Rec.lvnWarehouseLineCode)
+                {
+                    ApplicationArea = All;
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
+                field(InvestorCustomerNumber; Loan."Investor Customer No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Investor Customer No.';
+                    Lookup = false;
+                    DrillDown = false;
+                    AssistEdit = false;
+                }
             }
         }
         area(FactBoxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
-
-    var
-        GLAcc: Record "G/L Account";
-        Loan: Record lvnLoan;
-        DimensionManagement: Codeunit DimensionManagement;
-        CostCenterDimNo: Integer;
-        UseCostCenterFiltering: Boolean;
-        InvestorName: Text;
-        DimensionVisible1: Boolean;
-        DimensionVisible2: Boolean;
-        DimensionVisible3: Boolean;
-        DimensionVisible4: Boolean;
-        DimensionVisible5: Boolean;
-        DimensionVisible6: Boolean;
-        DimensionVisible7: Boolean;
-        DimensionVisible8: Boolean;
 
     trigger OnOpenPage()
     var
@@ -116,6 +225,22 @@ page 14135213 "lvnPerformanceGLEntries"
         end;
         CurrPage.DocumentExchange.Page.ReloadDocuments(Rec.lvnDocumentGuid);
     end;
+
+    var
+        GLAcc: Record "G/L Account";
+        Loan: Record lvnLoan;
+        DimensionManagement: Codeunit DimensionManagement;
+        CostCenterDimNo: Integer;
+        UseCostCenterFiltering: Boolean;
+        InvestorName: Text;
+        DimensionVisible1: Boolean;
+        DimensionVisible2: Boolean;
+        DimensionVisible3: Boolean;
+        DimensionVisible4: Boolean;
+        DimensionVisible5: Boolean;
+        DimensionVisible6: Boolean;
+        DimensionVisible7: Boolean;
+        DimensionVisible8: Boolean;
 
     procedure EnableCostCenterDocumentFiltering()
     begin

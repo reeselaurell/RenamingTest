@@ -6,7 +6,7 @@ codeunit 14135111 "lvnLoanVoidDocument"
         LoanVisionSetupRetrieved: Boolean;
         ConfirmationDialogLbl: Label 'Do you want to create Void document for %1?';
 
-    procedure CreateFundedVoidDocument(LoanFundedDocument: record lvnLoanFundedDocument; ShowConfirmation: Boolean)
+    procedure CreateFundedVoidDocument(LoanFundedDocument: Record lvnLoanFundedDocument; ShowConfirmation: Boolean)
     var
         LoanDocument: Record lvnLoanDocument;
         LoanDocumentLine: Record lvnLoanDocumentLine;
@@ -42,7 +42,7 @@ codeunit 14135111 "lvnLoanVoidDocument"
             until LoanFundedDocumentLine.Next() = 0;
     end;
 
-    procedure CreateSoldVoidDocument(LoanSoldDocument: record lvnLoanSoldDocument; ShowConfirmation: Boolean)
+    procedure CreateSoldVoidDocument(LoanSoldDocument: Record lvnLoanSoldDocument; ShowConfirmation: Boolean)
     var
         LoanDocument: Record lvnLoanDocument;
         LoanDocumentLine: Record lvnLoanDocumentLine;

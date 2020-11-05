@@ -14,7 +14,10 @@ page 14135258 "lvnSalesInvHeaderErrorDetails"
         {
             repeater(Group)
             {
-                field("Error Text"; Rec."Error Text") { ApplicationArea = All; }
+                field("Error Text"; Rec."Error Text")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

@@ -12,9 +12,18 @@ page 14135101 "lvnWarehouseLines"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Show In Rolecenter"; Rec."Show In Rolecenter") { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Show In Rolecenter"; Rec."Show In Rolecenter")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

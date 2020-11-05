@@ -4,7 +4,10 @@ pageextension 14135135 "lvnPostedBankRecWorksheet" extends "Posted Bank Rec. Wor
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

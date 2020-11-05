@@ -15,13 +15,34 @@ page 14135229 "lvnCloseManagerTemplateLines"
             {
                 Caption = 'Group';
 
-                field("Task Category"; Rec."Task Category") { ApplicationArea = All; }
-                field("Task Name"; Rec."Task Name") { ApplicationArea = All; }
-                field("Account No."; Rec."Account No.") { ApplicationArea = All; }
-                field("Due Date Calculation"; Rec."Due Date Calculation") { ApplicationArea = All; }
-                field("Assigned To"; Rec."Assigned To") { ApplicationArea = All; }
-                field("Assigned Approver"; Rec."Assigned Approver") { ApplicationArea = All; }
-                field(Instructions; Rec.Instructions) { ApplicationArea = All; }
+                field("Task Category"; Rec."Task Category")
+                {
+                    ApplicationArea = All;
+                }
+                field("Task Name"; Rec."Task Name")
+                {
+                    ApplicationArea = All;
+                }
+                field("Account No."; Rec."Account No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Due Date Calculation"; Rec."Due Date Calculation")
+                {
+                    ApplicationArea = All;
+                }
+                field("Assigned To"; Rec."Assigned To")
+                {
+                    ApplicationArea = All;
+                }
+                field("Assigned Approver"; Rec."Assigned Approver")
+                {
+                    ApplicationArea = All;
+                }
+                field(Instructions; Rec.Instructions)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

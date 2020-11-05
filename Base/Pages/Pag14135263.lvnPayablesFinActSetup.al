@@ -12,7 +12,10 @@ page 14135263 "lvnPayablesFinActSetup"
         {
             group(Group)
             {
-                field("Filter by User"; Rec."Filter by User") { ApplicationArea = All; }
+                field("Filter by User"; Rec."Filter by User")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

@@ -5,8 +5,16 @@ table 14135143 "lvnEncryptedData"
 
     fields
     {
-        field(1; "Key"; Guid) { DataClassification = CustomerContent; Caption = 'Key'; }
-        field(2; Value; Blob) { DataClassification = CustomerContent; Caption = 'Value'; }
+        field(1; "Key"; Guid)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Key';
+        }
+        field(2; Value; Blob)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Value';
+        }
     }
 
     keys

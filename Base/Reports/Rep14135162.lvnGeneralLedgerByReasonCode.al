@@ -23,30 +23,51 @@ report 14135162 "lvnGeneralLedgerByReasonCode"
                 CurrReport.Break();
             end;
         }
-
         dataitem(GLAccount; "G/L Account")
         {
             DataItemTableView = sorting("No.") where("Account Type" = const(Posting));
             RequestFilterFields = "No.", "Date Filter";
 
-            column(BeginningBalance; GLEntry.Amount) { }
-            column(CompanyName; CompanyInformation.Name) { }
-            column(ReasonFilter; ReasonFilter) { }
-            column(GLAccountFilter; GLAccountFilter) { }
-            column(DateFilter; DateFilter) { }
-
+            column(BeginningBalance; GLEntry.Amount)
+            {
+            }
+            column(CompanyName; CompanyInformation.Name)
+            {
+            }
+            column(ReasonFilter; ReasonFilter)
+            {
+            }
+            column(GLAccountFilter; GLAccountFilter)
+            {
+            }
+            column(DateFilter; DateFilter)
+            {
+            }
             dataitem(Loop; Integer)
             {
                 DataItemTableView = sorting(Number);
 
-                column(GLAccountNo; TempGLEntryBuffer."G/L Account No.") { }
-                column(ReasonCode; TempGLEntryBuffer."Reason Code") { }
-                column(SourceCode; TempGLEntryBuffer."Source Code") { }
-                column(DebitAmount; TempGLEntryBuffer."Debit Amount") { }
-                column(CreditAmount; TempGLEntryBuffer."Credit Amount") { }
-                column(Amount; TempGLEntryBuffer."Current Balance") { }
-                column(GLAccountName; GLAccountName) { }
-
+                column(GLAccountNo; TempGLEntryBuffer."G/L Account No.")
+                {
+                }
+                column(ReasonCode; TempGLEntryBuffer."Reason Code")
+                {
+                }
+                column(SourceCode; TempGLEntryBuffer."Source Code")
+                {
+                }
+                column(DebitAmount; TempGLEntryBuffer."Debit Amount")
+                {
+                }
+                column(CreditAmount; TempGLEntryBuffer."Credit Amount")
+                {
+                }
+                column(Amount; TempGLEntryBuffer."Current Balance")
+                {
+                }
+                column(GLAccountName; GLAccountName)
+                {
+                }
                 trigger OnPreDataItem()
                 begin
                     TempGLEntryBuffer.Reset();
@@ -67,7 +88,6 @@ report 14135162 "lvnGeneralLedgerByReasonCode"
                         GLAccountName := GLAccount2.Name;
                 end;
             }
-
             trigger OnAfterGetRecord()
             begin
                 GLEntry.Reset();
@@ -102,19 +122,6 @@ report 14135162 "lvnGeneralLedgerByReasonCode"
         }
     }
 
-    var
-        TempGLEntryBuffer: Record lvnGLEntryBuffer temporary;
-        CompanyInformation: Record "Company Information";
-        GLEntry: Record "G/L Entry";
-        GLPerReasonCode: Query lvnGLReportPerReasonCode;
-        DateFilter: Text;
-        ReasonFilter: Text;
-        GLAccountFilter: Text;
-        LineNo: Integer;
-        MaxDate: Date;
-        GLAccountName: Text;
-        DateOption: Enum lvnDocumentDateTypes;
-
     trigger OnPreReport()
     var
         DateFilterErr: Label 'Please provide a date filter';
@@ -148,4 +155,17 @@ report 14135162 "lvnGeneralLedgerByReasonCode"
         end;
         GLPerReasonCode.Close();
     end;
+
+    var
+        TempGLEntryBuffer: Record lvnGLEntryBuffer temporary;
+        CompanyInformation: Record "Company Information";
+        GLEntry: Record "G/L Entry";
+        GLPerReasonCode: Query lvnGLReportPerReasonCode;
+        DateFilter: Text;
+        ReasonFilter: Text;
+        GLAccountFilter: Text;
+        LineNo: Integer;
+        MaxDate: Date;
+        GLAccountName: Text;
+        DateOption: Enum lvnDocumentDateTypes;
 }

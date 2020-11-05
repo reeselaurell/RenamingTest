@@ -4,9 +4,13 @@ pageextension 14135133 "lvnPurchaseInvoices" extends "Purchase Invoices"
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
+
     actions
     {
         addlast(Invoice)

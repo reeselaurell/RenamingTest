@@ -12,18 +12,35 @@ page 14135212 "lvnPerfRowSchemaSubLines"
         {
             repeater(Group)
             {
-                field(Description; ColumnDescription) { ApplicationArea = All; Caption = 'Column'; Editable = false; }
-                field("Calculation Unit Code"; Rec."Calculation Unit Code") { ApplicationArea = All; LookupPageId = lvnCalculationUnitList; }
-                field("Number Format Code"; Rec."Number Format Code") { ApplicationArea = All; LookupPageId = lvnNumberFormatList; }
-                field("Style Code"; Rec."Style Code") { ApplicationArea = All; LookupPageId = lvnStyleList; }
-                field("Neg. Style Code"; Rec."Neg. Style Code") { ApplicationArea = All; LookupPageId = lvnStyleList; }
+                field(Description; ColumnDescription)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Column';
+                    Editable = false;
+                }
+                field("Calculation Unit Code"; Rec."Calculation Unit Code")
+                {
+                    ApplicationArea = All;
+                    LookupPageId = lvnCalculationUnitList;
+                }
+                field("Number Format Code"; Rec."Number Format Code")
+                {
+                    ApplicationArea = All;
+                    LookupPageId = lvnNumberFormatList;
+                }
+                field("Style Code"; Rec."Style Code")
+                {
+                    ApplicationArea = All;
+                    LookupPageId = lvnStyleList;
+                }
+                field("Neg. Style Code"; Rec."Neg. Style Code")
+                {
+                    ApplicationArea = All;
+                    LookupPageId = lvnStyleList;
+                }
             }
         }
     }
-
-    var
-        ColumnDescription: Text;
-        UnderlyingColumnSchemaCode: Code[20];
 
     trigger OnAfterGetRecord()
     var
@@ -34,6 +51,10 @@ page 14135212 "lvnPerfRowSchemaSubLines"
         else
             ColumnDescription := '';
     end;
+
+    var
+        ColumnDescription: Text;
+        UnderlyingColumnSchemaCode: Code[20];
 
     procedure SetColumnSchemaCode(SchemaCode: Code[20])
     begin

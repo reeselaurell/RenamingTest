@@ -9,7 +9,9 @@ report 14135900 "lvnBarcodeReport"
         {
             DataItemTableView = sorting(Number) where(Number = const(1));
 
-            column(BarcodeValue; BarcodeValue) { }
+            column(BarcodeValue; BarcodeValue)
+            {
+            }
         }
     }
 

@@ -12,12 +12,52 @@ page 14135225 "lvnLoanValuesView"
         {
             group(Filters)
             {
-                field(SchemaName; LoanLevelReportSchema.Description) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
-                field(Dim1Filter; SystemFilter."Global Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
-                field(Dim2Filter; SystemFilter."Global Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
-                field(Dim3Filter; SystemFilter."Shortcut Dimension 3") { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
-                field(Dim4Filter; SystemFilter."Shortcut Dimension 4") { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
-                field(BusinessUnitFilter; SystemFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
+                field(SchemaName; LoanLevelReportSchema.Description)
+                {
+                    ApplicationArea = All;
+                    Caption = 'View Name';
+                    ShowCaption = false;
+                    Editable = false;
+                }
+                field(Dim1Filter; SystemFilter."Global Dimension 1")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Dimension 1 Filter';
+                    Editable = false;
+                    Visible = Dim1Visible;
+                    CaptionClass = '1,3,1';
+                }
+                field(Dim2Filter; SystemFilter."Global Dimension 2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Dimension 2 Filter';
+                    Editable = false;
+                    Visible = Dim2Visible;
+                    CaptionClass = '1,3,2';
+                }
+                field(Dim3Filter; SystemFilter."Shortcut Dimension 3")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Dimension 3 Filter';
+                    Editable = false;
+                    Visible = Dim3Visible;
+                    CaptionClass = '1,2,3';
+                }
+                field(Dim4Filter; SystemFilter."Shortcut Dimension 4")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Dimension 4 Filter';
+                    Editable = false;
+                    Visible = Dim4Visible;
+                    CaptionClass = '1,2,4';
+                }
+                field(BusinessUnitFilter; SystemFilter."Business Unit")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Business Unit Filter';
+                    Editable = false;
+                    Visible = BusinessUnitVisible;
+                }
                 field(BasedOn; BasedOn)
                 {
                     ApplicationArea = All;
@@ -29,7 +69,12 @@ page 14135225 "lvnLoanValuesView"
                         InitializeDataGrid();
                     end;
                 }
-                field(DateFilter; SystemFilter."Date Filter") { ApplicationArea = All; Editable = false; Caption = 'Date Filter'; }
+                field(DateFilter; SystemFilter."Date Filter")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Date Filter';
+                }
             }
             usercontrol(DataGrid; lvnDataGridControl)
             {
@@ -91,21 +136,14 @@ page 14135225 "lvnLoanValuesView"
         }
     }
 
+    trigger OnOpenPage()
+    begin
+        LoanVisionSetup.Get();
+        CacheGLFilterBlobs();
+        CalculateData();
+    end;
+
     var
-        LoanNoLbl: Label 'Loan No.';
-        DateFundedLbl: Label 'Date Funded';
-        DateSoldLbl: Label 'Date Sold';
-        PostingDateLbl: Label 'Posting Date';
-        LONameLbl: Label 'LO Name';
-        YesTxt: Label 'Yes';
-        NoTxt: Label 'No';
-        TotalsTxt: Label 'Totals';
-        NotAvailableTxt: Label 'N/A';
-        LoanLevelExportFileNameTxt: Label 'Loan Level Report';
-        BusinessUnitFilterTxt: Label 'Business Unit Filter';
-        BaseDateText: Label 'Base Date';
-        DateFilterTxt: Label 'Date Filter';
-        IntranslatableRowFormulaErr: Label 'Row formula cannot be translated';
         LoanVisionSetup: Record lvnLoanVisionSetup;
         LoanLevelReportSchema: Record lvnLoanLevelReportSchema;
         SystemFilter: Record lvnSystemCalculationFilter temporary;
@@ -124,15 +162,26 @@ page 14135225 "lvnLoanValuesView"
         Dim4Visible: Boolean;
         BusinessUnitVisible: Boolean;
         TotalsRowVisible: Boolean;
+        LoanNoLbl: Label 'Loan No.';
+        DateFundedLbl: Label 'Date Funded';
+        DateSoldLbl: Label 'Date Sold';
+        PostingDateLbl: Label 'Posting Date';
+        LONameLbl: Label 'LO Name';
+        YesTxt: Label 'Yes';
+        NoTxt: Label 'No';
+        TotalsTxt: Label 'Totals';
+        NotAvailableTxt: Label 'N/A';
+        LoanLevelExportFileNameTxt: Label 'Loan Level Report';
+        BusinessUnitFilterTxt: Label 'Business Unit Filter';
+        BaseDateText: Label 'Base Date';
+        DateFilterTxt: Label 'Date Filter';
+        IntranslatableRowFormulaErr: Label 'Row formula cannot be translated';
 
-    trigger OnOpenPage()
-    begin
-        LoanVisionSetup.Get();
-        CacheGLFilterBlobs();
-        CalculateData();
-    end;
-
-    procedure SetParams(SchemaCode: Code[20]; BaseDate: Enum lvnLoanLevelReportBaseDate; var Filter: Record lvnSystemCalculationFilter; ShowTotals: Boolean)
+    procedure SetParams(
+        SchemaCode: Code[20];
+        BaseDate: Enum lvnLoanLevelReportBaseDate;
+        var Filter: Record lvnSystemCalculationFilter;
+        ShowTotals: Boolean)
     begin
         LoanLevelReportSchema.Get(SchemaCode);
         BasedOn := BaseDate;
@@ -143,6 +192,18 @@ page 14135225 "lvnLoanValuesView"
         Dim2Visible := Filter."Global Dimension 2" <> '';
         Dim3Visible := Filter."Shortcut Dimension 3" <> '';
         Dim4Visible := Filter."Shortcut Dimension 4" <> '';
+    end;
+
+    procedure GetExportFileName(Mode: Enum lvnGridExportMode): Text
+    begin
+        case Mode of
+            Mode::Pdf:
+                exit(LoanLevelExportFileNameTxt + '.pdf');
+            Mode::Html:
+                exit(LoanLevelExportFileNameTxt + '.html');
+            else
+                exit(LoanLevelExportFileNameTxt + '.xlsx');
+        end;
     end;
 
     local procedure CacheGLFilterBlobs()
@@ -169,8 +230,8 @@ page 14135225 "lvnLoanValuesView"
 
     local procedure CalculateData()
     var
-        GLLoansPerPeriod: Query lvnGLEntryLoansPerPeriod;
         Loan: Record lvnLoan;
+        GLLoansPerPeriod: Query lvnGLEntryLoansPerPeriod;
         RowNo: Integer;
     begin
         RowBuffer.Reset();
@@ -195,7 +256,7 @@ page 14135225 "lvnLoanValuesView"
             if GLLoansPerPeriod.Open() then
                 while GLLoansPerPeriod.Read() do begin
                     Clear(RowBuffer);
-                    RowBuffer.ID := RowNo;
+                    RowBuffer.Id := RowNo;
                     RowNo += 1;
                     Loan.Get(GLLoansPerPeriod.LoanNo);
                     RowBuffer.Name := Loan."No.";
@@ -203,7 +264,7 @@ page 14135225 "lvnLoanValuesView"
                     CalculateRowData(Loan);
                     if LoanLevelReportSchema."Skip Zero Balance Lines" then begin
                         ValueBuffer.Reset();
-                        ValueBuffer.SetRange("Row No.", RowBuffer.ID);
+                        ValueBuffer.SetRange("Row No.", RowBuffer.Id);
                         ValueBuffer.SetRange("Value Type", ValueBuffer."Value Type"::Number);
                         ValueBuffer.SetFilter("Numeric Value", '<>%1', 0);
                         if not ValueBuffer.IsEmpty() then
@@ -231,7 +292,7 @@ page 14135225 "lvnLoanValuesView"
             if Loan.FindSet() then
                 repeat
                     Clear(RowBuffer);
-                    RowBuffer.ID := RowNo;
+                    RowBuffer.Id := RowNo;
                     RowNo += 1;
                     RowBuffer.Name := Loan."No.";
                     if BasedOn = BasedOn::Sold then
@@ -285,7 +346,7 @@ page 14135225 "lvnLoanValuesView"
         LoanLevelReportSchemaLine.FindSet();
         repeat
             Clear(ValueBuffer);
-            ValueBuffer."Row No." := RowBuffer.ID;
+            ValueBuffer."Row No." := RowBuffer.Id;
             ValueBuffer."Column No." := LoanLevelReportSchemaLine."Column No.";
             ValueBuffer."Number Format Code" := LoanLevelReportSchemaLine."Number Format Code";
             CalculatePlainValue(LoanLevelReportSchemaLine, TempGroupedLoanGLEntry, Loan, RecordReference);
@@ -298,7 +359,7 @@ page 14135225 "lvnLoanValuesView"
         repeat
             CalculatedValue := CalculateFormulaValue(LoanLevelReportSchemaLine);
             Clear(ValueBuffer);
-            ValueBuffer."Row No." := RowBuffer.ID;
+            ValueBuffer."Row No." := RowBuffer.Id;
             ValueBuffer."Column No." := LoanLevelReportSchemaLine."Column No.";
             ValueBuffer."Number Format Code" := LoanLevelReportSchemaLine."Number Format Code";
             ValueBuffer."Raw Value" := CalculatedValue;
@@ -311,10 +372,10 @@ page 14135225 "lvnLoanValuesView"
         RecordReference.Close();
         if TotalsRowVisible then begin
             ValueBuffer.Reset();
-            ValueBuffer.SetRange("Row No.", RowBuffer.ID);
+            ValueBuffer.SetRange("Row No.", RowBuffer.Id);
             if ValueBuffer.FindSet() then
                 repeat
-                    if RowBuffer.ID = 1 then begin //First row
+                    if RowBuffer.Id = 1 then begin //First row
                         if ValueBuffer."Value Type" = ValueBuffer."Value Type"::Number then
                             TotalsData.Add(ValueBuffer."Column No.", ValueBuffer."Numeric Value");
                     end else begin
@@ -329,7 +390,11 @@ page 14135225 "lvnLoanValuesView"
         end;
     end;
 
-    local procedure CalculatePlainValue(var LoanLevelReportSchemaLine: Record lvnLoanLevelReportSchemaLine; var GroupedLoanGLEntry: Record lvnGroupedLoanGLEntry; var Loan: Record lvnLoan; var LoanRef: RecordRef)
+    local procedure CalculatePlainValue(
+        var LoanLevelReportSchemaLine: Record lvnLoanLevelReportSchemaLine;
+        var GroupedLoanGLEntry: Record lvnGroupedLoanGLEntry;
+        var Loan: Record lvnLoan;
+        var LoanRef: RecordRef)
     var
         LoanValue: Record lvnLoanValue;
         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
@@ -411,7 +476,7 @@ page 14135225 "lvnLoanValuesView"
         FormulaBuffer.Reset();
         FormulaBuffer.DeleteAll();
         ValueBuffer.Reset();
-        ValueBuffer.SetRange("Row No.", RowBuffer.ID);
+        ValueBuffer.SetRange("Row No.", RowBuffer.Id);
         ValueBuffer.SetRange("Value Type", ValueBuffer."Value Type"::Number);
         if ValueBuffer.FindSet() then
             repeat
@@ -481,12 +546,12 @@ page 14135225 "lvnLoanValuesView"
         if RowBuffer.FindSet() then begin
             repeat
                 Clear(RowData);
-                RowData.Add('rowId', RowBuffer.ID);
+                RowData.Add('rowId', RowBuffer.Id);
                 RowData.Add('LoanNo', RowBuffer.Name);
                 RowData.Add('BaseDate', RowBuffer.Value);
                 RowData.Add('LOName', RowBuffer."Value Long");
                 ValueBuffer.Reset();
-                ValueBuffer.SetRange("Row No.", RowBuffer.ID);
+                ValueBuffer.SetRange("Row No.", RowBuffer.Id);
                 if ValueBuffer.FindSet() then
                     repeat
                         if ValueBuffer."Value Type" = ValueBuffer."Value Type"::Number then begin
@@ -583,8 +648,8 @@ page 14135225 "lvnLoanValuesView"
         ColBuffer: Record lvnLoanLevelReportSchemaLine temporary;
         LoanLevelMgmt: Codeunit lvnLoanLevelReportManagement;
         ExpressionEngine: Codeunit lvnExpressionEngine;
-        ColIndexLookup: Dictionary of [Integer, Integer];
         ExcelExport: Codeunit lvnExcelExport;
+        ColIndexLookup: Dictionary of [Integer, Integer];
         DataColStartIdx: Integer;
         DataRowStartIdx: Integer;
         RowId: Integer;
@@ -691,7 +756,7 @@ page 14135225 "lvnLoanValuesView"
         RowBuffer.Reset();
         if RowBuffer.FindSet() then begin
             repeat
-                ExcelExport.NewRow(RowBuffer.ID);
+                ExcelExport.NewRow(RowBuffer.Id);
                 ExcelExport.WriteString(RowBuffer.Name);    //LoanNo
                 Evaluate(BaseDate, RowBuffer.Value);
                 ExcelExport.WriteDate(BaseDate);   //Date
@@ -702,9 +767,9 @@ page 14135225 "lvnLoanValuesView"
                         if ColBuffer.Type = ColBuffer.Type::Formula then begin
                             ExcelExport.FormatCell(ColBuffer."Number Format Code");
                             ExpressionHeader.Get(ColBuffer."Formula Code", LoanLevelMgmt.GetLoanLevelFormulaConsumerId());
-                            ExcelExport.WriteFormula('=' + TranslateRowFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), RowBuffer.ID - 1, DataRowStartIdx, DataColStartIdx, ColIndexLookup));
+                            ExcelExport.WriteFormula('=' + TranslateRowFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), RowBuffer.Id - 1, DataRowStartIdx, DataColStartIdx, ColIndexLookup));
                         end else begin
-                            ValueBuffer.Get(RowBuffer.ID, ColBuffer."Column No.");
+                            ValueBuffer.Get(RowBuffer.Id, ColBuffer."Column No.");
                             if ValueBuffer."Number Format Code" <> '' then
                                 ExcelExport.FormatCell(ValueBuffer."Number Format Code");
                             case ValueBuffer."Value Type" of
@@ -719,7 +784,7 @@ page 14135225 "lvnLoanValuesView"
                     until ColBuffer.Next() = 0;
             until RowBuffer.Next() = 0;
             if TotalsRowVisible then begin
-                ExcelExport.NewRow(RowBuffer.ID + 1);
+                ExcelExport.NewRow(RowBuffer.Id + 1);
                 ExcelExport.StyleRow(DefaultBoolean::Yes, DefaultBoolean::No, DefaultBoolean::No, -1, '', '', '');
                 ExcelExport.WriteString(TotalsTxt);
                 ExcelExport.WriteString(NotAvailableTxt);
@@ -730,7 +795,7 @@ page 14135225 "lvnLoanValuesView"
                     repeat
                         if TotalsData.Get(ColBuffer."Column No.", Dummy) then begin
                             ExcelExport.FormatCell(ColBuffer."Number Format Code");
-                            ExcelExport.WriteFormula('=SUM(' + TranslateRowFormulaField('col' + Format(ColBuffer."Column No."), 0, DataRowStartIdx, DataColStartIdx, ColIndexLookup) + ':' + TranslateRowFormulaField('col' + Format(ColBuffer."Column No."), RowBuffer.ID - 1, DataRowStartIdx, DataColStartIdx, ColIndexLookup) + ')');
+                            ExcelExport.WriteFormula('=SUM(' + TranslateRowFormulaField('col' + Format(ColBuffer."Column No."), 0, DataRowStartIdx, DataColStartIdx, ColIndexLookup) + ':' + TranslateRowFormulaField('col' + Format(ColBuffer."Column No."), RowBuffer.Id - 1, DataRowStartIdx, DataColStartIdx, ColIndexLookup) + ')');
                         end else
                             ExcelExport.WriteString(NotAvailableTxt);
                     until ColBuffer.Next() = 0;
@@ -740,7 +805,12 @@ page 14135225 "lvnLoanValuesView"
         ExcelExport.Download(GetExportFileName(GridExportMode));
     end;
 
-    local procedure TranslateRowFormula(Formula: Text; RowIdx: Integer; DataRowOffset: Integer; DataColOffset: Integer; var ColIndexLookup: Dictionary of [Integer, Integer]): Text
+    local procedure TranslateRowFormula(
+        Formula: Text;
+        RowIdx: Integer;
+        DataRowOffset: Integer;
+        DataColOffset: Integer;
+        var ColIndexLookup: Dictionary of [Integer, Integer]): Text
     var
         FieldStart: Integer;
         FieldEnd: Integer;
@@ -760,7 +830,12 @@ page 14135225 "lvnLoanValuesView"
         exit(Formula);
     end;
 
-    local procedure TranslateRowFormulaField(Field: Text; RowIdx: Integer; DataRowOffset: Integer; DataColOffset: Integer; var ColIndexLookup: Dictionary of [Integer, Integer]): Text
+    local procedure TranslateRowFormulaField(
+        Field: Text;
+        RowIdx: Integer;
+        DataRowOffset: Integer;
+        DataColOffset: Integer;
+        var ColIndexLookup: Dictionary of [Integer, Integer]): Text
     var
         ExcelExport: Codeunit lvnExcelExport;
         FieldIdx: Integer;
@@ -772,17 +847,5 @@ page 14135225 "lvnLoanValuesView"
         if not ColIndexLookup.Get(FieldIdx, FieldIdx) then
             Error(IntranslatableRowFormulaErr);
         exit(ExcelExport.GetExcelColumnName(DataColOffset + FieldIdx) + Format(RowIdx + DataRowOffset + 1));
-    end;
-
-    procedure GetExportFileName(Mode: Enum lvnGridExportMode): Text
-    begin
-        case Mode of
-            Mode::Pdf:
-                exit(LoanLevelExportFileNameTxt + '.pdf');
-            Mode::Html:
-                exit(LoanLevelExportFileNameTxt + '.html');
-            else
-                exit(LoanLevelExportFileNameTxt + '.xlsx');
-        end;
     end;
 }

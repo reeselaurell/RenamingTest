@@ -4,7 +4,10 @@ pageextension 14135127 "lvnPostedPurchaseCreditMemo" extends "Posted Purchase Cr
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

@@ -10,8 +10,14 @@ page 14135110 "lvnLoanImportSchemaLines"
         {
             repeater(Group)
             {
-                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
-                field("Field Type"; Rec."Field Type") { ApplicationArea = All; }
+                field("Line No."; Rec."Line No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Field Type"; Rec."Field Type")
+                {
+                    ApplicationArea = All;
+                }
                 field("Field No."; Rec."Field No.")
                 {
                     ApplicationArea = All;
@@ -53,9 +59,9 @@ page 14135110 "lvnLoanImportSchemaLines"
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsListPage: Page "Fields Lookup";
                         FieldRec: Record Field;
                         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
+                        FieldsListPage: Page "Fields Lookup";
                     begin
                         case Rec."Field Type" of
                             Rec."Field Type"::Table:
@@ -95,14 +101,38 @@ page 14135110 "lvnLoanImportSchemaLines"
                         end;
                     end;
                 }
-                field("Field Name"; Rec."Field Name") { ApplicationArea = All; }
-                field("Field Size"; Rec."Field Size") { ApplicationArea = All; }
-                field("Numeric Format"; Rec."Numeric Format") { ApplicationArea = All; }
-                field("Value Type"; Rec."Value Type") { ApplicationArea = All; }
-                field("Padding Side"; Rec."Padding Side") { ApplicationArea = All; }
-                field("Padding Character"; Rec."Padding Character") { ApplicationArea = All; }
-                field(Trimming; Rec.Trimming) { ApplicationArea = All; }
-                field("Boolean Format"; Rec."Boolean Format") { ApplicationArea = All; }
+                field("Field Name"; Rec."Field Name")
+                {
+                    ApplicationArea = All;
+                }
+                field("Field Size"; Rec."Field Size")
+                {
+                    ApplicationArea = All;
+                }
+                field("Numeric Format"; Rec."Numeric Format")
+                {
+                    ApplicationArea = All;
+                }
+                field("Value Type"; Rec."Value Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Padding Side"; Rec."Padding Side")
+                {
+                    ApplicationArea = All;
+                }
+                field("Padding Character"; Rec."Padding Character")
+                {
+                    ApplicationArea = All;
+                }
+                field(Trimming; Rec.Trimming)
+                {
+                    ApplicationArea = All;
+                }
+                field("Boolean Format"; Rec."Boolean Format")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

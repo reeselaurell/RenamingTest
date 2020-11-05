@@ -2,16 +2,53 @@ table 14135115 "lvnLoanDocumentLine"
 {
     DataClassification = CustomerContent;
     Caption = 'Loan Document Line';
+
     fields
     {
-        field(1; "Transaction Type"; enum lvnLoanTransactionType) { Caption = 'Document Type'; DataClassification = CustomerContent; }
-        field(2; "Document No."; Code[20]) { Caption = 'Document No.'; DataClassification = CustomerContent; TableRelation = lvnLoanDocument."Document No." where("Transaction Type" = field("Transaction Type")); }
-        field(3; "Line No."; Integer) { Caption = 'Line No.'; DataClassification = CustomerContent; }
-        field(10; "Account Type"; enum lvnLoanAccountType) { Caption = 'Account Type'; DataClassification = CustomerContent; }
-        field(11; "Account No."; Code[20]) { Caption = 'Account No.'; DataClassification = CustomerContent; TableRelation = if ("Account Type" = const("G/L Account")) "G/L Account"."No." where("Account Type" = const(Posting), Blocked = const(false)) else if ("Account Type" = const("Bank Account")) "Bank Account" where(Blocked = const(false)); }
-        field(12; "Reason Code"; Code[10]) { Caption = 'Reason Code'; DataClassification = CustomerContent; TableRelation = "Reason Code"; }
-        field(13; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(14; Amount; Decimal) { Caption = 'Amount'; DataClassification = CustomerContent; }
+        field(1; "Transaction Type"; enum lvnLoanTransactionType)
+        {
+            Caption = 'Document Type';
+            DataClassification = CustomerContent;
+        }
+        field(2; "Document No."; Code[20])
+        {
+            Caption = 'Document No.';
+            DataClassification = CustomerContent;
+            TableRelation = lvnLoanDocument."Document No." where("Transaction Type" = field("Transaction Type"));
+        }
+        field(3; "Line No."; Integer)
+        {
+            Caption = 'Line No.';
+            DataClassification = CustomerContent;
+        }
+        field(10; "Account Type"; enum lvnLoanAccountType)
+        {
+            Caption = 'Account Type';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Account No."; Code[20])
+        {
+            Caption = 'Account No.';
+            DataClassification = CustomerContent;
+            TableRelation = if ("Account Type" = const("G/L Account")) "G/L Account"."No." where("Account Type" = const(Posting), Blocked = const(false)) else
+            if ("Account Type" = const("Bank Account")) "Bank Account" where(Blocked = const(false));
+        }
+        field(12; "Reason Code"; Code[10])
+        {
+            Caption = 'Reason Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
+        }
+        field(13; Description; Text[50])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(14; Amount; Decimal)
+        {
+            Caption = 'Amount';
+            DataClassification = CustomerContent;
+        }
         field(80; "Global Dimension 1 Code"; Code[20])
         {
             DataClassification = CustomerContent;
@@ -108,13 +145,44 @@ table 14135115 "lvnLoanDocumentLine"
                 DimensionManagement.ValidateShortcutDimValues(8, "Shortcut Dimension 8 Code", "Dimension Set ID");
             end;
         }
-        field(88; "Business Unit Code"; Code[20]) { Caption = 'Business Unit Code'; DataClassification = CustomerContent; TableRelation = "Business Unit"; }
-        field(89; "Dimension Set ID"; Integer) { Caption = 'Dimension Set ID'; DataClassification = CustomerContent; }
-        field(200; "Servicing Type"; enum lvnServicingType) { Caption = 'Servicing Type'; DataClassification = CustomerContent; }
-        field(1000; "Processing Schema Code"; code[20]) { Caption = 'Processing Schema Code'; DataClassification = CustomerContent; TableRelation = lvnLoanProcessingSchema.Code; }
-        field(1001; "Processing Schema Line No."; Integer) { Caption = 'Processing Schema Line No.'; DataClassification = CustomerContent; TableRelation = lvnLoanProcessingSchemaline."Line No." where("Processing Code" = field("Processing Schema Code")); }
-        field(1002; "Balancing Entry"; boolean) { Caption = 'Balancing Entry'; DataClassification = CustomerContent; }
-        field(1003; "Tag Code"; Code[10]) { Caption = 'Tag Code'; DataClassification = CustomerContent; }
+        field(88; "Business Unit Code"; Code[20])
+        {
+            Caption = 'Business Unit Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Business Unit";
+        }
+        field(89; "Dimension Set ID"; Integer)
+        {
+            Caption = 'Dimension Set ID';
+            DataClassification = CustomerContent;
+        }
+        field(200; "Servicing Type"; enum lvnServicingType)
+        {
+            Caption = 'Servicing Type';
+            DataClassification = CustomerContent;
+        }
+        field(1000; "Processing Schema Code"; code[20])
+        {
+            Caption = 'Processing Schema Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvnLoanProcessingSchema.Code;
+        }
+        field(1001; "Processing Schema Line No."; Integer)
+        {
+            Caption = 'Processing Schema Line No.';
+            DataClassification = CustomerContent;
+            TableRelation = lvnLoanProcessingSchemaline."Line No." where("Processing Code" = field("Processing Schema Code"));
+        }
+        field(1002; "Balancing Entry"; boolean)
+        {
+            Caption = 'Balancing Entry';
+            DataClassification = CustomerContent;
+        }
+        field(1003; "Tag Code"; Code[10])
+        {
+            Caption = 'Tag Code';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
@@ -136,5 +204,4 @@ table 14135115 "lvnLoanDocumentLine"
         DimensionManagement.ValidateShortcutDimValues(7, "Shortcut Dimension 7 Code", "Dimension Set ID");
         DimensionManagement.ValidateShortcutDimValues(8, "Shortcut Dimension 8 Code", "Dimension Set ID");
     end;
-
 }

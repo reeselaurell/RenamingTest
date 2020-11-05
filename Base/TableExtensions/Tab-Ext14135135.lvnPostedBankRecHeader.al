@@ -2,7 +2,10 @@ tableextension 14135135 "lvnPostedBankRecHeader" extends "Posted Bank Rec. Heade
 {
     fields
     {
-        field(14135999; lvnDocumentGuid; Guid) { DataClassification = CustomerContent; }
+        field(14135999; lvnDocumentGuid; Guid)
+        {
+            DataClassification = CustomerContent;
+        }
     }
 
     trigger OnInsert()

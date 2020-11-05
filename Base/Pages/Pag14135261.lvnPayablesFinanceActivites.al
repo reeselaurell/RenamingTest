@@ -33,7 +33,6 @@ page 14135261 "lvnPayablesFinanceActivites"
                             Page.Run(Page::"Purchase Invoices", PurchHeader);
                     end;
                 }
-
                 field(OpenCrMemos; OpenCrMemoCount())
                 {
                     Caption = 'Open Cr. Memos Today';
@@ -55,7 +54,6 @@ page 14135261 "lvnPayablesFinanceActivites"
                             Page.Run(Page::"Purchase Invoices", PurchHeader);
                     end;
                 }
-
                 field(PostedInvoices; PostedInvoicesCount())
                 {
                     Caption = 'Posted Invoices Today';
@@ -75,7 +73,6 @@ page 14135261 "lvnPayablesFinanceActivites"
                             Page.Run(Page::"Posted Purchase Invoices", PurchInvHdr);
                     end;
                 }
-
                 field(PostedCrMemo; PostedCrMemoCount())
                 {
                     Caption = 'Posted Cr. Memos Today';

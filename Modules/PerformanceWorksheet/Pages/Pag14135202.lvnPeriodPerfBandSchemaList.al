@@ -12,11 +12,18 @@ page 14135202 "lvnPeriodPerfBandSchemaList"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
+
     actions
     {
         area(Processing)

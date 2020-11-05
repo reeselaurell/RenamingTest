@@ -6,11 +6,32 @@ table 14135171 "lvnPerformanceColSchemaLine"
 
     fields
     {
-        field(1; "Schema Code"; Code[20]) { Caption = 'Schema Code'; DataClassification = CustomerContent; TableRelation = lvnPerformanceColSchema.Code; }
-        field(2; "Column No."; Integer) { Caption = 'Column No.'; DataClassification = CustomerContent; }
-        field(10; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(11; "Primary Caption"; Text[50]) { Caption = 'Primary Caption'; DataClassification = CustomerContent; }
-        field(12; "Secondary Caption"; Text[50]) { Caption = 'Secondary Caption'; DataClassification = CustomerContent; }
+        field(1; "Schema Code"; Code[20])
+        {
+            Caption = 'Schema Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvnPerformanceColSchema.Code;
+        }
+        field(2; "Column No."; Integer)
+        {
+            Caption = 'Column No.';
+            DataClassification = CustomerContent;
+        }
+        field(10; Description; Text[50])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Primary Caption"; Text[50])
+        {
+            Caption = 'Primary Caption';
+            DataClassification = CustomerContent;
+        }
+        field(12; "Secondary Caption"; Text[50])
+        {
+            Caption = 'Secondary Caption';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

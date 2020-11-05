@@ -11,7 +11,9 @@ report 14135901 "lvnBarcodeReportBatch"
             DataItemTableView = sorting("Document Type", "No.");
             RequestFilterFields = "No.";
 
-            column(BarcodeValue; "Purchase Header"."No.") { }
+            column(BarcodeValue; "Purchase Header"."No.")
+            {
+            }
         }
     }
 }

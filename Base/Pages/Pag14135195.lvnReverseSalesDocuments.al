@@ -15,9 +15,21 @@ page 14135195 "lvnReverseSalesDocuments"
         {
             repeater(Group)
             {
-                field("Document Type"; Rec."Document Type") { ApplicationArea = All; Editable = false; }
-                field("No."; Rec."No.") { ApplicationArea = All; Editable = false; }
-                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; Editable = false; }
+                field("Document Type"; Rec."Document Type")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
                 field(NewPostingDate; Rec."Shipment Date")
                 {
                     ApplicationArea = All;
@@ -28,12 +40,31 @@ page 14135195 "lvnReverseSalesDocuments"
                         Rec."Shipment Date" := Rec."Shipment Date";
                     end;
                 }
-                field("Sell-to Customer No."; Rec."Sell-to Customer No.") { ApplicationArea = All; Editable = false; }
-                field("Bill-to Customer No."; Rec."Bill-to Customer No.") { ApplicationArea = All; Editable = false; }
-                field("Bill-to Name"; Rec."Bill-to Name") { ApplicationArea = All; Editable = false; }
-                field("Reason Code"; Rec."Reason Code") { ApplicationArea = All; Editable = false; }
-                //Borrower Name
-                field(ReverseTransaction; Rec.Correction) { ApplicationArea = All; Caption = 'Reverse Transaction'; }
+                field("Sell-to Customer No."; Rec."Sell-to Customer No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Bill-to Customer No."; Rec."Bill-to Customer No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Bill-to Name"; Rec."Bill-to Name")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Reason Code"; Rec."Reason Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field(ReverseTransaction; Rec.Correction)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Reverse Transaction';
+                }
             }
         }
     }
@@ -80,7 +111,6 @@ page 14135195 "lvnReverseSalesDocuments"
                     end;
                 end;
             }
-
             action(GetCreditMemos)
             {
                 Caption = 'Get Credit Memos to Reverse';
@@ -119,7 +149,6 @@ page 14135195 "lvnReverseSalesDocuments"
                     end;
                 end;
             }
-
             action(ReverseDocuments)
             {
                 Caption = 'Reverse Selected Documents';
@@ -279,7 +308,6 @@ page 14135195 "lvnReverseSalesDocuments"
                     Message(CompleteMsg, RecordsCount);
                 end;
             }
-
             action(SetNewPostingDate)
             {
                 Caption = 'Set New Posting Date';
@@ -291,7 +319,7 @@ page 14135195 "lvnReverseSalesDocuments"
 
                 trigger OnAction()
                 var
-                    DateTimeDialog: page "Date-Time Dialog";
+                    DateTimeDialog: Page "Date-Time Dialog";
                     NewDate: Date;
                 begin
                     Clear(DateTimeDialog);
@@ -311,6 +339,12 @@ page 14135195 "lvnReverseSalesDocuments"
     }
 
     var
+        SalesInvHeader: Record "Sales Invoice Header";
+        SalesInvLine: Record "Sales Invoice Line";
+        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
+        SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        LoanVisionSetup: Record lvnLoanVisionSetup;
+        LVSetupRetrieved: Boolean;
         InvoiceDocTxt: Label 'Invoice Documents';
         CrMemoDocTxt: Label 'Credit Memo Documents';
         ProgressMsg: Label 'Document #1#############';
@@ -318,12 +352,6 @@ page 14135195 "lvnReverseSalesDocuments"
         ReverseConfirmMsg: Label '"%1" Document was already reversed. Do you want to reverse it once more ?';
         ReverseErr: Label 'You can''t reverse more than 10 documents at a time. Please contact System Administrator for Assistance.';
         CancelledErr: Label 'Cancelled by User!';
-        SalesInvHeader: Record "Sales Invoice Header";
-        SalesInvLine: Record "Sales Invoice Line";
-        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
-        SalesCrMemoLine: Record "Sales Cr.Memo Line";
-        LoanVisionSetup: Record lvnLoanVisionSetup;
-        LVSetupRetrieved: Boolean;
 
     local procedure GetLoanVisionSetup()
     begin

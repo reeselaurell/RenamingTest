@@ -16,16 +16,6 @@ report 14135188 "lvnGLReconExcelExport"
             }
         }
     }
-    var
-        FileNameLbl: Label 'GLReconExport.xlsx';
-        DetailsColHdrTxt: Label 'Details';
-        GLReconExportCaller: Label 'GLReconExport';
-        HeaderTxt: Label 'G/L Reconciliation';
-        ColorCodeLbl: Label '#D2D2D2';
-        TempGenLedgRec: Record lvnGenLedgerReconcile temporary;
-        ExportFormat: Enum lvnGridExportMode;
-        ExcelExport: Codeunit lvnExcelExport;
-        NumberFormat: Code[20];
 
     trigger OnPreReport()
     begin
@@ -84,7 +74,34 @@ report 14135188 "lvnGLReconExcelExport"
         ExcelExport.Download(FileNameLbl);
     end;
 
-    local procedure WriteToExcel(Output: Variant; CreateRange: Boolean; SkipCells: Integer; CenterText: Boolean; CellColor: Text; Bold: Boolean; Currency: Boolean)
+    var
+        TempGenLedgRec: Record lvnGenLedgerReconcile temporary;
+        ExcelExport: Codeunit lvnExcelExport;
+        ExportFormat: Enum lvnGridExportMode;
+        NumberFormat: Code[20];
+        FileNameLbl: Label 'GLReconExport.xlsx';
+        DetailsColHdrTxt: Label 'Details';
+        GLReconExportCaller: Label 'GLReconExport';
+        HeaderTxt: Label 'G/L Reconciliation';
+        ColorCodeLbl: Label '#D2D2D2';
+
+    procedure SetParam(var pBuffer: Record lvnGenLedgerReconcile)
+    begin
+        if pBuffer.FindSet() then
+            repeat
+                TempGenLedgRec := pBuffer;
+                TempGenLedgRec.Insert();
+            until pBuffer.Next() = 0;
+    end;
+
+    local procedure WriteToExcel(
+        Output: Variant;
+        CreateRange: Boolean;
+        SkipCells: Integer;
+        CenterText: Boolean;
+        CellColor: Text;
+        Bold: Boolean;
+        Currency: Boolean)
     var
         DefaultBoolean: Enum lvnDefaultBoolean;
     begin
@@ -106,14 +123,5 @@ report 14135188 "lvnGLReconExcelExport"
             ExcelExport.SkipCells(SkipCells);
             ExcelExport.MergeRange(CenterText);
         end;
-    end;
-
-    procedure SetParam(var pBuffer: Record lvnGenLedgerReconcile)
-    begin
-        if pBuffer.FindSet() then
-            repeat
-                TempGenLedgRec := pBuffer;
-                TempGenLedgRec.Insert();
-            until pBuffer.Next() = 0;
     end;
 }

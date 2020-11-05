@@ -93,7 +93,6 @@ page 14135265 "lvnLoanManagerDocActivities"
                     end;
                 }
             }
-
             cuegroup(Group)
             {
                 Caption = 'Unproccessed Loan Fundings';
@@ -199,7 +198,6 @@ page 14135265 "lvnLoanManagerDocActivities"
                     end;
                 }
             }
-
             cuegroup(Sold)
             {
                 Caption = 'Unproccessed Loan Sales';
@@ -321,6 +319,13 @@ page 14135265 "lvnLoanManagerDocActivities"
         }
     }
 
+    trigger OnOpenPage()
+    begin
+        ActSetupRetrieved := false;
+        CheckVisibility();
+        CalculateFundedLastBusDay();
+    end;
+
     var
         ActSetup: Record lvnLoanManagerDocActSetup;
         ActSetupRetrieved: Boolean;
@@ -338,13 +343,6 @@ page 14135265 "lvnLoanManagerDocActivities"
         SoldVisible3: Boolean;
         SoldVisible4: Boolean;
         SoldVisible5: Boolean;
-
-    trigger OnOpenPage()
-    begin
-        ActSetupRetrieved := false;
-        CheckVisibility();
-        CalculateFundedLastBusDay();
-    end;
 
     local procedure CheckVisibility()
     begin

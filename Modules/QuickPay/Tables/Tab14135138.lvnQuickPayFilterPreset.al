@@ -5,9 +5,21 @@ table 14135138 "lvnQuickPayFilterPreset"
 
     fields
     {
-        field(1; Code; Code[20]) { Caption = 'Code'; DataClassification = CustomerContent; }
-        field(10; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(11; View; Blob) { Caption = 'View'; DataClassification = CustomerContent; }
+        field(1; Code; Code[20])
+        {
+            Caption = 'Code';
+            DataClassification = CustomerContent;
+        }
+        field(10; Description; Text[50])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(11; View; Blob)
+        {
+            Caption = 'View';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

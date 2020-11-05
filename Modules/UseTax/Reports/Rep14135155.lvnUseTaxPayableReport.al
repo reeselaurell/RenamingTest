@@ -17,7 +17,6 @@ report 14135155 "lvnUseTaxPayableReport"
                 CurrReport.Break();
             end;
         }
-
         dataitem(StateLoop; lvnState)
         {
             DataItemTableView = sorting(Code);
@@ -26,20 +25,45 @@ report 14135155 "lvnUseTaxPayableReport"
             {
                 DataItemTableView = sorting(Number);
 
-                column(DeliveryState; DeliveryState) { }
-                column(VendorNo; VendorNo) { }
-                column(VendorName; VendorName) { }
-                column(DocumentNo; DocumentNo) { }
-                column(ExtDocumentNo; ExtDocumentNo) { }
-                column(PostingDate; PostingDate) { }
-                column(LineAmount; LineAmount) { }
-                column(GLAccount; GLAccount) { }
-                column(TaxRate; TaxRate) { }
-                column(TaxAmount; TaxAmount) { }
-                column(TaxFrequency; TaxFrequency) { }
-                column(CostCenter; CostCenter) { }
-                column(DimName; DimName) { }
-
+                column(DeliveryState; DeliveryState)
+                {
+                }
+                column(VendorNo; VendorNo)
+                {
+                }
+                column(VendorName; VendorName)
+                {
+                }
+                column(DocumentNo; DocumentNo)
+                {
+                }
+                column(ExtDocumentNo; ExtDocumentNo)
+                {
+                }
+                column(PostingDate; PostingDate)
+                {
+                }
+                column(LineAmount; LineAmount)
+                {
+                }
+                column(GLAccount; GLAccount)
+                {
+                }
+                column(TaxRate; TaxRate)
+                {
+                }
+                column(TaxAmount; TaxAmount)
+                {
+                }
+                column(TaxFrequency; TaxFrequency)
+                {
+                }
+                column(CostCenter; CostCenter)
+                {
+                }
+                column(DimName; DimName)
+                {
+                }
                 trigger OnPreDataItem()
                 var
                     CrLineCount: Integer;
@@ -77,8 +101,8 @@ report 14135155 "lvnUseTaxPayableReport"
 
                 trigger OnAfterGetRecord()
                 var
-                    DimMgmt: Codeunit DimensionManagement;
                     TempDimSet: Record "Dimension Set Entry" temporary;
+                    DimMgmt: Codeunit DimensionManagement;
                 begin
                     if Number > 1 then
                         if Number <= InvLineCount then
@@ -134,12 +158,13 @@ report 14135155 "lvnUseTaxPayableReport"
                 end;
             }
         }
-
         dataitem(ReportFilters; Integer)
         {
             DataItemTableView = sorting(Number) where(Number = const(1));
 
-            column(Filters; PostedPurchaseLines.GetFilters()) { }
+            column(Filters; PostedPurchaseLines.GetFilters())
+            {
+            }
         }
     }
 
@@ -169,25 +194,22 @@ report 14135155 "lvnUseTaxPayableReport"
         }
     }
 
+    trigger OnPreReport()
+    begin
+        LoanVisionSetup.Get();
+        if PrintToExcel then
+            ExcelDataHeaders();
+    end;
+
+    trigger OnPostReport()
+    begin
+        if PrintToExcel then begin
+            ExcelDataTotals(ReportLineTtl, ReportTaxTtl, false);
+            ExcelExport.Download(FileNameLbl);
+        end;
+    end;
+
     var
-        ExportCallLabel: Label 'UseTaxPayableExport';
-        FileNameLbl: Label 'UseTaxPayableReport.xlsx';
-        ColorTxt: Label '#E1E1E1';
-        RepHeaderLbl: Label 'Use Tax Payable Report';
-        VendNoLbl: Label 'Vendor No.';
-        VendNameLbl: Label 'Vendor Name';
-        DocNoLbl: Label 'Document No.';
-        PostDateLbl: Label 'Posting Date';
-        ExtDocNoLbl: Label 'Ext. Doc. No.';
-        LineAmtLbl: Label 'Line Amount';
-        GLAccLbl: Label 'G/L Account';
-        CostCenterLbl: Label 'Cost Center';
-        TaxRateLbl: Label 'Tax Rate';
-        TaxAmtLbl: Label 'Tax Amount';
-        PayFreqLbl: Label 'Payment Frequency';
-        TtlForLbl: Label 'Total For ';
-        RepTtlLbl: Label 'Report Total For';
-        StateLbl: Label 'State ';
         LoanVisionSetup: Record lvnLoanVisionSetup;
         PurchInvLine: Record "Purch. Inv. Line";
         PurchCrMemoLine: Record "Purch. Cr. Memo Line";
@@ -215,21 +237,24 @@ report 14135155 "lvnUseTaxPayableReport"
         ReportLineTtl: Decimal;
         ReportTaxTtl: Decimal;
         NumberFormat: Code[20];
-
-    trigger OnPreReport()
-    begin
-        LoanVisionSetup.Get();
-        if PrintToExcel then
-            ExcelDataHeaders();
-    end;
-
-    trigger OnPostReport()
-    begin
-        if PrintToExcel then begin
-            ExcelDataTotals(ReportLineTtl, ReportTaxTtl, false);
-            ExcelExport.Download(FileNameLbl);
-        end;
-    end;
+        ExportCallLabel: Label 'UseTaxPayableExport';
+        FileNameLbl: Label 'UseTaxPayableReport.xlsx';
+        ColorTxt: Label '#E1E1E1';
+        RepHeaderLbl: Label 'Use Tax Payable Report';
+        VendNoLbl: Label 'Vendor No.';
+        VendNameLbl: Label 'Vendor Name';
+        DocNoLbl: Label 'Document No.';
+        PostDateLbl: Label 'Posting Date';
+        ExtDocNoLbl: Label 'Ext. Doc. No.';
+        LineAmtLbl: Label 'Line Amount';
+        GLAccLbl: Label 'G/L Account';
+        CostCenterLbl: Label 'Cost Center';
+        TaxRateLbl: Label 'Tax Rate';
+        TaxAmtLbl: Label 'Tax Amount';
+        PayFreqLbl: Label 'Payment Frequency';
+        TtlForLbl: Label 'Total For ';
+        RepTtlLbl: Label 'Report Total For';
+        StateLbl: Label 'State ';
 
     local procedure GetInvHeader()
     begin
@@ -258,8 +283,8 @@ report 14135155 "lvnUseTaxPayableReport"
 
     local procedure ExcelDataHeaders()
     var
-        ExportFormat: Enum lvnGridExportMode;
         Dimension: Record Dimension;
+        ExportFormat: Enum lvnGridExportMode;
     begin
         if Dimension.Get(LoanVisionSetup."Cost Center Dimension Code") then
             DimName := Dimension.Name;
@@ -315,8 +340,14 @@ report 14135155 "lvnUseTaxPayableReport"
         end;
     end;
 
-
-    local procedure WriteToExcel(Output: Variant; CreateRange: Boolean; SkipCells: Integer; CenterText: Boolean; CellColor: Text; Bold: Boolean; Currency: Boolean)
+    local procedure WriteToExcel(
+        Output: Variant;
+        CreateRange: Boolean;
+        SkipCells: Integer;
+        CenterText: Boolean;
+        CellColor: Text;
+        Bold: Boolean;
+        Currency: Boolean)
     var
         DefaultBoolean: Enum lvnDefaultBoolean;
     begin

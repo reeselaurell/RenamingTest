@@ -1,6 +1,12 @@
 codeunit 14135103 "lvnValidateFundedJournal"
 {
     var
+        LoanVisionSetup: Record lvnLoanVisionSetup;
+        LoanJournalErrorMgmt: Codeunit lvnLoanJournalErrorMgmt;
+        ConditionsMgmt: Codeunit lvnConditionsMgmt;
+        CreateFundedDocuments: Codeunit lvnCreateFundedDocuments;
+        LoanMgmt: Codeunit lvnLoanManagement;
+        LoanVisionSetupRetrieved: Boolean;
         LoanNoEmptyErr: Label 'Loan No. can not be blank';
         LoanNoDoesNotMatchPatternErr: Label 'Loan No. does not match any of defined patterns';
         FundedDateBlankErr: Label 'Funded Date can not be blank';
@@ -13,12 +19,6 @@ codeunit 14135103 "lvnValidateFundedJournal"
         NonPostedDocumentExistsErr: Label 'Non-Posted Funded document already exists %1';
         PostedDocumentExistsErr: Label 'Posted Funded document already exists %1';
         NothingToVoidErr: Label 'There is nothing to void';
-        LoanVisionSetup: Record lvnLoanVisionSetup;
-        LoanJournalErrorMgmt: Codeunit lvnLoanJournalErrorMgmt;
-        ConditionsMgmt: Codeunit lvnConditionsMgmt;
-        CreateFundedDocuments: Codeunit lvnCreateFundedDocuments;
-        LoanMgmt: Codeunit lvnLoanManagement;
-        LoanVisionSetupRetrieved: Boolean;
 
     procedure ValidateFundedLines(JournalBatchCode: Code[20])
     var
@@ -33,7 +33,7 @@ codeunit 14135103 "lvnValidateFundedJournal"
         until LoanJournalLine.Next() = 0;
     end;
 
-    local procedure ValidateSingleJournalLine(var LoanJournalLine: record lvnLoanJournalLine)
+    local procedure ValidateSingleJournalLine(var LoanJournalLine: Record lvnLoanJournalLine)
     var
         JournalValidationRule: Record lvnJournalValidationRule;
         ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
@@ -73,7 +73,7 @@ codeunit 14135103 "lvnValidateFundedJournal"
             LoanDocument.SetRange("Transaction Type", LoanDocument."Transaction Type"::Funded);
             if not LoanDocument.IsEmpty() then begin
                 LoanDocument.FindFirst();
-                LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, strsubstno(NonPostedDocumentExistsErr, LoanDocument."Document No."));
+                LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, StrSubstNo(NonPostedDocumentExistsErr, LoanDocument."Document No."));
             end;
             LoanFundedDocument.Reset();
             LoanFundedDocument.SetRange("Loan No.", LoanJournalLine."Loan No.");
@@ -85,7 +85,7 @@ codeunit 14135103 "lvnValidateFundedJournal"
                 if (FundedDocumentsCount <> VoidedDocumentsCount) then begin
                     LoanFundedDocument.SetRange(Void, false);
                     LoanFundedDocument.FindLast();
-                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, strsubstno(PostedDocumentExistsErr, LoanFundedDocument."Document No."));
+                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, StrSubstNo(PostedDocumentExistsErr, LoanFundedDocument."Document No."));
                 end;
             end;
         end;
@@ -130,17 +130,19 @@ codeunit 14135103 "lvnValidateFundedJournal"
         if TempLoanDocumentLine.FindSet() then
             repeat
                 if TempLoanDocumentLine."Reason Code" = '' then
-                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, strsubstno(ReasonCodeMissingOnLineErr, TempLoanDocumentLine."Line No."));
+                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, StrSubstNo(ReasonCodeMissingOnLineErr, TempLoanDocumentLine."Line No."));
                 if TempLoanDocumentLine."Account No." = '' then
-                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, strsubstno(AccountNoMissingOnLineErr, TempLoanDocumentLine."Line No."));
+                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, StrSubstNo(AccountNoMissingOnLineErr, TempLoanDocumentLine."Line No."));
             until TempLoanDocumentLine.Next() = 0;
     end;
 
-    local procedure ValidateConditionLine(var ExpressionValueBuffer: Record lvnExpressionValueBuffer; ConditionCode: Code[20]): Boolean
+    local procedure ValidateConditionLine(
+        var ExpressionValueBuffer: Record lvnExpressionValueBuffer;
+        ConditionCode: Code[20]): Boolean
     var
+        ExpressionHeader: Record lvnExpressionHeader;
         ExpressionEngine: Codeunit lvnExpressionEngine;
         ConditionMgmt: Codeunit lvnConditionsMgmt;
-        ExpressionHeader: Record lvnExpressionHeader;
     begin
         ExpressionHeader.Get(ConditionCode, ConditionMgmt.GetConditionsMgmtConsumerId());
         exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));

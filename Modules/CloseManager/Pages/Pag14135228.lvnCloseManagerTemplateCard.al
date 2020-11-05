@@ -12,10 +12,15 @@ page 14135228 "lvnCloseManagerTemplateCard"
             {
                 Caption = 'General';
 
-                field("No."; Rec."No.") { ApplicationArea = All; }
-                field(Name; Rec.Name) { ApplicationArea = All; }
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                }
             }
-
             part(Lines; lvnCloseManagerTemplateLines)
             {
                 Caption = 'Lines';

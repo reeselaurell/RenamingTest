@@ -9,7 +9,11 @@ page 14135268 "lvnLVAccountantHeadline"
     {
         area(Content)
         {
-            field(LoanVisionLbl; LoanVisionLbl) { Caption = 'Welcome'; ApplicationArea = All; }
+            field(LoanVisionLbl; LoanVisionLbl)
+            {
+                Caption = 'Welcome';
+                ApplicationArea = All;
+            }
             field(TopBranch; BranchProfitText)
             {
                 ApplicationArea = All;
@@ -93,15 +97,6 @@ page 14135268 "lvnLVAccountantHeadline"
         }
     }
 
-    var
-        LoanVisionLbl: Label '<qualifier>Welcome</qualifier><payload>Welcome to Loan Vision</payload>';
-        LVSetup: Record lvnLoanVisionSetup;
-        HeadlineSetup: Record lvnLVAcctRCHeadlineSetup;
-        BranchProfitText: Text;
-        LOProfitText: Text;
-        LowBranchProfitText: Text;
-        LowLOProfitText: Text;
-
     trigger OnOpenPage()
     begin
         HeadlineSetup.Get();
@@ -113,6 +108,15 @@ page 14135268 "lvnLVAccountantHeadline"
         LowBranchProfitText := GetText(LVSetup."Cost Center Dimension Code", true);
         LowLOProfitText := GetText(LVSetup."Loan Officer Dimension Code", true);
     end;
+
+    var
+        LVSetup: Record lvnLoanVisionSetup;
+        HeadlineSetup: Record lvnLVAcctRCHeadlineSetup;
+        BranchProfitText: Text;
+        LOProfitText: Text;
+        LowBranchProfitText: Text;
+        LowLOProfitText: Text;
+        LoanVisionLbl: Label '<qualifier>Welcome</qualifier><payload>Welcome to Loan Vision</payload>';
 
     local procedure GetText(DimensionCode: Code[20]; isAscending: Boolean): Text
     var

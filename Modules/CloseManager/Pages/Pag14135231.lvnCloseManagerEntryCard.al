@@ -14,14 +14,32 @@ page 14135231 "lvnCloseManagerEntryCard"
             {
                 Caption = 'General';
 
-                field("Period Date"; Rec."Period Date") { ApplicationArea = All; }
-                field("Total Tasks"; Rec."Total Tasks") { ApplicationArea = All; }
-                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations") { ApplicationArea = All; }
-                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval") { ApplicationArea = All; }
-                field("Tasks Approved"; Rec."Tasks Approved") { ApplicationArea = All; }
-                field(PercentComplete; PercentComplete) { ApplicationArea = All; Caption = 'Percent Complete'; }
+                field("Period Date"; Rec."Period Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Total Tasks"; Rec."Total Tasks")
+                {
+                    ApplicationArea = All;
+                }
+                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations")
+                {
+                    ApplicationArea = All;
+                }
+                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval")
+                {
+                    ApplicationArea = All;
+                }
+                field("Tasks Approved"; Rec."Tasks Approved")
+                {
+                    ApplicationArea = All;
+                }
+                field(PercentComplete; PercentComplete)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Percent Complete';
+                }
             }
-
             part(Subform; lvnCloseManagerEntrySubform)
             {
                 Caption = 'Lines';
@@ -29,10 +47,12 @@ page 14135231 "lvnCloseManagerEntryCard"
                 UpdatePropagation = Both;
             }
         }
-
         area(FactBoxes)
         {
-            part(DocumentsExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentsExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 
@@ -87,11 +107,6 @@ page 14135231 "lvnCloseManagerEntryCard"
         }
     }
 
-    var
-        ArchiveIncompleteEntryQst: Label 'Are you sure you want to Archive this Close Manager Entry? There are still open tasks left.';
-        UnableToArchiveIncompleteErr: Label 'Unable to archive entry with open tasks';
-        PercentComplete: Integer;
-
     trigger OnOpenPage()
     var
         CloseManagerTemplateLine: Record lvnCloseManagerTemplateLine;
@@ -141,4 +156,9 @@ page 14135231 "lvnCloseManagerEntryCard"
     begin
         CurrPage.DocumentsExchange.Page.ReloadDocuments(Rec."Document Guid");
     end;
+
+    var
+        PercentComplete: Integer;
+        ArchiveIncompleteEntryQst: Label 'Are you sure you want to Archive this Close Manager Entry? There are still open tasks left.';
+        UnableToArchiveIncompleteErr: Label 'Unable to archive entry with open tasks';
 }

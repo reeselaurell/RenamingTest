@@ -5,7 +5,12 @@ table 14135179 "lvnDimPerfBandSchemaLine"
 
     fields
     {
-        field(1; "Schema Code"; Code[20]) { Caption = 'Schema Code'; DataClassification = CustomerContent; TableRelation = lvnDimensionPerfBandSchema.Code; }
+        field(1; "Schema Code"; Code[20])
+        {
+            Caption = 'Schema Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvnDimensionPerfBandSchema.Code;
+        }
         field(2; "Band No."; Integer)
         {
             Caption = 'Band No.';
@@ -17,10 +22,26 @@ table 14135179 "lvnDimPerfBandSchemaLine"
                     Error(ShouldBePositiveErr, FieldCaption("Band No."));
             end;
         }
-        field(10; "Dimension Filter"; Code[20]) { Caption = 'Dimension Filter'; DataClassification = CustomerContent; }
-        field(11; "Header Description"; Text[100]) { Caption = 'Header Description'; DataClassification = CustomerContent; }
-        field(12; "Band Type"; Enum lvnPerformanceBandType) { Caption = 'Band Type'; DataClassification = CustomerContent; }
-        field(13; "Row Formula Code"; Code[20]) { Caption = 'Row Formula Code'; DataClassification = CustomerContent; }
+        field(10; "Dimension Filter"; Code[20])
+        {
+            Caption = 'Dimension Filter';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Header Description"; Text[100])
+        {
+            Caption = 'Header Description';
+            DataClassification = CustomerContent;
+        }
+        field(12; "Band Type"; Enum lvnPerformanceBandType)
+        {
+            Caption = 'Band Type';
+            DataClassification = CustomerContent;
+        }
+        field(13; "Row Formula Code"; Code[20])
+        {
+            Caption = 'Row Formula Code';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

@@ -10,17 +10,23 @@ page 14135112 "lvnPostProcessingSchemaLines"
         {
             repeater(Group)
             {
-                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
-                field(Type; Rec.Type) { ApplicationArea = All; }
+                field("Line No."; Rec."Line No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(Type; Rec.Type)
+                {
+                    ApplicationArea = All;
+                }
                 field("From Field No."; Rec."From Field No.")
                 {
                     ApplicationArea = All;
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsLookup: Page "Fields Lookup";
                         FieldRec: Record Field;
                         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
+                        FieldsLookup: Page "Fields Lookup";
                     begin
                         case Rec.Type of
                             Rec.Type::"Copy Loan Card Value":
@@ -58,20 +64,35 @@ page 14135112 "lvnPostProcessingSchemaLines"
                         end;
                     end;
                 }
-                field("Expression Code"; Rec."Expression Code") { ApplicationArea = All; }
-                field("Custom Value"; Rec."Custom Value") { ApplicationArea = All; }
-                field(Priority; Rec.Priority) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Assign To"; Rec."Assign To") { ApplicationArea = All; }
+                field("Expression Code"; Rec."Expression Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Custom Value"; Rec."Custom Value")
+                {
+                    ApplicationArea = All;
+                }
+                field(Priority; Rec.Priority)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Assign To"; Rec."Assign To")
+                {
+                    ApplicationArea = All;
+                }
                 field("To Field No."; Rec."To Field No.")
                 {
                     ApplicationArea = All;
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsLookup: Page "Fields Lookup";
                         FieldRec: Record Field;
                         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
+                        FieldsLookup: Page "Fields Lookup";
                     begin
                         case Rec."Assign To" of
                             Rec."Assign To"::"Loan Journal Field":
@@ -97,10 +118,22 @@ page 14135112 "lvnPostProcessingSchemaLines"
 
                     end;
                 }
-                field("Copy Field Part"; Rec."Copy Field Part") { ApplicationArea = All; }
-                field("From Character No."; Rec."From Character No.") { ApplicationArea = All; }
-                field("Characters Count"; Rec."Characters Count") { ApplicationArea = All; }
-                field("Rounding Expression"; Rec."Rounding Expression") { ApplicationArea = All; }
+                field("Copy Field Part"; Rec."Copy Field Part")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Character No."; Rec."From Character No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Characters Count"; Rec."Characters Count")
+                {
+                    ApplicationArea = All;
+                }
+                field("Rounding Expression"; Rec."Rounding Expression")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

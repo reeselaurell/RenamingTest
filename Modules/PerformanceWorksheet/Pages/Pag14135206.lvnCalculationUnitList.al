@@ -12,9 +12,18 @@ page 14135206 "lvnCalculationUnitList"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field(Type; Rec.Type) { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field(Type; Rec.Type)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

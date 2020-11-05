@@ -10,13 +10,13 @@ codeunit 14135113 "lvnCreateSoldDocuments"
     procedure CreateDocuments(LoanJournalBatchCode: Code[20])
     var
         LoanJournalLine: Record lvnLoanJournalLine;
-        LoanJournalErrorMgmt: Codeunit lvnLoanJournalErrorMgmt;
-        ValidateSoldJournal: Codeunit lvnValidateSoldJournal;
-        LoanManagement: Codeunit lvnLoanManagement;
         TempLoanDocument: Record lvnLoanDocument temporary;
         TempLoanDocumentLine: Record lvnLoanDocumentLine temporary;
         LoanDocument: Record lvnLoanDocument;
         LoanDocumentLine: Record lvnLoanDocumentLine;
+        LoanJournalErrorMgmt: Codeunit lvnLoanJournalErrorMgmt;
+        ValidateSoldJournal: Codeunit lvnValidateSoldJournal;
+        LoanManagement: Codeunit lvnLoanManagement;
         DocumentsCreated: Integer;
         TotalEntries: Integer;
         ProcessResultMsg: Label '%1 of %2 documents were created';
@@ -59,7 +59,11 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         Message(ProcessResultMsg, TotalEntries, DocumentsCreated);
     end;
 
-    procedure CreateSingleDocument(LoanJournalLine: Record lvnLoanJournalLine; var LoanDocument: Record lvnLoanDocument; var LoanDocumentLine: Record lvnLoanDocumentLine; Preview: Boolean)
+    procedure CreateSingleDocument(
+        LoanJournalLine: Record lvnLoanJournalLine;
+        var LoanDocument: Record lvnLoanDocument;
+        var LoanDocumentLine: Record lvnLoanDocumentLine;
+        Preview: Boolean)
     var
         LoanProcessingSchema: Record lvnLoanProcessingSchema;
         LoanProcessingSchemaLine: Record lvnLoanProcessingSchemaLine;
@@ -69,10 +73,10 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         LoanJournalValue: Record lvnLoanJournalValue;
         TempLoanDocumentLine: Record lvnLoanDocumentLine temporary;
         NoSeriesManagement: Codeunit NoSeriesManagement;
-        TempDocumentTok: Label 'XXXXXXXX';
         LineNo: Integer;
         DocumentAmount: Decimal;
         FieldSequenceNo: Integer;
+        TempDocumentTok: Label 'XXXXXXXX';
     begin
         GetLoanVisionSetup();
         if LoanVisionSetup."Sold Void Reason Code" <> '' then begin
@@ -135,7 +139,7 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         ExpressionValueBuffer.Insert();
 
         LineNo := 10000;
-        clear(LoanDocument);
+        Clear(LoanDocument);
         LoanDocument.Init();
         if Preview then
             LoanDocument."Document No." := TempDocumentTok
@@ -178,7 +182,7 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         LoanProcessingSchemaLine.Reset();
         LoanProcessingSchemaLine.SetRange("Processing Code", LoanProcessingSchema.Code);
         LoanProcessingSchemaLine.SetRange("Balancing Entry", false);
-        LoanProcessingSchemaLine.Setfilter("Processing Source Type", '<>%1', LoanProcessingSchemaLine."Processing Source Type"::Tag);
+        LoanProcessingSchemaLine.SetFilter("Processing Source Type", '<>%1', LoanProcessingSchemaLine."Processing Source Type"::Tag);
         if LoanProcessingSchemaLine.FindSet() then
             repeat
                 CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo);
@@ -253,7 +257,12 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         LoanDocument.Modify();
     end;
 
-    local procedure CreateDocumentLine(var LoanDocumentLine: Record lvnLoanDocumentLine; LoanDocument: record lvnLoanDocument; LoanProcessingSchemaLine: Record lvnLoanProcessingSchemaLine; LoanJournalLine: Record lvnLoanJournalLine; var LineNo: integer)
+    local procedure CreateDocumentLine(
+        var LoanDocumentLine: Record lvnLoanDocumentLine;
+        LoanDocument: Record lvnLoanDocument;
+        LoanProcessingSchemaLine: Record lvnLoanProcessingSchemaLine;
+        LoanJournalLine: Record lvnLoanJournalLine;
+        var LineNo: Integer)
     var
         LoanJournalValue: Record lvnLoanJournalValue;
         TempLoanDocumentLine: Record lvnLoanDocumentLine temporary;
@@ -339,7 +348,11 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         end;
     end;
 
-    local procedure AssignDimensions(var AssignToDimension: Code[20]; ProcessingDimensionValueCode: Code[20]; JournalDimensionValueCode: Code[20]; ProcessingDimensionRule: Enum lvnProcessingDimensionRule)
+    local procedure AssignDimensions(
+        var AssignToDimension: Code[20];
+        ProcessingDimensionValueCode: Code[20];
+        JournalDimensionValueCode: Code[20];
+        ProcessingDimensionRule: Enum lvnProcessingDimensionRule)
     begin
         case ProcessingDimensionRule of
             ProcessingDimensionRule::Defined:
@@ -349,10 +362,10 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         end;
     end;
 
-    local procedure CheckCondition(ConditionCode: code[20]): Boolean
+    local procedure CheckCondition(ConditionCode: Code[20]): Boolean
     var
-        ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionHeader: Record lvnExpressionHeader;
+        ConditionsMgmt: Codeunit lvnConditionsMgmt;
     begin
         if ConditionCode = '' then
             exit(true);
@@ -360,19 +373,19 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));
     end;
 
-    local procedure GetFunctionValue(FunctionCode: code[20]): Text
+    local procedure GetFunctionValue(FunctionCode: Code[20]): Text
     var
-        ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionHeader: Record lvnExpressionHeader;
+        ConditionsMgmt: Codeunit lvnConditionsMgmt;
     begin
         ExpressionHeader.Get(FunctionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
         exit(ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer));
     end;
 
-    local procedure GetSwitchValue(SwitchCode: code[20]): Code[20]
+    local procedure GetSwitchValue(SwitchCode: Code[20]): Code[20]
     var
-        ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionHeader: Record lvnExpressionHeader;
+        ConditionsMgmt: Codeunit lvnConditionsMgmt;
         Result: Text;
     begin
         ExpressionHeader.Get(SwitchCode, ConditionsMgmt.GetConditionsMgmtConsumerId());

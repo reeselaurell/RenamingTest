@@ -14,13 +14,58 @@ page 14135199 "lvnPeriodPerformanceView"
         {
             group(Filters)
             {
-                field(SchemaName; SystemFilter.Description) { ApplicationArea = All; Caption = 'View Name'; ShowCaption = false; Editable = false; }
-                field(Dim1Filter; SystemFilter."Global Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; Editable = false; Visible = Dim1Visible; CaptionClass = '1,3,1'; }
-                field(Dim2Filter; SystemFilter."Global Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; Editable = false; Visible = Dim2Visible; CaptionClass = '1,3,2'; }
-                field(Dim3Filter; SystemFilter."Shortcut Dimension 3") { ApplicationArea = All; Caption = 'Dimension 3 Filter'; Editable = false; Visible = Dim3Visible; CaptionClass = '1,2,3'; }
-                field(Dim4Filter; SystemFilter."Shortcut Dimension 4") { ApplicationArea = All; Caption = 'Dimension 4 Filter'; Editable = false; Visible = Dim4Visible; CaptionClass = '1,2,4'; }
-                field(BusinessUnitFilter; SystemFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; Editable = false; Visible = BusinessUnitVisible; }
-                field(AsOfDate; SystemFilter."As Of Date") { ApplicationArea = All; Caption = 'As Of Date'; Editable = false; }
+                field(SchemaName; SystemFilter.Description)
+                {
+                    ApplicationArea = All;
+                    Caption = 'View Name';
+                    ShowCaption = false;
+                    Editable = false;
+                }
+                field(Dim1Filter; SystemFilter."Global Dimension 1")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Dimension 1 Filter';
+                    Editable = false;
+                    Visible = Dim1Visible;
+                    CaptionClass = '1,3,1';
+                }
+                field(Dim2Filter; SystemFilter."Global Dimension 2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Dimension 2 Filter';
+                    Editable = false;
+                    Visible = Dim2Visible;
+                    CaptionClass = '1,3,2';
+                }
+                field(Dim3Filter; SystemFilter."Shortcut Dimension 3")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Dimension 3 Filter';
+                    Editable = false;
+                    Visible = Dim3Visible;
+                    CaptionClass = '1,2,3';
+                }
+                field(Dim4Filter; SystemFilter."Shortcut Dimension 4")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Dimension 4 Filter';
+                    Editable = false;
+                    Visible = Dim4Visible;
+                    CaptionClass = '1,2,4';
+                }
+                field(BusinessUnitFilter; SystemFilter."Business Unit")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Business Unit Filter';
+                    Editable = false;
+                    Visible = BusinessUnitVisible;
+                }
+                field(AsOfDate; SystemFilter."As Of Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'As Of Date';
+                    Editable = false;
+                }
             }
             usercontrol(DataGrid; lvnDataGridControl)
             {
@@ -87,6 +132,11 @@ page 14135199 "lvnPeriodPerformanceView"
         }
     }
 
+    trigger OnOpenPage()
+    begin
+        PerformanceMgmt.CalculatePeriodsData(RowSchema, BandSchema, SystemFilter, BandInfoBuffer, ValueBuffer);
+    end;
+
     var
         RowSchema: Record lvnPerformanceRowSchema;
         BandSchema: Record lvnPeriodPerfBandSchema;
@@ -103,12 +153,10 @@ page 14135199 "lvnPeriodPerformanceView"
         BusinessUnitVisible: Boolean;
         SchemaNameFormatTxt: Label '%1 - %2';
 
-    trigger OnOpenPage()
-    begin
-        PerformanceMgmt.CalculatePeriodsData(RowSchema, BandSchema, SystemFilter, BandInfoBuffer, ValueBuffer);
-    end;
-
-    procedure SetParams(RowSchemaCode: Code[20]; BandSchemaCode: Code[20]; var Filter: Record lvnSystemCalculationFilter)
+    procedure SetParams(
+        RowSchemaCode: Code[20];
+        BandSchemaCode: Code[20];
+        var Filter: Record lvnSystemCalculationFilter)
     begin
         RowSchema.Get(RowSchemaCode);
         BandSchema.Get(BandSchemaCode);

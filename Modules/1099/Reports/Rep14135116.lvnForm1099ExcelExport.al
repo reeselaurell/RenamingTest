@@ -115,7 +115,22 @@ report 14135116 "lvnForm1099ExcelExport"
         }
     }
 
+    trigger OnPreReport()
+    begin
+        ExcelExport.Init(Form1099ExportCaller, ExportFormat::Xlsx);
+    end;
+
+    trigger OnPostReport()
+    begin
+        ExcelExport.Download(FileNameLbl);
+    end;
+
     var
+        ExcelExport: Codeunit lvnExcelExport;
+        ExportFormat: Enum lvnGridExportMode;
+        NumberFormat: Code[20];
+        TtlPaymentAmount: Decimal;
+        MISCTotals: array[15] of Decimal;
         Form1099ExportCaller: Label 'Form1099Export';
         ReportHeaderLbl: Label 'Form 1099 Data';
         FedIDColLbl: Label 'Federal ID No.';
@@ -146,23 +161,15 @@ report 14135116 "lvnForm1099ExcelExport"
         TotalLbl: Label 'Total:';
         FileNameLbl: Label 'Form1099Export.xlsx';
         ColorTxt: Label '#E1E1E1';
-        ExcelExport: Codeunit lvnExcelExport;
-        ExportFormat: Enum lvnGridExportMode;
-        NumberFormat: Code[20];
-        TtlPaymentAmount: Decimal;
-        MISCTotals: array[15] of Decimal;
 
-    trigger OnPreReport()
-    begin
-        ExcelExport.Init(Form1099ExportCaller, ExportFormat::Xlsx);
-    end;
-
-    trigger OnPostReport()
-    begin
-        ExcelExport.Download(FileNameLbl);
-    end;
-
-    local procedure WriteToExcel(Output: Variant; CreateRange: Boolean; SkipCells: Integer; CenterText: Boolean; CellColor: Text; Bold: Boolean; Currency: Boolean)
+    local procedure WriteToExcel(
+        Output: Variant;
+        CreateRange: Boolean;
+        SkipCells: Integer;
+        CenterText: Boolean;
+        CellColor: Text;
+        Bold: Boolean;
+        Currency: Boolean)
     var
         DefaultBoolean: Enum lvnDefaultBoolean;
     begin

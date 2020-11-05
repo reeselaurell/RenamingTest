@@ -10,7 +10,10 @@ page 14135218 "lvnDimPerfBandSchemaLines"
         {
             repeater(Group)
             {
-                field("Band No."; Rec."Band No.") { ApplicationArea = All; }
+                field("Band No."; Rec."Band No.")
+                {
+                    ApplicationArea = All;
+                }
                 field("Dimension Filter"; Rec."Dimension Filter")
                 {
                     ApplicationArea = All;
@@ -29,8 +32,14 @@ page 14135218 "lvnDimPerfBandSchemaLines"
                             exit(false);
                     end;
                 }
-                field("Header Description"; Rec."Header Description") { ApplicationArea = All; }
-                field("Band Type"; Rec."Band Type") { ApplicationArea = All; }
+                field("Header Description"; Rec."Header Description")
+                {
+                    ApplicationArea = All;
+                }
+                field("Band Type"; Rec."Band Type")
+                {
+                    ApplicationArea = All;
+                }
                 field("Row Formula Code"; Rec."Row Formula Code")
                 {
                     ApplicationArea = All;
@@ -39,8 +48,8 @@ page 14135218 "lvnDimPerfBandSchemaLines"
 
                     trigger OnAssistEdit()
                     var
-                        ExpressionList: Page lvnExpressionList;
                         PerformanceMgmt: Codeunit lvnPerformanceMgmt;
+                        ExpressionList: Page lvnExpressionList;
                         ExpressiontType: Enum lvnExpressionType;
                         NewCode: Code[20];
                     begin
@@ -49,13 +58,9 @@ page 14135218 "lvnDimPerfBandSchemaLines"
                             Rec."Row Formula Code" := NewCode;
                     end;
                 }
-
             }
         }
     }
-
-    var
-        DimensionCode: Code[20];
 
     trigger OnNewRecord(BelowxRec: Boolean)
     var
@@ -68,6 +73,9 @@ page 14135218 "lvnDimPerfBandSchemaLines"
         else
             Rec."Band No." := 10;
     end;
+
+    var
+        DimensionCode: Code[20];
 
     procedure SetParams(DimCode: Code[20])
     begin

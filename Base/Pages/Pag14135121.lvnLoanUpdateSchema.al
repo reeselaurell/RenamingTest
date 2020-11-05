@@ -10,7 +10,10 @@ page 14135121 "lvnLoanUpdateSchema"
         {
             repeater(Group)
             {
-                field("Import Field Type"; Rec."Import Field Type") { ApplicationArea = All; }
+                field("Import Field Type"; Rec."Import Field Type")
+                {
+                    ApplicationArea = All;
+                }
                 field("Field No."; Rec."Field No.")
                 {
                     ApplicationArea = All;
@@ -39,9 +42,9 @@ page 14135121 "lvnLoanUpdateSchema"
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        FieldsLookup: Page "Fields Lookup";
                         FieldRec: Record Field;
                         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
+                        FieldsLookup: Page "Fields Lookup";
                     begin
                         case Rec."Import Field Type" of
                             Rec."Import Field Type"::Table:
@@ -68,10 +71,17 @@ page 14135121 "lvnLoanUpdateSchema"
                         end;
                     end;
                 }
-                field(FieldDescription; FieldDescription) { ApplicationArea = All; Caption = 'Field Name'; Editable = false; }
-                field("Field Update Option"; Rec."Field Update Option") { ApplicationArea = All; }
+                field(FieldDescription; FieldDescription)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Field Name';
+                    Editable = false;
+                }
+                field("Field Update Option"; Rec."Field Update Option")
+                {
+                    ApplicationArea = All;
+                }
             }
-
         }
     }
 
@@ -96,7 +106,6 @@ page 14135121 "lvnLoanUpdateSchema"
                     CurrPage.Update(false);
                 end;
             }
-
             group(Options)
             {
                 Caption = 'Change Update Option';
@@ -151,9 +160,6 @@ page 14135121 "lvnLoanUpdateSchema"
         }
     }
 
-    var
-        FieldDescription: Text;
-
     trigger OnAfterGetRecord()
     var
         TableField: Record Field;
@@ -164,7 +170,7 @@ page 14135121 "lvnLoanUpdateSchema"
             Rec."Import Field Type"::Table:
                 begin
                     TableField.SetRange("No.", Rec."Field No.");
-                    TableField.setrange(TableNo, Database::lvnLoanJournalLine);
+                    TableField.SetRange(TableNo, Database::lvnLoanJournalLine);
                     if TableField.FindFirst() then
                         FieldDescription := TableField."Field Caption";
                 end;
@@ -172,4 +178,7 @@ page 14135121 "lvnLoanUpdateSchema"
                 FieldDescription := LoanManagement.GetFieldName(Rec."Field No.");
         end;
     end;
+
+    var
+        FieldDescription: Text;
 }

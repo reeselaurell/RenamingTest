@@ -5,7 +5,11 @@ table 14135195 "lvnCloseManagerCue"
 
     fields
     {
-        field(1; "User ID"; Code[50]) { Caption = 'User ID'; DataClassification = CustomerContent; }
+        field(1; "User ID"; Code[50])
+        {
+            Caption = 'User ID';
+            DataClassification = CustomerContent;
+        }
         field(10; "Filter By Assigned To"; Boolean)
         {
             Caption = 'Filter By Assigned To';
@@ -32,12 +36,44 @@ table 14135195 "lvnCloseManagerCue"
                     SetRange("Assigned Approver Filter");
             end;
         }
-        field(11; "Total Tasks"; Integer) { Caption = 'Total Tasks'; FieldClass = FlowField; CalcFormula = count(lvnCloseManagerEntryLine where("Assigned To" = field("Assigned To Filter"), "Assigned Approver" = field("Assigned To Filter"))); Editable = false; }
-        field(12; "Outstanding Reconcilliations"; Integer) { Caption = 'Outstanding Reconcilliations'; FieldClass = FlowField; CalcFormula = count(lvnCloseManagerEntryLine where("Reconciled Date" = filter(''), "Assigned To" = field("Assigned To Filter"), "Assigned Approver" = field("Assigned To Filter"))); Editable = false; }
-        field(13; "Tasks Awaiting Approval"; Integer) { Caption = 'Tasks Awaiting Approval'; FieldClass = FlowField; CalcFormula = count(lvnCloseManagerEntryLine where("Awaiting Approval" = const(true), "Assigned To" = field("Assigned To Filter"), "Assigned Approver" = field("Assigned To Filter"))); Editable = false; }
-        field(14; "Tasks Approved"; Integer) { Caption = 'Tasks Approved'; FieldClass = FlowField; CalcFormula = count(lvnCloseManagerEntryLine where(Approved = const(true), "Assigned To" = field("Assigned To Filter"), "Assigned Approver" = field("Assigned To Filter"))); Editable = false; }
-        field(100; "Assigned To Filter"; Code[100]) { Caption = 'Assigned To Filter'; FieldClass = FlowFilter; }
-        field(101; "Assigned Approver Filter"; Code[100]) { Caption = 'Assigned Approver Filter'; FieldClass = FlowFilter; }
+        field(11; "Total Tasks"; Integer)
+        {
+            Caption = 'Total Tasks';
+            FieldClass = FlowField;
+            CalcFormula = count(lvnCloseManagerEntryLine where("Assigned To" = field("Assigned To Filter"), "Assigned Approver" = field("Assigned To Filter")));
+            Editable = false;
+        }
+        field(12; "Outstanding Reconcilliations"; Integer)
+        {
+            Caption = 'Outstanding Reconcilliations';
+            FieldClass = FlowField;
+            CalcFormula = count(lvnCloseManagerEntryLine where("Reconciled Date" = filter(''), "Assigned To" = field("Assigned To Filter"), "Assigned Approver" = field("Assigned To Filter")));
+            Editable = false;
+        }
+        field(13; "Tasks Awaiting Approval"; Integer)
+        {
+            Caption = 'Tasks Awaiting Approval';
+            FieldClass = FlowField;
+            CalcFormula = count(lvnCloseManagerEntryLine where("Awaiting Approval" = const(true), "Assigned To" = field("Assigned To Filter"), "Assigned Approver" = field("Assigned To Filter")));
+            Editable = false;
+        }
+        field(14; "Tasks Approved"; Integer)
+        {
+            Caption = 'Tasks Approved';
+            FieldClass = FlowField;
+            CalcFormula = count(lvnCloseManagerEntryLine where(Approved = const(true), "Assigned To" = field("Assigned To Filter"), "Assigned Approver" = field("Assigned To Filter")));
+            Editable = false;
+        }
+        field(100; "Assigned To Filter"; Code[100])
+        {
+            Caption = 'Assigned To Filter';
+            FieldClass = FlowFilter;
+        }
+        field(101; "Assigned Approver Filter"; Code[100])
+        {
+            Caption = 'Assigned Approver Filter';
+            FieldClass = FlowFilter;
+        }
     }
 
     keys

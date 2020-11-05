@@ -14,8 +14,14 @@ page 14135234 "lvnCloseManagerCategoryList"
             {
                 Caption = 'Group';
 
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

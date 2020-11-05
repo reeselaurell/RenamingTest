@@ -12,14 +12,12 @@ xmlport 14135106 "lvnDimensionLoanChangeImport"
             {
                 UseTemporary = true;
 
-                fieldelement(LoanNo; LoanBuffer."Loan No.") { }
+                fieldelement(LoanNo; LoanBuffer."Loan No.")
+                {
+                }
             }
         }
     }
-
-    var
-        ProgressLbl: Label '#1############## of #2###########';
-        ChangeSetId: Guid;
 
     trigger OnPostXmlPort()
     var
@@ -48,6 +46,10 @@ xmlport 14135106 "lvnDimensionLoanChangeImport"
         until LoanBuffer.Next() = 0;
         Progress.Close();
     end;
+
+    var
+        ChangeSetId: Guid;
+        ProgressLbl: Label '#1############## of #2###########';
 
     procedure SetParams(pChangeSetID: Guid)
     begin

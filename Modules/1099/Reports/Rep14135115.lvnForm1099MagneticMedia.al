@@ -15,7 +15,6 @@ report 14135115 "lvnForm1099MagneticMedia"
                 WriteTRec();
             end;
         }
-
         dataitem(ARecord; Integer)
         {
             DataItemTableView = sorting(Number);
@@ -45,7 +44,6 @@ report 14135115 "lvnForm1099MagneticMedia"
                     WriteMiscBRec();
                 end;
             }
-
             dataitem(CRecord; Integer)
             {
                 DataItemTableView = sorting(Number);
@@ -56,7 +54,6 @@ report 14135115 "lvnForm1099MagneticMedia"
                     WriteMISCCRec();
                 end;
             }
-
             trigger OnAfterGetRecord()
             var
                 InvoiceEntry: Record "Vendor Ledger Entry";
@@ -68,7 +65,6 @@ report 14135115 "lvnForm1099MagneticMedia"
                 ARecNum += 1;
             end;
         }
-
         dataitem(FRecord; Integer)
         {
             DataItemTableView = sorting(Number);
@@ -239,44 +235,6 @@ report 14135115 "lvnForm1099MagneticMedia"
         end;
     }
 
-    var
-        TransCodeErr: Label 'You must enter the Transmitter Control Code assigned to you by the IRS.';
-        ContactNameErr: Label 'You must enter the name of the person to be contacted if IRS/MCC encounters problems with the file or transmission.';
-        VendNameErr: Label 'You must enter the name of the person to be contacted if IRS/MCC has any software questions.';
-        VendPhoneNoErr: Label 'You must enter the phone number of the person to be contacted if IRS/MCC has any software questions.';
-        ContactPhoneNoErr: Label 'You must enter the phone number of the person to be contacted if IRS/MCC encounters problems with the file or transmission.';
-        VendInfoErr: Label 'You must enter all software vendor address information.';
-        ProgressMsg: Label 'Exporting...\\Table    #1####################';
-        InitialProgressTxt: Label 'IRSTAX';
-        ExportLbl: Label 'Export';
-        AllFileFilterTxt: Label 'All Files (*.*)|*.*';
-        DefaultFileNameTxt: Label '1099IRSTAX.txt';
-        CompanyInfo: Record "Company Information";
-        TempTransmitterInfo: Record "Company Information" temporary;
-        TempVendorInfo: Record "Company Information" temporary;
-        IRSBlob: Codeunit "Temp Blob";
-        MagMediaManagement: Codeunit "A/P Magnetic Media Management";
-        VendIndicator: Enum lvnForm1098VendorIndicator;
-        IRSData: OutStream;
-        Year: Integer;
-        SequenceNo: Integer;
-        TestFile: Text[1];
-        PriorYear: Text[1];
-        TransCode: Code[5];
-        ContactPhoneNo: Text[30];
-        ContactName: Text[40];
-        VendContactName: Text[40];
-        VendContactPhoneNo: Text[30];
-        ContactEmail: Text[35];
-        DirectSales: Text[1];
-        IsDirectSale: Boolean;
-        PayeeNum: Integer;
-        PayeeTotal: Integer;
-        Progress: Dialog;
-        ARecNum: Integer;
-        CodeNos: Text[12];
-        MISCTotals: array[15] of Decimal;
-
     trigger OnInitReport()
     begin
         TestFile := ' ';
@@ -326,6 +284,49 @@ report 14135115 "lvnForm1099MagneticMedia"
         IRSBlob.CreateInStream(IStream);
         FileName := DefaultFileNameTxt;
         DownloadFromStream(IStream, ExportLbl, '', AllFileFilterTxt, FileName);
+    end;
+
+    var
+        CompanyInfo: Record "Company Information";
+        TempTransmitterInfo: Record "Company Information" temporary;
+        TempVendorInfo: Record "Company Information" temporary;
+        IRSBlob: Codeunit "Temp Blob";
+        MagMediaManagement: Codeunit "A/P Magnetic Media Management";
+        VendIndicator: Enum lvnForm1098VendorIndicator;
+        IRSData: OutStream;
+        Year: Integer;
+        SequenceNo: Integer;
+        TestFile: Text[1];
+        PriorYear: Text[1];
+        TransCode: Code[5];
+        ContactPhoneNo: Text[30];
+        ContactName: Text[40];
+        VendContactName: Text[40];
+        VendContactPhoneNo: Text[30];
+        ContactEmail: Text[35];
+        DirectSales: Text[1];
+        IsDirectSale: Boolean;
+        PayeeNum: Integer;
+        PayeeTotal: Integer;
+        Progress: Dialog;
+        ARecNum: Integer;
+        CodeNos: Text[12];
+        MISCTotals: array[15] of Decimal;
+        TransCodeErr: Label 'You must enter the Transmitter Control Code assigned to you by the IRS.';
+        ContactNameErr: Label 'You must enter the name of the person to be contacted if IRS/MCC encounters problems with the file or transmission.';
+        VendNameErr: Label 'You must enter the name of the person to be contacted if IRS/MCC has any software questions.';
+        VendPhoneNoErr: Label 'You must enter the phone number of the person to be contacted if IRS/MCC has any software questions.';
+        ContactPhoneNoErr: Label 'You must enter the phone number of the person to be contacted if IRS/MCC encounters problems with the file or transmission.';
+        VendInfoErr: Label 'You must enter all software vendor address information.';
+        ProgressMsg: Label 'Exporting...\\Table    #1####################';
+        InitialProgressTxt: Label 'IRSTAX';
+        ExportLbl: Label 'Export';
+        AllFileFilterTxt: Label 'All Files (*.*)|*.*';
+        DefaultFileNameTxt: Label '1099IRSTAX.txt';
+
+    procedure SetParams(pYear: Integer)
+    begin
+        Year := pYear;
     end;
 
     local procedure IncrementSequenceNo()
@@ -530,11 +531,6 @@ report 14135115 "lvnForm1099MagneticMedia"
           StrSubstNo('                                                  ') +
           StrSubstNo('                                                  ') +
           StrSubstNo('                                           '));
-    end;
-
-    procedure SetParams(pYear: Integer)
-    begin
-        Year := pYear;
     end;
 
     local procedure IncrementMISCTotals()

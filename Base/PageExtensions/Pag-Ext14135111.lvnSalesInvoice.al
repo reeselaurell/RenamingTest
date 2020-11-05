@@ -4,12 +4,17 @@ pageextension 14135111 "lvnSalesInvoice" extends "Sales Invoice"
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
-
         addlast(General)
         {
-            field(lvnTotalAmount; Rec.lvnTotalAmount) { ApplicationArea = All; }
+            field(lvnTotalAmount; Rec.lvnTotalAmount)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 
@@ -28,11 +33,11 @@ pageextension 14135111 "lvnSalesInvoice" extends "Sales Invoice"
 
                 trigger OnAction()
                 var
-                    SalesFileImportManagement: codeunit lvnSalesFileImportManagement;
-                    DocumentType: enum lvnLoanDocumentType;
                     GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
                     ImportBufferError: Record lvnImportBufferError temporary;
+                    SalesFileImportManagement: Codeunit lvnSalesFileImportManagement;
                     JournalDataImport: Page lvnJournalDataImport;
+                    DocumentType: Enum lvnLoanDocumentType;
                 begin
                     Clear(SalesFileImportManagement);
                     if not SalesFileImportManagement.ManualFileImport(GenJnlImportBuffer, ImportBufferError) then

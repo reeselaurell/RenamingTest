@@ -15,7 +15,10 @@ codeunit 14135117 "lvnSalesFileImportManagement"
         OpenFileLbl: Label 'Open File for Import';
         ReadingToStreamErr: Label 'Error reading file to stream';
 
-    procedure CreateSalesLines(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; DocumentType: enum lvnLoanDocumentType; DocumentNo: Code[20])
+    procedure CreateSalesLines(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        DocumentType: Enum lvnLoanDocumentType;
+        DocumentNo: Code[20])
     var
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
@@ -74,7 +77,9 @@ codeunit 14135117 "lvnSalesFileImportManagement"
         until GenJnlImportBuffer.Next() = 0;
     end;
 
-    procedure ManualFileImport(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError): Boolean
+    procedure ManualFileImport(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError): Boolean
     begin
         FileImportSchema.Reset();
         FileImportSchema.SetRange("File Import Type", FileImportSchema."File Import Type"::"Sales Line");
@@ -204,7 +209,9 @@ codeunit 14135117 "lvnSalesFileImportManagement"
         until (StartLine > EndLine);
     end;
 
-    local procedure ValidateEntries(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError)
+    local procedure ValidateEntries(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError)
     var
         AccountNoBlankOrMissingErr: Label 'Account %1 %2 is missing or blank';
         LoanNoNotFoundErr: Label 'Loan No. %1 not found';
@@ -263,13 +270,18 @@ codeunit 14135117 "lvnSalesFileImportManagement"
                     GenJnlImportBuffer."Reason Code" := FileImportSchema."Reason Code";
                 if GenJnlImportBuffer."Reason Code" <> '' then
                     if not CheckReasonCode(GenJnlImportBuffer) then
-                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, strsubstno(ReasonCodeMissingErr, GenJnlImportBuffer."Reason Code"));
+                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(ReasonCodeMissingErr, GenJnlImportBuffer."Reason Code"));
                 //----
                 GenJnlImportBuffer.Modify();
             until GenJnlImportBuffer.Next() = 0;
     end;
 
-    local procedure ValidateDimension(LineNo: Integer; Mandatory: Boolean; DimensionNo: Integer; DimensionValueCode: Code[20]; var ImportBufferError: Record lvnImportBufferError)
+    local procedure ValidateDimension(
+        LineNo: Integer;
+        Mandatory: Boolean;
+        DimensionNo: Integer;
+        DimensionValueCode: Code[20];
+        var ImportBufferError: Record lvnImportBufferError)
     var
         DimensionValue: Record "Dimension Value";
         MandatoryDimensionBlankErr: Label 'Mandatory Dimension %1 is blank';
@@ -332,7 +344,11 @@ codeunit 14135117 "lvnSalesFileImportManagement"
         end;
     end;
 
-    local procedure SearchDimension(DimensionNo: Integer; DimensionMappingType: Enum lvnDimensionMappingType; DimensionValueText: Text; var DimensionValueCode: Code[20])
+    local procedure SearchDimension(
+        DimensionNo: Integer;
+        DimensionMappingType: Enum lvnDimensionMappingType;
+        DimensionValueText: Text;
+        var DimensionValueCode: Code[20])
     var
         DimensionValue: Record "Dimension Value";
     begin
@@ -490,7 +506,10 @@ codeunit 14135117 "lvnSalesFileImportManagement"
         end;
     end;
 
-    local procedure AddErrorLine(GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError; ErrorText: Text)
+    local procedure AddErrorLine(
+        GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError;
+        ErrorText: Text)
     var
         ErrorLineNo: Integer;
     begin
@@ -507,7 +526,10 @@ codeunit 14135117 "lvnSalesFileImportManagement"
         ImportBufferError.Insert();
     end;
 
-    local procedure AddErrorLine(LineNo: Integer; var ImportBufferError: Record lvnImportBufferError; ErrorText: Text)
+    local procedure AddErrorLine(
+        LineNo: Integer;
+        var ImportBufferError: Record lvnImportBufferError;
+        ErrorText: Text)
     var
         ErrorLineNo: Integer;
     begin

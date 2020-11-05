@@ -14,10 +14,18 @@ xmlport 14135110 "lvnOneOffChecksImport"
                 SourceTableView = sorting("Entry No.");
                 UseTemporary = true;
 
-                fieldelement(GLAccountNo; TempImportBuffer."G/L Account No.") { }
-                fieldelement(Name; TempImportBuffer.Name) { }
-                fieldelement(Amount; TempImportBuffer.Amount) { }
-                fieldelement(LoanNo; TempImportBuffer."Loan No.") { }
+                fieldelement(GLAccountNo; TempImportBuffer."G/L Account No.")
+                {
+                }
+                fieldelement(Name; TempImportBuffer.Name)
+                {
+                }
+                fieldelement(Amount; TempImportBuffer.Amount)
+                {
+                }
+                fieldelement(LoanNo; TempImportBuffer."Loan No.")
+                {
+                }
                 textelement(Address)
                 {
                     trigger OnAfterAssignVariable()
@@ -26,10 +34,15 @@ xmlport 14135110 "lvnOneOffChecksImport"
                         TempImportBuffer."Address 2" := CopyStr(Address, 50, MaxStrLen(TempImportBuffer."Address 2"));
                     end;
                 }
-                fieldelement(City; TempImportBuffer.City) { }
-                fieldelement(County; TempImportBuffer.County) { }
-                fieldelement(ZIPCode; TempImportBuffer."Post Code") { }
-
+                fieldelement(City; TempImportBuffer.City)
+                {
+                }
+                fieldelement(County; TempImportBuffer.County)
+                {
+                }
+                fieldelement(ZIPCode; TempImportBuffer."Post Code")
+                {
+                }
                 trigger OnBeforeInsertRecord()
                 begin
                     EntryNo += 1;
@@ -38,7 +51,6 @@ xmlport 14135110 "lvnOneOffChecksImport"
             }
         }
     }
-
 
     requestpage
     {
@@ -56,14 +68,6 @@ xmlport 14135110 "lvnOneOffChecksImport"
             }
         }
     }
-
-    var
-        GenJnlBatch: Record "Gen. Journal Batch";
-        EntryNo: Integer;
-        PostingDate: Date;
-        ReasonCode: Code[10];
-        BankAccountNo: Code[20];
-        CheckType: Enum lvnBankPaymentType;
 
     trigger OnPostXmlPort()
     var
@@ -107,7 +111,7 @@ xmlport 14135110 "lvnOneOffChecksImport"
             GenJnlLine.Validate("Account No.", TempOneOffCheckBuffer."G/L Account No.");
             GenJnlLine.Validate("Posting Date", PostingDate);
             GenJnlLine.Validate("Document Type", GenJnlLine."Document Type"::Payment);
-            GenJnlLine.Validate("Document No.", NoSeriesManagement.GetNextNo(GenJnlBatch."No. Series", TODAY, TRUE));
+            GenJnlLine.Validate("Document No.", NoSeriesManagement.GetNextNo(GenJnlBatch."No. Series", Today, true));
             GenJnlLine.Validate("External Document No.", ReasonCode + TempOneOffCheckBuffer."Loan No.");
             GenJnlLine.Validate(lvnLoanNo, TempOneOffCheckBuffer."Loan No.");
             GenJnlLine.Validate(lvnImportID, CreateGuid());
@@ -131,6 +135,14 @@ xmlport 14135110 "lvnOneOffChecksImport"
             GenJnlLine.Modify(true);
         until TempOneOffCheckBuffer.Next() = 0;
     end;
+
+    var
+        GenJnlBatch: Record "Gen. Journal Batch";
+        EntryNo: Integer;
+        PostingDate: Date;
+        ReasonCode: Code[10];
+        BankAccountNo: Code[20];
+        CheckType: Enum lvnBankPaymentType;
 
     procedure SetParams(JournalTemplate: Code[20]; JournalBatch: Code[20])
     begin

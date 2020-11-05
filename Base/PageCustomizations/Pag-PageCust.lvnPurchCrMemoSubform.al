@@ -20,6 +20,4 @@ pagecustomization "lvnPurchCrMemoSubform" customizes "Purch. Cr. Memo Subform"
         movebefore("IRS 1099 Liable"; lvnUseSalesTax)
         movebefore(lvnUseSalesTax; lvnDeliveryState)
     }
-
-
 }

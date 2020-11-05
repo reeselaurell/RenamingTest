@@ -162,16 +162,6 @@ report 14135110 "lvnPostDimensionChangeSet"
         end;
     }
 
-    var
-        AnalysisEntriesRegenMsg: Label 'Note: All analysis entries will be deleted and should be regenerated.';
-        SelectDimensionMsg: Label 'Please, select at least one dimension to transfer';
-        ProcessingMsg: Label 'Processing entry #1####### of #2#######';
-        DimensionTransferFlag: array[9] of Boolean;
-        LoanChangeFlag: Boolean;
-        Current: Integer;
-        Total: Integer;
-        Progress: Dialog;
-
     trigger OnPreReport()
     var
         LoanVisionSetup: Record lvnLoanVisionSetup;
@@ -182,4 +172,14 @@ report 14135110 "lvnPostDimensionChangeSet"
         Current := 0;
         Total := DimensionChangeJnlEntry.Count();
     end;
+
+    var
+        DimensionTransferFlag: array[9] of Boolean;
+        LoanChangeFlag: Boolean;
+        Current: Integer;
+        Total: Integer;
+        Progress: Dialog;
+        AnalysisEntriesRegenMsg: Label 'Note: All analysis entries will be deleted and should be regenerated.';
+        SelectDimensionMsg: Label 'Please, select at least one dimension to transfer';
+        ProcessingMsg: Label 'Processing entry #1####### of #2#######';
 }

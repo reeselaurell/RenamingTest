@@ -16,19 +16,43 @@ page 14135230 "lvnCloseManagerEntryList"
             {
                 Caption = 'Group';
 
-                field("Template No."; Rec."Template No.") { ApplicationArea = All; }
-                field("Period Date"; Rec."Period Date") { ApplicationArea = All; }
-                field("Total Tasks"; Rec."Total Tasks") { ApplicationArea = All; }
-                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations") { ApplicationArea = All; }
-                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval") { ApplicationArea = All; }
-                field("Tasks Approved"; Rec."Tasks Approved") { ApplicationArea = All; }
-                field(PercentComplete; PercentComplete) { ApplicationArea = All; Caption = 'Percent Complete'; }
+                field("Template No."; Rec."Template No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Period Date"; Rec."Period Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Total Tasks"; Rec."Total Tasks")
+                {
+                    ApplicationArea = All;
+                }
+                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations")
+                {
+                    ApplicationArea = All;
+                }
+                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval")
+                {
+                    ApplicationArea = All;
+                }
+                field("Tasks Approved"; Rec."Tasks Approved")
+                {
+                    ApplicationArea = All;
+                }
+                field(PercentComplete; PercentComplete)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Percent Complete';
+                }
             }
         }
-
         area(FactBoxes)
         {
-            part(DocumentsExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentsExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 
@@ -75,10 +99,6 @@ page 14135230 "lvnCloseManagerEntryList"
         }
     }
 
-    var
-        TemplateEntryAlreadyExistsMsg: Label 'This Template already has an Entry. The existing Entry was opened.';
-        PercentComplete: Integer;
-
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
         Rec."Document Guid" := CreateGuid();
@@ -97,4 +117,8 @@ page 14135230 "lvnCloseManagerEntryList"
     begin
         CurrPage.DocumentsExchange.Page.ReloadDocuments(Rec."Document Guid");
     end;
+
+    var
+        PercentComplete: Integer;
+        TemplateEntryAlreadyExistsMsg: Label 'This Template already has an Entry. The existing Entry was opened.';
 }

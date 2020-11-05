@@ -24,17 +24,44 @@ page 14135172 "lvnQuickPayWorksheet"
                 {
                     Caption = 'Filters';
 
-                    field(InvoicesPostedPostingDate; InvoicesPostedPostingDate) { ApplicationArea = All; Caption = 'Invoices Posted'; }
-                    field(DueDateBefore; DueDateBefore) { ApplicationArea = All; Caption = 'Due Date Before'; }
-                    field(QuickPayPresetCode; QuickPayPresetCode) { ApplicationArea = All; Caption = 'Filter Preset'; TableRelation = lvnQuickPayFilterPreset.Code; }
+                    field(InvoicesPostedPostingDate; InvoicesPostedPostingDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Invoices Posted';
+                    }
+                    field(DueDateBefore; DueDateBefore)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Due Date Before';
+                    }
+                    field(QuickPayPresetCode; QuickPayPresetCode)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Filter Preset';
+                        TableRelation = lvnQuickPayFilterPreset.Code;
+                    }
                 }
                 group(Payment)
                 {
                     Caption = 'Payment';
 
-                    field(PostingDate; PostingDate) { ApplicationArea = All; Caption = 'Payment Date'; }
-                    field(PaymentMethodCode; PaymentMethodCode) { ApplicationArea = All; Caption = 'Payment Method'; Visible = false; TableRelation = "Payment Method".Code; }
-                    field(BankPaymentType; BankPaymentType) { ApplicationArea = All; Caption = 'Bank Payment Type'; }
+                    field(PostingDate; PostingDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Payment Date';
+                    }
+                    field(PaymentMethodCode; PaymentMethodCode)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Payment Method';
+                        Visible = false;
+                        TableRelation = "Payment Method".Code;
+                    }
+                    field(BankPaymentType; BankPaymentType)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Bank Payment Type';
+                    }
                     field(BankAccountNo; BankAccountNo)
                     {
                         ApplicationArea = All;
@@ -53,8 +80,16 @@ page 14135172 "lvnQuickPayWorksheet"
                             BankAccountName := BankAccount.Name;
                         end;
                     }
-                    field(BankAccountName; BankAccountName) { ApplicationArea = All; Editable = false; }
-                    field(GroupPerVendor; GroupPerVendor) { ApplicationArea = All; Caption = 'Group per Vendor'; }
+                    field(BankAccountName; BankAccountName)
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                    }
+                    field(GroupPerVendor; GroupPerVendor)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Group per Vendor';
+                    }
                 }
             }
             repeater(Group)
@@ -74,16 +109,64 @@ page 14135172 "lvnQuickPayWorksheet"
                         TotalAmountToPay := Buffer."Amount to Pay";
                     end;
                 }
-                field("Vendor No."; Rec."Vendor No.") { ApplicationArea = All; Caption = 'Vendor No.'; Editable = false; }
-                field("Due Date"; Rec."Due Date") { ApplicationArea = All; Caption = 'Due Date'; Editable = false; }
-                field("Document No."; Rec."Document No.") { ApplicationArea = All; Caption = 'Document No.'; Editable = false; }
-                field("External Document No."; Rec."External Document No.") { ApplicationArea = All; Caption = 'External Document No.'; Editable = false; }
-                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; Caption = 'Posting Date'; Editable = false; }
-                field("Vendor Name"; Rec."Vendor Name") { ApplicationArea = All; Caption = 'Vendor Name'; Editable = false; }
-                field(Description; Rec.Description) { ApplicationArea = All; Caption = 'Description'; Editable = false; }
-                field("Payment Method Code"; Rec."Payment Method Code") { ApplicationArea = All; Caption = 'Payment Method Code'; }
-                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; Caption = 'Loan No.'; }
-                field("Remaining Amount"; Rec."Remaining Amount") { ApplicationArea = All; Caption = 'Remaining Amount'; Editable = false; }
+                field("Vendor No."; Rec."Vendor No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Vendor No.';
+                    Editable = false;
+                }
+                field("Due Date"; Rec."Due Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Due Date';
+                    Editable = false;
+                }
+                field("Document No."; Rec."Document No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Document No.';
+                    Editable = false;
+                }
+                field("External Document No."; Rec."External Document No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'External Document No.';
+                    Editable = false;
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Posting Date';
+                    Editable = false;
+                }
+                field("Vendor Name"; Rec."Vendor Name")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Vendor Name';
+                    Editable = false;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Description';
+                    Editable = false;
+                }
+                field("Payment Method Code"; Rec."Payment Method Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Payment Method Code';
+                }
+                field("Loan No."; Rec."Loan No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Loan No.';
+                }
+                field("Remaining Amount"; Rec."Remaining Amount")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Remaining Amount';
+                    Editable = false;
+                }
                 field("Amount to Pay"; Rec."Amount to Pay")
                 {
                     ApplicationArea = All;
@@ -105,16 +188,46 @@ page 14135172 "lvnQuickPayWorksheet"
             {
                 Caption = 'Bank';
 
-                field(BankAccountBalance; BankAccountBalance) { ApplicationArea = All; Caption = 'Bank Balance'; Editable = false; }
-                field(TotalAmountToPay; TotalAmountToPay) { ApplicationArea = All; Caption = 'Total Amount to Pay'; Editable = false; }
-                field(EndBalance; BankAccountBalance - TotalAmountToPay) { ApplicationArea = All; Caption = 'End Balance'; }
+                field(BankAccountBalance; BankAccountBalance)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Bank Balance';
+                    Editable = false;
+                }
+                field(TotalAmountToPay; TotalAmountToPay)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Total Amount to Pay';
+                    Editable = false;
+                }
+                field(EndBalance; BankAccountBalance - TotalAmountToPay)
+                {
+                    ApplicationArea = All;
+                    Caption = 'End Balance';
+                }
             }
         }
         area(FactBoxes)
         {
-            part(VendorStats; "Vendor Statistics FactBox") { ApplicationArea = All; Caption = 'Vendor Statistics'; SubPageView = sorting("No."); SubPageLink = "No." = field("Vendor No."); }
-            part(Dimensions; "Dimension Set Entries FactBox") { ApplicationArea = All; Caption = 'Dimensions'; SubPageView = sorting("Dimension Set ID", "Dimension Code"); SubPageLink = "Dimension Set ID" = field("Dimension Set ID"); }
-            part(Documents; lvnDocumentListFactbox) { ApplicationArea = All; Caption = 'Documents'; }
+            part(VendorStats; "Vendor Statistics FactBox")
+            {
+                ApplicationArea = All;
+                Caption = 'Vendor Statistics';
+                SubPageView = sorting("No.");
+                SubPageLink = "No." = field("Vendor No.");
+            }
+            part(Dimensions; "Dimension Set Entries FactBox")
+            {
+                ApplicationArea = All;
+                Caption = 'Dimensions';
+                SubPageView = sorting("Dimension Set ID", "Dimension Code");
+                SubPageLink = "Dimension Set ID" = field("Dimension Set ID");
+            }
+            part(Documents; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+                Caption = 'Documents';
+            }
         }
     }
 
@@ -212,25 +325,6 @@ page 14135172 "lvnQuickPayWorksheet"
         }
     }
 
-    var
-        RemoveSelectionQst: Label 'Do you want to remove current selection?';
-        CloseWorksheetQst: Label 'Do You want to Close Quick Pay Worksheet?';
-        ConfirmJournalCreateQst: Label 'Do you want to create payment journal?';
-        Buffer: Record lvnQuickPayBuffer temporary;
-        InvoicesPostedPostingDate: Date;
-        DueDateBefore: Date;
-        QuickPayPresetCode: Code[20];
-        PostingDate: Date;
-        PaymentMethodCode: Code[10];
-        BankPaymentType: Option " ","Computer Check","Manual Check","Electronic Payment","Electronic Payment-IAT";
-        BankAccountNo: Code[20];
-        BankAccountName: Text[250];
-        GroupPerVendor: Boolean;
-        BankAccountBalance: Decimal;
-        TotalAmountToPay: Decimal;
-        ShowAll: Boolean;
-        ShowNonApplied: Boolean;
-
     trigger OnOpenPage()
     begin
         ShowAll := false;
@@ -251,6 +345,25 @@ page 14135172 "lvnQuickPayWorksheet"
     begin
         exit(Confirm(CloseWorksheetQst));
     end;
+
+    var
+        Buffer: Record lvnQuickPayBuffer temporary;
+        InvoicesPostedPostingDate: Date;
+        DueDateBefore: Date;
+        QuickPayPresetCode: Code[20];
+        PostingDate: Date;
+        PaymentMethodCode: Code[10];
+        BankPaymentType: Option " ","Computer Check","Manual Check","Electronic Payment","Electronic Payment-IAT";
+        BankAccountNo: Code[20];
+        BankAccountName: Text[250];
+        GroupPerVendor: Boolean;
+        BankAccountBalance: Decimal;
+        TotalAmountToPay: Decimal;
+        ShowAll: Boolean;
+        ShowNonApplied: Boolean;
+        RemoveSelectionQst: Label 'Do you want to remove current selection?';
+        CloseWorksheetQst: Label 'Do You want to Close Quick Pay Worksheet?';
+        ConfirmJournalCreateQst: Label 'Do you want to create payment journal?';
 
     local procedure RefreshView()
     begin
@@ -400,8 +513,8 @@ page 14135172 "lvnQuickPayWorksheet"
         TempGenJnlLine1: Record "Gen. Journal Line" temporary;
         TempGenJnlLine2: Record "Gen. Journal Line" temporary;
         VendLedgEntry: Record "Vendor Ledger Entry";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
         UserSetup: Record "User Setup";
+        NoSeriesManagement: Codeunit NoSeriesManagement;
         BatchName: Code[20];
         LineNo: Integer;
         Idx: Integer;

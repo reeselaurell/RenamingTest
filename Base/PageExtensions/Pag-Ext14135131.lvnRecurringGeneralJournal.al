@@ -4,7 +4,10 @@ pageextension 14135131 "lvnRecurringGeneralJournal" extends "Recurring General J
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

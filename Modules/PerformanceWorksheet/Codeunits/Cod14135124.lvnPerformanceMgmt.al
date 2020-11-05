@@ -39,7 +39,12 @@ codeunit 14135124 "lvnPerformanceMgmt"
         exit(DimensionRowExpressionConsumerId);
     end;
 
-    procedure CalculatePerformanceBand(var Buffer: Record lvnPerformanceValueBuffer; BandNo: Integer; var RowSchema: Record lvnPerformanceRowSchema; var ColSchema: Record lvnPerformanceColSchema; var SystemFilter: Record lvnSystemCalculationFilter)
+    procedure CalculatePerformanceBand(
+        var Buffer: Record lvnPerformanceValueBuffer;
+        BandNo: Integer;
+        var RowSchema: Record lvnPerformanceRowSchema;
+        var ColSchema: Record lvnPerformanceColSchema;
+        var SystemFilter: Record lvnSystemCalculationFilter)
     var
         Cache: Dictionary of [Code[20], Decimal];
         Path: List of [Code[20]];
@@ -47,51 +52,21 @@ codeunit 14135124 "lvnPerformanceMgmt"
         CalculatePerformanceBand(Buffer, BandNo, RowSchema, ColSchema, SystemFilter, Cache, Path);
     end;
 
-    local procedure CalculatePerformanceBand(var Buffer: Record lvnPerformanceValueBuffer; BandNo: Integer; var RowSchema: Record lvnPerformanceRowSchema; var ColSchema: Record lvnPerformanceColSchema; var SystemFilter: Record lvnSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; var Path: List of [Code[20]])
-    var
-        RowLine: Record lvnPerformanceRowSchemaLine;
-        ColLine: Record lvnPerformanceColSchemaLine;
-        CalculationUnit: Record lvnCalculationUnit;
-    begin
-        ColLine.Reset();
-        ColLine.SetRange("Schema Code", ColSchema.Code);
-        ColLine.FindSet();
-        repeat
-            RowLine.Reset();
-            RowLine.SetRange("Schema Code", RowSchema.Code);
-            RowLine.SetRange("Column No.", ColLine."Column No.");
-            RowLine.FindSet();
-            repeat
-                Clear(Buffer);
-                Buffer."Column No." := ColLine."Column No.";
-                Buffer."Row No." := RowLine."Line No.";
-                Buffer."Band No." := BandNo;
-                Buffer."Calculation Unit Code" := RowLine."Calculation Unit Code";
-                if CalculationUnit.Get(RowLine."Calculation Unit Code") then begin
-                    Buffer.Value := CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path);
-                    Buffer.Interactive := IsClickableCell(CalculationUnit);
-                end else
-                    Buffer.Value := 0;
-                if Buffer.Value >= 0 then
-                    if RowLine."Style Code" <> '' then
-                        Buffer."Style Code" := RowLine."Style Code";
-                if Buffer.Value < 0 then
-                    if RowLine."Neg. Style Code" <> '' then
-                        Buffer."Style Code" := RowLine."Neg. Style Code";
-                Buffer."Number Format Code" := RowLine."Number Format Code";
-                Buffer.Insert();
-            until RowLine.Next() = 0;
-        until ColLine.Next() = 0;
-    end;
-
-    procedure CalculateFormulaBand(var Buffer: Record lvnPerformanceValueBuffer; BandNo: Integer; var RowSchema: Record lvnPerformanceRowSchema; var ColSchema: Record lvnPerformanceColSchema; var SystemFilter: Record lvnSystemCalculationFilter; RowFormulaCode: Code[20]; ExpressionConsumerId: Guid)
+    procedure CalculateFormulaBand(
+        var Buffer: Record lvnPerformanceValueBuffer;
+        BandNo: Integer;
+        var RowSchema: Record lvnPerformanceRowSchema;
+        var ColSchema: Record lvnPerformanceColSchema;
+        var SystemFilter: Record lvnSystemCalculationFilter;
+        RowFormulaCode: Code[20];
+        ExpressionConsumerId: Guid)
     var
         ColLine: Record lvnPerformanceColSchemaLine;
         CalculationUnit: Record lvnCalculationUnit;
         RowLine: Query lvnPerformanceRowLiteralLine;
         Cache: Dictionary of [Code[20], Decimal];
-        Path: List of [Code[20]];
         CalculationType: Enum lvnCalculationUnitType;
+        Path: List of [Code[20]];
     begin
         ColLine.Reset();
         ColLine.SetRange("Schema Code", ColSchema.Code);
@@ -110,7 +85,10 @@ codeunit 14135124 "lvnPerformanceMgmt"
         CalculatePerformanceBand(Buffer, BandNo, RowSchema, ColSchema, SystemFilter, Cache, Path);
     end;
 
-    procedure ApplyLoanFilter(var Loan: Record lvnLoan; var CalcUnit: Record lvnCalculationUnit; var SystemFilter: Record lvnSystemCalculationFilter)
+    procedure ApplyLoanFilter(
+        var Loan: Record lvnLoan;
+        var CalcUnit: Record lvnCalculationUnit;
+        var SystemFilter: Record lvnSystemCalculationFilter)
     begin
         Loan.FilterGroup(2);
         if CalcUnit."Dimension 1 Filter" <> '' then
@@ -175,7 +153,10 @@ codeunit 14135124 "lvnPerformanceMgmt"
         Loan.FilterGroup(0);
     end;
 
-    procedure ApplyGLFilter(var GLEntry: Record "G/L Entry"; var CalcUnit: Record lvnCalculationUnit; var SystemFilter: Record lvnSystemCalculationFilter)
+    procedure ApplyGLFilter(
+        var GLEntry: Record "G/L Entry";
+        var CalcUnit: Record lvnCalculationUnit;
+        var SystemFilter: Record lvnSystemCalculationFilter)
     begin
         GLEntry.FilterGroup(2);
         GLEntry.SetFilter("G/L Account No.", CalcUnit."Account No. Filter");
@@ -228,7 +209,11 @@ codeunit 14135124 "lvnPerformanceMgmt"
         GLEntry.FilterGroup(0);
     end;
 
-    procedure GetData(var Buffer: Record lvnPerformanceValueBuffer; var StylesInUse: Dictionary of [Code[20], Boolean]; RowSchemaCode: Code[20]; ColSchemaCode: Code[20]) DataSource: JsonArray
+    procedure GetData(
+        var Buffer: Record lvnPerformanceValueBuffer;
+        var StylesInUse: Dictionary of [Code[20], Boolean];
+        RowSchemaCode: Code[20];
+        ColSchemaCode: Code[20]) DataSource: JsonArray
     var
         RowLine: Record lvnPerformanceRowSchemaLine;
         ColLine: Record lvnPerformanceColSchemaLine;
@@ -314,11 +299,6 @@ codeunit 14135124 "lvnPerformanceMgmt"
         until RowLine.Next() = 0;
     end;
 
-    local procedure FormatValue(var Buffer: Record lvnPerformanceValueBuffer) TextValue: Text
-    begin
-        exit(FormatValue(Buffer.Value, Buffer."Number Format Code"))
-    end;
-
     procedure FormatValue(NumericValue: Decimal; FormatCode: Code[20]) TextValue: Text
     var
         NumberFormat: Record lvnNumberFormat;
@@ -330,9 +310,9 @@ codeunit 14135124 "lvnPerformanceMgmt"
 
     procedure GetGridStyles(StylesInUse: List of [Code[20]]) Json: JsonObject
     var
+        Style: Record lvnStyle;
         CssClass: JsonObject;
         StyleCode: Code[20];
-        Style: Record lvnStyle;
     begin
         Clear(CssClass);
         CssClass.Add('font-weight', 'bold');
@@ -457,71 +437,11 @@ codeunit 14135124 "lvnPerformanceMgmt"
             end;
     end;
 
-    local procedure IsClickableCell(var CalculationUnit: Record lvnCalculationUnit): Boolean
-    begin
-        if (CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup") or (CalculationUnit.Type = CalculationUnit.Type::"Count Lookup") then begin
-            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::"Loan Card" then
-                exit(true);
-            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::"Ledger Entries" then
-                exit(CalculationUnit."Account No. Filter" <> '');
-        end;
-        exit(false);
-    end;
-
-    local procedure CalculateSingleRowValue(RowNo: Integer; ColNo: Integer; CalculationUnitCode: Code[20]; RowFormulaCode: Code[20]; ExpressionConsumerId: Guid; var Buffer: Record lvnPerformanceValueBuffer; Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
-    var
-        ValueBuffer: Record lvnExpressionValueBuffer temporary;
-        ExpressionHeader: Record lvnExpressionHeader;
-        ExpressionEngine: Codeunit lvnExpressionEngine;
-        Number: Integer;
-        BandNo: Integer;
-    begin
-        if Cache.Get(CalculationUnitCode, Result) then
-            exit;
-        if Path.IndexOf(CalculationUnitCode) <> 0 then
-            Error(CircularReferenceErr);
-        Buffer.Reset();
-        Buffer.SetRange("Row No.", RowNo);
-        Buffer.SetRange("Column No.", ColNo);
-        if not Buffer.FindSet() then
-            exit(0);
-        repeat
-            Clear(ValueBuffer);
-            ValueBuffer.Number := Buffer."Band No.";
-            Number := Buffer."Band No.";
-            ValueBuffer.Name := 'BAND' + Format(Buffer."Band No.");
-            ValueBuffer.Type := 'Decimal';
-            ValueBuffer.Value := Format(Buffer.Value);
-            ValueBuffer.Insert();
-        until Buffer.Next() = 0;
-        //Insert band count
-        Buffer.Reset();
-        Buffer.SetRange("Row No.", RowNo);
-        Buffer.SetRange("Column No.", 1);
-        Clear(ValueBuffer);
-        ValueBuffer.Number := Number + 1;
-        ValueBuffer.Name := BandCountTxt;
-        ValueBuffer.Type := 'Decimal';
-        ValueBuffer.Value := Format(Buffer.Count());
-        ValueBuffer.Insert();
-        Buffer.FindFirst();
-        BandNo := Buffer."Band No.";
-        //Insert column count
-        Buffer.Reset();
-        Buffer.SetRange("Row No.", RowNo);
-        Buffer.SetRange("Band No.", BandNo);
-        Clear(ValueBuffer);
-        ValueBuffer.Number := Number + 2;
-        ValueBuffer.Name := ColCountTxt;
-        ValueBuffer.Type := 'Decimal';
-        ValueBuffer.Value := Format(Buffer.Count());
-        ValueBuffer.Insert();
-        ExpressionHeader.Get(RowFormulaCode, ExpressionConsumerId);
-        Evaluate(Result, ExpressionEngine.CalculateFormula(ExpressionHeader, ValueBuffer));
-        Cache.Add(CalculationUnitCode, Result);
-    end;
-
-    procedure CalculateSingleValue(var CalculationUnit: Record lvnCalculationUnit; var SystemFilter: Record lvnSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
+    procedure CalculateSingleValue(
+        var CalculationUnit: Record lvnCalculationUnit;
+        var SystemFilter: Record lvnSystemCalculationFilter;
+        var Cache: Dictionary of [Code[20], Decimal];
+        Path: List of [Code[20]]) Result: Decimal
     begin
         if Cache.Get(CalculationUnit.Code, Result) then
             exit;
@@ -555,279 +475,20 @@ codeunit 14135124 "lvnPerformanceMgmt"
         Cache.Add(CalculationUnit.Code, Result);
     end;
 
-    local procedure LookupLoanCard(var CalculationUnit: Record lvnCalculationUnit; var SystemFilter: Record lvnSystemCalculationFilter) Result: Decimal
-    var
-        LoanAmountsByDimension: Query lvnLoanAmountsByDimension;
-    begin
-        if CalculationUnit."Dimension 1 Filter" <> '' then
-            LoanAmountsByDimension.SetFilter(Dimension1Filter, CalculationUnit."Dimension 1 Filter")
-        else
-            if SystemFilter."Global Dimension 1" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension1Filter, SystemFilter."Global Dimension 1");
-        if CalculationUnit."Dimension 2 Filter" <> '' then
-            LoanAmountsByDimension.SetFilter(Dimension2Filter, CalculationUnit."Dimension 2 Filter")
-        else
-            if SystemFilter."Global Dimension 2" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension2Filter, SystemFilter."Global Dimension 2");
-        if CalculationUnit."Dimension 3 Filter" <> '' then
-            LoanAmountsByDimension.SetFilter(Dimension3Filter, CalculationUnit."Dimension 3 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 3" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension3Filter, SystemFilter."Shortcut Dimension 3");
-        if CalculationUnit."Dimension 4 Filter" <> '' then
-            LoanAmountsByDimension.SetFilter(Dimension4Filter, CalculationUnit."Dimension 4 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 4" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension4Filter, SystemFilter."Shortcut Dimension 4");
-        if CalculationUnit."Dimension 5 Filter" <> '' then
-            LoanAmountsByDimension.SetFilter(Dimension5Filter, CalculationUnit."Dimension 5 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 5" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension5Filter, SystemFilter."Shortcut Dimension 5");
-        if CalculationUnit."Dimension 6 Filter" <> '' then
-            LoanAmountsByDimension.SetFilter(Dimension6Filter, CalculationUnit."Dimension 6 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 6" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension6Filter, SystemFilter."Shortcut Dimension 6");
-        if CalculationUnit."Dimension 7 Filter" <> '' then
-            LoanAmountsByDimension.SetFilter(Dimension7Filter, CalculationUnit."Dimension 7 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 7" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension7Filter, SystemFilter."Shortcut Dimension 7");
-        if CalculationUnit."Dimension 8 Filter" <> '' then
-            LoanAmountsByDimension.SetFilter(Dimension8Filter, CalculationUnit."Dimension 8 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 8" <> '' then
-                LoanAmountsByDimension.SetFilter(Dimension8Filter, SystemFilter."Shortcut Dimension 8");
-        if CalculationUnit."Business Unit Filter" <> '' then
-            LoanAmountsByDimension.SetFilter(BusinessUnitFilter, CalculationUnit."Business Unit Filter")
-        else
-            if SystemFilter."Business Unit" <> '' then
-                LoanAmountsByDimension.SetFilter(BusinessUnitFilter, SystemFilter."Business Unit");
-        case CalculationUnit."Based On Date" of
-            CalculationUnit."Based On Date"::Application:
-                LoanAmountsByDimension.SetFilter(DateApplicationFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Closed:
-                LoanAmountsByDimension.SetFilter(DateClosedFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Funded:
-                LoanAmountsByDimension.SetFilter(DateFundedFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Locked:
-                LoanAmountsByDimension.SetFilter(DateLockedFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Sold:
-                LoanAmountsByDimension.SetFilter(DateSoldFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Commission:
-                LoanAmountsByDimension.SetFilter(DateCommissionFilter, SystemFilter."Date Filter");
-        end;
-        LoanAmountsByDimension.Open();
-        LoanAmountsByDimension.Read();
-        if CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup" then
-            Result := LoanAmountsByDimension.LoanAmount
-        else
-            Result := LoanAmountsByDimension.LoanCount;
-        LoanAmountsByDimension.Close();
-    end;
-
-    local procedure LookupLoanValue(var CalculationUnit: Record lvnCalculationUnit; var SystemFilter: Record lvnSystemCalculationFilter) Result: Decimal
-    var
-        LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
-        LoanValuesByDimension: Query lvnLoanValuesByDimension;
-    begin
-        if not LoanFieldsConfiguration.Get(CalculationUnit."Field No.") then
-            exit(0);
-        if CalculationUnit."Dimension 1 Filter" <> '' then
-            LoanValuesByDimension.SetFilter(Dimension1Filter, CalculationUnit."Dimension 1 Filter")
-        else
-            if SystemFilter."Global Dimension 1" <> '' then
-                LoanValuesByDimension.SetFilter(Dimension1Filter, SystemFilter."Global Dimension 1");
-        if CalculationUnit."Dimension 2 Filter" <> '' then
-            LoanValuesByDimension.SetFilter(Dimension2Filter, CalculationUnit."Dimension 2 Filter")
-        else
-            if SystemFilter."Global Dimension 2" <> '' then
-                LoanValuesByDimension.SetFilter(Dimension2Filter, SystemFilter."Global Dimension 2");
-        if CalculationUnit."Dimension 3 Filter" <> '' then
-            LoanValuesByDimension.SetFilter(Dimension3Filter, CalculationUnit."Dimension 3 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 3" <> '' then
-                LoanValuesByDimension.SetFilter(Dimension3Filter, SystemFilter."Shortcut Dimension 3");
-        if CalculationUnit."Dimension 4 Filter" <> '' then
-            LoanValuesByDimension.SetFilter(Dimension4Filter, CalculationUnit."Dimension 4 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 4" <> '' then
-                LoanValuesByDimension.SetFilter(Dimension4Filter, SystemFilter."Shortcut Dimension 4");
-        if CalculationUnit."Dimension 5 Filter" <> '' then
-            LoanValuesByDimension.SetFilter(Dimension5Filter, CalculationUnit."Dimension 5 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 5" <> '' then
-                LoanValuesByDimension.SetFilter(Dimension5Filter, SystemFilter."Shortcut Dimension 5");
-        if CalculationUnit."Dimension 6 Filter" <> '' then
-            LoanValuesByDimension.SetFilter(Dimension6Filter, CalculationUnit."Dimension 6 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 6" <> '' then
-                LoanValuesByDimension.SetFilter(Dimension6Filter, SystemFilter."Shortcut Dimension 6");
-        if CalculationUnit."Dimension 7 Filter" <> '' then
-            LoanValuesByDimension.SetFilter(Dimension7Filter, CalculationUnit."Dimension 7 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 7" <> '' then
-                LoanValuesByDimension.SetFilter(Dimension7Filter, SystemFilter."Shortcut Dimension 7");
-        if CalculationUnit."Dimension 8 Filter" <> '' then
-            LoanValuesByDimension.SetFilter(Dimension8Filter, CalculationUnit."Dimension 8 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 8" <> '' then
-                LoanValuesByDimension.SetFilter(Dimension8Filter, SystemFilter."Shortcut Dimension 8");
-        if CalculationUnit."Business Unit Filter" <> '' then
-            LoanValuesByDimension.SetFilter(BusinessUnitFilter, CalculationUnit."Business Unit Filter")
-        else
-            if SystemFilter."Business Unit" <> '' then
-                LoanValuesByDimension.SetFilter(BusinessUnitFilter, SystemFilter."Business Unit");
-        case CalculationUnit."Based On Date" of
-            CalculationUnit."Based On Date"::Application:
-                LoanValuesByDimension.SetFilter(DateApplicationFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Closed:
-                LoanValuesByDimension.SetFilter(DateClosedFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Funded:
-                LoanValuesByDimension.SetFilter(DateFundedFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Locked:
-                LoanValuesByDimension.SetFilter(DateLockedFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Sold:
-                LoanValuesByDimension.SetFilter(DateSoldFilter, SystemFilter."Date Filter");
-            CalculationUnit."Based On Date"::Commission:
-                LoanValuesByDimension.SetFilter(DateCommissionFilter, SystemFilter."Date Filter");
-        end;
-        LoanValuesByDimension.Open();
-        LoanValuesByDimension.Read();
-        if CalculationUnit.Type = CalculationUnit.Type::"Count Lookup" then
-            Result := LoanValuesByDimension.Count
-        else
-            case LoanFieldsConfiguration."Value Type" of
-                LoanFieldsConfiguration."Value Type"::Integer:
-                    Result := LoanValuesByDimension.IntegerValue;
-                LoanFieldsConfiguration."Value Type"::Decimal:
-                    Result := LoanValuesByDimension.DecimalValue
-                else
-                    Result := 0;
-            end;
-        LoanValuesByDimension.Close();
-    end;
-
-    local procedure LookupGeneralLedger(var CalculationUnit: Record lvnCalculationUnit; var SystemFilter: Record lvnSystemCalculationFilter) Result: Decimal
-    var
-        GLEntry: Record lvnGroupedGLEntry;
-    begin
-        GLEntry.Reset();
-        GLEntry.SetFilter("G/L Account No.", CalculationUnit."Account No. Filter");
-        if CalculationUnit."Dimension 1 Filter" <> '' then
-            GLEntry.SetFilter("Global Dimension 1 Code", CalculationUnit."Dimension 1 Filter")
-        else
-            if SystemFilter."Global Dimension 1" <> '' then
-                GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
-        if CalculationUnit."Dimension 2 Filter" <> '' then
-            GLEntry.SetFilter("Global Dimension 2 Code", CalculationUnit."Dimension 2 Filter")
-        else
-            if SystemFilter."Global Dimension 2" <> '' then
-                GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
-        if CalculationUnit."Dimension 3 Filter" <> '' then
-            GLEntry.SetFilter("Shortcut Dimension 3 Code", CalculationUnit."Dimension 3 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 3" <> '' then
-                GLEntry.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
-        if CalculationUnit."Dimension 4 Filter" <> '' then
-            GLEntry.SetFilter("Shortcut Dimension 4 Code", CalculationUnit."Dimension 4 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 4" <> '' then
-                GLEntry.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
-        if CalculationUnit."Dimension 5 Filter" <> '' then
-            GLEntry.SetFilter("Shortcut Dimension 5 Code", CalculationUnit."Dimension 5 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 5" <> '' then
-                GLEntry.SetFilter("Shortcut Dimension 5 Code", SystemFilter."Shortcut Dimension 5");
-        if CalculationUnit."Dimension 6 Filter" <> '' then
-            GLEntry.SetFilter("Shortcut Dimension 6 Code", CalculationUnit."Dimension 6 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 6" <> '' then
-                GLEntry.SetFilter("Shortcut Dimension 6 Code", SystemFilter."Shortcut Dimension 6");
-        if CalculationUnit."Dimension 7 Filter" <> '' then
-            GLEntry.SetFilter("Shortcut Dimension 7 Code", CalculationUnit."Dimension 7 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 7" <> '' then
-                GLEntry.SetFilter("Shortcut Dimension 7 Code", SystemFilter."Shortcut Dimension 7");
-        if CalculationUnit."Dimension 8 Filter" <> '' then
-            GLEntry.SetFilter("Shortcut Dimension 8 Code", CalculationUnit."Dimension 8 Filter")
-        else
-            if SystemFilter."Shortcut Dimension 8" <> '' then
-                GLEntry.SetFilter("Shortcut Dimension 8 Code", SystemFilter."Shortcut Dimension 8");
-        if CalculationUnit."Business Unit Filter" <> '' then
-            GLEntry.SetFilter("Business Unit Code", CalculationUnit."Business Unit Filter")
-        else
-            if SystemFilter."Business Unit" <> '' then
-                GLEntry.SetFilter("Business Unit Code", SystemFilter."Business Unit");
-        GLEntry.SetFilter("Posting Date", SystemFilter.GetGLPostingDateFilter());
-        case CalculationUnit."Amount Type" of
-            CalculationUnit."Amount Type"::"Net Amount":
-                begin
-                    GLEntry.CalcSums(Amount);
-                    Result := GLEntry.Amount;
-                end;
-            CalculationUnit."Amount Type"::"Debit Amount":
-                begin
-                    GLEntry.CalcSums("Debit Amount");
-                    Result := GLEntry."Debit Amount";
-                end;
-            CalculationUnit."Amount Type"::"Credit Amount":
-                begin
-                    GLEntry.CalcSums("Credit Amount");
-                    Result := GLEntry."Credit Amount";
-                end;
-        end;
-    end;
-
-    local procedure CalculateBandExpression(var BaseCalculationUnit: Record lvnCalculationUnit; var SystemFilter: Record lvnSystemCalculationFilter; var Cache: Dictionary of [Code[20], Decimal]; Path: List of [Code[20]]) Result: Decimal
-    var
-        CalculationUnit: Record lvnCalculationUnit;
-        CalculationLine: Record lvnCalculationUnitLine;
-        ValueBuffer: Record lvnExpressionValueBuffer temporary;
-        ExpressionHeader: Record lvnExpressionHeader;
-        ExpressionEngine: Codeunit lvnExpressionEngine;
-        String: Text;
-    begin
-        CalculationLine.Reset();
-        CalculationLine.SetRange("Unit Code", BaseCalculationUnit.Code);
-        if not CalculationLine.FindSet() then
-            exit(0);
-        repeat
-            CalculationUnit.Get(CalculationLine."Source Unit Code");
-            Clear(ValueBuffer);
-            ValueBuffer.Name := CalculationLine."Source Unit Code";
-            ValueBuffer.Number := CalculationLine."Line no.";
-            ValueBuffer.Type := 'Decimal';
-            ValueBuffer.Value := Format(CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path), 0, 9);
-            ValueBuffer.Insert();
-        until CalculationLine.Next() = 0;
-        ExpressionHeader.Get(BaseCalculationUnit."Expression Code", GetBandExpressionConsumerId());
-        case ExpressionHeader.Type of
-            ExpressionHeader.Type::Formula:
-                Evaluate(Result, ExpressionEngine.CalculateFormula(ExpressionHeader, ValueBuffer));
-            ExpressionHeader.Type::Switch:
-                begin
-                    if ExpressionEngine.SwitchCase(ExpressionHeader, String, ValueBuffer) then
-                        Evaluate(Result, String)
-                    else
-                        Result := 0;
-                end;
-            ExpressionHeader.Type::Iif:
-                Evaluate(Result, ExpressionEngine.Iif(ExpressionHeader, ValueBuffer))
-            else
-                Error(UnsupportedExpressionTypeErr, ExpressionHeader.Type);
-        end;
-    end;
-
-    procedure ApplyPeriodBandFilter(var SystemFilter: Record lvnSystemCalculationFilter; var BaseFilter: Record lvnSystemCalculationFilter; var BandLineInfo: Record lvnPerformanceBandLineInfo)
+    procedure ApplyPeriodBandFilter(
+        var SystemFilter: Record lvnSystemCalculationFilter;
+        var BaseFilter: Record lvnSystemCalculationFilter;
+        var BandLineInfo: Record lvnPerformanceBandLineInfo)
     begin
         Clear(SystemFilter);
         SystemFilter := BaseFilter;
         SystemFilter."Date Filter" := StrSubstNo('%1..%2', BandLineInfo."Date From", BandLineInfo."Date To");
     end;
 
-    procedure ApplyDimensionBandFilter(var SystemFilter: Record lvnSystemCalculationFilter; var BandSchema: Record lvnDimensionPerfBandSchema; var BandLine: Record lvnDimPerfBandSchemaLine)
+    procedure ApplyDimensionBandFilter(
+        var SystemFilter: Record lvnSystemCalculationFilter;
+        var BandSchema: Record lvnDimensionPerfBandSchema;
+        var BandLine: Record lvnDimPerfBandSchemaLine)
     var
         DimensionValue: Record "Dimension Value";
     begin
@@ -855,7 +516,12 @@ codeunit 14135124 "lvnPerformanceMgmt"
         end;
     end;
 
-    procedure CalculatePeriodsData(var RowSchema: Record lvnPerformanceRowSchema; var BandSchema: Record lvnPeriodPerfBandSchema; var BaseFilter: Record lvnSystemCalculationFilter; var BandInfoBuffer: Record lvnPerformanceBandLineInfo; var ValueBuffer: Record lvnPerformanceValueBuffer)
+    procedure CalculatePeriodsData(
+        var RowSchema: Record lvnPerformanceRowSchema;
+        var BandSchema: Record lvnPeriodPerfBandSchema;
+        var BaseFilter: Record lvnSystemCalculationFilter;
+        var BandInfoBuffer: Record lvnPerformanceBandLineInfo;
+        var ValueBuffer: Record lvnPerformanceValueBuffer)
     var
         ColSchema: Record lvnPerformanceColSchema;
         BandLine: Record lvnPeriodPerfBandSchemaLine;
@@ -1061,13 +727,11 @@ codeunit 14135124 "lvnPerformanceMgmt"
             until BandInfoBuffer.Next() = 0;
     end;
 
-    [IntegrationEvent(false, false)]
-    procedure GetProviderValue(Metadata: Text; var SystemFilter: Record lvnSystemCalculationFilter; var Result: Decimal)
-    begin
-    end;
-
     [EventSubscriber(ObjectType::Page, Page::lvnExpressionList, 'FillBuffer', '', false, false)]
-    local procedure OnFillBuffer(ExpressionHeader: Record lvnExpressionHeader; ConsumerMetadata: Text; var ExpressionBuffer: Record lvnExpressionValueBuffer)
+    local procedure OnFillBuffer(
+        ExpressionHeader: Record lvnExpressionHeader;
+        ConsumerMetadata: Text;
+        var ExpressionBuffer: Record lvnExpressionValueBuffer)
     var
         CalcUnitLine: Record lvnCalculationUnitLine;
         DimPerfBandSchemaLine: Record lvnDimPerfBandSchemaLine;
@@ -1116,5 +780,409 @@ codeunit 14135124 "lvnPerformanceMgmt"
                         until PeriodPerfBandSchemaLine.Next() = 0;
                 end;
         end;
+    end;
+
+    local procedure CalculatePerformanceBand(
+        var Buffer: Record lvnPerformanceValueBuffer;
+        BandNo: Integer;
+        var RowSchema: Record lvnPerformanceRowSchema;
+        var ColSchema: Record lvnPerformanceColSchema;
+        var SystemFilter: Record lvnSystemCalculationFilter;
+        var Cache: Dictionary of [Code[20], Decimal];
+        var Path: List of [Code[20]])
+    var
+        RowLine: Record lvnPerformanceRowSchemaLine;
+        ColLine: Record lvnPerformanceColSchemaLine;
+        CalculationUnit: Record lvnCalculationUnit;
+    begin
+        ColLine.Reset();
+        ColLine.SetRange("Schema Code", ColSchema.Code);
+        ColLine.FindSet();
+        repeat
+            RowLine.Reset();
+            RowLine.SetRange("Schema Code", RowSchema.Code);
+            RowLine.SetRange("Column No.", ColLine."Column No.");
+            RowLine.FindSet();
+            repeat
+                Clear(Buffer);
+                Buffer."Column No." := ColLine."Column No.";
+                Buffer."Row No." := RowLine."Line No.";
+                Buffer."Band No." := BandNo;
+                Buffer."Calculation Unit Code" := RowLine."Calculation Unit Code";
+                if CalculationUnit.Get(RowLine."Calculation Unit Code") then begin
+                    Buffer.Value := CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path);
+                    Buffer.Interactive := IsClickableCell(CalculationUnit);
+                end else
+                    Buffer.Value := 0;
+                if Buffer.Value >= 0 then
+                    if RowLine."Style Code" <> '' then
+                        Buffer."Style Code" := RowLine."Style Code";
+                if Buffer.Value < 0 then
+                    if RowLine."Neg. Style Code" <> '' then
+                        Buffer."Style Code" := RowLine."Neg. Style Code";
+                Buffer."Number Format Code" := RowLine."Number Format Code";
+                Buffer.Insert();
+            until RowLine.Next() = 0;
+        until ColLine.Next() = 0;
+    end;
+
+    local procedure FormatValue(var Buffer: Record lvnPerformanceValueBuffer) TextValue: Text
+    begin
+        exit(FormatValue(Buffer.Value, Buffer."Number Format Code"))
+    end;
+
+    local procedure IsClickableCell(var CalculationUnit: Record lvnCalculationUnit): Boolean
+    begin
+        if (CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup") or (CalculationUnit.Type = CalculationUnit.Type::"Count Lookup") then begin
+            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::"Loan Card" then
+                exit(true);
+            if CalculationUnit."Lookup Source" = CalculationUnit."Lookup Source"::"Ledger Entries" then
+                exit(CalculationUnit."Account No. Filter" <> '');
+        end;
+        exit(false);
+    end;
+
+    local procedure CalculateSingleRowValue(
+        RowNo: Integer;
+        ColNo: Integer;
+        CalculationUnitCode: Code[20];
+        RowFormulaCode: Code[20];
+        ExpressionConsumerId: Guid;
+        var Buffer: Record lvnPerformanceValueBuffer;
+        Cache: Dictionary of [Code[20], Decimal];
+        Path: List of [Code[20]]) Result: Decimal
+    var
+        ValueBuffer: Record lvnExpressionValueBuffer temporary;
+        ExpressionHeader: Record lvnExpressionHeader;
+        ExpressionEngine: Codeunit lvnExpressionEngine;
+        Number: Integer;
+        BandNo: Integer;
+    begin
+        if Cache.Get(CalculationUnitCode, Result) then
+            exit;
+        if Path.IndexOf(CalculationUnitCode) <> 0 then
+            Error(CircularReferenceErr);
+        Buffer.Reset();
+        Buffer.SetRange("Row No.", RowNo);
+        Buffer.SetRange("Column No.", ColNo);
+        if not Buffer.FindSet() then
+            exit(0);
+        repeat
+            Clear(ValueBuffer);
+            ValueBuffer.Number := Buffer."Band No.";
+            Number := Buffer."Band No.";
+            ValueBuffer.Name := 'BAND' + Format(Buffer."Band No.");
+            ValueBuffer.Type := 'Decimal';
+            ValueBuffer.Value := Format(Buffer.Value);
+            ValueBuffer.Insert();
+        until Buffer.Next() = 0;
+        //Insert band count
+        Buffer.Reset();
+        Buffer.SetRange("Row No.", RowNo);
+        Buffer.SetRange("Column No.", 1);
+        Clear(ValueBuffer);
+        ValueBuffer.Number := Number + 1;
+        ValueBuffer.Name := BandCountTxt;
+        ValueBuffer.Type := 'Decimal';
+        ValueBuffer.Value := Format(Buffer.Count());
+        ValueBuffer.Insert();
+        Buffer.FindFirst();
+        BandNo := Buffer."Band No.";
+        //Insert column count
+        Buffer.Reset();
+        Buffer.SetRange("Row No.", RowNo);
+        Buffer.SetRange("Band No.", BandNo);
+        Clear(ValueBuffer);
+        ValueBuffer.Number := Number + 2;
+        ValueBuffer.Name := ColCountTxt;
+        ValueBuffer.Type := 'Decimal';
+        ValueBuffer.Value := Format(Buffer.Count());
+        ValueBuffer.Insert();
+        ExpressionHeader.Get(RowFormulaCode, ExpressionConsumerId);
+        Evaluate(Result, ExpressionEngine.CalculateFormula(ExpressionHeader, ValueBuffer));
+        Cache.Add(CalculationUnitCode, Result);
+    end;
+
+    local procedure LookupLoanCard(
+        var CalculationUnit: Record lvnCalculationUnit;
+        var SystemFilter: Record lvnSystemCalculationFilter) Result: Decimal
+    var
+        LoanAmountsByDimension: Query lvnLoanAmountsByDimension;
+    begin
+        if CalculationUnit."Dimension 1 Filter" <> '' then
+            LoanAmountsByDimension.SetFilter(Dimension1Filter, CalculationUnit."Dimension 1 Filter")
+        else
+            if SystemFilter."Global Dimension 1" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension1Filter, SystemFilter."Global Dimension 1");
+        if CalculationUnit."Dimension 2 Filter" <> '' then
+            LoanAmountsByDimension.SetFilter(Dimension2Filter, CalculationUnit."Dimension 2 Filter")
+        else
+            if SystemFilter."Global Dimension 2" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension2Filter, SystemFilter."Global Dimension 2");
+        if CalculationUnit."Dimension 3 Filter" <> '' then
+            LoanAmountsByDimension.SetFilter(Dimension3Filter, CalculationUnit."Dimension 3 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 3" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension3Filter, SystemFilter."Shortcut Dimension 3");
+        if CalculationUnit."Dimension 4 Filter" <> '' then
+            LoanAmountsByDimension.SetFilter(Dimension4Filter, CalculationUnit."Dimension 4 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 4" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension4Filter, SystemFilter."Shortcut Dimension 4");
+        if CalculationUnit."Dimension 5 Filter" <> '' then
+            LoanAmountsByDimension.SetFilter(Dimension5Filter, CalculationUnit."Dimension 5 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 5" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension5Filter, SystemFilter."Shortcut Dimension 5");
+        if CalculationUnit."Dimension 6 Filter" <> '' then
+            LoanAmountsByDimension.SetFilter(Dimension6Filter, CalculationUnit."Dimension 6 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 6" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension6Filter, SystemFilter."Shortcut Dimension 6");
+        if CalculationUnit."Dimension 7 Filter" <> '' then
+            LoanAmountsByDimension.SetFilter(Dimension7Filter, CalculationUnit."Dimension 7 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 7" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension7Filter, SystemFilter."Shortcut Dimension 7");
+        if CalculationUnit."Dimension 8 Filter" <> '' then
+            LoanAmountsByDimension.SetFilter(Dimension8Filter, CalculationUnit."Dimension 8 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 8" <> '' then
+                LoanAmountsByDimension.SetFilter(Dimension8Filter, SystemFilter."Shortcut Dimension 8");
+        if CalculationUnit."Business Unit Filter" <> '' then
+            LoanAmountsByDimension.SetFilter(BusinessUnitFilter, CalculationUnit."Business Unit Filter")
+        else
+            if SystemFilter."Business Unit" <> '' then
+                LoanAmountsByDimension.SetFilter(BusinessUnitFilter, SystemFilter."Business Unit");
+        case CalculationUnit."Based On Date" of
+            CalculationUnit."Based On Date"::Application:
+                LoanAmountsByDimension.SetFilter(DateApplicationFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Closed:
+                LoanAmountsByDimension.SetFilter(DateClosedFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Funded:
+                LoanAmountsByDimension.SetFilter(DateFundedFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Locked:
+                LoanAmountsByDimension.SetFilter(DateLockedFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Sold:
+                LoanAmountsByDimension.SetFilter(DateSoldFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Commission:
+                LoanAmountsByDimension.SetFilter(DateCommissionFilter, SystemFilter."Date Filter");
+        end;
+        LoanAmountsByDimension.Open();
+        LoanAmountsByDimension.Read();
+        if CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup" then
+            Result := LoanAmountsByDimension.LoanAmount
+        else
+            Result := LoanAmountsByDimension.LoanCount;
+        LoanAmountsByDimension.Close();
+    end;
+
+    local procedure LookupLoanValue(
+        var CalculationUnit: Record lvnCalculationUnit;
+        var SystemFilter: Record lvnSystemCalculationFilter) Result: Decimal
+    var
+        LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
+        LoanValuesByDimension: Query lvnLoanValuesByDimension;
+    begin
+        if not LoanFieldsConfiguration.Get(CalculationUnit."Field No.") then
+            exit(0);
+        if CalculationUnit."Dimension 1 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension1Filter, CalculationUnit."Dimension 1 Filter")
+        else
+            if SystemFilter."Global Dimension 1" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension1Filter, SystemFilter."Global Dimension 1");
+        if CalculationUnit."Dimension 2 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension2Filter, CalculationUnit."Dimension 2 Filter")
+        else
+            if SystemFilter."Global Dimension 2" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension2Filter, SystemFilter."Global Dimension 2");
+        if CalculationUnit."Dimension 3 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension3Filter, CalculationUnit."Dimension 3 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 3" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension3Filter, SystemFilter."Shortcut Dimension 3");
+        if CalculationUnit."Dimension 4 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension4Filter, CalculationUnit."Dimension 4 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 4" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension4Filter, SystemFilter."Shortcut Dimension 4");
+        if CalculationUnit."Dimension 5 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension5Filter, CalculationUnit."Dimension 5 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 5" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension5Filter, SystemFilter."Shortcut Dimension 5");
+        if CalculationUnit."Dimension 6 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension6Filter, CalculationUnit."Dimension 6 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 6" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension6Filter, SystemFilter."Shortcut Dimension 6");
+        if CalculationUnit."Dimension 7 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension7Filter, CalculationUnit."Dimension 7 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 7" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension7Filter, SystemFilter."Shortcut Dimension 7");
+        if CalculationUnit."Dimension 8 Filter" <> '' then
+            LoanValuesByDimension.SetFilter(Dimension8Filter, CalculationUnit."Dimension 8 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 8" <> '' then
+                LoanValuesByDimension.SetFilter(Dimension8Filter, SystemFilter."Shortcut Dimension 8");
+        if CalculationUnit."Business Unit Filter" <> '' then
+            LoanValuesByDimension.SetFilter(BusinessUnitFilter, CalculationUnit."Business Unit Filter")
+        else
+            if SystemFilter."Business Unit" <> '' then
+                LoanValuesByDimension.SetFilter(BusinessUnitFilter, SystemFilter."Business Unit");
+        case CalculationUnit."Based On Date" of
+            CalculationUnit."Based On Date"::Application:
+                LoanValuesByDimension.SetFilter(DateApplicationFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Closed:
+                LoanValuesByDimension.SetFilter(DateClosedFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Funded:
+                LoanValuesByDimension.SetFilter(DateFundedFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Locked:
+                LoanValuesByDimension.SetFilter(DateLockedFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Sold:
+                LoanValuesByDimension.SetFilter(DateSoldFilter, SystemFilter."Date Filter");
+            CalculationUnit."Based On Date"::Commission:
+                LoanValuesByDimension.SetFilter(DateCommissionFilter, SystemFilter."Date Filter");
+        end;
+        LoanValuesByDimension.Open();
+        LoanValuesByDimension.Read();
+        if CalculationUnit.Type = CalculationUnit.Type::"Count Lookup" then
+            Result := LoanValuesByDimension.Count
+        else
+            case LoanFieldsConfiguration."Value Type" of
+                LoanFieldsConfiguration."Value Type"::Integer:
+                    Result := LoanValuesByDimension.IntegerValue;
+                LoanFieldsConfiguration."Value Type"::Decimal:
+                    Result := LoanValuesByDimension.DecimalValue
+                else
+                    Result := 0;
+            end;
+        LoanValuesByDimension.Close();
+    end;
+
+    local procedure LookupGeneralLedger(
+        var CalculationUnit: Record lvnCalculationUnit;
+        var SystemFilter: Record lvnSystemCalculationFilter) Result: Decimal
+    var
+        GLEntry: Record lvnGroupedGLEntry;
+    begin
+        GLEntry.Reset();
+        GLEntry.SetFilter("G/L Account No.", CalculationUnit."Account No. Filter");
+        if CalculationUnit."Dimension 1 Filter" <> '' then
+            GLEntry.SetFilter("Global Dimension 1 Code", CalculationUnit."Dimension 1 Filter")
+        else
+            if SystemFilter."Global Dimension 1" <> '' then
+                GLEntry.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
+        if CalculationUnit."Dimension 2 Filter" <> '' then
+            GLEntry.SetFilter("Global Dimension 2 Code", CalculationUnit."Dimension 2 Filter")
+        else
+            if SystemFilter."Global Dimension 2" <> '' then
+                GLEntry.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
+        if CalculationUnit."Dimension 3 Filter" <> '' then
+            GLEntry.SetFilter("Shortcut Dimension 3 Code", CalculationUnit."Dimension 3 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 3" <> '' then
+                GLEntry.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
+        if CalculationUnit."Dimension 4 Filter" <> '' then
+            GLEntry.SetFilter("Shortcut Dimension 4 Code", CalculationUnit."Dimension 4 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 4" <> '' then
+                GLEntry.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
+        if CalculationUnit."Dimension 5 Filter" <> '' then
+            GLEntry.SetFilter("Shortcut Dimension 5 Code", CalculationUnit."Dimension 5 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 5" <> '' then
+                GLEntry.SetFilter("Shortcut Dimension 5 Code", SystemFilter."Shortcut Dimension 5");
+        if CalculationUnit."Dimension 6 Filter" <> '' then
+            GLEntry.SetFilter("Shortcut Dimension 6 Code", CalculationUnit."Dimension 6 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 6" <> '' then
+                GLEntry.SetFilter("Shortcut Dimension 6 Code", SystemFilter."Shortcut Dimension 6");
+        if CalculationUnit."Dimension 7 Filter" <> '' then
+            GLEntry.SetFilter("Shortcut Dimension 7 Code", CalculationUnit."Dimension 7 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 7" <> '' then
+                GLEntry.SetFilter("Shortcut Dimension 7 Code", SystemFilter."Shortcut Dimension 7");
+        if CalculationUnit."Dimension 8 Filter" <> '' then
+            GLEntry.SetFilter("Shortcut Dimension 8 Code", CalculationUnit."Dimension 8 Filter")
+        else
+            if SystemFilter."Shortcut Dimension 8" <> '' then
+                GLEntry.SetFilter("Shortcut Dimension 8 Code", SystemFilter."Shortcut Dimension 8");
+        if CalculationUnit."Business Unit Filter" <> '' then
+            GLEntry.SetFilter("Business Unit Code", CalculationUnit."Business Unit Filter")
+        else
+            if SystemFilter."Business Unit" <> '' then
+                GLEntry.SetFilter("Business Unit Code", SystemFilter."Business Unit");
+        GLEntry.SetFilter("Posting Date", SystemFilter.GetGLPostingDateFilter());
+        case CalculationUnit."Amount Type" of
+            CalculationUnit."Amount Type"::"Net Amount":
+                begin
+                    GLEntry.CalcSums(Amount);
+                    Result := GLEntry.Amount;
+                end;
+            CalculationUnit."Amount Type"::"Debit Amount":
+                begin
+                    GLEntry.CalcSums("Debit Amount");
+                    Result := GLEntry."Debit Amount";
+                end;
+            CalculationUnit."Amount Type"::"Credit Amount":
+                begin
+                    GLEntry.CalcSums("Credit Amount");
+                    Result := GLEntry."Credit Amount";
+                end;
+        end;
+    end;
+
+    local procedure CalculateBandExpression(
+        var BaseCalculationUnit: Record lvnCalculationUnit;
+        var SystemFilter: Record lvnSystemCalculationFilter;
+        var Cache: Dictionary of [Code[20], Decimal];
+        Path: List of [Code[20]]) Result: Decimal
+    var
+        CalculationUnit: Record lvnCalculationUnit;
+        CalculationLine: Record lvnCalculationUnitLine;
+        ValueBuffer: Record lvnExpressionValueBuffer temporary;
+        ExpressionHeader: Record lvnExpressionHeader;
+        ExpressionEngine: Codeunit lvnExpressionEngine;
+        String: Text;
+    begin
+        CalculationLine.Reset();
+        CalculationLine.SetRange("Unit Code", BaseCalculationUnit.Code);
+        if not CalculationLine.FindSet() then
+            exit(0);
+        repeat
+            CalculationUnit.Get(CalculationLine."Source Unit Code");
+            Clear(ValueBuffer);
+            ValueBuffer.Name := CalculationLine."Source Unit Code";
+            ValueBuffer.Number := CalculationLine."Line no.";
+            ValueBuffer.Type := 'Decimal';
+            ValueBuffer.Value := Format(CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path), 0, 9);
+            ValueBuffer.Insert();
+        until CalculationLine.Next() = 0;
+        ExpressionHeader.Get(BaseCalculationUnit."Expression Code", GetBandExpressionConsumerId());
+        case ExpressionHeader.Type of
+            ExpressionHeader.Type::Formula:
+                Evaluate(Result, ExpressionEngine.CalculateFormula(ExpressionHeader, ValueBuffer));
+            ExpressionHeader.Type::Switch:
+                begin
+                    if ExpressionEngine.SwitchCase(ExpressionHeader, String, ValueBuffer) then
+                        Evaluate(Result, String)
+                    else
+                        Result := 0;
+                end;
+            ExpressionHeader.Type::Iif:
+                Evaluate(Result, ExpressionEngine.Iif(ExpressionHeader, ValueBuffer))
+            else
+                Error(UnsupportedExpressionTypeErr, ExpressionHeader.Type);
+        end;
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure GetProviderValue(
+        Metadata: Text;
+        var SystemFilter: Record lvnSystemCalculationFilter;
+        var Result: Decimal)
+    begin
     end;
 }

@@ -1,4 +1,4 @@
-profile "lvngLoanProcessor"
+profile "lvnLoanProcessor"
 {
     Caption = 'Loan Processor';
     ProfileDescription = 'Loan Processor Profile';

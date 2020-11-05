@@ -10,10 +10,22 @@ page 14135118 "lvnJournalValidationRules"
         {
             repeater(Group)
             {
-                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Condition Code"; Rec."Condition Code") { ApplicationArea = All; }
-                field("Error Message"; Rec."Error Message") { ApplicationArea = All; }
+                field("Line No."; Rec."Line No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Condition Code"; Rec."Condition Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Error Message"; Rec."Error Message")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

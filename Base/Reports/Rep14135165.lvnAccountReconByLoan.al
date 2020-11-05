@@ -14,43 +14,92 @@ report 14135165 "lvnAccountReconByLoan"
             RequestFilterFields = "No.", "Date Filter";
             PrintOnlyIfDetail = true;
 
-            column(CompanyName; CompanyInformation.Name) { }
-            column(GLEntryFilters; GLEntryFilters) { }
-            column(GLAccountFilters; GLAccountFilters) { }
-            column(LoanCardFilters; LoanCardFilters) { }
-            column(GLAccountNo; "No.") { }
-            column(GLAccountName; Name) { }
-            column(ShowDetails; ShowDetails) { }
-
+            column(CompanyName; CompanyInformation.Name)
+            {
+            }
+            column(GLEntryFilters; GLEntryFilters)
+            {
+            }
+            column(GLAccountFilters; GLAccountFilters)
+            {
+            }
+            column(LoanCardFilters; LoanCardFilters)
+            {
+            }
+            column(GLAccountNo; "No.")
+            {
+            }
+            column(GLAccountName; Name)
+            {
+            }
+            column(ShowDetails; ShowDetails)
+            {
+            }
             dataitem(Loop; Integer)
             {
                 DataItemTableView = sorting(Number);
 
-                column(LoanNo; Loan."No.") { }
-                column(BorrowerName; BorrowerName) { }
-                column(DateFunded; Loan."Date Funded") { }
-                column(DateSold; Loan."Date Sold") { }
-                column(DebitAmount; DebitAmount) { }
-                column(CreditAmount; CreditAmount) { }
-                column(CurrentBalance; CurrentBalance) { }
-                column(Dimension1Code; Loan."Global Dimension 1 Code") { }
-                column(Dimension2Code; Loan."Global Dimension 2 Code") { }
-                column(GLStartingBalanceLoan; GLStartingBalanceLoan) { }
-                column(GLEndingBalanceLoan; GLEndingBalanceLoan) { }
-                column(Dim1Caption; Loan.FieldCaption("Global Dimension 1 Code")) { }
-                column(Dim2Caption; Loan.FieldCaption("Global Dimension 2 Code")) { }
-
+                column(LoanNo; Loan."No.")
+                {
+                }
+                column(BorrowerName; BorrowerName)
+                {
+                }
+                column(DateFunded; Loan."Date Funded")
+                {
+                }
+                column(DateSold; Loan."Date Sold")
+                {
+                }
+                column(DebitAmount; DebitAmount)
+                {
+                }
+                column(CreditAmount; CreditAmount)
+                {
+                }
+                column(CurrentBalance; CurrentBalance)
+                {
+                }
+                column(Dimension1Code; Loan."Global Dimension 1 Code")
+                {
+                }
+                column(Dimension2Code; Loan."Global Dimension 2 Code")
+                {
+                }
+                column(GLStartingBalanceLoan; GLStartingBalanceLoan)
+                {
+                }
+                column(GLEndingBalanceLoan; GLEndingBalanceLoan)
+                {
+                }
+                column(Dim1Caption; Loan.FieldCaption("Global Dimension 1 Code"))
+                {
+                }
+                column(Dim2Caption; Loan.FieldCaption("Global Dimension 2 Code"))
+                {
+                }
                 dataitem("G/L Entry"; "G/L Entry")
                 {
                     DataItemTableView = sorting("Entry No.");
 
-                    column(TransactionDescription; Description) { }
-                    column(PostingDate; "Posting Date") { }
-                    column(TransactionDebitAmount; "Debit Amount") { }
-                    column(TransactionCreditAmount; "Credit Amount") { }
-                    column(GlobalDimension1CodeGL; "Global Dimension 1 Code") { }
-                    column(GlobalDimension2CodeGL; "Global Dimension 2 Code") { }
-
+                    column(TransactionDescription; Description)
+                    {
+                    }
+                    column(PostingDate; "Posting Date")
+                    {
+                    }
+                    column(TransactionDebitAmount; "Debit Amount")
+                    {
+                    }
+                    column(TransactionCreditAmount; "Credit Amount")
+                    {
+                    }
+                    column(GlobalDimension1CodeGL; "Global Dimension 1 Code")
+                    {
+                    }
+                    column(GlobalDimension2CodeGL; "Global Dimension 2 Code")
+                    {
+                    }
                     trigger OnPreDataItem()
                     begin
                         SetFilter("Posting Date", DateFilter);
@@ -89,7 +138,6 @@ report 14135165 "lvnAccountReconByLoan"
                         WriteExcelTotals(1);
                     end;
                 }
-
                 trigger OnPreDataItem()
                 begin
                     CreditAmountTtl[1] := 0;
@@ -145,7 +193,6 @@ report 14135165 "lvnAccountReconByLoan"
                     end;
                 end;
             }
-
             trigger OnAfterGetRecord()
             var
                 AccountReconByLoan: Query lvnAccountReconByLoan;
@@ -173,7 +220,6 @@ report 14135165 "lvnAccountReconByLoan"
                     CurrReport.Skip();
             end;
         }
-
         dataitem(LoanFilters; lvnLoan)
         {
             DataItemTableView = sorting("No.");
@@ -201,41 +247,6 @@ report 14135165 "lvnAccountReconByLoan"
             }
         }
     }
-
-    var
-        ColorCodeLbl: Label '#D2D2D2';
-        NoDateFilterErr: Label 'Date Filter can''t be blank';
-        NoLoanFiltersErr: Label 'Please prefilter Loan Card information';
-        ExcelExportCaller: Label 'AccountReconByLoan';
-        FileName: Label 'AccountReconExport.xlsx';
-        CompanyInformation: Record "Company Information";
-        Loan: Record lvnLoan;
-        TempLoan: Record lvnLoan temporary;
-        ExcelExport: Codeunit lvnExcelExport;
-        lvnLoanManagement: Codeunit lvnLoanManagement;
-        BorrowerName: Text;
-        GLEntryFilters: Text;
-        GLAccountFilters: Text;
-        LoanCardFilters: Text;
-        DateFilter: Text;
-        ShowDetails: Boolean;
-        [InDataSet]
-        ExcelToExport: Boolean;
-        LoanNoFilter: Text;
-        NumberFormat: Code[20];
-        DebitAmount: Decimal;
-        CreditAmount: Decimal;
-        CurrentBalance: Decimal;
-        GLStartingBalanceLoan: Decimal;
-        GLEndingBalanceLoan: Decimal;
-        RecCounter: Integer;
-        MinDate: Date;
-        MaxDate: Date;
-        DebitAmountTtl: array[2] of Decimal;
-        CreditAmountTtl: array[2] of Decimal;
-        CurrentBalanceTtl: array[2] of Decimal;
-        GLStartingTtl: array[2] of Decimal;
-        GLEndingTtl: array[2] of Decimal;
 
     trigger OnPreReport()
     var
@@ -265,6 +276,41 @@ report 14135165 "lvnAccountReconByLoan"
         if ExcelToExport then
             ExcelExport.Download(FileName);
     end;
+
+    var
+        CompanyInformation: Record "Company Information";
+        Loan: Record lvnLoan;
+        TempLoan: Record lvnLoan temporary;
+        ExcelExport: Codeunit lvnExcelExport;
+        lvnLoanManagement: Codeunit lvnLoanManagement;
+        BorrowerName: Text;
+        GLEntryFilters: Text;
+        GLAccountFilters: Text;
+        LoanCardFilters: Text;
+        DateFilter: Text;
+        ShowDetails: Boolean;
+        [InDataSet]
+        ExcelToExport: Boolean;
+        LoanNoFilter: Text;
+        NumberFormat: Code[20];
+        DebitAmount: Decimal;
+        CreditAmount: Decimal;
+        CurrentBalance: Decimal;
+        GLStartingBalanceLoan: Decimal;
+        GLEndingBalanceLoan: Decimal;
+        RecCounter: Integer;
+        MinDate: Date;
+        MaxDate: Date;
+        DebitAmountTtl: array[2] of Decimal;
+        CreditAmountTtl: array[2] of Decimal;
+        CurrentBalanceTtl: array[2] of Decimal;
+        GLStartingTtl: array[2] of Decimal;
+        GLEndingTtl: array[2] of Decimal;
+        ColorCodeLbl: Label '#D2D2D2';
+        NoDateFilterErr: Label 'Date Filter can''t be blank';
+        NoLoanFiltersErr: Label 'Please prefilter Loan Card information';
+        ExcelExportCaller: Label 'AccountReconByLoan';
+        FileName: Label 'AccountReconExport.xlsx';
 
     local procedure WriteExcelHeaders()
     begin
@@ -346,7 +392,14 @@ report 14135165 "lvnAccountReconByLoan"
 
     end;
 
-    local procedure WriteToExcel(Output: Variant; CreateRange: Boolean; SkipCells: Integer; CenterText: Boolean; CellColor: Text; Bold: Boolean; Currency: Boolean)
+    local procedure WriteToExcel(
+        Output: Variant;
+        CreateRange: Boolean;
+        SkipCells: Integer;
+        CenterText: Boolean;
+        CellColor: Text;
+        Bold: Boolean;
+        Currency: Boolean)
     var
         DefaultBoolean: Enum lvnDefaultBoolean;
     begin

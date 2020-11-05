@@ -184,5 +184,4 @@ codeunit 14135122 "lvnJetExpressViewMgmt"
                 exit(LoanCustNormView.FieldCaption("Custom Date 5"));
         end
     end;
-
 }

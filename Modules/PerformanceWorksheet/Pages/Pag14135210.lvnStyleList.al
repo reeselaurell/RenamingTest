@@ -12,11 +12,26 @@ page 14135210 "lvnStyleList"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field(Bold; Rec.Bold) { ApplicationArea = All; }
-                field(Italic; Rec.Italic) { ApplicationArea = All; }
-                field(Underline; Rec.Underline) { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field(Bold; Rec.Bold)
+                {
+                    ApplicationArea = All;
+                }
+                field(Italic; Rec.Italic)
+                {
+                    ApplicationArea = All;
+                }
+                field(Underline; Rec.Underline)
+                {
+                    ApplicationArea = All;
+                }
                 field("Background Color"; Rec."Background Color")
                 {
                     ApplicationArea = All;
@@ -49,8 +64,14 @@ page 14135210 "lvnStyleList"
                             exit(false);
                     end;
                 }
-                field("Font Size"; Rec."Font Size") { ApplicationArea = All; }
-                field("Font Name"; Rec."Font Name") { ApplicationArea = All; }
+                field("Font Size"; Rec."Font Size")
+                {
+                    ApplicationArea = All;
+                }
+                field("Font Name"; Rec."Font Name")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

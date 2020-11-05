@@ -7,8 +7,16 @@ table 14135189 "lvnCloseManagerTemplateHeader"
 
     fields
     {
-        field(1; "No."; Code[20]) { Caption = 'No.'; DataClassification = CustomerContent; }
-        field(10; Name; Text[50]) { Caption = 'Name'; DataClassification = CustomerContent; }
+        field(1; "No."; Code[20])
+        {
+            Caption = 'No.';
+            DataClassification = CustomerContent;
+        }
+        field(10; Name; Text[50])
+        {
+            Caption = 'Name';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
@@ -24,5 +32,4 @@ table 14135189 "lvnCloseManagerTemplateHeader"
         CloseManagerTemplateLine.SetRange("Template No.", "No.");
         CloseManagerTemplateLine.DeleteAll(true);
     end;
-
 }

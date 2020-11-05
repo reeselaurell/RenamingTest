@@ -4,7 +4,10 @@ pageextension 14135400 "lvnAccountingPeriodsExtension" extends "Accounting Perio
     {
         addafter("New Fiscal Year")
         {
-            field(lvnFiscalQuarter; Rec.lvnFiscalQuarter) { Caption = 'Fiscal Quarter'; }
+            field(lvnFiscalQuarter; Rec.lvnFiscalQuarter)
+            {
+                Caption = 'Fiscal Quarter';
+            }
         }
     }
 }

@@ -12,8 +12,16 @@ page 14135171 "lvnQuickPayPresets"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; Caption = 'Code'; }
-                field(Description; Rec.Description) { ApplicationArea = All; Caption = 'Description'; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Code';
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Description';
+                }
             }
         }
     }
@@ -31,7 +39,7 @@ page 14135171 "lvnQuickPayPresets"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
 
-                trigger OnAction();
+                trigger OnAction()
                 begin
                     Rec.MakeFilter();
                     CurrPage.Update(true);

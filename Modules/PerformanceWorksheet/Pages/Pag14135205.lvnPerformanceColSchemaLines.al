@@ -10,10 +10,23 @@ page 14135205 "lvnPerformanceColSchemaLines"
         {
             repeater(General)
             {
-                field("Column No."; Rec."Column No.") { Editable = false; ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Primary Caption"; Rec."Primary Caption") { ApplicationArea = All; }
-                field("Secondary Caption"; Rec."Secondary Caption") { ApplicationArea = All; }
+                field("Column No."; Rec."Column No.")
+                {
+                    Editable = false;
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Primary Caption"; Rec."Primary Caption")
+                {
+                    ApplicationArea = All;
+                }
+                field("Secondary Caption"; Rec."Secondary Caption")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

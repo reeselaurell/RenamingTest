@@ -72,21 +72,6 @@ report 14135120 "lvnReclassLoanGLEntries"
         end;
     }
 
-    var
-        CompleteMsg: Label 'Complete';
-        BlankDocNoErr: Label 'Document No. can''t be blank';
-        BlankPostDateErr: Label 'Posting Date can''t be blank';
-        TempSourceRecBuffer: Record lvnLoanReconciliationBuffer temporary;
-        GenJnlBatch: Record "Gen. Journal Batch";
-        TemplateName: Code[10];
-        BatchName: Code[10];
-        PostingDate: Date;
-        DocumentNo: Code[20];
-        UseNumberSeries: Boolean;
-        BalAccountType: Option "Bank Account","G/L Account";
-        BalAccountNo: Code[20];
-        ReasonCode: Code[10];
-
     trigger OnPreReport()
     var
         GenJnlLine: Record "Gen. Journal Line";
@@ -127,7 +112,7 @@ report 14135120 "lvnReclassLoanGLEntries"
                 GenJnlLine.Validate("Account No.", TempSourceRecBuffer."G/L Account No.");
             end;
             if UseNumberSeries then
-                GenJnlLine.Validate("Document No.", NoSeriesManagement.GetNextNo(GenJnlBatch."No. Series", TODAY, TRUE))
+                GenJnlLine.Validate("Document No.", NoSeriesManagement.GetNextNo(GenJnlBatch."No. Series", Today, true))
             else
                 GenJnlLine.Validate("Document No.", DocumentNo);
             GenJnlLine.Validate("Bal. Account Type", BalAccountType);
@@ -147,6 +132,21 @@ report 14135120 "lvnReclassLoanGLEntries"
         GenJnlBatch.SetRange("Journal Template Name", TemplateName);
         Page.Run(0, GenJnlBatch);
     end;
+
+    var
+        TempSourceRecBuffer: Record lvnLoanReconciliationBuffer temporary;
+        GenJnlBatch: Record "Gen. Journal Batch";
+        TemplateName: Code[10];
+        BatchName: Code[10];
+        PostingDate: Date;
+        DocumentNo: Code[20];
+        UseNumberSeries: Boolean;
+        BalAccountType: Option "Bank Account","G/L Account";
+        BalAccountNo: Code[20];
+        ReasonCode: Code[10];
+        CompleteMsg: Label 'Complete';
+        BlankDocNoErr: Label 'Document No. can''t be blank';
+        BlankPostDateErr: Label 'Posting Date can''t be blank';
 
     procedure SetEntries(var LoanRecBuffer: Record lvnLoanReconciliationBuffer)
     begin

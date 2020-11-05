@@ -54,7 +54,7 @@ codeunit 14135110 "lvnPostLoanDocument"
         TempLoanDocumentLine.SetRange("Balancing Entry", false);
         if TempLoanDocumentLine.FindSet() then begin
             repeat
-                clear(GenJnlLine);
+                Clear(GenJnlLine);
                 GenJnlLine.InitNewLine(LoanDocument."Posting Date", LoanDocument."Posting Date", TempLoanDocumentLine.Description, TempLoanDocumentLine."Global Dimension 1 Code", TempLoanDocumentLine."Global Dimension 2 Code", TempLoanDocumentLine."Dimension Set ID", TempLoanDocumentLine."Reason Code");
                 CreateGenJnlLine(LoanDocument, TempLoanDocumentLine, GenJnlLine, SourceCode);
                 GenJnlPostLine.RunWithCheck(GenJnlLine);
@@ -62,7 +62,7 @@ codeunit 14135110 "lvnPostLoanDocument"
             until TempLoanDocumentLine.Next() = 0;
         end;
 
-        clear(GenJnlLine);
+        Clear(GenJnlLine);
         GenJnlLine.InitNewLine(LoanDocument."Posting Date", LoanDocument."Posting Date", LoanDocument."Loan No.", LoanDocument."Global Dimension 1 Code", LoanDocument."Global Dimension 2 Code", LoanDocument."Dimension Set ID", LoanDocument."Reason Code");
         CreateCustomerGenJnlLine(LoanDocument, GenJnlLine, DocumentAmount, SourceCode);
         GenJnlPostLine.RunWithCheck(GenJnlLine);
@@ -95,12 +95,14 @@ codeunit 14135110 "lvnPostLoanDocument"
         LoanDocumentHeader.Delete();
     end;
 
-    local procedure PrepareDocumentLinesBuffer(lvnLoanDocument: Record lvnLoanDocument; var lvnLoanDocumentLineTemp: Record lvnLoanDocumentLine): Decimal
+    local procedure PrepareDocumentLinesBuffer(
+        lvnLoanDocument: Record lvnLoanDocument;
+        var lvnLoanDocumentLineTemp: Record lvnLoanDocumentLine): Decimal
     var
         lvnLoanDocumentLine: Record lvnLoanDocumentLine;
         DocumentAmount: Decimal;
     begin
-        lvnLoanDocumentLine.reset;
+        lvnLoanDocumentLine.Reset;
         lvnLoanDocumentLine.SetRange("Transaction Type", lvnLoanDocument."Transaction Type");
         lvnLoanDocumentLine.SetRange("Document No.", lvnLoanDocument."Document No.");
         if lvnLoanDocumentLine.FindSet() then begin
@@ -115,7 +117,11 @@ codeunit 14135110 "lvnPostLoanDocument"
         exit(DocumentAmount);
     end;
 
-    local procedure CreateCustomerGenJnlLine(lvnLoanDocument: Record lvnLoanDocument; var GenJnlLine: Record "Gen. Journal Line"; Amount: Decimal; SourceCode: Code[20])
+    local procedure CreateCustomerGenJnlLine(
+        lvnLoanDocument: Record lvnLoanDocument;
+        var GenJnlLine: Record "Gen. Journal Line";
+        Amount: Decimal;
+        SourceCode: Code[20])
     begin
 
         if lvnLoanDocument."Document Type" = lvnLoanDocument."Document Type"::Invoice then
@@ -134,9 +140,11 @@ codeunit 14135110 "lvnPostLoanDocument"
         GenJnlLine."External Document No." := lvnLoanDocument."External Document No.";
     end;
 
-
-
-    local procedure CreateGenJnlLine(lvnLoanDocument: Record lvnLoanDocument; lvnLoanDocumentLine: Record lvnLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line"; SourceCode: Code[20])
+    local procedure CreateGenJnlLine(
+        lvnLoanDocument: Record lvnLoanDocument;
+        lvnLoanDocumentLine: Record lvnLoanDocumentLine;
+        var GenJnlLine: Record "Gen. Journal Line";
+        SourceCode: Code[20])
     begin
         if lvnLoanDocument."Document Type" = lvnLoanDocument."Document Type"::Invoice then
             GenJnlLine."Document Type" := GenJnlLine."Document Type"::Invoice
@@ -163,7 +171,11 @@ codeunit 14135110 "lvnPostLoanDocument"
         GenJnlLine."External Document No." := lvnLoanDocument."External Document No.";
     end;
 
-    local procedure CreateBalancingGenJnlLine(lvnLoanDocument: Record lvnLoanDocument; lvnLoanDocumentLine: Record lvnLoanDocumentLine; var GenJnlLine: Record "Gen. Journal Line"; SourceCode: Code[20])
+    local procedure CreateBalancingGenJnlLine(
+        lvnLoanDocument: Record lvnLoanDocument;
+        lvnLoanDocumentLine: Record lvnLoanDocumentLine;
+        var GenJnlLine: Record "Gen. Journal Line";
+        SourceCode: Code[20])
     begin
         GenJnlLine."Document No." := lvnLoanDocument."Document No.";
         if lvnLoanDocument."Document Type" = lvnLoanDocument."Document Type"::"Credit Memo" then
@@ -256,7 +268,7 @@ codeunit 14135110 "lvnPostLoanDocument"
         CustLedgerEntry: Record "Cust. Ledger Entry";
         lvnLedgerVoidEntry: Record lvnLedgerVoidEntry;
     begin
-        GLEntry.reset;
+        GLEntry.Reset;
         GLEntry.SetCurrentKey("Document No.", "Posting Date");
         GLEntry.SetRange("Document No.", lvnDocumentNo);
         GLEntry.SetRange("Posting Date", lvnPostingDate);
@@ -266,7 +278,7 @@ codeunit 14135110 "lvnPostLoanDocument"
                 lvnLedgerVoidEntry.InsertFromGLEntry(GLEntry);
             until GLEntry.Next() = 0;
         end;
-        CustLedgerEntry.reset;
+        CustLedgerEntry.Reset;
         CustLedgerEntry.SetCurrentKey("Document No.", "Posting Date");
         CustLedgerEntry.SetRange("Document No.", lvnDocumentNo);
         CustLedgerEntry.SetRange("Posting Date", lvnPostingDate);
@@ -276,7 +288,7 @@ codeunit 14135110 "lvnPostLoanDocument"
                 lvnLedgerVoidEntry.InsertFromCustLedgEntry(CustLedgerEntry);
             until CustLedgerEntry.Next() = 0;
         end;
-        BankAccountLedgerEntry.reset;
+        BankAccountLedgerEntry.Reset;
         BankAccountLedgerEntry.SetCurrentKey("Document No.", "Posting Date");
         BankAccountLedgerEntry.SetRange("Document No.", lvnDocumentNo);
         BankAccountLedgerEntry.SetRange("Posting Date", lvnPostingDate);

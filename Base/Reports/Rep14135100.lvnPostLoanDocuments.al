@@ -8,6 +8,7 @@ report 14135100 "lvnPostLoanDocuments"
         dataitem(lvnLoanDocument; lvnLoanDocument)
         {
             RequestFilterFields = "Transaction Type", "Posting Date", "Document Type", "Document No.", "Loan No.";
+
             trigger OnPreDataItem()
             begin
                 if not Confirm(DocumentsPostingCountLbl, false, Count()) then
@@ -33,8 +34,8 @@ report 14135100 "lvnPostLoanDocuments"
 
     var
         lvnPostLoanDocument: Codeunit lvnPostLoanDocument;
-        DocumentsPostingCountLbl: Label 'Do You want to post %1 documents?';
-        DocumentsPostingResultLbl: Label '%1 documents posted. %2 failed';
         PostedDocuments: Integer;
         FailedDocuments: Integer;
+        DocumentsPostingCountLbl: Label 'Do You want to post %1 documents?';
+        DocumentsPostingResultLbl: Label '%1 documents posted. %2 failed';
 }

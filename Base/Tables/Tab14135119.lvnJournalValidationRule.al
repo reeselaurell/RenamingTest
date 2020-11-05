@@ -6,9 +6,22 @@ table 14135119 "lvnJournalValidationRule"
 
     fields
     {
-        field(1; "Journal Batch Code"; Code[20]) { Caption = 'Batch Code'; DataClassification = CustomerContent; TableRelation = lvnLoanJournalBatch.Code; }
-        field(2; "Line No."; Integer) { Caption = 'Line No.'; DataClassification = CustomerContent; }
-        field(10; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
+        field(1; "Journal Batch Code"; Code[20])
+        {
+            Caption = 'Batch Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvnLoanJournalBatch.Code;
+        }
+        field(2; "Line No."; Integer)
+        {
+            Caption = 'Line No.';
+            DataClassification = CustomerContent;
+        }
+        field(10; Description; Text[50])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
         field(11; "Condition Code"; Code[20])
         {
             DataClassification = CustomerContent;
@@ -27,7 +40,11 @@ table 14135119 "lvnJournalValidationRule"
                     "Condition Code" := SelectedConditionCode;
             end;
         }
-        field(12; "Error Message"; Text[250]) { Caption = 'Error Message'; DataClassification = CustomerContent; }
+        field(12; "Error Message"; Text[250])
+        {
+            Caption = 'Error Message';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

@@ -113,15 +113,6 @@ report 14135220 "lvnPerformanceWorksheet"
         }
     }
 
-    var
-        RowSchema: Record lvnPerformanceRowSchema;
-        SystemFilter: Record lvnSystemCalculationFilter temporary;
-        DateFilter: Text;
-        RowSchemaCode: Code[20];
-        BandSchemaCode: Code[20];
-        AsOfDate: Date;
-        DateFilterLbl: Label '..%1';
-
     trigger OnPostReport()
     var
         PeriodPerformanceView: Page lvnPeriodPerformanceView;
@@ -140,4 +131,13 @@ report 14135220 "lvnPerformanceWorksheet"
             DimensionPerformanceView.RunModal();
         end;
     end;
+
+    var
+        RowSchema: Record lvnPerformanceRowSchema;
+        SystemFilter: Record lvnSystemCalculationFilter temporary;
+        DateFilter: Text;
+        RowSchemaCode: Code[20];
+        BandSchemaCode: Code[20];
+        AsOfDate: Date;
+        DateFilterLbl: Label '..%1';
 }

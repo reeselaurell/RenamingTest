@@ -22,7 +22,9 @@ codeunit 14135100 "lvnGLEntryEventsSubscriber"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Invoice Post. Buffer", 'OnAfterInvPostBufferPreparePurchase', '', false, false)]
-    local procedure OnAfterPurchasePostBufferPrepate(var InvoicePostBuffer: Record "Invoice Post. Buffer"; var PurchaseLine: Record "Purchase Line")
+    local procedure OnAfterPurchasePostBufferPrepate(
+        var InvoicePostBuffer: Record "Invoice Post. Buffer";
+        var PurchaseLine: Record "Purchase Line")
     begin
         InvoicePostBuffer."Additional Grouping Identifier" := Format(PurchaseLine."Line No.");
         InvoicePostBuffer.lvnLoanNo := PurchaseLine.lvnLoanNo;
@@ -32,7 +34,9 @@ codeunit 14135100 "lvnGLEntryEventsSubscriber"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Invoice Post. Buffer", 'OnAfterInvPostBufferPrepareSales', '', false, false)]
-    local procedure OnAfterSalesPostBufferPrepate(var InvoicePostBuffer: Record "Invoice Post. Buffer"; var SalesLine: Record "Sales Line")
+    local procedure OnAfterSalesPostBufferPrepate(
+        var InvoicePostBuffer: Record "Invoice Post. Buffer";
+        var SalesLine: Record "Sales Line")
     begin
         InvoicePostBuffer."Additional Grouping Identifier" := Format(SalesLine."Line No.");
         InvoicePostBuffer.lvnLoanNo := SalesLine.lvnLoanNo;
@@ -43,7 +47,9 @@ codeunit 14135100 "lvnGLEntryEventsSubscriber"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterCopyGenJnlLineFromInvPostBuffer', '', false, false)]
-    local procedure OnAfterCopyGenJnlLineFromInvPostBuffer(var GenJournalLine: Record "Gen. Journal Line"; InvoicePostBuffer: Record "Invoice Post. Buffer")
+    local procedure OnAfterCopyGenJnlLineFromInvPostBuffer(
+        var GenJournalLine: Record "Gen. Journal Line";
+        InvoicePostBuffer: Record "Invoice Post. Buffer")
     begin
         GenJournalLine.lvnServicingType := InvoicePostBuffer.lvnServicingType;
         GenJournalLine.lvnLoanNo := InvoicePostBuffer.lvnLoanNo;

@@ -12,11 +12,27 @@ page 14135139 "lvnFileImportSchemas"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field("File Import Type"; Rec."File Import Type") { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Field Separator"; Rec."Field Separator") { ApplicationArea = All; ToolTip = 'Use <TAB> for Tab or any other symbol'; }
-                field("Skip Rows"; Rec."Skip Rows") { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field("File Import Type"; Rec."File Import Type")
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Field Separator"; Rec."Field Separator")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Use <TAB> for Tab or any other symbol';
+                }
+                field("Skip Rows"; Rec."Skip Rows")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -34,9 +50,9 @@ page 14135139 "lvnFileImportSchemas"
                 PromotedCategory = Process;
                 ApplicationArea = All;
 
-                trigger OnAction();
+                trigger OnAction()
                 var
-                    GenJnlImportSchema: page lvnGenJnlImportSchema;
+                    GenJnlImportSchema: Page lvnGenJnlImportSchema;
                     PurchaseLinesImportSchema: Page lvnPurchaseLinesImportSchema;
                     SalesLinesImportSchema: Page lvnSalesLinesImportSchema;
                     DepositImportSchema: Page lvnDepositImportSchema;

@@ -20,8 +20,17 @@ table 14135133 "lvnEscrowFieldsMapping"
                 Description := LoanFieldsConfiguration."Field Name";
             end;
         }
-        field(10; Description; Text[100]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(11; "Map-To G/L Account No."; Code[20]) { Caption = 'Map-to G/L Account No.'; TableRelation = "G/L Account"."No." where("Account Type" = const(Posting)); DataClassification = CustomerContent; }
+        field(10; Description; Text[100])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Map-To G/L Account No."; Code[20])
+        {
+            Caption = 'Map-to G/L Account No.';
+            TableRelation = "G/L Account"."No." where("Account Type" = const(Posting));
+            DataClassification = CustomerContent;
+        }
         field(12; "Switch Code"; Code[20])
         {
             Caption = 'G/L Account Switch Code';
@@ -40,7 +49,11 @@ table 14135133 "lvnEscrowFieldsMapping"
                     "Switch Code" := SelectedExpressionCode;
             end;
         }
-        field(30; "Cost Center Option"; enum lvnServDimSelectionType) { Caption = 'Cost Center Option'; DataClassification = CustomerContent; }
+        field(30; "Cost Center Option"; enum lvnServDimSelectionType)
+        {
+            Caption = 'Cost Center Option';
+            DataClassification = CustomerContent;
+        }
         field(31; "Cost Center"; Code[20])
         {
             Caption = 'Cost Center';

@@ -13,8 +13,14 @@ page 14135220 "lvnReportGeneratorBatchList"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -32,7 +38,7 @@ page 14135220 "lvnReportGeneratorBatchList"
                 PromotedIsBig = true;
                 Image = ExecuteBatch;
 
-                trigger OnAction();
+                trigger OnAction()
                 var
                     Report: Report lvnRptGeneratorBatchProcess;
                 begin

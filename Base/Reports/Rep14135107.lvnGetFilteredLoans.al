@@ -2,6 +2,7 @@ report 14135107 "lvnGetFilteredLoans"
 {
     Caption = 'Get Filtered Loans';
     ProcessingOnly = true;
+
     dataset
     {
         dataitem(Loan; lvnLoan)

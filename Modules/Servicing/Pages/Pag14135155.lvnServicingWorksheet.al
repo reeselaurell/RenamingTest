@@ -14,24 +14,85 @@ page 14135155 "lvnServicingWorksheet"
             {
                 FreezeColumn = "Borrower Name";
 
-                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; DrillDown = false; Style = Attention; StyleExpr = Rec."Error Message" <> ''; }
-                field("Borrower Name"; Rec."Borrower Name") { ApplicationArea = All; DrillDown = false; }
-                field("Customer No."; Rec."Customer No.") { ApplicationArea = All; DrillDown = false; }
-                field("Date Funded"; Rec."Date Funded") { ApplicationArea = All; DrillDown = false; }
-                field("First Payment Due"; Rec."First Payment Due") { ApplicationArea = All; DrillDown = false; }
-                field("Next Payment Date"; Rec."Next Payment Date") { ApplicationArea = All; DrillDown = false; }
-                field("First Payment Due To Investor"; Rec."First Payment Due To Investor") { ApplicationArea = All; DrillDown = false; }
-                field("Last Servicing Period"; Rec."Last Servicing Period") { ApplicationArea = All; }
-                field("Payable to Investor"; Rec."Payable to Investor") { ApplicationArea = All; Editable = false; }
-                field("Date Sold"; Rec."Date Sold") { ApplicationArea = All; DrillDown = false; }
-                field("Interest Amount"; Rec."Interest Amount") { ApplicationArea = All; Editable = false; }
-                field("Principal Amount"; Rec."Principal Amount") { ApplicationArea = All; Editable = false; }
-                field("Escrow Amount"; Rec."Escrow Amount") { ApplicationArea = All; Editable = false; }
-                field(TotalAmount; Rec."Interest Amount" + Rec."Principal Amount" + Rec."Escrow Amount") { ApplicationArea = All; Editable = false; Caption = 'Total Amount'; }
-                field("Error Message"; Rec."Error Message") { ApplicationArea = All; Editable = false; }
+                field("Loan No."; Rec."Loan No.")
+                {
+                    ApplicationArea = All;
+                    DrillDown = false;
+                    Style = Attention;
+                    StyleExpr = Rec."Error Message" <> '';
+                }
+                field("Borrower Name"; Rec."Borrower Name")
+                {
+                    ApplicationArea = All;
+                    DrillDown = false;
+                }
+                field("Customer No."; Rec."Customer No.")
+                {
+                    ApplicationArea = All;
+                    DrillDown = false;
+                }
+                field("Date Funded"; Rec."Date Funded")
+                {
+                    ApplicationArea = All;
+                    DrillDown = false;
+                }
+                field("First Payment Due"; Rec."First Payment Due")
+                {
+                    ApplicationArea = All;
+                    DrillDown = false;
+                }
+                field("Next Payment Date"; Rec."Next Payment Date")
+                {
+                    ApplicationArea = All;
+                    DrillDown = false;
+                }
+                field("First Payment Due To Investor"; Rec."First Payment Due To Investor")
+                {
+                    ApplicationArea = All;
+                    DrillDown = false;
+                }
+                field("Last Servicing Period"; Rec."Last Servicing Period")
+                {
+                    ApplicationArea = All;
+                }
+                field("Payable to Investor"; Rec."Payable to Investor")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Date Sold"; Rec."Date Sold")
+                {
+                    ApplicationArea = All;
+                    DrillDown = false;
+                }
+                field("Interest Amount"; Rec."Interest Amount")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Principal Amount"; Rec."Principal Amount")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Escrow Amount"; Rec."Escrow Amount")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field(TotalAmount; Rec."Interest Amount" + Rec."Principal Amount" + Rec."Escrow Amount")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Total Amount';
+                }
+                field("Error Message"; Rec."Error Message")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
             }
         }
-
         area(Factboxes)
         {
             part(Escrows; lvnLoanEscrowFields)
@@ -56,7 +117,6 @@ page 14135155 "lvnServicingWorksheet"
                 RunObject = page lvnLoanCard;
                 RunPageLink = "No." = field("Loan No.");
             }
-
             action(RetrieveLoansForServicing)
             {
                 Caption = 'Retrieve Loans for Servicing';
@@ -67,7 +127,6 @@ page 14135155 "lvnServicingWorksheet"
                 PromotedIsBig = true;
                 RunObject = report lvnPrepareServicingDocuments;
             }
-
             action(ValidateLines)
             {
                 Caption = 'Validate Lines';
@@ -131,11 +190,11 @@ page 14135155 "lvnServicingWorksheet"
         }
     }
 
-    var
-        ServicingManagement: Codeunit lvnServicingManagement;
-
     trigger OnAfterGetCurrRecord()
     begin
         CurrPage.Escrows.Page.SetParams(Rec."Loan No.");
     end;
+
+    var
+        ServicingManagement: Codeunit lvnServicingManagement;
 }

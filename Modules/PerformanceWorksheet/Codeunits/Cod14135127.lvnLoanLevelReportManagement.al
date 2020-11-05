@@ -13,7 +13,10 @@ codeunit 14135127 "lvnLoanLevelReportManagement"
     end;
 
     [EventSubscriber(ObjectType::Page, Page::lvnExpressionList, 'FillBuffer', '', false, false)]
-    local procedure OnFillBuffer(ExpressionHeader: Record lvnExpressionHeader; ConsumerMetadata: Text; var ExpressionBuffer: Record lvnExpressionValueBuffer)
+    local procedure OnFillBuffer(
+        ExpressionHeader: Record lvnExpressionHeader;
+        ConsumerMetadata: Text;
+        var ExpressionBuffer: Record lvnExpressionValueBuffer)
     var
         LoanLevelReportSchemaLine: Record lvnLoanLevelReportSchemaLine;
     begin

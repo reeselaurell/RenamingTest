@@ -19,7 +19,11 @@ page 14135248 "lvnStorageBrowser"
         {
             repeater(Group)
             {
-                field(Name; Rec.Name) { ApplicationArea = All; CaptionClass = GetColumnName; }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                    CaptionClass = GetColumnName;
+                }
             }
         }
     }
@@ -45,8 +49,8 @@ page 14135248 "lvnStorageBrowser"
 
                     trigger OnAction()
                     var
-                        FPBuilder: FilterPageBuilder;
                         NameValueBuffer: Record "Name/Value Buffer" temporary;
+                        FPBuilder: FilterPageBuilder;
                         ContainerName: Text;
                     begin
                         FPBuilder.PageCaption(NewContainerLbl);
@@ -62,7 +66,6 @@ page 14135248 "lvnStorageBrowser"
                         end;
                     end;
                 }
-
                 action(BrowseContents)
                 {
                     Caption = 'Browse...';
@@ -85,7 +88,6 @@ page 14135248 "lvnStorageBrowser"
                         end;
                     end;
                 }
-
                 action(DeleteContainer)
                 {
                     Caption = 'Delete';
@@ -137,7 +139,6 @@ page 14135248 "lvnStorageBrowser"
                         end;
                     end;
                 }
-
                 action(DownloadFile)
                 {
                     Caption = 'Download';
@@ -159,7 +160,6 @@ page 14135248 "lvnStorageBrowser"
                         DownloadFromStream(IStream, SaveFileLbl, '', FileMaskTxt, FileName);
                     end;
                 }
-
                 action(CopyFile)
                 {
                     Caption = 'Copy To...';
@@ -186,7 +186,6 @@ page 14135248 "lvnStorageBrowser"
                         end;
                     end;
                 }
-
                 action(MoveFile)
                 {
                     Caption = 'Move To...';
@@ -215,7 +214,6 @@ page 14135248 "lvnStorageBrowser"
                         end;
                     end;
                 }
-
                 action(DeleteFile)
                 {
                     Caption = 'Delete';
@@ -240,7 +238,17 @@ page 14135248 "lvnStorageBrowser"
         }
     }
 
+    trigger OnOpenPage()
+    begin
+        Refresh();
+    end;
+
     var
+        AzureBlobMgmt: Codeunit lvnAzureBlobManagement;
+        [InDataSet]
+        BrowsingFiles: Boolean;
+        Container: Text;
+        ExcludeName: Text;
         ContainersLbl: Label 'Containers';
         FilesCaptionLbl: Label 'Files in %1';
         NewContainerLbl: Label 'Create Container';
@@ -250,16 +258,6 @@ page 14135248 "lvnStorageBrowser"
         SaveFileLbl: Label 'Save file';
         SelectFileLbl: Label 'Select a file';
         FileMaskTxt: Label 'All Files|*.*';
-        [InDataSet]
-        BrowsingFiles: Boolean;
-        Container: Text;
-        AzureBlobMgmt: Codeunit lvnAzureBlobManagement;
-        ExcludeName: Text;
-
-    trigger OnOpenPage()
-    begin
-        Refresh();
-    end;
 
     procedure SetParams(ContainerName: Text)
     begin

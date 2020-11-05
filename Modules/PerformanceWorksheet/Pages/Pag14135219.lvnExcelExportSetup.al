@@ -14,8 +14,14 @@ page 14135219 "lvnExcelExportSetup"
         {
             group(General)
             {
-                field("Base Url"; Rec."Base Url") { ApplicationArea = All; }
-                field("Access Key"; Rec."Access Key") { ApplicationArea = All; }
+                field("Base Url"; Rec."Base Url")
+                {
+                    ApplicationArea = All;
+                }
+                field("Access Key"; Rec."Access Key")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

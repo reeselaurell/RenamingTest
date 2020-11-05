@@ -117,14 +117,6 @@ page 14135241 "lvnSwitchEdit"
         }
     }
 
-    var
-        ConditionValueBuffer: Record lvnExpressionValueBuffer temporary;
-        Engine: Codeunit lvnExpressionEngine;
-        ValueEmptyErr: Label 'Switch value cannot be empty';
-        SwitchValue: Text;
-        Ready: Boolean;
-        AddInInitialized: Boolean;
-
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
         if not Ready then
@@ -138,6 +130,14 @@ page 14135241 "lvnSwitchEdit"
             end;
         exit(true);
     end;
+
+    var
+        ConditionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        Engine: Codeunit lvnExpressionEngine;
+        SwitchValue: Text;
+        Ready: Boolean;
+        AddInInitialized: Boolean;
+        ValueEmptyErr: Label 'Switch value cannot be empty';
 
     procedure SetFieldList(var FieldList: Record lvnExpressionValueBuffer)
     begin

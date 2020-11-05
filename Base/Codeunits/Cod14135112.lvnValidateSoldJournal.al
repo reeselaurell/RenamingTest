@@ -1,6 +1,11 @@
 codeunit 14135112 "lvnValidateSoldJournal"
 {
     var
+        LoanVisionSetup: Record lvnLoanVisionSetup;
+        CreateSoldDocuments: Codeunit lvnCreateSoldDocuments;
+        LoanJournalErrorMgmt: Codeunit lvnLoanJournalErrorMgmt;
+        LoanMgmt: Codeunit lvnLoanManagement;
+        ConditionsMgmt: Codeunit lvnConditionsMgmt;
         LoanNoEmptyErr: Label 'Loan No. can not be blank';
         LoanNoDoesNotMatchPatternErr: Label 'Loan No. does not match any of defined patterns';
         SoldDateBlankErr: Label 'Sold Date can not be blank';
@@ -13,11 +18,6 @@ codeunit 14135112 "lvnValidateSoldJournal"
         NonPostedDocumentExistsErr: Label 'Non-Posted Sold document already exists %1';
         PostedDocumentExistsErr: Label 'Posted Sold document already exists %1';
         NothingToVoidErr: Label 'There is nothing to void';
-        LoanVisionSetup: Record lvnLoanVisionSetup;
-        CreateSoldDocuments: Codeunit lvnCreateSoldDocuments;
-        LoanJournalErrorMgmt: Codeunit lvnLoanJournalErrorMgmt;
-        LoanMgmt: Codeunit lvnLoanManagement;
-        ConditionsMgmt: Codeunit lvnConditionsMgmt;
 
     procedure ValidateSoldLines(JournalBatchCode: Code[20])
     var
@@ -33,7 +33,7 @@ codeunit 14135112 "lvnValidateSoldJournal"
         until LoanJournalLine.Next() = 0;
     end;
 
-    local procedure ValidateSingleJournalLine(var LoanJournalLine: record lvnLoanJournalLine)
+    local procedure ValidateSingleJournalLine(var LoanJournalLine: Record lvnLoanJournalLine)
     var
         JournalValidationRule: Record lvnJournalValidationRule;
         ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
@@ -72,7 +72,7 @@ codeunit 14135112 "lvnValidateSoldJournal"
         LoanDocument.SetRange("Transaction Type", LoanDocument."Transaction Type"::Sold);
         if not LoanDocument.IsEmpty() then begin
             LoanDocument.FindFirst();
-            LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, strsubstno(NonPostedDocumentExistsErr, LoanDocument."Document No."));
+            LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, StrSubstNo(NonPostedDocumentExistsErr, LoanDocument."Document No."));
         end;
         LoanSoldDocument.Reset();
         LoanSoldDocument.SetRange("Loan No.", LoanJournalLine."Loan No.");
@@ -84,7 +84,7 @@ codeunit 14135112 "lvnValidateSoldJournal"
             if (SoldDocumentsCount <> VoidedDocumentsCount) then begin
                 LoanSoldDocument.SetRange(Void, false);
                 LoanSoldDocument.FindLast();
-                LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, strsubstno(PostedDocumentExistsErr, LoanSoldDocument."Document No."));
+                LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, StrSubstNo(PostedDocumentExistsErr, LoanSoldDocument."Document No."));
             end;
         end;
         if LoanJournalLine."Date Sold" = 0D then
@@ -122,24 +122,26 @@ codeunit 14135112 "lvnValidateSoldJournal"
         if (TempLoanDocument."Customer No." = '') then
             LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, InvestorCustomerNoMissingErr)
         else begin
-            if not Customer.get(TempLoanDocument."Customer No.") then
+            if not Customer.Get(TempLoanDocument."Customer No.") then
                 LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, InvestorCustomerNoMissingErr);
         end;
         TempLoanDocumentLine.Reset();
         if TempLoanDocumentLine.FindSet() then
             repeat
                 if TempLoanDocumentLine."Reason Code" = '' then
-                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, strsubstno(ReasonCodeMissingOnLineErr, TempLoanDocumentLine."Line No."));
+                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, StrSubstNo(ReasonCodeMissingOnLineErr, TempLoanDocumentLine."Line No."));
                 if TempLoanDocumentLine."Account No." = '' then
-                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, strsubstno(AccountNoMissingOnLineErr, TempLoanDocumentLine."Line No."));
+                    LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, StrSubstNo(AccountNoMissingOnLineErr, TempLoanDocumentLine."Line No."));
             until TempLoanDocumentLine.Next() = 0;
     end;
 
-    local procedure ValidateConditionLine(var ExpressionValueBuffer: Record lvnExpressionValueBuffer; ConditionCode: Code[20]): Boolean
+    local procedure ValidateConditionLine(
+        var ExpressionValueBuffer: Record lvnExpressionValueBuffer;
+        ConditionCode: Code[20]): Boolean
     var
+        ExpressionHeader: Record lvnExpressionHeader;
         ExpressionEngine: Codeunit lvnExpressionEngine;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
-        ExpressionHeader: Record lvnExpressionHeader;
     begin
         ExpressionHeader.Get(ConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
         exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));

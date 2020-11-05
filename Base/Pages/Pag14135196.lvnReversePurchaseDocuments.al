@@ -15,13 +15,41 @@ page 14135196 "lvnReversePurchaseDocuments"
         {
             repeater(Group)
             {
-                field("Document Type"; Rec."Document Type") { ApplicationArea = All; Editable = false; }
-                field("No."; Rec."No.") { ApplicationArea = All; Editable = false; }
-                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; Editable = false; }
-                field("Sell-to Customer No."; Rec."Sell-to Customer No.") { ApplicationArea = All; Editable = false; }
-                field("Buy-from Vendor No."; Rec."Buy-from Vendor No.") { ApplicationArea = All; Editable = false; }
-                field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name") { ApplicationArea = All; Editable = false; }
-                field(ReverseTransaction; Rec.Correction) { ApplicationArea = All; Caption = 'Reverse Transaction'; }
+                field("Document Type"; Rec."Document Type")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Sell-to Customer No."; Rec."Sell-to Customer No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field(ReverseTransaction; Rec.Correction)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Reverse Transaction';
+                }
             }
         }
     }
@@ -41,8 +69,8 @@ page 14135196 "lvnReversePurchaseDocuments"
 
                 trigger OnAction()
                 var
-                    FPBuilder: FilterPageBuilder;
                     PurchInvHeader: Record "Purch. Inv. Header";
+                    FPBuilder: FilterPageBuilder;
                 begin
                     Clear(PurchInvHeader);
                     FPBuilder.AddRecord(InvoiceDocTxt, PurchInvHeader);
@@ -62,7 +90,6 @@ page 14135196 "lvnReversePurchaseDocuments"
                     end;
                 end;
             }
-
             action(ReverseDocuments)
             {
                 Caption = 'Reverse Selected Documents';

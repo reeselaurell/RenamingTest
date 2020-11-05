@@ -6,7 +6,9 @@ codeunit 14135128 "lvnExpressionEngine"
         UnrecognizedFieldErr: Label 'Unrecognized field name: %1';
         UnrecognizedTypeErr: Label 'Unrecognized value type: %1';
 
-    procedure CheckCondition(var ExpressionHeader: Record lvnExpressionHeader; var ValueBuffer: Record lvnExpressionValueBuffer): Boolean
+    procedure CheckCondition(
+        var ExpressionHeader: Record lvnExpressionHeader;
+        var ValueBuffer: Record lvnExpressionValueBuffer): Boolean
     var
         ExpressionLine: Record lvnExpressionLine;
         TempValueBuffer: Record lvnExpressionValueBuffer temporary;
@@ -109,7 +111,9 @@ codeunit 14135128 "lvnExpressionEngine"
         exit(Result);
     end;
 
-    procedure CalculateFormula(var ExpressionHeader: Record lvnExpressionHeader; var ValueBuffer: Record lvnExpressionValueBuffer): Text
+    procedure CalculateFormula(
+        var ExpressionHeader: Record lvnExpressionHeader;
+        var ValueBuffer: Record lvnExpressionValueBuffer): Text
     var
         Formula: Text;
     begin
@@ -121,7 +125,10 @@ codeunit 14135128 "lvnExpressionEngine"
         exit(CalculateValue(Formula, ValueBuffer));
     end;
 
-    procedure SwitchCase(var ExpressionHeader: Record lvnExpressionHeader; var Result: Text; var ValueBuffer: Record lvnExpressionValueBuffer): Boolean
+    procedure SwitchCase(
+        var ExpressionHeader: Record lvnExpressionHeader;
+        var Result: Text;
+        var ValueBuffer: Record lvnExpressionValueBuffer): Boolean
     var
         CaseLine: Record lvnExpressionLine;
         Value: Text;
@@ -161,7 +168,11 @@ codeunit 14135128 "lvnExpressionEngine"
             exit(false);
     end;
 
-    procedure Iif(var ConditionHeader: Record lvnExpressionHeader; var TrueFormulaHeader: Record lvnExpressionHeader; var FalseFormulaHeader: Record lvnExpressionHeader; var ValueBuffer: Record lvnExpressionValueBuffer): Text
+    procedure Iif(
+        var ConditionHeader: Record lvnExpressionHeader;
+        var TrueFormulaHeader: Record lvnExpressionHeader;
+        var FalseFormulaHeader: Record lvnExpressionHeader;
+        var ValueBuffer: Record lvnExpressionValueBuffer): Text
     var
         FieldList: Dictionary of [Text, Boolean];
     begin
@@ -178,7 +189,9 @@ codeunit 14135128 "lvnExpressionEngine"
         end;
     end;
 
-    procedure Iif(var ExpressionHeader: Record lvnExpressionHeader; var ValueBuffer: Record lvnExpressionValueBuffer): Text
+    procedure Iif(
+        var ExpressionHeader: Record lvnExpressionHeader;
+        var ValueBuffer: Record lvnExpressionValueBuffer): Text
     var
         ExpressionLine: Record lvnExpressionLine;
         LeftHand: Text;
@@ -213,7 +226,9 @@ codeunit 14135128 "lvnExpressionEngine"
         exit(CalculateOrReturnValue(Return, ValueBuffer));
     end;
 
-    procedure CloneValueBuffer(var FromBuffer: Record lvnExpressionValueBuffer; var ToBuffer: Record lvnExpressionValueBuffer)
+    procedure CloneValueBuffer(
+        var FromBuffer: Record lvnExpressionValueBuffer;
+        var ToBuffer: Record lvnExpressionValueBuffer)
     begin
         FromBuffer.Reset();
         ToBuffer.Reset();
@@ -225,7 +240,176 @@ codeunit 14135128 "lvnExpressionEngine"
             until FromBuffer.Next() = 0;
     end;
 
-    local procedure ResolveCondition(LeftHand: Text; Comparison: Enum lvnComparison; RightHand: Text; var ValueBuffer: Record lvnExpressionValueBuffer): Boolean
+    procedure GetFormulaFromLines(var ExpressionHeader: Record lvnExpressionHeader) Formula: Text
+    begin
+        Formula := GetFormulaFromLines(ExpressionHeader, 0);
+    end;
+
+    procedure GetFormulaFromLines(var ExpressionHeader: Record lvnExpressionHeader; LineNo: Integer) Formula: Text
+    var
+        ExpressionLine: Record lvnExpressionLine;
+    begin
+        ExpressionLine.Reset();
+        ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
+        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
+        ExpressionLine.SetRange("Line No.", LineNo);
+        if not ExpressionLine.FindSet() then
+            exit;
+        repeat
+            Formula := Formula + ExpressionLine."Left Side" + ExpressionLine."Right Side";
+        until ExpressionLine.Next() = 0;
+    end;
+
+    procedure SetFormulaToLines(var ExpressionHeader: Record lvnExpressionHeader; Formula: Text)
+    begin
+        SetFormulaToLines(ExpressionHeader, Formula, 0);
+    end;
+
+    procedure SetFormulaToLines(var ExpressionHeader: Record lvnExpressionHeader; Formula: Text; LineNo: Integer)
+    var
+        ExpressionLine: Record lvnExpressionLine;
+        Idx: Integer;
+    begin
+        ExpressionLine.Reset();
+        ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
+        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
+        ExpressionLine.SetRange("Line No.", LineNo);
+        ExpressionLine.DeleteAll();
+        Idx := 1;
+        while Formula <> '' do begin
+            Clear(ExpressionLine);
+            ExpressionLine."Expression Code" := ExpressionHeader.Code;
+            ExpressionLine."Consumer Id" := ExpressionHeader."Consumer Id";
+            ExpressionLine."Line No." := 0;
+            ExpressionLine."Split No." := Idx;
+            ExpressionLine."Left Side" := CopyStr(Formula, 1, 250);
+            Formula := DelStr(Formula, 1, 250);
+            if Formula <> '' then begin
+                ExpressionLine."Right Side" := CopyStr(Formula, 1, 250);
+                Formula := DelStr(Formula, 1, 250);
+            end;
+            ExpressionLine.Insert();
+            Idx := Idx + 1;
+        end;
+    end;
+
+    procedure EvaluateBooleanExpression(Expression: Text) Result: Boolean
+    var
+        IsExpression: Boolean;
+        Operators: Text;
+        OperatorNo: Integer;
+        i: Integer;
+        Parentheses: Integer;
+        LeftOperand: Text;
+        RightOperand: Text;
+        Operator: Char;
+        LeftResult: Boolean;
+        RightResult: Boolean;
+    begin
+        Result := false;
+        Expression := ReplaceString(Expression, ' and ', '*', true);
+        Expression := ReplaceString(Expression, ' or ', '+', true);
+        Expression := ReplaceString(Expression, ' xor ', '^', true);
+        Expression := DelChr(Expression, '=', ' ');
+        if StrLen(Expression) > 0 then begin
+            Parentheses := 0;
+            IsExpression := false;
+            Operators := '+*^';
+            OperatorNo := 1;
+            repeat
+                i := StrLen(Expression);
+                repeat
+                    if Expression[i] = '(' then
+                        Parentheses := Parentheses + 1
+                    else
+                        if Expression[i] = ')' then
+                            Parentheses := Parentheses - 1;
+                    if (Parentheses = 0) and (Expression[i] = Operators[OperatorNo]) then
+                        IsExpression := true
+                    else
+                        i := i - 1;
+                until IsExpression or (i <= 0);
+                if not IsExpression then
+                    OperatorNo := OperatorNo + 1;
+            until (OperatorNo > StrLen(Operators)) or IsExpression;
+            if IsExpression then begin
+                if i > 1 then
+                    LeftOperand := CopyStr(Expression, 1, i - 1)
+                else
+                    LeftOperand := '';
+                if i < StrLen(Expression) then
+                    RightOperand := CopyStr(Expression, i + 1)
+                else
+                    RightOperand := '';
+                Operator := Expression[i];
+                LeftResult := EvaluateBooleanExpression(LeftOperand);
+                RightResult := EvaluateBooleanExpression(RightOperand);
+                case Operator of
+                    '^':
+                        Result := LeftResult xor RightResult;
+                    '*':
+                        Result := LeftResult and RightResult;
+                    '+':
+                        Result := LeftResult or RightResult;
+                end;
+            end else
+                if (Expression[1] = '(') and (Expression[StrLen(Expression)] = ')') then
+                    Result := EvaluateBooleanExpression(CopyStr(Expression, 2, StrLen(Expression) - 2)) else
+                    if Evaluate(Result, Expression) then;
+        end else begin
+            if Evaluate(Result, Expression) then;
+        end;
+    end;
+
+    procedure FormatComparison(Comparison: Enum lvnComparison): Text
+    begin
+        case Comparison of
+            Comparison::Contains:
+                exit('like');
+            Comparison::Equal:
+                exit('eq');
+            Comparison::NotEqual:
+                exit('neq');
+            Comparison::Greater:
+                exit('gt');
+            Comparison::GreaterOrEqual:
+                exit('gte');
+            Comparison::Less:
+                exit('lt');
+            Comparison::LessOrEqual:
+                exit('lte');
+            Comparison::Within:
+                exit('in');
+        end;
+    end;
+
+    procedure ParseComparison(Comparison: Text) Result: Enum lvnComparison
+    begin
+        case Comparison of
+            'like':
+                Result := Result::Contains;
+            'eq':
+                Result := Result::Equal;
+            'neq':
+                Result := Result::NotEqual;
+            'gt':
+                Result := Result::Greater;
+            'gte':
+                Result := Result::GreaterOrEqual;
+            'lt':
+                Result := Result::Less;
+            'lte':
+                Result := Result::LessOrEqual;
+            'in':
+                Result := Result::Within;
+        end;
+    end;
+
+    local procedure ResolveCondition(
+        LeftHand: Text;
+        Comparison: Enum lvnComparison;
+        RightHand: Text;
+        var ValueBuffer: Record lvnExpressionValueBuffer): Boolean
     var
         DecimalLeft: Decimal;
         DecimalRight: Decimal;
@@ -390,59 +574,6 @@ codeunit 14135128 "lvnExpressionEngine"
             exit(UpperCase(Source) >= UpperCase(Target));
     end;
 
-    procedure GetFormulaFromLines(var ExpressionHeader: Record lvnExpressionHeader) Formula: Text
-    begin
-        Formula := GetFormulaFromLines(ExpressionHeader, 0);
-    end;
-
-    procedure GetFormulaFromLines(var ExpressionHeader: Record lvnExpressionHeader; LineNo: Integer) Formula: Text
-    var
-        ExpressionLine: Record lvnExpressionLine;
-    begin
-        ExpressionLine.Reset();
-        ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
-        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
-        ExpressionLine.SetRange("Line No.", LineNo);
-        if not ExpressionLine.FindSet() then
-            exit;
-        repeat
-            Formula := Formula + ExpressionLine."Left Side" + ExpressionLine."Right Side";
-        until ExpressionLine.Next() = 0;
-    end;
-
-    procedure SetFormulaToLines(var ExpressionHeader: Record lvnExpressionHeader; Formula: Text)
-    begin
-        SetFormulaToLines(ExpressionHeader, Formula, 0);
-    end;
-
-    procedure SetFormulaToLines(var ExpressionHeader: Record lvnExpressionHeader; Formula: Text; LineNo: Integer)
-    var
-        ExpressionLine: Record lvnExpressionLine;
-        Idx: Integer;
-    begin
-        ExpressionLine.Reset();
-        ExpressionLine.SetRange("Expression Code", ExpressionHeader.Code);
-        ExpressionLine.SetRange("Consumer Id", ExpressionHeader."Consumer Id");
-        ExpressionLine.SetRange("Line No.", LineNo);
-        ExpressionLine.DeleteAll();
-        Idx := 1;
-        while Formula <> '' do begin
-            Clear(ExpressionLine);
-            ExpressionLine."Expression Code" := ExpressionHeader.Code;
-            ExpressionLine."Consumer Id" := ExpressionHeader."Consumer Id";
-            ExpressionLine."Line No." := 0;
-            ExpressionLine."Split No." := Idx;
-            ExpressionLine."Left Side" := CopyStr(Formula, 1, 250);
-            Formula := DelStr(Formula, 1, 250);
-            if Formula <> '' then begin
-                ExpressionLine."Right Side" := CopyStr(Formula, 1, 250);
-                Formula := DelStr(Formula, 1, 250);
-            end;
-            ExpressionLine.Insert();
-            Idx := Idx + 1;
-        end;
-    end;
-
     local procedure ResolveVariables(Expression: Text; var ValueBuffer: Record lvnExpressionValueBuffer) Result: Text
     var
         Idx: Integer;
@@ -469,7 +600,10 @@ codeunit 14135128 "lvnExpressionEngine"
             Result := Result + Expression;
     end;
 
-    local procedure GetValue(FieldName: Text; var ValueBuffer: Record lvnExpressionValueBuffer; WrapLiterals: Boolean): Text
+    local procedure GetValue(
+        FieldName: Text;
+        var ValueBuffer: Record lvnExpressionValueBuffer;
+        WrapLiterals: Boolean): Text
     begin
         ValueBuffer.Reset();
         ValueBuffer.SetCurrentKey(Name);
@@ -697,74 +831,6 @@ codeunit 14135128 "lvnExpressionEngine"
         exit(Result);
     end;
 
-    procedure EvaluateBooleanExpression(Expression: Text) Result: Boolean
-    var
-        IsExpression: Boolean;
-        Operators: Text;
-        OperatorNo: Integer;
-        i: Integer;
-        Parentheses: Integer;
-        LeftOperand: Text;
-        RightOperand: Text;
-        Operator: Char;
-        LeftResult: Boolean;
-        RightResult: Boolean;
-    begin
-        Result := false;
-        Expression := ReplaceString(Expression, ' and ', '*', true);
-        Expression := ReplaceString(Expression, ' or ', '+', true);
-        Expression := ReplaceString(Expression, ' xor ', '^', true);
-        Expression := DelChr(Expression, '=', ' ');
-        if StrLen(Expression) > 0 then begin
-            Parentheses := 0;
-            IsExpression := false;
-            Operators := '+*^';
-            OperatorNo := 1;
-            repeat
-                i := StrLen(Expression);
-                repeat
-                    if Expression[i] = '(' then
-                        Parentheses := Parentheses + 1
-                    else
-                        if Expression[i] = ')' then
-                            Parentheses := Parentheses - 1;
-                    if (Parentheses = 0) and (Expression[i] = Operators[OperatorNo]) then
-                        IsExpression := true
-                    else
-                        i := i - 1;
-                until IsExpression or (i <= 0);
-                if not IsExpression then
-                    OperatorNo := OperatorNo + 1;
-            until (OperatorNo > StrLen(Operators)) or IsExpression;
-            if IsExpression then begin
-                if i > 1 then
-                    LeftOperand := CopyStr(Expression, 1, i - 1)
-                else
-                    LeftOperand := '';
-                if i < StrLen(Expression) then
-                    RightOperand := CopyStr(Expression, i + 1)
-                else
-                    RightOperand := '';
-                Operator := Expression[i];
-                LeftResult := EvaluateBooleanExpression(LeftOperand);
-                RightResult := EvaluateBooleanExpression(RightOperand);
-                case Operator of
-                    '^':
-                        Result := LeftResult xor RightResult;
-                    '*':
-                        Result := LeftResult and RightResult;
-                    '+':
-                        Result := LeftResult or RightResult;
-                end;
-            end else
-                if (Expression[1] = '(') and (Expression[StrLen(Expression)] = ')') then
-                    Result := EvaluateBooleanExpression(CopyStr(Expression, 2, StrLen(Expression) - 2)) else
-                    if Evaluate(Result, Expression) then;
-        end else begin
-            if Evaluate(Result, Expression) then;
-        end;
-    end;
-
     local procedure ReplaceString(String: Text; FindWhat: Text; ReplaceWith: Text; CaseInsensitive: Boolean): Text
     var
         Idx: Integer;
@@ -789,50 +855,5 @@ codeunit 14135128 "lvnExpressionEngine"
             end;
         end;
         exit(String);
-    end;
-
-
-    procedure FormatComparison(Comparison: Enum lvnComparison): Text
-    begin
-        case Comparison of
-            Comparison::Contains:
-                exit('like');
-            Comparison::Equal:
-                exit('eq');
-            Comparison::NotEqual:
-                exit('neq');
-            Comparison::Greater:
-                exit('gt');
-            Comparison::GreaterOrEqual:
-                exit('gte');
-            Comparison::Less:
-                exit('lt');
-            Comparison::LessOrEqual:
-                exit('lte');
-            Comparison::Within:
-                exit('in');
-        end;
-    end;
-
-    procedure ParseComparison(Comparison: Text) Result: Enum lvnComparison
-    begin
-        case Comparison of
-            'like':
-                Result := Result::Contains;
-            'eq':
-                Result := Result::Equal;
-            'neq':
-                Result := Result::NotEqual;
-            'gt':
-                Result := Result::Greater;
-            'gte':
-                Result := Result::GreaterOrEqual;
-            'lt':
-                Result := Result::Less;
-            'lte':
-                Result := Result::LessOrEqual;
-            'in':
-                Result := Result::Within;
-        end;
     end;
 }

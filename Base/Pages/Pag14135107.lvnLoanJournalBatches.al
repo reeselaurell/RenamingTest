@@ -12,17 +12,50 @@ page 14135107 "lvnLoanJournalBatches"
         {
             repeater(Group)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field("Loan Journal Type"; Rec."Loan Journal Type") { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Dimension Import Rule"; Rec."Dimension Import Rule") { ApplicationArea = All; }
-                field("Map Dimensions Using Hierachy"; Rec."Map Dimensions Using Hierachy") { ApplicationArea = All; }
-                field("Dimension Hierarchy Date"; Rec."Dimension Hierarchy Date") { ApplicationArea = All; }
-                field("Default Title Customer No."; Rec."Default Title Customer No.") { ApplicationArea = All; }
-                field("Default Investor Customer No."; Rec."Default Investor Customer No.") { ApplicationArea = All; }
-                field("Default Reason Code"; Rec."Default Reason Code") { ApplicationArea = All; }
-                field("Def. Processing Schema Code"; Rec."Def. Processing Schema Code") { ApplicationArea = All; }
-                field("Loan Card Update Option"; Rec."Loan Card Update Option") { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field("Loan Journal Type"; Rec."Loan Journal Type")
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Dimension Import Rule"; Rec."Dimension Import Rule")
+                {
+                    ApplicationArea = All;
+                }
+                field("Map Dimensions Using Hierachy"; Rec."Map Dimensions Using Hierachy")
+                {
+                    ApplicationArea = All;
+                }
+                field("Dimension Hierarchy Date"; Rec."Dimension Hierarchy Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Default Title Customer No."; Rec."Default Title Customer No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Default Investor Customer No."; Rec."Default Investor Customer No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Default Reason Code"; Rec."Default Reason Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Def. Processing Schema Code"; Rec."Def. Processing Schema Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Loan Card Update Option"; Rec."Loan Card Update Option")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -40,7 +73,7 @@ page 14135107 "lvnLoanJournalBatches"
                 ApplicationArea = All;
                 Image = Journal;
 
-                trigger OnAction();
+                trigger OnAction()
                 var
                     LoanJournalLine: Record lvnLoanJournalLine;
                     FundedJournalLinesPage: Page lvnFundedJournalLines;
@@ -75,7 +108,6 @@ page 14135107 "lvnLoanJournalBatches"
                     end;
                 end;
             }
-
             action(PostProcessingLines)
             {
                 Caption = 'Post Processing Lines';
@@ -88,7 +120,6 @@ page 14135107 "lvnLoanJournalBatches"
                 PromotedCategory = Process;
                 ApplicationArea = All;
             }
-
             action(ValidationRules)
             {
                 Caption = 'Validation Rules';
@@ -101,7 +132,6 @@ page 14135107 "lvnLoanJournalBatches"
                 Image = BreakRulesOn;
                 ApplicationArea = All;
             }
-
             action(LoanCardUpdateSchema)
             {
                 Caption = 'Loan Card Update Schema';

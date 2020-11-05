@@ -3,7 +3,6 @@ report 14135108 "lvnGetLoansWithActivity"
     Caption = 'Get Loans with Activity';
     ProcessingOnly = true;
 
-
     dataset
     {
         dataitem(GLEntry; "G/L Entry")
@@ -45,7 +44,6 @@ report 14135108 "lvnGetLoansWithActivity"
         ProgressDialog: Dialog;
         Counter: Integer;
         ProcessingEntryLbl: Label 'Processing Entry #1########## of #2###########';
-
 
     procedure RetrieveData(var LoanReportingBuffer: Record lvnLoanReportingBuffer)
     begin

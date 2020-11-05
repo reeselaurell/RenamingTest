@@ -4,7 +4,10 @@ pageextension 14135132 "lvnFixedAssetCard" extends "Fixed Asset Card"
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

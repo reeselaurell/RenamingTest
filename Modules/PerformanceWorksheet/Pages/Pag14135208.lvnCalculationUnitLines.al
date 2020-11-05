@@ -10,9 +10,18 @@ page 14135208 "lvnCalculationUnitLines"
         {
             repeater(Group)
             {
-                field("Line no."; Rec."Line no.") { ApplicationArea = All; }
-                field("Source Unit Code"; Rec."Source Unit Code") { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
+                field("Line no."; Rec."Line no.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Source Unit Code"; Rec."Source Unit Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

@@ -2,6 +2,9 @@ codeunit 14135129 "lvnDocumentExchangeManagement"
 {
     var
         DocumentExchangeSetup: Record lvnDocumentExchangeSetup;
+        AzureBlobMgmt: Codeunit lvnAzureBlobManagement;
+        EmptyGuid: Guid;
+        DocumentExchangeSetupRetrieved: Boolean;
         DocumentGuidTxt: Label 'lvnDocumentGuid';
         MultipleRecordsErr: Label 'Target table has multiple records with different Ids related to the file being imported';
         SuccessMsg: Label 'Document attached successfully';
@@ -9,9 +12,6 @@ codeunit 14135129 "lvnDocumentExchangeManagement"
         NoDXCIdFoundErr: Label 'Import rule was found, however target table does not have Document Exchange Id field';
         NoRuleFoundErr: Label 'No matching import rule was found';
         NoImportRulesErr: Label 'Import rules are not configured';
-        EmptyGuid: Guid;
-        DocumentExchangeSetupRetrieved: Boolean;
-        AzureBlobMgmt: Codeunit lvnAzureBlobManagement;
 
     procedure CheckDocumentExchange(): Boolean
     begin
@@ -21,7 +21,14 @@ codeunit 14135129 "lvnDocumentExchangeManagement"
         exit(DocumentExchangeSetup."Azure Base Url" <> '');
     end;
 
-    procedure AttachDocument(ObjectId: Guid; FileName: Text; var Content: Codeunit "Temp Blob"; AttachmentDateTime: DateTime; UsedCompanyName: Text; Importing: Boolean; SkipOperations: Boolean): Guid
+    procedure AttachDocument(
+        ObjectId: Guid;
+        FileName: Text;
+        var Content: Codeunit "Temp Blob";
+        AttachmentDateTime: DateTime;
+        UsedCompanyName: Text;
+        Importing: Boolean;
+        SkipOperations: Boolean): Guid
     var
         DocumentExchangeLine: Record lvnDocumentExchangeLine;
         FileMgmt: Codeunit "File Management";
@@ -60,17 +67,17 @@ codeunit 14135129 "lvnDocumentExchangeManagement"
 
     procedure TryAttachDocument(CompanyName: Text; FileName: Text): Text
     var
-        FileManagement: Codeunit "File Management";
-        DocumentName: Text;
         DocumentImportRule: Record lvnDocumentImportRule;
+        FileManagement: Codeunit "File Management";
+        FileContent: Codeunit "Temp Blob";
+        DocumentName: Text;
         RecordReference: RecordRef;
         FieldReference: FieldRef;
         FieldNo: Integer;
         TableView: Text;
         DocumentGuid: Guid;
-        HashSet: List of [Guid];
-        FileContent: Codeunit "Temp Blob";
         IStream: InStream;
+        HashSet: List of [GUID];
     begin
         FileContent.CreateInStream(IStream);
         AzureBlobMgmt.DownloadFile('temp', FileName, IStream);
@@ -149,10 +156,10 @@ codeunit 14135129 "lvnDocumentExchangeManagement"
 
     local procedure SetupDocumentLine(var DocumentExchangeLine: Record lvnDocumentExchangeLine)
     var
+        FileMgmt: Codeunit "File Management";
         Idx: Integer;
         PlainFileName: Text;
         FileExtension: Text;
-        FileMgmt: Codeunit "File Management";
     begin
         GetDocumentExchangeSetup();
         DocumentExchangeLine.Id := CreateGuid();
@@ -195,7 +202,7 @@ codeunit 14135129 "lvnDocumentExchangeManagement"
         end;
     end;
 
-    local procedure GetFirstKey(var HashSet: List of [Guid]): Guid
+    local procedure GetFirstKey(var HashSet: List of [GUID]): Guid
     var
         Item: Guid;
     begin

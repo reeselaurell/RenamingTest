@@ -13,8 +13,16 @@ page 14135159 "lvnTablesList"
             {
                 Caption = 'Group';
 
-                field(ID; Rec.ID) { Caption = 'ID'; ApplicationArea = All; }
-                field(Name; Rec.Name) { Caption = 'Name'; ApplicationArea = All; }
+                field(ID; Rec.ID)
+                {
+                    Caption = 'ID';
+                    ApplicationArea = All;
+                }
+                field(Name; Rec.Name)
+                {
+                    Caption = 'Name';
+                    ApplicationArea = All;
+                }
             }
         }
     }

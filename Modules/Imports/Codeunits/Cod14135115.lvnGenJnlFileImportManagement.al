@@ -14,7 +14,11 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         OpenFileLbl: Label 'Open File for Import';
         ReadingToStreamErr: Label 'Error reading file to stream';
 
-    procedure CreateJournalLines(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; GenJnlTemplateCode: Code[10]; GenJnlBatchCode: Code[10]; ImportID: Guid)
+    procedure CreateJournalLines(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        GenJnlTemplateCode: Code[10];
+        GenJnlBatchCode: Code[10];
+        ImportID: Guid)
     var
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlLine: Record "Gen. Journal Line";
@@ -91,7 +95,9 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         until GenJnlImportBuffer.Next() = 0;
     end;
 
-    procedure ManualFileImport(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError): Boolean
+    procedure ManualFileImport(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError): Boolean
     begin
         FileImportSchema.Reset();
         FileImportSchema.SetRange("File Import Type", FileImportSchema."File Import Type"::"General Journal");
@@ -114,7 +120,12 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         end;
     end;
 
-    procedure AutoFileImport(SchemaCode: Code[20]; ContainerName: Text; FileName: Text; var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError)
+    procedure AutoFileImport(
+        SchemaCode: Code[20];
+        ContainerName: Text;
+        FileName: Text;
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError)
     begin
         FileImportSchema.Get(SchemaCode);
         FileImportJnlLine.Reset();
@@ -192,7 +203,7 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
                     case TempFileImportJnlLine."Import Field Type" of
                         TempFileImportJnlLine."Import Field Type"::"Account No.":
                             begin
-                                GenJnlImportBuffer."Account Value" := copystr(Value, 1, maxstrlen(GenJnlImportBuffer."Account Value"));
+                                GenJnlImportBuffer."Account Value" := CopyStr(Value, 1, MaxStrLen(GenJnlImportBuffer."Account Value"));
                                 if TempFileImportJnlLine."Dimension Split" then
                                     if TempFileImportJnlLine."Dimension Split Character" <> '' then begin
                                         Pos := StrPos(Value, TempFileImportJnlLine."Dimension Split Character");
@@ -289,8 +300,14 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         until (StartLine > EndLine);
     end;
 
-    local procedure ValidateEntries(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError)
+    local procedure ValidateEntries(
+        var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError)
     var
+        GLAccount: Record "G/L Account";
+        NoSeriesMgmt: Codeunit NoSeriesManagement;
+        UserSetupMgmt: Codeunit "User Setup Management";
+        DocumentNo: Code[20];
         PostingDateIsBlankErr: Label 'Posting Date is Blank';
         PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
         AccountNoBlankOrMissingErr: Label 'Account %1 %2 is missing or blank';
@@ -301,10 +318,6 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         PaymentMethodCodeMissingErr: Label '%1 Payment Method Code is not available';
         ExternalDocNoAlreadyPostedErr: Label 'Document with External Document No. %1 for Vendor %2 is already posted';
         ExternalDocNoIsBlankErr: Label 'External Document No. cannot be blank';
-        NoSeriesMgmt: Codeunit NoSeriesManagement;
-        UserSetupMgmt: codeunit "User Setup Management";
-        GLAccount: Record "G/L Account";
-        DocumentNo: Code[20];
     begin
         MainDimensionCode := DimensionsManagement.GetMainHierarchyDimensionCode();
         MainDimensionNo := DimensionsManagement.GetMainHierarchyDimensionNo();
@@ -327,7 +340,7 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
                     AddErrorLine(GenJnlImportBuffer, ImportBufferError, PostingDateIsBlankErr)
                 else
                     if not UserSetupMgmt.IsPostingDateValid(GenJnlImportBuffer."Posting Date") then
-                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, strsubstno(PostingDateIsNotValidErr, GenJnlImportBuffer."Posting Date"));
+                        AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(PostingDateIsNotValidErr, GenJnlImportBuffer."Posting Date"));
                 if GenJnlImportBuffer."Document Date" = 0D then
                     GenJnlImportBuffer."Document Date" := GenJnlImportBuffer."Posting Date";
                 //Account Type and Account No.
@@ -434,7 +447,12 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
             until GenJnlImportBuffer.Next() = 0;
     end;
 
-    local procedure ValidateDimension(LineNo: Integer; Mandatory: Boolean; DimensionNo: Integer; DimensionValueCode: Code[20]; var ImportBufferError: Record lvnImportBufferError)
+    local procedure ValidateDimension(
+        LineNo: Integer;
+        Mandatory: Boolean;
+        DimensionNo: Integer;
+        DimensionValueCode: Code[20];
+        var ImportBufferError: Record lvnImportBufferError)
     var
         DimensionValue: Record "Dimension Value";
         MandatoryDimensionBlankErr: Label 'Mandatory Dimension %1 is blank';
@@ -497,7 +515,11 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         end;
     end;
 
-    local procedure SearchDimension(DimensionNo: Integer; DimensionMappingType: Enum lvnDimensionMappingType; DimensionValueText: Text; var DimensionValueCode: Code[20])
+    local procedure SearchDimension(
+        DimensionNo: Integer;
+        DimensionMappingType: Enum lvnDimensionMappingType;
+        DimensionValueText: Text;
+        var DimensionValueCode: Code[20])
     var
         DimensionValue: Record "Dimension Value";
     begin
@@ -521,8 +543,8 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
 
     local procedure CheckVendorExternalDocumentNo(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer): Boolean
     var
-        VendorMgt: codeunit "Vendor Mgt.";
         VendorLedgerEntry: Record "Vendor Ledger Entry";
+        VendorMgt: Codeunit "Vendor Mgt.";
     begin
         Clear(VendorMgt);
         VendorMgt.SetFilterForExternalDocNo(VendorLedgerEntry, GenJnlImportBuffer."Document Type", GenJnlImportBuffer."External Document No.", GenJnlImportBuffer."Account No.", GenJnlImportBuffer."Posting Date");
@@ -531,14 +553,14 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
 
     local procedure CheckPaymentMethodCode(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer): Boolean
     var
-        PaymentMethod: record "Payment Method";
+        PaymentMethod: Record "Payment Method";
     begin
         exit(PaymentMethod.Get(GenJnlImportBuffer."Payment Method Code"));
     end;
 
     local procedure CheckReasonCode(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer): Boolean
     var
-        ReasonCode: record "Reason Code";
+        ReasonCode: Record "Reason Code";
     begin
         exit(ReasonCode.Get(GenJnlImportBuffer."Reason Code"));
     end;
@@ -660,7 +682,10 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         exit(true);
     end;
 
-    local procedure FindAccountNo(GenJnlAccountType: Enum lvnGenJnlAccountType; Value: Text; var AccountNo: Code[20])
+    local procedure FindAccountNo(
+        GenJnlAccountType: Enum lvnGenJnlAccountType;
+        Value: Text;
+        var AccountNo: Code[20])
     var
         GLAccount: Record "G/L Account";
         Vendor: Record Vendor;
@@ -798,7 +823,10 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         end;
     end;
 
-    local procedure AddErrorLine(GenJnlImportBuffer: Record lvnGenJnlImportBuffer; var ImportBufferError: Record lvnImportBufferError; ErrorText: Text)
+    local procedure AddErrorLine(
+        GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
+        var ImportBufferError: Record lvnImportBufferError;
+        ErrorText: Text)
     var
         ErrorLineNo: Integer;
     begin
@@ -815,7 +843,10 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         ImportBufferError.Insert();
     end;
 
-    local procedure AddErrorLine(LineNo: Integer; var ImportBufferError: Record lvnImportBufferError; ErrorText: Text)
+    local procedure AddErrorLine(
+        LineNo: Integer;
+        var ImportBufferError: Record lvnImportBufferError;
+        ErrorText: Text)
     var
         ErrorLineNo: Integer;
     begin

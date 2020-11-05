@@ -4,18 +4,30 @@ pageextension 14135103 "lvnDimensionValue" extends "Dimension Values"
     {
         addbefore(Name)
         {
-            field(lvnFirstName; Rec.lvnFirstName) { ApplicationArea = All; Visible = LoanOfficerFieldsVisible; }
-            field(lvnLastName; Rec.lvnLastName) { ApplicationArea = All; Visible = LoanOfficerFieldsVisible; }
-            field(lvnMiddleName; Rec.lvnMiddleName) { ApplicationArea = All; Visible = LoanOfficerFieldsVisible; }
+            field(lvnFirstName; Rec.lvnFirstName)
+            {
+                ApplicationArea = All;
+                Visible = LoanOfficerFieldsVisible;
+            }
+            field(lvnLastName; Rec.lvnLastName)
+            {
+                ApplicationArea = All;
+                Visible = LoanOfficerFieldsVisible;
+            }
+            field(lvnMiddleName; Rec.lvnMiddleName)
+            {
+                ApplicationArea = All;
+                Visible = LoanOfficerFieldsVisible;
+            }
         }
         addafter(Code)
         {
-            field(lvnAdditionalCode; Rec.lvnAdditionalCode) { ApplicationArea = All; }
+            field(lvnAdditionalCode; Rec.lvnAdditionalCode)
+            {
+                ApplicationArea = All;
+            }
         }
     }
-
-    var
-        LoanOfficerFieldsVisible: Boolean;
 
     trigger OnOpenPage()
     var
@@ -27,4 +39,6 @@ pageextension 14135103 "lvnDimensionValue" extends "Dimension Values"
         end;
     end;
 
+    var
+        LoanOfficerFieldsVisible: Boolean;
 }

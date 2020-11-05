@@ -11,7 +11,9 @@ report 14135902 "lvnBarcodePReportBatch"
             DataItemTableView = sorting("No.");
             RequestFilterFields = "No.";
 
-            column(BarcodeValue; "Purch. Inv. Header"."No.") { }
+            column(BarcodeValue; "Purch. Inv. Header"."No.")
+            {
+            }
         }
     }
 }

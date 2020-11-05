@@ -16,26 +16,74 @@ xmlport 14135108 "lvnPurchInvImport"
                 AutoUpdate = false;
                 AutoSave = false;
 
-                textelement(DocNo) { }
-                textelement(PostingDate) { }
-                textelement(VendorNo) { }
-                textelement(DocumentDate) { }
-                textelement(PaymentMethodCode) { MinOccurs = Zero; }
-                textelement(DueDate) { }
-                textelement(PostingDescription) { MinOccurs = Zero; }
-                textelement(LoanNo) { }
-                textelement(GLAccountNo) { }
-                textelement(LineDescription) { MinOccurs = Zero; }
-                textelement(Amount) { }
-                textelement(Dimension1Code) { MinOccurs = Zero; }
-                textelement(Dimension2Code) { MinOccurs = Zero; }
-                textelement(Dimension3Code) { MinOccurs = Zero; }
-                textelement(Dimension4Code) { MinOccurs = Zero; }
-                textelement(Dimension5Code) { MinOccurs = Zero; }
-                textelement(Dimension6Code) { MinOccurs = Zero; }
-                textelement(Dimension7Code) { MinOccurs = Zero; }
-                textelement(Dimension8Code) { MinOccurs = Zero; }
-
+                textelement(DocNo)
+                {
+                }
+                textelement(PostingDate)
+                {
+                }
+                textelement(VendorNo)
+                {
+                }
+                textelement(DocumentDate)
+                {
+                }
+                textelement(PaymentMethodCode)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(DueDate)
+                {
+                }
+                textelement(PostingDescription)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(LoanNo)
+                {
+                }
+                textelement(GLAccountNo)
+                {
+                }
+                textelement(LineDescription)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(Amount)
+                {
+                }
+                textelement(Dimension1Code)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(Dimension2Code)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(Dimension3Code)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(Dimension4Code)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(Dimension5Code)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(Dimension6Code)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(Dimension7Code)
+                {
+                    MinOccurs = Zero;
+                }
+                textelement(Dimension8Code)
+                {
+                    MinOccurs = Zero;
+                }
                 trigger OnBeforeInsertRecord()
                 var
                     Loan: Record lvnLoan;
@@ -173,13 +221,6 @@ xmlport 14135108 "lvnPurchInvImport"
         }
     }
 
-    var
-        PurchInvHdrBuffer: Record lvnPurchInvHdrBuffer;
-        PurchInvLineBuffer: Record lvnPurchInvLineBuffer;
-        PurchInLineBuffer2: Record lvnPurchInvLineBuffer;
-        DimensionValidation: Option "Dimensions from File","Dimensions from Loan","From Dimension Hierarchy";
-        LoanNoValidation: Enum lvnLoanNoValidationRule;
-
     trigger OnPreXmlPort()
     begin
         PurchInvHdrBuffer.Reset();
@@ -202,4 +243,11 @@ xmlport 14135108 "lvnPurchInvImport"
         PurchInvoiceImportJnl.SetErrors(InvoiceErrorDetail);
         PurchInvoiceImportJnl.Run();
     end;
+
+    var
+        PurchInvHdrBuffer: Record lvnPurchInvHdrBuffer;
+        PurchInvLineBuffer: Record lvnPurchInvLineBuffer;
+        PurchInLineBuffer2: Record lvnPurchInvLineBuffer;
+        DimensionValidation: Option "Dimensions from File","Dimensions from Loan","From Dimension Hierarchy";
+        LoanNoValidation: Enum lvnLoanNoValidationRule;
 }

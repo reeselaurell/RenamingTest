@@ -19,37 +19,108 @@ page 14135197 "lvnGLReconciliation"
         {
             group(Filters)
             {
-                field(GLAccountFilter; GLAccountNo) { Caption = 'G/L Account No.'; ApplicationArea = All; }
-                field(DateFilter; DateFilter) { Caption = 'Date Filter'; ApplicationArea = All; }
+                field(GLAccountFilter; GLAccountNo)
+                {
+                    Caption = 'G/L Account No.';
+                    ApplicationArea = All;
+                }
+                field(DateFilter; DateFilter)
+                {
+                    Caption = 'Date Filter';
+                    ApplicationArea = All;
+                }
             }
-
             repeater(Group)
             {
-                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; }
-                field("G/L Account No."; Rec."G/L Account No.") { ApplicationArea = All; }
-                field("Date Funded"; Rec."Date Funded") { ApplicationArea = All; }
-                field("Date Sold"; Rec."Date Sold") { ApplicationArea = All; }
-                field("Investor Name"; Rec."Investor Name") { ApplicationArea = All; }
-                field("Last Transaction Date"; Rec."Last Transaction Date") { ApplicationArea = All; }
-                field(Name; Rec.Name) { ApplicationArea = All; }
-                field("Loan Card Value"; Rec."Loan Card Value") { ApplicationArea = All; }
-                field("Debit Amount"; Rec."Debit Amount") { ApplicationArea = All; }
-                field("Credit Amount"; Rec."Credit Amount") { ApplicationArea = All; }
-                field("Current Balance"; Rec."Current Balance") { ApplicationArea = All; }
-                field("Includes Multi-Payment"; Rec."Includes Multi-Payment") { ApplicationArea = All; }
-                field("Shortcut Dimension 1"; Rec."Shortcut Dimension 1") { ApplicationArea = All; }
-                field("Shortcut Dimension 2"; Rec."Shortcut Dimension 2") { ApplicationArea = All; }
-                field("Shortcut Dimension 3"; Rec."Shortcut Dimension 3") { ApplicationArea = All; }
-                field("Shortcut Dimension 4"; Rec."Shortcut Dimension 4") { ApplicationArea = All; }
-                field("Shortcut Dimension 5"; Rec."Shortcut Dimension 5") { ApplicationArea = All; }
-                field("Shortcut Dimension 6"; Rec."Shortcut Dimension 6") { ApplicationArea = All; }
-                field("Shortcut Dimension 7"; Rec."Shortcut Dimension 7") { ApplicationArea = All; }
-                field("Shortcut Dimension 8"; Rec."Shortcut Dimension 8") { ApplicationArea = All; }
+                field("Loan No."; Rec."Loan No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("G/L Account No."; Rec."G/L Account No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Date Funded"; Rec."Date Funded")
+                {
+                    ApplicationArea = All;
+                }
+                field("Date Sold"; Rec."Date Sold")
+                {
+                    ApplicationArea = All;
+                }
+                field("Investor Name"; Rec."Investor Name")
+                {
+                    ApplicationArea = All;
+                }
+                field("Last Transaction Date"; Rec."Last Transaction Date")
+                {
+                    ApplicationArea = All;
+                }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                }
+                field("Loan Card Value"; Rec."Loan Card Value")
+                {
+                    ApplicationArea = All;
+                }
+                field("Debit Amount"; Rec."Debit Amount")
+                {
+                    ApplicationArea = All;
+                }
+                field("Credit Amount"; Rec."Credit Amount")
+                {
+                    ApplicationArea = All;
+                }
+                field("Current Balance"; Rec."Current Balance")
+                {
+                    ApplicationArea = All;
+                }
+                field("Includes Multi-Payment"; Rec."Includes Multi-Payment")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shortcut Dimension 1"; Rec."Shortcut Dimension 1")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shortcut Dimension 2"; Rec."Shortcut Dimension 2")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shortcut Dimension 3"; Rec."Shortcut Dimension 3")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shortcut Dimension 4"; Rec."Shortcut Dimension 4")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shortcut Dimension 5"; Rec."Shortcut Dimension 5")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shortcut Dimension 6"; Rec."Shortcut Dimension 6")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shortcut Dimension 7"; Rec."Shortcut Dimension 7")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shortcut Dimension 8"; Rec."Shortcut Dimension 8")
+                {
+                    ApplicationArea = All;
+                }
             }
-
             group(Lines)
             {
-                part(lvnGLReconcilitationSubform; lvnGLReconcilitationSubform) { ApplicationArea = All; SubPageLink = lvnLoanNo = field("Loan No."), "Posting Date" = field(filter("Date Filter")), "G/L Account No." = field("G/L Account No."); Editable = false; }
+                part(lvnGLReconcilitationSubform; lvnGLReconcilitationSubform)
+                {
+                    ApplicationArea = All;
+                    SubPageLink = lvnLoanNo = field("Loan No."), "Posting Date" = field(filter("Date Filter")), "G/L Account No." = field("G/L Account No.");
+                    Editable = false;
+                }
             }
         }
     }
@@ -81,7 +152,6 @@ page 14135197 "lvnGLReconciliation"
                     CurrPage.Update(false);
                 end;
             }
-
             action(ShowDetails)
             {
                 Caption = 'Show Details';
@@ -103,7 +173,6 @@ page 14135197 "lvnGLReconciliation"
                     Page.RunModal(Page::"General Ledger Entries", GLEntry);
                 end;
             }
-
             action(LoanCard)
             {
                 Caption = 'Loan Card';
@@ -121,7 +190,6 @@ page 14135197 "lvnGLReconciliation"
                     Page.RunModal(Page::lvnLoanCard, Loan);
                 end;
             }
-
             action(QuickTrace)
             {
                 Caption = 'Quick Trace';
@@ -140,7 +208,6 @@ page 14135197 "lvnGLReconciliation"
                     QuickTrace.RunModal();
                 end;
             }
-
             action(ExportToExcel)
             {
                 Caption = 'Export to Excel';
@@ -160,10 +227,6 @@ page 14135197 "lvnGLReconciliation"
             }
         }
     }
-
-    var
-        GLAccountNo: Text;
-        DateFilter: Text;
 
     trigger OnOpenPage()
     begin
@@ -185,4 +248,8 @@ page 14135197 "lvnGLReconciliation"
                         Rec."Loan Card Value" := LoanValue."Decimal Value";
             end;
     end;
+
+    var
+        GLAccountNo: Text;
+        DateFilter: Text;
 }

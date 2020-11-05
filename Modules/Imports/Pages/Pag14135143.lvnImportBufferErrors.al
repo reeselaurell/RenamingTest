@@ -12,7 +12,10 @@ page 14135143 "lvnImportBufferErrors"
         {
             repeater(Group)
             {
-                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

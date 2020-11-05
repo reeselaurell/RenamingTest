@@ -12,9 +12,18 @@ page 14135116 "lvnImportDimensionMapping"
         {
             repeater(Group)
             {
-                field("Dimension Code"; Rec."Dimension Code") { ApplicationArea = All; }
-                field("Mapping Value"; Rec."Mapping Value") { ApplicationArea = All; }
-                field("Dimension Value Code"; Rec."Dimension Value Code") { ApplicationArea = All; }
+                field("Dimension Code"; Rec."Dimension Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Mapping Value"; Rec."Mapping Value")
+                {
+                    ApplicationArea = All;
+                }
+                field("Dimension Value Code"; Rec."Dimension Value Code")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

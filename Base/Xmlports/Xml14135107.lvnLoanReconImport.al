@@ -13,9 +13,15 @@ xmlport 14135107 "lvnLoanReconImport"
                 SourceTableView = sorting("Loan No.", "G/L Account No.");
                 UseTemporary = true;
 
-                fieldelement(LoanNo; LoanReconBuffer."Loan No.") { }
-                fieldelement(FileAmount; LoanReconBuffer."File Amount") { }
-                fieldelement(GLAccount; LoanReconBuffer."G/L Account No.") { }
+                fieldelement(LoanNo; LoanReconBuffer."Loan No.")
+                {
+                }
+                fieldelement(FileAmount; LoanReconBuffer."File Amount")
+                {
+                }
+                fieldelement(GLAccount; LoanReconBuffer."G/L Account No.")
+                {
+                }
             }
             tableelement(Filters; "G/L Entry")
             {
@@ -42,15 +48,15 @@ xmlport 14135107 "lvnLoanReconImport"
         }
     }
 
-    var
-        LoanLevelReportSchema: Record lvnLoanLevelReportSchema;
-        FlipSign: Boolean;
-        GLAccountSource: Option "File","Filter";
-
     trigger OnPreXmlPort()
     begin
         LoanLevelReportSchema.Get(LoanLevelReportSchema.Code);
     end;
+
+    var
+        LoanLevelReportSchema: Record lvnLoanLevelReportSchema;
+        FlipSign: Boolean;
+        GLAccountSource: Option "File","Filter";
 
     procedure GetData(var LoanReconciliationBuffer: Record lvnLoanReconciliationBuffer)
     var
@@ -86,7 +92,7 @@ xmlport 14135107 "lvnLoanReconImport"
                         LoanReconciliationBuffer.Amount := LoanReconciliationBuffer.Amount + GLEntry.Amount;
                     until GLEntry.Next() = 0;
                 LoanReconciliationBuffer.Difference := LoanReconciliationBuffer."File Amount" - LoanReconciliationBuffer.Amount;
-                IF LoanReconciliationBuffer.Difference <> 0 then
+                if LoanReconciliationBuffer.Difference <> 0 then
                     LoanReconciliationBuffer.Unbalanced := true;
                 LoanReconciliationBuffer.Modify();
             until LoanReconBuffer.Next() = 0;

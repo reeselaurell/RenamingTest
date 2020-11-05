@@ -14,16 +14,34 @@ xmlport 14135103 "lvnFixedAssetJournalImport"
             {
                 SourceTableView = sorting("Journal Template Name", "Journal Batch Name", "Line No.");
 
-                fieldelement(FAPostingDate; FAJournalLine."FA Posting Date") { }
-                fieldelement(DocumentType; FAJournalLine."Document Type") { }
-                fieldelement(DocumentNo; FAJournalLine."Document No.") { }
-                fieldelement(FANo; FAJournalLine."FA No.") { }
-                fieldelement(DepBookCode; FAJournalLine."Depreciation Book Code") { }
-                fieldelement(FAPostingType; FAJournalLine."FA Posting Type") { }
-                fieldelement(Description; FAJournalLine.Description) { }
-                fieldelement(Amount; FAJournalLine.Amount) { }
-                fieldelement(NoOfDepDays; FAJournalLine."No. of Depreciation Days") { MinOccurs = Zero; }
-
+                fieldelement(FAPostingDate; FAJournalLine."FA Posting Date")
+                {
+                }
+                fieldelement(DocumentType; FAJournalLine."Document Type")
+                {
+                }
+                fieldelement(DocumentNo; FAJournalLine."Document No.")
+                {
+                }
+                fieldelement(FANo; FAJournalLine."FA No.")
+                {
+                }
+                fieldelement(DepBookCode; FAJournalLine."Depreciation Book Code")
+                {
+                }
+                fieldelement(FAPostingType; FAJournalLine."FA Posting Type")
+                {
+                }
+                fieldelement(Description; FAJournalLine.Description)
+                {
+                }
+                fieldelement(Amount; FAJournalLine.Amount)
+                {
+                }
+                fieldelement(NoOfDepDays; FAJournalLine."No. of Depreciation Days")
+                {
+                    MinOccurs = Zero;
+                }
                 trigger OnBeforeInsertRecord()
                 begin
                     FAJournalLine."Journal Template Name" := JournalTemplateName;

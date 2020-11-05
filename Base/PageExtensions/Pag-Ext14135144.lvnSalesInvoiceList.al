@@ -1,10 +1,5 @@
 pageextension 14135144 "lvnSalesInvoiceList" extends "Sales Invoice List"
 {
-    layout
-    {
-        // Add changes to page layout here
-    }
-
     actions
     {
         addlast(Invoice)

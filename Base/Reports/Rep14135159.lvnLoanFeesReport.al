@@ -33,36 +33,69 @@ report 14135159 "lvnLoanFeesReport"
                     until TempExpenseGLAccount.Next() = 0;
             end;
         }
-
         dataitem(Loan; lvnLoan)
         {
             DataItemTableView = sorting("No.");
             RequestFilterFields = "No.", "Date Funded";
 
-            column(Filters; "G/L Account".GetFilters) { }
-            column(LoanFilters; GetFilters) { }
-            column(LoanNo; Loan."No.") { }
-            column(DateFunded; Loan."Date Funded") { }
-            column(DateSold; Loan."Date Sold") { }
-            column(BorrowerFirstName; Loan."Borrower First Name") { }
-            column(BorrowerMiddleName; Loan."Borrower Middle Name") { }
-            column(BorrowerLastName; Loan."Borrower Last Name") { }
-            column(LoanAmount; Loan."Loan Amount") { }
-            column(CostCenter; CostCenterCode) { }
-            column(LoanTypeCode; LoanTypeCode) { }
-            column(LoanOfficerCode; LoanOfficerCode) { }
-
+            column(Filters; "G/L Account".GetFilters)
+            {
+            }
+            column(LoanFilters; GetFilters)
+            {
+            }
+            column(LoanNo; Loan."No.")
+            {
+            }
+            column(DateFunded; Loan."Date Funded")
+            {
+            }
+            column(DateSold; Loan."Date Sold")
+            {
+            }
+            column(BorrowerFirstName; Loan."Borrower First Name")
+            {
+            }
+            column(BorrowerMiddleName; Loan."Borrower Middle Name")
+            {
+            }
+            column(BorrowerLastName; Loan."Borrower Last Name")
+            {
+            }
+            column(LoanAmount; Loan."Loan Amount")
+            {
+            }
+            column(CostCenter; CostCenterCode)
+            {
+            }
+            column(LoanTypeCode; LoanTypeCode)
+            {
+            }
+            column(LoanOfficerCode; LoanOfficerCode)
+            {
+            }
             dataitem(ExpenseLoop; Integer)
             {
                 DataItemTableView = sorting(Number);
 
-                column(ExpensePostingDate; TempExpenses."Date Funded") { }
-                column(ExpenseDescription; TempExpenses.Name) { }
-                column(ExpenseGLAccountNo; TempExpenses."G/L Account No.") { }
-                column(ExpenseGLAccountName; TempExpenseGLAccount.Name) { }
-                column(ExpenseAmount; TempExpenses."Current Balance") { }
-                column(ExpenseSection; ExpenseSection) { }
-
+                column(ExpensePostingDate; TempExpenses."Date Funded")
+                {
+                }
+                column(ExpenseDescription; TempExpenses.Name)
+                {
+                }
+                column(ExpenseGLAccountNo; TempExpenses."G/L Account No.")
+                {
+                }
+                column(ExpenseGLAccountName; TempExpenseGLAccount.Name)
+                {
+                }
+                column(ExpenseAmount; TempExpenses."Current Balance")
+                {
+                }
+                column(ExpenseSection; ExpenseSection)
+                {
+                }
                 trigger OnPreDataItem()
                 begin
                     TempExpenses.Reset();
@@ -80,18 +113,28 @@ report 14135159 "lvnLoanFeesReport"
                     ExpenseSection := true;
                 end;
             }
-
             dataitem(RevenueLoop; Integer)
             {
                 DataItemTableView = sorting(Number);
 
-                column(RevenuePostingDate; TempRevenue."Date Funded") { }
-                column(RevenueDescription; TempRevenue.Name) { }
-                column(RevenueGLAccountNo; TempRevenue."G/L Account No.") { }
-                column(RevenueGLAccountName; TempRevenueGLAccount.Name) { }
-                column(RevenueAmount; TempRevenue."Current Balance") { }
-                column(RevenueSection; RevenueSection) { }
-
+                column(RevenuePostingDate; TempRevenue."Date Funded")
+                {
+                }
+                column(RevenueDescription; TempRevenue.Name)
+                {
+                }
+                column(RevenueGLAccountNo; TempRevenue."G/L Account No.")
+                {
+                }
+                column(RevenueGLAccountName; TempRevenueGLAccount.Name)
+                {
+                }
+                column(RevenueAmount; TempRevenue."Current Balance")
+                {
+                }
+                column(RevenueSection; RevenueSection)
+                {
+                }
                 trigger OnPreDataItem()
                 begin
                     TempRevenue.Reset();
@@ -109,7 +152,6 @@ report 14135159 "lvnLoanFeesReport"
                     ExpenseSection := false;
                 end;
             }
-
             trigger OnAfterGetRecord()
             var
                 DimMgmt: Codeunit lvnDimensionsManagement;
@@ -180,6 +222,21 @@ report 14135159 "lvnLoanFeesReport"
         end;
     }
 
+    trigger OnPreReport()
+    var
+        LoanVisionSetup: Record lvnLoanVisionSetup;
+        DimMgmt: Codeunit lvnDimensionsManagement;
+    begin
+        LoanVisionSetup.Get();
+        if LoanVisionSetup."Cost Center Dimension Code" <> '' then
+            DimensionNo := DimMgmt.GetDimensionNo(LoanVisionSetup."Cost Center Dimension Code");
+        if LoanVisionSetup."Loan Type Dimension Code" <> '' then
+            LoanTypeDimensionNo := DimMgmt.GetDimensionNo(LoanVisionSetup."Loan Type Dimension Code");
+        if LoanVisionSetup."Loan Officer Dimension Code" <> '' then
+            LoanOfficerDimensionNo := DimMgmt.GetDimensionNo(LoanVisionSetup."Loan Officer Dimension Code");
+        DateFilter := "G/L Account".GetFilter("Date Filter");
+    end;
+
     var
         TempExpenseGLAccount: Record "G/L Account" temporary;
         TempRevenueGLAccount: Record "G/L Account" temporary;
@@ -197,19 +254,4 @@ report 14135159 "lvnLoanFeesReport"
         RevenueSection: Boolean;
         ExpenseSection: Boolean;
         SkipZeroBalance: Boolean;
-
-    trigger OnPreReport()
-    var
-        LoanVisionSetup: Record lvnLoanVisionSetup;
-        DimMgmt: Codeunit lvnDimensionsManagement;
-    begin
-        LoanVisionSetup.Get();
-        if LoanVisionSetup."Cost Center Dimension Code" <> '' then
-            DimensionNo := DimMgmt.GetDimensionNo(LoanVisionSetup."Cost Center Dimension Code");
-        if LoanVisionSetup."Loan Type Dimension Code" <> '' then
-            LoanTypeDimensionNo := DimMgmt.GetDimensionNo(LoanVisionSetup."Loan Type Dimension Code");
-        if LoanVisionSetup."Loan Officer Dimension Code" <> '' then
-            LoanOfficerDimensionNo := DimMgmt.GetDimensionNo(LoanVisionSetup."Loan Officer Dimension Code");
-        DateFilter := "G/L Account".GetFilter("Date Filter");
-    end;
 }

@@ -6,15 +6,55 @@ table 14135112 "lvnPostProcessingSchemaLine"
 
     fields
     {
-        field(1; "Journal Batch Code"; Code[20]) { Caption = 'Loan Journal Batch Code'; DataClassification = CustomerContent; TableRelation = lvnLoanJournalBatch; NotBlank = true; }
-        field(2; "Line No."; Integer) { Caption = 'Line No.'; DataClassification = CustomerContent; AutoIncrement = true; }
-        field(10; Priority; Integer) { Caption = 'Priority'; DataClassification = CustomerContent; }
-        field(11; Type; enum lvnPostProcessingType) { Caption = 'Type'; DataClassification = CustomerContent; }
-        field(12; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(13; "Assign To"; Enum lvnPostProcessingAssignTo) { Caption = 'Assign To'; DataClassification = CustomerContent; }
-        field(14; "Rounding Expression"; Decimal) { Caption = 'Rounding Expression'; DataClassification = CustomerContent; DecimalPlaces = 5 : 5; }
-        field(15; "From Field No."; Integer) { Caption = 'From Field No.'; DataClassification = CustomerContent; }
-        field(16; "To Field No."; Integer) { Caption = 'To Field No.'; DataClassification = CustomerContent; }
+        field(1; "Journal Batch Code"; Code[20])
+        {
+            Caption = 'Loan Journal Batch Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvnLoanJournalBatch;
+            NotBlank = true;
+        }
+        field(2; "Line No."; Integer)
+        {
+            Caption = 'Line No.';
+            DataClassification = CustomerContent;
+            AutoIncrement = true;
+        }
+        field(10; Priority; Integer)
+        {
+            Caption = 'Priority';
+            DataClassification = CustomerContent;
+        }
+        field(11; Type; enum lvnPostProcessingType)
+        {
+            Caption = 'Type';
+            DataClassification = CustomerContent;
+        }
+        field(12; Description; Text[50])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(13; "Assign To"; Enum lvnPostProcessingAssignTo)
+        {
+            Caption = 'Assign To';
+            DataClassification = CustomerContent;
+        }
+        field(14; "Rounding Expression"; Decimal)
+        {
+            Caption = 'Rounding Expression';
+            DataClassification = CustomerContent;
+            DecimalPlaces = 5 : 5;
+        }
+        field(15; "From Field No."; Integer)
+        {
+            Caption = 'From Field No.';
+            DataClassification = CustomerContent;
+        }
+        field(16; "To Field No."; Integer)
+        {
+            Caption = 'To Field No.';
+            DataClassification = CustomerContent;
+        }
         field(17; "Expression Code"; Code[20])
         {
             DataClassification = CustomerContent;
@@ -23,7 +63,7 @@ table 14135112 "lvnPostProcessingSchemaLine"
             trigger OnLookup()
             var
                 ConditionsMgmt: Codeunit lvnConditionsMgmt;
-                ExpressionList: page lvnExpressionList;
+                ExpressionList: Page lvnExpressionList;
                 SelectedExpressionCode: Code[20];
                 ExpressionType: Enum lvnExpressionType;
             begin
@@ -33,10 +73,27 @@ table 14135112 "lvnPostProcessingSchemaLine"
                     "Expression Code" := SelectedExpressionCode;
             end;
         }
-        field(18; "Custom Value"; Text[250]) { Caption = 'Custom Value'; DataClassification = CustomerContent; }
-        field(19; "From Character No."; Integer) { Caption = 'From Character No.'; DataClassification = CustomerContent; MinValue = 1; }
-        field(20; "Characters Count"; Integer) { Caption = 'Characters Count'; DataClassification = CustomerContent; }
-        field(21; "Copy Field Part"; Boolean) { Caption = 'Copy Field Part'; DataClassification = CustomerContent; }
+        field(18; "Custom Value"; Text[250])
+        {
+            Caption = 'Custom Value';
+            DataClassification = CustomerContent;
+        }
+        field(19; "From Character No."; Integer)
+        {
+            Caption = 'From Character No.';
+            DataClassification = CustomerContent;
+            MinValue = 1;
+        }
+        field(20; "Characters Count"; Integer)
+        {
+            Caption = 'Characters Count';
+            DataClassification = CustomerContent;
+        }
+        field(21; "Copy Field Part"; Boolean)
+        {
+            Caption = 'Copy Field Part';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

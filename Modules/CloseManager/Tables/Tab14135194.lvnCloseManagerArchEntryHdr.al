@@ -7,14 +7,54 @@ table 14135194 "lvnCloseManagerArchEntryHdr"
 
     fields
     {
-        field(1; "No."; Code[20]) { Caption = 'No.'; DataClassification = CustomerContent; }
-        field(5; "Template No."; Code[20]) { Caption = 'Template No.'; DataClassification = CustomerContent; }
-        field(10; "Period Date"; Date) { Caption = 'Period Date'; DataClassification = CustomerContent; }
-        field(11; "Total Tasks"; Integer) { Caption = 'Total Tasks'; FieldClass = FlowField; CalcFormula = count(lvnCloseManagerArchEntryLine where("No." = field("No."))); Editable = false; }
-        field(12; "Outstanding Reconcilliations"; Integer) { Caption = 'Outstanding Reconcilliations'; FieldClass = FlowField; CalcFormula = count(lvnCloseManagerArchEntryLine where("No." = field("No."), "Reconciled Date" = filter(''))); Editable = false; }
-        field(13; "Tasks Awaiting Approval"; Integer) { Caption = 'Tasks Awaiting Approval'; FieldClass = FlowField; CalcFormula = count(lvnCloseManagerArchEntryLine where("No." = field("No."), Approved = const(false))); Editable = false; }
-        field(14; "Tasks Approved"; Integer) { Caption = 'Tasks Approved'; FieldClass = FlowField; CalcFormula = count(lvnCloseManagerArchEntryLine where("No." = field("No."), Approved = const(true))); Editable = false; }
-        field(14135999; "Document Guid"; Guid) { Caption = 'Document Guid'; DataClassification = CustomerContent; }
+        field(1; "No."; Code[20])
+        {
+            Caption = 'No.';
+            DataClassification = CustomerContent;
+        }
+        field(5; "Template No."; Code[20])
+        {
+            Caption = 'Template No.';
+            DataClassification = CustomerContent;
+        }
+        field(10; "Period Date"; Date)
+        {
+            Caption = 'Period Date';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Total Tasks"; Integer)
+        {
+            Caption = 'Total Tasks';
+            FieldClass = FlowField;
+            CalcFormula = count(lvnCloseManagerArchEntryLine where("No." = field("No.")));
+            Editable = false;
+        }
+        field(12; "Outstanding Reconcilliations"; Integer)
+        {
+            Caption = 'Outstanding Reconcilliations';
+            FieldClass = FlowField;
+            CalcFormula = count(lvnCloseManagerArchEntryLine where("No." = field("No."), "Reconciled Date" = filter('')));
+            Editable = false;
+        }
+        field(13; "Tasks Awaiting Approval"; Integer)
+        {
+            Caption = 'Tasks Awaiting Approval';
+            FieldClass = FlowField;
+            CalcFormula = count(lvnCloseManagerArchEntryLine where("No." = field("No."), Approved = const(false)));
+            Editable = false;
+        }
+        field(14; "Tasks Approved"; Integer)
+        {
+            Caption = 'Tasks Approved';
+            FieldClass = FlowField;
+            CalcFormula = count(lvnCloseManagerArchEntryLine where("No." = field("No."), Approved = const(true)));
+            Editable = false;
+        }
+        field(14135999; "Document Guid"; Guid)
+        {
+            Caption = 'Document Guid';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

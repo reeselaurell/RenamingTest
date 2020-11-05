@@ -78,37 +78,112 @@ table 14135141 "lvnForm1098Entry"
                 end;
             end;
         }
-        field(10; "Borrower Name"; Text[100]) { Caption = 'Borrower Name'; DataClassification = CustomerContent; }
-        field(11; "Borrower SSN"; Text[20]) { Caption = 'Borrower SSN'; DataClassification = CustomerContent; }
-        field(12; "Co-Borrower Name"; Text[100]) { Caption = 'Co-Borrower Name'; DataClassification = CustomerContent; }
-        field(13; "Co-Borrower SSN"; Text[20]) { Caption = 'Co-Borrower SSN'; DataClassification = CustomerContent; }
-        field(14; "Borrower Mailing Address"; Text[250]) { Caption = 'Borrower Mailing Address'; DataClassification = CustomerContent; }
-        field(15; "Borrower Mailing City"; Text[100]) { Caption = 'Borrower Mailing City'; DataClassification = CustomerContent; }
-        field(16; "Borrower State"; Code[50]) { Caption = 'Borrower State'; DataClassification = CustomerContent; }
-        field(17; "Borrower ZIP Code"; Code[100]) { Caption = 'Borrower ZIP Code'; DataClassification = CustomerContent; }
-        field(18; "Borrower E-Mail"; Text[100]) { Caption = 'Borrower E-Mail'; DataClassification = CustomerContent; }
-        field(19; "Box 1"; Decimal) { Caption = 'Box 1'; DataClassification = CustomerContent; }
-        field(20; "Box 2"; Decimal) { Caption = 'Box 2'; DataClassification = CustomerContent; }
-        field(21; "Box 3"; Date) { Caption = 'Box 3'; DataClassification = CustomerContent; }
-        field(22; "Box 4"; Decimal) { Caption = 'Box 4'; DataClassification = CustomerContent; }
-        field(23; "Box 5"; Decimal) { Caption = 'Box 5'; DataClassification = CustomerContent; }
-        field(24; "Box 6"; Decimal) { Caption = 'Box 6'; DataClassification = CustomerContent; }
-        field(25; "Box 7"; Boolean) { Caption = 'Box 7'; DataClassification = CustomerContent; }
-        field(26; "Box 8"; Text[250]) { Caption = 'Box 8'; DataClassification = CustomerContent; }
-        field(27; "Box 9"; Text[250]) { Caption = 'Box 9'; DataClassification = CustomerContent; }
-        field(28; "Box 10"; Decimal) { Caption = 'Box 10'; DataClassification = CustomerContent; }
-        field(29; "Not Eligible"; Boolean) { Caption = 'Not Eligible'; DataClassification = CustomerContent; }
+        field(10; "Borrower Name"; Text[100])
+        {
+            Caption = 'Borrower Name';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Borrower SSN"; Text[20])
+        {
+            Caption = 'Borrower SSN';
+            DataClassification = CustomerContent;
+        }
+        field(12; "Co-Borrower Name"; Text[100])
+        {
+            Caption = 'Co-Borrower Name';
+            DataClassification = CustomerContent;
+        }
+        field(13; "Co-Borrower SSN"; Text[20])
+        {
+            Caption = 'Co-Borrower SSN';
+            DataClassification = CustomerContent;
+        }
+        field(14; "Borrower Mailing Address"; Text[250])
+        {
+            Caption = 'Borrower Mailing Address';
+            DataClassification = CustomerContent;
+        }
+        field(15; "Borrower Mailing City"; Text[100])
+        {
+            Caption = 'Borrower Mailing City';
+            DataClassification = CustomerContent;
+        }
+        field(16; "Borrower State"; Code[50])
+        {
+            Caption = 'Borrower State';
+            DataClassification = CustomerContent;
+        }
+        field(17; "Borrower ZIP Code"; Code[100])
+        {
+            Caption = 'Borrower ZIP Code';
+            DataClassification = CustomerContent;
+        }
+        field(18; "Borrower E-Mail"; Text[100])
+        {
+            Caption = 'Borrower E-Mail';
+            DataClassification = CustomerContent;
+        }
+        field(19; "Box 1"; Decimal)
+        {
+            Caption = 'Box 1';
+            DataClassification = CustomerContent;
+        }
+        field(20; "Box 2"; Decimal)
+        {
+            Caption = 'Box 2';
+            DataClassification = CustomerContent;
+        }
+        field(21; "Box 3"; Date)
+        {
+            Caption = 'Box 3';
+            DataClassification = CustomerContent;
+        }
+        field(22; "Box 4"; Decimal)
+        {
+            Caption = 'Box 4';
+            DataClassification = CustomerContent;
+        }
+        field(23; "Box 5"; Decimal)
+        {
+            Caption = 'Box 5';
+            DataClassification = CustomerContent;
+        }
+        field(24; "Box 6"; Decimal)
+        {
+            Caption = 'Box 6';
+            DataClassification = CustomerContent;
+        }
+        field(25; "Box 7"; Boolean)
+        {
+            Caption = 'Box 7';
+            DataClassification = CustomerContent;
+        }
+        field(26; "Box 8"; Text[250])
+        {
+            Caption = 'Box 8';
+            DataClassification = CustomerContent;
+        }
+        field(27; "Box 9"; Text[250])
+        {
+            Caption = 'Box 9';
+            DataClassification = CustomerContent;
+        }
+        field(28; "Box 10"; Decimal)
+        {
+            Caption = 'Box 10';
+            DataClassification = CustomerContent;
+        }
+        field(29; "Not Eligible"; Boolean)
+        {
+            Caption = 'Not Eligible';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
     {
         key(PK; "Loan No.") { Clustered = true; }
     }
-
-    var
-        LoanVisionSetup: Record lvnLoanVisionSetup;
-        lvnLoanManagement: Codeunit lvnLoanManagement;
-        GotLoanVisionSetup: Boolean;
 
     trigger OnDelete()
     var
@@ -118,6 +193,11 @@ table 14135141 "lvnForm1098Entry"
         Form1098Details.SetRange("Loan No.", "Loan No.");
         Form1098Details.DeleteAll();
     end;
+
+    var
+        LoanVisionSetup: Record lvnLoanVisionSetup;
+        lvnLoanManagement: Codeunit lvnLoanManagement;
+        GotLoanVisionSetup: Boolean;
 
     local procedure GetLoanVisionSetup()
     begin

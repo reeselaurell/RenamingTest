@@ -6,9 +6,22 @@ table 14135101 "lvnWarehouseLine"
 
     fields
     {
-        field(1; Code; Code[50]) { Caption = 'Code'; DataClassification = CustomerContent; NotBlank = true; }
-        field(10; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(11; "Show In Rolecenter"; Boolean) { Caption = 'Show in Rolecenter'; DataClassification = CustomerContent; }
+        field(1; Code; Code[50])
+        {
+            Caption = 'Code';
+            DataClassification = CustomerContent;
+            NotBlank = true;
+        }
+        field(10; Description; Text[50])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Show In Rolecenter"; Boolean)
+        {
+            Caption = 'Show in Rolecenter';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

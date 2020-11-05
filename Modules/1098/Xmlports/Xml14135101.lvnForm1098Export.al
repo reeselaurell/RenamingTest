@@ -13,15 +13,33 @@ xmlport 14135101 "lvnForm1098Export"
                 SourceTableView = sorting("Loan No.");
                 RequestFilterFields = "Not Eligible";
 
-                fieldelement(LoanNo; FormEntry."Loan No.") { }
-                textelement(LenderName) { }
-                textelement(LenderAddress) { }
-                textelement(LenderCity) { }
-                textelement(LenderState) { }
-                textelement(LenderCountry) { }
-                textelement(LenderZIPCode) { }
-                textelement(LenderPhone) { }
-                textelement(LenderFedID) { }
+                fieldelement(LoanNo; FormEntry."Loan No.")
+                {
+                }
+                textelement(LenderName)
+                {
+                }
+                textelement(LenderAddress)
+                {
+                }
+                textelement(LenderCity)
+                {
+                }
+                textelement(LenderState)
+                {
+                }
+                textelement(LenderCountry)
+                {
+                }
+                textelement(LenderZIPCode)
+                {
+                }
+                textelement(LenderPhone)
+                {
+                }
+                textelement(LenderFedID)
+                {
+                }
                 textelement(BorrowerSSN)
                 {
                     trigger OnBeforePassVariable()
@@ -37,20 +55,48 @@ xmlport 14135101 "lvnForm1098Export"
                             BorrowerSSN := FormEntry."Borrower SSN";
                     end;
                 }
-                fieldelement(Name; FormEntry."Borrower Name") { }
-                fieldelement(Address; FormEntry."Borrower Mailing Address") { }
-                fieldelement(City; FormEntry."Borrower Mailing City") { }
-                fieldelement(State; FormEntry."Borrower State") { }
-                fieldelement(ZIP; FormEntry."Borrower ZIP Code") { }
-                fieldelement(State2; FormEntry."Borrower State") { }
-                textelement(Other) { }
-                fieldelement(LoanNo2; FormEntry."Loan No.") { }
-                fieldelement(Interest; FormEntry."Box 1") { }
-                fieldelement(OutstandingPrincipalBalance; FormEntry."Box 2") { }
-                fieldelement(DateFunded; FormEntry."Box 3") { }
-                fieldelement(RefundInterest; FormEntry."Box 4") { }
-                fieldelement(InsurancePremium; FormEntry."Box 5") { }
-                fieldelement(PointsPaid; FormEntry."Box 6") { }
+                fieldelement(Name; FormEntry."Borrower Name")
+                {
+                }
+                fieldelement(Address; FormEntry."Borrower Mailing Address")
+                {
+                }
+                fieldelement(City; FormEntry."Borrower Mailing City")
+                {
+                }
+                fieldelement(State; FormEntry."Borrower State")
+                {
+                }
+                fieldelement(ZIP; FormEntry."Borrower ZIP Code")
+                {
+                }
+                fieldelement(State2; FormEntry."Borrower State")
+                {
+                }
+                textelement(Other)
+                {
+                }
+                fieldelement(LoanNo2; FormEntry."Loan No.")
+                {
+                }
+                fieldelement(Interest; FormEntry."Box 1")
+                {
+                }
+                fieldelement(OutstandingPrincipalBalance; FormEntry."Box 2")
+                {
+                }
+                fieldelement(DateFunded; FormEntry."Box 3")
+                {
+                }
+                fieldelement(RefundInterest; FormEntry."Box 4")
+                {
+                }
+                fieldelement(InsurancePremium; FormEntry."Box 5")
+                {
+                }
+                fieldelement(PointsPaid; FormEntry."Box 6")
+                {
+                }
                 textelement(Box7)
                 {
                     trigger OnBeforePassVariable()
@@ -61,8 +107,12 @@ xmlport 14135101 "lvnForm1098Export"
                             Box7 := 'FALSE';
                     end;
                 }
-                fieldelement(Box8; FormEntry."Box 8") { }
-                fieldelement(Box9; FormEntry."Box 9") { }
+                fieldelement(Box8; FormEntry."Box 8")
+                {
+                }
+                fieldelement(Box9; FormEntry."Box 9")
+                {
+                }
             }
         }
     }
@@ -83,11 +133,6 @@ xmlport 14135101 "lvnForm1098Export"
         }
     }
 
-    var
-        WrongSSNErr: Label 'Wrong SSN for Loan No. %1';
-        SSNMaskTxt: Label '***-**-%1';
-        EncryptSSN: Boolean;
-
     trigger OnPreXmlPort()
     var
         CompanyInformation: Record "Company Information";
@@ -101,4 +146,9 @@ xmlport 14135101 "lvnForm1098Export"
         LenderPhone := CompanyInformation."Phone No.";
         LenderFedID := CompanyInformation."Federal ID No.";
     end;
+
+    var
+        EncryptSSN: Boolean;
+        WrongSSNErr: Label 'Wrong SSN for Loan No. %1';
+        SSNMaskTxt: Label '***-**-%1';
 }

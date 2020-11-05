@@ -12,32 +12,110 @@ page 14135187 "lvnForm1099Vendors"
         {
             repeater(Group)
             {
-                field("Federal ID No."; Rec."Federal ID No.") { ApplicationArea = All; }
-                field("No."; Rec."No.") { ApplicationArea = All; }
-                field(Name; Rec.Name) { ApplicationArea = All; }
-                field("Legal Name"; Rec."Legal Name") { ApplicationArea = All; }
-                field("Legal Address"; Rec."Legal Address") { ApplicationArea = All; }
-                field("Legal Address City"; Rec."Legal Address City") { ApplicationArea = All; }
-                field("Legal Address State"; Rec."Legal Address State") { ApplicationArea = All; }
-                field("Legal Address ZIP Code"; Rec."Legal Address ZIP Code") { ApplicationArea = All; }
-                field("Total Payments Amount"; Rec."Total Payments Amount") { ApplicationArea = All; }
-                field("Not Assigned Amount"; Rec."Not Assigned Amount") { ApplicationArea = All; }
-                field("Default MISC"; Rec."Default MISC") { ApplicationArea = All; }
-                field("MISC-01"; Rec."MISC-01") { ApplicationArea = All; }
-                field("MISC-02"; Rec."MISC-02") { ApplicationArea = All; }
-                field("MISC-03"; Rec."MISC-03") { ApplicationArea = All; }
-                field("MISC-04"; Rec."MISC-04") { ApplicationArea = All; }
-                field("MISC-05"; Rec."MISC-05") { ApplicationArea = All; }
-                field("MISC-06"; Rec."MISC-06") { ApplicationArea = All; }
-                field("MISC-07"; Rec."MISC-07") { ApplicationArea = All; }
-                field("MISC-08"; Rec."MISC-08") { ApplicationArea = All; }
-                field("MISC-09"; Rec."MISC-09") { ApplicationArea = All; }
-                field("MISC-10"; Rec."MISC-10") { ApplicationArea = All; }
-                field("MISC-13"; Rec."MISC-13") { ApplicationArea = All; }
-                field("MISC-14"; Rec."MISC-14") { ApplicationArea = All; }
-                field("MISC-15-A"; Rec."MISC-15-A") { ApplicationArea = All; }
-                field("MISC-15-B"; Rec."MISC-15-B") { ApplicationArea = All; }
-                field("MISC-16"; Rec."MISC-16") { ApplicationArea = All; }
+                field("Federal ID No."; Rec."Federal ID No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                }
+                field("Legal Name"; Rec."Legal Name")
+                {
+                    ApplicationArea = All;
+                }
+                field("Legal Address"; Rec."Legal Address")
+                {
+                    ApplicationArea = All;
+                }
+                field("Legal Address City"; Rec."Legal Address City")
+                {
+                    ApplicationArea = All;
+                }
+                field("Legal Address State"; Rec."Legal Address State")
+                {
+                    ApplicationArea = All;
+                }
+                field("Legal Address ZIP Code"; Rec."Legal Address ZIP Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Total Payments Amount"; Rec."Total Payments Amount")
+                {
+                    ApplicationArea = All;
+                }
+                field("Not Assigned Amount"; Rec."Not Assigned Amount")
+                {
+                    ApplicationArea = All;
+                }
+                field("Default MISC"; Rec."Default MISC")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-01"; Rec."MISC-01")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-02"; Rec."MISC-02")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-03"; Rec."MISC-03")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-04"; Rec."MISC-04")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-05"; Rec."MISC-05")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-06"; Rec."MISC-06")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-07"; Rec."MISC-07")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-08"; Rec."MISC-08")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-09"; Rec."MISC-09")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-10"; Rec."MISC-10")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-13"; Rec."MISC-13")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-14"; Rec."MISC-14")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-15-A"; Rec."MISC-15-A")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-15-B"; Rec."MISC-15-B")
+                {
+                    ApplicationArea = All;
+                }
+                field("MISC-16"; Rec."MISC-16")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -85,7 +163,6 @@ page 14135187 "lvnForm1099Vendors"
                         until Vendor.Next() = 0;
                 end;
             }
-
             action(RetrieveGroupVendors)
             {
                 Caption = 'Retrieve Grouped Vendors';
@@ -128,7 +205,6 @@ page 14135187 "lvnForm1099Vendors"
                         until Vendor.Next() = 0;
                 end;
             }
-
             action(CalcPayments)
             {
                 Caption = 'Calculate Total Payments';
@@ -150,7 +226,6 @@ page 14135187 "lvnForm1099Vendors"
                     CurrPage.Update();
                 end;
             }
-
             action(IRSData)
             {
                 Caption = 'Magnetic Media Export';
@@ -173,7 +248,6 @@ page 14135187 "lvnForm1099Vendors"
                     MagMedia1099.Run();
                 end;
             }
-
             action(Printout)
             {
                 Caption = 'Form 1099 Printout';
@@ -196,7 +270,6 @@ page 14135187 "lvnForm1099Vendors"
                     Printout.Run();
                 end;
             }
-
             action(Export)
             {
                 Caption = 'Export Form 1099';
@@ -219,16 +292,16 @@ page 14135187 "lvnForm1099Vendors"
         }
     }
 
-    var
-        ConfirmMsg: Label 'This process will erase current calculations, Do you wish to continue?';
-        NoVendorsErr: Label 'Vendors List is empty';
-        CalcErr: Label 'Payments not calculated';
-        FedID: Dictionary of [Text[30], Text];
-        Year: Integer;
-
     trigger OnOpenPage()
     begin
         Rec.Reset();
         Rec.DeleteAll();
     end;
+
+    var
+        FedID: Dictionary of [Text[30], Text];
+        Year: Integer;
+        ConfirmMsg: Label 'This process will erase current calculations, Do you wish to continue?';
+        NoVendorsErr: Label 'Vendors List is empty';
+        CalcErr: Label 'Payments not calculated';
 }

@@ -18,7 +18,7 @@ report 14135117 "lvnGeneralLedgerRecGen"
                 trigger OnPreDataItem()
                 begin
                     TempGenRec.Reset();
-                    SetRange(Number, 1, TempGenRec.COUNT);
+                    SetRange(Number, 1, TempGenRec.Count);
                 end;
 
                 trigger OnAfterGetRecord()
@@ -97,7 +97,6 @@ report 14135117 "lvnGeneralLedgerRecGen"
                     end;
                 end;
             }
-
             trigger OnPreDataItem()
             var
                 VendorLedgerEntry: Record "Vendor Ledger Entry";
@@ -257,7 +256,6 @@ report 14135117 "lvnGeneralLedgerRecGen"
                 CurrReport.Break();
             end;
         }
-
         dataitem(LoanFilters; lvnLoan)
         {
             DataItemTableView = sorting("No.");
@@ -290,21 +288,6 @@ report 14135117 "lvnGeneralLedgerRecGen"
         end;
     }
 
-    var
-        DateFilterErr: Label 'Please provide a date filter';
-        GLSetup: Record "General Ledger Setup";
-        GLEntry: Record "G/L Entry";
-        DefaultDimension: Record "Default Dimension";
-        TempGenRec: Record lvnGenLedgerReconcile temporary;
-        QuerySum: Query lvnGLEntriesByLoanSums;
-        lvnLoanManagement: Codeunit lvnLoanManagement;
-        DateFilter: Text;
-        GLFilter: Text;
-        LoanNoFilter: Text;
-        DisableMultiPaySearch: Boolean;
-        HideZeroBalance: Boolean;
-        LastTransaction: Date;
-
     trigger OnPreReport()
     begin
         GLSetup.Get();
@@ -314,6 +297,21 @@ report 14135117 "lvnGeneralLedgerRecGen"
         GLFilter := "G/L Account".GetFilter("No.");
         LoanNoFilter := LoanFilters.GetFilter("No.");
     end;
+
+    var
+        GLSetup: Record "General Ledger Setup";
+        GLEntry: Record "G/L Entry";
+        DefaultDimension: Record "Default Dimension";
+        TempGenRec: Record lvnGenLedgerReconcile temporary;
+        lvnLoanManagement: Codeunit lvnLoanManagement;
+        QuerySum: Query lvnGLEntriesByLoanSums;
+        DateFilter: Text;
+        GLFilter: Text;
+        LoanNoFilter: Text;
+        DisableMultiPaySearch: Boolean;
+        HideZeroBalance: Boolean;
+        LastTransaction: Date;
+        DateFilterErr: Label 'Please provide a date filter';
 
     procedure GetDateFilter(): Text
     begin
@@ -328,7 +326,7 @@ report 14135117 "lvnGeneralLedgerRecGen"
     procedure GetData(var CopyDataTo: Record lvnGenLedgerReconcile)
     begin
         TempGenRec.Reset();
-        if TempGenRec.Findset() then
+        if TempGenRec.FindSet() then
             repeat
                 Clear(CopyDataTo);
                 CopyDataTo := TempGenRec;

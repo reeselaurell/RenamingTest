@@ -1,6 +1,8 @@
 codeunit 14135251 "lvnSalesInvoiceImportMgmt"
 {
     var
+        SalesInvImportLine2: Record lvnSalesInvLineBuffer;
+        SalesInvImportLine3: Record lvnSalesInvLineBuffer;
         InvCreatedMsg: Label 'Invoice(s) Created';
 
     procedure ValidateDocuments(): Boolean
@@ -11,13 +13,16 @@ codeunit 14135251 "lvnSalesInvoiceImportMgmt"
         exit(not InvoiceErrorDetail.FindSet());
     end;
 
-    procedure CreateInvoices(var SalesHeaderBuffer: Record lvnSalesInvHdrBuffer; var SalesLineBuffer: Record lvnSalesInvLineBuffer; Post: Boolean)
+    procedure CreateInvoices(
+        var SalesHeaderBuffer: Record lvnSalesInvHdrBuffer;
+        var SalesLineBuffer: Record lvnSalesInvLineBuffer;
+        Post: Boolean)
     var
-        EmptyJnlErr: Label 'Sales Invoice Import Journal is empty';
         SalesHeader: Record "Sales Header";
         TempSalesHeader: Record "Sales Header" temporary;
         SalesLine: Record "Sales Line";
         DocNo: Code[20];
+        EmptyJnlErr: Label 'Sales Invoice Import Journal is empty';
     begin
         SalesHeaderBuffer.Reset();
         if SalesHeaderBuffer.FindSet() then begin
@@ -83,15 +88,17 @@ codeunit 14135251 "lvnSalesInvoiceImportMgmt"
             Error(EmptyJnlErr);
     end;
 
-    procedure ValidateHeaderEntries(var SalesInvJnlError: Record lvnInvoiceErrorDetail; var SalesInvHdrBuffer: Record lvnSalesInvHdrBuffer)
+    procedure ValidateHeaderEntries(
+        var SalesInvJnlError: Record lvnInvoiceErrorDetail;
+        var SalesInvHdrBuffer: Record lvnSalesInvHdrBuffer)
     var
+        Vendor: Record Vendor;
+        PaymentMethod: Record "Payment Method";
+        UserSetupMgmt: Codeunit "User Setup Management";
         PostingDateIsBlankErr: Label 'Posting Date is Blank';
         PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
         VendorNotFoundErr: Label 'Vendor with No.: %1 was not found in Vendor List';
         PaymentMethodNotFoundErr: Label 'Payment Method Code: %1 was not found in Payment Method Table';
-        Vendor: Record Vendor;
-        PaymentMethod: Record "Payment Method";
-        UserSetupMgmt: Codeunit "User Setup Management";
     begin
         SalesInvHdrBuffer.Reset();
         if SalesInvHdrBuffer.FindSet() then
@@ -109,13 +116,15 @@ codeunit 14135251 "lvnSalesInvoiceImportMgmt"
             until SalesInvHdrBuffer.Next() = 0;
     end;
 
-    procedure ValidateLineEntries(var SalesInvJnlError: Record lvnInvoiceErrorDetail; var SalesInvLineBuffer: Record lvnSalesInvLineBuffer)
+    procedure ValidateLineEntries(
+        var SalesInvJnlError: Record lvnInvoiceErrorDetail;
+        var SalesInvLineBuffer: Record lvnSalesInvLineBuffer)
     var
+        Loan: Record lvnLoan;
+        DimensionValue: Record "Dimension Value";
         AccountNoBlankOrMissingErr: Label 'Line %1: G/L Account is missing or blank';
         LoanNoMissingErr: Label 'Line %1: Loan No. is Missing';
         InvalidDimensionErr: Label 'Line %1: Dimension Value %2 does not exist for Dimension %3';
-        Loan: Record lvnLoan;
-        DimensionValue: Record "Dimension Value";
     begin
         SalesInvLineBuffer.Reset();
         if SalesInvLineBuffer.FindSet() then
@@ -193,28 +202,9 @@ codeunit 14135251 "lvnSalesInvoiceImportMgmt"
         SalesInvLineBuffer.Reset();
     end;
 
-    local procedure AddErrorLine(var SalesInvJnlError: Record lvnInvoiceErrorDetail; DocumentNo: Code[20]; isHeader: Boolean; LineNo: Integer; ErrorTxt: Text)
-    var
-        ErrorNo: Integer;
-    begin
-        SalesInvJnlError.Reset();
-        SalesInvJnlError.SetRange("Document No.", DocumentNo);
-        SalesInvJnlError.SetRange("Header Error", isHeader);
-        SalesInvJnlError.SetRange("Line No.", LineNo);
-        ErrorNo := SalesInvJnlError.Count + 1;
-        SalesInvJnlError.SetRange("Error Text", ErrorTxt);
-        if not SalesInvJnlError.IsEmpty() then
-            exit;
-        Clear(SalesInvJnlError);
-        SalesInvJnlError."Document No." := DocumentNo;
-        SalesInvJnlError."Header Error" := isHeader;
-        SalesInvJnlError."Line No." := LineNo;
-        SalesInvJnlError."Error No." := ErrorNo;
-        SalesInvJnlError."Error Text" := ErrorTxt;
-        if SalesInvJnlError.Insert() then;
-    end;
-
-    procedure GroupLines(var pSalesInvImportHdr: Record lvnSalesInvHdrBuffer; var pSalesInvImportLine: Record lvnSalesInvLineBuffer)
+    procedure GroupLines(
+        var pSalesInvImportHdr: Record lvnSalesInvHdrBuffer;
+        var pSalesInvImportLine: Record lvnSalesInvLineBuffer)
     var
         TotalAmount: Decimal;
         LineDescription: Text[250];
@@ -290,7 +280,29 @@ codeunit 14135251 "lvnSalesInvoiceImportMgmt"
         pSalesInvImportLine.Reset();
     end;
 
+    local procedure AddErrorLine(
+        var SalesInvJnlError: Record lvnInvoiceErrorDetail;
+        DocumentNo: Code[20];
+        isHeader: Boolean;
+        LineNo: Integer;
+        ErrorTxt: Text)
     var
-        SalesInvImportLine2: Record lvnSalesInvLineBuffer;
-        SalesInvImportLine3: Record lvnSalesInvLineBuffer;
+        ErrorNo: Integer;
+    begin
+        SalesInvJnlError.Reset();
+        SalesInvJnlError.SetRange("Document No.", DocumentNo);
+        SalesInvJnlError.SetRange("Header Error", isHeader);
+        SalesInvJnlError.SetRange("Line No.", LineNo);
+        ErrorNo := SalesInvJnlError.Count + 1;
+        SalesInvJnlError.SetRange("Error Text", ErrorTxt);
+        if not SalesInvJnlError.IsEmpty() then
+            exit;
+        Clear(SalesInvJnlError);
+        SalesInvJnlError."Document No." := DocumentNo;
+        SalesInvJnlError."Header Error" := isHeader;
+        SalesInvJnlError."Line No." := LineNo;
+        SalesInvJnlError."Error No." := ErrorNo;
+        SalesInvJnlError."Error Text" := ErrorTxt;
+        if SalesInvJnlError.Insert() then;
+    end;
 }

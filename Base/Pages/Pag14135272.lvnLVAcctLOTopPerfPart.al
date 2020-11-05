@@ -27,7 +27,11 @@ page 14135272 "lvnLVAcctLOTopPerfPart"
             {
                 IndentationColumn = 0;
 
-                field(Name; Rec.Name) { Caption = 'Name'; ApplicationArea = All; }
+                field(Name; Rec.Name)
+                {
+                    Caption = 'Name';
+                    ApplicationArea = All;
+                }
                 field("Net Change"; Rec."Net Change")
                 {
                     Caption = 'Net Change';
@@ -68,7 +72,6 @@ page 14135272 "lvnLVAcctLOTopPerfPart"
                     CurrPage.Update();
                 end;
             }
-
             action(ShowTopFiveAction)
             {
                 Caption = 'Show Top Five';
@@ -83,10 +86,6 @@ page 14135272 "lvnLVAcctLOTopPerfPart"
         }
     }
 
-    var
-        LoanVisionSetup: Record lvnLoanVisionSetup;
-        DateRange: Text;
-
     trigger OnOpenPage()
     var
         Headline: Record lvnLVAcctRCHeadline;
@@ -95,6 +94,10 @@ page 14135272 "lvnLVAcctLOTopPerfPart"
         LoanVisionSetup.Get();
         ShowTopFive();
     end;
+
+    var
+        LoanVisionSetup: Record lvnLoanVisionSetup;
+        DateRange: Text;
 
     local procedure ShowTopFive()
     var

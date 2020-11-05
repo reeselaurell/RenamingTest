@@ -12,8 +12,14 @@ page 14135221 "lvnReportGeneratorBatchCard"
         {
             group(General)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
             }
             part(Details; lvnRptGeneratorSequencePart)
             {

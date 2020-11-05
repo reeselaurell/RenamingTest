@@ -2,7 +2,10 @@ tableextension 14135140 "lvnPaymentBuffer" extends "Payment Buffer" //MyTargetTa
 {
     fields
     {
-        field(14135100; lvnPostingGroupCode; Code[20]) { Caption = 'Posting Group'; DataClassification = CustomerContent; }
+        field(14135100; lvnPostingGroupCode; Code[20])
+        {
+            Caption = 'Posting Group';
+            DataClassification = CustomerContent;
+        }
     }
-
 }

@@ -68,11 +68,13 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         end;
     end;
 
-    local procedure AssignDimensions(LoanJournalBatch: Record lvnLoanJournalBatch; var LoanJournalLine: Record lvnLoanJournalLine)
+    local procedure AssignDimensions(
+        LoanJournalBatch: Record lvnLoanJournalBatch;
+        var LoanJournalLine: Record lvnLoanJournalLine)
     var
         Loan: Record lvnLoan;
-        DimensionCode: Code[20];
         DimensionHierarchy: Record lvnDimensionHierarchy;
+        DimensionCode: Code[20];
         HierarchyBasedOnDate: Date;
     begin
         case LoanJournalBatch."Dimension Import Rule" of
@@ -161,12 +163,16 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         end;
     end;
 
-    local procedure AssignCustomValue(PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine; var LoanJournalLine: Record lvnLoanJournalLine)
+    local procedure AssignCustomValue(
+        PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
+        var LoanJournalLine: Record lvnLoanJournalLine)
     begin
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, PostProcessingSchemaLine."Custom Value");
     end;
 
-    local procedure MapImportedDimension(PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine; var LoanJournalLine: Record lvnLoanJournalLine)
+    local procedure MapImportedDimension(
+        PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
+        var LoanJournalLine: Record lvnLoanJournalLine)
     var
         ImportDimensionMapping: Record lvnImportDimensionMapping;
         LoanJournalValue: Record lvnLoanJournalValue;
@@ -254,15 +260,17 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         end;
     end;
 
-    local procedure CalculateSwitch(PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine; var LoanJournalLine: Record lvnLoanJournalLine)
+    local procedure CalculateSwitch(
+        PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
+        var LoanJournalLine: Record lvnLoanJournalLine)
     var
-        SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
         ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         ExpressionHeader: Record lvnExpressionHeader;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionEngine: Codeunit lvnExpressionEngine;
         Value: Text;
         FieldSequenceNo: Integer;
+        SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
     begin
         PostProcessingSchemaLine.TestField("Expression Code");
         ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
@@ -272,7 +280,9 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CalculateFormula(PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine; var LoanJournalLine: Record lvnLoanJournalLine)
+    local procedure CalculateFormula(
+        PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
+        var LoanJournalLine: Record lvnLoanJournalLine)
     var
         ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         ExpressionHeader: Record lvnExpressionHeader;
@@ -288,7 +298,9 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CopyLoanCardValue(PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine; var LoanJournalLine: Record lvnLoanJournalLine)
+    local procedure CopyLoanCardValue(
+        PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
+        var LoanJournalLine: Record lvnLoanJournalLine)
     var
         Loan: Record lvnLoan;
         RecordReference: RecordRef;
@@ -305,7 +317,9 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CopyLoanJournalValue(PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine; var LoanJournalLine: Record lvnLoanJournalLine)
+    local procedure CopyLoanJournalValue(
+        PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
+        var LoanJournalLine: Record lvnLoanJournalLine)
     var
         RecordReference: RecordRef;
         FieldReference: FieldRef;
@@ -320,9 +334,11 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CopyLoanJournalVariableValue(PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine; var LoanJournalLine: Record lvnLoanJournalLine)
+    local procedure CopyLoanJournalVariableValue(
+        PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
+        var LoanJournalLine: Record lvnLoanJournalLine)
     var
-        LoanJournalValueFrom: record lvnLoanJournalValue;
+        LoanJournalValueFrom: Record lvnLoanJournalValue;
         Value: Text;
     begin
         LoanJournalValueFrom.Get(LoanJournalLine."Loan Journal Batch Code", LoanJournalLine."Line No.", PostProcessingSchemaLine."From Field No.");
@@ -332,9 +348,11 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure CopyLoanVariableValue(PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine; var LoanJournalLine: Record lvnLoanJournalLine)
+    local procedure CopyLoanVariableValue(
+        PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
+        var LoanJournalLine: Record lvnLoanJournalLine)
     var
-        LoanValueFrom: record lvnLoanValue;
+        LoanValueFrom: Record lvnLoanValue;
         Value: Text;
     begin
         LoanValueFrom.Get(LoanJournalLine."Loan No.", PostProcessingSchemaLine."From Field No.");
@@ -344,11 +362,14 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
-    local procedure AssignFieldValue(var LoanJournalLine: Record lvnLoanJournalLine; PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine; Value: Text)
+    local procedure AssignFieldValue(
+        var LoanJournalLine: Record lvnLoanJournalLine;
+        PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
+        Value: Text)
     var
+        LoanJournalValue: Record lvnLoanJournalValue;
         RecordRefTo: RecordRef;
         FieldRefTo: FieldRef;
-        LoanJournalValue: Record lvnLoanJournalValue;
         DecimalValue: Decimal;
     begin
         case PostProcessingSchemaLine."Assign To" of
@@ -428,6 +449,6 @@ codeunit 14135102 "lvnPostProcessingMgmt"
             exit;
         if StrLen(InputValue) <= FromCharacterNo then
             exit;
-        exit(copystr(InputValue, FromCharacterNo, CharactersCount));
+        exit(CopyStr(InputValue, FromCharacterNo, CharactersCount));
     end;
 }

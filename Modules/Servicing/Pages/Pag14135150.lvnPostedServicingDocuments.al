@@ -14,13 +14,34 @@ page 14135150 "lvnPostedServicingDocuments"
         {
             repeater(Group)
             {
-                field("Servicing Document Type"; Rec."Servicing Document Type") { ApplicationArea = All; }
-                field("No."; Rec."No.") { ApplicationArea = All; }
-                field("Borrower Customer No."; Rec."Borrower Customer No.") { ApplicationArea = All; }
-                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; }
-                field("Posting Date"; Rec."Posting Date") { ApplicationArea = All; }
-                field("Due Date"; Rec."Due Date") { ApplicationArea = All; }
-                field("Reason Code"; Rec."Reason Code") { ApplicationArea = All; }
+                field("Servicing Document Type"; Rec."Servicing Document Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Borrower Customer No."; Rec."Borrower Customer No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Loan No."; Rec."Loan No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Due Date"; Rec."Due Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Reason Code"; Rec."Reason Code")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -43,7 +64,6 @@ page 14135150 "lvnPostedServicingDocuments"
                         Page.Run(Page::lvnPostedServicingCrMemo, Rec);
                 end;
             }
-
             action(Post)
             {
                 Caption = 'Post';

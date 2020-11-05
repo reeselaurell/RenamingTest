@@ -13,11 +13,18 @@ report 14135157 "lvnVendCheckApplicationReport"
             DataItemTableView = sorting("Bank Account No.", "Check Date") where("Entry Status" = filter(<> Voided & <> "Financially Voided"), "Document Type" = const(Payment));
             RequestFilterFields = "Bank Account No.", "Posting Date", "Check Date", "Check No.";
 
-            column(Filters; GetFilters()) { }
-            column(CheckNo; "Check No.") { }
-            column(CheckDate; "Check Date") { }
-            column(CheckAmount; Amount) { }
-
+            column(Filters; GetFilters())
+            {
+            }
+            column(CheckNo; "Check No.")
+            {
+            }
+            column(CheckDate; "Check Date")
+            {
+            }
+            column(CheckAmount; Amount)
+            {
+            }
             dataitem("Bank Account Ledger Entry"; "Bank Account Ledger Entry")
             {
                 DataItemTableView = sorting("Entry No.");
@@ -32,29 +39,61 @@ report 14135157 "lvnVendCheckApplicationReport"
                     {
                         DataItemTableView = sorting(Number);
 
-                        column(LoanNo; TempVendLedgerEntry.lvnLoanNo) { }
-                        column(BorrowerName; BorrowerName) { }
-                        column(DocumentNo; TempVendLedgerEntry."Document No.") { }
-                        column(ExternalDocNo; TempVendLedgerEntry."External Document No.") { }
-                        column(PostingDate; TempVendLedgerEntry."Posting Date") { }
-                        column(Amount; -TempVendLedgerEntry.Amount) { }
-                        column(PaidAmount; TempVendLedgerEntry."Closed by Amount") { }
-                        column(VendorName; VendorName) { }
-                        column(HideCheckSummaryGroup; HideCheckSummaryGroup) { }
-
+                        column(LoanNo; TempVendLedgerEntry.lvnLoanNo)
+                        {
+                        }
+                        column(BorrowerName; BorrowerName)
+                        {
+                        }
+                        column(DocumentNo; TempVendLedgerEntry."Document No.")
+                        {
+                        }
+                        column(ExternalDocNo; TempVendLedgerEntry."External Document No.")
+                        {
+                        }
+                        column(PostingDate; TempVendLedgerEntry."Posting Date")
+                        {
+                        }
+                        column(Amount; -TempVendLedgerEntry.Amount)
+                        {
+                        }
+                        column(PaidAmount; TempVendLedgerEntry."Closed by Amount")
+                        {
+                        }
+                        column(VendorName; VendorName)
+                        {
+                        }
+                        column(HideCheckSummaryGroup; HideCheckSummaryGroup)
+                        {
+                        }
                         dataitem(LoanDetails; Integer)
                         {
                             DataItemTableView = sorting(Number);
 
-                            column(LineLoanNo; TempPurchInvLine.lvnLoanNo) { }
-                            column(Dimension1Code; TempPurchInvLine."Shortcut Dimension 1 Code") { }
-                            column(Dimension2Code; TempPurchInvLine."Shortcut Dimension 2 Code") { }
-                            column(LineAmount; TempPurchInvLine.Amount) { }
-                            column(LineBorrowerName; LineBorrowerName) { }
-                            column(GLAccountNo; TempPurchInvLine."No.") { }
-                            column(Description; TempPurchInvLine.Description) { }
-                            column(HideDocumentDetails; HideDocumentDetails) { }
-
+                            column(LineLoanNo; TempPurchInvLine.lvnLoanNo)
+                            {
+                            }
+                            column(Dimension1Code; TempPurchInvLine."Shortcut Dimension 1 Code")
+                            {
+                            }
+                            column(Dimension2Code; TempPurchInvLine."Shortcut Dimension 2 Code")
+                            {
+                            }
+                            column(LineAmount; TempPurchInvLine.Amount)
+                            {
+                            }
+                            column(LineBorrowerName; LineBorrowerName)
+                            {
+                            }
+                            column(GLAccountNo; TempPurchInvLine."No.")
+                            {
+                            }
+                            column(Description; TempPurchInvLine.Description)
+                            {
+                            }
+                            column(HideDocumentDetails; HideDocumentDetails)
+                            {
+                            }
                             trigger OnPreDataItem()
                             begin
                                 SetRange(Number, 1, TempPurchInvLine.Count());
@@ -75,7 +114,6 @@ report 14135157 "lvnVendCheckApplicationReport"
                                     TempVendLedgerEntry."Closed by Amount" := 0;
                             end;
                         }
-
                         trigger OnPreDataItem()
                         begin
                             TempVendLedgerEntry.Reset();
@@ -140,7 +178,6 @@ report 14135157 "lvnVendCheckApplicationReport"
                                     BorrowerName := lvnLoanManagement.GetBorrowerName(Loan);
                         end;
                     }
-
                     trigger OnAfterGetRecord()
                     var
                         WorkVendorLedgerEntry: Record "Vendor Ledger Entry";

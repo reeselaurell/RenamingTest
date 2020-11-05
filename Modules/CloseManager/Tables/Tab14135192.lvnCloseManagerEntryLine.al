@@ -7,16 +7,66 @@ table 14135192 "lvnCloseManagerEntryLine"
 
     fields
     {
-        field(1; "Template No."; Code[20]) { Caption = 'Template No.'; DataClassification = CustomerContent; }
-        field(2; "Line No."; Integer) { Caption = 'Line No.'; DataClassification = CustomerContent; }
-        field(10; "Task Category"; Code[10]) { Caption = 'Task Category'; DataClassification = CustomerContent; TableRelation = lvnCloseManagerCategory; }
-        field(11; "Task Name"; Text[50]) { Caption = 'Task Name'; DataClassification = CustomerContent; Editable = false; }
-        field(12; "Due Date Calculation"; DateFormula) { Caption = 'Due Date Calculation'; DataClassification = CustomerContent; Editable = false; }
-        field(13; "Account Number"; Code[20]) { Caption = 'Account Number'; DataClassification = CustomerContent; Editable = false; }
-        field(14; "Assigned To"; Code[50]) { Caption = 'Assigned To'; DataClassification = CustomerContent; TableRelation = "User Setup"."User ID"; ValidateTableRelation = false; }
-        field(15; "Assigned Approver"; Code[50]) { Caption = 'Assigned Approver'; DataClassification = CustomerContent; TableRelation = "User Setup"."User ID"; ValidateTableRelation = false; }
-        field(16; Instructions; Text[250]) { Caption = 'Instructions'; DataClassification = CustomerContent; }
-        field(17; "G/L Total"; Decimal) { Caption = 'G/L Total'; FieldClass = FlowField; CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Account Number"), "Posting Date" = field(filter("Date Filter")))); Editable = false; }
+        field(1; "Template No."; Code[20])
+        {
+            Caption = 'Template No.';
+            DataClassification = CustomerContent;
+        }
+        field(2; "Line No."; Integer)
+        {
+            Caption = 'Line No.';
+            DataClassification = CustomerContent;
+        }
+        field(10; "Task Category"; Code[10])
+        {
+            Caption = 'Task Category';
+            DataClassification = CustomerContent;
+            TableRelation = lvnCloseManagerCategory;
+        }
+        field(11; "Task Name"; Text[50])
+        {
+            Caption = 'Task Name';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(12; "Due Date Calculation"; DateFormula)
+        {
+            Caption = 'Due Date Calculation';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(13; "Account Number"; Code[20])
+        {
+            Caption = 'Account Number';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(14; "Assigned To"; Code[50])
+        {
+            Caption = 'Assigned To';
+            DataClassification = CustomerContent;
+            TableRelation = "User Setup"."User ID";
+            ValidateTableRelation = false;
+        }
+        field(15; "Assigned Approver"; Code[50])
+        {
+            Caption = 'Assigned Approver';
+            DataClassification = CustomerContent;
+            TableRelation = "User Setup"."User ID";
+            ValidateTableRelation = false;
+        }
+        field(16; Instructions; Text[250])
+        {
+            Caption = 'Instructions';
+            DataClassification = CustomerContent;
+        }
+        field(17; "G/L Total"; Decimal)
+        {
+            Caption = 'G/L Total';
+            FieldClass = FlowField;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Account Number"), "Posting Date" = field(filter("Date Filter"))));
+            Editable = false;
+        }
         field(18; "Reconciled Total"; Decimal)
         {
             Caption = 'Reconciled Total';
@@ -50,9 +100,24 @@ table 14135192 "lvnCloseManagerEntryLine"
                 end;
             end;
         }
-        field(20; "Reconciled By"; Code[50]) { Caption = 'Reconciled By'; DataClassification = CustomerContent; Editable = false; }
-        field(21; "Reconciled Date"; DateTime) { Caption = 'Reconciled Date'; DataClassification = CustomerContent; Editable = false; }
-        field(22; "Awaiting Approval"; Boolean) { Caption = 'Awaiting Approval'; DataClassification = CustomerContent; Editable = false; }
+        field(20; "Reconciled By"; Code[50])
+        {
+            Caption = 'Reconciled By';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(21; "Reconciled Date"; DateTime)
+        {
+            Caption = 'Reconciled Date';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(22; "Awaiting Approval"; Boolean)
+        {
+            Caption = 'Awaiting Approval';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
         field(23; Approved; Boolean)
         {
             Caption = 'Approved';
@@ -73,22 +138,45 @@ table 14135192 "lvnCloseManagerEntryLine"
                 end;
             end;
         }
-        field(24; "Approved By"; Code[50]) { Caption = 'Approved By'; DataClassification = CustomerContent; Editable = false; }
-        field(25; "Approved Date"; DateTime) { Caption = 'Approved Date'; DataClassification = CustomerContent; Editable = false; }
-        field(26; Note; Text[250]) { Caption = 'Note'; DataClassification = CustomerContent; }
-        field(100; "Date Filter"; Date) { Caption = 'Date Filter'; FieldClass = FlowFilter; }
-        field(101; "Period Date"; Date) { Caption = 'Period Date'; FieldClass = FlowField; CalcFormula = lookup(lvnCloseManagerEntryHeader."Period Date" where("Template No." = field("Template No."))); }
-        field(14135999; "Document Guid"; Guid) { Caption = 'Document Guid'; DataClassification = CustomerContent; }
+        field(24; "Approved By"; Code[50])
+        {
+            Caption = 'Approved By';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(25; "Approved Date"; DateTime)
+        {
+            Caption = 'Approved Date';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(26; Note; Text[250])
+        {
+            Caption = 'Note';
+            DataClassification = CustomerContent;
+        }
+        field(100; "Date Filter"; Date)
+        {
+            Caption = 'Date Filter';
+            FieldClass = FlowFilter;
+        }
+        field(101; "Period Date"; Date)
+        {
+            Caption = 'Period Date';
+            FieldClass = FlowField;
+            CalcFormula = lookup(lvnCloseManagerEntryHeader."Period Date" where("Template No." = field("Template No.")));
+        }
+        field(14135999; "Document Guid"; Guid)
+        {
+            Caption = 'Document Guid';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
     {
         key(PK; "Template No.", "Line No.") { Clustered = true; }
     }
-
-    var
-        ReconciliationTotalsNotMatchQst: Label 'The %1 and %2 does not match. Are you sure you want to reconcile this entry?';
-        ReconciliationTotalsMustMatchErr: Label 'Reconciliation totals must match';
 
     trigger OnInsert()
     var
@@ -97,4 +185,8 @@ table 14135192 "lvnCloseManagerEntryLine"
         if "Document Guid" = EmptyGuid then
             "Document Guid" := CreateGuid();
     end;
+
+    var
+        ReconciliationTotalsNotMatchQst: Label 'The %1 and %2 does not match. Are you sure you want to reconcile this entry?';
+        ReconciliationTotalsMustMatchErr: Label 'Reconciliation totals must match';
 }

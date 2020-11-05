@@ -14,23 +14,86 @@ page 14135164 "lvnLoanLevelReporting"
         {
             repeater(Group)
             {
-                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; }
-                field("Alternative Loan No."; Rec."Alternative Loan No.") { ApplicationArea = All; }
-                field("Search Name"; Rec."Search Name") { ApplicationArea = All; Width = 50; }
-                field("Loan Amount"; Rec."Loan Amount") { ApplicationArea = All; }
-                field("Application Date"; Rec."Application Date") { Visible = false; ApplicationArea = All; }
-                field("Date Closed"; Rec."Date Closed") { Visible = false; ApplicationArea = All; }
-                field("Date Funded"; Rec."Date Funded") { ApplicationArea = All; }
-                field("Date Sold"; Rec."Date Sold") { ApplicationArea = All; }
-                field("Business Unit Code"; Rec."Business Unit Code") { Visible = false; ApplicationArea = All; }
-                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code") { ApplicationArea = All; Visible = DimensionVisible1; }
-                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code") { ApplicationArea = All; Visible = DimensionVisible2; }
-                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code") { ApplicationArea = All; Visible = DimensionVisible3; }
-                field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code") { ApplicationArea = All; Visible = DimensionVisible4; }
-                field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code") { ApplicationArea = All; Visible = DimensionVisible5; }
-                field("Shortcut Dimension 6 Code"; Rec."Shortcut Dimension 6 Code") { ApplicationArea = All; Visible = DimensionVisible6; }
-                field("Shortcut Dimension 7 Code"; Rec."Shortcut Dimension 7 Code") { ApplicationArea = All; Visible = DimensionVisible7; }
-                field("Shortcut Dimension 8 Code"; Rec."Shortcut Dimension 8 Code") { ApplicationArea = All; Visible = DimensionVisible8; }
+                field("Loan No."; Rec."Loan No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Alternative Loan No."; Rec."Alternative Loan No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Search Name"; Rec."Search Name")
+                {
+                    ApplicationArea = All;
+                    Width = 50;
+                }
+                field("Loan Amount"; Rec."Loan Amount")
+                {
+                    ApplicationArea = All;
+                }
+                field("Application Date"; Rec."Application Date")
+                {
+                    Visible = false;
+                    ApplicationArea = All;
+                }
+                field("Date Closed"; Rec."Date Closed")
+                {
+                    Visible = false;
+                    ApplicationArea = All;
+                }
+                field("Date Funded"; Rec."Date Funded")
+                {
+                    ApplicationArea = All;
+                }
+                field("Date Sold"; Rec."Date Sold")
+                {
+                    ApplicationArea = All;
+                }
+                field("Business Unit Code"; Rec."Business Unit Code")
+                {
+                    Visible = false;
+                    ApplicationArea = All;
+                }
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible1;
+                }
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible2;
+                }
+                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible3;
+                }
+                field("Shortcut Dimension 4 Code"; Rec."Shortcut Dimension 4 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible4;
+                }
+                field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible5;
+                }
+                field("Shortcut Dimension 6 Code"; Rec."Shortcut Dimension 6 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible6;
+                }
+                field("Shortcut Dimension 7 Code"; Rec."Shortcut Dimension 7 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible7;
+                }
+                field("Shortcut Dimension 8 Code"; Rec."Shortcut Dimension 8 Code")
+                {
+                    ApplicationArea = All;
+                    Visible = DimensionVisible8;
+                }
             }
         }
     }
@@ -49,7 +112,7 @@ page 14135164 "lvnLoanLevelReporting"
 
                 trigger OnAction()
                 var
-                    ImportLoanNumbers: XmlPort lvnImportLoanNumbers;
+                    ImportLoanNumbers: XMLport lvnImportLoanNumbers;
                 begin
                     Clear(ImportLoanNumbers);
                     ImportLoanNumbers.Run();
@@ -90,7 +153,6 @@ page 14135164 "lvnLoanLevelReporting"
                     GetLoansWithActivity.RetrieveData(Rec);
                 end;
             }
-
             action(ClearLoans)
             {
                 Caption = 'Clear List';
@@ -108,6 +170,12 @@ page 14135164 "lvnLoanLevelReporting"
         }
     }
 
+    trigger OnOpenPage()
+    begin
+        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6,
+        DimensionVisible7, DimensionVisible8);
+    end;
+
     var
         DimensionManagement: Codeunit DimensionManagement;
         DimensionVisible1: Boolean;
@@ -118,10 +186,4 @@ page 14135164 "lvnLoanLevelReporting"
         DimensionVisible6: Boolean;
         DimensionVisible7: Boolean;
         DimensionVisible8: Boolean;
-
-    trigger OnOpenPage()
-    begin
-        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6,
-        DimensionVisible7, DimensionVisible8);
-    end;
 }

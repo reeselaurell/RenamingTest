@@ -12,10 +12,22 @@ page 14135247 "lvnDocumentExchangeLog"
         {
             repeater(Group)
             {
-                field("Creation Date/Time"; Rec."Creation Date/Time") { ApplicationArea = All; }
-                field(Success; Rec.Success) { ApplicationArea = All; }
-                field("File Name"; Rec."File Name") { ApplicationArea = All; }
-                field(Message; Rec.Message) { ApplicationArea = All; }
+                field("Creation Date/Time"; Rec."Creation Date/Time")
+                {
+                    ApplicationArea = All;
+                }
+                field(Success; Rec.Success)
+                {
+                    ApplicationArea = All;
+                }
+                field("File Name"; Rec."File Name")
+                {
+                    ApplicationArea = All;
+                }
+                field(Message; Rec.Message)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

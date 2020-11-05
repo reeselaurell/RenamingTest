@@ -8,28 +8,121 @@ table 14135102 "lvnLoan"
 
     fields
     {
-        field(1; "No."; Code[20]) { Caption = 'Loan No.'; DataClassification = CustomerContent; NotBlank = true; }
-        field(10; "Search Name"; Code[100]) { Caption = 'Search Name'; DataClassification = CustomerContent; }
-        field(11; "Borrower First Name"; Text[30]) { Caption = 'Borrower First Name'; DataClassification = CustomerContent; }
-        field(12; "Borrower Last Name"; Text[30]) { Caption = 'Borrower Last Name'; DataClassification = CustomerContent; }
-        field(13; "Borrower Middle Name"; Text[30]) { Caption = 'Borrower Middle Name'; DataClassification = CustomerContent; }
-        field(14; "Title Customer No."; Code[20]) { Caption = 'Title Customer No.'; DataClassification = CustomerContent; TableRelation = Customer."No."; }
-        field(15; "Investor Customer No."; Code[20]) { Caption = 'Investor Customer No.'; DataClassification = CustomerContent; TableRelation = Customer."No."; }
-        field(16; "Borrower Customer No."; Code[20]) { Caption = 'Borrower Customer No.'; DataClassification = CustomerContent; TableRelation = Customer."No."; }
-        field(17; "Alternative Loan No."; Code[50]) { Caption = 'Alternative Loan No.'; DataClassification = CustomerContent; }
-        field(20; "Application Date"; Date) { Caption = 'Application Date'; DataClassification = CustomerContent; }
-        field(21; "Date Closed"; Date) { Caption = 'Date Closed'; DataClassification = CustomerContent; }
-        field(22; "Date Funded"; Date) { Caption = 'Date Funded'; DataClassification = CustomerContent; }
-        field(23; "Date Sold"; Date) { Caption = 'Date Sold'; DataClassification = CustomerContent; }
-        field(24; "Date Locked"; Date) { Caption = 'Date Locked'; DataClassification = CustomerContent; }
-        field(25; "Loan Amount"; Decimal) { Caption = 'Loan Amount'; DataClassification = CustomerContent; }
-        field(26; Blocked; Boolean) { Caption = 'Blocked'; DataClassification = CustomerContent; }
-        field(27; "Warehouse Line Code"; Code[50]) { Caption = 'Warehouse Line Code'; DataClassification = CustomerContent; TableRelation = lvnWarehouseLine; }
-        field(28; "Co-Borrower First Name"; Text[30]) { Caption = 'Co-Borrower First Name'; DataClassification = CustomerContent; }
-        field(29; "Co-Borrower Last Name"; Text[30]) { Caption = 'Co-Borrower Last Name'; DataClassification = CustomerContent; }
-        field(30; "Co-Borrower Middle Name"; Text[30]) { Caption = 'Co-Borrower Middle Name'; DataClassification = CustomerContent; }
-        field(31; "203K Contractor Name"; Text[100]) { Caption = '203K Contractor Name'; DataClassification = CustomerContent; }
-        field(32; "203K Inspector Name"; Text[100]) { Caption = '203K Inspector Name'; DataClassification = CustomerContent; }
+        field(1; "No."; Code[20])
+        {
+            Caption = 'Loan No.';
+            DataClassification = CustomerContent;
+            NotBlank = true;
+        }
+        field(10; "Search Name"; Code[100])
+        {
+            Caption = 'Search Name';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Borrower First Name"; Text[30])
+        {
+            Caption = 'Borrower First Name';
+            DataClassification = CustomerContent;
+        }
+        field(12; "Borrower Last Name"; Text[30])
+        {
+            Caption = 'Borrower Last Name';
+            DataClassification = CustomerContent;
+        }
+        field(13; "Borrower Middle Name"; Text[30])
+        {
+            Caption = 'Borrower Middle Name';
+            DataClassification = CustomerContent;
+        }
+        field(14; "Title Customer No."; Code[20])
+        {
+            Caption = 'Title Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+        field(15; "Investor Customer No."; Code[20])
+        {
+            Caption = 'Investor Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+        field(16; "Borrower Customer No."; Code[20])
+        {
+            Caption = 'Borrower Customer No.';
+            DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
+        }
+        field(17; "Alternative Loan No."; Code[50])
+        {
+            Caption = 'Alternative Loan No.';
+            DataClassification = CustomerContent;
+        }
+        field(20; "Application Date"; Date)
+        {
+            Caption = 'Application Date';
+            DataClassification = CustomerContent;
+        }
+        field(21; "Date Closed"; Date)
+        {
+            Caption = 'Date Closed';
+            DataClassification = CustomerContent;
+        }
+        field(22; "Date Funded"; Date)
+        {
+            Caption = 'Date Funded';
+            DataClassification = CustomerContent;
+        }
+        field(23; "Date Sold"; Date)
+        {
+            Caption = 'Date Sold';
+            DataClassification = CustomerContent;
+        }
+        field(24; "Date Locked"; Date)
+        {
+            Caption = 'Date Locked';
+            DataClassification = CustomerContent;
+        }
+        field(25; "Loan Amount"; Decimal)
+        {
+            Caption = 'Loan Amount';
+            DataClassification = CustomerContent;
+        }
+        field(26; Blocked; Boolean)
+        {
+            Caption = 'Blocked';
+            DataClassification = CustomerContent;
+        }
+        field(27; "Warehouse Line Code"; Code[50])
+        {
+            Caption = 'Warehouse Line Code';
+            DataClassification = CustomerContent;
+            TableRelation = lvnWarehouseLine;
+        }
+        field(28; "Co-Borrower First Name"; Text[30])
+        {
+            Caption = 'Co-Borrower First Name';
+            DataClassification = CustomerContent;
+        }
+        field(29; "Co-Borrower Last Name"; Text[30])
+        {
+            Caption = 'Co-Borrower Last Name';
+            DataClassification = CustomerContent;
+        }
+        field(30; "Co-Borrower Middle Name"; Text[30])
+        {
+            Caption = 'Co-Borrower Middle Name';
+            DataClassification = CustomerContent;
+        }
+        field(31; "203K Contractor Name"; Text[100])
+        {
+            Caption = '203K Contractor Name';
+            DataClassification = CustomerContent;
+        }
+        field(32; "203K Inspector Name"; Text[100])
+        {
+            Caption = '203K Inspector Name';
+            DataClassification = CustomerContent;
+        }
         field(80; "Global Dimension 1 Code"; Code[20])
         {
             DataClassification = CustomerContent;
@@ -126,28 +219,119 @@ table 14135102 "lvnLoan"
                 ValidateShortcutDimCode(8, "Shortcut Dimension 8 Code");
             end;
         }
-        field(88; "Business Unit Code"; Code[10]) { Caption = 'Business Unit Code'; DataClassification = CustomerContent; TableRelation = "Business Unit"; }
-        field(100; "Loan Term (Months)"; Integer) { Caption = 'Loan Term (Months)'; DataClassification = CustomerContent; }
-        field(101; "Interest Rate"; Decimal) { Caption = 'Interest Rate'; DataClassification = CustomerContent; DecimalPlaces = 3 : 3; }
-        field(102; "First Payment Due"; Date) { Caption = 'First Payment Due'; DataClassification = CustomerContent; }
-        field(103; "First Payment Due To Investor"; Date) { Caption = 'First Payment Due to Investor'; DataClassification = CustomerContent; }
-        field(104; "Next Payment Date"; Date) { Caption = 'Next Payment Date'; DataClassification = CustomerContent; }
-        field(105; "Monthly Escrow Amount"; Decimal) { Caption = 'Monthly Escrow Amount'; DataClassification = CustomerContent; }
-        field(106; "Monthly Payment Amount"; Decimal) { Caption = 'Monthly Payment Amount (P+I)'; DataClassification = CustomerContent; }
-        field(107; "Late Fee"; Decimal) { Caption = 'Servicing Late Fee'; DataClassification = CustomerContent; }
-        field(300; "Borrower SSN"; Code[20]) { Caption = 'Borrower SSN'; DataClassification = CustomerContent; }
-        field(301; "Co-Borrower SSN"; Code[20]) { Caption = 'Co-Borrower SSN'; DataClassification = CustomerContent; }
-        field(302; "Borrower SSN Key"; Guid) { Caption = 'Borrower SSN Key'; DataClassification = CustomerContent; }
-        field(303; "Co-Borrower SSN Key"; Guid) { Caption = 'Co-Borrower SSN Key'; DataClassification = CustomerContent; }
-        field(500; "Commission Base Amount"; Decimal) { Caption = 'Commission Base Amount'; DataClassification = CustomerContent; }
-        field(501; "Commission Date"; Date) { Caption = 'Commission Date'; DataClassification = CustomerContent; }
-        field(502; "Commission Bps"; Decimal) { Caption = 'Commission Bps'; DataClassification = CustomerContent; }
-        field(503; "Commission Amount"; Decimal) { Caption = 'Commission Amount'; DataClassification = CustomerContent; }
-        field(600; "Constr. Interest Rate"; Decimal) { Caption = 'Construction Interest Rate'; DataClassification = CustomerContent; DecimalPlaces = 3 : 3; }
-        field(1000; "Servicing Finished"; Boolean) { Caption = 'Servicing Finished'; DataClassification = CustomerContent; }
-        field(80000; "Creation Date"; Date) { Caption = 'Creation Date'; DataClassification = CustomerContent; }
-        field(80001; "Modified Date"; Date) { Caption = 'Modified Date'; DataClassification = CustomerContent; }
-        field(14135999; lvnDocumentGuid; Guid) { Caption = 'Document GUID'; DataClassification = CustomerContent; }
+        field(88; "Business Unit Code"; Code[10])
+        {
+            Caption = 'Business Unit Code';
+            DataClassification = CustomerContent;
+            TableRelation = "Business Unit";
+        }
+        field(100; "Loan Term (Months)"; Integer)
+        {
+            Caption = 'Loan Term (Months)';
+            DataClassification = CustomerContent;
+        }
+        field(101; "Interest Rate"; Decimal)
+        {
+            Caption = 'Interest Rate';
+            DataClassification = CustomerContent;
+            DecimalPlaces = 3 : 3;
+        }
+        field(102; "First Payment Due"; Date)
+        {
+            Caption = 'First Payment Due';
+            DataClassification = CustomerContent;
+        }
+        field(103; "First Payment Due To Investor"; Date)
+        {
+            Caption = 'First Payment Due to Investor';
+            DataClassification = CustomerContent;
+        }
+        field(104; "Next Payment Date"; Date)
+        {
+            Caption = 'Next Payment Date';
+            DataClassification = CustomerContent;
+        }
+        field(105; "Monthly Escrow Amount"; Decimal)
+        {
+            Caption = 'Monthly Escrow Amount';
+            DataClassification = CustomerContent;
+        }
+        field(106; "Monthly Payment Amount"; Decimal)
+        {
+            Caption = 'Monthly Payment Amount (P+I)';
+            DataClassification = CustomerContent;
+        }
+        field(107; "Late Fee"; Decimal)
+        {
+            Caption = 'Servicing Late Fee';
+            DataClassification = CustomerContent;
+        }
+        field(300; "Borrower SSN"; Code[20])
+        {
+            Caption = 'Borrower SSN';
+            DataClassification = CustomerContent;
+        }
+        field(301; "Co-Borrower SSN"; Code[20])
+        {
+            Caption = 'Co-Borrower SSN';
+            DataClassification = CustomerContent;
+        }
+        field(302; "Borrower SSN Key"; Guid)
+        {
+            Caption = 'Borrower SSN Key';
+            DataClassification = CustomerContent;
+        }
+        field(303; "Co-Borrower SSN Key"; Guid)
+        {
+            Caption = 'Co-Borrower SSN Key';
+            DataClassification = CustomerContent;
+        }
+        field(500; "Commission Base Amount"; Decimal)
+        {
+            Caption = 'Commission Base Amount';
+            DataClassification = CustomerContent;
+        }
+        field(501; "Commission Date"; Date)
+        {
+            Caption = 'Commission Date';
+            DataClassification = CustomerContent;
+        }
+        field(502; "Commission Bps"; Decimal)
+        {
+            Caption = 'Commission Bps';
+            DataClassification = CustomerContent;
+        }
+        field(503; "Commission Amount"; Decimal)
+        {
+            Caption = 'Commission Amount';
+            DataClassification = CustomerContent;
+        }
+        field(600; "Constr. Interest Rate"; Decimal)
+        {
+            Caption = 'Construction Interest Rate';
+            DataClassification = CustomerContent;
+            DecimalPlaces = 3 : 3;
+        }
+        field(1000; "Servicing Finished"; Boolean)
+        {
+            Caption = 'Servicing Finished';
+            DataClassification = CustomerContent;
+        }
+        field(80000; "Creation Date"; Date)
+        {
+            Caption = 'Creation Date';
+            DataClassification = CustomerContent;
+        }
+        field(80001; "Modified Date"; Date)
+        {
+            Caption = 'Modified Date';
+            DataClassification = CustomerContent;
+        }
+        field(14135999; lvnDocumentGuid; Guid)
+        {
+            Caption = 'Document GUID';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
@@ -194,6 +378,21 @@ table 14135102 "lvnLoan"
         LoanValue.DeleteAll(false);
     end;
 
+    procedure GetLoanAddress(AddressType: Enum lvnAddressType): Text;
+    var
+        LoanAddress: Record lvnLoanAddress;
+        FormattedAddress: Text;
+        AddressFormat: Label '%1 %2, %3 %4 %5';
+    begin
+        if LoanAddress.Get("No.", AddressType) then begin
+            FormattedAddress := StrSubstNo(AddressFormat, LoanAddress.Address, LoanAddress."Address 2", LoanAddress.City, LoanAddress.State, LoanAddress."ZIP Code");
+            if DelChr(FormattedAddress, '=', ' ,') = '' then
+                exit('')
+            else
+                exit(FormattedAddress);
+        end;
+    end;
+
     local procedure ValidateShortcutDimCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
     var
         DimensionManagement: Codeunit DimensionManagement;
@@ -201,20 +400,5 @@ table 14135102 "lvnLoan"
         DimensionManagement.ValidateDimValueCode(FieldNumber, ShortcutDimCode);
         DimensionManagement.SaveDefaultDim(Database::lvnLoan, "No.", FieldNumber, ShortcutDimCode);
         Modify();
-    end;
-
-    procedure GetLoanAddress(AddressType: enum lvnAddressType): Text;
-    var
-        LoanAddress: Record lvnLoanAddress;
-        AddressFormat: Label '%1 %2, %3 %4 %5';
-        FormattedAddress: Text;
-    begin
-        if LoanAddress.Get("No.", AddressType) then begin
-            FormattedAddress := strsubstno(AddressFormat, LoanAddress.Address, LoanAddress."Address 2", LoanAddress.City, LoanAddress.State, LoanAddress."ZIP Code");
-            if DelChr(FormattedAddress, '=', ' ,') = '' then
-                exit('')
-            else
-                exit(FormattedAddress);
-        end;
     end;
 }

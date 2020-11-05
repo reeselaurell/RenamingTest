@@ -4,7 +4,10 @@ pageextension 14135119 "lvnCustomerLedgerEntries" extends "Customer Ledger Entri
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

@@ -41,11 +41,6 @@ page 14135240 "lvnFormulaEdit"
         }
     }
 
-    var
-        ConditionValueBuffer: Record lvnExpressionValueBuffer temporary;
-        Ready: Boolean;
-        FormulaText: Text;
-
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
         if CloseAction = Action::LookupOK then
@@ -54,6 +49,11 @@ page 14135240 "lvnFormulaEdit"
                 exit(false);
             end;
     end;
+
+    var
+        ConditionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        Ready: Boolean;
+        FormulaText: Text;
 
     procedure SetFieldList(var FieldList: Record lvnExpressionValueBuffer)
     var
@@ -76,6 +76,4 @@ page 14135240 "lvnFormulaEdit"
     begin
         exit(Ready);
     end;
-
-
 }

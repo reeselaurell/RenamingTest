@@ -8,8 +8,16 @@ pageextension 14135138 "lvnPurchasesPayablesSetup" extends "Purchases & Payables
             {
                 Caption = 'Loan Vision';
 
-                field(lvnQuickPayDefaultBatch; Rec.lvnQuickPayDefaultBatch) { ApplicationArea = All; Caption = 'Quick Pay Default Batch'; }
-                field(lvnQuickPayBatchSelection; Rec.lvnQuickPayBatchSelection) { ApplicationArea = All; Caption = 'Quick Pay Batch Selection'; }
+                field(lvnQuickPayDefaultBatch; Rec.lvnQuickPayDefaultBatch)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Quick Pay Default Batch';
+                }
+                field(lvnQuickPayBatchSelection; Rec.lvnQuickPayBatchSelection)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Quick Pay Batch Selection';
+                }
             }
         }
     }

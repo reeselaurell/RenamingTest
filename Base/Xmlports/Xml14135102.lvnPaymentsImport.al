@@ -15,12 +15,24 @@ xmlport 14135102 "lvnPaymentsImport"
                 SourceTableView = sorting("Vendor No.", "Check No.", "Vendor Invoice No.");
                 UseTemporary = true;
 
-                fieldelement(CheckNo; PaymentImportBuffer."Check No.") { }
-                fieldelement(PaymentDate; PaymentImportBuffer."Payment Date") { }
-                fieldelement(VendorInvoiceNo; PaymentImportBuffer."Vendor Invoice No.") { }
-                fieldelement(InvoiceAmount; PaymentImportBuffer."Invoice Amount") { }
-                fieldelement(PaymentAmount; PaymentImportBuffer."Payment Amount") { }
-                fieldelement(VendorNo; PaymentImportBuffer."Vendor No.") { }
+                fieldelement(CheckNo; PaymentImportBuffer."Check No.")
+                {
+                }
+                fieldelement(PaymentDate; PaymentImportBuffer."Payment Date")
+                {
+                }
+                fieldelement(VendorInvoiceNo; PaymentImportBuffer."Vendor Invoice No.")
+                {
+                }
+                fieldelement(InvoiceAmount; PaymentImportBuffer."Invoice Amount")
+                {
+                }
+                fieldelement(PaymentAmount; PaymentImportBuffer."Payment Amount")
+                {
+                }
+                fieldelement(VendorNo; PaymentImportBuffer."Vendor No.")
+                {
+                }
             }
         }
     }
@@ -54,15 +66,6 @@ xmlport 14135102 "lvnPaymentsImport"
         }
     }
 
-    var
-        CheckTotalAmountErr: Label 'Totals For Check %1 Amount %2 does not match invoices amount %3 for Vendor %4';
-        TempChecksBuffer: Record lvnPaymentImportBuffer temporary;
-        BankPaymentType: Enum lvnBankPaymentType;
-        BankAccountNo: Code[20];
-        BankAccountName: Text;
-        JournalTemplate: Code[10];
-        JournalBatch: Code[10];
-
     trigger OnPostXmlPort()
     begin
         PaymentImportBuffer.Reset();
@@ -81,6 +84,15 @@ xmlport 14135102 "lvnPaymentsImport"
         until PaymentImportBuffer.Next() = 0;
         CreatePaymentJournal();
     end;
+
+    var
+        TempChecksBuffer: Record lvnPaymentImportBuffer temporary;
+        BankPaymentType: Enum lvnBankPaymentType;
+        BankAccountNo: Code[20];
+        BankAccountName: Text;
+        JournalTemplate: Code[10];
+        JournalBatch: Code[10];
+        CheckTotalAmountErr: Label 'Totals For Check %1 Amount %2 does not match invoices amount %3 for Vendor %4';
 
     procedure SetParams(pJournalTemplate: Code[10]; pJournalBatch: Code[10])
     begin

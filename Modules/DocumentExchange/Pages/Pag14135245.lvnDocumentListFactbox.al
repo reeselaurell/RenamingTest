@@ -81,25 +81,34 @@ page 14135245 "lvnDocumentListFactbox"
         }
     }
 
+    trigger OnInit()
+    begin
+        CurrentObjectId := CreateGuid();//Will ensure correct first initialization
+    end;
+
     var
+        DXCMgmt: Codeunit lvnDocumentExchangeManagement;
+        DropBlob: Codeunit "Temp Blob";
+        CurrentObjectId: Guid;
+        ProposedObjectId: Guid;
+        ReloadNeeded: Boolean;
+        ControlInitialized: Boolean;
+        DropStream: OutStream;
+        DropName: Text;
         DeletePromptQst: Label 'File %1 will be deleted permanently. This action cannot be undone. Are you sure?';
         SaveDocumentLbl: Label 'Save document';
         DXCRecordNotConfiguredErr: Label 'Error: Document Exchange Id is not configured for this record';
         DXCSetupNotConfiguredErr: Label 'Error: Document Exchange is not configured';
         SelectDocumentLbl: Label 'Select a Document';
         FileMaskTxt: Label 'All Files|*.*';
-        DXCMgmt: Codeunit lvnDocumentExchangeManagement;
-        CurrentObjectId: Guid;
-        ProposedObjectId: Guid;
-        ReloadNeeded: Boolean;
-        ControlInitialized: Boolean;
-        DropBlob: Codeunit "Temp Blob";
-        DropStream: OutStream;
-        DropName: Text;
 
-    trigger OnInit()
+    procedure ReloadDocuments(NewId: Guid)
     begin
-        CurrentObjectId := CreateGuid();//Will ensure correct first initialization
+        ProposedObjectId := NewId;
+        if not ControlInitialized then
+            ReloadNeeded := true
+        else
+            ReloadDocuments(false);
     end;
 
     local procedure ReloadDocuments(Force: Boolean)
@@ -126,14 +135,5 @@ page 14135245 "lvnDocumentListFactbox"
                         CurrPage.AddIn.AppendDocument(DocumentExchangeLine."Original Name", DocumentExchangeLine.Id);
                     until DocumentExchangeLine.Next() = 0;
             end;
-    end;
-
-    procedure ReloadDocuments(NewId: Guid)
-    begin
-        ProposedObjectId := NewId;
-        if not ControlInitialized then
-            ReloadNeeded := true
-        else
-            ReloadDocuments(false);
     end;
 }

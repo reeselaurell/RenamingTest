@@ -4,7 +4,10 @@ pageextension 14135128 "lvnPostedPurchaseInvoices" extends "Posted Purchase Invo
     {
         addfirst(factboxes)
         {
-            part(DocumentExchange; lvnDocumentListFactbox) { ApplicationArea = All; }
+            part(DocumentExchange; lvnDocumentListFactbox)
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

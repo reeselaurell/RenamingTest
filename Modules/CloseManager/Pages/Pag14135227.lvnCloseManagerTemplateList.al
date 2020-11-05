@@ -15,8 +15,14 @@ page 14135227 "lvnCloseManagerTemplateList"
             {
                 Caption = 'Group';
 
-                field("No."; Rec."No.") { ApplicationArea = All; }
-                field(Name; Rec.Name) { ApplicationArea = All; }
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

@@ -11,28 +11,61 @@ report 14135160 "lvnLoanProfitability"
             RequestFilterFields = "No.";
             DataItemTableView = sorting("No.");
 
-            column(LoanNo; "No.") { }
-            column(BorrowerFirstName; "Borrower First Name") { }
-            column(BorrowerMiddleName; "Borrower Middle Name") { }
-            column(BorrowerLastName; "Borrower Last Name") { }
-            column(DateFunded; "Date Funded") { }
-            column(WarehouseLineCode; "Warehouse Line Code") { }
-            column(LoanType; LoanType) { }
-            column(InterestRate; "Interest Rate") { }
-            column(DateSold; "Date Sold") { }
-            column(InvestorName; InvestorName) { }
-            column(LoanAmount; "Loan Amount") { }
-            column(LoanOfficerName; LoanOfficerName) { }
-            column(CompanyName; CompanyInformation.Name) { }
-            column(AsOfDate; AsOfDate) { }
-
+            column(LoanNo; "No.")
+            {
+            }
+            column(BorrowerFirstName; "Borrower First Name")
+            {
+            }
+            column(BorrowerMiddleName; "Borrower Middle Name")
+            {
+            }
+            column(BorrowerLastName; "Borrower Last Name")
+            {
+            }
+            column(DateFunded; "Date Funded")
+            {
+            }
+            column(WarehouseLineCode; "Warehouse Line Code")
+            {
+            }
+            column(LoanType; LoanType)
+            {
+            }
+            column(InterestRate; "Interest Rate")
+            {
+            }
+            column(DateSold; "Date Sold")
+            {
+            }
+            column(InvestorName; InvestorName)
+            {
+            }
+            column(LoanAmount; "Loan Amount")
+            {
+            }
+            column(LoanOfficerName; LoanOfficerName)
+            {
+            }
+            column(CompanyName; CompanyInformation.Name)
+            {
+            }
+            column(AsOfDate; AsOfDate)
+            {
+            }
             dataitem(DataSetValues; Integer)
             {
                 DataItemTableView = sorting(Number);
-                column(BalanceAtDate; CalculatedValue) { }
-                column(ReportingAccountType; ReportingAccountType) { }
-                column(Descripiton; TempDataBuffer."Raw Value") { }
 
+                column(BalanceAtDate; CalculatedValue)
+                {
+                }
+                column(ReportingAccountType; ReportingAccountType)
+                {
+                }
+                column(Descripiton; TempDataBuffer."Raw Value")
+                {
+                }
                 trigger OnPreDataItem()
                 begin
                     TempDataBuffer.Reset();
@@ -66,7 +99,6 @@ report 14135160 "lvnLoanProfitability"
                         CurrReport.Skip();
                 end;
             }
-
             trigger OnAfterGetRecord()
             var
                 DefaultDimension: Record "Default Dimension";
@@ -149,39 +181,6 @@ report 14135160 "lvnLoanProfitability"
         end;
     }
 
-    var
-        DateRangeRequiredErr: Label 'If you set Dimension Filter you must also set From Date and To Date';
-        CompanyInformation: Record "Company Information";
-        LoanVisionSetup: Record lvnLoanVisionSetup;
-        TempDataBuffer: Record lvnLoanLevelValueBuffer temporary;
-        GLEntriesByDimension: Query lvnGLEntriesByDimension;
-        PeriodEnd: Date;
-        PeriodStart: Date;
-        AsOfDate: Text[250];
-        LoanType: Text;
-        LoanOfficerName: Text;
-        InvestorName: Text;
-        ReportingAccountType: Integer;
-        CalculatedValue: Decimal;
-        DimensionFilters: array[8] of Code[20];
-        ReportingType: Enum lvnLoanProfitReportingType;
-        [InDataSet]
-        Dimension1FilterVisible: Boolean;
-        [InDataSet]
-        Dimension2FilterVisible: Boolean;
-        [InDataSet]
-        Dimension3FilterVisible: Boolean;
-        [InDataSet]
-        Dimension4FilterVisible: Boolean;
-        [InDataSet]
-        Dimension5FilterVisible: Boolean;
-        [InDataSet]
-        Dimension6FilterVisible: Boolean;
-        [InDataSet]
-        Dimension7FilterVisible: Boolean;
-        [InDataSet]
-        Dimension8FilterVisible: Boolean;
-
     trigger OnPreReport()
     var
         GLAccount: Record "G/L Account";
@@ -238,4 +237,37 @@ report 14135160 "lvnLoanProfitability"
                 end;
             until GLAccount.Next() = 0;
     end;
+
+    var
+        CompanyInformation: Record "Company Information";
+        LoanVisionSetup: Record lvnLoanVisionSetup;
+        TempDataBuffer: Record lvnLoanLevelValueBuffer temporary;
+        GLEntriesByDimension: Query lvnGLEntriesByDimension;
+        PeriodEnd: Date;
+        PeriodStart: Date;
+        AsOfDate: Text[250];
+        LoanType: Text;
+        LoanOfficerName: Text;
+        InvestorName: Text;
+        ReportingAccountType: Integer;
+        CalculatedValue: Decimal;
+        DimensionFilters: array[8] of Code[20];
+        ReportingType: Enum lvnLoanProfitReportingType;
+        [InDataSet]
+        Dimension1FilterVisible: Boolean;
+        [InDataSet]
+        Dimension2FilterVisible: Boolean;
+        [InDataSet]
+        Dimension3FilterVisible: Boolean;
+        [InDataSet]
+        Dimension4FilterVisible: Boolean;
+        [InDataSet]
+        Dimension5FilterVisible: Boolean;
+        [InDataSet]
+        Dimension6FilterVisible: Boolean;
+        [InDataSet]
+        Dimension7FilterVisible: Boolean;
+        [InDataSet]
+        Dimension8FilterVisible: Boolean;
+        DateRangeRequiredErr: Label 'If you set Dimension Filter you must also set From Date and To Date';
 }

@@ -197,44 +197,92 @@ xmlport 14135100 "lvnGeneralLedgerEntriesExport"
                     end;
                 }
             }
-
             tableelement(GLEntry; "G/L Entry")
             {
                 RequestFilterFields = "Reason Code", "Posting Date", lvnEntryDate;
                 SourceTableView = sorting("Entry No.");
 
-                fieldelement(EntryNo; GLEntry."Entry No.") { }
-                fieldelement(PostingDate; GLEntry."Posting Date") { }
-                fieldelement(EntryDate; GLEntry.lvnEntryDate) { }
-                fieldelement(DocumentType; GLEntry."Document Type") { }
-                fieldelement(DocumentNo; GLEntry."Document No.") { }
-                fieldelement(GLAccountNo; GLEntry."G/L Account No.") { }
-                fieldelement(GLAccountName; GLEntry."G/L Account Name") { }
-                fieldelement(Description; GLEntry.Description) { }
-                fieldelement(Amount; GLEntry.Amount) { }
-                fieldelement(ReasonCode; GLEntry."Reason Code") { }
-                fieldelement(BalAccountType; GLEntry."Bal. Account Type") { }
-                fieldelement(BalAccountNo; GLEntry."Bal. Account No.") { }
-                fieldelement(LoanNo; GLEntry.lvnLoanNo) { }
-                fieldelement(SourceType; GLEntry."Source Type") { }
-                fieldelement(SourceNo; GLEntry."Source No.") { }
-                fieldelement(SourceName; GLEntry.lvnSourceName) { }
-                fieldelement(Reversed; GLEntry.Reversed) { }
-                fieldelement(UserId; GLEntry."User ID") { }
-                fieldelement(Dim1; GLEntry."Global Dimension 1 Code") { }
-                fieldelement(Dim2; GLEntry."Global Dimension 2 Code") { }
-                fieldelement(Dim3; GLEntry.lvnShortcutDimension3Code) { }
-                fieldelement(Dim4; GLEntry.lvnShortcutDimension4Code) { }
-                fieldelement(Dim5; GLEntry.lvnShortcutDimension5Code) { }
-                fieldelement(Dim6; GLEntry.lvnShortcutDimension6Code) { }
-                fieldelement(Dim7; GLEntry.lvnShortcutDimension7Code) { }
-                fieldelement(Dim8; GLEntry.lvnShortcutDimension8Code) { }
+                fieldelement(EntryNo; GLEntry."Entry No.")
+                {
+                }
+                fieldelement(PostingDate; GLEntry."Posting Date")
+                {
+                }
+                fieldelement(EntryDate; GLEntry.lvnEntryDate)
+                {
+                }
+                fieldelement(DocumentType; GLEntry."Document Type")
+                {
+                }
+                fieldelement(DocumentNo; GLEntry."Document No.")
+                {
+                }
+                fieldelement(GLAccountNo; GLEntry."G/L Account No.")
+                {
+                }
+                fieldelement(GLAccountName; GLEntry."G/L Account Name")
+                {
+                }
+                fieldelement(Description; GLEntry.Description)
+                {
+                }
+                fieldelement(Amount; GLEntry.Amount)
+                {
+                }
+                fieldelement(ReasonCode; GLEntry."Reason Code")
+                {
+                }
+                fieldelement(BalAccountType; GLEntry."Bal. Account Type")
+                {
+                }
+                fieldelement(BalAccountNo; GLEntry."Bal. Account No.")
+                {
+                }
+                fieldelement(LoanNo; GLEntry.lvnLoanNo)
+                {
+                }
+                fieldelement(SourceType; GLEntry."Source Type")
+                {
+                }
+                fieldelement(SourceNo; GLEntry."Source No.")
+                {
+                }
+                fieldelement(SourceName; GLEntry.lvnSourceName)
+                {
+                }
+                fieldelement(Reversed; GLEntry.Reversed)
+                {
+                }
+                fieldelement(UserId; GLEntry."User ID")
+                {
+                }
+                fieldelement(Dim1; GLEntry."Global Dimension 1 Code")
+                {
+                }
+                fieldelement(Dim2; GLEntry."Global Dimension 2 Code")
+                {
+                }
+                fieldelement(Dim3; GLEntry.lvnShortcutDimension3Code)
+                {
+                }
+                fieldelement(Dim4; GLEntry.lvnShortcutDimension4Code)
+                {
+                }
+                fieldelement(Dim5; GLEntry.lvnShortcutDimension5Code)
+                {
+                }
+                fieldelement(Dim6; GLEntry.lvnShortcutDimension6Code)
+                {
+                }
+                fieldelement(Dim7; GLEntry.lvnShortcutDimension7Code)
+                {
+                }
+                fieldelement(Dim8; GLEntry.lvnShortcutDimension8Code)
+                {
+                }
             }
         }
     }
-
-    var
-        DimensionNames: array[8] of Text;
 
     trigger OnPreXmlPort()
     var
@@ -242,4 +290,7 @@ xmlport 14135100 "lvnGeneralLedgerEntriesExport"
     begin
         DimensionMgmt.GetDimensionNames(DimensionNames);
     end;
+
+    var
+        DimensionNames: array[8] of Text;
 }

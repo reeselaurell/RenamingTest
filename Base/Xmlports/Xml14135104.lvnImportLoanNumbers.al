@@ -14,10 +14,10 @@ xmlport 14135104 "lvnImportLoanNumbers"
                 SourceTableView = sorting("Loan No.");
                 UseTemporary = true;
 
-                fieldelement(LoanNo; ReportingBuffer."Loan No.") { }
-
+                fieldelement(LoanNo; ReportingBuffer."Loan No.")
+                {
+                }
             }
-
         }
     }
 
@@ -33,5 +33,4 @@ xmlport 14135104 "lvnImportLoanNumbers"
             LoanReportingBuffer.Insert();
         until ReportingBuffer.Next() = 0;
     end;
-
 }

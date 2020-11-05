@@ -123,42 +123,78 @@ report 14135163 "lvnGLEntriesByLoanVer1"
                     Progress.Close();
             end;
         }
-
         dataitem(LoanNoLoop; Integer)
         {
             DataItemTableView = sorting(Number);
 
-            column(CompanyName; CompanyInformation.Name) { }
-            column(ReportFilters; Filters) { }
-            column(LoanNo; TempLoan."No.") { }
-            column(BorrowerFirstName; TempLoan."Borrower First Name") { }
-            column(BorrowerMiddleName; TempLoan."Borrower Middle Name") { }
-            column(BorrowerLastName; TempLoan."Borrower Last Name") { }
-            column(LoanBalanceStart; TempLoan."Loan Amount") { }
-
+            column(CompanyName; CompanyInformation.Name)
+            {
+            }
+            column(ReportFilters; Filters)
+            {
+            }
+            column(LoanNo; TempLoan."No.")
+            {
+            }
+            column(BorrowerFirstName; TempLoan."Borrower First Name")
+            {
+            }
+            column(BorrowerMiddleName; TempLoan."Borrower Middle Name")
+            {
+            }
+            column(BorrowerLastName; TempLoan."Borrower Last Name")
+            {
+            }
+            column(LoanBalanceStart; TempLoan."Loan Amount")
+            {
+            }
             dataitem(GLAccountLoanNo; Integer)
             {
                 DataItemTableView = sorting(Number);
 
-                column(GLAccountNo; TempGLAccountLoanBuffer."View Code") { }
-                column(BeginningBalance; TempGLAccountLoanBuffer."Decimal Value") { }
-                column(AccountName; TempGLAccountLoanBuffer."Text Value") { }
-
+                column(GLAccountNo; TempGLAccountLoanBuffer."View Code")
+                {
+                }
+                column(BeginningBalance; TempGLAccountLoanBuffer."Decimal Value")
+                {
+                }
+                column(AccountName; TempGLAccountLoanBuffer."Text Value")
+                {
+                }
                 dataitem(GLEntries; Integer)
                 {
                     DataItemTableView = sorting(Number);
 
-                    column(PostingDate; TempGLEntryBuffer."Payment Due Date") { }
-                    column(Description; Description) { }
-                    column(Amount; TempGLEntryBuffer."Current Balance") { }
-                    column(DebitAmount; TempGLEntryBuffer."Debit Amount") { }
-                    column(CreditAmount; TempGLEntryBuffer."Credit Amount") { }
-                    column(ReasonCode; TempGLEntryBuffer."Reason Code") { }
-                    column(DocumentNo; TempGLEntryBuffer."Document No.") { }
-                    column(ExternalDocumentNo; TempGLEntryBuffer."External Document No.") { }
-                    column(ReferenceNo; TempGLEntryBuffer."Reference No.") { }
-                    column(CostCenter; CostCenter) { }
-
+                    column(PostingDate; TempGLEntryBuffer."Payment Due Date")
+                    {
+                    }
+                    column(Description; Description)
+                    {
+                    }
+                    column(Amount; TempGLEntryBuffer."Current Balance")
+                    {
+                    }
+                    column(DebitAmount; TempGLEntryBuffer."Debit Amount")
+                    {
+                    }
+                    column(CreditAmount; TempGLEntryBuffer."Credit Amount")
+                    {
+                    }
+                    column(ReasonCode; TempGLEntryBuffer."Reason Code")
+                    {
+                    }
+                    column(DocumentNo; TempGLEntryBuffer."Document No.")
+                    {
+                    }
+                    column(ExternalDocumentNo; TempGLEntryBuffer."External Document No.")
+                    {
+                    }
+                    column(ReferenceNo; TempGLEntryBuffer."Reference No.")
+                    {
+                    }
+                    column(CostCenter; CostCenter)
+                    {
+                    }
                     trigger OnPreDataItem()
                     begin
                         TempGLEntryBuffer.Reset();
@@ -197,7 +233,6 @@ report 14135163 "lvnGLEntriesByLoanVer1"
                             Description := TempGLEntryBuffer.Name;
                     end;
                 }
-
                 trigger OnPreDataItem()
                 begin
                     TempGLAccountLoanBuffer.Reset();
@@ -213,7 +248,6 @@ report 14135163 "lvnGLEntriesByLoanVer1"
                         TempGLAccountLoanBuffer.Next();
                 end;
             }
-
             trigger OnPreDataItem()
             begin
                 TempLoan.Reset();
@@ -230,23 +264,6 @@ report 14135163 "lvnGLEntriesByLoanVer1"
         }
     }
 
-    var
-        NoFilterErr: Label 'Please define Date or Loan No. filter';
-        ProcessingMsg: Label 'Processing entries #1####### of #2########';
-        TempGLEntryBuffer: Record lvnGLEntryBuffer temporary;
-        TempLoan: Record lvnLoan temporary;
-        TempGLAccountLoanBuffer: Record lvnGLAccountLoanBuffer temporary;
-        LoanVisionSetup: Record lvnLoanVisionSetup;
-        CompanyInformation: Record "Company Information";
-        Progress: Dialog;
-        Counter: Integer;
-        MinDate: Date;
-        DimensionNo: Integer;
-        CostCenter: Code[20];
-        Description: Text;
-        Filters: Text;
-        SourceName: Text;
-
     trigger OnPreReport()
     var
         DimMgmt: Codeunit lvnDimensionsManagement;
@@ -261,4 +278,21 @@ report 14135163 "lvnGLEntriesByLoanVer1"
         if "G/L Entry".GetFilter("Posting Date") <> '' then
             MinDate := "G/L Entry".GetRangeMin("Posting Date") - 1;
     end;
+
+    var
+        TempGLEntryBuffer: Record lvnGLEntryBuffer temporary;
+        TempLoan: Record lvnLoan temporary;
+        TempGLAccountLoanBuffer: Record lvnGLAccountLoanBuffer temporary;
+        LoanVisionSetup: Record lvnLoanVisionSetup;
+        CompanyInformation: Record "Company Information";
+        Progress: Dialog;
+        Counter: Integer;
+        MinDate: Date;
+        DimensionNo: Integer;
+        CostCenter: Code[20];
+        Description: Text;
+        Filters: Text;
+        SourceName: Text;
+        NoFilterErr: Label 'Please define Date or Loan No. filter';
+        ProcessingMsg: Label 'Processing entries #1####### of #2########';
 }

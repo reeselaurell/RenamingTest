@@ -16,7 +16,10 @@ page 14135226 "lvnCloseManagerSetup"
             {
                 Caption = 'General';
 
-                field("Quick Entry Archive Nos."; Rec."Quick Entry Archive Nos.") { ApplicationArea = All; }
+                field("Quick Entry Archive Nos."; Rec."Quick Entry Archive Nos.")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

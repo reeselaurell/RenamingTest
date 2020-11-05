@@ -159,15 +159,6 @@ page 14135243 lvnIifEdit
         }
     }
 
-    var
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
-        ExpressionLine: Record lvnExpressionLine;
-        Engine: Codeunit lvnExpressionEngine;
-        ReadyState: Integer;
-        InitState: Integer;
-        TrueTxt: Label 'true';
-        FalseTxt: Label 'false';
-
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
         if ReadyState < 2 then
@@ -178,6 +169,15 @@ page 14135243 lvnIifEdit
             end;
         exit(true);
     end;
+
+    var
+        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        ExpressionLine: Record lvnExpressionLine;
+        Engine: Codeunit lvnExpressionEngine;
+        ReadyState: Integer;
+        InitState: Integer;
+        TrueTxt: Label 'true';
+        FalseTxt: Label 'false';
 
     procedure SetFieldList(var FieldList: Record lvnExpressionValueBuffer)
     begin

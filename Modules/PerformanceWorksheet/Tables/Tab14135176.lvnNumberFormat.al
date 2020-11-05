@@ -6,14 +6,46 @@ table 14135176 "lvnNumberFormat"
 
     fields
     {
-        field(1; Code; Code[20]) { Caption = 'Code'; DataClassification = CustomerContent; }
-        field(10; Description; Text[50]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(11; "Value Type"; Enum lvnPerformanceValueType) { Caption = 'Value Type'; DataClassification = CustomerContent; }
-        field(12; Rounding; Enum lvnRounding) { Caption = 'Rounding'; DataClassification = CustomerContent; }
-        field(13; "Blank Zero"; Enum lvnBlankZero) { Caption = 'Blank Zero'; DataClassification = SystemMetadata; }
-        field(14; "Negative Formatting"; Enum lvnNegativeFormatting) { Caption = 'Negative Formatting'; DataClassification = CustomerContent; }
-        field(15; "Suppress Thousand Separator"; Boolean) { Caption = 'Suppress Thousand Separator'; DataClassification = CustomerContent; }
-        field(16; "Invert Sign"; Boolean) { Caption = 'Invert Sign'; DataClassification = CustomerContent; }
+        field(1; Code; Code[20])
+        {
+            Caption = 'Code';
+            DataClassification = CustomerContent;
+        }
+        field(10; Description; Text[50])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Value Type"; Enum lvnPerformanceValueType)
+        {
+            Caption = 'Value Type';
+            DataClassification = CustomerContent;
+        }
+        field(12; Rounding; Enum lvnRounding)
+        {
+            Caption = 'Rounding';
+            DataClassification = CustomerContent;
+        }
+        field(13; "Blank Zero"; Enum lvnBlankZero)
+        {
+            Caption = 'Blank Zero';
+            DataClassification = SystemMetadata;
+        }
+        field(14; "Negative Formatting"; Enum lvnNegativeFormatting)
+        {
+            Caption = 'Negative Formatting';
+            DataClassification = CustomerContent;
+        }
+        field(15; "Suppress Thousand Separator"; Boolean)
+        {
+            Caption = 'Suppress Thousand Separator';
+            DataClassification = CustomerContent;
+        }
+        field(16; "Invert Sign"; Boolean)
+        {
+            Caption = 'Invert Sign';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

@@ -11,10 +11,22 @@ page 14135186 "lvnFlexImportSchemaConditions"
         {
             repeater(Group)
             {
-                field("Expression Type"; Rec."Expression Type") { ApplicationArea = All; }
-                field("Expression Code"; Rec."Expression Code") { ApplicationArea = All; }
-                field(Value; Rec.Value) { ApplicationArea = All; }
-                field("Assign Result To Field"; Rec."Assign Result To Field") { ApplicationArea = All; }
+                field("Expression Type"; Rec."Expression Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Expression Code"; Rec."Expression Code")
+                {
+                    ApplicationArea = All;
+                }
+                field(Value; Rec.Value)
+                {
+                    ApplicationArea = All;
+                }
+                field("Assign Result To Field"; Rec."Assign Result To Field")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -27,7 +39,7 @@ page 14135186 "lvnFlexImportSchemaConditions"
             {
                 ApplicationArea = All;
 
-                trigger OnAction();
+                trigger OnAction()
                 begin
 
                 end;

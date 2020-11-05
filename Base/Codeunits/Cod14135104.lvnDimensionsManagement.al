@@ -91,22 +91,6 @@ codeunit 14135104 "lvnDimensionsManagement"
             DimensionValueCode := DimensionValue.Code;
     end;
 
-    local procedure GetGLSetup()
-    begin
-        if not GLSetupRetrieved then begin
-            GLSetup.Get();
-            GLSetupRetrieved := true;
-        end;
-    end;
-
-    local procedure GetLoanVisionSetup()
-    begin
-        if not LoanVisionSetupRetrieved then begin
-            LoanVisionSetup.Get();
-            LoanVisionSetupRetrieved := true;
-        end;
-    end;
-
     procedure FillDimensionsFromTable(LoanDocument: Record lvnLoanDocument; var DimensionCodes: array[8] of Code[20])
     begin
         DimensionCodes[1] := LoanDocument."Global Dimension 1 Code";
@@ -119,7 +103,9 @@ codeunit 14135104 "lvnDimensionsManagement"
         DimensionCodes[8] := LoanDocument."Shortcut Dimension 8 Code";
     end;
 
-    procedure FillDimensionsFromTable(LoanDocumentLine: Record lvnLoanDocumentLine; var DimensionCodes: array[8] of Code[20])
+    procedure FillDimensionsFromTable(
+        LoanDocumentLine: Record lvnLoanDocumentLine;
+        var DimensionCodes: array[8] of Code[20])
     begin
         DimensionCodes[1] := LoanDocumentLine."Global Dimension 1 Code";
         DimensionCodes[2] := LoanDocumentLine."Global Dimension 2 Code";
@@ -131,7 +117,9 @@ codeunit 14135104 "lvnDimensionsManagement"
         DimensionCodes[8] := LoanDocumentLine."Shortcut Dimension 8 Code";
     end;
 
-    procedure FillDimensionsFromTable(LoanFundedDocument: Record lvnLoanFundedDocument; var DimensionCodes: array[8] of Code[20])
+    procedure FillDimensionsFromTable(
+        LoanFundedDocument: Record lvnLoanFundedDocument;
+        var DimensionCodes: array[8] of Code[20])
     begin
         DimensionCodes[1] := LoanFundedDocument."Global Dimension 1 Code";
         DimensionCodes[2] := LoanFundedDocument."Global Dimension 2 Code";
@@ -143,7 +131,9 @@ codeunit 14135104 "lvnDimensionsManagement"
         DimensionCodes[8] := LoanFundedDocument."Shortcut Dimension 8 Code";
     end;
 
-    procedure FillDimensionsFromTable(LoanFundedDocumentLine: Record lvnLoanFundedDocumentLine; var DimensionCodes: array[8] of Code[20])
+    procedure FillDimensionsFromTable(
+        LoanFundedDocumentLine: Record lvnLoanFundedDocumentLine;
+        var DimensionCodes: array[8] of Code[20])
     begin
         DimensionCodes[1] := LoanFundedDocumentLine."Global Dimension 1 Code";
         DimensionCodes[2] := LoanFundedDocumentLine."Global Dimension 2 Code";
@@ -155,7 +145,9 @@ codeunit 14135104 "lvnDimensionsManagement"
         DimensionCodes[8] := LoanFundedDocumentLine."Shortcut Dimension 8 Code";
     end;
 
-    procedure FillDimensionsFromTable(LoanSoldDocument: Record lvnLoanSoldDocument; var DimensionCodes: array[8] of Code[20])
+    procedure FillDimensionsFromTable(
+        LoanSoldDocument: Record lvnLoanSoldDocument;
+        var DimensionCodes: array[8] of Code[20])
     begin
         DimensionCodes[1] := LoanSoldDocument."Global Dimension 1 Code";
         DimensionCodes[2] := LoanSoldDocument."Global Dimension 2 Code";
@@ -167,7 +159,9 @@ codeunit 14135104 "lvnDimensionsManagement"
         DimensionCodes[8] := LoanSoldDocument."Shortcut Dimension 8 Code";
     end;
 
-    procedure FillDimensionsFromTable(LoanSoldDocumentLine: Record lvnLoanSoldDocumentLine; var DimensionCodes: array[8] of Code[20])
+    procedure FillDimensionsFromTable(
+        LoanSoldDocumentLine: Record lvnLoanSoldDocumentLine;
+        var DimensionCodes: array[8] of Code[20])
     begin
         DimensionCodes[1] := LoanSoldDocumentLine."Global Dimension 1 Code";
         DimensionCodes[2] := LoanSoldDocumentLine."Global Dimension 2 Code";
@@ -193,8 +187,8 @@ codeunit 14135104 "lvnDimensionsManagement"
 
     procedure GetDimensionName(DimensionNo: Integer): Text
     var
-        DimensionCode: Code[20];
         Dimension: Record Dimension;
+        DimensionCode: Code[20];
     begin
         GetGLSetup();
         case DimensionNo of
@@ -302,6 +296,22 @@ codeunit 14135104 "lvnDimensionsManagement"
                 Sender.ValidateShortcutDimCode(4, DimensionHierarchy."Shortcut Dimension 4 Code");
             if DimensionUsage[5] then
                 Sender.Validate("Business Unit Code", DimensionHierarchy."Business Unit Code");
+        end;
+    end;
+
+    local procedure GetGLSetup()
+    begin
+        if not GLSetupRetrieved then begin
+            GLSetup.Get();
+            GLSetupRetrieved := true;
+        end;
+    end;
+
+    local procedure GetLoanVisionSetup()
+    begin
+        if not LoanVisionSetupRetrieved then begin
+            LoanVisionSetup.Get();
+            LoanVisionSetupRetrieved := true;
         end;
     end;
 }

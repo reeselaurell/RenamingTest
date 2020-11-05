@@ -40,7 +40,6 @@ page 14135162 "lvnQuickTrace"
                     end;
                 }
             }
-
             group(PostedDocCaption)
             {
                 Caption = 'Posted Document';
@@ -178,7 +177,6 @@ page 14135162 "lvnQuickTrace"
                             end;
                         }
                     }
-
                     cuegroup(LoanDocCrMemos)
                     {
                         Caption = 'Credit Memos';
@@ -279,7 +277,6 @@ page 14135162 "lvnQuickTrace"
                     }
                 }
             }
-
             group(OpenDocumentsCaption)
             {
                 Caption = 'Open Documents';
@@ -332,7 +329,6 @@ page 14135162 "lvnQuickTrace"
                             end;
                         }
                     }
-
                     cuegroup(OpenCreditMemos)
                     {
                         Caption = 'Open Credit Memos';
@@ -380,7 +376,6 @@ page 14135162 "lvnQuickTrace"
                 }
             }
         }
-
         area(FactBoxes)
         {
             part(LoanFactBox; lvnLoanInfoBox)
@@ -392,6 +387,11 @@ page 14135162 "lvnQuickTrace"
             }
         }
     }
+
+    trigger OnOpenPage()
+    begin
+        LoanVisionSetup.Get();
+    end;
 
     var
         LoanVisionSetup: Record lvnLoanVisionSetup;
@@ -437,11 +437,6 @@ page 14135162 "lvnQuickTrace"
         FundedLoanDocCrMemos: Integer;
         SoldLoanDocInvoices: Integer;
         SoldLoanDocCrMemos: Integer;
-
-    trigger OnOpenPage()
-    begin
-        LoanVisionSetup.Get();
-    end;
 
     procedure DoSearch()
     begin

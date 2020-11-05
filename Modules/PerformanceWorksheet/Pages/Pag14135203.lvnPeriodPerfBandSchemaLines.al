@@ -10,15 +10,43 @@ page 14135203 "lvnPeriodPerfBandSchemaLines"
         {
             repeater(Group)
             {
-                field("Line No."; Rec."Band No.") { ApplicationArea = All; Caption = 'Band No.'; }
-                field("Period Type"; Rec."Period Type") { ApplicationArea = All; }
-                field("Period Offset"; Rec."Period Offset") { ApplicationArea = All; }
-                field("Period Length Formula"; Rec."Period Length Formula") { ApplicationArea = All; }
-                field("Band Type"; Rec."Band Type") { ApplicationArea = All; }
-                field("Header Description"; Rec."Header Description") { ApplicationArea = All; }
-                field("Dynamic Date Description"; Rec."Dynamic Date Description") { ApplicationArea = All; }
-                field("Date From"; Rec."Date From") { ApplicationArea = All; }
-                field("Date To"; Rec."Date To") { ApplicationArea = All; }
+                field("Line No."; Rec."Band No.")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Band No.';
+                }
+                field("Period Type"; Rec."Period Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Period Offset"; Rec."Period Offset")
+                {
+                    ApplicationArea = All;
+                }
+                field("Period Length Formula"; Rec."Period Length Formula")
+                {
+                    ApplicationArea = All;
+                }
+                field("Band Type"; Rec."Band Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Header Description"; Rec."Header Description")
+                {
+                    ApplicationArea = All;
+                }
+                field("Dynamic Date Description"; Rec."Dynamic Date Description")
+                {
+                    ApplicationArea = All;
+                }
+                field("Date From"; Rec."Date From")
+                {
+                    ApplicationArea = All;
+                }
+                field("Date To"; Rec."Date To")
+                {
+                    ApplicationArea = All;
+                }
                 field("Row Formula Code"; Rec."Row Formula Code")
                 {
                     ApplicationArea = All;
@@ -27,8 +55,8 @@ page 14135203 "lvnPeriodPerfBandSchemaLines"
 
                     trigger OnAssistEdit()
                     var
-                        ExpressionList: Page lvnExpressionList;
                         PerformanceMgmt: Codeunit lvnPerformanceMgmt;
+                        ExpressionList: Page lvnExpressionList;
                         ExpressiontType: Enum lvnExpressionType;
                         NewCode: Code[20];
                     begin

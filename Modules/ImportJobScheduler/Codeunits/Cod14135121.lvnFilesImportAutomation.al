@@ -61,7 +61,10 @@ codeunit 14135121 "lvnFilesImportAutomation"
     end;
 
     [TryFunction]
-    procedure ProcessFileImport(var ImportJobSchedulerTask: Record lvnImportJobSchedulerTask; FileName: Text; ImportID: Guid)
+    procedure ProcessFileImport(
+        var ImportJobSchedulerTask: Record lvnImportJobSchedulerTask;
+        FileName: Text;
+        ImportID: Guid)
     begin
         case ImportJobSchedulerTask.Type of
             ImportJobSchedulerTask.Type::"General Journal":
@@ -71,7 +74,9 @@ codeunit 14135121 "lvnFilesImportAutomation"
         end;
     end;
 
-    local procedure CalcJournalStatistics(var ImportJobSchedulerTask: Record lvnImportJobSchedulerTask; var ImportJobSchedulerLog: Record lvnImportJobSchedulerLog)
+    local procedure CalcJournalStatistics(
+        var ImportJobSchedulerTask: Record lvnImportJobSchedulerTask;
+        var ImportJobSchedulerLog: Record lvnImportJobSchedulerLog)
     var
         GenJnlLine: Record "Gen. Journal Line";
     begin
@@ -99,7 +104,10 @@ codeunit 14135121 "lvnFilesImportAutomation"
         exit(GenJnlPostBatch.Run(GenJnlLine));
     end;
 
-    local procedure ProcessGeneralJournalImportFile(var ImportJobSchedulerTask: Record lvnImportJobSchedulerTask; FileName: Text; ImportID: Guid)
+    local procedure ProcessGeneralJournalImportFile(
+        var ImportJobSchedulerTask: Record lvnImportJobSchedulerTask;
+        FileName: Text;
+        ImportID: Guid)
     var
         GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
         ImportBufferError: Record lvnImportBufferError temporary;

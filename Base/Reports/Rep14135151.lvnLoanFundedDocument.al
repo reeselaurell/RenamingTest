@@ -12,91 +12,70 @@ report 14135151 "lvnLoanFundedDocument"
 
             column(DocumentType; DocumentType)
             {
-
             }
             column(lvnDocumentNo; "Document No.")
             {
-
             }
             column(lvnCustomerNo; "Customer No.")
             {
-
             }
             column(lvnLoanNo; "Loan No.")
             {
-
             }
             column(BorrowerName; BorrowerName)
             {
-
             }
             column(lvnPostingDate; "Posting Date")
             {
-
             }
             column(lvnVoid; Void)
             {
-
             }
             column(PropertyAddress; PropertyAddress)
             {
-
             }
             column(lvnVoidDocumentNo; "Void Document No.")
             {
             }
             column(CostCenter; CostCenter)
             {
-
             }
             column(LoanType; LoanType)
             {
-
             }
             column(LoanOfficer; LoanOfficer)
             {
-
             }
             column(State; State)
             {
-
             }
-
             dataitem(lvnLoanFundedDocumentLine; lvnLoanFundedDocumentLine)
             {
                 DataItemTableView = sorting("Document No.", "Line No.");
                 DataItemLinkReference = lvnLoanFundedDocument;
                 DataItemLink = "Document No." = field("Document No.");
+
                 column(lvnAccountNo; "Account No.")
                 {
-
                 }
                 column(lvnDescription; Description)
                 {
-
                 }
                 column(lvnAmount; Amount)
                 {
-
                 }
                 column(lvnBalancingEntry; "Balancing Entry")
                 {
-
                 }
                 column(lvnLineNo; "Line No.")
                 {
-
                 }
                 column(lvnServicingType; ServicingType)
                 {
-
                 }
-
                 column(DocumentLineCostCenter; DocumentLineCostCenter)
                 {
-
                 }
-
                 trigger OnAfterGetRecord()
                 begin
                     Clear(DimensionValues);
@@ -125,9 +104,7 @@ report 14135151 "lvnLoanFundedDocument"
 
 
             end;
-
         }
-
     }
 
     requestpage
@@ -163,10 +140,29 @@ report 14135151 "lvnLoanFundedDocument"
         lvnLoanVisionSetup.TestField("Search Name Template");
     end;
 
+    var
+        lvnLoanVisionSetup: Record lvnLoanVisionSetup;
+        GeneralLedgerSetup: Record "General Ledger Setup";
+        DimensionValue: Record "Dimension Value";
+        lvnLoan: Record lvnLoan;
+        lvnDimensionsManagement: Codeunit lvnDimensionsManagement;
+        lvnLoanManagement: Codeunit lvnLoanManagement;
+        DimensionValues: array[8] of Code[20];
+        lvnLoanAddressTypeEnum: Enum lvnAddressType;
+        LoanOfficer: Text;
+        LoanType: Text;
+        CostCenter: Text;
+        DocumentLineCostCenter: Text;
+        State: Text;
+        BorrowerName: Text;
+        ServicingType: Text;
+        DocumentType: Text;
+        PropertyAddress: Text;
+
     local procedure GetDimensionValueName(DimensionCode: Code[20]): Text
     begin
 
-        DimensionValue.reset;
+        DimensionValue.Reset;
         DimensionValue.SetRange("Dimension Code", DimensionCode);
         DimensionValue.SetRange(Code, GetDimensionValueCode(DimensionCode));
         DimensionValue.SetLoadFields(DimensionValue.Name);
@@ -196,23 +192,4 @@ report 14135151 "lvnLoanFundedDocument"
                 exit(Dimensionvalues[8]);
         end;
     end;
-
-    var
-        lvnLoanVisionSetup: Record lvnLoanVisionSetup;
-        GeneralLedgerSetup: Record "General Ledger Setup";
-        DimensionValue: Record "Dimension Value";
-        DimensionValues: array[8] of Code[20];
-        lvnDimensionsManagement: Codeunit lvnDimensionsManagement;
-        lvnLoanManagement: Codeunit lvnLoanManagement;
-        lvnLoan: Record lvnLoan;
-        lvnLoanAddressTypeEnum: Enum lvnAddressType;
-        LoanOfficer: Text;
-        LoanType: Text;
-        CostCenter: Text;
-        DocumentLineCostCenter: Text;
-        State: Text;
-        BorrowerName: Text;
-        ServicingType: Text;
-        DocumentType: Text;
-        PropertyAddress: Text;
 }

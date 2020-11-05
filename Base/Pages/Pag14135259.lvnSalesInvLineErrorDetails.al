@@ -13,11 +13,13 @@ page 14135259 "lvnSalesInvLineErrorDetails"
         {
             repeater(Group)
             {
-                field("Error Text"; Rec."Error Text") { ApplicationArea = All; }
+                field("Error Text"; Rec."Error Text")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
-
 
     procedure SetLineErrors(var pInvoiceErrorDetails: Record lvnInvoiceErrorDetail)
     begin

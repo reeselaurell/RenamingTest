@@ -86,8 +86,13 @@ report 14135105 "lvnCalculate1098Values"
         end;
     }
 
+    trigger OnPreReport()
+    begin
+        Form1098Details.Reset();
+        Form1098Details.DeleteAll();
+    end;
+
     var
-        ProcessingLoanMsg: Label 'Processing Loan #1#########';
         Form1098Details: Record lvnForm1098Details;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
         Progress: Dialog;
@@ -95,14 +100,11 @@ report 14135105 "lvnCalculate1098Values"
         Box1Limit: Decimal;
         Box5Limit: Decimal;
         Box1Plus6Limit: Decimal;
+        ProcessingLoanMsg: Label 'Processing Loan #1#########';
 
-    trigger OnPreReport()
-    begin
-        Form1098Details.Reset();
-        Form1098Details.DeleteAll();
-    end;
-
-    local procedure ApplyGLEntryFilters(var GLEntry: Record "G/L Entry"; var Form1098ColRuleDetails: Record lvnForm1098ColRuleDetails): Boolean
+    local procedure ApplyGLEntryFilters(
+        var GLEntry: Record "G/L Entry";
+        var Form1098ColRuleDetails: Record lvnForm1098ColRuleDetails): Boolean
     var
         IStream: InStream;
         ViewText: Text;
@@ -117,7 +119,10 @@ report 14135105 "lvnCalculate1098Values"
             exit(false);
     end;
 
-    local procedure CalculateValue(BoxNo: Integer; var TempGLEntry: Record "G/L Entry"; var ExpressionValueBuffer: Record lvnExpressionValueBuffer) Value: Decimal
+    local procedure CalculateValue(
+        BoxNo: Integer;
+        var TempGLEntry: Record "G/L Entry";
+        var ExpressionValueBuffer: Record lvnExpressionValueBuffer) Value: Decimal
     var
         Form1098CollectionRule: Record lvnForm1098CollectionRule;
         Form1098ColRuleDetails: Record lvnForm1098ColRuleDetails;

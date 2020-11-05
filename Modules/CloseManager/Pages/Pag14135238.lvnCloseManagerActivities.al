@@ -8,19 +8,41 @@ page 14135238 "lvnCloseManagerActivities"
     {
         area(Content)
         {
-            field("Filter By Assigned To"; Rec."Filter By Assigned To") { ApplicationArea = All; }
-            field("Filter By Assigned Approver"; Rec."Filter By Assigned Approver") { ApplicationArea = All; }
-
+            field("Filter By Assigned To"; Rec."Filter By Assigned To")
+            {
+                ApplicationArea = All;
+            }
+            field("Filter By Assigned Approver"; Rec."Filter By Assigned Approver")
+            {
+                ApplicationArea = All;
+            }
             cuegroup(CloseManagerStatus)
             {
                 Caption = 'Close Manager Status';
                 CuegroupLayout = Wide;
 
-                field("Total Tasks"; Rec."Total Tasks") { ApplicationArea = All; }
-                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations") { ApplicationArea = All; }
-                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval") { ApplicationArea = All; }
-                field("Tasks Approved"; Rec."Tasks Approved") { ApplicationArea = All; }
-                field(ItemDiscrepancy; ItemDiscrepancy) { ApplicationArea = All; Caption = 'Approved Item Discrepancy'; Editable = false; }
+                field("Total Tasks"; Rec."Total Tasks")
+                {
+                    ApplicationArea = All;
+                }
+                field("Outstanding Reconcilliations"; Rec."Outstanding Reconcilliations")
+                {
+                    ApplicationArea = All;
+                }
+                field("Tasks Awaiting Approval"; Rec."Tasks Awaiting Approval")
+                {
+                    ApplicationArea = All;
+                }
+                field("Tasks Approved"; Rec."Tasks Approved")
+                {
+                    ApplicationArea = All;
+                }
+                field(ItemDiscrepancy; ItemDiscrepancy)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Approved Item Discrepancy';
+                    Editable = false;
+                }
             }
         }
     }
@@ -37,14 +59,13 @@ page 14135238 "lvnCloseManagerActivities"
 
                 trigger OnAction()
                 var
-                    CueRecordRef: RecordRef;
                     CueSetup: Codeunit "Cues And KPIs";
+                    CueRecordRef: RecordRef;
                 begin
                     CueRecordRef.GetTable(Rec);
                     CueSetup.OpenCustomizePageForCurrentUser(CueRecordRef.Number);
                 end;
             }
-
             action(ToggleFilterByAssignedTo)
             {
                 ApplicationArea = All;
@@ -57,7 +78,6 @@ page 14135238 "lvnCloseManagerActivities"
                     CurrPage.Update(true);
                 end;
             }
-
             action(ToggleFilterByAssignedApprover)
             {
                 ApplicationArea = All;
@@ -72,9 +92,6 @@ page 14135238 "lvnCloseManagerActivities"
             }
         }
     }
-
-    var
-        ItemDiscrepancy: Integer;
 
     trigger OnOpenPage()
     var
@@ -98,4 +115,7 @@ page 14135238 "lvnCloseManagerActivities"
             if CloseManagerEntryLine."G/L Total" <> CloseManagerEntryLine."Reconciled Total" then
                 ItemDiscrepancy := ItemDiscrepancy + 1;
     end;
+
+    var
+        ItemDiscrepancy: Integer;
 }

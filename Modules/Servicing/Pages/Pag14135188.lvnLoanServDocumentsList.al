@@ -14,12 +14,30 @@ page 14135188 "lvnLoanServDocumentsList"
         {
             repeater(Group)
             {
-                field("Document Type"; Rec."Document Type") { ApplicationArea = All; }
-                field("Document No."; Rec."Document No.") { ApplicationArea = All; }
-                field("Customer No."; Rec."Customer No.") { ApplicationArea = All; }
-                field("Loan No."; Rec."Loan No.") { ApplicationArea = All; }
-                field("Borrower Search Name"; Rec."Borrower Search Name") { ApplicationArea = All; }
-                field("Document Amount"; Rec."Document Amount") { ApplicationArea = All; }
+                field("Document Type"; Rec."Document Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Document No."; Rec."Document No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Customer No."; Rec."Customer No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Loan No."; Rec."Loan No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Borrower Search Name"; Rec."Borrower Search Name")
+                {
+                    ApplicationArea = All;
+                }
+                field("Document Amount"; Rec."Document Amount")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -39,10 +57,9 @@ page 14135188 "lvnLoanServDocumentsList"
 
                 trigger OnAction()
                 begin
-                    Page.Run(page::lvnServicedDocument, Rec);
+                    Page.Run(Page::lvnServicedDocument, Rec);
                 end;
             }
-
             action(Post)
             {
                 Caption = 'Post';
@@ -62,7 +79,6 @@ page 14135188 "lvnLoanServDocumentsList"
                     end;
                 end;
             }
-
             action(BatchPost)
             {
                 Caption = 'Post Batch';
@@ -73,7 +89,6 @@ page 14135188 "lvnLoanServDocumentsList"
                 Image = PostBatch;
                 RunObject = report lvnPostLoanDocuments;
             }
-
             action(Print)
             {
                 Caption = 'Print';
@@ -87,6 +102,13 @@ page 14135188 "lvnLoanServDocumentsList"
         }
     }
 
+    trigger OnOpenPage()
+    var
+        DimensionManagement: Codeunit DimensionManagement;
+    begin
+        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6, DimensionVisible7, DimensionVisible8);
+    end;
+
     var
         DimensionVisible1: Boolean;
         DimensionVisible2: Boolean;
@@ -96,11 +118,4 @@ page 14135188 "lvnLoanServDocumentsList"
         DimensionVisible6: Boolean;
         DimensionVisible7: Boolean;
         DimensionVisible8: Boolean;
-
-    trigger OnOpenPage()
-    var
-        DimensionManagement: Codeunit DimensionManagement;
-    begin
-        DimensionManagement.UseShortcutDims(DimensionVisible1, DimensionVisible2, DimensionVisible3, DimensionVisible4, DimensionVisible5, DimensionVisible6, DimensionVisible7, DimensionVisible8);
-    end;
 }

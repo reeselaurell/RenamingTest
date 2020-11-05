@@ -7,7 +7,7 @@ report 14135113 "lvnSuggestVendorPayments"
     {
         dataitem(Vendor; Vendor)
         {
-            DataItemTableView = SORTING(Blocked) WHERE(Blocked = FILTER(= " "));
+            DataItemTableView = sorting(Blocked) where(Blocked = filter(= " "));
             RequestFilterFields = "No.", lvnPaymentMethodFilter, lvnReasonCodeFilter, lvnUserIDFilter, lvnPostingGroupFilter;
 
             trigger OnAfterGetRecord()
@@ -145,7 +145,7 @@ report 14135113 "lvnSuggestVendorPayments"
 
                 SelectedDim.SetRange("User ID", UserId);
                 SelectedDim.SetRange("Object Type", 3);
-                SelectedDim.SetRange("Object ID", REPORT::"Suggest Vendor Payments");
+                SelectedDim.SetRange("Object ID", Report::"Suggest Vendor Payments");
                 SummarizePerDim := (not SelectedDim.IsEmpty) and SummarizePerVend;
 
                 NextEntryNo := 1;
@@ -434,7 +434,7 @@ report 14135113 "lvnSuggestVendorPayments"
         Commit;
         if not VendorLedgEntryTemp.IsEmpty then
             if ConfirmManagement.GetResponse(Text024, true) then
-                PAGE.RunModal(0, VendorLedgEntryTemp);
+                Page.RunModal(0, VendorLedgEntryTemp);
 
         if CheckOtherJournalBatches then
             if not TempErrorMessage.IsEmpty then
@@ -454,22 +454,6 @@ report 14135113 "lvnSuggestVendorPayments"
     end;
 
     var
-        Text000: Label 'In the Last Payment Date field, specify the last possible date that payments must be made.';
-        Text001: Label 'In the Posting Date field, specify the date that will be used as the posting date for the journal entries.';
-        Text002: Label 'In the Starting Document No. field, specify the first document number to be used.';
-        Text003: Label 'The payment date is earlier than %1.\\Do you still want to run the batch job?', Comment = '%1 is a date';
-        Text005: Label 'The batch job was interrupted.';
-        Text006: Label 'Processing vendors     #1##########';
-        Text007: Label 'Processing vendors for payment discounts #1##########';
-        Text008: Label 'Inserting payment journal lines #1##########';
-        Text009: Label '%1 must be G/L Account or Bank Account.';
-        Text010: Label '%1 must be filled only when %2 is Bank Account.';
-        Text011: Label 'Use Vendor Priority must be activated when the value in the Amount Available field is not 0.';
-        Text013: Label 'Use Vendor Priority must be activated when the value in the Amount Available Amount (LCY) field is not 0.';
-        Text017: Label 'If %1 = %2 and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.', Comment = 'If Bank Payment Type = Computer Check and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.';
-        Text020: Label 'You have only created suggested vendor payment lines for the %1 %2.\ However, there are other open vendor ledger entries in currencies other than %2.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR.\ However, there are other open vendor ledger entries in currencies other than EUR.';
-        Text021: Label 'You have only created suggested vendor payment lines for the %1 %2.\ There are no other open vendor ledger entries in other currencies.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR\ There are no other open vendor ledger entries in other currencies.\\';
-        Text022: Label 'You have created suggested vendor payment lines for all currencies.\\';
         Vend2: Record Vendor;
         GenJnlTemplate: Record "Gen. Journal Template";
         GenJnlBatch: Record "Gen. Journal Batch";
@@ -517,18 +501,34 @@ report 14135113 "lvnSuggestVendorPayments"
         PostingGroupFilter: Text;
         GenJnlLineInserted: Boolean;
         SeveralCurrencies: Boolean;
-        Text024: Label 'There are one or more entries for which no payment suggestions have been made because the posting dates of the entries are later than the requested posting date. Do you want to see the entries?';
         [InDataSet]
         SummarizePerDimTextEnable: Boolean;
-        Text025: Label 'The %1 with the number %2 has a %3 with the number %4.';
         ShowPostingDateWarning: Boolean;
         VendorBalance: Decimal;
+        SkipExportedPayments: Boolean;
+        CheckOtherJournalBatches: Boolean;
+        Text000: Label 'In the Last Payment Date field, specify the last possible date that payments must be made.';
+        Text001: Label 'In the Posting Date field, specify the date that will be used as the posting date for the journal entries.';
+        Text002: Label 'In the Starting Document No. field, specify the first document number to be used.';
+        Text003: Label 'The payment date is earlier than %1.\\Do you still want to run the batch job?', Comment = '%1 is a date';
+        Text005: Label 'The batch job was interrupted.';
+        Text006: Label 'Processing vendors     #1##########';
+        Text007: Label 'Processing vendors for payment discounts #1##########';
+        Text008: Label 'Inserting payment journal lines #1##########';
+        Text009: Label '%1 must be G/L Account or Bank Account.';
+        Text010: Label '%1 must be filled only when %2 is Bank Account.';
+        Text011: Label 'Use Vendor Priority must be activated when the value in the Amount Available field is not 0.';
+        Text013: Label 'Use Vendor Priority must be activated when the value in the Amount Available Amount (LCY) field is not 0.';
+        Text017: Label 'If %1 = %2 and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.', Comment = 'If Bank Payment Type = Computer Check and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.';
+        Text020: Label 'You have only created suggested vendor payment lines for the %1 %2.\ However, there are other open vendor ledger entries in currencies other than %2.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR.\ However, there are other open vendor ledger entries in currencies other than EUR.';
+        Text021: Label 'You have only created suggested vendor payment lines for the %1 %2.\ There are no other open vendor ledger entries in other currencies.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR\ There are no other open vendor ledger entries in other currencies.\\';
+        Text022: Label 'You have created suggested vendor payment lines for all currencies.\\';
+        Text024: Label 'There are one or more entries for which no payment suggestions have been made because the posting dates of the entries are later than the requested posting date. Do you want to see the entries?';
+        Text025: Label 'The %1 with the number %2 has a %3 with the number %4.';
         ReplacePostingDateMsg: Label 'For one or more entries, the requested posting date is before the work date.\\These posting dates will use the work date.';
         PmtDiscUnavailableErr: Label 'You cannot use Find Payment Discounts or Summarize per Vendor together with Calculate Posting Date from Applies-to-Doc. Due Date, because the resulting posting date might not match the payment discount date.';
-        SkipExportedPayments: Boolean;
         MessageToRecipientMsg: Label 'Payment of %1 %2 ', Comment = '%1 document type, %2 Document No.';
         StartingDocumentNoErr: Label 'The value in the Starting Document No. field must have a number so that we can assign the next number in the series.';
-        CheckOtherJournalBatches: Boolean;
         ReviewNotSuggestedLinesQst: Label 'There are payments in other journal batches that are not suggested here. This helps avoid duplicate payments. To add them to this batch, remove the payment from the other batch, and then suggest payments again.\\Do you want to review the payments from the other journal batches now?';
         NotSuggestedPaymentInfoTxt: Label 'There are payments in %1 %2, %3 %4, %5 %6', Comment = 'There are payments in Journal Template Name PAYMENT, Journal Batch Name GENERAL, Applies-to Doc. No. 101321';
 
@@ -537,18 +537,17 @@ report 14135113 "lvnSuggestVendorPayments"
         GenJnlLine := NewGenJnlLine;
     end;
 
-    local procedure ValidatePostingDate()
-    begin
-        GenJnlBatch.Get(GenJnlLine."Journal Template Name", GenJnlLine."Journal Batch Name");
-        if GenJnlBatch."No. Series" = '' then
-            NextDocNo := ''
-        else begin
-            NextDocNo := NoSeriesMgt.GetNextNo(GenJnlBatch."No. Series", PostingDate, false);
-            Clear(NoSeriesMgt);
-        end;
-    end;
-
-    procedure InitializeRequest(LastPmtDate: Date; FindPmtDisc: Boolean; NewAvailableAmount: Decimal; NewSkipExportedPayments: Boolean; NewPostingDate: Date; NewStartDocNo: Code[20]; NewSummarizePerVend: Boolean; BalAccType: Enum "Gen. Journal Account Type"; BalAccNo: Code[20]; BankPmtType: Enum "Bank Payment Type")
+    procedure InitializeRequest(
+        LastPmtDate: Date;
+        FindPmtDisc: Boolean;
+        NewAvailableAmount: Decimal;
+        NewSkipExportedPayments: Boolean;
+        NewPostingDate: Date;
+        NewStartDocNo: Code[20];
+        NewSummarizePerVend: Boolean;
+        BalAccType: Enum "Gen. Journal Account Type";
+        BalAccNo: Code[20];
+        BankPmtType: Enum "Bank Payment Type")
     begin
         LastDueDateToPayReq := LastPmtDate;
         UsePaymentDisc := FindPmtDisc;
@@ -560,6 +559,17 @@ report 14135113 "lvnSuggestVendorPayments"
         GenJnlLine2."Bal. Account Type" := BalAccType;
         GenJnlLine2."Bal. Account No." := BalAccNo;
         GenJnlLine2."Bank Payment Type" := BankPmtType;
+    end;
+
+    local procedure ValidatePostingDate()
+    begin
+        GenJnlBatch.Get(GenJnlLine."Journal Template Name", GenJnlLine."Journal Batch Name");
+        if GenJnlBatch."No. Series" = '' then
+            NextDocNo := ''
+        else begin
+            NextDocNo := NoSeriesMgt.GetNextNo(GenJnlBatch."No. Series", PostingDate, false);
+            Clear(NoSeriesMgt);
+        end;
     end;
 
     local procedure GetVendLedgEntries(Positive: Boolean; Future: Boolean)
@@ -601,7 +611,7 @@ report 14135113 "lvnSuggestVendorPayments"
                     if VendLedgEntry."Accepted Pmt. Disc. Tolerance" or (VendLedgEntry."Accepted Payment Tolerance" <> 0) then begin
                         VendLedgEntry."Accepted Pmt. Disc. Tolerance" := false;
                         VendLedgEntry."Accepted Payment Tolerance" := 0;
-                        CODEUNIT.Run(CODEUNIT::"Vend. Entry-Edit", VendLedgEntry);
+                        Codeunit.Run(Codeunit::"Vend. Entry-Edit", VendLedgEntry);
                     end;
                 end;
             until VendLedgEntry.Next = 0;
@@ -752,7 +762,7 @@ report 14135113 "lvnSuggestVendorPayments"
                             end;
 
                         VendLedgEntry."Amount to Apply" := VendLedgEntry."Remaining Amount";
-                        CODEUNIT.Run(CODEUNIT::"Vend. Entry-Edit", VendLedgEntry);
+                        Codeunit.Run(Codeunit::"Vend. Entry-Edit", VendLedgEntry);
                     end else begin
                         VendorLedgEntryTemp := VendLedgEntry;
                         VendorLedgEntryTemp.Insert;
@@ -877,9 +887,9 @@ report 14135113 "lvnSuggestVendorPayments"
         GenJnlLine.CreateDim(
           DimMgt.TypeToTableID1(GenJnlLine."Account Type".AsInteger()), GenJnlLine."Account No.",
           DimMgt.TypeToTableID1(GenJnlLine."Bal. Account Type".AsInteger()), GenJnlLine."Bal. Account No.",
-          DATABASE::Job, GenJnlLine."Job No.",
-          DATABASE::"Salesperson/Purchaser", GenJnlLine."Salespers./Purch. Code",
-          DATABASE::Campaign, GenJnlLine."Campaign No.");
+          Database::Job, GenJnlLine."Job No.",
+          Database::"Salesperson/Purchaser", GenJnlLine."Salespers./Purch. Code",
+          Database::Campaign, GenJnlLine."Campaign No.");
         if NewDimensionID <> GenJnlLine."Dimension Set ID" then begin
             DimSetIDArr[1] := GenJnlLine."Dimension Set ID";
             DimSetIDArr[2] := NewDimensionID;
@@ -896,7 +906,10 @@ report 14135113 "lvnSuggestVendorPayments"
         end;
     end;
 
-    local procedure SetBankAccCurrencyFilter(BalAccType: Enum "Gen. Journal Account Type"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
+    local procedure SetBankAccCurrencyFilter(
+        BalAccType: Enum "Gen. Journal Account Type";
+        BalAccNo: Code[20];
+        var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
     var
         BankAcc: Record "Bank Account";
     begin
@@ -918,7 +931,10 @@ report 14135113 "lvnSuggestVendorPayments"
         end;
     end;
 
-    local procedure CheckCurrencies(BalAccType: Enum "Gen. Journal Account Type"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
+    local procedure CheckCurrencies(
+        BalAccType: Enum "Gen. Journal Account Type";
+        BalAccNo: Code[20];
+        var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
     var
         BankAcc: Record "Bank Account";
         TmpPayableVendLedgEntry2: Record "Payable Vendor Ledger Entry" temporary;
@@ -985,14 +1001,21 @@ report 14135113 "lvnSuggestVendorPayments"
         exit(not DimBuf.IsEmpty);
     end;
 
-    local procedure RemovePaymentsAboveLimit(var PayableVendLedgEntry: Record "Payable Vendor Ledger Entry"; RemainingAmtAvailable: Decimal)
+    local procedure RemovePaymentsAboveLimit(
+        var PayableVendLedgEntry: Record "Payable Vendor Ledger Entry";
+        RemainingAmtAvailable: Decimal)
     begin
         PayableVendLedgEntry.SetFilter("Amount (LCY)", '>%1', RemainingAmtAvailable);
         PayableVendLedgEntry.DeleteAll;
         PayableVendLedgEntry.SetRange("Amount (LCY)");
     end;
 
-    local procedure InsertDimBuf(var DimBuf: Record "Dimension Buffer"; TableID: Integer; EntryNo: Integer; DimCode: Code[20]; DimValue: Code[20])
+    local procedure InsertDimBuf(
+        var DimBuf: Record "Dimension Buffer";
+        TableID: Integer;
+        EntryNo: Integer;
+        DimCode: Code[20];
+        DimValue: Code[20])
     begin
         DimBuf.Init;
         DimBuf."Table ID" := TableID;
@@ -1042,7 +1065,9 @@ report 14135113 "lvnSuggestVendorPayments"
         exit(PostingDate);
     end;
 
-    local procedure AdjustAgainstSelectedDim(var TempDimSetEntry: Record "Dimension Set Entry" temporary; var TempDimSetEntry2: Record "Dimension Set Entry" temporary): Boolean
+    local procedure AdjustAgainstSelectedDim(
+        var TempDimSetEntry: Record "Dimension Set Entry" temporary;
+        var TempDimSetEntry2: Record "Dimension Set Entry" temporary): Boolean
     begin
         if SelectedDim.FindSet then begin
             repeat
@@ -1068,7 +1093,7 @@ report 14135113 "lvnSuggestVendorPayments"
             if SelectedDim.FindSet then
                 repeat
                     if DimSetEntry.Get(VendLedgEntry."Dimension Set ID", SelectedDim."Dimension Code") then
-                        InsertDimBuf(DimBuf, DATABASE::"Dimension Buffer", 0, DimSetEntry."Dimension Code", DimSetEntry."Dimension Value Code");
+                        InsertDimBuf(DimBuf, Database::"Dimension Buffer", 0, DimSetEntry."Dimension Code", DimSetEntry."Dimension Value Code");
                 until SelectedDim.Next = 0;
             EntryNo := DimBufMgt.FindDimensions(DimBuf);
             if EntryNo = 0 then
@@ -1097,14 +1122,18 @@ report 14135113 "lvnSuggestVendorPayments"
         end;
     end;
 
-    local procedure IsNotAppliedEntry(GenJournalLine: Record "Gen. Journal Line"; VendorLedgerEntry: Record "Vendor Ledger Entry"): Boolean
+    local procedure IsNotAppliedEntry(
+        GenJournalLine: Record "Gen. Journal Line";
+        VendorLedgerEntry: Record "Vendor Ledger Entry"): Boolean
     begin
         exit(
           IsNotAppliedToCurrentBatchLine(GenJournalLine, VendorLedgerEntry) and
           IsNotAppliedToOtherBatchLine(GenJournalLine, VendorLedgerEntry));
     end;
 
-    local procedure IsNotAppliedToCurrentBatchLine(GenJournalLine: Record "Gen. Journal Line"; VendorLedgerEntry: Record "Vendor Ledger Entry"): Boolean
+    local procedure IsNotAppliedToCurrentBatchLine(
+        GenJournalLine: Record "Gen. Journal Line";
+        VendorLedgerEntry: Record "Vendor Ledger Entry"): Boolean
     var
         PaymentGenJournalLine: Record "Gen. Journal Line";
     begin
@@ -1117,7 +1146,9 @@ report 14135113 "lvnSuggestVendorPayments"
         exit(PaymentGenJournalLine.IsEmpty);
     end;
 
-    local procedure IsNotAppliedToOtherBatchLine(GenJournalLine: Record "Gen. Journal Line"; VendorLedgerEntry: Record "Vendor Ledger Entry"): Boolean
+    local procedure IsNotAppliedToOtherBatchLine(
+        GenJournalLine: Record "Gen. Journal Line";
+        VendorLedgerEntry: Record "Vendor Ledger Entry"): Boolean
     var
         PaymentGenJournalLine: Record "Gen. Journal Line";
     begin
@@ -1167,7 +1198,9 @@ report 14135113 "lvnSuggestVendorPayments"
         end;
     end;
 
-    local procedure CopyFieldsFromVendorLedgerEntry(var PaymentBuffer: Record "Payment Buffer"; VendorLedgerEntry: Record "Vendor Ledger Entry")
+    local procedure CopyFieldsFromVendorLedgerEntry(
+        var PaymentBuffer: Record "Payment Buffer";
+        VendorLedgerEntry: Record "Vendor Ledger Entry")
     begin
         PaymentBuffer."Creditor No." := VendorLedgerEntry."Creditor No.";
         PaymentBuffer."Payment Reference" := VendorLedgerEntry."Payment Reference";
@@ -1176,7 +1209,9 @@ report 14135113 "lvnSuggestVendorPayments"
         PaymentBuffer.lvnPostingGroupCode := VendorLedgerEntry."Vendor Posting Group";
     end;
 
-    local procedure CopyFieldsToGenJournalLine(PaymentBuffer: record "Payment Buffer"; var GenJournalLine: Record "Gen. Journal Line")
+    local procedure CopyFieldsToGenJournalLine(
+        PaymentBuffer: Record "Payment Buffer";
+        var GenJournalLine: Record "Gen. Journal Line")
     var
         PurchInvLine: Record "Purch. Inv. Line";
         lvnLoanReportingBuffer: Record lvnLoanReportingBuffer temporary;

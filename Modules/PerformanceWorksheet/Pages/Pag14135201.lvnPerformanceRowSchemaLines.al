@@ -13,18 +13,34 @@ page 14135201 "lvnPerformanceRowSchemaLines"
         {
             repeater(Group)
             {
-                field("Line No."; Rec."Line No.") { ApplicationArea = All; }
-                field(Description; Rec.Description) { ApplicationArea = All; }
-                field("Row Type"; Rec."Row Type") { ApplicationArea = All; }
-                field("Row Style"; Rec."Row Style") { ApplicationArea = All; }
-                field("Hide Zero Line"; Rec."Hide Zero Line") { ApplicationArea = All; }
+                field("Line No."; Rec."Line No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field("Row Type"; Rec."Row Type")
+                {
+                    ApplicationArea = All;
+                }
+                field("Row Style"; Rec."Row Style")
+                {
+                    ApplicationArea = All;
+                }
+                field("Hide Zero Line"; Rec."Hide Zero Line")
+                {
+                    ApplicationArea = All;
+                }
             }
-            part(SubList; lvnPerfRowSchemaSubLines) { ApplicationArea = All; SubPageLink = "Schema Code" = field("Schema Code"), "Line No." = field("Line No."); }
+            part(SubList; lvnPerfRowSchemaSubLines)
+            {
+                ApplicationArea = All;
+                SubPageLink = "Schema Code" = field("Schema Code"), "Line No." = field("Line No.");
+            }
         }
     }
-
-    var
-        UnderlyingColumnSchemaCode: Code[20];
 
     trigger OnNewRecord(BelowxRec: Boolean)
     var
@@ -56,6 +72,9 @@ page 14135201 "lvnPerformanceRowSchemaLines"
             RowLine.Insert();
         end;
     end;
+
+    var
+        UnderlyingColumnSchemaCode: Code[20];
 
     procedure SetColumnSchemaCode(SchemaCode: Code[20])
     begin

@@ -14,17 +14,17 @@ report 14135111 "lvnRefreshJetExpressView"
         }
     }
 
-    var
-        ViewCode: Code[20];
-
     trigger OnPreReport()
     var
-        ConfirmContinueMsg: Label 'This procedure will erase previously generated Analysis entries. Do you want to continue?';
         JetExpressViewMgmt: Codeunit lvnJetExpressViewMgmt;
+        ConfirmContinueMsg: Label 'This procedure will erase previously generated Analysis entries. Do you want to continue?';
     begin
         if Confirm(ConfirmContinueMsg, false) then
             JetExpressViewMgmt.RefreshJetExpressView(ViewCode);
     end;
+
+    var
+        ViewCode: Code[20];
 
     procedure SetView(RefreshViewCode: Code[20])
     begin

@@ -6,9 +6,21 @@ table 14135185 "lvnLoanLevelReportSchema"
 
     fields
     {
-        field(1; Code; Code[20]) { Caption = 'Code'; DataClassification = CustomerContent; }
-        field(10; Description; Text[250]) { Caption = 'Description'; DataClassification = CustomerContent; }
-        field(11; "Skip Zero Balance Lines"; Boolean) { Caption = 'Skip Zero Balance Lines'; DataClassification = CustomerContent; }
+        field(1; Code; Code[20])
+        {
+            Caption = 'Code';
+            DataClassification = CustomerContent;
+        }
+        field(10; Description; Text[250])
+        {
+            Caption = 'Description';
+            DataClassification = CustomerContent;
+        }
+        field(11; "Skip Zero Balance Lines"; Boolean)
+        {
+            Caption = 'Skip Zero Balance Lines';
+            DataClassification = CustomerContent;
+        }
     }
 
     trigger OnDelete()

@@ -128,13 +128,6 @@ page 14135193 "lvnLVAccountantFinanceAct"
         }
     }
 
-    var
-        ActivitiesSetupErr: Label 'Activities Setup does not exist';
-        ActSetup: Record lvnLVAccountantFinActSetup;
-        FundedDocFilter: Text;
-        SoldDocFilter: Text;
-        ActSetupRetrieved: Boolean;
-
     trigger OnOpenPage()
     begin
         Rec.Reset;
@@ -150,6 +143,13 @@ page 14135193 "lvnLVAccountantFinanceAct"
     begin
         CalculateCashAcctBal();
     end;
+
+    var
+        ActSetup: Record lvnLVAccountantFinActSetup;
+        FundedDocFilter: Text;
+        SoldDocFilter: Text;
+        ActSetupRetrieved: Boolean;
+        ActivitiesSetupErr: Label 'Activities Setup does not exist';
 
     local procedure CalculateCashAcctBal()
     var

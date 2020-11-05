@@ -45,13 +45,6 @@ report 14135222 "lvnLoanLevelWorksheet"
         }
     }
 
-    var
-        AnalysisEntryUpdatePromptQst: Label 'Analysis entries required to view this report are outdated. Do you want to refresh them?';
-        SystemFilter: Record lvnSystemCalculationFilter;
-        BaseDate: Enum lvnLoanLevelReportBaseDate;
-        ShowTotals: Boolean;
-        ColSchemaCode: Code[20];
-
     trigger OnPostReport()
     var
         LoanVisionSetup: Record lvnLoanVisionSetup;
@@ -71,4 +64,11 @@ report 14135222 "lvnLoanLevelWorksheet"
         LoanValuesView.SetParams(ColSchemaCode, BaseDate, SystemFilter, ShowTotals);
         LoanValuesView.RunModal();
     end;
+
+    var
+        SystemFilter: Record lvnSystemCalculationFilter;
+        BaseDate: Enum lvnLoanLevelReportBaseDate;
+        ShowTotals: Boolean;
+        ColSchemaCode: Code[20];
+        AnalysisEntryUpdatePromptQst: Label 'Analysis entries required to view this report are outdated. Do you want to refresh them?';
 }

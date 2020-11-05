@@ -12,8 +12,10 @@ page 14135269 "lvnPayablesHeadline"
             {
                 Editable = false;
 
-                field(WelcomeMsg; LoanVisionLbl) { ApplicationArea = All; }
-
+                field(WelcomeMsg; LoanVisionLbl)
+                {
+                    ApplicationArea = All;
+                }
                 field(InvoicesDueToday; InvoicesDueTxt)
                 {
                     Caption = 'Invoices Due Today';
@@ -43,11 +45,6 @@ page 14135269 "lvnPayablesHeadline"
         }
     }
 
-    var
-        LoanVisionLbl: Label '<qualifier>Welcome</qualifier><payload>Welcome to Loan Vision</payload>';
-        InvoicesDueTxt: Text;
-        OverdueApprovalsTxt: Text;
-
     trigger OnOpenPage()
     var
         EntriesCount: Integer;
@@ -59,6 +56,11 @@ page 14135269 "lvnPayablesHeadline"
         else
             OverdueApprovalsTxt := StrSubstNo('There are %1 overdue Approval Entries', EntriesCount);
     end;
+
+    var
+        InvoicesDueTxt: Text;
+        OverdueApprovalsTxt: Text;
+        LoanVisionLbl: Label '<qualifier>Welcome</qualifier><payload>Welcome to Loan Vision</payload>';
 
     local procedure InvoicesDueTodayAmount(): Decimal
     var
@@ -82,5 +84,4 @@ page 14135269 "lvnPayablesHeadline"
         OverdueApprovalEntry.Reset();
         exit(OverdueApprovalEntry.Count());
     end;
-
 }

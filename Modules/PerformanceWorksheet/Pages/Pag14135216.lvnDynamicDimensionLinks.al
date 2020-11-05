@@ -14,8 +14,14 @@ page 14135216 "lvnDynamicDimensionLinks"
         {
             repeater(GroupName)
             {
-                field(Code; Rec.Code) { ApplicationArea = All; }
-                field(Name; Rec.Name) { ApplicationArea = All; }
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
