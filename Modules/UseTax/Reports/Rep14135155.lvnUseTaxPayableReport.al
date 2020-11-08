@@ -67,6 +67,7 @@ report 14135155 "lvnUseTaxPayableReport"
                 trigger OnPreDataItem()
                 var
                     CrLineCount: Integer;
+                    InvLineCount: Integer;
                 begin
                     PurchInvLine.SetCurrentKey(lvnDeliveryState);
                     PurchCrMemoLine.SetCurrentKey(lvnDeliveryState);
@@ -103,6 +104,7 @@ report 14135155 "lvnUseTaxPayableReport"
                 var
                     TempDimSet: Record "Dimension Set Entry" temporary;
                     DimMgmt: Codeunit DimensionManagement;
+                    InvLineCount: Integer;
                 begin
                     if Number > 1 then
                         if Number <= InvLineCount then
@@ -231,7 +233,6 @@ report 14135155 "lvnUseTaxPayableReport"
         TaxAmount: Decimal;
         PrintToExcel: Boolean;
         Found: Boolean;
-        InvLineCount: Integer;
         StateLineTtl: Decimal;
         StateTaxAmtTtl: Decimal;
         ReportLineTtl: Decimal;
