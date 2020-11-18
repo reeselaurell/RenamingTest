@@ -11,9 +11,7 @@ codeunit 14135301 lvnCommissionReportsHelper
         if CommissionHelper.GetCommissionReportConsumerId() = ExpressionHeader."Consumer Id" then
             case ConsumerMetadata of
                 'REPORTLOAN':
-                    begin
-                        FillLoanFields(ExpressionBuffer);
-                    end;
+                    FillLoanFields(ExpressionBuffer);
             end;
     end;
 
@@ -24,7 +22,7 @@ codeunit 14135301 lvnCommissionReportsHelper
         FieldSequenceNo: Integer;
     begin
         LoanFieldsConfiguration.Reset();
-        if LoanFieldsConfiguration.FindSet() then begin
+        if LoanFieldsConfiguration.FindSet() then
             repeat
                 FieldSequenceNo := FieldSequenceNo + 1;
                 Clear(ExpressionValueBuffer);
@@ -33,7 +31,6 @@ codeunit 14135301 lvnCommissionReportsHelper
                 ExpressionValueBuffer.Type := Format(LoanFieldsConfiguration."Value Type");
                 ExpressionValueBuffer.Insert();
             until LoanFieldsConfiguration.Next() = 0;
-        end;
         TableFields.Reset();
         TableFields.SetRange(TableNo, Database::lvnLoan);
         TableFields.FindSet();

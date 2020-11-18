@@ -86,27 +86,4 @@ table 14135322 lvnDebtLogWorksheet
             Clustered = true;
         }
     }
-
-    trigger OnInsert()
-    begin
-
-    end;
-
-    trigger OnModify()
-    begin
-
-    end;
-
-    trigger OnDelete()
-    begin
-
-    end;
-
-    trigger OnRename()
-    begin
-
-    end;
-
-    var
-        myInt: Integer;
 }

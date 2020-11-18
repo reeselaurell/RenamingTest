@@ -117,7 +117,7 @@ report 14135116 "lvnForm1099ExcelExport"
 
     trigger OnPreReport()
     begin
-        ExcelExport.Init(Form1099ExportCaller, ExportFormat::Xlsx);
+        ExcelExport.Init(Form1099ExportCallerTxt, ExportFormat::Xlsx);
     end;
 
     trigger OnPostReport()
@@ -131,7 +131,7 @@ report 14135116 "lvnForm1099ExcelExport"
         NumberFormat: Code[20];
         TtlPaymentAmount: Decimal;
         MISCTotals: array[15] of Decimal;
-        Form1099ExportCaller: Label 'Form1099Export';
+        Form1099ExportCallerTxt: Label 'Form1099Export';
         ReportHeaderLbl: Label 'Form 1099 Data';
         FedIDColLbl: Label 'Federal ID No.';
         VendNoColLbl: Label 'Vendor No.';

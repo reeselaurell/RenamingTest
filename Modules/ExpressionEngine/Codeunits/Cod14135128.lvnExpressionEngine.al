@@ -173,8 +173,6 @@ codeunit 14135128 "lvnExpressionEngine"
         var TrueFormulaHeader: Record lvnExpressionHeader;
         var FalseFormulaHeader: Record lvnExpressionHeader;
         var ValueBuffer: Record lvnExpressionValueBuffer): Text
-    var
-        FieldList: Dictionary of [Text, Boolean];
     begin
         if ConditionHeader.Type <> ConditionHeader.Type::Condition then
             Error(WrongTypeErr);
@@ -356,9 +354,8 @@ codeunit 14135128 "lvnExpressionEngine"
                 if (Expression[1] = '(') and (Expression[StrLen(Expression)] = ')') then
                     Result := EvaluateBooleanExpression(CopyStr(Expression, 2, StrLen(Expression) - 2)) else
                     if Evaluate(Result, Expression) then;
-        end else begin
+        end else
             if Evaluate(Result, Expression) then;
-        end;
     end;
 
     procedure FormatComparison(Comparison: Enum lvnComparison): Text
@@ -644,8 +641,6 @@ codeunit 14135128 "lvnExpressionEngine"
         ExpLen: Integer;
         ParCount: Integer;
         OpIdx: Integer;
-        LeftOperand: Text;
-        RightOperand: Text;
         ExpandFrom: Integer;
         ExpandTo: Integer;
     begin
@@ -654,17 +649,15 @@ codeunit 14135128 "lvnExpressionEngine"
         while OpenIdx > 0 do begin
             //Open Parenthesis
             ParCount := 1;
-            for i := OpenIdx + 1 to ExpLen do begin
+            for i := OpenIdx + 1 to ExpLen do
                 if Expression[i] = '(' then
                     ParCount += 1
                 else
                     if Expression[i] = ')' then begin
-                        if ParCount = 1 then begin
+                        if ParCount = 1 then
                             Expression := CopyStr(Expression, 1, OpenIdx - 1) + CalculateDecimalValue(CopyStr(Expression, OpenIdx + 1, i - OpenIdx - 1), ValueBuffer) + CopyStr(Expression, i + 1);
-                        end;
                         ParCount -= 1;
                     end;
-            end;
             OpenIdx := StrPos(Expression, '(');
         end;
         //At this point we have an expression without parenthesis
@@ -825,9 +818,8 @@ codeunit 14135128 "lvnExpressionEngine"
                 if (Expression[1] = '(') and (Expression[StrLen(Expression)] = ')') then
                     Result := EvaluateDecimalExpression(CopyStr(Expression, 2, StrLen(Expression) - 2)) else
                     if Evaluate(Result, Expression) then;
-        end else begin
+        end else
             if Evaluate(Result, Expression) then;
-        end;
         exit(Result);
     end;
 

@@ -49,8 +49,8 @@ report 14135222 "lvnLoanLevelWorksheet"
     var
         LoanVisionSetup: Record lvnLoanVisionSetup;
         GLEntry: Record "G/L Entry";
-        LoanValuesView: Page lvnLoanValuesView;
         RefreshGLAnalysisEntries: Report lvnRefreshGLAnalysisEntries;
+        LoanValuesView: Page lvnLoanValuesView;
     begin
         GLEntry.Reset();
         GLEntry.FindLast();

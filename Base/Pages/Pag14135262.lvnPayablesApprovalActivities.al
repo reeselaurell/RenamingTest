@@ -107,7 +107,7 @@ page 14135262 "lvnPayablesApprovalActivities"
     begin
         UserSetup.Reset();
         UserSetup.SetRange("Approver ID", UserId);
-        ApprovalsIDExists := UserSetup.FindFirst();
+        ApprovalsIDExists := not UserSetup.IsEmpty();
     end;
 
     local procedure ApprovedNotPostedCount(): Integer

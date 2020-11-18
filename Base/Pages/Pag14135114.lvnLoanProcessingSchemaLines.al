@@ -113,11 +113,9 @@ page 14135114 "lvnLoanProcessingSchemaLines"
                                     end;
                                 end;
                             Rec."Processing Source Type"::"Loan Journal Variable Value":
-                                begin
-                                    if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
-                                        Rec."Field No." := LoanFieldsConfiguration."Field No.";
-                                        Rec.Description := LoanFieldsConfiguration."Field Name";
-                                    end;
+                                if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
+                                    Rec."Field No." := LoanFieldsConfiguration."Field No.";
+                                    Rec.Description := LoanFieldsConfiguration."Field Name";
                                 end;
                         end;
                     end;

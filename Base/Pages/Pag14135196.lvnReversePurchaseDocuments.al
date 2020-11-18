@@ -101,15 +101,10 @@ page 14135196 "lvnReversePurchaseDocuments"
 
                 trigger OnAction()
                 var
-                    GLEntry: Record "G/L Entry";
-                    CustLedgEntry: Record "Cust. Ledger Entry";
                     PurchHeader: Record "Purchase Header";
-                    PurchLine: Record "Purchase Line";
                     CopyDocumentMgt: Codeunit "Copy Document Mgt.";
                     RecordsCount: Integer;
                     Progress: Dialog;
-                    LoanNoLength: Integer;
-                    LastSymbolOfLoanNo: Text;
                     PurchDocTypeFrom: Enum "Purchase Document Type From";
                 begin
                     Rec.Reset();

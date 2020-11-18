@@ -109,7 +109,6 @@ codeunit 14135106 "lvnLoanManagement"
         LoanValue: Record lvnLoanValue;
         Loan: Record lvnLoan;
         LoanAddress: Record lvnLoanAddress;
-        LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
     begin
         if LoanJournalLine."Loan No." = '' then
             exit;
@@ -1079,7 +1078,6 @@ codeunit 14135106 "lvnLoanManagement"
         LoanValue: Record lvnLoanValue;
         Loan: Record lvnLoan;
         LoanAddress: Record lvnLoanAddress;
-        LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
     begin
         if LoanJournalLine."Loan No." = '' then
             exit;
@@ -1311,13 +1309,12 @@ codeunit 14135106 "lvnLoanManagement"
         if not LoanFieldsConfigurationRetrieved then begin
             LoanFieldsConfigurationRetrieved := true;
             LoanFieldsConfiguration.Reset;
-            if LoanFieldsConfiguration.FindSet() then begin
+            if LoanFieldsConfiguration.FindSet() then
                 repeat
                     Clear(TempLoanFieldsConfiguration);
                     TempLoanFieldsConfiguration := LoanFieldsConfiguration;
                     TempLoanFieldsConfiguration.Insert();
                 until LoanFieldsConfiguration.Next() = 0;
-            end;
         end;
     end;
 

@@ -213,14 +213,13 @@ page 14135213 "lvnPerformanceGLEntries"
                 GLEntry.Reset();
                 GLEntry.SetCurrentKey("Transaction No.");
                 GLEntry.SetRange("Transaction No.", Rec."Transaction No.");
-                if GLEntry.FindSet() then begin
+                if GLEntry.FindSet() then
                     repeat
                         if GetCostCenter(GLEntry) <> OriginalCostCenter then begin
                             CurrPage.DocumentExchange.Page.ReloadDocuments(CreateGuid());
                             exit;
                         end;
                     until GLEntry.Next() = 0;
-                end;
             end;
         end;
         CurrPage.DocumentExchange.Page.ReloadDocuments(Rec.lvnDocumentGuid);

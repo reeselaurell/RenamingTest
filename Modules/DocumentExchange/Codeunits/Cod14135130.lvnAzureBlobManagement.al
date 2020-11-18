@@ -77,8 +77,6 @@ codeunit 14135130 "lvnAzureBlobManagement"
     procedure DownloadFile(ContainerName: Text; FileName: Text; var Stream: InStream)
     var
         Client: HttpClient;
-        RequestContent: HttpContent;
-        ContentHeaders: HttpHeaders;
         ResponseMsg: HttpResponseMessage;
     begin
         GetAzureBlobSetup();

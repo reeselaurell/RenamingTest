@@ -15,7 +15,7 @@ codeunit 14135119 "lvnServicingManagement"
         var InterestAmount: Decimal)
     var
         GLEntry: Record "G/L Entry";
-        GLEntryBuffer: Record lvnGLEntryBuffer temporary;
+        TempGLEntryBuffer: Record lvnGLEntryBuffer temporary;
         LineNo: Integer;
         PreviousBalance: Decimal;
         InterestPerMonth: Decimal;
@@ -40,11 +40,11 @@ codeunit 14135119 "lvnServicingManagement"
         GLEntry.SetRange("G/L Account No.", LoanServicingSetup."Principal Red. G/L Account No.");
         if GLEntry.FindSet() then
             repeat
-                Clear(GLEntryBuffer);
-                GLEntryBuffer."Entry No." := GLEntry."Entry No.";
-                GLEntryBuffer.Amount := GLEntry.Amount;
-                GLEntryBuffer."Posting Date" := GLEntry."Posting Date";
-                GLEntryBuffer.Insert();
+                Clear(TempGLEntryBuffer);
+                TempGLEntryBuffer."Entry No." := GLEntry."Entry No.";
+                TempGLEntryBuffer.Amount := GLEntry.Amount;
+                TempGLEntryBuffer."Posting Date" := GLEntry."Posting Date";
+                TempGLEntryBuffer.Insert();
             until GLEntry.Next() = 0;
         InterestPerMonth := Loan."Interest Rate" / 12 / 100;
         MonthlyPayment := InterestPerMonth * Loan."Loan Amount" * Power(1 + InterestPerMonth, Loan."Loan Term (Months)") / (Power(1 + InterestPerMonth, Loan."Loan Term (Months)") - 1);
@@ -52,12 +52,12 @@ codeunit 14135119 "lvnServicingManagement"
         PreviousBalance := Loan."Loan Amount";
         CalculationDate := StartDate;
         for LineNo := 1 to Loan."Loan Term (Months)" do begin
-            GLEntryBuffer.Reset();
-            GLEntryBuffer.SetRange("Posting Date", CalcDate('<-1M + 1D>', CalculationDate), CalculationDate);
-            if GLEntryBuffer.FindSet() then begin
+            TempGLEntryBuffer.Reset();
+            TempGLEntryBuffer.SetRange("Posting Date", CalcDate('<-1M + 1D>', CalculationDate), CalculationDate);
+            if TempGLEntryBuffer.FindSet() then begin
                 repeat
-                    PreviousBalance := PreviousBalance + GLEntryBuffer.Amount;
-                until GLEntryBuffer.Next() = 0;
+                    PreviousBalance := PreviousBalance + TempGLEntryBuffer.Amount;
+                until TempGLEntryBuffer.Next() = 0;
                 if PreviousBalance < 0 then
                     PreviousBalance := 0;
             end;
@@ -69,9 +69,8 @@ codeunit 14135119 "lvnServicingManagement"
                 exit;
             InterestAmount := Round(InterestAmount, 0.01);
             PrincipalAmount := Round(PrincipalAmount, 0.01);
-            if (InterestAmount + PrincipalAmount) <> Loan."Monthly Payment Amount" then begin
+            if (InterestAmount + PrincipalAmount) <> Loan."Monthly Payment Amount" then
                 PrincipalAmount := Loan."Monthly Payment Amount" - InterestAmount;
-            end;
             CalculationDate := CalcDate(StrSubstNo('<+%1M>', LineNo), StartDate);
         end;
     end;
@@ -96,13 +95,12 @@ codeunit 14135119 "lvnServicingManagement"
         ServicingWorksheet: Record lvnServicingWorksheet;
     begin
         ServicingWorksheet.Reset();
-        if ServicingWorksheet.FindSet() then begin
+        if ServicingWorksheet.FindSet() then
             repeat
                 ServicingWorksheet.CalculateAmounts();
                 ValidateServicingLine(ServicingWorksheet);
                 ServicingWorksheet.Modify();
             until ServicingWorksheet.Next() = 0;
-        end;
     end;
 
     procedure ValidateServicingLine(var ServicingWorksheet: Record lvnServicingWorksheet)
@@ -113,11 +111,11 @@ codeunit 14135119 "lvnServicingManagement"
     begin
         GetSetupData();
         GetLoan(ServicingWorksheet."Loan No.");
-        if Loan."Date Sold" <> 0D then begin
+        if Loan."Date Sold" <> 0D then
             if Date2DMY(Loan."Date Sold", 1) > LoanServicingSetup."Last Servicing Month Day" then
-                ServicingWorksheet."Payable to Investor" := true else
+                ServicingWorksheet."Payable to Investor" := true
+            else
                 ServicingWorksheet."Last Servicing Period" := true;
-        end;
         Clear(ServicingWorksheet."Error Message");
         if LoanServicingSetup."Test Escrow Totals" then
             if Loan."Monthly Escrow Amount" <> ServicingWorksheet."Escrow Amount" then
@@ -234,7 +232,7 @@ codeunit 14135119 "lvnServicingManagement"
                 LineNo := LineNo + 1000;
                 EscrowFieldsMapping.Reset();
                 EscrowFieldsMapping.SetFilter("Map-To G/L Account No.", '<>%1', '');
-                if EscrowFieldsMapping.FindSet() then begin
+                if EscrowFieldsMapping.FindSet() then
                     repeat
                         if LoanValue.Get(ServicingWorksheet."Loan No.", EscrowFieldsMapping."Field No.") then begin
                             Clear(LoanDocumentLine);
@@ -251,8 +249,6 @@ codeunit 14135119 "lvnServicingManagement"
                             LineNo := LineNo + 1000;
                         end;
                     until EscrowFieldsMapping.Next() = 0;
-                end;
-
             end;
         until ServicingWorksheet.Next() = 0;
     end;
@@ -263,9 +259,7 @@ codeunit 14135119 "lvnServicingManagement"
         AsOfDate: Date)
     var
         DimensionHierarchy: Record lvnDimensionHierarchy;
-        GetShortcutDimensionValues: Codeunit "Get Shortcut Dimension Values";
     begin
-
         if (MainDimensionNo < 1) or (MainDimensionNo > 8) then
             exit;
         DimensionHierarchy.Reset();
@@ -313,18 +307,17 @@ codeunit 14135119 "lvnServicingManagement"
 
     local procedure CalculateSwitch(SwitchCode: Code[20]; LoanNo: Code[20]): Text
     var
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         ExpressionHeader: Record lvnExpressionHeader;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionEngine: Codeunit lvnExpressionEngine;
         Value: Text;
-        FieldSequenceNo: Integer;
         SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
     begin
         GetLoan(LoanNo);
-        ConditionsMgmt.FillLoanFieldValues(ExpressionValueBuffer, Loan);
+        ConditionsMgmt.FillLoanFieldValues(TempExpressionValueBuffer, Loan);
         ExpressionHeader.Get(SwitchCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        if not ExpressionEngine.SwitchCase(ExpressionHeader, Value, ExpressionValueBuffer) then
+        if not ExpressionEngine.SwitchCase(ExpressionHeader, Value, TempExpressionValueBuffer) then
             Error(SwitchCaseErr, SwitchCode);
         exit(Value);
     end;

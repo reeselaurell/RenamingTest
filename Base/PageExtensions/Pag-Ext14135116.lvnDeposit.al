@@ -30,21 +30,21 @@ pageextension 14135116 "lvnDeposit" extends Deposit
 
                 trigger OnAction()
                 var
-                    GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
-                    ImportBufferError: Record lvnImportBufferError temporary;
+                    TempGenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
+                    TempImportBufferError: Record lvnImportBufferError temporary;
                     DepositFileImportMgmt: Codeunit lvnDepositFileImportMgmt;
                     JournalDataImport: Page lvnJournalDataImport;
                 begin
                     Clear(DepositFileImportMgmt);
-                    if not DepositFileImportMgmt.ManualFileImport(GenJnlImportBuffer, ImportBufferError) then
+                    if not DepositFileImportMgmt.ManualFileImport(TempGenJnlImportBuffer, TempImportBufferError) then
                         exit;
-                    ImportBufferError.Reset();
-                    if not ImportBufferError.IsEmpty() then begin
+                    TempImportBufferError.Reset();
+                    if not TempImportBufferError.IsEmpty() then begin
                         Clear(JournalDataImport);
-                        JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
+                        JournalDataImport.SetParams(TempGenJnlImportBuffer, TempImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        DepositFileImportMgmt.CreateJournalLines(GenJnlImportBuffer, Rec."No.");
+                        DepositFileImportMgmt.CreateJournalLines(TempGenJnlImportBuffer, Rec."No.");
                     CurrPage.Update(false);
                 end;
             }

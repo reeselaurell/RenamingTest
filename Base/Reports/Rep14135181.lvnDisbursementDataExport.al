@@ -55,7 +55,7 @@ report 14135181 "lvnDisbursementDataExport"
                 DetailedVendLedgEntry.SetRange("Entry Type", DetailedVendLedgEntry."Entry Type"::Application);
                 DetailedVendLedgEntry.SetRange("Initial Document Type", DetailedVendLedgEntry."Initial Document Type"::Invoice);
                 DetailedVendLedgEntry.SetLoadFields("Vendor Ledger Entry No.");
-                if DetailedVendLedgEntry.FindSet() then begin
+                if DetailedVendLedgEntry.FindSet() then
                     repeat
                         NewRow;
                         VendorLedgerEntry.Get(DetailedVendLedgEntry."Vendor Ledger Entry No.");
@@ -74,15 +74,14 @@ report 14135181 "lvnDisbursementDataExport"
                         if ClearedDate <> 0D then
                             ExportDateColumn(ClearedDate);
                     until DetailedVendLedgEntry.Next() = 0;
-                end;
             end;
 
             trigger OnPostDataItem()
             begin
-                ExcelBuffer.CreateNewBook(ExportNameLbl);
-                ExcelBuffer.WriteSheet(ExportNameLbl, CompanyName, UserId);
-                ExcelBuffer.CloseBook();
-                ExcelBuffer.OpenExcel();
+                TempExcelBuffer.CreateNewBook(ExportNameLbl);
+                TempExcelBuffer.WriteSheet(ExportNameLbl, CompanyName, UserId);
+                TempExcelBuffer.CloseBook();
+                TempExcelBuffer.OpenExcel();
             end;
         }
     }
@@ -94,7 +93,7 @@ report 14135181 "lvnDisbursementDataExport"
         CheckLedgerEntry: Record "Check Ledger Entry";
         PostedBankRecHeader: Record "Posted Bank Rec. Header";
         BankAccountLedgerEntry: Record "Bank Account Ledger Entry";
-        ExcelBuffer: Record "Excel Buffer" temporary;
+        TempExcelBuffer: Record "Excel Buffer" temporary;
         ColumnNo: Integer;
         RowNo: Integer;
         ClearedDate: Date;
@@ -121,24 +120,24 @@ report 14135181 "lvnDisbursementDataExport"
 
     local procedure ExportTextColumn(Value: Text; Bold: Boolean)
     begin
-        Clear(ExcelBuffer);
-        ExcelBuffer.Validate("Row No.", RowNo);
-        ExcelBuffer.Validate("Column No.", ColumnNo);
-        ExcelBuffer.Validate("Cell Value as Text", Value);
-        ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.Validate(Bold, Bold);
-        ExcelBuffer.Insert(true);
+        Clear(TempExcelBuffer);
+        TempExcelBuffer.Validate("Row No.", RowNo);
+        TempExcelBuffer.Validate("Column No.", ColumnNo);
+        TempExcelBuffer.Validate("Cell Value as Text", Value);
+        TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.Validate(Bold, Bold);
+        TempExcelBuffer.Insert(true);
         ColumnNo := ColumnNo + 1;
     end;
 
     local procedure ExportDateColumn(Value: Date)
     begin
-        Clear(ExcelBuffer);
-        ExcelBuffer.Validate("Row No.", RowNo);
-        ExcelBuffer.Validate("Column No.", ColumnNo);
-        ExcelBuffer.Validate("Cell Value as Text", Format(Value));
-        ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Date);
-        ExcelBuffer.Insert(true);
+        Clear(TempExcelBuffer);
+        TempExcelBuffer.Validate("Row No.", RowNo);
+        TempExcelBuffer.Validate("Column No.", ColumnNo);
+        TempExcelBuffer.Validate("Cell Value as Text", Format(Value));
+        TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Date);
+        TempExcelBuffer.Insert(true);
         ColumnNo := ColumnNo + 1;
     end;
 
@@ -146,13 +145,13 @@ report 14135181 "lvnDisbursementDataExport"
     var
         NumberFormatTxt: Label '0.00';
     begin
-        Clear(ExcelBuffer);
-        ExcelBuffer.Validate("Row No.", RowNo);
-        ExcelBuffer.Validate("Column No.", ColumnNo);
-        ExcelBuffer.Validate("Cell Value as Text", Format(Value));
-        ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Number);
-        ExcelBuffer.NumberFormat := NumberFormatTxt;
-        ExcelBuffer.Insert(true);
+        Clear(TempExcelBuffer);
+        TempExcelBuffer.Validate("Row No.", RowNo);
+        TempExcelBuffer.Validate("Column No.", ColumnNo);
+        TempExcelBuffer.Validate("Cell Value as Text", Format(Value));
+        TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Number);
+        TempExcelBuffer.NumberFormat := NumberFormatTxt;
+        TempExcelBuffer.Insert(true);
         ColumnNo := ColumnNo + 1;
     end;
 
@@ -160,13 +159,13 @@ report 14135181 "lvnDisbursementDataExport"
     var
         NumberFormatTxt: Label '0';
     begin
-        Clear(ExcelBuffer);
-        ExcelBuffer.Validate("Row No.", RowNo);
-        ExcelBuffer.Validate("Column No.", ColumnNo);
-        ExcelBuffer.Validate("Cell Value as Text", Format(Value));
-        ExcelBuffer.Validate("Cell Type", ExcelBuffer."Cell Type"::Number);
-        ExcelBuffer.NumberFormat := NumberFormatTxt;
-        ExcelBuffer.Insert(true);
+        Clear(TempExcelBuffer);
+        TempExcelBuffer.Validate("Row No.", RowNo);
+        TempExcelBuffer.Validate("Column No.", ColumnNo);
+        TempExcelBuffer.Validate("Cell Value as Text", Format(Value));
+        TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Number);
+        TempExcelBuffer.NumberFormat := NumberFormatTxt;
+        TempExcelBuffer.Insert(true);
         ColumnNo := ColumnNo + 1;
     end;
 }

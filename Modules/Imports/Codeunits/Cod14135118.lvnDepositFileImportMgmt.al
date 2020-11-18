@@ -153,7 +153,7 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
             TempFileImportJnlLine.FindSet();
             repeat
                 Value := TempCSVBuffer.GetValue(StartLine, TempFileImportJnlLine."Column No.");
-                if Value <> '' then begin
+                if Value <> '' then
                     case TempFileImportJnlLine."Deposit Import Field Type" of
                         TempFileImportJnlLine."Deposit Import Field Type"::"Account No.":
                             begin
@@ -227,7 +227,6 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
                         TempFileImportJnlLine."Deposit Import Field Type"::"Reason Code":
                             GenJnlImportBuffer."Reason Code" := CopyStr(Value, 1, MaxStrLen(GenJnlImportBuffer."Reason Code"));
                     end;
-                end;
             until TempFileImportJnlLine.Next() = 0;
             GenJnlImportBuffer.Modify();
             StartLine := StartLine + 1;
@@ -587,27 +586,25 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
                         end;
                 end;
             FileImportSchema."Account Mapping Type"::"No.":
-                begin
-                    case GenJnlAccountType of
-                        GenJnlAccountType::"G/L Account":
-                            if GLAccount.Get(Value) and (GLAccount."Account Type" = GLAccount."Account Type"::Posting) then
-                                AccountNo := GLAccount."No.";
-                        GenJnlAccountType::"Bank Account":
-                            if BankAccount.Get(Value) then
-                                AccountNo := BankAccount."No.";
-                        GenJnlAccountType::Customer:
-                            if Customer.Get(Value) then
-                                AccountNo := Customer."No.";
-                        GenJnlAccountType::Vendor:
-                            if Vendor.Get(Value) then
-                                AccountNo := Vendor."No.";
-                        GenJnlAccountType::"Fixed Asset":
-                            if FixedAsset.Get(Value) then
-                                AccountNo := FixedAsset."No.";
-                        GenJnlAccountType::"IC Partner":
-                            if ICPartner.Get(Value) then
-                                AccountNo := ICPartner.Code;
-                    end;
+                case GenJnlAccountType of
+                    GenJnlAccountType::"G/L Account":
+                        if GLAccount.Get(Value) and (GLAccount."Account Type" = GLAccount."Account Type"::Posting) then
+                            AccountNo := GLAccount."No.";
+                    GenJnlAccountType::"Bank Account":
+                        if BankAccount.Get(Value) then
+                            AccountNo := BankAccount."No.";
+                    GenJnlAccountType::Customer:
+                        if Customer.Get(Value) then
+                            AccountNo := Customer."No.";
+                    GenJnlAccountType::Vendor:
+                        if Vendor.Get(Value) then
+                            AccountNo := Vendor."No.";
+                    GenJnlAccountType::"Fixed Asset":
+                        if FixedAsset.Get(Value) then
+                            AccountNo := FixedAsset."No.";
+                    GenJnlAccountType::"IC Partner":
+                        if ICPartner.Get(Value) then
+                            AccountNo := ICPartner.Code;
                 end;
             FileImportSchema."Account Mapping Type"::"No. 2":
                 case GenJnlAccountType of
@@ -662,9 +659,8 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
                         begin
                             ICPartner.Reset;
                             ICPartner.SetFilter(Name, '@' + Value);
-                            if ICPartner.FindFirst() then begin
+                            if ICPartner.FindFirst() then
                                 AccountNo := ICPartner.Code;
-                            end;
                         end;
                 end;
         end;

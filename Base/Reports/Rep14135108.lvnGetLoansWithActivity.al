@@ -26,9 +26,9 @@ report 14135108 "lvnGetLoansWithActivity"
                     if Counter mod 100 = 0 then
                         ProgressDialog.Update(1, Counter);
                 end;
-                Clear(ReportingBuffer);
-                ReportingBuffer."Loan No." := lvnLoanNo;
-                ReportingBuffer.Insert();
+                Clear(TempReportingBuffer);
+                TempReportingBuffer."Loan No." := lvnLoanNo;
+                TempReportingBuffer.Insert();
             end;
 
             trigger OnPostDataItem()
@@ -40,7 +40,7 @@ report 14135108 "lvnGetLoansWithActivity"
     }
 
     var
-        ReportingBuffer: Record lvnLoanReportingBuffer temporary;
+        TempReportingBuffer: Record lvnLoanReportingBuffer temporary;
         ProgressDialog: Dialog;
         Counter: Integer;
         ProcessingEntryLbl: Label 'Processing Entry #1########## of #2###########';
@@ -49,12 +49,12 @@ report 14135108 "lvnGetLoansWithActivity"
     begin
         LoanReportingBuffer.Reset();
         LoanReportingBuffer.DeleteAll();
-        ReportingBuffer.Reset();
-        ReportingBuffer.FindSet();
+        TempReportingBuffer.Reset();
+        TempReportingBuffer.FindSet();
         repeat
             Clear(LoanReportingBuffer);
-            LoanReportingBuffer := ReportingBuffer;
+            LoanReportingBuffer := TempReportingBuffer;
             LoanReportingBuffer.Insert();
-        until ReportingBuffer.Next() = 0;
+        until TempReportingBuffer.Next() = 0;
     end;
 }

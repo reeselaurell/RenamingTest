@@ -45,11 +45,11 @@ report 14135300 lvnCalculateCommissions
             trigger OnAfterGetRecord()
             var
                 CommissionProfileLine: Record lvnCommissionProfileLine;
-                CalcBuffer: Record lvnLoanCommissionBuffer temporary;
+                TempLoanCommissionBuffer: Record lvnLoanCommissionBuffer temporary;
                 Loan: Record lvnLoan;
                 CommissionValueEntry: Record lvnCommissionValueEntry;
                 ExpressionHeader: Record lvnExpressionHeader;
-                ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+                TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
                 CommissionTierHeader: Record lvnCommissionTierHeader;
                 BufferEntryNo: Integer;
                 ValidLoan: Boolean;
@@ -62,8 +62,8 @@ report 14135300 lvnCalculateCommissions
                 TotalUnits: Decimal;
                 TotalVolume: Decimal;
             begin
-                LoanCommissionBuffer.Reset();
-                LoanCommissionBuffer.DeleteAll();
+                TempLoanCommissionBuffer.Reset();
+                TempLoanCommissionBuffer.DeleteAll();
                 BufferEntryNo := 0;
                 CommissionProfileLine.Reset();
                 CommissionProfileLine.SetRange("Profile Code", CommissionProfile.Code);
@@ -81,25 +81,21 @@ report 14135300 lvnCalculateCommissions
                             repeat
                                 //Add check for condition and valid dates
                                 ValidLoan := true;
-                                if (CommissionProfileLine."Valid From Date" <> 0D) then begin
+                                if (CommissionProfileLine."Valid From Date" <> 0D) then
                                     if (Loan."Commission Date" < CommissionProfileLine."Valid From Date") then
                                         ValidLoan := false;
-                                end;
-                                if (CommissionProfileLine."Valid To Date" <> 0D) then begin
+                                if (CommissionProfileLine."Valid To Date" <> 0D) then
                                     if (Loan."Commission Date" > CommissionProfileLine."Valid To Date") then
                                         ValidLoan := false;
-                                end;
-                                if ValidLoan then begin
+                                if ValidLoan then
                                     if CommissionProfileLine."Loan Level Condition Code" <> '' then begin
                                         if not ExpressionHeader.Get(CommissionProfileLine."Loan Level Condition Code", CommissionCalcHelper.GetCommissionConsumerId()) then
                                             Error(FindingConditionErr, CommissionProfileLine."Profile Code", CommissionProfileLine."Loan Level Condition Code", CommissionProfileLine."Line No.");
-                                        FillCalculationBuffer(Loan, CommissionProfileLine, ExpressionValueBuffer);
-                                        ValidLoan := ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer);
+                                        FillCalculationBuffer(Loan, CommissionProfileLine, TempExpressionValueBuffer);
+                                        ValidLoan := ExpressionEngine.CheckCondition(ExpressionHeader, TempExpressionValueBuffer);
                                     end;
-                                end;
-                                if ValidLoan then begin
+                                if ValidLoan then
                                     CreateJournalBufferFromLoan(Loan, BufferEntryNo, CommissionProfileLine."Line No.");
-                                end;
                             until Loan.Next() = 0;
                         CommissionValueEntry.Reset();
                         CommissionValueEntry.SetRange("Calculation Line No.", CommissionProfileLine."Line No.");
@@ -109,19 +105,19 @@ report 14135300 lvnCalculateCommissions
                         if CommissionValueEntry.FindSet() then
                             repeat
                                 CreateJournalBufferFromValueEntry(CommissionValueEntry, BufferEntryNo, CommissionProfileLine."Line No.");
-                            until CommissionValueEntry.next = 0;
+                            until CommissionValueEntry.Next() = 0;
                     until CommissionProfileLine.Next() = 0;
-                CalcBuffer.Reset();
-                CalcBuffer.DeleteAll();
-                LoanCommissionBuffer.Reset();
-                if LoanCommissionBuffer.FindSet() then
+                TempLoanCommissionBuffer.Reset();
+                TempLoanCommissionBuffer.DeleteAll();
+                TempLoanCommissionBuffer.Reset();
+                if TempLoanCommissionBuffer.FindSet() then
                     repeat
-                        Clear(CalcBuffer);
-                        CalcBuffer := LoanCommissionBuffer;
-                        CalcBuffer."Commission Amount" := 0;
-                        CalcBuffer.Bps := 0;
-                        CalcBuffer.Insert();
-                    until LoanCommissionBuffer.Next() = 0;
+                        Clear(TempLoanCommissionBuffer);
+                        TempLoanCommissionBuffer := TempLoanCommissionBuffer;
+                        TempLoanCommissionBuffer."Commission Amount" := 0;
+                        TempLoanCommissionBuffer.Bps := 0;
+                        TempLoanCommissionBuffer.Insert();
+                    until TempLoanCommissionBuffer.Next() = 0;
                 //Loan Level
                 CommissionProfileLine.SetRange("Profile Line Type", CommissionProfileLine."Profile Line Type"::"Loan Level");
                 if CommissionProfileLine.FindSet() then
@@ -136,89 +132,89 @@ report 14135300 lvnCalculateCommissions
                         //Fill in Quarterly data
                         //Fill in Yearly data
                         //Fill in Single period data
-                        CalcBuffer.Reset();
-                        CalcBuffer.SetRange("Profile Code", CommissionProfileLine."Profile Code");
-                        CalcBuffer.SetRange("Profile Line No.", CommissionProfileLine."Line No.");
-                        if CalcBuffer.FindSet() then begin
+                        TempLoanCommissionBuffer.Reset();
+                        TempLoanCommissionBuffer.SetRange("Profile Code", CommissionProfileLine."Profile Code");
+                        TempLoanCommissionBuffer.SetRange("Profile Line No.", CommissionProfileLine."Line No.");
+                        if TempLoanCommissionBuffer.FindSet() then begin
                             if CommissionProfileLine."Loan Calculation Type" = CommissionProfileLine."Loan Calculation Type"::Tiers then begin
-                                LoanCommissionBuffer.Reset();
-                                LoanCommissionBuffer.SetRange("Profile Code", CommissionProfileLine."Profile Code");
+                                TempLoanCommissionBuffer.Reset();
+                                TempLoanCommissionBuffer.SetRange("Profile Code", CommissionProfileLine."Profile Code");
                                 if CommissionProfileLine."Totals Based On Line No." = 0 then
-                                    LoanCommissionBuffer.SetRange("Profile Line No.", CommissionProfileLine."Line No.")
+                                    TempLoanCommissionBuffer.SetRange("Profile Line No.", CommissionProfileLine."Line No.")
                                 else
-                                    LoanCommissionBuffer.SetRange("Profile Line No.", CommissionProfileLine."Totals Based On Line No.");
-                                LoanCommissionBuffer.SetRange("Commission Date", CurrentMonthStartDate, CurrentMonthEndDate);
-                                CurrentMonthUnits := LoanCommissionBuffer.Count();
-                                LoanCommissionBuffer.CalcSums("Base Amount");
-                                CurrentMonthAmount := LoanCommissionBuffer."Base Amount";
-                                LoanCommissionBuffer.SetRange("Commission Date", NextMonthStartDate, NextMonthEndDate);
-                                NextMonthUnits := LoanCommissionBuffer.Count();
-                                LoanCommissionBuffer.CalcSums("Base Amount");
-                                NextMonthAmount := LoanCommissionBuffer."Base Amount";
+                                    TempLoanCommissionBuffer.SetRange("Profile Line No.", CommissionProfileLine."Totals Based On Line No.");
+                                TempLoanCommissionBuffer.SetRange("Commission Date", CurrentMonthStartDate, CurrentMonthEndDate);
+                                CurrentMonthUnits := TempLoanCommissionBuffer.Count();
+                                TempLoanCommissionBuffer.CalcSums("Base Amount");
+                                CurrentMonthAmount := TempLoanCommissionBuffer."Base Amount";
+                                TempLoanCommissionBuffer.SetRange("Commission Date", NextMonthStartDate, NextMonthEndDate);
+                                NextMonthUnits := TempLoanCommissionBuffer.Count();
+                                TempLoanCommissionBuffer.CalcSums("Base Amount");
+                                NextMonthAmount := TempLoanCommissionBuffer."Base Amount";
                             end;
                             CurrentOnGoingUnits := 0;
                             CurrentOnGoingVolume := 0;
                             NextOnGoingUnits := 0;
                             NextOnGoingVolume := 0;
                             repeat
-                                if CalcBuffer."Commission Date" > CurrentMonthEndDate then begin
-                                    NextOnGoingVolume := NextOnGoingVolume + CalcBuffer."Base Amount";
+                                if TempLoanCommissionBuffer."Commission Date" > CurrentMonthEndDate then begin
+                                    NextOnGoingVolume := NextOnGoingVolume + TempLoanCommissionBuffer."Base Amount";
                                     NextOnGoingUnits := NextOnGoingUnits + 1;
                                     OnGoingVolume := NextOnGoingVolume;
                                     OnGoingUnits := NextOnGoingUnits;
                                     TotalUnits := NextMonthUnits;
                                     TotalVolume := NextMonthAmount;
                                 end else begin
-                                    CurrentOnGoingVolume := CurrentOnGoingVolume + CalcBuffer."Base Amount";
+                                    CurrentOnGoingVolume := CurrentOnGoingVolume + TempLoanCommissionBuffer."Base Amount";
                                     CurrentOnGoingUnits := CurrentOnGoingUnits + 1;
                                     OnGoingVolume := CurrentOnGoingVolume;
                                     OnGoingUnits := CurrentOnGoingUnits;
                                     TotalUnits := CurrentMonthUnits;
                                     TotalVolume := CurrentMonthAmount;
                                 end;
-                                Loan.Get(CalcBuffer."Loan No.");
+                                Loan.Get(TempLoanCommissionBuffer."Loan No.");
                                 case CommissionProfileLine."Loan Calculation Type" of
                                     CommissionProfileLine."Loan Calculation Type"::"Defined Bps":
                                         begin
-                                            CalcBuffer."Commission Amount" := CommissionProfileLine.Parameter * CalcBuffer."Base Amount" / 10000;
-                                            CalcBuffer.Bps := CommissionProfileLine.Parameter;
+                                            TempLoanCommissionBuffer."Commission Amount" := CommissionProfileLine.Parameter * TempLoanCommissionBuffer."Base Amount" / 10000;
+                                            TempLoanCommissionBuffer.Bps := CommissionProfileLine.Parameter;
                                         end;
                                     CommissionProfileLine."Loan Calculation Type"::"Defined Value":
                                         begin
-                                            CalcBuffer."Commission Amount" := CommissionProfileLine.Parameter;
-                                            if CalcBuffer."Base Amount" <> 0 then
-                                                CalcBuffer.Bps := CalcBuffer."Commission Amount" / CalcBuffer."Base Amount" * 10000;
+                                            TempLoanCommissionBuffer."Commission Amount" := CommissionProfileLine.Parameter;
+                                            if TempLoanCommissionBuffer."Base Amount" <> 0 then
+                                                TempLoanCommissionBuffer.Bps := TempLoanCommissionBuffer."Commission Amount" / TempLoanCommissionBuffer."Base Amount" * 10000;
                                         end;
                                     CommissionProfileLine."Loan Calculation Type"::Formula:
                                         begin
                                             if not ExpressionHeader.Get(CommissionProfileLine."Loan Level Function Code", CommissionCalcHelper.GetCommissionConsumerId()) then
                                                 Error(FindingFunctionErr, CommissionProfileLine."Loan Level Function Code", CommissionProfileLine."Profile Code", CommissionProfileLine."Line No.");
-                                            FillCalculationBuffer(Loan, CommissionProfileLine, ExpressionValueBuffer);
-                                            Evaluate(CalcBuffer."Commission Amount", ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer));
-                                            if CalcBuffer."Base Amount" <> 0 then
-                                                CalcBuffer.Bps := CalcBuffer."Commission Amount" / CalcBuffer."Base Amount" * 10000;
+                                            FillCalculationBuffer(Loan, CommissionProfileLine, TempExpressionValueBuffer);
+                                            Evaluate(TempLoanCommissionBuffer."Commission Amount", ExpressionEngine.CalculateFormula(ExpressionHeader, TempExpressionValueBuffer));
+                                            if TempLoanCommissionBuffer."Base Amount" <> 0 then
+                                                TempLoanCommissionBuffer.Bps := TempLoanCommissionBuffer."Commission Amount" / TempLoanCommissionBuffer."Base Amount" * 10000;
                                         end;
                                     CommissionProfileLine."Loan Calculation Type"::"Loan Card Bps":
                                         begin
-                                            CalcBuffer."Commission Amount" := Loan."Commission Bps" * CalcBuffer."Base Amount" / 10000;
-                                            CalcBuffer.Bps := Loan."Commission Bps";
+                                            TempLoanCommissionBuffer."Commission Amount" := Loan."Commission Bps" * TempLoanCommissionBuffer."Base Amount" / 10000;
+                                            TempLoanCommissionBuffer.Bps := Loan."Commission Bps";
                                         end;
                                     CommissionProfileLine."Loan Calculation Type"::"Loan Card Value":
                                         begin
-                                            CalcBuffer."Commission Amount" := Loan."Commission Amount";
-                                            if CalcBuffer."Base Amount" <> 0 then
-                                                CalcBuffer.Bps := CalcBuffer."Commission Amount" / CalcBuffer."Base Amount" * 10000;
+                                            TempLoanCommissionBuffer."Commission Amount" := Loan."Commission Amount";
+                                            if TempLoanCommissionBuffer."Base Amount" <> 0 then
+                                                TempLoanCommissionBuffer.Bps := TempLoanCommissionBuffer."Commission Amount" / TempLoanCommissionBuffer."Base Amount" * 10000;
                                         end;
                                     CommissionProfileLine."Loan Calculation Type"::Tiers:
                                         begin
                                             CommissionTierHeader.Get(CommissionProfileLine."Tier Code");
                                             if CheckLoanTierPayoutCondition(Loan, CommissionTierHeader) then
-                                                CommissionCalcHelper.CalculateLoanTier(CalcBuffer, CommissionTierHeader, OnGoingVolume, TotalVolume, OnGoingUnits, TotalUnits);
+                                                CommissionCalcHelper.CalculateLoanTier(TempLoanCommissionBuffer, CommissionTierHeader, OnGoingVolume, TotalVolume, OnGoingUnits, TotalUnits);
                                         end;
                                 end;
-                                CalcBuffer.Modify();
-                                AddCommissionJournalLine(CommissionProfileLine, CalcBuffer);
-                            until CalcBuffer.Next() = 0;
+                                TempLoanCommissionBuffer.Modify();
+                                AddCommissionJournalLine(CommissionProfileLine, TempLoanCommissionBuffer);
+                            until TempLoanCommissionBuffer.Next() = 0;
                         end;
                     until CommissionProfileLine.Next() = 0;
                 //Period Level
@@ -278,7 +274,7 @@ report 14135300 lvnCalculateCommissions
     var
         CommissionSchedule: Record lvnCommissionSchedule;
         LoanVisionSetup: Record lvnLoanVisionSetup;
-        LoanCommissionBuffer: Record lvnLoanCommissionBuffer temporary;
+        TempLoanCommissionBuffer: Record lvnLoanCommissionBuffer temporary;
         DimensionsManagement: Codeunit lvnDimensionsManagement;
         CommissionCalcHelper: Codeunit lvnCommissionCalcHelper;
         ExpressionEngine: Codeunit lvnExpressionEngine;
@@ -359,40 +355,40 @@ report 14135300 lvnCalculateCommissions
         CommissionJournalLine.DeleteAll(true);
     end;
 
-    local procedure AppendExpressionValue(var ExpressionValueBuffer: Record lvnExpressionValueBuffer; var ValueNo: Integer; Name: Text; Value: Decimal)
+    local procedure AppendExpressionValue(var TempExpressionValueBuffer: Record lvnExpressionValueBuffer; var ValueNo: Integer; Name: Text; Value: Decimal)
     begin
-        Clear(ExpressionValueBuffer);
+        Clear(TempExpressionValueBuffer);
         ValueNo := ValueNo + 1;
-        ExpressionValueBuffer.Number := ValueNo;
-        ExpressionValueBuffer.Name := Name;
-        ExpressionValueBuffer.Type := 'Decimal';
-        ExpressionValueBuffer.Value := Format(Value, 0, 9);
-        ExpressionValueBuffer.Insert();
+        TempExpressionValueBuffer.Number := ValueNo;
+        TempExpressionValueBuffer.Name := Name;
+        TempExpressionValueBuffer.Type := 'Decimal';
+        TempExpressionValueBuffer.Value := Format(Value, 0, 9);
+        TempExpressionValueBuffer.Insert();
     end;
 
-    local procedure AppendExpressionValue(var ExpressionValueBuffer: Record lvnExpressionValueBuffer; var ValueNo: Integer; Name: Text; Value: Boolean)
+    local procedure AppendExpressionValue(var TempExpressionValueBuffer: Record lvnExpressionValueBuffer; var ValueNo: Integer; Name: Text; Value: Boolean)
     begin
-        Clear(ExpressionValueBuffer);
+        Clear(TempExpressionValueBuffer);
         ValueNo := ValueNo + 1;
-        ExpressionValueBuffer.Number := ValueNo;
-        ExpressionValueBuffer.Name := Name;
-        ExpressionValueBuffer.Type := 'Decimal';
+        TempExpressionValueBuffer.Number := ValueNo;
+        TempExpressionValueBuffer.Name := Name;
+        TempExpressionValueBuffer.Type := 'Decimal';
         if Value then
-            ExpressionValueBuffer.Value := 'True'
+            TempExpressionValueBuffer.Value := 'True'
         else
-            ExpressionValueBuffer.Value := 'False';
-        ExpressionValueBuffer.Insert();
+            TempExpressionValueBuffer.Value := 'False';
+        TempExpressionValueBuffer.Insert();
     end;
 
-    local procedure AppendExpressionValue(var ExpressionValueBuffer: Record lvnExpressionValueBuffer; var ValueNo: Integer; Name: Text; Value: Text)
+    local procedure AppendExpressionValue(var TempExpressionValueBuffer: Record lvnExpressionValueBuffer; var ValueNo: Integer; Name: Text; Value: Text)
     begin
-        Clear(ExpressionValueBuffer);
+        Clear(TempExpressionValueBuffer);
         ValueNo := ValueNo + 1;
-        ExpressionValueBuffer.Number := ValueNo;
-        ExpressionValueBuffer.Name := Name;
-        ExpressionValueBuffer.Type := 'Text';
-        ExpressionValueBuffer.Value := Value;
-        ExpressionValueBuffer.Insert();
+        TempExpressionValueBuffer.Number := ValueNo;
+        TempExpressionValueBuffer.Name := Name;
+        TempExpressionValueBuffer.Type := 'Text';
+        TempExpressionValueBuffer.Value := Value;
+        TempExpressionValueBuffer.Insert();
     end;
 
     local procedure GetJournalStats(var CommissionProfileLine: Record lvnCommissionProfileLine; StartDate: Date; EndDate: Date; var Units: Decimal; var Volume: Decimal; var Commission: Decimal; Append: Boolean): Boolean
@@ -442,8 +438,8 @@ report 14135300 lvnCalculateCommissions
     local procedure CalculatePeriodLevelProfileLine(var CommissionProfileLine: Record lvnCommissionProfileLine; CommissionDate: Date)
     var
         ExpressionHeader: Record lvnExpressionHeader;
-        CalcBuffer: Record lvnLoanCommissionBuffer temporary;
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempLoanCommissionBuffer: Record lvnLoanCommissionBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         CommissionTierHeader: Record lvnCommissionTierHeader;
         Commission: Decimal;
         Volume: Decimal;
@@ -452,69 +448,69 @@ report 14135300 lvnCalculateCommissions
         CurrentMonthVolume: Decimal;
         ValueNo: Integer;
     begin
-        ExpressionValueBuffer.Reset();
-        ExpressionValueBuffer.DeleteAll();
+        TempExpressionValueBuffer.Reset();
+        TempExpressionValueBuffer.DeleteAll();
         ValueNo := 0;
-        Clear(CalcBuffer);
-        CalcBuffer."Commission Date" := CommissionDate;
+        Clear(TempLoanCommissionBuffer);
+        TempLoanCommissionBuffer."Commission Date" := CommissionDate;
         GetJournalStats(CommissionProfileLine, CurrentPeriodStartDate, CurrentPeriodEndDate, Units, Volume, Commission, false);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'CurrentCount', Units);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'CurrentAmount', Volume);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'CurrentCommission', Commission);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'CurrentCount', Units);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'CurrentAmount', Volume);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'CurrentCommission', Commission);
         GetLedgerStats(CommissionProfileLine, CurrentPeriodStartDate, CurrentPeriodEndDate, Units, Volume, Commission, true);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'PeriodCount', Units);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'PeriodAmount', Volume);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'PeriodCommission', Commission);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'PeriodCount', Units);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'PeriodAmount', Volume);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'PeriodCommission', Commission);
         GetJournalStats(CommissionProfileLine, CurrentMonthStartDate, CurrentMonthEndDate, Units, Volume, Commission, false);
         GetLedgerStats(CommissionProfileLine, CurrentMonthStartDate, CurrentMonthEndDate, Units, Volume, Commission, true);
         CurrentMonthUnits := Units;
         CurrentMonthVolume := Volume;
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'MonthCount', Units);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'MonthAmount', Volume);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'MonthCommission', Commission);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'MonthCount', Units);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'MonthAmount', Volume);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'MonthCommission', Commission);
         GetJournalStats(CommissionProfileLine, QuarterStartDate, QuarterEndDate, Units, Volume, Commission, false);
         GetLedgerStats(CommissionProfileLine, QuarterStartDate, QuarterEndDate, Units, Volume, Commission, true);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'QuarterCount', Units);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'QuarterAmount', Volume);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'QuarterCommission', Commission);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'QuarterCount', Units);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'QuarterAmount', Volume);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'QuarterCommission', Commission);
         GetJournalStats(CommissionProfileLine, CurrentYearStartDate, CurrentYearEndDate, Units, Volume, Commission, false);
         GetLedgerStats(CommissionProfileLine, CurrentYearStartDate, CurrentYearEndDate, Units, Volume, Commission, true);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'YearCount', Units);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'YearAmount', Volume);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'YearCommission', Commission);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'Month', CommissionSchedule."Month End Calculation");
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, 'Quarter', CommissionSchedule."Quarter Calculation");
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, '!CalculationParameter', CommissionProfileLine.Parameter);
-        AppendExpressionValue(ExpressionValueBuffer, ValueNo, '!ProfileLineTag', CommissionProfileLine.Tag);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'YearCount', Units);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'YearAmount', Volume);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'YearCommission', Commission);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'Month', CommissionSchedule."Month End Calculation");
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, 'Quarter', CommissionSchedule."Quarter Calculation");
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, '!CalculationParameter', CommissionProfileLine.Parameter);
+        AppendExpressionValue(TempExpressionValueBuffer, ValueNo, '!ProfileLineTag', CommissionProfileLine.Tag);
         if CommissionProfileLine."Period Level Condition Code" <> '' then begin
             if not ExpressionHeader.Get(CommissionProfileLine."Period Level Condition Code", CommissionCalcHelper.GetCommissionConsumerId()) then
                 Error(FindingConditionErr, CommissionProfileLine."Profile Code", CommissionProfileLine."Loan Level Condition Code", CommissionProfileLine."Line No.");
-            if not ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer) then
+            if not ExpressionEngine.CheckCondition(ExpressionHeader, TempExpressionValueBuffer) then
                 exit;
         end;
         case CommissionProfileLine."Period Calculation Type" of
             CommissionProfileLine."Period Calculation Type"::"Defined Value":
                 begin
-                    CalcBuffer."Commission Amount" := CommissionProfileLine.Parameter;
-                    CalcBuffer."Base Amount" := CommissionProfileLine.Parameter;
+                    TempLoanCommissionBuffer."Commission Amount" := CommissionProfileLine.Parameter;
+                    TempLoanCommissionBuffer."Base Amount" := CommissionProfileLine.Parameter;
                 end;
             CommissionProfileLine."Period Calculation Type"::Formula, CommissionProfileLine."Period Calculation Type"::Tiers:
                 begin
                     if not ExpressionHeader.Get(CommissionProfileLine."Period Level Function Code", CommissionCalcHelper.GetCommissionConsumerId()) then
                         Error(FindingFunctionErr, CommissionProfileLine."Period Level Function Code", CommissionProfileLine."Profile Code", CommissionProfileLine."Line No.");
-                    Evaluate(CalcBuffer."Commission Amount", ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer));
-                    CalcBuffer."Base Amount" := CalcBuffer."Commission Amount";
+                    Evaluate(TempLoanCommissionBuffer."Commission Amount", ExpressionEngine.CalculateFormula(ExpressionHeader, TempExpressionValueBuffer));
+                    TempLoanCommissionBuffer."Base Amount" := TempLoanCommissionBuffer."Commission Amount";
                     if CommissionProfileLine."Period Calculation Type" = CommissionProfileLine."Period Calculation Type"::Tiers then begin
                         CommissionTierHeader.Get(CommissionProfileLine."Tier Code");
-                        if CheckPeriodTierPayoutCondition(CalcBuffer, CommissionTierHeader) then
-                            CommissionCalcHelper.CalculateLoanTier(CalcBuffer, CommissionTierHeader, CalcBuffer."Base Amount", 1, CurrentMonthAmount, CurrentMonthUnits);
+                        if CheckPeriodTierPayoutCondition(TempLoanCommissionBuffer, CommissionTierHeader) then
+                            CommissionCalcHelper.CalculateLoanTier(TempLoanCommissionBuffer, CommissionTierHeader, TempLoanCommissionBuffer."Base Amount", 1, CurrentMonthAmount, CurrentMonthUnits);
                     end;
                 end;
             else
                 ImplementationMgmt.ThrowNotImplementedError();
         end;
-        if CalcBuffer."Commission Amount" <> 0 then
-            AddCommissionJournalLine(CommissionProfileLine, CalcBuffer);
+        if TempLoanCommissionBuffer."Commission Amount" <> 0 then
+            AddCommissionJournalLine(CommissionProfileLine, TempLoanCommissionBuffer);
     end;
 
     local procedure ApplyExtendedFilters(var Loan: Record lvnLoan; ExtendedFilterCode: Code[20])
@@ -554,17 +550,17 @@ report 14135300 lvnCalculateCommissions
         end;
     end;
 
-    local procedure FillCalculationBuffer(var Loan: Record lvnLoan; var CommissionProfileLine: Record lvnCommissionProfileLine; var ExpressionValueBuffer: Record lvnExpressionValueBuffer)
+    local procedure FillCalculationBuffer(var Loan: Record lvnLoan; var CommissionProfileLine: Record lvnCommissionProfileLine; var TempExpressionValueBuffer: Record lvnExpressionValueBuffer)
     var
         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
         LoanValue: Record lvnLoanValue;
         TableFields: Record Field;
-        FieldSequenceNo: Integer;
         RecordReference: RecordRef;
         FieldReference: FieldRef;
+        FieldSequenceNo: Integer;
     begin
-        ExpressionValueBuffer.Reset();
-        ExpressionValueBuffer.DeleteAll();
+        TempExpressionValueBuffer.Reset();
+        TempExpressionValueBuffer.DeleteAll();
         LoanFieldsConfiguration.Reset();
         if LoanFieldsConfiguration.FindSet() then
             repeat
@@ -572,22 +568,22 @@ report 14135300 lvnCalculateCommissions
                 LoanValue.Reset();
                 LoanValue.SetRange("Loan No.", Loan."No.");
                 LoanValue.SetRange("Field No.", LoanFieldsConfiguration."Field No.");
-                Clear(ExpressionValueBuffer);
-                ExpressionValueBuffer.Number := FieldSequenceNo;
-                ExpressionValueBuffer.Name := LoanFieldsConfiguration."Field Name";
-                ExpressionValueBuffer.Type := Format(LoanFieldsConfiguration."Value Type");
+                Clear(TempExpressionValueBuffer);
+                TempExpressionValueBuffer.Number := FieldSequenceNo;
+                TempExpressionValueBuffer.Name := LoanFieldsConfiguration."Field Name";
+                TempExpressionValueBuffer.Type := Format(LoanFieldsConfiguration."Value Type");
                 if LoanValue.FindFirst() then
-                    ExpressionValueBuffer.Value := LoanValue."Field Value"
+                    TempExpressionValueBuffer.Value := LoanValue."Field Value"
                 else
                     case LoanFieldsConfiguration."Value Type" of
                         LoanFieldsConfiguration."Value Type"::Boolean:
-                            ExpressionValueBuffer.Value := BooleanFalseLbl;
+                            TempExpressionValueBuffer.Value := BooleanFalseLbl;
                         LoanFieldsConfiguration."Value Type"::Decimal:
-                            ExpressionValueBuffer.Value := DecimalZeroLbl;
+                            TempExpressionValueBuffer.Value := DecimalZeroLbl;
                         LoanFieldsConfiguration."Value Type"::Integer:
-                            ExpressionValueBuffer.Value := IntegerZeroLbl;
+                            TempExpressionValueBuffer.Value := IntegerZeroLbl;
                     end;
-                ExpressionValueBuffer.Insert();
+                TempExpressionValueBuffer.Insert();
             until LoanFieldsConfiguration.Next() = 0;
         TableFields.Reset();
         TableFields.SetRange(TableNo, Database::lvnLoan);
@@ -596,49 +592,49 @@ report 14135300 lvnCalculateCommissions
         RecordReference.GetTable(Loan);
         repeat
             FieldSequenceNo := FieldSequenceNo + 1;
-            Clear(ExpressionValueBuffer);
-            ExpressionValueBuffer.Number := FieldSequenceNo;
-            ExpressionValueBuffer.Name := TableFields.FieldName;
+            Clear(TempExpressionValueBuffer);
+            TempExpressionValueBuffer.Number := FieldSequenceNo;
+            TempExpressionValueBuffer.Name := TableFields.FieldName;
             FieldReference := RecordReference.Field(TableFields."No.");
-            ExpressionValueBuffer.Value := Delchr(Format(FieldReference.Value()), '<>', ' ');
-            ExpressionValueBuffer.Type := Format(FieldReference.Type());
-            ExpressionValueBuffer.Insert();
+            TempExpressionValueBuffer.Value := Delchr(Format(FieldReference.Value()), '<>', ' ');
+            TempExpressionValueBuffer.Type := Format(FieldReference.Type());
+            TempExpressionValueBuffer.Insert();
         until TableFields.Next() = 0;
         RecordReference.Close();
-        AppendExpressionValue(ExpressionValueBuffer, FieldSequenceNo, '!CalculationParameter', CommissionProfileLine.Parameter);
-        AppendExpressionValue(ExpressionValueBuffer, FieldSequenceNo, '!ProfileLineTag', CommissionProfileLine.Tag);
+        AppendExpressionValue(TempExpressionValueBuffer, FieldSequenceNo, '!CalculationParameter', CommissionProfileLine.Parameter);
+        AppendExpressionValue(TempExpressionValueBuffer, FieldSequenceNo, '!ProfileLineTag', CommissionProfileLine.Tag);
     end;
 
     local procedure CreateJournalBufferFromLoan(var Loan: Record lvnLoan; var BufferEntryNo: Integer; ProfileLineNo: Integer)
     begin
-        Clear(LoanCommissionBuffer);
-        LoanCommissionBuffer."Entry No." := BufferEntryNo;
+        Clear(TempLoanCommissionBuffer);
+        TempLoanCommissionBuffer."Entry No." := BufferEntryNo;
         BufferEntryNo := BufferEntryNo + 1;
-        LoanCommissionBuffer."Loan No." := Loan."No.";
-        LoanCommissionBuffer."Profile Code" := CommissionProfile.Code;
-        LoanCommissionBuffer."Profile Line No." := ProfileLineNo;
-        LoanCommissionBuffer."Commission Date" := Loan."Commission Date";
-        LoanCommissionBuffer."Base Amount" := Loan."Commission Base Amount";
-        LoanCommissionBuffer.Insert();
+        TempLoanCommissionBuffer."Loan No." := Loan."No.";
+        TempLoanCommissionBuffer."Profile Code" := CommissionProfile.Code;
+        TempLoanCommissionBuffer."Profile Line No." := ProfileLineNo;
+        TempLoanCommissionBuffer."Commission Date" := Loan."Commission Date";
+        TempLoanCommissionBuffer."Base Amount" := Loan."Commission Base Amount";
+        TempLoanCommissionBuffer.Insert();
     end;
 
     local procedure CreateJournalBufferFromValueEntry(var CommissionValueEntry: Record lvnCommissionValueEntry; var BufferEntryNo: Integer; ProfileLineNo: Integer)
     begin
-        Clear(LoanCommissionBuffer);
-        LoanCommissionBuffer."Entry No." := BufferEntryNo;
+        Clear(TempLoanCommissionBuffer);
+        TempLoanCommissionBuffer."Entry No." := BufferEntryNo;
         BufferEntryNo := BufferEntryNo + 1;
-        LoanCommissionBuffer."Loan No." := CommissionValueEntry."Loan No.";
-        LoanCommissionBuffer."Profile Code" := CommissionProfile.Code;
-        LoanCommissionBuffer."Profile Line No." := ProfileLineNo;
-        LoanCommissionBuffer."Commission Date" := CommissionValueEntry."Commission Date";
-        LoanCommissionBuffer."Base Amount" := CommissionValueEntry."Commission Amount";
-        LoanCommissionBuffer."Commission Amount" := CommissionValueEntry."Commission Amount";
-        LoanCommissionBuffer.Bps := CommissionValueEntry.Bps;
-        LoanCommissionBuffer."Value Entry" := true;
-        LoanCommissionBuffer.Insert();
+        TempLoanCommissionBuffer."Loan No." := CommissionValueEntry."Loan No.";
+        TempLoanCommissionBuffer."Profile Code" := CommissionProfile.Code;
+        TempLoanCommissionBuffer."Profile Line No." := ProfileLineNo;
+        TempLoanCommissionBuffer."Commission Date" := CommissionValueEntry."Commission Date";
+        TempLoanCommissionBuffer."Base Amount" := CommissionValueEntry."Commission Amount";
+        TempLoanCommissionBuffer."Commission Amount" := CommissionValueEntry."Commission Amount";
+        TempLoanCommissionBuffer.Bps := CommissionValueEntry.Bps;
+        TempLoanCommissionBuffer."Value Entry" := true;
+        TempLoanCommissionBuffer.Insert();
     end;
 
-    local procedure AddCommissionJournalLine(var CommissionProfileLine: Record lvnCommissionProfileLine; var CalcBuffer: Record lvnLoanCommissionBuffer)
+    local procedure AddCommissionJournalLine(var CommissionProfileLine: Record lvnCommissionProfileLine; var TempLoanCommissionBuffer: Record lvnLoanCommissionBuffer)
     var
         CommissionJournalLine: Record lvnCommissionJournalLine;
         JournalLineNo: Integer;
@@ -668,11 +664,11 @@ report 14135300 lvnCalculateCommissions
         CommissionJournalLine.Description := CommissionProfileLine.Description;
         CommissionJournalLine."Calculation Only" := CommissionProfileLine."Calculation Only";
         //Fill calculated fields
-        CommissionJournalLine."Loan No." := CalcBuffer."Loan No.";
-        CommissionJournalLine."Base Amount" := CalcBuffer."Base Amount";
-        CommissionJournalLine."Commission Date" := CalcBuffer."Commission Date";
-        CommissionJournalLine."Commission Amount" := CalcBuffer."Commission Amount";
-        CommissionJournalLine.Bps := CalcBuffer.Bps;
+        CommissionJournalLine."Loan No." := TempLoanCommissionBuffer."Loan No.";
+        CommissionJournalLine."Base Amount" := TempLoanCommissionBuffer."Base Amount";
+        CommissionJournalLine."Commission Date" := TempLoanCommissionBuffer."Commission Date";
+        CommissionJournalLine."Commission Amount" := TempLoanCommissionBuffer."Commission Amount";
+        CommissionJournalLine.Bps := TempLoanCommissionBuffer.Bps;
         //Adjust amount according to split
         CommissionJournalLine."Commission Amount" := CommissionJournalLine."Commission Amount" / 100 * CommissionProfileLine."Split Percentage";
         //Adjust amount according to min/max
@@ -683,11 +679,11 @@ report 14135300 lvnCalculateCommissions
             if CommissionJournalLine."Commission Amount" > CommissionProfileLine."Max. Commission Amount" then
                 CommissionJournalLine."Commission Amount" := CommissionProfileLine."Max. Commission Amount";
         //Check for posted entries (loan-level)
-        if (CommissionProfileLine."Profile Line Type" = CommissionProfileLine."Profile Line Type"::"Loan Level") and CalcBuffer."Value Entry" then begin
-            LoanCommissionBuffer.Get(CalcBuffer."Entry No.");
-            if LoanCommissionBuffer."Commission Amount" <> CalcBuffer."Commission Amount" then begin
-                CommissionJournalLine."Commission Amount" := CalcBuffer."Commission Amount" - CommissionJournalLine."Commission Amount";
-                CommissionJournalLine.Bps := CalcBuffer.Bps - CommissionJournalLine.Bps;
+        if (CommissionProfileLine."Profile Line Type" = CommissionProfileLine."Profile Line Type"::"Loan Level") and TempLoanCommissionBuffer."Value Entry" then begin
+            TempLoanCommissionBuffer.Get(TempLoanCommissionBuffer."Entry No.");
+            if TempLoanCommissionBuffer."Commission Amount" <> TempLoanCommissionBuffer."Commission Amount" then begin
+                CommissionJournalLine."Commission Amount" := TempLoanCommissionBuffer."Commission Amount" - CommissionJournalLine."Commission Amount";
+                CommissionJournalLine.Bps := TempLoanCommissionBuffer.Bps - CommissionJournalLine.Bps;
                 CommissionJournalLine.Insert();
             end;
         end else
@@ -698,8 +694,8 @@ report 14135300 lvnCalculateCommissions
     var
         LoanValue: Record lvnLoanValue;
         ExpressionHeader: Record lvnExpressionHeader;
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
-        Dummy: Record lvnCommissionProfileLine temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempDummy: Record lvnCommissionProfileLine temporary;
         ValidCondition: Boolean;
     begin
         Clear(ValidCondition);
@@ -717,14 +713,14 @@ report 14135300 lvnCalculateCommissions
                 begin
                     if not ExpressionHeader.Get(CommissionTierHeader."Payout Condition Code", CommissionCalcHelper.GetCommissionConsumerId()) then
                         Error(FindingConditionForTierErr, CommissionTierHeader."Payout Condition Code", CommissionTierHeader.Code);
-                    FillCalculationBuffer(Loan, Dummy, ExpressionValueBuffer);
-                    ValidCondition := ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer);
+                    FillCalculationBuffer(Loan, TempDummy, TempExpressionValueBuffer);
+                    ValidCondition := ExpressionEngine.CheckCondition(ExpressionHeader, TempExpressionValueBuffer);
                     exit(ValidCondition);
                 end;
         end;
     end;
 
-    local procedure CheckPeriodTierPayoutCondition(var CalcBuffer: Record lvnLoanCommissionBuffer; var CommissionTierHeader: Record lvnCommissionTierHeader): Boolean
+    local procedure CheckPeriodTierPayoutCondition(var TempLoanCommissionBuffer: Record lvnLoanCommissionBuffer; var CommissionTierHeader: Record lvnCommissionTierHeader): Boolean
     begin
         ImplementationMgmt.ThrowNotImplementedError();
     end;

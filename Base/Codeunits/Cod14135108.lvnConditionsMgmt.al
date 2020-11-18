@@ -12,9 +12,9 @@ codeunit 14135108 "lvnConditionsMgmt"
         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
         LoanValue: Record lvnLoanValue;
         TableFields: Record Field;
-        FieldSequenceNo: Integer;
         RecordReference: RecordRef;
         FieldReference: FieldRef;
+        FieldSequenceNo: Integer;
     begin
         LoanFieldsConfiguration.Reset();
         if LoanFieldsConfiguration.FindSet() then
@@ -31,17 +31,11 @@ codeunit 14135108 "lvnConditionsMgmt"
                 else
                     case LoanFieldsConfiguration."Value Type" of
                         LoanFieldsConfiguration."Value Type"::Boolean:
-                            begin
-                                ExpressionValueBuffer.Value := 'False';
-                            end;
+                            ExpressionValueBuffer.Value := 'False';
                         LoanFieldsConfiguration."Value Type"::Decimal:
-                            begin
-                                ExpressionValueBuffer.Value := '0.00';
-                            end;
+                            ExpressionValueBuffer.Value := '0.00';
                         LoanFieldsConfiguration."Value Type"::Integer:
-                            begin
-                                ExpressionValueBuffer.Value := '0';
-                            end;
+                            ExpressionValueBuffer.Value := '0';
                     end;
                 ExpressionValueBuffer.Insert();
             until LoanFieldsConfiguration.Next() = 0;
@@ -90,17 +84,11 @@ codeunit 14135108 "lvnConditionsMgmt"
                 else
                     case LoanFieldsConfiguration."Value Type" of
                         LoanFieldsConfiguration."Value Type"::Boolean:
-                            begin
-                                ExpressionValueBuffer.Value := 'False';
-                            end;
+                            ExpressionValueBuffer.Value := 'False';
                         LoanFieldsConfiguration."Value Type"::Decimal:
-                            begin
-                                ExpressionValueBuffer.Value := '0.00';
-                            end;
+                            ExpressionValueBuffer.Value := '0.00';
                         LoanFieldsConfiguration."Value Type"::Integer:
-                            begin
-                                ExpressionValueBuffer.Value := '0';
-                            end;
+                            ExpressionValueBuffer.Value := '0';
                     end;
                 ExpressionValueBuffer.Insert();
             until LoanFieldsConfiguration.Next() = 0;
@@ -131,13 +119,9 @@ codeunit 14135108 "lvnConditionsMgmt"
         if GetConditionsMgmtConsumerId() = ExpressionHeader."Consumer Id" then
             case ConsumerMetadata of
                 'JOURNAL':
-                    begin
-                        FillJournalFields(ExpressionBuffer);
-                    end;
+                    FillJournalFields(ExpressionBuffer);
                 'LOAN':
-                    begin
-                        FillLoanFields(ExpressionBuffer);
-                    end;
+                    FillLoanFields(ExpressionBuffer);
             end;
     end;
 
@@ -177,7 +161,7 @@ codeunit 14135108 "lvnConditionsMgmt"
         FieldSequenceNo: Integer;
     begin
         LoanFieldsConfiguration.Reset();
-        if LoanFieldsConfiguration.FindSet() then begin
+        if LoanFieldsConfiguration.FindSet() then
             repeat
                 FieldSequenceNo := FieldSequenceNo + 1;
                 Clear(ExpressionValueBuffer);
@@ -186,7 +170,6 @@ codeunit 14135108 "lvnConditionsMgmt"
                 ExpressionValueBuffer.Type := Format(LoanFieldsConfiguration."Value Type");
                 ExpressionValueBuffer.Insert();
             until LoanFieldsConfiguration.Next() = 0;
-        end;
         TableFields.Reset();
         TableFields.SetRange(TableNo, Database::lvnLoanJournalLine);
         TableFields.SetFilter("No.", '>%1', 4);

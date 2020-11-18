@@ -146,24 +146,24 @@ report 14135221 "lvnRptGeneratorBatchProcess"
     var
         RowSchema: Record lvnPerformanceRowSchema;
         BandSchema: Record lvnPeriodPerfBandSchema;
-        BaseFilter: Record lvnSystemCalculationFilter temporary;
-        BandInfoBuffer: Record lvnPerformanceBandLineInfo temporary;
-        ValueBuffer: Record lvnPerformanceValueBuffer temporary;
+        TempSystemCalcFilter: Record lvnSystemCalculationFilter temporary;
+        TempPerfBandInfoBuffer: Record lvnPerformanceBandLineInfo temporary;
+        TempPerfValueBuffer: Record lvnPerformanceValueBuffer temporary;
         PerformanceMgmt: Codeunit lvnPerformanceMgmt;
     begin
-        Clear(BaseFilter);
-        BaseFilter.Description := ReportGeneratorSequence.Description;
-        BaseFilter."Global Dimension 1" := ReportGeneratorSequence."Dimension 1 Filter";
-        BaseFilter."Global Dimension 2" := ReportGeneratorSequence."Dimension 2 Filter";
-        BaseFilter."Shortcut Dimension 3" := ReportGeneratorSequence."Dimension 3 Filter";
-        BaseFilter."Shortcut Dimension 4" := ReportGeneratorSequence."Dimension 4 Filter";
-        BaseFilter."Business Unit" := ReportGeneratorSequence."Business Unit Filter";
+        Clear(TempSystemCalcFilter);
+        TempSystemCalcFilter.Description := ReportGeneratorSequence.Description;
+        TempSystemCalcFilter."Global Dimension 1" := ReportGeneratorSequence."Dimension 1 Filter";
+        TempSystemCalcFilter."Global Dimension 2" := ReportGeneratorSequence."Dimension 2 Filter";
+        TempSystemCalcFilter."Shortcut Dimension 3" := ReportGeneratorSequence."Dimension 3 Filter";
+        TempSystemCalcFilter."Shortcut Dimension 4" := ReportGeneratorSequence."Dimension 4 Filter";
+        TempSystemCalcFilter."Business Unit" := ReportGeneratorSequence."Business Unit Filter";
         if ToDate = 0D then
             ToDate := Today();
-        BaseFilter."As Of Date" := ToDate;
+        TempSystemCalcFilter."As Of Date" := ToDate;
         RowSchema.Get(ReportGeneratorSequence."Row Layout");
         BandSchema.Get(ReportGeneratorSequence."Band Layout");
-        PerformanceMgmt.CalculatePeriodsData(RowSchema, BandSchema, BaseFilter, BandInfoBuffer, ValueBuffer);
-        PerformanceDataExport.ExportToExcel(ExcelExport, RowSchema, ValueBuffer, BaseFilter, BandInfoBuffer);
+        PerformanceMgmt.CalculatePeriodsData(RowSchema, BandSchema, TempSystemCalcFilter, TempPerfBandInfoBuffer, TempPerfValueBuffer);
+        PerformanceDataExport.ExportToExcel(ExcelExport, RowSchema, TempPerfValueBuffer, TempSystemCalcFilter, TempPerfBandInfoBuffer);
     end;
 }

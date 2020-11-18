@@ -43,10 +43,10 @@ report 14135313 lvnLOsWithoutClosings
     trigger OnPreReport()
     begin
         LoanVisionSetup.Get();
-        ExcelBuffer.AddColumn(LoanOfficerCodeLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(PayrollIDLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(LoanOfficerNameLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(CostCenterCodeLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(LoanOfficerCodeLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(PayrollIDLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(LoanOfficerNameLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(CostCenterCodeLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
 
         CommissionProfile.Reset();
         CommissionProfile.FindSet();
@@ -79,18 +79,18 @@ report 14135313 lvnLOsWithoutClosings
             end;
             if not LoansExist then begin
                 DimensionValue.Get(LoanVisionSetup."Loan Officer Dimension Code", CommissionProfile.Code);
-                ExcelBuffer.NewRow();
-                ExcelBuffer.AddColumn(CommissionProfile.Code, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                ExcelBuffer.AddColumn(DimensionValue.lvnAdditionalCode, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                ExcelBuffer.AddColumn(CommissionProfile.Name, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                ExcelBuffer.AddColumn(CommissionProfile."Cost Center Code", false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.NewRow();
+                TempExcelBuffer.AddColumn(CommissionProfile.Code, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.AddColumn(DimensionValue.lvnAdditionalCode, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.AddColumn(CommissionProfile.Name, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.AddColumn(CommissionProfile."Cost Center Code", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
             end;
         until CommissionProfile.Next() = 0;
 
-        ExcelBuffer.CreateNewBook(ExcelSheetNameLbl);
-        ExcelBuffer.WriteSheet(ExcelSheetNameLbl, CompanyName, UserId);
-        ExcelBuffer.CloseBook();
-        ExcelBuffer.OpenExcel();
+        TempExcelBuffer.CreateNewBook(ExcelSheetNameLbl);
+        TempExcelBuffer.WriteSheet(ExcelSheetNameLbl, CompanyName, UserId);
+        TempExcelBuffer.CloseBook();
+        TempExcelBuffer.OpenExcel();
         if GuiAllowed() then
             ProcessingDialog.Close();
     end;
@@ -102,7 +102,7 @@ report 14135313 lvnLOsWithoutClosings
         PeriodIdentifier: Record lvnPeriodIdentifier;
         CommissionProfile: Record lvnCommissionProfile;
         DimensionValue: Record "Dimension Value";
-        ExcelBuffer: Record "Excel Buffer" temporary;
+        TempExcelBuffer: Record "Excel Buffer" temporary;
         FilterTokens: Codeunit "Filter Tokens";
         ProcessingDialog: Dialog;
         Counter: Integer;

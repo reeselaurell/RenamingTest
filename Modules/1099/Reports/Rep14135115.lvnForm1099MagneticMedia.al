@@ -55,8 +55,6 @@ report 14135115 "lvnForm1099MagneticMedia"
                 end;
             }
             trigger OnAfterGetRecord()
-            var
-                InvoiceEntry: Record "Vendor Ledger Entry";
             begin
                 PayeeNum := 0;
                 if DirectSales = '1' then
@@ -305,7 +303,6 @@ report 14135115 "lvnForm1099MagneticMedia"
         VendContactPhoneNo: Text[30];
         ContactEmail: Text[35];
         DirectSales: Text[1];
-        IsDirectSale: Boolean;
         PayeeNum: Integer;
         PayeeTotal: Integer;
         Progress: Dialog;

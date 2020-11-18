@@ -91,12 +91,10 @@ page 14135110 "lvnLoanImportSchemaLines"
                                     end;
                                 end;
                             Rec."Field Type"::Variable:
-                                begin
-                                    if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
-                                        Rec."Field No." := LoanFieldsConfiguration."Field No.";
-                                        Rec."Field Name" := LoanFieldsConfiguration."Field Name";
-                                        Rec."Value Type" := LoanFieldsConfiguration."Value Type";
-                                    end;
+                                if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
+                                    Rec."Field No." := LoanFieldsConfiguration."Field No.";
+                                    Rec."Field Name" := LoanFieldsConfiguration."Field Name";
+                                    Rec."Value Type" := LoanFieldsConfiguration."Value Type";
                                 end;
                         end;
                     end;

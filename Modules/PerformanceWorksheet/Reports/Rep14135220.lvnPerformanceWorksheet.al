@@ -89,25 +89,24 @@ report 14135220 "lvnPerformanceWorksheet"
                             if RowSchema."Schema Type" = RowSchema."Schema Type"::Period then begin
                                 Evaluate(AsOfDate, DateFilter);
                                 DateFilter := Format(AsOfDate);
-                            end else begin
+                            end else
                                 if Evaluate(AsOfDate, DateFilter) then
                                     DateFilter := StrSubstNo(DateFilterLbl, AsOfDate)
                                 else
                                     FilterTokens.MakeDateFilter(DateFilter);
-                            end;
                         end;
                     }
-                    field(ClosingDates; SystemFilter."Omit Closing Dates") { ApplicationArea = All; Importance = Additional; Caption = 'Omit Closing Dates'; }
+                    field(ClosingDates; TempSystemCalcFilter."Omit Closing Dates") { ApplicationArea = All; Importance = Additional; Caption = 'Omit Closing Dates'; }
                 }
                 group(Dimensions)
                 {
                     Caption = 'Dimension Filters';
 
-                    field(Dim1Filter; SystemFilter."Global Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; CaptionClass = '1,3,1'; }
-                    field(Dim2Filter; SystemFilter."Global Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; CaptionClass = '1,3,2'; }
-                    field(Dim3Filter; SystemFilter."Shortcut Dimension 3") { ApplicationArea = All; Caption = 'Dimension 3 Filter'; CaptionClass = '1,4,3'; }
-                    field(Dim4Filter; SystemFilter."Shortcut Dimension 4") { ApplicationArea = All; Caption = 'Dimension 4 Filter'; CaptionClass = '1,4,4'; }
-                    field(BusinessUnitFilter; SystemFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; }
+                    field(Dim1Filter; TempSystemCalcFilter."Global Dimension 1") { ApplicationArea = All; Caption = 'Dimension 1 Filter'; CaptionClass = '1,3,1'; }
+                    field(Dim2Filter; TempSystemCalcFilter."Global Dimension 2") { ApplicationArea = All; Caption = 'Dimension 2 Filter'; CaptionClass = '1,3,2'; }
+                    field(Dim3Filter; TempSystemCalcFilter."Shortcut Dimension 3") { ApplicationArea = All; Caption = 'Dimension 3 Filter'; CaptionClass = '1,4,3'; }
+                    field(Dim4Filter; TempSystemCalcFilter."Shortcut Dimension 4") { ApplicationArea = All; Caption = 'Dimension 4 Filter'; CaptionClass = '1,4,4'; }
+                    field(BusinessUnitFilter; TempSystemCalcFilter."Business Unit") { ApplicationArea = All; Caption = 'Business Unit Filter'; }
                 }
             }
         }
@@ -121,20 +120,20 @@ report 14135220 "lvnPerformanceWorksheet"
         RowSchema.Get(RowSchemaCode);
         if RowSchema."Schema Type" = RowSchema."Schema Type"::Period then begin
             Clear(PeriodPerformanceView);
-            Evaluate(SystemFilter."As Of Date", DateFilter);
-            PeriodPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, SystemFilter);
+            Evaluate(TempSystemCalcFilter."As Of Date", DateFilter);
+            PeriodPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, TempSystemCalcFilter);
             PeriodPerformanceView.RunModal();
         end else begin
             Clear(DimensionPerformanceView);
-            SystemFilter."Date Filter" := DateFilter;
-            DimensionPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, SystemFilter);
+            TempSystemCalcFilter."Date Filter" := DateFilter;
+            DimensionPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, TempSystemCalcFilter);
             DimensionPerformanceView.RunModal();
         end;
     end;
 
     var
         RowSchema: Record lvnPerformanceRowSchema;
-        SystemFilter: Record lvnSystemCalculationFilter temporary;
+        TempSystemCalcFilter: Record lvnSystemCalculationFilter temporary;
         DateFilter: Text;
         RowSchemaCode: Code[20];
         BandSchemaCode: Code[20];

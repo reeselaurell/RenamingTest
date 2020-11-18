@@ -198,7 +198,6 @@ report 14135161 "lvnGeneralLedgerRecSimplified"
         DefaultDimension: Record "Default Dimension";
         Loan: Record lvnLoan;
         BorrowerName: Text;
-        DateFunded: Date;
         DateFilter: Text;
         LoanCardFilters: Text;
         GLEntryFilters: Text;

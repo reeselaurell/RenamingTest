@@ -70,9 +70,9 @@ codeunit 14135129 "lvnDocumentExchangeManagement"
         DocumentImportRule: Record lvnDocumentImportRule;
         FileManagement: Codeunit "File Management";
         FileContent: Codeunit "Temp Blob";
-        DocumentName: Text;
         RecordReference: RecordRef;
         FieldReference: FieldRef;
+        DocumentName: Text;
         FieldNo: Integer;
         TableView: Text;
         DocumentGuid: Guid;

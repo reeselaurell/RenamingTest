@@ -62,11 +62,9 @@ page 14135121 "lvnLoanUpdateSchema"
                                     end;
                                 end;
                             Rec."Import Field Type"::Variable:
-                                begin
-                                    if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
-                                        Rec."Field No." := LoanFieldsConfiguration."Field No.";
-                                        FieldDescription := LoanFieldsConfiguration."Field Name";
-                                    end;
+                                if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
+                                    Rec."Field No." := LoanFieldsConfiguration."Field No.";
+                                    FieldDescription := LoanFieldsConfiguration."Field Name";
                                 end;
                         end;
                     end;

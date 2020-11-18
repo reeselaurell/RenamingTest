@@ -183,5 +183,4 @@ page 14135207 "lvnCalculationUnitCard"
 
     var
         PerformanceMgmt: Codeunit lvnPerformanceMgmt;
-        Dummy: Text;
 }

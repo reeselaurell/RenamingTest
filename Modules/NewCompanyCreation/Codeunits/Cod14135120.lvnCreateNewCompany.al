@@ -14,7 +14,6 @@ codeunit 14135120 "lvnCreateNewCompany"
         Company: Record Company;
         CompanyDataTransfer: Record lvnCompanyDataTransfer;
         ChooseCompany: Page lvnChooseCompany;
-        Progress: Dialog;
         FromRecRef: RecordRef;
         ToRecRef: RecordRef;
         FromFieldRef: FieldRef;
@@ -25,9 +24,10 @@ codeunit 14135120 "lvnCreateNewCompany"
         Counter: Integer;
         NewCompanyName: Text[50];
         ShowWarnings: Boolean;
+        Progress: Dialog;
         CopyCompanyMsg: Label 'Copy this company to #3#######################\';
         WorkingOnTableMsg: Label 'Working on table     #1################# #130#of#140#\';
-        NoRecords: Label 'No. of records       #2###';
+        NoRecordsMsg: Label 'No. of records       #2###';
         CompanyCopyItselfErr: Label 'Company can not be copied into it self';
         NoTablesSelectedErr: Label 'No Tables have been selected in "Create New Company Setup"';
         TablesCopiedMsg: Label '%1 tables were copied';
@@ -47,7 +47,7 @@ codeunit 14135120 "lvnCreateNewCompany"
         if NewCompanyName = CompanyName() then
             Error(CompanyCopyItselfErr);
         ChooseCompany.GetParameters(ShowWarnings);
-        Progress.Open(CopyCompanyMsg + WorkingOnTableMsg + NoRecords);
+        Progress.Open(CopyCompanyMsg + WorkingOnTableMsg + NoRecordsMsg);
         Progress.Update(3, NewCompanyName);
         if not Company.Get(NewCompanyName) then begin
             Company.Init();

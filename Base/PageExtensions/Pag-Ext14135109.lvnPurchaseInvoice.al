@@ -149,22 +149,22 @@ pageextension 14135109 "lvnPurchaseInvoice" extends "Purchase Invoice"
 
                 trigger OnAction()
                 var
-                    GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
-                    ImportBufferError: Record lvnImportBufferError temporary;
+                    TempGenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
+                    TempImportBufferError: Record lvnImportBufferError temporary;
                     PurchFileImportManagement: Codeunit lvnPurchFileImportManagement;
                     JournalDataImport: Page lvnJournalDataImport;
                     DocumentType: Enum lvnLoanDocumentType;
                 begin
                     Clear(PurchFileImportManagement);
-                    if not PurchFileImportManagement.ManualFileImport(GenJnlImportBuffer, ImportBufferError) then
+                    if not PurchFileImportManagement.ManualFileImport(TempGenJnlImportBuffer, TempImportBufferError) then
                         exit;
-                    ImportBufferError.Reset();
-                    if not ImportBufferError.IsEmpty() then begin
+                    TempImportBufferError.Reset();
+                    if not TempImportBufferError.IsEmpty() then begin
                         Clear(JournalDataImport);
-                        JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
+                        JournalDataImport.SetParams(TempGenJnlImportBuffer, TempImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        PurchFileImportManagement.CreatePurchaseLines(GenJnlImportBuffer, DocumentType::Invoice, Rec."No.");
+                        PurchFileImportManagement.CreatePurchaseLines(TempGenJnlImportBuffer, DocumentType::Invoice, Rec."No.");
                     CurrPage.Update(false);
                 end;
             }

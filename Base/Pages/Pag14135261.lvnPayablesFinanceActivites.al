@@ -166,10 +166,9 @@ page 14135261 "lvnPayablesFinanceActivites"
     var
         User: Record User;
     begin
-        if ActSetup.Get() then begin
+        if ActSetup.Get() then
             if ActSetup."Filter by User" <> '' then
                 if User.Get(ActSetup."Filter by User") then
                     UserName := User."User Name"
-        end;
     end;
 }

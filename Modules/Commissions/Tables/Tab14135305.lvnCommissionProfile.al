@@ -25,9 +25,8 @@ table 14135305 lvnCommissionProfile
                 GetLoanVisionSetup();
                 DimensionValue.Reset();
                 DimensionValue.SetRange("Dimension Code", LoanVisionSetup."Loan Officer Dimension Code");
-                if Page.RunModal(Page::lvnLoanOfficerDimensions, DimensionValue) = Action::LookupOK then begin
+                if Page.RunModal(Page::lvnLoanOfficerDimensions, DimensionValue) = Action::LookupOK then
                     Validate(Code, DimensionValue.Code);
-                end;
             end;
         }
         field(10; Name; Text[100])
@@ -53,9 +52,8 @@ table 14135305 lvnCommissionProfile
                 GetLoanVisionSetup();
                 DimensionValue.Reset();
                 DimensionValue.SetRange("Dimension Code", LoanVisionSetup."Cost Center Dimension Code");
-                if Page.RunModal(Page::"Dimension Value List", DimensionValue) = Action::LookupOK then begin
+                if Page.RunModal(Page::"Dimension Value List", DimensionValue) = Action::LookupOK then
                     Validate("Cost Center Code", DimensionValue.Code);
-                end;
             end;
         }
         field(12; Blocked; Boolean)

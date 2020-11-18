@@ -2,7 +2,7 @@ codeunit 14135113 "lvnCreateSoldDocuments"
 {
     var
         LoanVisionSetup: Record lvnLoanVisionSetup;
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionEngine: Codeunit lvnExpressionEngine;
         LoanVisionSetupRetrieved: Boolean;
@@ -79,7 +79,7 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         TempDocumentTok: Label 'XXXXXXXX';
     begin
         GetLoanVisionSetup();
-        if LoanVisionSetup."Sold Void Reason Code" <> '' then begin
+        if LoanVisionSetup."Sold Void Reason Code" <> '' then
             if LoanVisionSetup."Sold Void Reason Code" = LoanJournalLine."Reason Code" then begin
                 LoanVisionSetup.TestField("Void Sold No. Series");
                 LoanSoldDocument.Reset();
@@ -115,28 +115,27 @@ codeunit 14135113 "lvnCreateSoldDocuments"
                 until LoanSoldDocumentLine.Next() = 0;
                 exit;
             end;
-        end;
         LoanJournalLine.TestField("Processing Schema Code");
         LoanProcessingSchema.Get(LoanJournalLine."Processing Schema Code");
         LoanJournalBatch.Get(LoanJournalLine."Loan Journal Batch Code");
-        ExpressionValueBuffer.Reset();
-        ExpressionValueBuffer.DeleteAll();
+        TempExpressionValueBuffer.Reset();
+        TempExpressionValueBuffer.DeleteAll();
         FieldSequenceNo := 0;
-        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
-        Clear(ExpressionValueBuffer);
+        ConditionsMgmt.FillJournalFieldValues(TempExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
+        Clear(TempExpressionValueBuffer);
         FieldSequenceNo += 1;
-        ExpressionValueBuffer.Number := FieldSequenceNo;
-        ExpressionValueBuffer.Name := '!CalculationParameter';
-        ExpressionValueBuffer.Value := '0';
-        ExpressionValueBuffer.Type := 'Decimal';
-        ExpressionValueBuffer.Insert();
-        Clear(ExpressionValueBuffer);
+        TempExpressionValueBuffer.Number := FieldSequenceNo;
+        TempExpressionValueBuffer.Name := '!CalculationParameter';
+        TempExpressionValueBuffer.Value := '0';
+        TempExpressionValueBuffer.Type := 'Decimal';
+        TempExpressionValueBuffer.Insert();
+        Clear(TempExpressionValueBuffer);
         FieldSequenceNo += 1;
-        ExpressionValueBuffer.Number := FieldSequenceNo;
-        ExpressionValueBuffer.Name := '!ProcessingParameter';
-        ExpressionValueBuffer.Value := '';
-        ExpressionValueBuffer.Type := 'Text';
-        ExpressionValueBuffer.Insert();
+        TempExpressionValueBuffer.Number := FieldSequenceNo;
+        TempExpressionValueBuffer.Name := '!ProcessingParameter';
+        TempExpressionValueBuffer.Value := '';
+        TempExpressionValueBuffer.Type := 'Text';
+        TempExpressionValueBuffer.Insert();
 
         LineNo := 10000;
         Clear(LoanDocument);
@@ -163,11 +162,9 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         AssignDimensions(LoanDocument."Shortcut Dimension 8 Code", LoanProcessingSchema."Shortcut Dimension 8 Code", LoanJournalLine."Shortcut Dimension 8 Code", LoanProcessingSchema."Dimension 8 Rule");
         AssignDimensions(LoanDocument."Business Unit Code", LoanProcessingSchema."Business Unit Code", LoanJournalLine."Business Unit Code", LoanProcessingSchema."Business Unit Rule");
         LoanDocument.GenerateDimensionSetId();
-        if LoanProcessingSchema."External Document No. Field" <> 0 then begin
-            if LoanJournalValue.Get(LoanJournalLine."Loan Journal Batch Code", LoanJournalLine."Line No.", LoanProcessingSchema."External Document No. Field") then begin
+        if LoanProcessingSchema."External Document No. Field" <> 0 then
+            if LoanJournalValue.Get(LoanJournalLine."Loan Journal Batch Code", LoanJournalLine."Line No.", LoanProcessingSchema."External Document No. Field") then
                 LoanDocument."External Document No." := CopyStr(LoanJournalValue."Field Value", 1, MaxStrLen(LoanDocument."External Document No."));
-            end;
-        end;
         LoanDocument.Modify(true);
         if LoanProcessingSchema."Use Global Schema Code" <> '' then begin
             LoanProcessingSchemaLine.Reset();
@@ -271,14 +268,14 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         AccountNo: Code[20];
         DecimalValue: Decimal;
     begin
-        ExpressionValueBuffer.Reset();
-        ExpressionValueBuffer.Ascending(false);
-        ExpressionValueBuffer.FindSet(true);
-        ExpressionValueBuffer.Value := LoanProcessingSchemaLine."Processing Parameter";
-        ExpressionValueBuffer.Modify();
-        ExpressionValueBuffer.Next();
-        ExpressionValueBuffer.Value := Format(LoanProcessingSchemaLine."Calculation Parameter", 0, 9);
-        ExpressionValueBuffer.Modify();
+        TempExpressionValueBuffer.Reset();
+        TempExpressionValueBuffer.Ascending(false);
+        TempExpressionValueBuffer.FindSet(true);
+        TempExpressionValueBuffer.Value := LoanProcessingSchemaLine."Processing Parameter";
+        TempExpressionValueBuffer.Modify();
+        TempExpressionValueBuffer.Next();
+        TempExpressionValueBuffer.Value := Format(LoanProcessingSchemaLine."Calculation Parameter", 0, 9);
+        TempExpressionValueBuffer.Modify();
         if CheckCondition(LoanProcessingSchemaLine."Condition Code") then begin
             Clear(LoanDocumentLine);
             LoanDocumentLine.Init();
@@ -370,7 +367,7 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         if ConditionCode = '' then
             exit(true);
         ExpressionHeader.Get(ConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));
+        exit(ExpressionEngine.CheckCondition(ExpressionHeader, TempExpressionValueBuffer));
     end;
 
     local procedure GetFunctionValue(FunctionCode: Code[20]): Text
@@ -379,7 +376,7 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
     begin
         ExpressionHeader.Get(FunctionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        exit(ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer));
+        exit(ExpressionEngine.CalculateFormula(ExpressionHeader, TempExpressionValueBuffer));
     end;
 
     local procedure GetSwitchValue(SwitchCode: Code[20]): Code[20]
@@ -389,7 +386,7 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         Result: Text;
     begin
         ExpressionHeader.Get(SwitchCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        if not ExpressionEngine.SwitchCase(ExpressionHeader, Result, ExpressionValueBuffer) then
+        if not ExpressionEngine.SwitchCase(ExpressionHeader, Result, TempExpressionValueBuffer) then
             exit('')
         else
             exit(CopyStr(Result, 1, 20));

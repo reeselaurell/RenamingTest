@@ -79,43 +79,39 @@ codeunit 14135102 "lvnPostProcessingMgmt"
     begin
         case LoanJournalBatch."Dimension Import Rule" of
             LoanJournalBatch."Dimension Import Rule"::"Copy All From Loan":
-                begin
-                    if Loan.Get(LoanJournalLine."Loan No.") then begin
-                        LoanJournalLine."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
-                        LoanJournalLine."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
-                        LoanJournalLine."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
-                        LoanJournalLine."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
-                        LoanJournalLine."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
-                        LoanJournalLine."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
-                        LoanJournalLine."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
-                        LoanJournalLine."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
-                        LoanJournalLine."Business Unit Code" := Loan."Business Unit Code";
-                        LoanJournalLine.Modify();
-                    end;
+                if Loan.Get(LoanJournalLine."Loan No.") then begin
+                    LoanJournalLine."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
+                    LoanJournalLine."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
+                    LoanJournalLine."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
+                    LoanJournalLine."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
+                    LoanJournalLine."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
+                    LoanJournalLine."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
+                    LoanJournalLine."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
+                    LoanJournalLine."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
+                    LoanJournalLine."Business Unit Code" := Loan."Business Unit Code";
+                    LoanJournalLine.Modify();
                 end;
             LoanJournalBatch."Dimension Import Rule"::"Copy All From Loan If Empty":
-                begin
-                    if Loan.Get(LoanJournalLine."Loan No.") then begin
-                        if LoanJournalLine."Global Dimension 1 Code" = '' then
-                            LoanJournalLine."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
-                        if LoanJournalLine."Global Dimension 2 Code" = '' then
-                            LoanJournalLine."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
-                        if LoanJournalLine."Shortcut Dimension 3 Code" = '' then
-                            LoanJournalLine."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
-                        if LoanJournalLine."Shortcut Dimension 4 Code" = '' then
-                            LoanJournalLine."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
-                        if LoanJournalLine."Shortcut Dimension 5 Code" = '' then
-                            LoanJournalLine."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
-                        if LoanJournalLine."Shortcut Dimension 6 Code" = '' then
-                            LoanJournalLine."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
-                        if LoanJournalLine."Shortcut Dimension 7 Code" = '' then
-                            LoanJournalLine."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
-                        if LoanJournalLine."Shortcut Dimension 8 Code" = '' then
-                            LoanJournalLine."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
-                        if LoanJournalLine."Business Unit Code" = '' then
-                            LoanJournalLine."Business Unit Code" := Loan."Business Unit Code";
-                        LoanJournalLine.Modify();
-                    end;
+                if Loan.Get(LoanJournalLine."Loan No.") then begin
+                    if LoanJournalLine."Global Dimension 1 Code" = '' then
+                        LoanJournalLine."Global Dimension 1 Code" := Loan."Global Dimension 1 Code";
+                    if LoanJournalLine."Global Dimension 2 Code" = '' then
+                        LoanJournalLine."Global Dimension 2 Code" := Loan."Global Dimension 2 Code";
+                    if LoanJournalLine."Shortcut Dimension 3 Code" = '' then
+                        LoanJournalLine."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
+                    if LoanJournalLine."Shortcut Dimension 4 Code" = '' then
+                        LoanJournalLine."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
+                    if LoanJournalLine."Shortcut Dimension 5 Code" = '' then
+                        LoanJournalLine."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
+                    if LoanJournalLine."Shortcut Dimension 6 Code" = '' then
+                        LoanJournalLine."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
+                    if LoanJournalLine."Shortcut Dimension 7 Code" = '' then
+                        LoanJournalLine."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
+                    if LoanJournalLine."Shortcut Dimension 8 Code" = '' then
+                        LoanJournalLine."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
+                    if LoanJournalLine."Business Unit Code" = '' then
+                        LoanJournalLine."Business Unit Code" := Loan."Business Unit Code";
+                    LoanJournalLine.Modify();
                 end;
         end;
         if LoanJournalBatch."Map Dimensions Using Hierachy" then begin
@@ -264,7 +260,7 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
         var LoanJournalLine: Record lvnLoanJournalLine)
     var
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         ExpressionHeader: Record lvnExpressionHeader;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionEngine: Codeunit lvnExpressionEngine;
@@ -273,9 +269,9 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
     begin
         PostProcessingSchemaLine.TestField("Expression Code");
-        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
+        ConditionsMgmt.FillJournalFieldValues(TempExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
         ExpressionHeader.Get(PostProcessingSchemaLine."Expression Code", ConditionsMgmt.GetConditionsMgmtConsumerId());
-        if not ExpressionEngine.SwitchCase(ExpressionHeader, Value, ExpressionValueBuffer) then
+        if not ExpressionEngine.SwitchCase(ExpressionHeader, Value, TempExpressionValueBuffer) then
             Error(SwitchCaseErr, PostProcessingSchemaLine."Expression Code");
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
@@ -284,7 +280,7 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         PostProcessingSchemaLine: Record lvnPostProcessingSchemaLine;
         var LoanJournalLine: Record lvnLoanJournalLine)
     var
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         ExpressionHeader: Record lvnExpressionHeader;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionEngine: Codeunit lvnExpressionEngine;
@@ -292,9 +288,9 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         FieldSequenceNo: Integer;
     begin
         PostProcessingSchemaLine.TestField("Expression Code");
-        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
+        ConditionsMgmt.FillJournalFieldValues(TempExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
         ExpressionHeader.Get(PostProcessingSchemaLine."Expression Code", ConditionsMgmt.GetConditionsMgmtConsumerId());
-        Value := ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer);
+        Value := ExpressionEngine.CalculateFormula(ExpressionHeader, TempExpressionValueBuffer);
         AssignFieldValue(LoanJournalLine, PostProcessingSchemaLine, Value);
     end;
 
@@ -384,11 +380,9 @@ codeunit 14135102 "lvnPostProcessingMgmt"
                         LoanJournalValue.Insert(true);
                     end;
                     LoanJournalValue."Field Value" := Value;
-                    if PostProcessingSchemaLine."Rounding Expression" <> 0 then begin
-                        if Evaluate(DecimalValue, LoanJournalValue."Field Value") then begin
+                    if PostProcessingSchemaLine."Rounding Expression" <> 0 then
+                        if Evaluate(DecimalValue, LoanJournalValue."Field Value") then
                             LoanJournalValue."Field Value" := Format(Round(DecimalValue, PostProcessingSchemaLine."Rounding Expression"));
-                        end;
-                    end;
                     LoanJournalValue.Modify(true);
                 end;
             PostProcessingSchemaLine."Assign To"::"Loan Journal Field":

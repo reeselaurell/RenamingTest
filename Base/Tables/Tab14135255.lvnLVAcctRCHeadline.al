@@ -56,7 +56,6 @@ table 14135255 "lvnLVAcctRCHeadline"
     procedure SetNetChange()
     var
         GLAccount: Record "G/L Account";
-        DateFilter: Text;
     begin
         Reset();
         FindSet();

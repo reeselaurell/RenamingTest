@@ -73,21 +73,21 @@ pageextension 14135107 "lvnPurchaseJournal" extends "Purchase Journal"
 
                 trigger OnAction()
                 var
-                    GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
-                    ImportBufferError: Record lvnImportBufferError temporary;
+                    TempGenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
+                    TempImportBufferError: Record lvnImportBufferError temporary;
                     ImportGenJnlFile: Codeunit lvnGenJnlFileImportManagement;
                     JournalDataImport: Page lvnJournalDataImport;
                 begin
                     Clear(ImportGenJnlFile);
-                    if not ImportGenJnlFile.ManualFileImport(GenJnlImportBuffer, ImportBufferError) then
+                    if not ImportGenJnlFile.ManualFileImport(TempGenJnlImportBuffer, TempImportBufferError) then
                         exit;
-                    ImportBufferError.Reset();
-                    if not ImportBufferError.IsEmpty() then begin
+                    TempImportBufferError.Reset();
+                    if not TempImportBufferError.IsEmpty() then begin
                         Clear(JournalDataImport);
-                        JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
+                        JournalDataImport.SetParams(TempGenJnlImportBuffer, TempImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, Rec."Journal Template Name", Rec."Journal Batch Name", CreateGuid());
+                        ImportGenJnlFile.CreateJournalLines(TempGenJnlImportBuffer, Rec."Journal Template Name", Rec."Journal Batch Name", CreateGuid());
                     CurrPage.Update(false);
                 end;
             }

@@ -238,7 +238,7 @@ report 14135155 "lvnUseTaxPayableReport"
         ReportLineTtl: Decimal;
         ReportTaxTtl: Decimal;
         NumberFormat: Code[20];
-        ExportCallLabel: Label 'UseTaxPayableExport';
+        ExportCallLbl: Label 'UseTaxPayableExport';
         FileNameLbl: Label 'UseTaxPayableReport.xlsx';
         ColorTxt: Label '#E1E1E1';
         RepHeaderLbl: Label 'Use Tax Payable Report';
@@ -249,7 +249,6 @@ report 14135155 "lvnUseTaxPayableReport"
         ExtDocNoLbl: Label 'Ext. Doc. No.';
         LineAmtLbl: Label 'Line Amount';
         GLAccLbl: Label 'G/L Account';
-        CostCenterLbl: Label 'Cost Center';
         TaxRateLbl: Label 'Tax Rate';
         TaxAmtLbl: Label 'Tax Amount';
         PayFreqLbl: Label 'Payment Frequency';
@@ -289,7 +288,7 @@ report 14135155 "lvnUseTaxPayableReport"
     begin
         if Dimension.Get(LoanVisionSetup."Cost Center Dimension Code") then
             DimName := Dimension.Name;
-        ExcelExport.Init(ExportCallLabel, ExportFormat::Xlsx);
+        ExcelExport.Init(ExportCallLbl, ExportFormat::Xlsx);
         ExcelExport.NewRow(-10);
         WriteToExcel(RepHeaderLbl, true, 22, true, '', true, false);
         ExcelExport.NewRow(-10);

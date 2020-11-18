@@ -127,10 +127,9 @@ page 14135166 "lvnDimensionChangeLedger"
     trigger OnAfterGetRecord()
     begin
         Clear(GLAccountName);
-        if GLAccount."No." <> Rec."G/L Account No." then begin
+        if GLAccount."No." <> Rec."G/L Account No." then
             if GLAccount.Get(Rec."G/L Account No.") then
                 GLAccountName := GLAccount.Name;
-        end;
     end;
 
     var

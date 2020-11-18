@@ -43,15 +43,15 @@ report 14135312 lvnCommissionAdjExport
     trigger OnPreReport()
     begin
         LoanVisionSetup.Get();
-        ExcelBuffer.AddColumn(LoanOfficercodeLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(PayrollIDLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(LoanOfficerNameLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(CostCenterCodeLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(DescriptionLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(ManualEntryLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(IdentifierCodeLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(LoanNoLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(AmountLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(LoanOfficercodeLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(PayrollIDLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(LoanOfficerNameLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(CostCenterCodeLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(DescriptionLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(ManualEntryLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(IdentifierCodeLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(LoanNoLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(AmountLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
         CommissionProfile.Reset();
         CommissionProfile.FindSet();
         if GuiAllowed() then begin
@@ -71,16 +71,16 @@ report 14135312 lvnCommissionAdjExport
             CommissionJournalLine.SetRange("Profile Line Type", CommissionJournalLine."Profile Line Type"::"Period Level");
             if CommissionJournalLine.FindSet() then
                 repeat
-                    ExcelBuffer.NewRow();
-                    ExcelBuffer.AddColumn(CommissionProfile.Code, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(DimensionValue.lvnAdditionalCode, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionProfile.Name, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionProfile."Cost Center Code", false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionJournalLine.Description, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(Format(CommissionJournalLine."Manual Adjustment"), false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionJournalLine."Identifier Code", false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionJournalLine."Loan No.", false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionJournalLine."Commission Amount", false, '', true, false, false, '', ExcelBuffer."Cell Type"::Number);
+                    TempExcelBuffer.NewRow();
+                    TempExcelBuffer.AddColumn(CommissionProfile.Code, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(DimensionValue.lvnAdditionalCode, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionProfile.Name, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionProfile."Cost Center Code", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionJournalLine.Description, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(Format(CommissionJournalLine."Manual Adjustment"), false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionJournalLine."Identifier Code", false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionJournalLine."Loan No.", false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionJournalLine."Commission Amount", false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Number);
                 until CommissionJournalLine.Next() = 0;
             CommissionValueEntry.Reset();
             CommissionValueEntry.SetRange("Profile Code", CommissionProfile.Code);
@@ -90,22 +90,22 @@ report 14135312 lvnCommissionAdjExport
             CommissionValueEntry.SetRange("Profile Line Type", CommissionValueEntry."Profile Line Type"::"Period Level");
             if CommissionValueEntry.FindSet() then
                 repeat
-                    ExcelBuffer.NewRow();
-                    ExcelBuffer.AddColumn(CommissionProfile.Code, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(DimensionValue.lvnAdditionalCode, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionProfile.Name, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionProfile."Cost Center Code", false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionValueEntry.Description, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(Format(CommissionValueEntry."Manual Adjustment"), false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionValueEntry."Identifier Code", false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionValueEntry."Loan No.", false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-                    ExcelBuffer.AddColumn(CommissionValueEntry."Commission Amount", false, '', true, false, false, '', ExcelBuffer."Cell Type"::Number);
+                    TempExcelBuffer.NewRow();
+                    TempExcelBuffer.AddColumn(CommissionProfile.Code, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(DimensionValue.lvnAdditionalCode, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionProfile.Name, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionProfile."Cost Center Code", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionValueEntry.Description, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(Format(CommissionValueEntry."Manual Adjustment"), false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionValueEntry."Identifier Code", false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionValueEntry."Loan No.", false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                    TempExcelBuffer.AddColumn(CommissionValueEntry."Commission Amount", false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Number);
                 until CommissionValueEntry.Next() = 0;
         until CommissionProfile.Next() = 0;
-        ExcelBuffer.CreateNewBook(ExcelSheetNameLbl);
-        ExcelBuffer.WriteSheet(ExcelSheetNameLbl, CompanyName, UserId);
-        ExcelBuffer.CloseBook();
-        ExcelBuffer.OpenExcel();
+        TempExcelBuffer.CreateNewBook(ExcelSheetNameLbl);
+        TempExcelBuffer.WriteSheet(ExcelSheetNameLbl, CompanyName, UserId);
+        TempExcelBuffer.CloseBook();
+        TempExcelBuffer.OpenExcel();
         if GuiAllowed() then
             ProcessingDialog.Close();
     end;
@@ -117,7 +117,7 @@ report 14135312 lvnCommissionAdjExport
         PeriodIdentifier: Record lvnPeriodIdentifier;
         CommissionProfile: Record lvnCommissionProfile;
         DimensionValue: Record "Dimension Value";
-        ExcelBuffer: Record "Excel Buffer" temporary;
+        TempExcelBuffer: Record "Excel Buffer" temporary;
         FilterTokens: Codeunit "Filter Tokens";
         ProcessingDialog: Dialog;
         Counter: Integer;

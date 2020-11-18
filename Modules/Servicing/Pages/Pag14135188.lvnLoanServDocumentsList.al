@@ -74,9 +74,8 @@ page 14135188 "lvnLoanServDocumentsList"
                     PostLoanDocument: Codeunit lvnPostLoanDocument;
                     PostConfirmationQst: Label 'Do You want to Post Document?';
                 begin
-                    if Confirm(PostConfirmationQst, false) then begin
+                    if Confirm(PostConfirmationQst, false) then
                         PostLoanDocument.Run(Rec);
-                    end;
                 end;
             }
             action(BatchPost)

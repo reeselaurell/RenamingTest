@@ -52,14 +52,14 @@ report 14135113 "lvnSuggestVendorPayments"
                 if UsePaymentDisc and not StopPayments then begin
                     Reset;
                     CopyFilters(Vend2);
-                    Window2.Open(Text007);
+                    Window2.Open(ProcessingPaymentDiscountsMsg);
                     if FindSet then
                         repeat
                             Clear(VendorBalance);
                             CalcFields("Balance (LCY)");
                             VendorBalance := "Balance (LCY)";
                             Window2.Update(1, "No.");
-                            PayableVendLedgEntry.SetRange("Vendor No.", "No.");
+                            TempPayableVendLedgEntry.SetRange("Vendor No.", "No.");
                             if VendorBalance > 0 then begin
                                 GetVendLedgEntries(true, true);
                                 GetVendLedgEntries(false, true);
@@ -85,16 +85,16 @@ report 14135113 "lvnSuggestVendorPayments"
                     GenJnlLine.Init;
                 end;
 
-                Window2.Open(Text008);
+                Window2.Open(InsertPayJournalLinesMsg);
 
-                PayableVendLedgEntry.Reset;
-                PayableVendLedgEntry.SetRange(Priority, 1, 2147483647);
+                TempPayableVendLedgEntry.Reset;
+                TempPayableVendLedgEntry.SetRange(Priority, 1, 2147483647);
                 MakeGenJnlLines;
-                PayableVendLedgEntry.Reset;
-                PayableVendLedgEntry.SetRange(Priority, 0);
+                TempPayableVendLedgEntry.Reset;
+                TempPayableVendLedgEntry.SetRange(Priority, 0);
                 MakeGenJnlLines;
-                PayableVendLedgEntry.Reset;
-                PayableVendLedgEntry.DeleteAll;
+                TempPayableVendLedgEntry.Reset;
+                TempPayableVendLedgEntry.DeleteAll;
 
                 Window2.Close;
                 Window.Close;
@@ -106,9 +106,9 @@ report 14135113 "lvnSuggestVendorPayments"
                 ConfirmManagement: Codeunit "Confirm Management";
             begin
                 if LastDueDateToPayReq = 0D then
-                    Error(Text000);
+                    Error(SpecifyLastDateErr);
                 if (PostingDate = 0D) and (not UseDueDateAsPostingDate) then
-                    Error(Text001);
+                    Error(SpecifyPostingDateErr);
 
                 BankPmtType := GenJnlLine2."Bank Payment Type";
                 BalAccType := GenJnlLine2."Bal. Account Type";
@@ -121,17 +121,17 @@ report 14135113 "lvnSuggestVendorPayments"
                     SummarizePerVend) and
                    (NextDocNo = '')
                 then
-                    Error(Text002);
+                    Error(SpecifyFirstDocNoErr);
 
                 if ((BankPmtType = GenJnlLine2."Bank Payment Type"::"Manual Check") and
                     not SummarizePerVend and
                     not DocNoPerLine)
                 then
-                    Error(Text017, GenJnlLine2.FieldCaption("Bank Payment Type"), Format(GenJnlLine2."Bank Payment Type"::"Manual Check"));
+                    Error(SelectNewDocNoErr, GenJnlLine2.FieldCaption("Bank Payment Type"), Format(GenJnlLine2."Bank Payment Type"::"Manual Check"));
 
                 if UsePaymentDisc and (LastDueDateToPayReq < WorkDate) then
-                    if not ConfirmManagement.GetResponseOrDefault(StrSubstNo(Text003, WorkDate), true) then
-                        Error(Text005);
+                    if not ConfirmManagement.GetResponseOrDefault(StrSubstNo(RunBatchJobMsg, WorkDate), true) then
+                        Error(BatchJobInterruptErr);
 
                 Vend2.CopyFilters(Vendor);
 
@@ -141,7 +141,7 @@ report 14135113 "lvnSuggestVendorPayments"
                     SetRange(Priority, 1, 2147483647);
                     UsePriority := true;
                 end;
-                Window.Open(Text006);
+                Window.Open(ProccessingVendorsMsg);
 
                 SelectedDim.SetRange("User ID", UserId);
                 SelectedDim.SetRange("Object Type", 3);
@@ -197,7 +197,7 @@ report 14135113 "lvnSuggestVendorPayments"
                             trigger OnValidate()
                             begin
                                 if not UsePriority and (AmountAvailable <> 0) then
-                                    Error(Text011);
+                                    Error(AmountAvailableNotZeroErr);
                             end;
                         }
                         field("Available Amount (LCY)"; AmountAvailable)
@@ -322,7 +322,7 @@ report 14135113 "lvnSuggestVendorPayments"
                             trigger OnValidate()
                             begin
                                 if not UsePriority and (AmountAvailable <> 0) then
-                                    Error(Text013);
+                                    Error(AmountAvailableLCYNotZeroErr);
                             end;
                         }
                         field(BalAccountType; GenJnlLine2."Bal. Account Type")
@@ -351,7 +351,7 @@ report 14135113 "lvnSuggestVendorPayments"
                                         if PAGE.RunModal(0, GLAcc) = ACTION::LookupOK then
                                             GenJnlLine2."Bal. Account No." := GLAcc."No.";
                                     GenJnlLine2."Bal. Account Type"::Customer, GenJnlLine2."Bal. Account Type"::Vendor:
-                                        Error(Text009, GenJnlLine2.FieldCaption("Bal. Account Type"));
+                                        Error(NotGLAccOrBankAccErr, GenJnlLine2.FieldCaption("Bal. Account Type"));
                                     GenJnlLine2."Bal. Account Type"::"Bank Account":
                                         if PAGE.RunModal(0, BankAcc) = ACTION::LookupOK then
                                             GenJnlLine2."Bal. Account No." := BankAcc."No.";
@@ -365,7 +365,7 @@ report 14135113 "lvnSuggestVendorPayments"
                                         GenJnlLine2."Bal. Account Type"::"G/L Account":
                                             GLAcc.Get(GenJnlLine2."Bal. Account No.");
                                         GenJnlLine2."Bal. Account Type"::Customer, GenJnlLine2."Bal. Account Type"::Vendor:
-                                            Error(Text009, GenJnlLine2.FieldCaption("Bal. Account Type"));
+                                            Error(NotGLAccOrBankAccErr, GenJnlLine2.FieldCaption("Bal. Account Type"));
                                         GenJnlLine2."Bal. Account Type"::"Bank Account":
                                             BankAcc.Get(GenJnlLine2."Bal. Account No.");
                                     end;
@@ -384,7 +384,7 @@ report 14135113 "lvnSuggestVendorPayments"
                                    (GenJnlLine2."Bank Payment Type".AsInteger() > 0)
                                 then
                                     Error(
-                                      Text010,
+                                      MustBeFilledErr,
                                       GenJnlLine2.FieldCaption("Bank Payment Type"),
                                       GenJnlLine2.FieldCaption("Bal. Account Type"));
                             end;
@@ -432,9 +432,9 @@ report 14135113 "lvnSuggestVendorPayments"
         ConfirmManagement: Codeunit "Confirm Management";
     begin
         Commit;
-        if not VendorLedgEntryTemp.IsEmpty then
-            if ConfirmManagement.GetResponse(Text024, true) then
-                Page.RunModal(0, VendorLedgEntryTemp);
+        if not TempVendorLedgEntry.IsEmpty then
+            if ConfirmManagement.GetResponse(NoPaymentSuggestMsg, true) then
+                Page.RunModal(0, TempVendorLedgEntry);
 
         if CheckOtherJournalBatches then
             if not TempErrorMessage.IsEmpty then
@@ -445,7 +445,7 @@ report 14135113 "lvnSuggestVendorPayments"
     trigger OnPreReport()
     begin
         CompanyInformation.Get;
-        VendorLedgEntryTemp.DeleteAll;
+        TempVendorLedgEntry.DeleteAll;
         ShowPostingDateWarning := false;
         PaymentMethodFilter := Vendor.GetFilter(lvnPaymentMethodFilter);
         PostingGroupFilter := Vendor.GetFilter(lvnPostingGroupFilter);
@@ -463,16 +463,17 @@ report 14135113 "lvnSuggestVendorPayments"
         VendLedgEntry: Record "Vendor Ledger Entry";
         GLAcc: Record "G/L Account";
         BankAcc: Record "Bank Account";
-        PayableVendLedgEntry: Record "Payable Vendor Ledger Entry" temporary;
+        TempPayableVendLedgEntry: Record "Payable Vendor Ledger Entry" temporary;
         CompanyInformation: Record "Company Information";
         TempPaymentBuffer: Record "Payment Buffer" temporary;
-        OldTempPaymentBuffer: Record "Payment Buffer" temporary;
+        TempOldPaymentBuffer: Record "Payment Buffer" temporary;
         SelectedDim: Record "Selected Dimension";
-        VendorLedgEntryTemp: Record "Vendor Ledger Entry" temporary;
+        TempVendorLedgEntry: Record "Vendor Ledger Entry" temporary;
         TempErrorMessage: Record "Error Message" temporary;
         NoSeriesMgt: Codeunit NoSeriesManagement;
         DimMgt: Codeunit DimensionManagement;
         DimBufMgt: Codeunit "Dimension Buffer Management";
+        DueDateOffset: DateFormula;
         Window: Dialog;
         Window2: Dialog;
         UsePaymentDisc: Boolean;
@@ -487,7 +488,6 @@ report 14135113 "lvnSuggestVendorPayments"
         SummarizePerDimText: Text[250];
         LastLineNo: Integer;
         NextEntryNo: Integer;
-        DueDateOffset: DateFormula;
         UseDueDateAsPostingDate: Boolean;
         StopPayments: Boolean;
         DocNoPerLine: Boolean;
@@ -507,24 +507,24 @@ report 14135113 "lvnSuggestVendorPayments"
         VendorBalance: Decimal;
         SkipExportedPayments: Boolean;
         CheckOtherJournalBatches: Boolean;
-        Text000: Label 'In the Last Payment Date field, specify the last possible date that payments must be made.';
-        Text001: Label 'In the Posting Date field, specify the date that will be used as the posting date for the journal entries.';
-        Text002: Label 'In the Starting Document No. field, specify the first document number to be used.';
-        Text003: Label 'The payment date is earlier than %1.\\Do you still want to run the batch job?', Comment = '%1 is a date';
-        Text005: Label 'The batch job was interrupted.';
-        Text006: Label 'Processing vendors     #1##########';
-        Text007: Label 'Processing vendors for payment discounts #1##########';
-        Text008: Label 'Inserting payment journal lines #1##########';
-        Text009: Label '%1 must be G/L Account or Bank Account.';
-        Text010: Label '%1 must be filled only when %2 is Bank Account.';
-        Text011: Label 'Use Vendor Priority must be activated when the value in the Amount Available field is not 0.';
-        Text013: Label 'Use Vendor Priority must be activated when the value in the Amount Available Amount (LCY) field is not 0.';
-        Text017: Label 'If %1 = %2 and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.', Comment = 'If Bank Payment Type = Computer Check and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.';
-        Text020: Label 'You have only created suggested vendor payment lines for the %1 %2.\ However, there are other open vendor ledger entries in currencies other than %2.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR.\ However, there are other open vendor ledger entries in currencies other than EUR.';
-        Text021: Label 'You have only created suggested vendor payment lines for the %1 %2.\ There are no other open vendor ledger entries in other currencies.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR\ There are no other open vendor ledger entries in other currencies.\\';
-        Text022: Label 'You have created suggested vendor payment lines for all currencies.\\';
-        Text024: Label 'There are one or more entries for which no payment suggestions have been made because the posting dates of the entries are later than the requested posting date. Do you want to see the entries?';
-        Text025: Label 'The %1 with the number %2 has a %3 with the number %4.';
+        SpecifyLastDateErr: Label 'In the Last Payment Date field, specify the last possible date that payments must be made.';
+        SpecifyPostingDateErr: Label 'In the Posting Date field, specify the date that will be used as the posting date for the journal entries.';
+        SpecifyFirstDocNoErr: Label 'In the Starting Document No. field, specify the first document number to be used.';
+        RunBatchJobMsg: Label 'The payment date is earlier than %1.\\Do you still want to run the batch job?', Comment = '%1 is a date';
+        BatchJobInterruptErr: Label 'The batch job was interrupted.';
+        ProccessingVendorsMsg: Label 'Processing vendors     #1##########';
+        ProcessingPaymentDiscountsMsg: Label 'Processing vendors for payment discounts #1##########';
+        InsertPayJournalLinesMsg: Label 'Inserting payment journal lines #1##########';
+        NotGLAccOrBankAccErr: Label '%1 must be G/L Account or Bank Account.';
+        MustBeFilledErr: Label '%1 must be filled only when %2 is Bank Account.';
+        AmountAvailableNotZeroErr: Label 'Use Vendor Priority must be activated when the value in the Amount Available field is not 0.';
+        AmountAvailableLCYNotZeroErr: Label 'Use Vendor Priority must be activated when the value in the Amount Available Amount (LCY) field is not 0.';
+        SelectNewDocNoErr: Label 'If %1 = %2 and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.', Comment = 'If Bank Payment Type = Computer Check and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.';
+        OtherOpenVendLedgEntriesMsg: Label 'You have only created suggested vendor payment lines for the %1 %2.\ However, there are other open vendor ledger entries in currencies other than %2.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR.\ However, there are other open vendor ledger entries in currencies other than EUR.';
+        NoOtherOpenVendLedgEntriesMsg: Label 'You have only created suggested vendor payment lines for the %1 %2.\ There are no other open vendor ledger entries in other currencies.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR\ There are no other open vendor ledger entries in other currencies.\\';
+        AllCurrenciesMsg: Label 'You have created suggested vendor payment lines for all currencies.\\';
+        NoPaymentSuggestMsg: Label 'There are one or more entries for which no payment suggestions have been made because the posting dates of the entries are later than the requested posting date. Do you want to see the entries?';
+        ExistingPayToVendorNoMsg: Label 'The %1 with the number %2 has a %3 with the number %4.';
         ReplacePostingDateMsg: Label 'For one or more entries, the requested posting date is before the work date.\\These posting dates will use the work date.';
         PmtDiscUnavailableErr: Label 'You cannot use Find Payment Discounts or Summarize per Vendor together with Calculate Posting Date from Applies-to-Doc. Due Date, because the resulting posting date might not match the payment discount date.';
         MessageToRecipientMsg: Label 'Payment of %1 %2 ', Comment = '%1 document type, %2 Document No.';
@@ -651,18 +651,18 @@ report 14135113 "lvnSuggestVendorPayments"
         GenJnlLine.Validate(Amount);
 
         if UsePriority then
-            PayableVendLedgEntry.Priority := Vendor.Priority
+            TempPayableVendLedgEntry.Priority := Vendor.Priority
         else
-            PayableVendLedgEntry.Priority := 0;
-        PayableVendLedgEntry."Vendor No." := VendLedgEntry."Vendor No.";
-        PayableVendLedgEntry."Entry No." := NextEntryNo;
-        PayableVendLedgEntry."Vendor Ledg. Entry No." := VendLedgEntry."Entry No.";
-        PayableVendLedgEntry.Amount := GenJnlLine.Amount;
-        PayableVendLedgEntry."Amount (LCY)" := GenJnlLine."Amount (LCY)";
-        PayableVendLedgEntry.Positive := (PayableVendLedgEntry.Amount > 0);
-        PayableVendLedgEntry.Future := (VendLedgEntry."Due Date" > LastDueDateToPayReq);
-        PayableVendLedgEntry."Currency Code" := VendLedgEntry."Currency Code";
-        PayableVendLedgEntry.Insert;
+            TempPayableVendLedgEntry.Priority := 0;
+        TempPayableVendLedgEntry."Vendor No." := VendLedgEntry."Vendor No.";
+        TempPayableVendLedgEntry."Entry No." := NextEntryNo;
+        TempPayableVendLedgEntry."Vendor Ledg. Entry No." := VendLedgEntry."Entry No.";
+        TempPayableVendLedgEntry.Amount := GenJnlLine.Amount;
+        TempPayableVendLedgEntry."Amount (LCY)" := GenJnlLine."Amount (LCY)";
+        TempPayableVendLedgEntry.Positive := (TempPayableVendLedgEntry.Amount > 0);
+        TempPayableVendLedgEntry.Future := (VendLedgEntry."Due Date" > LastDueDateToPayReq);
+        TempPayableVendLedgEntry."Currency Code" := VendLedgEntry."Currency Code";
+        TempPayableVendLedgEntry.Insert;
         NextEntryNo := NextEntryNo + 1;
     end;
 
@@ -671,30 +671,30 @@ report 14135113 "lvnSuggestVendorPayments"
         CurrencyBalance: Decimal;
         PrevCurrency: Code[10];
     begin
-        PayableVendLedgEntry.SetRange("Vendor No.", Vendor."No.");
-        PayableVendLedgEntry.SetRange(Future, Future);
+        TempPayableVendLedgEntry.SetRange("Vendor No.", Vendor."No.");
+        TempPayableVendLedgEntry.SetRange(Future, Future);
 
-        if PayableVendLedgEntry.FindSet then begin
+        if TempPayableVendLedgEntry.FindSet then begin
             repeat
-                if PayableVendLedgEntry."Currency Code" <> PrevCurrency then begin
+                if TempPayableVendLedgEntry."Currency Code" <> PrevCurrency then begin
                     if CurrencyBalance > 0 then
                         AmountAvailable := AmountAvailable - CurrencyBalance;
                     CurrencyBalance := 0;
-                    PrevCurrency := PayableVendLedgEntry."Currency Code";
+                    PrevCurrency := TempPayableVendLedgEntry."Currency Code";
                 end;
                 if (OriginalAmtAvailable = 0) or
-                   (AmountAvailable >= CurrencyBalance + PayableVendLedgEntry."Amount (LCY)")
+                   (AmountAvailable >= CurrencyBalance + TempPayableVendLedgEntry."Amount (LCY)")
                 then
-                    CurrencyBalance := CurrencyBalance + PayableVendLedgEntry."Amount (LCY)"
+                    CurrencyBalance := CurrencyBalance + TempPayableVendLedgEntry."Amount (LCY)"
                 else
-                    PayableVendLedgEntry.Delete;
-            until PayableVendLedgEntry.Next = 0;
+                    TempPayableVendLedgEntry.Delete;
+            until TempPayableVendLedgEntry.Next = 0;
             if OriginalAmtAvailable > 0 then
                 AmountAvailable := AmountAvailable - CurrencyBalance;
             if (OriginalAmtAvailable > 0) and (AmountAvailable <= 0) then
                 StopPayments := true;
         end;
-        PayableVendLedgEntry.Reset;
+        TempPayableVendLedgEntry.Reset;
     end;
 
     local procedure MakeGenJnlLines()
@@ -708,20 +708,20 @@ report 14135113 "lvnSuggestVendorPayments"
         TempPaymentBuffer.DeleteAll;
 
         if BalAccType = BalAccType::"Bank Account" then begin
-            CheckCurrencies(BalAccType, BalAccNo, PayableVendLedgEntry);
-            SetBankAccCurrencyFilter(BalAccType, BalAccNo, PayableVendLedgEntry);
+            CheckCurrencies(BalAccType, BalAccNo, TempPayableVendLedgEntry);
+            SetBankAccCurrencyFilter(BalAccType, BalAccNo, TempPayableVendLedgEntry);
         end;
 
         if OriginalAmtAvailable <> 0 then begin
             RemainingAmtAvailable := OriginalAmtAvailable;
-            RemovePaymentsAboveLimit(PayableVendLedgEntry, RemainingAmtAvailable);
+            RemovePaymentsAboveLimit(TempPayableVendLedgEntry, RemainingAmtAvailable);
         end;
-        if PayableVendLedgEntry.Find('-') then
+        if TempPayableVendLedgEntry.Find('-') then
             repeat
-                PayableVendLedgEntry.SetRange("Vendor No.", PayableVendLedgEntry."Vendor No.");
-                PayableVendLedgEntry.Find('-');
+                TempPayableVendLedgEntry.SetRange("Vendor No.", TempPayableVendLedgEntry."Vendor No.");
+                TempPayableVendLedgEntry.Find('-');
                 repeat
-                    VendLedgEntry.Get(PayableVendLedgEntry."Vendor Ledg. Entry No.");
+                    VendLedgEntry.Get(TempPayableVendLedgEntry."Vendor Ledg. Entry No.");
                     SetPostingDate(GenJnlLine1, VendLedgEntry."Due Date", PostingDate);
                     HandledEntry := VendLedgEntry."Posting Date" <= GenJnlLine1."Posting Date";
                     if HandledEntry then begin
@@ -739,12 +739,12 @@ report 14135113 "lvnSuggestVendorPayments"
                             if SummarizePerVend then begin
                                 TempPaymentBuffer."Vendor Ledg. Entry No." := 0;
                                 if TempPaymentBuffer.Find then begin
-                                    TempPaymentBuffer.Amount := TempPaymentBuffer.Amount + PayableVendLedgEntry.Amount;
+                                    TempPaymentBuffer.Amount := TempPaymentBuffer.Amount + TempPayableVendLedgEntry.Amount;
                                     TempPaymentBuffer.Modify;
                                 end else begin
                                     TempPaymentBuffer."Document No." := NextDocNo;
                                     NextDocNo := IncStr(NextDocNo);
-                                    TempPaymentBuffer.Amount := PayableVendLedgEntry.Amount;
+                                    TempPaymentBuffer.Amount := TempPayableVendLedgEntry.Amount;
                                     Window2.Update(1, VendLedgEntry."Vendor No.");
                                     TempPaymentBuffer.Insert;
                                 end;
@@ -756,7 +756,7 @@ report 14135113 "lvnSuggestVendorPayments"
                                 TempPaymentBuffer."Global Dimension 2 Code" := VendLedgEntry."Global Dimension 2 Code";
                                 TempPaymentBuffer."Dimension Set ID" := VendLedgEntry."Dimension Set ID";
                                 TempPaymentBuffer."Vendor Ledg. Entry No." := VendLedgEntry."Entry No.";
-                                TempPaymentBuffer.Amount := PayableVendLedgEntry.Amount;
+                                TempPaymentBuffer.Amount := TempPayableVendLedgEntry.Amount;
                                 Window2.Update(1, VendLedgEntry."Vendor No.");
                                 TempPaymentBuffer.Insert;
                             end;
@@ -764,22 +764,22 @@ report 14135113 "lvnSuggestVendorPayments"
                         VendLedgEntry."Amount to Apply" := VendLedgEntry."Remaining Amount";
                         Codeunit.Run(Codeunit::"Vend. Entry-Edit", VendLedgEntry);
                     end else begin
-                        VendorLedgEntryTemp := VendLedgEntry;
-                        VendorLedgEntryTemp.Insert;
+                        TempVendorLedgEntry := VendLedgEntry;
+                        TempVendorLedgEntry.Insert;
                     end;
 
-                    PayableVendLedgEntry.Delete;
+                    TempPayableVendLedgEntry.Delete;
                     if OriginalAmtAvailable <> 0 then begin
-                        RemainingAmtAvailable := RemainingAmtAvailable - PayableVendLedgEntry."Amount (LCY)";
-                        RemovePaymentsAboveLimit(PayableVendLedgEntry, RemainingAmtAvailable);
+                        RemainingAmtAvailable := RemainingAmtAvailable - TempPayableVendLedgEntry."Amount (LCY)";
+                        RemovePaymentsAboveLimit(TempPayableVendLedgEntry, RemainingAmtAvailable);
                     end;
 
-                until not PayableVendLedgEntry.FindSet;
-                PayableVendLedgEntry.DeleteAll;
-                PayableVendLedgEntry.SetRange("Vendor No.");
-            until not PayableVendLedgEntry.Find('-');
+                until not TempPayableVendLedgEntry.FindSet;
+                TempPayableVendLedgEntry.DeleteAll;
+                TempPayableVendLedgEntry.SetRange("Vendor No.");
+            until not TempPayableVendLedgEntry.Find('-');
 
-        Clear(OldTempPaymentBuffer);
+        Clear(TempOldPaymentBuffer);
         TempPaymentBuffer.SetCurrentKey("Document No.");
         TempPaymentBuffer.SetFilter(
           "Vendor Ledg. Entry Doc. Type", '<>%1&<>%2', TempPaymentBuffer."Vendor Ledg. Entry Doc. Type"::Refund,
@@ -811,15 +811,15 @@ report 14135113 "lvnSuggestVendorPayments"
                 GenJnlLine."Document No." := NextDocNo;
                 NextDocNo := IncStr(NextDocNo);
             end else
-                if (TempPaymentBuffer."Vendor No." = OldTempPaymentBuffer."Vendor No.") and
-                   (TempPaymentBuffer."Currency Code" = OldTempPaymentBuffer."Currency Code")
+                if (TempPaymentBuffer."Vendor No." = TempOldPaymentBuffer."Vendor No.") and
+                   (TempPaymentBuffer."Currency Code" = TempOldPaymentBuffer."Currency Code")
                 then
-                    GenJnlLine."Document No." := OldTempPaymentBuffer."Document No."
+                    GenJnlLine."Document No." := TempOldPaymentBuffer."Document No."
                 else begin
                     GenJnlLine."Document No." := NextDocNo;
                     NextDocNo := IncStr(NextDocNo);
-                    OldTempPaymentBuffer := TempPaymentBuffer;
-                    OldTempPaymentBuffer."Document No." := GenJnlLine."Document No.";
+                    TempOldPaymentBuffer := TempPaymentBuffer;
+                    TempOldPaymentBuffer."Document No." := GenJnlLine."Document No.";
                 end;
         GenJnlLine."Account Type" := GenJnlLine."Account Type"::Vendor;
         GenJnlLine.SetHideValidation(true);
@@ -828,7 +828,7 @@ report 14135113 "lvnSuggestVendorPayments"
         GenJnlLine.Validate("Account No.", TempPaymentBuffer."Vendor No.");
         Vendor.Get(TempPaymentBuffer."Vendor No.");
         if (Vendor."Pay-to Vendor No." <> '') and (Vendor."Pay-to Vendor No." <> GenJnlLine."Account No.") then
-            Message(Text025, Vendor.TableCaption, Vendor."No.", Vendor.FieldCaption("Pay-to Vendor No."),
+            Message(ExistingPayToVendorNoMsg, Vendor.TableCaption, Vendor."No.", Vendor.FieldCaption("Pay-to Vendor No."),
               Vendor."Pay-to Vendor No.");
         GenJnlLine."Bal. Account Type" := BalAccType;
         GenJnlLine.Validate("Bal. Account No.", BalAccNo);
@@ -937,61 +937,61 @@ report 14135113 "lvnSuggestVendorPayments"
         var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
     var
         BankAcc: Record "Bank Account";
-        TmpPayableVendLedgEntry2: Record "Payable Vendor Ledger Entry" temporary;
+        TempPayableVendLedgEntry2: Record "Payable Vendor Ledger Entry" temporary;
     begin
         if BalAccType = BalAccType::"Bank Account" then
             if BalAccNo <> '' then begin
                 BankAcc.Get(BalAccNo);
                 if BankAcc."Currency Code" <> '' then begin
-                    TmpPayableVendLedgEntry2.Reset;
-                    TmpPayableVendLedgEntry2.DeleteAll;
+                    TempPayableVendLedgEntry2.Reset;
+                    TempPayableVendLedgEntry2.DeleteAll;
                     if TmpPayableVendLedgEntry.FindSet then
                         repeat
-                            TmpPayableVendLedgEntry2 := TmpPayableVendLedgEntry;
-                            TmpPayableVendLedgEntry2.Insert;
+                            TempPayableVendLedgEntry2 := TmpPayableVendLedgEntry;
+                            TempPayableVendLedgEntry2.Insert;
                         until TmpPayableVendLedgEntry.Next = 0;
 
-                    TmpPayableVendLedgEntry2.SetFilter("Currency Code", '<>%1', BankAcc."Currency Code");
-                    SeveralCurrencies := SeveralCurrencies or TmpPayableVendLedgEntry2.FindFirst;
+                    TempPayableVendLedgEntry2.SetFilter("Currency Code", '<>%1', BankAcc."Currency Code");
+                    SeveralCurrencies := SeveralCurrencies or TempPayableVendLedgEntry2.FindFirst;
 
                     if SeveralCurrencies then
                         MessageText :=
-                          StrSubstNo(Text020, BankAcc.FieldCaption("Currency Code"), BankAcc."Currency Code")
+                          StrSubstNo(OtherOpenVendLedgEntriesMsg, BankAcc.FieldCaption("Currency Code"), BankAcc."Currency Code")
                     else
                         MessageText :=
-                          StrSubstNo(Text021, BankAcc.FieldCaption("Currency Code"), BankAcc."Currency Code");
+                          StrSubstNo(NoOtherOpenVendLedgEntriesMsg, BankAcc.FieldCaption("Currency Code"), BankAcc."Currency Code");
                 end else
-                    MessageText := Text022;
+                    MessageText := AllCurrenciesMsg;
             end;
     end;
 
     local procedure ClearNegative()
     var
         TempCurrency: Record Currency temporary;
-        PayableVendLedgEntry2: Record "Payable Vendor Ledger Entry" temporary;
+        TempPayableVendLedgEntry2: Record "Payable Vendor Ledger Entry" temporary;
         CurrencyBalance: Decimal;
     begin
-        Clear(PayableVendLedgEntry);
-        PayableVendLedgEntry.SetRange("Vendor No.", Vendor."No.");
+        Clear(TempPayableVendLedgEntry);
+        TempPayableVendLedgEntry.SetRange("Vendor No.", Vendor."No.");
 
-        while PayableVendLedgEntry.Next <> 0 do begin
-            TempCurrency.Code := PayableVendLedgEntry."Currency Code";
+        while TempPayableVendLedgEntry.Next <> 0 do begin
+            TempCurrency.Code := TempPayableVendLedgEntry."Currency Code";
             CurrencyBalance := 0;
             if TempCurrency.Insert then begin
-                PayableVendLedgEntry2 := PayableVendLedgEntry;
-                PayableVendLedgEntry.SetRange("Currency Code", PayableVendLedgEntry."Currency Code");
+                TempPayableVendLedgEntry2 := TempPayableVendLedgEntry;
+                TempPayableVendLedgEntry.SetRange("Currency Code", TempPayableVendLedgEntry."Currency Code");
                 repeat
-                    CurrencyBalance := CurrencyBalance + PayableVendLedgEntry."Amount (LCY)"
-                until PayableVendLedgEntry.Next = 0;
+                    CurrencyBalance := CurrencyBalance + TempPayableVendLedgEntry."Amount (LCY)"
+                until TempPayableVendLedgEntry.Next = 0;
                 if CurrencyBalance < 0 then begin
-                    PayableVendLedgEntry.DeleteAll;
+                    TempPayableVendLedgEntry.DeleteAll;
                     AmountAvailable += CurrencyBalance;
                 end;
-                PayableVendLedgEntry.SetRange("Currency Code");
-                PayableVendLedgEntry := PayableVendLedgEntry2;
+                TempPayableVendLedgEntry.SetRange("Currency Code");
+                TempPayableVendLedgEntry := TempPayableVendLedgEntry2;
             end;
         end;
-        PayableVendLedgEntry.Reset;
+        TempPayableVendLedgEntry.Reset;
     end;
 
     local procedure DimCodeIsInDimBuf(DimCode: Code[20]; DimBuf: Record "Dimension Buffer"): Boolean
@@ -1002,12 +1002,12 @@ report 14135113 "lvnSuggestVendorPayments"
     end;
 
     local procedure RemovePaymentsAboveLimit(
-        var PayableVendLedgEntry: Record "Payable Vendor Ledger Entry";
+        var TempPayableVendLedgEntry: Record "Payable Vendor Ledger Entry";
         RemainingAmtAvailable: Decimal)
     begin
-        PayableVendLedgEntry.SetFilter("Amount (LCY)", '>%1', RemainingAmtAvailable);
-        PayableVendLedgEntry.DeleteAll;
-        PayableVendLedgEntry.SetRange("Amount (LCY)");
+        TempPayableVendLedgEntry.SetFilter("Amount (LCY)", '>%1', RemainingAmtAvailable);
+        TempPayableVendLedgEntry.DeleteAll;
+        TempPayableVendLedgEntry.SetRange("Amount (LCY)");
     end;
 
     local procedure InsertDimBuf(
@@ -1214,7 +1214,7 @@ report 14135113 "lvnSuggestVendorPayments"
         var GenJournalLine: Record "Gen. Journal Line")
     var
         PurchInvLine: Record "Purch. Inv. Line";
-        lvnLoanReportingBuffer: Record lvnLoanReportingBuffer temporary;
+        TempLoanReportingBuffer: Record lvnLoanReportingBuffer temporary;
         MultipleLoans: Boolean;
     begin
         GenJournalLine."Creditor No." := PaymentBuffer."Creditor No.";
@@ -1233,15 +1233,15 @@ report 14135113 "lvnSuggestVendorPayments"
                 PurchInvLine.SetFilter(lvnLoanNo, '<>%1', '');
                 if PurchInvLine.FindSet() then begin
                     repeat
-                        Clear(lvnLoanReportingBuffer);
-                        lvnLoanReportingBuffer."Loan No." := PurchInvLine.lvnLoanNo;
-                        if lvnLoanReportingBuffer.Insert(false) then;
-                        MultipleLoans := lvnLoanReportingBuffer.Count() > 1;
+                        Clear(TempLoanReportingBuffer);
+                        TempLoanReportingBuffer."Loan No." := PurchInvLine.lvnLoanNo;
+                        if TempLoanReportingBuffer.Insert(false) then;
+                        MultipleLoans := TempLoanReportingBuffer.Count() > 1;
                     until (PurchInvLine.Next() = 0) or (MultipleLoans);
                     if not MultipleLoans then begin
-                        lvnLoanReportingBuffer.Reset();
-                        if lvnLoanReportingBuffer.FindFirst() then
-                            GenJournalLine.lvnLoanNo := lvnLoanReportingBuffer."Loan No.";
+                        TempLoanReportingBuffer.Reset();
+                        if TempLoanReportingBuffer.FindFirst() then
+                            GenJournalLine.lvnLoanNo := TempLoanReportingBuffer."Loan No.";
                     end;
                 end;
             end;

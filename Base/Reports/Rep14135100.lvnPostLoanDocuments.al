@@ -18,11 +18,10 @@ report 14135100 "lvnPostLoanDocuments"
             trigger OnAfterGetRecord()
             begin
                 Clear(lvnPostLoanDocument);
-                if lvnPostLoanDocument.Run(lvnLoanDocument) then begin
-                    PostedDocuments := PostedDocuments + 1;
-                end else begin
+                if lvnPostLoanDocument.Run(lvnLoanDocument) then
+                    PostedDocuments := PostedDocuments + 1
+                else
                     FailedDocuments := FailedDocuments + 1;
-                end;
             end;
 
             trigger OnPostDataItem()

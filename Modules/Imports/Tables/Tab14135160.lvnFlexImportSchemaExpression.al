@@ -36,7 +36,6 @@ table 14135160 "lvnFlexImportSchemaExpression"
                 ConditionsMgmt: Codeunit lvnConditionsMgmt;
                 ExpressionList: Page lvnExpressionList;
                 SelectedExpressionCode: Code[20];
-                ExpressionType: Enum lvnExpressionType;
             begin
                 Clear(ExpressionList);
                 SelectedExpressionCode := ExpressionList.SelectExpression(ConditionsMgmt.GetConditionsMgmtConsumerId(), 'LOAN', "Expression Code", "Expression Type");

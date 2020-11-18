@@ -19,14 +19,14 @@ page 14135240 "lvnFormulaEdit"
                         Object: JsonObject;
                     begin
                         CurrPage.FormulaControl.LoadFormula(FormulaText);
-                        ConditionValueBuffer.Reset();
-                        if ConditionValueBuffer.FindSet() then
+                        TempExpressionValueBuffer.Reset();
+                        if TempExpressionValueBuffer.FindSet() then
                             repeat
                                 Clear(Object);
-                                Object.Add('n', ConditionValueBuffer.Name);
-                                Object.Add('t', ConditionValueBuffer.Type);
+                                Object.Add('n', TempExpressionValueBuffer.Name);
+                                Object.Add('t', TempExpressionValueBuffer.Type);
                                 Data.Add(Object);
-                            until ConditionValueBuffer.Next() = 0;
+                            until TempExpressionValueBuffer.Next() = 0;
                         CurrPage.FormulaControl.LoadFields(Data);
                     end;
 
@@ -51,7 +51,7 @@ page 14135240 "lvnFormulaEdit"
     end;
 
     var
-        ConditionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         Ready: Boolean;
         FormulaText: Text;
 
@@ -59,7 +59,7 @@ page 14135240 "lvnFormulaEdit"
     var
         Engine: Codeunit lvnExpressionEngine;
     begin
-        Engine.CloneValueBuffer(FieldList, ConditionValueBuffer);
+        Engine.CloneValueBuffer(FieldList, TempExpressionValueBuffer);
     end;
 
     procedure SetFormula(Formula: Text)

@@ -198,7 +198,7 @@ page 14135192 "lvnLVAccountantLoanActivities"
     begin
         UserSetup.Reset();
         UserSetup.SetRange("Approver ID", UserId);
-        ApprovalsIDExists := UserSetup.FindFirst();
+        ApprovalsIDExists := not UserSetup.IsEmpty();
     end;
 
     local procedure CalculateGenJnlEntriesCount(): Integer

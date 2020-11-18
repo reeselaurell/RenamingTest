@@ -25,19 +25,9 @@ report 14135163 "lvnGLEntriesByLoanVer1"
             var
                 Loan: Record lvnLoan;
                 GLAccount: Record "G/L Account";
-                VendorLedgerEntry: Record "Vendor Ledger Entry";
-                CustLedgerEntry: Record "Cust. Ledger Entry";
-                VendorLedgerEntry2: Record "Vendor Ledger Entry";
-                CustLedgerEntry2: Record "Cust. Ledger Entry";
-                BankAccount: Record "Bank Account";
-                BankAccountPostingGroup: Record "Bank Account Posting Group";
-                DetailedVendorLedgEntry: Record "Detailed Vendor Ledg. Entry";
-                DetailedCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
                 Vendor: Record Vendor;
                 Customer: Record Customer;
                 GLEntry: Record "G/L Entry";
-                GLEntry2: Record "G/L Entry";
-                AccountNo: Code[20];
                 EntryNo: Integer;
             begin
                 Clear(TempGLEntryBuffer);

@@ -101,12 +101,12 @@ page 14135172 "lvnQuickPayWorksheet"
 
                     trigger OnValidate()
                     begin
-                        Buffer.Get(Rec."Entry No.");
-                        Buffer := Rec;
-                        Buffer.Modify();
-                        Buffer.Reset();
-                        Buffer.CalcSums("Amount to Pay");
-                        TotalAmountToPay := Buffer."Amount to Pay";
+                        TempQuickPayBuffer.Get(Rec."Entry No.");
+                        TempQuickPayBuffer := Rec;
+                        TempQuickPayBuffer.Modify();
+                        TempQuickPayBuffer.Reset();
+                        TempQuickPayBuffer.CalcSums("Amount to Pay");
+                        TotalAmountToPay := TempQuickPayBuffer."Amount to Pay";
                     end;
                 }
                 field("Vendor No."; Rec."Vendor No.")
@@ -175,12 +175,12 @@ page 14135172 "lvnQuickPayWorksheet"
 
                     trigger OnValidate()
                     begin
-                        Buffer.Get(Rec."Entry No.");
-                        Buffer := Rec;
-                        Buffer.Modify();
-                        Buffer.Reset();
-                        Buffer.CalcSums("Amount to Pay");
-                        TotalAmountToPay := Buffer."Amount to Pay";
+                        TempQuickPayBuffer.Get(Rec."Entry No.");
+                        TempQuickPayBuffer := Rec;
+                        TempQuickPayBuffer.Modify();
+                        TempQuickPayBuffer.Reset();
+                        TempQuickPayBuffer.CalcSums("Amount to Pay");
+                        TotalAmountToPay := TempQuickPayBuffer."Amount to Pay";
                     end;
                 }
             }
@@ -347,7 +347,7 @@ page 14135172 "lvnQuickPayWorksheet"
     end;
 
     var
-        Buffer: Record lvnQuickPayBuffer temporary;
+        TempQuickPayBuffer: Record lvnQuickPayBuffer temporary;
         InvoicesPostedPostingDate: Date;
         DueDateBefore: Date;
         QuickPayPresetCode: Code[20];
@@ -389,15 +389,15 @@ page 14135172 "lvnQuickPayWorksheet"
         repeat
             Rec.Validate(Pay, true);
             Rec.Modify();
-            Buffer.Get(Rec."Entry No.");
-            Buffer := Rec;
-            Buffer.Modify();
+            TempQuickPayBuffer.Get(Rec."Entry No.");
+            TempQuickPayBuffer := Rec;
+            TempQuickPayBuffer.Modify();
         until Rec.Next() = 0;
         Rec.Reset();
         Rec.FindFirst();
-        Buffer.Reset();
-        Buffer.CalcSums("Amount to Pay");
-        TotalAmountToPay := Buffer."Amount to Pay";
+        TempQuickPayBuffer.Reset();
+        TempQuickPayBuffer.CalcSums("Amount to Pay");
+        TotalAmountToPay := TempQuickPayBuffer."Amount to Pay";
     end;
 
     local procedure ClearSelection()
@@ -407,15 +407,15 @@ page 14135172 "lvnQuickPayWorksheet"
         repeat
             Rec.Validate(Pay, false);
             Rec.Modify();
-            Buffer.Get(Rec."Entry No.");
-            Buffer := Rec;
-            Buffer.Modify();
+            TempQuickPayBuffer.Get(Rec."Entry No.");
+            TempQuickPayBuffer := Rec;
+            TempQuickPayBuffer.Modify();
         until Rec.Next() = 0;
         Rec.Reset();
         Rec.FindFirst();
-        Buffer.Reset();
-        Buffer.CalcSums("Amount to Pay");
-        TotalAmountToPay := Buffer."Amount to Pay";
+        TempQuickPayBuffer.Reset();
+        TempQuickPayBuffer.CalcSums("Amount to Pay");
+        TotalAmountToPay := TempQuickPayBuffer."Amount to Pay";
     end;
 
     local procedure RetrieveInvoices()
@@ -460,7 +460,7 @@ page 14135172 "lvnQuickPayWorksheet"
         if InvoicesPostedPostingDate <> 0D then
             QuickPayData.SetRange(PostingDateFilter, InvoicesPostedPostingDate);
         QuickPayData.Open();
-        while QuickPayData.Read() do begin
+        while QuickPayData.Read() do
             if not Rec.Get(QuickPayData.EntryNo) then begin
                 Rec.Init();
                 Rec."Entry No." := QuickPayData.EntryNo;
@@ -490,18 +490,17 @@ page 14135172 "lvnQuickPayWorksheet"
                 end;
                 Rec.Insert();
             end;
-        end;
         QuickPayData.Close();
         Rec.Reset();
-        Buffer.Reset();
-        Buffer.DeleteAll();
+        TempQuickPayBuffer.Reset();
+        TempQuickPayBuffer.DeleteAll();
         if Rec.FindSet() then
             repeat
-                Buffer := Rec;
-                Buffer.Insert();
+                TempQuickPayBuffer := Rec;
+                TempQuickPayBuffer.Insert();
             until Rec.Next() = 0;
-        Buffer.CalcSums("Amount to Pay");
-        TotalAmountToPay := Buffer."Amount to Pay";
+        TempQuickPayBuffer.CalcSums("Amount to Pay");
+        TotalAmountToPay := TempQuickPayBuffer."Amount to Pay";
     end;
 
     local procedure CreatePaymentJournal()
@@ -628,7 +627,7 @@ page 14135172 "lvnQuickPayWorksheet"
                         VendLedgEntry.Modify();
                     until TempGenJnlLine1.Next() = 0;
                 until TempGenJnlLine2.Next() = 0;
-            end else begin
+            end else
                 repeat
                     Clear(GenJnlLine);
                     GenJnlLine.Validate("Journal Template Name", GenJnlBatch."Journal Template Name");
@@ -655,7 +654,6 @@ page 14135172 "lvnQuickPayWorksheet"
                     GenJnlLine.lvnLoanNo := Rec."Loan No.";
                     GenJnlLine.Insert(true);
                 until Rec.Next() = 0;
-            end;
             Commit();
             GenJnlLine.Reset();
             GenJnlLine.SetRange("Journal Template Name", GenJnlTemplate.Name);
@@ -664,8 +662,8 @@ page 14135172 "lvnQuickPayWorksheet"
             Page.RunModal(Page::"Payment Journal", GenJnlLine);
             Rec.Reset();
             Rec.DeleteAll();
-            Buffer.Reset();
-            Buffer.DeleteAll();
+            TempQuickPayBuffer.Reset();
+            TempQuickPayBuffer.DeleteAll();
         end;
     end;
 }

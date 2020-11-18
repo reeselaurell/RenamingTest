@@ -534,8 +534,6 @@ report 14135317 lvnCommissionPrintoutExport
         CommissionAmountTtl: Decimal;
         EntryNo: Integer;
         DefaultBoolean: Enum lvnDefaultBoolean;
-        HorizontalAlign: Enum lvnCellHorizontalAlignment;
-        VerticalAlign: Enum lvnCellVerticalAlignment;
         PeriodBaseAmountTtl: Decimal;
         PeriodAmountTtl: Decimal;
         AdjustmentsTtl: Decimal;

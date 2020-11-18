@@ -85,9 +85,8 @@ page 14135309 lvnExtendedFilters
             FilterText := LoanFilterBuilder.GetView(LoanFilterLbl, false);
             Clear(Loan);
             Loan.SetView(FilterText);
-            if Loan.GetFilters() <> '' then begin
+            if Loan.GetFilters() <> '' then
                 FilterOutStream.Write(FilterText);
-            end;
             Rec.Modify();
         end;
     end;

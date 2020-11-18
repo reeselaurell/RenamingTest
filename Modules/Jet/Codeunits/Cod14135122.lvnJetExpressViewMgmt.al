@@ -7,7 +7,6 @@ codeunit 14135122 "lvnJetExpressViewMgmt"
     var
         LoanCustomNormViewSetup: Record lvnLoanNormalizedViewSetup;
         LoanCustomNormView: Record lvnLoanNormalizedView;
-        LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
         Loan: Record lvnLoan;
         Counter: Integer;
         Progress: Dialog;
@@ -68,7 +67,7 @@ codeunit 14135122 "lvnJetExpressViewMgmt"
         Progress.Close();
     end;
 
-    local procedure GetTextValue(LoanNo: Code[20]; FieldNo: Integer) FieldValue: Text[250]
+    local procedure GetTextValue(LoanNo: Code[20]; FieldNo: Integer): Text[250]
     var
         LoanValue: Record lvnLoanValue;
     begin
@@ -81,7 +80,7 @@ codeunit 14135122 "lvnJetExpressViewMgmt"
             exit('');
     end;
 
-    local procedure GetDecimalValue(LoanNo: Code[20]; FieldNo: Integer) FieldValue: Decimal
+    local procedure GetDecimalValue(LoanNo: Code[20]; FieldNo: Integer): Decimal
     var
         LoanValue: Record lvnLoanValue;
     begin
@@ -94,7 +93,7 @@ codeunit 14135122 "lvnJetExpressViewMgmt"
             exit(0);
     end;
 
-    local procedure GetDateValue(LoanNo: Code[20]; FieldNo: Integer) FieldValue: Date
+    local procedure GetDateValue(LoanNo: Code[20]; FieldNo: Integer): Date
     var
         LoanValue: Record lvnLoanValue;
     begin
@@ -107,7 +106,7 @@ codeunit 14135122 "lvnJetExpressViewMgmt"
             exit(0D);
     end;
 
-    local procedure GetCaption(var LoanCustNormView: Record lvnLoanNormalizedView; FieldNo: Integer) CaptionValue: Text[50]
+    local procedure GetCaption(var LoanCustNormView: Record lvnLoanNormalizedView; FieldNo: Integer): Text[50]
     begin
         case FieldNo of
             10:

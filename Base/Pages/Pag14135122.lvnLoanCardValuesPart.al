@@ -54,20 +54,18 @@ page 14135122 "lvnLoanCardValuesPart"
         LoanFieldsConfiguration: Record lvnLoanFieldsConfiguration;
     begin
         LoanFieldsConfiguration.Reset();
-        if LoanFieldsConfiguration.FindSet() then begin
+        if LoanFieldsConfiguration.FindSet() then
             repeat
                 TempLoanFieldsConfiguration := LoanFieldsConfiguration;
                 TempLoanFieldsConfiguration.Insert();
             until LoanFieldsConfiguration.Next() = 0;
-        end;
     end;
 
     trigger OnAfterGetRecord()
     begin
         FieldDescription := '';
-        if TempLoanFieldsConfiguration.Get(Rec."Field No.") then begin
+        if TempLoanFieldsConfiguration.Get(Rec."Field No.") then
             FieldDescription := TempLoanFieldsConfiguration."Field Name";
-        end;
     end;
 
     var

@@ -43,11 +43,8 @@ page 14135112 "lvnPostProcessingSchemaLines"
                                     end;
                                 end;
                             Rec.Type::"Copy Loan Variable Value", Rec.Type::"Copy Loan Journal Variable Value", Rec.Type::"Dimension Mapping":
-                                begin
-                                    if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
-                                        Rec."From Field No." := LoanFieldsConfiguration."Field No.";
-                                    end;
-                                end;
+                                if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then
+                                    Rec."From Field No." := LoanFieldsConfiguration."Field No.";
                             Rec.Type::"Copy Loan Journal Value":
                                 begin
                                     FieldRec.Reset();
@@ -109,13 +106,9 @@ page 14135112 "lvnPostProcessingSchemaLines"
                                     end;
                                 end;
                             Rec."Assign To"::"Loan Journal Variable Field":
-                                begin
-                                    if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
-                                        Rec."To Field No." := LoanFieldsConfiguration."Field No.";
-                                    end;
-                                end;
+                                if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then
+                                    Rec."To Field No." := LoanFieldsConfiguration."Field No.";
                         end;
-
                     end;
                 }
                 field("Copy Field Part"; Rec."Copy Field Part")

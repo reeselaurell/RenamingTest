@@ -199,7 +199,7 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
             TempFileImportJnlLine.FindSet();
             repeat
                 Value := TempCSVBuffer.GetValue(StartLine, TempFileImportJnlLine."Column No.");
-                if Value <> '' then begin
+                if Value <> '' then
                     case TempFileImportJnlLine."Import Field Type" of
                         TempFileImportJnlLine."Import Field Type"::"Account No.":
                             begin
@@ -293,7 +293,6 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
                         TempFileImportJnlLine."Import Field Type"::"Reason Code":
                             GenJnlImportBuffer."Reason Code" := CopyStr(Value, 1, MaxStrLen(GenJnlImportBuffer."Reason Code"));
                     end;
-                end;
             until TempFileImportJnlLine.Next() = 0;
             GenJnlImportBuffer.Modify();
             StartLine := StartLine + 1;
@@ -399,9 +398,8 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
                         if not CheckVendorExternalDocumentNo(GenJnlImportBuffer) then
                             AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(ExternalDocNoAlreadyPostedErr, GenJnlImportBuffer."External Document No.", GenJnlImportBuffer."Account No."));
                 //Posting Group
-                if GenJnlImportBuffer."Posting Group" = '' then begin
+                if GenJnlImportBuffer."Posting Group" = '' then
                     GenJnlImportBuffer."Posting Group" := FileImportSchema."Posting Group";
-                end;
                 if GenJnlImportBuffer."Posting Group" <> '' then
                     if not CheckPostingGroup(GenJnlImportBuffer) then
                         AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(PostingGroupMissingErr, GenJnlImportBuffer."Account Type", GenJnlImportBuffer."Posting Group"));

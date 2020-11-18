@@ -36,7 +36,7 @@ codeunit 14135112 "lvnValidateSoldJournal"
     local procedure ValidateSingleJournalLine(var LoanJournalLine: Record lvnLoanJournalLine)
     var
         JournalValidationRule: Record lvnJournalValidationRule;
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         Customer: Record Customer;
         LoanDocument: Record lvnLoanDocument;
         LoanSoldDocument: Record lvnLoanSoldDocument;
@@ -113,18 +113,17 @@ codeunit 14135112 "lvnValidateSoldJournal"
         JournalValidationRule.Reset();
         JournalValidationRule.SetRange("Journal Batch Code", LoanJournalLine."Loan Journal Batch Code");
         if JournalValidationRule.FindSet() then begin
-            ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
+            ConditionsMgmt.FillJournalFieldValues(TempExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
             repeat
-                if not ValidateConditionLine(ExpressionValueBuffer, JournalValidationRule."Condition Code") then
+                if not ValidateConditionLine(TempExpressionValueBuffer, JournalValidationRule."Condition Code") then
                     LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, JournalValidationRule."Error Message");
             until JournalValidationRule.Next() = 0;
         end;
         if (TempLoanDocument."Customer No." = '') then
             LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, InvestorCustomerNoMissingErr)
-        else begin
+        else
             if not Customer.Get(TempLoanDocument."Customer No.") then
                 LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, InvestorCustomerNoMissingErr);
-        end;
         TempLoanDocumentLine.Reset();
         if TempLoanDocumentLine.FindSet() then
             repeat
@@ -136,7 +135,7 @@ codeunit 14135112 "lvnValidateSoldJournal"
     end;
 
     local procedure ValidateConditionLine(
-        var ExpressionValueBuffer: Record lvnExpressionValueBuffer;
+        var TempExpressionValueBuffer: Record lvnExpressionValueBuffer;
         ConditionCode: Code[20]): Boolean
     var
         ExpressionHeader: Record lvnExpressionHeader;
@@ -144,6 +143,6 @@ codeunit 14135112 "lvnValidateSoldJournal"
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
     begin
         ExpressionHeader.Get(ConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));
+        exit(ExpressionEngine.CheckCondition(ExpressionHeader, TempExpressionValueBuffer));
     end;
 }
