@@ -546,6 +546,8 @@ codeunit 14135124 "lvnPerformanceMgmt"
                 BandLine."Band Type"::Normal,
                 BandLine."Band Type"::Formula:  //In case expression formula refers to not cached row formula value it will be calculated as Normal
                     begin
+                        TotalStartDate := 0D;
+                        TotalEndDate := 0D;
                         case BandLine."Period Type" of
                             BandLine."Period Type"::MTD:
                                 begin

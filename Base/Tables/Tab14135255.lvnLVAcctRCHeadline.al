@@ -30,6 +30,7 @@ table 14135255 "lvnLVAcctRCHeadline"
     {
         key(PK; "Dimension Code", Code) { Clustered = true; }
         key(Name; Name) { }
+        key(NetChange; "Net Change") { }
     }
 
     procedure FillDimensions()

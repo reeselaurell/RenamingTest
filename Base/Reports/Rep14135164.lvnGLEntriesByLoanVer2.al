@@ -34,6 +34,7 @@ report 14135164 "lvnGLEntriesByLoanVer2"
                 begin
                     Clear(TempGenLedgBuffer);
                     EntryNo := EntryNo + 1;
+                    Counter := Counter + 1;
                     TempGenLedgBuffer."Entry No." := EntryNo;
                     TempGenLedgBuffer."Reference No." := Format(Counter);
                     TempGenLedgBuffer."Payment Due Date" := "Posting Date";
@@ -98,7 +99,6 @@ report 14135164 "lvnGLEntriesByLoanVer2"
                     end;
                     TempLoan."Commission Base Amount" := TempLoan."Commission Base Amount" + TempGenLedgBuffer."Current Balance";
                     TempLoan.Modify();
-                    Counter := Counter + 1;
                     if GuiAllowed then
                         Progress.Update(1, Counter);
                 end;

@@ -129,6 +129,7 @@ report 14135161 "lvnGeneralLedgerRecSimplified"
                 EntriesByLoanSums.SetFilter(GLAccountNoFilter, "No.");
                 EntriesByLoanSums.SetFilter(PostingDateFilter, DateFilter);
                 EntriesByLoanSums.Open();
+                LineNo := 1;
                 while EntriesByLoanSums.Read() do begin
                     if (EntriesByLoanSums.DebitAmount <> 0) or (EntriesByLoanSums.CreditAmount <> 0) then
                         if HideZeroBalance then begin
