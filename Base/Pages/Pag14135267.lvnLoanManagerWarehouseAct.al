@@ -239,7 +239,7 @@ page 14135267 "lvnLoanManagerWarehouseAct"
                 end;
                 FundedDoc.SetRange("Warehouse Line Code", WarehouseLine.Code);
                 FundedDocFilter[Idx] := '';
-                FundedDoc.SetFilter("Posting Date", '<>%1', CalcDate('0D'));
+                FundedDoc.SetFilter("Posting Date", '<>%1', CalcDate('<CD>'));
                 FundedDoc.SetCurrentKey("Posting Date");
                 FundedDoc.SetAscending("Posting Date", false);
                 if FundedDoc.FindFirst() then begin

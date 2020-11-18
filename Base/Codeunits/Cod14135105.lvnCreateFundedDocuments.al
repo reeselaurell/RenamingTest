@@ -30,9 +30,9 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         if LoanJournalLine.FindSet() then
             repeat
                 if not LoanJournalErrorMgmt.HasError(LoanJournalLine) then begin
-                    TempLoanDocument.Reset;
+                    TempLoanDocument.Reset();
                     TempLoanDocument.DeleteAll();
-                    TempLoanDocumentLine.Reset;
+                    TempLoanDocumentLine.Reset();
                     TempLoanDocumentLine.DeleteAll();
                     CreateSingleDocument(LoanJournalLine, TempLoanDocument, TempLoanDocumentLine, false);
                     TempLoanDocument.Reset();

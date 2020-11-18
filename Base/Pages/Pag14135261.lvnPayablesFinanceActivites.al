@@ -28,7 +28,7 @@ page 14135261 "lvnPayablesFinanceActivites"
                             PurchHeader.SetRange("Assigned User ID", UserName);
                         PurchHeader.SetRange("Document Type", PurchHeader."Document Type"::Invoice);
                         PurchHeader.SetRange(Status, PurchHeader.Status::Open);
-                        PurchHeader.SetRange("Document Date", CalcDate('CD'));
+                        PurchHeader.SetRange("Document Date", CalcDate('<CD>'));
                         if PurchHeader.FindSet() then
                             Page.Run(Page::"Purchase Invoices", PurchHeader);
                     end;
@@ -49,7 +49,7 @@ page 14135261 "lvnPayablesFinanceActivites"
                             PurchHeader.SetRange("Assigned User ID", UserName);
                         PurchHeader.SetRange("Document Type", PurchHeader."Document Type"::"Credit Memo");
                         PurchHeader.SetRange(Status, PurchHeader.Status::Open);
-                        PurchHeader.SetRange("Document Date", CalcDate('CD'));
+                        PurchHeader.SetRange("Document Date", CalcDate('<CD>'));
                         if PurchHeader.FindSet() then
                             Page.Run(Page::"Purchase Invoices", PurchHeader);
                     end;
@@ -68,7 +68,7 @@ page 14135261 "lvnPayablesFinanceActivites"
                         PurchInvHdr.Reset();
                         if ActSetup."Filter by User" <> '' then
                             PurchInvHdr.SetRange("User ID", UserName);
-                        PurchInvHdr.SetRange("Posting Date", CalcDate('CD'));
+                        PurchInvHdr.SetRange("Posting Date", CalcDate('<CD>'));
                         if PurchInvHdr.FindSet() then
                             Page.Run(Page::"Posted Purchase Invoices", PurchInvHdr);
                     end;
@@ -87,7 +87,7 @@ page 14135261 "lvnPayablesFinanceActivites"
                         PurchCrMemoHdr.Reset();
                         if ActSetup."Filter by User" <> '' then
                             PurchCrMemoHdr.SetRange("User ID", UserName);
-                        PurchCrMemoHdr.SetRange("Posting Date", CalcDate('CD'));
+                        PurchCrMemoHdr.SetRange("Posting Date", CalcDate('<CD>'));
                         if PurchCrMemoHdr.FindSet() then
                             Page.Run(Page::"Posted Purchase Invoices", PurchCrMemoHdr);
                     end;
@@ -125,7 +125,7 @@ page 14135261 "lvnPayablesFinanceActivites"
             PurchHeader.SetRange("Assigned User ID", UserName);
         PurchHeader.SetRange("Document Type", PurchHeader."Document Type"::Invoice);
         PurchHeader.SetRange(Status, PurchHeader.Status::Open);
-        Today := CalcDate('CD');
+        Today := CalcDate('<CD>');
         PurchHeader.SetRange("Document Date", Today);
         exit(PurchHeader.Count());
     end;
@@ -140,7 +140,7 @@ page 14135261 "lvnPayablesFinanceActivites"
             PurchHeader.SetRange("Assigned User ID", UserName);
         PurchHeader.SetRange("Document Type", PurchHeader."Document Type"::"Credit Memo");
         PurchHeader.SetRange(Status, PurchHeader.Status::Open);
-        PurchHeader.SetRange("Document Date", CalcDate('CD'));
+        PurchHeader.SetRange("Document Date", CalcDate('<CD>'));
         exit(PurchHeader.Count());
     end;
 
@@ -149,7 +149,7 @@ page 14135261 "lvnPayablesFinanceActivites"
         PurchInvHdr: Record "Purch. Inv. Header";
     begin
         PurchInvHdr.Reset();
-        PurchInvHdr.SetRange("Posting Date", CalcDate('CD'));
+        PurchInvHdr.SetRange("Posting Date", CalcDate('<CD>'));
         exit(PurchInvHdr.Count());
     end;
 
@@ -158,7 +158,7 @@ page 14135261 "lvnPayablesFinanceActivites"
         PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
     begin
         PurchCrMemoHdr.Reset();
-        PurchCrMemoHdr.SetRange("Posting Date", CalcDate('CD'));
+        PurchCrMemoHdr.SetRange("Posting Date", CalcDate('<CD>'));
         exit(PurchCrMemoHdr.Count());
     end;
 

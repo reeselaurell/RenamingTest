@@ -26,7 +26,7 @@ page 14135269 "lvnPayablesHeadline"
                         PurchInvHdr: Record "Purch. Inv. Header";
                     begin
                         PurchInvHdr.Reset();
-                        PurchInvHdr.SetRange("Due Date", CalcDate('CD'));
+                        PurchInvHdr.SetRange("Due Date", CalcDate('<CD>'));
                         if PurchInvHdr.FindSet() then
                             Page.Run(Page::"Posted Purchase Invoices", PurchInvHdr);
                     end;
@@ -68,7 +68,7 @@ page 14135269 "lvnPayablesHeadline"
         TtlAmount: Decimal;
     begin
         PurchInvHdr.Reset();
-        PurchInvHdr.SetRange("Due Date", CalcDate('CD'));
+        PurchInvHdr.SetRange("Due Date", CalcDate('<CD>'));
         if PurchInvHdr.FindSet() then
             repeat
                 PurchInvHdr.CalcFields(Amount);

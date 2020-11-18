@@ -93,6 +93,7 @@ page 14135108 "lvnGLReconcilitationSubform"
             action(Navigate)
             {
                 Caption = 'Navigate';
+                Image = Navigate;
                 ApplicationArea = All;
                 Promoted = true;
                 PromotedCategory = Process;

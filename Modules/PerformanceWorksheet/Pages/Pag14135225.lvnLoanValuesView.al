@@ -124,6 +124,7 @@ page 14135225 "lvnLoanValuesView"
             {
                 ApplicationArea = All;
                 Caption = 'Html Export';
+                Image = Export;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Promoted = true;

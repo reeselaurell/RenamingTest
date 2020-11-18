@@ -70,22 +70,6 @@ page 14135334 lvnDebtLogWorksheet
         }
     }
 
-    actions
-    {
-        area(Processing)
-        {
-            action(ActionName)
-            {
-                ApplicationArea = All;
-
-                trigger OnAction()
-                begin
-
-                end;
-            }
-        }
-    }
-
     trigger OnAfterGetRecord()
     var
         CommissionProfile: Record lvnCommissionProfile;

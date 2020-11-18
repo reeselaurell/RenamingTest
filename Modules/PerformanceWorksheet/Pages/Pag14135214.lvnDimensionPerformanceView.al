@@ -120,6 +120,7 @@ page 14135214 "lvnDimensionPerformanceView"
             {
                 ApplicationArea = All;
                 Caption = 'Html Export';
+                Image = Export;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Promoted = true;
