@@ -408,7 +408,7 @@ codeunit 14135125 "lvnExcelExport"
             Comparison::Contains:
                 if RightHand.IndexOf('..') <> 0 then begin
                     Split := DelChr(RightHand, '<>', '()').Split('..');
-                    exit(StrSubstNo('(%1>=%2)AND(%1<=%2)', LeftHand, Split.Get(1), Split.Get(2)));
+                    exit(StrSubstNo('(%1>=%2)AND(%1<=%3)', LeftHand, Split.Get(1), Split.Get(2)));
                 end else
                     exit(StrSubstNo('ISNUMBER(MATCH(%1,{%2},0))', LeftHand, DelChr(RightHand, '<>', '()').Replace('|', ',')));
         end;

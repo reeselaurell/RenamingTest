@@ -46,6 +46,7 @@ codeunit 14135128 "lvnExpressionEngine"
         if not ExpressionLine.FindSet() then
             exit(false);
         LineNo := 1;
+        PrevNo := 0;
         repeat
             if PrevNo <> ExpressionLine."Line No." then begin
                 if LeftHand <> '' then begin
@@ -146,6 +147,7 @@ codeunit 14135128 "lvnExpressionEngine"
         CaseLine.SetFilter("Line No.", '>%1', 0);
         if not CaseLine.FindSet() then
             exit(false);
+        PrevNo := 0;
         repeat
             if PrevNo <> CaseLine."Line No." then begin
                 if Predicate <> '' then

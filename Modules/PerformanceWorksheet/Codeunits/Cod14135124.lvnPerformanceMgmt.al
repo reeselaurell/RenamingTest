@@ -470,7 +470,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
             CalculationUnit.Type::Expression:
                 begin
                     Path.Add(CalculationUnit.Code);
-                    Result := CalculateBandExpression(CalculationUnit, TempSystemCalcFilter, Cache, Path);
+                    Result := CalculateBandExpression(RowLine, CalculationUnit, TempSystemCalcFilter, Cache, Path);
                     Path.RemoveAt(Path.Count());
                 end;
             CalculationUnit.Type::"Cell Reference":
@@ -484,7 +484,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                         Error(CircularReferenceErr);
                     if RefRowLine.Get(RowLine."Schema Code", CalculationUnit."Row No.", CalculationUnit."Column No.") then
                         if RefCalculationUnit.Get(RefRowLine."Calculation Unit Code") then
-                            Result := CalculateSingleValue(RowLine, RefCalculationUnit, SystemFilter, Cache, Path);
+                            Result := CalculateSingleValue(RowLine, RefCalculationUnit, TempSystemCalcFilter, Cache, Path);
                 end;
             CalculationUnit.Type::"Provider Value":
                 begin
@@ -832,7 +832,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                 Buffer."Band No." := BandNo;
                 Buffer."Calculation Unit Code" := RowLine."Calculation Unit Code";
                 if CalculationUnit.Get(RowLine."Calculation Unit Code") then begin
-                    Buffer.Value := CalculateSingleValue(CalculationUnit, TempSystemCalcFilter, Cache, Path);
+                    Buffer.Value := CalculateSingleValue(RowLine, CalculationUnit, TempSystemCalcFilter, Cache, Path);
                     Buffer.Interactive := IsClickableCell(CalculationUnit);
                 end else
                     Buffer.Value := 0;
@@ -1180,7 +1180,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
             TempValueBuffer.Name := CalculationLine."Source Unit Code";
             TempValueBuffer.Number := CalculationLine."Line no.";
             TempValueBuffer.Type := 'Decimal';
-            TempValueBuffer.Value := Format(CalculateSingleValue(CalculationUnit, TempSystemCalcFilter, Cache, Path), 0, 9);
+            TempValueBuffer.Value := Format(CalculateSingleValue(RowLine, CalculationUnit, TempSystemCalcFilter, Cache, Path), 0, 9);
             TempValueBuffer.Insert();
         until CalculationLine.Next() = 0;
         ExpressionHeader.Get(BaseCalculationUnit."Expression Code", GetBandExpressionConsumerId());
