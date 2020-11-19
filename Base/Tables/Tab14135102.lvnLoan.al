@@ -317,12 +317,12 @@ table 14135102 "lvnLoan"
             Caption = 'Servicing Finished';
             DataClassification = CustomerContent;
         }
-        field(80000; "Creation Date"; Date)
+        field(1001; "Creation Date"; Date)
         {
             Caption = 'Creation Date';
             DataClassification = CustomerContent;
         }
-        field(80001; "Modified Date"; Date)
+        field(1002; "Modified Date"; Date)
         {
             Caption = 'Modified Date';
             DataClassification = CustomerContent;

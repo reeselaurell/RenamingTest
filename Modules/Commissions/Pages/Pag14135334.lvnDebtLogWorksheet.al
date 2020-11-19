@@ -16,6 +16,7 @@ page 14135334 lvnDebtLogWorksheet
                 }
                 field(LoanOfficerName; LoanOfficerName)
                 {
+                    Caption = 'Loan Officer Name';
                     ApplicationArea = All;
                     Editable = false;
                 }
@@ -49,16 +50,19 @@ page 14135334 lvnDebtLogWorksheet
                 }
                 field(Draws; Draws)
                 {
+                    Caption = 'Draws';
                     ApplicationArea = All;
                     Editable = false;
                 }
                 field(Recovery; Recovery)
                 {
+                    Caption = 'Recovery';
                     ApplicationArea = All;
                     Editable = false;
                 }
                 field(Other; Other)
                 {
+                    Caption = 'Other';
                     ApplicationArea = All;
                     Editable = false;
                 }

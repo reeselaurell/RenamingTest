@@ -119,18 +119,6 @@ report 14135152 "lvnLoanSoldDocument"
                 }
             }
         }
-
-        actions
-        {
-            area(processing)
-            {
-                action(ActionName)
-                {
-                    ApplicationArea = All;
-
-                }
-            }
-        }
     }
 
     trigger OnPreReport()

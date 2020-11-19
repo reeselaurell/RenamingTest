@@ -157,7 +157,7 @@ table 14135100 "lvnLoanVisionSetup"
             DataClassification = CustomerContent;
             TableRelation = "Dimension Value".Code where("Dimension Code" = field("Loan Purpose Dimension Code"));
         }
-        field(90000; "Maintenance Mode"; Boolean)
+        field(2004; "Maintenance Mode"; Boolean)
         {
             Caption = 'Maintenance Mode';
             DataClassification = CustomerContent;

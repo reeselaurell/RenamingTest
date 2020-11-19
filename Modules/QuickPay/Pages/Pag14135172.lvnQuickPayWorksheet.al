@@ -82,6 +82,7 @@ page 14135172 "lvnQuickPayWorksheet"
                     }
                     field(BankAccountName; BankAccountName)
                     {
+                        Caption = 'Bank Account Name';
                         ApplicationArea = All;
                         Editable = false;
                     }
