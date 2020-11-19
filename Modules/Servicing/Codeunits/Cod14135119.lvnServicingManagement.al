@@ -22,6 +22,8 @@ codeunit 14135119 "lvnServicingManagement"
         MonthlyPayment: Decimal;
         StartDate: Date;
         CalculationDate: Date;
+        CalcDateFormatLbl: Label '<+%1M>', Comment = '%1 = Loan Term (Months) + 1';
+        CalcDateLineNoFormatLbl: Label '<+%1M>', Comment = '%1 = Line No.';
     begin
         if Loan."Date Funded" = 0D then
             exit;
@@ -29,7 +31,7 @@ codeunit 14135119 "lvnServicingManagement"
             exit;
         if Loan."First Payment Due" = 0D then
             Loan."First Payment Due" := CalcDate('<CM + 1D - 1M>', Loan."Date Funded");
-        if CalcDate(StrSubstNo('<+%1M>', Loan."Loan Term (Months)" + 1), Loan."First Payment Due") < NextPaymentDate then
+        if CalcDate(StrSubstNo(CalcDateFormatLbl, Loan."Loan Term (Months)" + 1), Loan."First Payment Due") < NextPaymentDate then
             exit;
         GetSetupData();
         LoanServicingSetup.TestField("Principal Red. Reason Code");
@@ -71,7 +73,7 @@ codeunit 14135119 "lvnServicingManagement"
             PrincipalAmount := Round(PrincipalAmount, 0.01);
             if (InterestAmount + PrincipalAmount) <> Loan."Monthly Payment Amount" then
                 PrincipalAmount := Loan."Monthly Payment Amount" - InterestAmount;
-            CalculationDate := CalcDate(StrSubstNo('<+%1M>', LineNo), StartDate);
+            CalculationDate := CalcDate(StrSubstNo(CalcDateLineNoFormatLbl, LineNo), StartDate);
         end;
     end;
 
@@ -312,7 +314,7 @@ codeunit 14135119 "lvnServicingManagement"
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
         ExpressionEngine: Codeunit lvnExpressionEngine;
         Value: Text;
-        SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
+        SwitchCaseErr: Label 'Switch Case %1 can not be resolved', Comment = '%1 = Switch Code';
     begin
         GetLoan(LoanNo);
         ConditionsMgmt.FillLoanFieldValues(TempExpressionValueBuffer, Loan);

@@ -25,13 +25,13 @@ codeunit 14135120 "lvnCreateNewCompany"
         NewCompanyName: Text[50];
         ShowWarnings: Boolean;
         Progress: Dialog;
-        CopyCompanyMsg: Label 'Copy this company to #3#######################\';
-        WorkingOnTableMsg: Label 'Working on table     #1################# #130#of#140#\';
-        NoRecordsMsg: Label 'No. of records       #2###';
+        CopyCompanyMsg: Label 'Copy this company to #3#######################\', Comment = '#3 Copy company to';
+        WorkingOnTableMsg: Label 'Working on table     #1################# #130#of#140#\', Comment = '#1 = Progress; #130 Count; #140 Total';
+        NoRecordsMsg: Label 'No. of records       #2###', Comment = '#1 = Record Count';
         CompanyCopyItselfErr: Label 'Company can not be copied into it self';
         NoTablesSelectedErr: Label 'No Tables have been selected in "Create New Company Setup"';
-        TablesCopiedMsg: Label '%1 tables were copied';
-        RecordsExistMsg: Label 'Records already exist in table: "%1" for Company: "%2". Do you want to proceed anyway?';
+        TablesCopiedMsg: Label '%1 tables were copied', Comment = '%1 = Tables Count';
+        RecordsExistMsg: Label 'Records already exist in table: "%1" for Company: "%2". Do you want to proceed anyway?', Comment = '%1 = Tables Name; %2 = New Company Name';
     begin
         CompanyDataTransfer.SetRange(Active, true);
         if CompanyDataTransfer.IsEmpty() then

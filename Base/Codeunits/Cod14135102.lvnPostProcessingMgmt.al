@@ -266,7 +266,7 @@ codeunit 14135102 "lvnPostProcessingMgmt"
         ExpressionEngine: Codeunit lvnExpressionEngine;
         Value: Text;
         FieldSequenceNo: Integer;
-        SwitchCaseErr: Label 'Switch Case %1 can not be resolved';
+        SwitchCaseErr: Label 'Switch Case %1 can not be resolved', Comment = '%1 = Expression Code';
     begin
         PostProcessingSchemaLine.TestField("Expression Code");
         ConditionsMgmt.FillJournalFieldValues(TempExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);

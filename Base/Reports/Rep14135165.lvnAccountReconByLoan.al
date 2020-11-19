@@ -377,11 +377,13 @@ report 14135165 "lvnAccountReconByLoan"
     end;
 
     local procedure WriteExcelTotals(Int: Integer)
+    var
+        GLAccountTotalFormatLbl: Label 'Total for %1:', Comment = '%1 = G/L Account No.';
     begin
         ExcelExport.NewRow(10);
         ExcelExport.SkipCells(7);
         if Int = 1 then
-            WriteToExcel(StrSubstNo('Total for %1:', "G/L Account"."No."), false, 0, false, '', true, false)
+            WriteToExcel(StrSubstNo(GLAccountTotalFormatLbl, "G/L Account"."No."), false, 0, false, '', true, false)
         else
             WriteToExcel('Grand Totals:', false, 0, false, '', true, false);
         WriteToExcel(GLStartingTtl[Int], false, 0, false, '', true, true);

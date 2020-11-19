@@ -92,7 +92,7 @@ xmlport 14135102 "lvnPaymentsImport"
         BankAccountName: Text;
         JournalTemplate: Code[10];
         JournalBatch: Code[10];
-        CheckTotalAmountErr: Label 'Totals For Check %1 Amount %2 does not match invoices amount %3 for Vendor %4';
+        CheckTotalAmountErr: Label 'Totals For Check %1 Amount %2 does not match invoices amount %3 for Vendor %4', Comment = '%1 = Check No.;%2 = Payment Amount;%3 = Compare Amount;%4 = Vendor No.;';
 
     procedure SetParams(pJournalTemplate: Code[10]; pJournalBatch: Code[10])
     begin

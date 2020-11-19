@@ -187,6 +187,6 @@ table 14135192 "lvnCloseManagerEntryLine"
     end;
 
     var
-        ReconciliationTotalsNotMatchQst: Label 'The %1 and %2 does not match. Are you sure you want to reconcile this entry?';
+        ReconciliationTotalsNotMatchQst: Label 'The %1 and %2 does not match. Are you sure you want to reconcile this entry?', Comment = '%1 = G/L Total Caption; %2 = Reconciled Total Caption';
         ReconciliationTotalsMustMatchErr: Label 'Reconciliation totals must match';
 }

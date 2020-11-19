@@ -246,6 +246,6 @@ xmlport 14135109 "lvnSalesInvImport"
         SalesInvHdrBuffer: Record lvnSalesInvHdrBuffer;
         SalesInvLineBuffer: Record lvnSalesInvLineBuffer;
         SalesInLineBuffer2: Record lvnSalesInvLineBuffer;
-        DimensionValidation: Option "Dimensions from File","Dimensions from Loan","From Dimension Hierarchy";
+        DimensionValidation: Enum lvnInvImportDimValidationType;
         LoanNoValidation: Enum lvnLoanNoValidationRule;
 }

@@ -138,6 +138,6 @@ page 14135196 "lvnReversePurchaseDocuments"
 
     var
         InvoiceDocTxt: Label 'Invoice Documents';
-        ProgressMsg: Label 'Document #1#############';
-        CompleteMsg: Label '%1 Documents were reversed';
+        ProgressMsg: Label 'Document #1#############', Comment = '%1 = Document No.';
+        CompleteMsg: Label '%1 Documents were reversed', Comment = '%1 = Document Count';
 }

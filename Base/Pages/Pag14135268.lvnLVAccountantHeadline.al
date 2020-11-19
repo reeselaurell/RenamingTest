@@ -123,6 +123,7 @@ page 14135268 "lvnLVAccountantHeadline"
         DimensionType: Text;
         PerformanceTxt: Text;
         InsightTxt: Text;
+        HeadlineFormatLbl: Label '<qualifier>%1</qualifier><payload>%2 was the %3 performing %4 with <emphasize>%5</emphasize> in profit</payload>', Comment = '%1 = Insight Text;%2 = Dimension Name;%3 = Performance Text ;%4 = Dimension Code;%5 = Net Change;';
     begin
         Rec.Reset();
         Rec.SetRange("Dimension Code", DimensionCode);
@@ -140,7 +141,7 @@ page 14135268 "lvnLVAccountantHeadline"
             DimensionType := 'LO';
             InsightTxt := Rec.GetLOInsightText();
         end;
-        exit(StrSubstNo('<qualifier>%1</qualifier><payload>%2 was the %3 performing %4 with <emphasize>%5</emphasize> in profit</payload>', InsightTxt, Rec.Name, PerformanceTxt, DimensionType, GetNetChangeText(Rec."Net Change")));
+        exit(StrSubstNo(HeadlineFormatLbl, InsightTxt, Rec.Name, PerformanceTxt, DimensionType, GetNetChangeText(Rec."Net Change")));
     end;
 
     local procedure GetNetChangeText(NetChange: Decimal): Text

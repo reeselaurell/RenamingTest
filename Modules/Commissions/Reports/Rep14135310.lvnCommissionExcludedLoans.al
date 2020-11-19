@@ -212,10 +212,10 @@ report 14135310 lvnCommissionExcludedLoans
         FalseValueLbl: Label 'False';
         IntegerValueLbl: Label '0';
         DecimalValueLbl: Label '0.00';
-        ColLbl: Label 'Col%1';
+        ColLbl: Label 'Col%1', Comment = '%1 = Column No.';
         ExcelSheetNameLbl: Label 'Export';
-        TypeFilterLbl: Label '%1|%2';
-        ProcessingDialogMsg: Label 'Processing #1########## of #2###########';
+        TypeFilterLbl: Label '%1|%2', Comment = '%1 = Template Line Type::Loan Card Field; %2 = Template Line Type::Loan Value Field';
+        ProcessingDialogMsg: Label 'Processing #1########## of #2###########', Comment = '#1 = Entry No.; #2 = Total Entries';
 
     local procedure FillCalculationBuffer()
     var

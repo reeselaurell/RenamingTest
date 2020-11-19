@@ -35,6 +35,6 @@ report 14135100 "lvnPostLoanDocuments"
         lvnPostLoanDocument: Codeunit lvnPostLoanDocument;
         PostedDocuments: Integer;
         FailedDocuments: Integer;
-        DocumentsPostingCountLbl: Label 'Do You want to post %1 documents?';
-        DocumentsPostingResultLbl: Label '%1 documents posted. %2 failed';
+        DocumentsPostingCountLbl: Label 'Do You want to post %1 documents?', Comment = '%1 = Document Count';
+        DocumentsPostingResultLbl: Label '%1 documents posted. %2 failed', Comment = '%1 = Documents Posted; %2 = Documents Posted';
 }

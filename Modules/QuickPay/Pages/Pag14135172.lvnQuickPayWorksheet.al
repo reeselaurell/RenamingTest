@@ -61,6 +61,7 @@ page 14135172 "lvnQuickPayWorksheet"
                     {
                         ApplicationArea = All;
                         Caption = 'Bank Payment Type';
+                        OptionCaption = ' ,Computer Check,Manual Check,Electronic Payment,Electronic Payment-IAT';
                     }
                     field(BankAccountNo; BankAccountNo)
                     {

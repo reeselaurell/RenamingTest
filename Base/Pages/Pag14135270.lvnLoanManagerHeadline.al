@@ -51,10 +51,13 @@ page 14135270 "lvnLoanManagerHeadline"
     }
 
     trigger OnOpenPage()
+    var
+        FundedTextFormatLbl: Label 'The Total Funded Amount for the Previous Business Day was %1', Comment = '%1 = Total Funded Amount Text';
+        SoldTextFormatLbl: Label 'The Total Sold Amount for the Previous Business Day was %1', Comment = '%1 = Total Sold Amount Text';
     begin
         CompanyInfo.CalcFields(Picture);
-        FundedText := StrSubstNo('The Total Funded Amount for the Previous Business Day was %1', CalcTotalFundedAmountText());
-        SoldText := StrSubstNo('The Total Sold Amount for the Previous Business Day was %1', CalcTotalSoldAmountText());
+        FundedText := StrSubstNo(FundedTextFormatLbl, CalcTotalFundedAmountText());
+        SoldText := StrSubstNo(SoldTextFormatLbl, CalcTotalSoldAmountText());
     end;
 
     var
@@ -79,8 +82,10 @@ page 14135270 "lvnLoanManagerHeadline"
 
     local procedure CalcTotalSoldAmountText(): Text
     var
+        Loan: Record lvnLoan;
         AmtText: Text;
     begin
+        Loan.Reset();
         AmtText := Format(CalcTotalSoldAmount());
         if AmtText.Contains('-') then
             AmtText := AmtText.Replace('-', '-$')

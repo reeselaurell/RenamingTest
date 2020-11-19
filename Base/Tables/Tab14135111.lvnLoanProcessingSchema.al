@@ -168,7 +168,7 @@ table 14135111 "lvnLoanProcessingSchema"
     }
 
     var
-        RuleCaptionLbl: Label '%1 Rule';
+        RuleCaptionLbl: Label '%1 Rule', Comment = '%1 = Dimension Name';
 
     local procedure GetRuleCaptionString(Index: Integer): Text
     var

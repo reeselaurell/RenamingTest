@@ -110,7 +110,7 @@ report 14135181 "lvnDisbursementDataExport"
         VendorAddressLbl: Label 'Vendor Address';
         PaymentMethodLbl: Label 'Payment Method';
         DateClearedLbl: Label 'Date Cleared';
-        AddressTemplateLbl: Label '%1, %2';
+        AddressTemplateLbl: Label '%1, %2', Comment = '%1 = Vendor City; %2 = Vendor Address';
 
     local procedure NewRow()
     begin
@@ -155,17 +155,17 @@ report 14135181 "lvnDisbursementDataExport"
         ColumnNo := ColumnNo + 1;
     end;
 
-    local procedure ExportIntColumn(Value: Decimal)
-    var
-        NumberFormatTxt: Label '0';
-    begin
-        Clear(TempExcelBuffer);
-        TempExcelBuffer.Validate("Row No.", RowNo);
-        TempExcelBuffer.Validate("Column No.", ColumnNo);
-        TempExcelBuffer.Validate("Cell Value as Text", Format(Value));
-        TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Number);
-        TempExcelBuffer.NumberFormat := NumberFormatTxt;
-        TempExcelBuffer.Insert(true);
-        ColumnNo := ColumnNo + 1;
-    end;
+    // local procedure ExportIntColumn(Value: Decimal)
+    // var
+    //     NumberFormatTxt: Label '0';
+    // begin
+    //     Clear(TempExcelBuffer);
+    //     TempExcelBuffer.Validate("Row No.", RowNo);
+    //     TempExcelBuffer.Validate("Column No.", ColumnNo);
+    //     TempExcelBuffer.Validate("Cell Value as Text", Format(Value));
+    //     TempExcelBuffer.Validate("Cell Type", TempExcelBuffer."Cell Type"::Number);
+    //     TempExcelBuffer.NumberFormat := NumberFormatTxt;
+    //     TempExcelBuffer.Insert(true);
+    //     ColumnNo := ColumnNo + 1;
+    // end;
 }

@@ -1,7 +1,7 @@
 codeunit 14135122 "lvnJetExpressViewMgmt"
 {
     var
-        ProcessingMsg: Label 'Processing #1######### of #2###########';
+        ProcessingMsg: Label 'Processing #1######### of #2###########', Comment = '#1 = Entry No.; #2 = Total Entries';
 
     procedure RefreshJetExpressView(ViewCode: Code[20])
     var
@@ -106,81 +106,81 @@ codeunit 14135122 "lvnJetExpressViewMgmt"
             exit(0D);
     end;
 
-    local procedure GetCaption(var LoanCustNormView: Record lvnLoanNormalizedView; FieldNo: Integer): Text[50]
-    begin
-        case FieldNo of
-            10:
-                exit(LoanCustNormView.FieldCaption("Custom Text 1"));
-            11:
-                exit(LoanCustNormView.FieldCaption("Custom Text 2"));
-            12:
-                exit(LoanCustNormView.FieldCaption("Custom Text 3"));
-            13:
-                exit(LoanCustNormView.FieldCaption("Custom Text 4"));
-            14:
-                exit(LoanCustNormView.FieldCaption("Custom Text 5"));
-            15:
-                exit(LoanCustNormView.FieldCaption("Custom Text 6"));
-            16:
-                exit(LoanCustNormView.FieldCaption("Custom Text 7"));
-            17:
-                exit(LoanCustNormView.FieldCaption("Custom Text 8"));
-            18:
-                exit(LoanCustNormView.FieldCaption("Custom Text 9"));
-            19:
-                exit(LoanCustNormView.FieldCaption("Custom Text 10"));
-            30:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 1"));
-            31:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 2"));
-            32:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 3"));
-            33:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 4"));
-            34:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 5"));
-            35:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 6"));
-            36:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 7"));
-            37:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 8"));
-            38:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 9"));
-            39:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 10"));
-            40:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 11"));
-            41:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 12"));
-            42:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 13"));
-            43:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 14"));
-            44:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 15"));
-            45:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 16"));
-            46:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 17"));
-            47:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 18"));
-            48:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 19"));
-            49:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 20"));
-            50:
-                exit(LoanCustNormView.FieldCaption("Custom Decimal 21"));
-            100:
-                exit(LoanCustNormView.FieldCaption("Custom Date 1"));
-            101:
-                exit(LoanCustNormView.FieldCaption("Custom Date 2"));
-            102:
-                exit(LoanCustNormView.FieldCaption("Custom Date 3"));
-            103:
-                exit(LoanCustNormView.FieldCaption("Custom Date 4"));
-            104:
-                exit(LoanCustNormView.FieldCaption("Custom Date 5"));
-        end
-    end;
+    // local procedure GetCaption(var LoanCustNormView: Record lvnLoanNormalizedView; FieldNo: Integer): Text[50]
+    // begin
+    //     case FieldNo of
+    //         10:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 1"));
+    //         11:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 2"));
+    //         12:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 3"));
+    //         13:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 4"));
+    //         14:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 5"));
+    //         15:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 6"));
+    //         16:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 7"));
+    //         17:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 8"));
+    //         18:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 9"));
+    //         19:
+    //             exit(LoanCustNormView.FieldCaption("Custom Text 10"));
+    //         30:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 1"));
+    //         31:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 2"));
+    //         32:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 3"));
+    //         33:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 4"));
+    //         34:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 5"));
+    //         35:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 6"));
+    //         36:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 7"));
+    //         37:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 8"));
+    //         38:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 9"));
+    //         39:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 10"));
+    //         40:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 11"));
+    //         41:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 12"));
+    //         42:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 13"));
+    //         43:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 14"));
+    //         44:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 15"));
+    //         45:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 16"));
+    //         46:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 17"));
+    //         47:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 18"));
+    //         48:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 19"));
+    //         49:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 20"));
+    //         50:
+    //             exit(LoanCustNormView.FieldCaption("Custom Decimal 21"));
+    //         100:
+    //             exit(LoanCustNormView.FieldCaption("Custom Date 1"));
+    //         101:
+    //             exit(LoanCustNormView.FieldCaption("Custom Date 2"));
+    //         102:
+    //             exit(LoanCustNormView.FieldCaption("Custom Date 3"));
+    //         103:
+    //             exit(LoanCustNormView.FieldCaption("Custom Date 4"));
+    //         104:
+    //             exit(LoanCustNormView.FieldCaption("Custom Date 5"));
+    //     end
+    // end;
 }

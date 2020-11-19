@@ -255,7 +255,7 @@ table 14135113 "lvnLoanProcessingSchemaLine"
         ExpressionList: Page lvnExpressionList;
         DimensionNamesRetrieved: Boolean;
         DimensionNames: array[8] of Text;
-        RuleLbl: Label '%1 Rule';
+        RuleLbl: Label '%1 Rule', Comment = '%1 Dimension Names';
 
     local procedure GetRuleCaptionString(Index: Integer): Text
     begin

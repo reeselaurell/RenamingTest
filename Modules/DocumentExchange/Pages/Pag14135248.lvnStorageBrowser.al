@@ -250,11 +250,11 @@ page 14135248 "lvnStorageBrowser"
         Container: Text;
         ExcludeName: Text;
         ContainersLbl: Label 'Containers';
-        FilesCaptionLbl: Label 'Files in %1';
+        FilesCaptionLbl: Label 'Files in %1', Comment = '%1 = Container';
         NewContainerLbl: Label 'Create Container';
-        DeleteContainerPromptQst: Label 'Container %1 and all its contents will be deleted permanently. This action cannot be undone. Are you sure?';
+        DeleteContainerPromptQst: Label 'Container %1 and all its contents will be deleted permanently. This action cannot be undone. Are you sure?', Comment = '%1 = Name/Value Record Name ';
         FilesLbl: Label 'Files';
-        DeleteFilePromptQst: Label 'File %1 will be deleted permanently. This action cannot be undone. Are you sure?';
+        DeleteFilePromptQst: Label 'File %1 will be deleted permanently. This action cannot be undone. Are you sure?', Comment = '%1 =  File Name';
         SaveFileLbl: Label 'Save file';
         SelectFileLbl: Label 'Select a file';
         FileMaskTxt: Label 'All Files|*.*';

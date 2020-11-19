@@ -48,13 +48,16 @@ page 14135269 "lvnPayablesHeadline"
     trigger OnOpenPage()
     var
         EntriesCount: Integer;
+        InvoiceDueFormatLbl: Label 'The Total Invoice Amount Due Today is $%1', Comment = '%1 = Total Invoices Due Today Amount';
+        OverdueApprovalFormatLbl: Label 'There is %1 overdue Approval Entry', Comment = '%1 = Overdue approval entries count (Single)';
+        OverdueApprovalsFormatLbl: Label 'There are %1 overdue Approval Entry', Comment = '%1 = Overdue approval entries count (Plural)';
     begin
-        InvoicesDueTxt := StrSubstNo('The Total Invoice Amount Due Today is $%1', InvoicesDueTodayAmount());
+        InvoicesDueTxt := StrSubstNo(InvoiceDueFormatlbl, InvoicesDueTodayAmount());
         EntriesCount := OverdueApprovalsCount();
         if EntriesCount = 1 then
-            OverdueApprovalsTxt := StrSubstNo('There is %1 overdue Approval Entry', EntriesCount)
+            OverdueApprovalsTxt := StrSubstNo(OverdueApprovalFormatLbl, EntriesCount)
         else
-            OverdueApprovalsTxt := StrSubstNo('There are %1 overdue Approval Entries', EntriesCount);
+            OverdueApprovalsTxt := StrSubstNo(OverdueApprovalsFormatLbl, EntriesCount);
     end;
 
     var

@@ -127,5 +127,5 @@ report 14135311 lvnGrossCommissionExport
         CommissionsDueLbl: Label 'Commissions Due';
         CommissionsPaidLbl: Label ' Commissions Paid';
         ExcelSheetNameLbl: Label 'Export';
-        ProcessingDialogMsg: Label 'Processing #1######## of #2##########';
+        ProcessingDialogMsg: Label 'Processing #1######## of #2##########', Comment = '#1 = Entry No.; #2 = Total Entries';
 }

@@ -68,8 +68,8 @@ report 14135109 "lvnDimensionChangeSetImport"
         Progress: Dialog;
         Total: Integer;
         Current: Integer;
-        LargeCountMsg: Label 'Your selection contains very large number of entries (%1)\This may lock database for all users for a long time\Are you sure you want to proceed?';
-        ImportingMsg: Label 'Importing entry #1######## of #2########';
+        LargeCountMsg: Label 'Your selection contains very large number of entries (%1)\This may lock database for all users for a long time\Are you sure you want to proceed?', Comment = '%1 = Entry Count';
+        ImportingMsg: Label 'Importing entry #1######## of #2########', Comment = '#1 = Entry No.; #2 = Total Entries';
 
     procedure SetParams(pChangeSetID: Guid)
     begin

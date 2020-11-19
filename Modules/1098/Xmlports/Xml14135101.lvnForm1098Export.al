@@ -149,6 +149,6 @@ xmlport 14135101 "lvnForm1098Export"
 
     var
         EncryptSSN: Boolean;
-        WrongSSNErr: Label 'Wrong SSN for Loan No. %1';
-        SSNMaskTxt: Label '***-**-%1';
+        WrongSSNErr: Label 'Wrong SSN for Loan No. %1', Comment = '%1 = Loan No.';
+        SSNMaskTxt: Label '***-**-%1', Comment = '%1 = Last 4 SSN Digits';
 }

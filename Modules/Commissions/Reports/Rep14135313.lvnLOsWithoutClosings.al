@@ -114,5 +114,5 @@ report 14135313 lvnLOsWithoutClosings
         PayrollIDLbl: Label 'Payroll ID';
         CostCenterCodeLbl: Label 'Cost Center Code';
         ExcelSheetNameLbl: Label 'Export';
-        ProcessingDialogMsg: Label 'Processing #1######## of #2##########';
+        ProcessingDialogMsg: Label 'Processing #1######## of #2##########', Comment = '#1 = Entry No.; #2 = Total Entries';
 }

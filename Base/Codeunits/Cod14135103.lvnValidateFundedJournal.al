@@ -13,11 +13,11 @@ codeunit 14135103 "lvnValidateFundedJournal"
         SearchNameBlankErr: Label 'Search Name can not be compiled';
         ProcessingSchemaBlankErr: Label 'Processing Schema Code can not be blank';
         TitleCustomerNoMissingErr: Label 'Title Customer No. is missing';
-        ReasonCodeMissingOnLineErr: Label 'Reason Code is mandatory for Transaction, Line No. %1';
-        AccountNoMissingOnLineErr: Label 'Account No. is mandatory for Transaction, Line No. %1';
-        NonPostedVoidDocumentExistsErr: Label 'Non-Posted Funded Void document already exists %1';
-        NonPostedDocumentExistsErr: Label 'Non-Posted Funded document already exists %1';
-        PostedDocumentExistsErr: Label 'Posted Funded document already exists %1';
+        ReasonCodeMissingOnLineErr: Label 'Reason Code is mandatory for Transaction, Line No. %1', Comment = '%1 = Line No.';
+        AccountNoMissingOnLineErr: Label 'Account No. is mandatory for Transaction, Line No. %1', Comment = '%1 = Line No.';
+        NonPostedVoidDocumentExistsErr: Label 'Non-Posted Funded Void document already exists %1', Comment = '%1 = Document No.';
+        NonPostedDocumentExistsErr: Label 'Non-Posted Funded document already exists %1', Comment = '%1 = Document No.';
+        PostedDocumentExistsErr: Label 'Posted Funded document already exists %1', Comment = '%1 = Document No.';
         NothingToVoidErr: Label 'There is nothing to void';
 
     procedure ValidateFundedLines(JournalBatchCode: Code[20])

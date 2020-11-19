@@ -52,6 +52,8 @@ page 14135318 lvnCommissionPrintoutView
     }
 
     trigger OnOpenPage()
+    var
+        DateFilterFormatLbl: Label '%1..%2', Comment = '%1 = Period Start Date; %2 = Period End Date';
     begin
         LoanVisionSetup.Get();
         CommissionSetup.Get();
@@ -72,7 +74,7 @@ page 14135318 lvnCommissionPrintoutView
             BpsFormat."Value Type" := BpsFormat."Value Type"::Regular;
         end;
         LoanOfficerDimensionNo := DimensionManagement.GetDimensionNo(LoanVisionSetup."Loan Officer Dimension Code");
-        DateFilter := StrSubstNo('%1..%2', CommissionSchedule."Period Start Date", CommissionSchedule."Period End Date");
+        DateFilter := StrSubstNo(DateFilterFormatLbl, CommissionSchedule."Period Start Date", CommissionSchedule."Period End Date");
         CalculateData();
     end;
 

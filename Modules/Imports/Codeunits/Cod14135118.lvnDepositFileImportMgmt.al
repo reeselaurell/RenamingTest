@@ -241,10 +241,11 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
         NoSeriesMgmt: Codeunit NoSeriesManagement;
         UserSetupMgmt: Codeunit "User Setup Management";
         DocumentNo: Code[20];
-        PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
-        AccountNoBlankOrMissingErr: Label 'Account %1 %2 is missing or blank';
-        LoanNoNotFoundErr: Label 'Loan No. %1 not found';
-        ReasonCodeMissingErr: Label '%1 Reason Code is not available';
+        PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges', Comment = '%1 = Posting Date';
+        AccountNoBlankOrMissingErr: Label 'Account %1 %2 is missing or blank', Comment = '%1 = Account Type; %2 = Account Value';
+        LoanNoNotFoundErr: Label 'Loan No. %1 not found', Comment = '%1 = Loan No.';
+        ReasonCodeMissingErr: Label '%1 Reason Code is not available', Comment = '%1 = Reason Code';
+
     begin
         MainDimensionCode := DimensionsManagement.GetMainHierarchyDimensionCode();
         MainDimensionNo := DimensionsManagement.GetMainHierarchyDimensionNo();
@@ -339,9 +340,9 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
         var ImportBufferError: Record lvnImportBufferError)
     var
         DimensionValue: Record "Dimension Value";
-        MandatoryDimensionBlankErr: Label 'Mandatory Dimension %1 is blank';
-        DimensionValueCodeMissingErr: Label 'Dimension Value Code %1 is missing';
-        DimensionValueCodeBlockedErr: Label 'Dimension Value Code %1 is blocked';
+        MandatoryDimensionBlankErr: Label 'Mandatory Dimension %1 is blank', Comment = ' %1 = Dimension No.';
+        DimensionValueCodeMissingErr: Label 'Dimension Value Code %1 is missing', Comment = '%1 = Dimension Value Code';
+        DimensionValueCodeBlockedErr: Label 'Dimension Value Code %1 is blocked', Comment = '%1 = Dimension Value Code';
     begin
         if Mandatory then
             if DimensionValueCode = '' then

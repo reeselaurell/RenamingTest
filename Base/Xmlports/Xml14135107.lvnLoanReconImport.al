@@ -42,7 +42,7 @@ xmlport 14135107 "lvnLoanReconImport"
                 group(Option)
                 {
                     field(FlipSignField; FlipSign) { ApplicationArea = All; Caption = 'Flip Sign'; }
-                    field(GLAccountSourceField; GLAccountSource) { ApplicationArea = All; Caption = 'G/L Account Source'; }
+                    field(GLAccountSourceField; GLAccountSource) { ApplicationArea = All; Caption = 'G/L Account Source'; OptionCaption = 'File,Filter'; }
                 }
             }
         }
@@ -61,7 +61,6 @@ xmlport 14135107 "lvnLoanReconImport"
     procedure GetData(var LoanReconciliationBuffer: Record lvnLoanReconciliationBuffer)
     var
         GLEntry: Record "G/L Entry";
-        FlipSign: Boolean;
     begin
         if GLAccountSource = GLAccountSource::File then begin
             LoanReconBuffer.Reset();

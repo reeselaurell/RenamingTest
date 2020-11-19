@@ -133,5 +133,5 @@ report 14135312 lvnCommissionAdjExport
         LoanNoLbl: Label 'Loan No.';
         ManualEntryLbl: Label 'Manual Entry';
         AmountLbl: Label 'Amount';
-        ProcessingDialogMsg: Label 'Processing #1######## of #2##########';
+        ProcessingDialogMsg: Label 'Processing #1######## of #2##########', Comment = '#1 = Entry No.; #2 = Total Entries';
 }

@@ -95,7 +95,7 @@ page 14135245 "lvnDocumentListFactbox"
         ControlInitialized: Boolean;
         DropStream: OutStream;
         DropName: Text;
-        DeletePromptQst: Label 'File %1 will be deleted permanently. This action cannot be undone. Are you sure?';
+        DeletePromptQst: Label 'File %1 will be deleted permanently. This action cannot be undone. Are you sure?', Comment = '%1 = Document Name';
         SaveDocumentLbl: Label 'Save document';
         DXCRecordNotConfiguredErr: Label 'Error: Document Exchange Id is not configured for this record';
         DXCSetupNotConfiguredErr: Label 'Error: Document Exchange is not configured';

@@ -96,9 +96,9 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
         PaymentMethod: Record "Payment Method";
         UserSetupMgmt: Codeunit "User Setup Management";
         PostingDateIsBlankErr: Label 'Posting Date is Blank';
-        PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
-        VendorNotFoundErr: Label 'Vendor with No.: %1 was not found in Vendor List';
-        PaymentMethodNotFoundErr: Label 'Payment Method Code: %1 was not found in Payment Method Table';
+        PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges', Comment = '%1 = Posting Date';
+        VendorNotFoundErr: Label 'Vendor with No.: %1 was not found in Vendor List', Comment = '%1 = Vendor No.';
+        PaymentMethodNotFoundErr: Label 'Payment Method Code: %1 was not found in Payment Method Table', Comment = '%1 = Payment Method Code';
     begin
         PurchInvHdrBuffer.Reset();
         if PurchInvHdrBuffer.FindSet() then
@@ -122,9 +122,9 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
     var
         Loan: Record lvnLoan;
         DimensionValue: Record "Dimension Value";
-        AccountNoBlankOrMissingErr: Label 'Line %1: G/L Account is missing or blank';
-        LoanNoMissingErr: Label 'Line %1: Loan No. is Missing';
-        InvalidDimensionErr: Label 'Line %1: Dimension Value %2 does not exist for Dimension %3';
+        AccountNoBlankOrMissingErr: Label 'Line %1: G/L Account is missing or blank', Comment = '%1 = Line No.';
+        LoanNoMissingErr: Label 'Line %1: Loan No. is Missing', Comment = '%1 = Line No.';
+        InvalidDimensionErr: Label 'Line %1: Dimension Value %2 does not exist for Dimension %3', Comment = '%1 = Line No.;%2 Dimension Value;%3 = Dimension Code';
     begin
         PurchInvLineBuffer.Reset();
         if PurchInvLineBuffer.FindSet() then

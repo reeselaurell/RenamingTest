@@ -181,5 +181,5 @@ report 14135110 "lvnPostDimensionChangeSet"
         Progress: Dialog;
         AnalysisEntriesRegenMsg: Label 'Note: All analysis entries will be deleted and should be regenerated.';
         SelectDimensionMsg: Label 'Please, select at least one dimension to transfer';
-        ProcessingMsg: Label 'Processing entry #1####### of #2#######';
+        ProcessingMsg: Label 'Processing entry #1####### of #2#######', Comment = '#1 = Entry No.; #2 = Total Entries';
 }

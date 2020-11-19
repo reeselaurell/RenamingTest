@@ -32,6 +32,6 @@ report 14135102 "lvnVoidPostedSoldDocuments"
     var
         lvnLoanVoidDocument: Codeunit lvnLoanVoidDocument;
         VoidsCreatedCount: Integer;
-        DocumentsVoidCountLbl: Label 'Do You want to create %1 void documents?';
-        DocumentsVoidResultLbl: Label '%1 void documents created';
+        DocumentsVoidCountLbl: Label 'Do You want to create %1 void documents?', Comment = '%1 = Document Count';
+        DocumentsVoidResultLbl: Label '%1 void documents created', Comment = '%1 = Documents Created Count';
 }

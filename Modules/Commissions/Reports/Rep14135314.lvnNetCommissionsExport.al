@@ -168,9 +168,9 @@ report 14135314 lvnNetCommissionsExport
         PayrollIDLbl: Label 'Payroll ID';
         CostCenterCodeLbl: Label 'Cost Center Code';
         ExcelSheetNameLbl: Label 'Export';
-        DateFilterLbl: Label '%1..%2';
+        DateFilterLbl: Label '%1..%2', Comment = '%1 = Period Start Date; %2 = Period End Date';
         TotalLbl: Label 'Total';
-        SumFormulaLbl: Label 'SUM(%1%2:%3%4)';
+        SumFormulaLbl: Label 'SUM(%1%2:%3%4)', Comment = '%1 = Starting Amount Position; %2 = Row ID; %3 = Col ID; %4 = Row ID';
         NumberFormatLbl: Label '0.00';
-        ProcessingDialogMsg: Label 'Processing #1######## of #2##########';
+        ProcessingDialogMsg: Label 'Processing #1######## of #2##########', Comment = '#1 = Entry No.; #2 = Total Entries';
 }

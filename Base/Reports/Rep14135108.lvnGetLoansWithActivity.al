@@ -43,7 +43,7 @@ report 14135108 "lvnGetLoansWithActivity"
         TempReportingBuffer: Record lvnLoanReportingBuffer temporary;
         ProgressDialog: Dialog;
         Counter: Integer;
-        ProcessingEntryLbl: Label 'Processing Entry #1########## of #2###########';
+        ProcessingEntryLbl: Label 'Processing Entry #1########## of #2###########', Comment = '#1 = Processed Entries; #2 = Total Entires';
 
     procedure RetrieveData(var LoanReportingBuffer: Record lvnLoanReportingBuffer)
     begin

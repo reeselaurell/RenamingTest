@@ -32,7 +32,7 @@ report 14135120 "lvnReclassLoanGLEntries"
                     field(PostingDateField; PostingDate) { Caption = 'Posting Date'; ApplicationArea = All; }
                     field(DocumentNoField; DocumentNo) { Caption = 'Document No.'; ApplicationArea = All; }
                     field(UseNumberSeriesField; UseNumberSeries) { Caption = 'Use Number Series'; ApplicationArea = All; }
-                    field(BalAccountTypeField; BalAccountType) { Caption = 'Bal. Account Type'; ApplicationArea = All; }
+                    field(BalAccountTypeField; BalAccountType) { Caption = 'Bal. Account Type'; ApplicationArea = All; OptionCaption = 'Bank Account,G/L Account'; }
                     field(BalAccountNoField; BalAccountNo)
                     {
                         Caption = 'Bal. Account No.';

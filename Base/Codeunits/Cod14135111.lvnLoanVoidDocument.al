@@ -4,7 +4,7 @@ codeunit 14135111 "lvnLoanVoidDocument"
         LoanVisionSetup: Record lvnLoanVisionSetup;
         NoSeriesMgmt: Codeunit NoSeriesManagement;
         LoanVisionSetupRetrieved: Boolean;
-        ConfirmationDialogLbl: Label 'Do you want to create Void document for %1?';
+        ConfirmationDialogLbl: Label 'Do you want to create Void document for %1?', Comment = '%1 = Document No.';
 
     procedure CreateFundedVoidDocument(LoanFundedDocument: Record lvnLoanFundedDocument; ShowConfirmation: Boolean)
     var

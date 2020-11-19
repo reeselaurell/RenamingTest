@@ -184,7 +184,7 @@ page 14135251 "lvnPurchInvoiceImportJnl"
         InvoiceErrorDetail: Record lvnInvoiceErrorDetail;
         [InDataSet]
         ErrorStyle: Boolean;
-        ConfirmMsg: Label 'Post %1 Invoices?';
+        ConfirmMsg: Label 'Post %1 Invoices?', Comment = '%1 = Invoice Count';
         ContainsErrorsErr: Label 'One or more Invoices contain errors. Correct entries and Validate to proceed';
 
     procedure SetHeaderBuffer(var pPurchInvHdrBuffer: Record lvnPurchInvHdrBuffer)

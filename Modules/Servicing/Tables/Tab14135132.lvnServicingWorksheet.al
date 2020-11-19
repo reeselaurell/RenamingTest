@@ -117,11 +117,11 @@ table 14135132 "lvnServicingWorksheet"
         "Escrow Amount" := ServicingManagement.GetTotalEscrowAmounts(Loan);
     end;
 
-    local procedure GetLoanServicingSetup()
-    begin
-        if not LoanServicingSetupRetrieved then begin
-            LoanServicingSetupRetrieved := true;
-            LoanServicingSetup.Get();
-        end;
-    end;
+    // local procedure GetLoanServicingSetup()
+    // begin
+    //     if not LoanServicingSetupRetrieved then begin
+    //         LoanServicingSetupRetrieved := true;
+    //         LoanServicingSetup.Get();
+    //     end;
+    // end;
 }

@@ -131,5 +131,5 @@ report 14135112 "lvnRefreshGLAnalysisEntries"
         Counter: Integer;
         LastEntryNo: Integer;
         ProgressDialog: Dialog;
-        ProcessingGLEntriesLbl: Label 'Processing entry #1#############';
+        ProcessingGLEntriesLbl: Label 'Processing entry #1#############', Comment = '#1 Entry No.';
 }

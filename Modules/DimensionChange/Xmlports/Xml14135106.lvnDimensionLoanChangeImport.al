@@ -48,7 +48,7 @@ xmlport 14135106 "lvnDimensionLoanChangeImport"
 
     var
         ChangeSetId: Guid;
-        ProgressLbl: Label '#1############## of #2###########';
+        ProgressLbl: Label '#1############## of #2###########', Comment = '#1 = Entry No.; #2 = Total Entries';
 
     procedure SetParams(pChangeSetID: Guid)
     begin

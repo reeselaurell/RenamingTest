@@ -19,7 +19,7 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         LoanManagement: Codeunit lvnLoanManagement;
         DocumentsCreated: Integer;
         TotalEntries: Integer;
-        ProcessResultMsg: Label '%1 of %2 documents were created';
+        ProcessResultMsg: Label '%1 of %2 documents were created', Comment = '%1 = Entries Processed; %2 = Total Entries';
     begin
         ValidateSoldJournal.ValidateSoldLines(LoanJournalBatchCode);
         LoanManagement.UpdateLoans(LoanJournalBatchCode);
@@ -56,7 +56,7 @@ codeunit 14135113 "lvnCreateSoldDocuments"
         LoanJournalLine.MarkedOnly(true);
         LoanJournalLine.DeleteAll(true);
         Commit();
-        Message(ProcessResultMsg, TotalEntries, DocumentsCreated);
+        Message(ProcessResultMsg, DocumentsCreated, TotalEntries);
     end;
 
     procedure CreateSingleDocument(

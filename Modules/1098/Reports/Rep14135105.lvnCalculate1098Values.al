@@ -100,7 +100,7 @@ report 14135105 "lvnCalculate1098Values"
         Box1Limit: Decimal;
         Box5Limit: Decimal;
         Box1Plus6Limit: Decimal;
-        ProcessingLoanMsg: Label 'Processing Loan #1#########';
+        ProcessingLoanMsg: Label 'Processing Loan #1#########', Comment = '#1 = Loan No.';
 
     local procedure ApplyGLEntryFilters(
         var GLEntry: Record "G/L Entry";

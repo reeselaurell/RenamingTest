@@ -512,25 +512,25 @@ report 14135113 "lvnSuggestVendorPayments"
         SpecifyFirstDocNoErr: Label 'In the Starting Document No. field, specify the first document number to be used.';
         RunBatchJobMsg: Label 'The payment date is earlier than %1.\\Do you still want to run the batch job?', Comment = '%1 is a date';
         BatchJobInterruptErr: Label 'The batch job was interrupted.';
-        ProccessingVendorsMsg: Label 'Processing vendors     #1##########';
-        ProcessingPaymentDiscountsMsg: Label 'Processing vendors for payment discounts #1##########';
-        InsertPayJournalLinesMsg: Label 'Inserting payment journal lines #1##########';
-        NotGLAccOrBankAccErr: Label '%1 must be G/L Account or Bank Account.';
-        MustBeFilledErr: Label '%1 must be filled only when %2 is Bank Account.';
+        ProccessingVendorsMsg: Label 'Processing vendors     #1##########', Comment = '#1 Vendor No.';
+        ProcessingPaymentDiscountsMsg: Label 'Processing vendors for payment discounts #1##########', Comment = '#1 Vendor No.';
+        InsertPayJournalLinesMsg: Label 'Inserting payment journal lines #1##########', Comment = '#1 Journal Line';
+        NotGLAccOrBankAccErr: Label '%1 must be G/L Account or Bank Account.', Comment = '%1 = Bal. Account Type Caption';
+        MustBeFilledErr: Label '%1 must be filled only when %2 is Bank Account.', Comment = '%1 = Bank Payment Type Caption; %2 = Bal. Account Type Caption';
         AmountAvailableNotZeroErr: Label 'Use Vendor Priority must be activated when the value in the Amount Available field is not 0.';
         AmountAvailableLCYNotZeroErr: Label 'Use Vendor Priority must be activated when the value in the Amount Available Amount (LCY) field is not 0.';
-        SelectNewDocNoErr: Label 'If %1 = %2 and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.', Comment = 'If Bank Payment Type = Computer Check and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.';
-        OtherOpenVendLedgEntriesMsg: Label 'You have only created suggested vendor payment lines for the %1 %2.\ However, there are other open vendor ledger entries in currencies other than %2.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR.\ However, there are other open vendor ledger entries in currencies other than EUR.';
-        NoOtherOpenVendLedgEntriesMsg: Label 'You have only created suggested vendor payment lines for the %1 %2.\ There are no other open vendor ledger entries in other currencies.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR\ There are no other open vendor ledger entries in other currencies.\\';
+        SelectNewDocNoErr: Label 'If %1 = %2 and you have not selected the Summarize per Vendor field,\ then you must select the New Doc. No. per Line.', Comment = '%1 = Bank Payment Type Caption; %2 = Manual Check';
+        OtherOpenVendLedgEntriesMsg: Label 'You have only created suggested vendor payment lines for the %1 %2.\ However, there are other open vendor ledger entries in currencies other than %2.\\', Comment = '%1 = Currency Code Caption; %2 = Currency Code Value';
+        NoOtherOpenVendLedgEntriesMsg: Label 'You have only created suggested vendor payment lines for the %1 %2.\ There are no other open vendor ledger entries in other currencies.\\', Comment = '%1 = Currency Code Caption; %2 = Currency Code Value';
         AllCurrenciesMsg: Label 'You have created suggested vendor payment lines for all currencies.\\';
         NoPaymentSuggestMsg: Label 'There are one or more entries for which no payment suggestions have been made because the posting dates of the entries are later than the requested posting date. Do you want to see the entries?';
-        ExistingPayToVendorNoMsg: Label 'The %1 with the number %2 has a %3 with the number %4.';
+        ExistingPayToVendorNoMsg: Label 'The %1 with the number %2 has a %3 with the number %4.', Comment = '%1 = Vendor Table Caption;%2 = Vendor No.;%3 = Pay-to Vendor No. Caption ;%4 = Pay-to Vendor No. Value ;';
         ReplacePostingDateMsg: Label 'For one or more entries, the requested posting date is before the work date.\\These posting dates will use the work date.';
         PmtDiscUnavailableErr: Label 'You cannot use Find Payment Discounts or Summarize per Vendor together with Calculate Posting Date from Applies-to-Doc. Due Date, because the resulting posting date might not match the payment discount date.';
         MessageToRecipientMsg: Label 'Payment of %1 %2 ', Comment = '%1 document type, %2 Document No.';
         StartingDocumentNoErr: Label 'The value in the Starting Document No. field must have a number so that we can assign the next number in the series.';
         ReviewNotSuggestedLinesQst: Label 'There are payments in other journal batches that are not suggested here. This helps avoid duplicate payments. To add them to this batch, remove the payment from the other batch, and then suggest payments again.\\Do you want to review the payments from the other journal batches now?';
-        NotSuggestedPaymentInfoTxt: Label 'There are payments in %1 %2, %3 %4, %5 %6', Comment = 'There are payments in Journal Template Name PAYMENT, Journal Batch Name GENERAL, Applies-to Doc. No. 101321';
+        NotSuggestedPaymentInfoTxt: Label 'There are payments in %1 %2, %3 %4, %5 %6', Comment = '%1 = Journal Template Name Caption;%2 = Journal Template Name Value;%3 = Journal Batch Name Caption;%4 = Journal Batch Name Value ;%5 = Applies-to Doc. No. Caption;%6 = Applies-to Doc. No. Value;';
 
     procedure SetGenJnlLine(NewGenJnlLine: Record "Gen. Journal Line")
     begin

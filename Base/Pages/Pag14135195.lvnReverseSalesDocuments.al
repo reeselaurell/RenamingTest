@@ -347,9 +347,9 @@ page 14135195 "lvnReverseSalesDocuments"
         LVSetupRetrieved: Boolean;
         InvoiceDocTxt: Label 'Invoice Documents';
         CrMemoDocTxt: Label 'Credit Memo Documents';
-        ProgressMsg: Label 'Document #1#############';
-        CompleteMsg: Label '%1 Documents were reversed';
-        ReverseConfirmMsg: Label '"%1" Document was already reversed. Do you want to reverse it once more ?';
+        ProgressMsg: Label 'Document #1#############', Comment = '%1 = Document No.';
+        CompleteMsg: Label '%1 Documents were reversed', Comment = '%1 = Document Count';
+        ReverseConfirmMsg: Label '"%1" Document was already reversed. Do you want to reverse it once more ?', Comment = '%1 = Document No.';
         ReverseErr: Label 'You can''t reverse more than 10 documents at a time. Please contact System Administrator for Assistance.';
         CancelledErr: Label 'Cancelled by User!';
 

@@ -382,7 +382,7 @@ table 14135102 "lvnLoan"
     var
         LoanAddress: Record lvnLoanAddress;
         FormattedAddress: Text;
-        AddressFormatTxt: Label '%1 %2, %3 %4 %5';
+        AddressFormatTxt: Label '%1 %2, %3 %4 %5', Comment = '%1 = Loan Address;%2 = Loan Address 2 ;%3 = Loan Address City;%4 = Loan Address State;%5 = Loan Address ZIP Code ;';
     begin
         if LoanAddress.Get("No.", AddressType) then begin
             FormattedAddress := StrSubstNo(AddressFormatTxt, LoanAddress.Address, LoanAddress."Address 2", LoanAddress.City, LoanAddress.State, LoanAddress."ZIP Code");

@@ -246,6 +246,6 @@ xmlport 14135108 "lvnPurchInvImport"
         PurchInvHdrBuffer: Record lvnPurchInvHdrBuffer;
         PurchInvLineBuffer: Record lvnPurchInvLineBuffer;
         PurchInLineBuffer2: Record lvnPurchInvLineBuffer;
-        DimensionValidation: Option "Dimensions from File","Dimensions from Loan","From Dimension Hierarchy";
+        DimensionValidation: Enum lvnInvImportDimValidationType;
         LoanNoValidation: Enum lvnLoanNoValidationRule;
 }

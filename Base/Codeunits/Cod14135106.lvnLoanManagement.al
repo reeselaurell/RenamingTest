@@ -49,8 +49,8 @@ codeunit 14135106 "lvnLoanManagement"
         Window: Dialog;
         Counter: Integer;
         ProcessedCount: Integer;
-        ProgressMsg: Label 'Processing #1########### of #2###########';
-        ProcessedMsg: Label '%1 of %2 Loans Processed';
+        ProgressMsg: Label 'Processing #1########### of #2###########', Comment = '#1 = Loans Processed; #2 = Total Loans';
+        ProcessedMsg: Label '%1 of %2 Loans Processed', Comment = '%1 = Loans Processed; %2 = Total Loans';
     begin
         GetLoanVisionSetup();
         LoanJournalBatch.Get(JournalBatchCode);
@@ -1261,7 +1261,7 @@ codeunit 14135106 "lvnLoanManagement"
     procedure ModifyFieldUpdateOption(JournalBatchCode: Code[20]; FieldUpdateOption: Enum lvnFieldUpdateCondition)
     var
         LoanUpdateSchema: Record lvnLoanUpdateSchema;
-        ConfirmModificationQst: Label 'Do You want to update all entries to %1 update option?';
+        ConfirmModificationQst: Label 'Do You want to update all entries to %1 update option?', Comment = '%1 = Field Update Condition';
     begin
         if Confirm(ConfirmModificationQst, false, FieldUpdateOption) then begin
             LoanUpdateSchema.Reset();

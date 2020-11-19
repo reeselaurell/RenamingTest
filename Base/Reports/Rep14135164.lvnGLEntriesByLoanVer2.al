@@ -284,5 +284,5 @@ report 14135164 "lvnGLEntriesByLoanVer2"
         Description: Text;
         BorrowerName: Text;
         NoDateFilterErr: Label 'Please define Filter for Loan No. or Funded Date';
-        ProgressMsg: Label 'Processing entries #1####### of #2########';
+        ProgressMsg: Label 'Processing entries #1####### of #2########', Comment = '#1 = Current Entry; #2 = Entry Total';
 }

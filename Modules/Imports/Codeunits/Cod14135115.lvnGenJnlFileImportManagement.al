@@ -308,14 +308,14 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         UserSetupMgmt: Codeunit "User Setup Management";
         DocumentNo: Code[20];
         PostingDateIsBlankErr: Label 'Posting Date is Blank';
-        PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
-        AccountNoBlankOrMissingErr: Label 'Account %1 %2 is missing or blank';
-        BalAccountNoBlankOrMissingErr: Label 'Bal. Account %1 %2 is missing or blank';
-        LoanNoNotFoundErr: Label 'Loan No. %1 not found';
-        PostingGroupMissingErr: Label '%1 %2 Posting Group is not available';
-        ReasonCodeMissingErr: Label '%1 Reason Code is not available';
-        PaymentMethodCodeMissingErr: Label '%1 Payment Method Code is not available';
-        ExternalDocNoAlreadyPostedErr: Label 'Document with External Document No. %1 for Vendor %2 is already posted';
+        PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges', Comment = '%1 = Posting Date';
+        AccountNoBlankOrMissingErr: Label 'Account %1 %2 is missing or blank', Comment = '%1 = Account Type; %2 = Account Value;';
+        BalAccountNoBlankOrMissingErr: Label 'Bal. Account %1 %2 is missing or blank', Comment = '%1 = Bal. Account Type; %2 = Bal. Account Value;';
+        LoanNoNotFoundErr: Label 'Loan No. %1 not found', Comment = '%1 = Loan No.';
+        PostingGroupMissingErr: Label '%1 %2 Posting Group is not available', Comment = '%1 = Account Type ;%2 = Posting Group;';
+        ReasonCodeMissingErr: Label '%1 Reason Code is not available', Comment = '%1 = Reason Code';
+        PaymentMethodCodeMissingErr: Label '%1 Payment Method Code is not available', Comment = '%1 = Payment Method Code';
+        ExternalDocNoAlreadyPostedErr: Label 'Document with External Document No. %1 for Vendor %2 is already posted', Comment = '%1 = External Doc. No.; %2 = Account No.';
         ExternalDocNoIsBlankErr: Label 'External Document No. cannot be blank';
     begin
         MainDimensionCode := DimensionsManagement.GetMainHierarchyDimensionCode();
@@ -453,9 +453,9 @@ codeunit 14135115 "lvnGenJnlFileImportManagement"
         var ImportBufferError: Record lvnImportBufferError)
     var
         DimensionValue: Record "Dimension Value";
-        MandatoryDimensionBlankErr: Label 'Mandatory Dimension %1 is blank';
-        DimensionValueCodeMissingErr: Label 'Dimension Value Code %1 is missing';
-        DimensionValueCodeBlockedErr: Label 'Dimension Value Code %1 is blocked';
+        MandatoryDimensionBlankErr: Label 'Mandatory Dimension %1 is blank', Comment = '%1 = Dimension No.';
+        DimensionValueCodeMissingErr: Label 'Dimension Value Code %1 is missing', Comment = '%1 = Dimension Value Code';
+        DimensionValueCodeBlockedErr: Label 'Dimension Value Code %1 is blocked', Comment = '%1 = Dimension Value Code';
     begin
         if Mandatory then
             if DimensionValueCode = '' then

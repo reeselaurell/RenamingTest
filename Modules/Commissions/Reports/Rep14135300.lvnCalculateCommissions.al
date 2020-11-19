@@ -296,10 +296,10 @@ report 14135300 lvnCalculateCommissions
         QuarterStartDate: Date;
         QuarterEndDate: Date;
         LoanOfficerDimensionNo: Integer;
-        WrongDateLbl: Label '%1 can''t be blank';
-        FindingFunctionErr: Label 'Error finding function %1 for profile %2 Line No. %3';
-        FindingConditionErr: Label 'Error finding condition %1 for profile %2 Line No. %3';
-        FindingConditionForTierErr: Label 'Error finding condition %1 for tier %2';
+        WrongDateLbl: Label '%1 can''t be blank', Comment = '%1 = Date Field';
+        FindingFunctionErr: Label 'Error finding function %1 for profile %2 Line No. %3', Comment = '%1 = Period Level Function Code; %2 = Profile Code ; %3 = Line No. ';
+        FindingConditionErr: Label 'Error finding condition %1 for profile %2 Line No. %3', Comment = '%1 = Profile Code; %2 = Condition Code ; %3 = Line No. ';
+        FindingConditionForTierErr: Label 'Error finding condition %1 for tier %2', Comment = '%1 = Payout Condition Code, %2 = Commission Tier Header Code';
         BooleanFalseLbl: Label 'False';
         DecimalZeroLbl: Label '0.00';
         IntegerZeroLbl: Label '0';

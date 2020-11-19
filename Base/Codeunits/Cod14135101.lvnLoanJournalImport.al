@@ -7,11 +7,11 @@ codeunit 14135101 "lvnLoanJournalImport"
         PostProcessingMgmt: Codeunit lvnPostProcessingMgmt;
         ImportStream: InStream;
         FileName: Text;
-        BooleanStringWrongFormatErr: Label 'Boolean Value %1 has wrong format. Line No. %2, Field %3. Possible Values %4 %5';
-        BooleanStringNoFormatDefinedErr: Label 'Boolean format is not defined for field %1';
-        DateStringWrongFormatErr: Label 'Date Value %1 has wrong format. Line No. %2, Field %3';
-        DecimalStringWrongFormatErr: Label 'Decimal Value %1 has wrong format. Line No. %2, Field %3';
-        IntegerStringWrongFormatErr: Label 'Integer Value %1 has wrong format. Line No. %2, Field %3';
+        BooleanStringWrongFormatErr: Label 'Boolean Value %1 has wrong format. Line No. %2, Field %3. Possible Values %4 %5', Comment = '%1 = Value ;%2 = Line No.;%3 = Field Name ;%4 = 1;%5 = 0;';
+        BooleanStringNoFormatDefinedErr: Label 'Boolean format is not defined for field %1', Comment = '%1 = Field Name';
+        DateStringWrongFormatErr: Label 'Date Value %1 has wrong format. Line No. %2, Field %3', Comment = '%1 = Value;%2 = Line No. ;%3 = Field Name;';
+        DecimalStringWrongFormatErr: Label 'Decimal Value %1 has wrong format. Line No. %2, Field %3', Comment = '%1 = Value;%2 = Line No. ;%3 = Field Name;';
+        IntegerStringWrongFormatErr: Label 'Integer Value %1 has wrong format. Line No. %2, Field %3', Comment = '%1 = Value;%2 = Line No. ;%3 = Field Name;';
         OpenFileLbl: Label 'Open File for Import';
         ReadingToStreamErr: Label 'Error reading file to stream';
 

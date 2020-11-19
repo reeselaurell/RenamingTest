@@ -38,7 +38,7 @@ codeunit 14135302 lvnCommissionDimCaptionClass
     var
         DimensionsManagement: Codeunit lvnDimensionsManagement;
         DimensionNames: array[8] of Text;
-        AccrualOptionLbl: Label '%1 Accrual Option';
+        AccrualOptionLbl: Label '%1 Accrual Option', Comment = '%1 = Dimension Name';
     begin
         DimensionsManagement.GetDimensionNames(DimensionNames);
         exit(StrSubstNo(AccrualOptionLbl, DimensionNames[DimensionNo]));
@@ -48,7 +48,7 @@ codeunit 14135302 lvnCommissionDimCaptionClass
     var
         DimensionsManagement: Codeunit lvnDimensionsManagement;
         DimensionNames: array[8] of Text;
-        DefaultDimensionLbl: Label 'Default %1';
+        DefaultDimensionLbl: Label 'Default %1', Comment = '%1 = Dimension Name';
     begin
         DimensionsManagement.GetDimensionNames(DimensionNames);
         exit(StrSubstNo(DefaultDimensionLbl, DimensionNames[DimensionNo]));

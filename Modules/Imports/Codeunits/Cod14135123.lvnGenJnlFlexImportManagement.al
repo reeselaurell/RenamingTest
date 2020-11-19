@@ -6,15 +6,15 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         FieldSeparatorLbl: Label '<TAB>';
         OpenFileLbl: Label 'Open File for Import';
         ReadingToStreamErr: Label 'Error reading file to stream';
-        NotSupportedExpressionTypeErr: Label 'Expression type is not supported: %1';
+        NotSupportedExpressionTypeErr: Label 'Expression type is not supported: %1', Comment = '%1 = Expression Header Type';
         SchemaEmptyErr: Label 'Import schema is empty';
         PostingDateIsBlankErr: Label 'Posting Date is Blank';
-        PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
-        AccountNoBlankOrMissingErr: Label 'Account %1 %2 is blank or missing';
-        BalAccountNoBlankOrMissingErr: Label 'Bal. Account %1 %2 is missing';
-        LoanNoNotFoundErr: Label 'Loan No. %1 not found';
-        DimensionValueCodeMissingErr: Label 'Dimension Value Code %1 is missing';
-        DimensionValueCodeBlockedErr: Label 'Dimension Value Code %1 is blocked';
+        BalAccountNoBlankOrMissingErr: Label 'Bal. Account %1 %2 is missing', Comment = '%1 = Bal. Account Type; %2 = Bal. Account Value';
+        PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges', Comment = '%1 = Posting Date';
+        AccountNoBlankOrMissingErr: Label 'Account %1 %2 is missing or blank', Comment = '%1 = Account Type; %2 = Account Value';
+        LoanNoNotFoundErr: Label 'Loan No. %1 not found', Comment = '%1 = Loan No.';
+        DimensionValueCodeMissingErr: Label 'Dimension Value Code %1 is missing', Comment = '%1 = Dimension Value Code';
+        DimensionValueCodeBlockedErr: Label 'Dimension Value Code %1 is blocked', Comment = '%1 = Dimension Value Code';
 
     procedure ManualFileImport(
         var GenJnlImportBuffer: Record lvnGenJnlImportBuffer;
