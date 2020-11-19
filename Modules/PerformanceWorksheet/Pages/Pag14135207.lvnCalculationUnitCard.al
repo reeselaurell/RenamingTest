@@ -39,10 +39,24 @@ page 14135207 "lvnCalculationUnitCard"
             {
                 Visible = (Rec.Type = Rec.Type::"Amount Lookup") or (Rec.Type = Rec.Type::"Count Lookup");
                 Caption = 'Lookup';
-
-                field("Lookup Source"; Rec."Lookup Source")
+                group(Source)
                 {
-                    ApplicationArea = All;
+                    ShowCaption = false;
+
+                    field("Lookup Source"; Rec."Lookup Source")
+                    {
+                        ApplicationArea = All;
+                    }
+                    group(InvertSign)
+                    {
+                        ShowCaption = false;
+                        Visible = Rec.Type = Rec.Type::"Amount Lookup";
+
+                        field("Invert Sign"; Rec."Invert Sign")
+                        {
+                            Caption = 'Invert Sign';
+                        }
+                    }
                 }
                 group(LoanCard)
                 {

@@ -997,6 +997,8 @@ codeunit 14135124 "lvnPerformanceMgmt"
         else
             Result := LoanAmountsByDimension.LoanCount;
         LoanAmountsByDimension.Close();
+        if (CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup") and (CalculationUnit."Invert Sign") then
+            Result := -Result;
     end;
 
     local procedure LookupLoanValue(
@@ -1081,6 +1083,8 @@ codeunit 14135124 "lvnPerformanceMgmt"
                     Result := 0;
             end;
         LoanValuesByDimension.Close();
+        if (CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup") and (CalculationUnit."Invert Sign") then
+            Result := -Result;
     end;
 
     local procedure LookupGeneralLedger(
@@ -1154,6 +1158,8 @@ codeunit 14135124 "lvnPerformanceMgmt"
                     Result := GLEntry."Credit Amount";
                 end;
         end;
+        if (CalculationUnit.Type = CalculationUnit.Type::"Amount Lookup") and (CalculationUnit."Invert Sign") then
+            Result := -Result;
     end;
 
     local procedure CalculateBandExpression(

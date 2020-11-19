@@ -55,6 +55,11 @@ table 14135174 "lvnCalculationUnit"
             DataClassification = CustomerContent;
             TableRelation = lvnLoanFieldsConfiguration."Field No." where("Value Type" = filter(Decimal | Integer));
         }
+        field(35; "Invert Sign"; Boolean)
+        {
+            Caption = 'Invert Sign';
+            DataClassification = CustomerContent;
+        }
         field(40; "Expression Code"; Code[20])
         {
             Caption = 'Expression Code';
