@@ -98,6 +98,7 @@ page 14135155 "lvnServicingWorksheet"
             part(Escrows; lvnLoanEscrowFields)
             {
                 Caption = 'Escrows Breakdown';
+                ApplicationArea = All;
             }
         }
     }

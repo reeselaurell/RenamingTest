@@ -9,7 +9,7 @@ table 14135161 "lvnGenLedgerReconcile"
         field(1; "Entry No."; Integer)
         {
             Caption = 'Entry No.';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(10; "Loan No."; Code[20])
         {

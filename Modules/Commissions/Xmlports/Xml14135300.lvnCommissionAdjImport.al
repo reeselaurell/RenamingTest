@@ -54,6 +54,7 @@ xmlport 14135300 lvnCommissionAdjImport
                     field(ScheduleNo; ScheduleNo)
                     {
                         Caption = 'Commission Schedule No.';
+                        ApplicationArea = All;
                         TableRelation = lvnCommissionSchedule."No." where("Period Posted" = const(false));
                         ShowMandatory = true;
 
@@ -66,6 +67,7 @@ xmlport 14135300 lvnCommissionAdjImport
                     field(AsOfDate; AsOfDate)
                     {
                         Caption = 'As Of Date';
+                        ApplicationArea = All;
                         ShowMandatory = true;
                     }
                 }

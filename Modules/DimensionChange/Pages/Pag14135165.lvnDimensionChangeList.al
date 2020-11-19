@@ -75,6 +75,7 @@ page 14135165 "lvnDimensionChangeList"
             action(Post)
             {
                 Caption = 'Post';
+                ApplicationArea = All;
                 Image = PostBatch;
                 Promoted = true;
                 PromotedCategory = Process;
