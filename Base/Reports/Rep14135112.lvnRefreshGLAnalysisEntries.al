@@ -11,7 +11,7 @@ report 14135112 "lvnRefreshGLAnalysisEntries"
         {
             area(Content)
             {
-                field(CompleteRefresh; CompleteRefresh) { Caption = 'Complete Refresh'; ApplicationArea = All; ToolTip = 'Complete Refresh. Might take long time to refresh'; }
+                field(Refresh; CompleteRefresh) { Caption = 'Complete Refresh'; ApplicationArea = All; ToolTip = 'Complete Refresh. Might take long time to refresh'; }
             }
         }
     }

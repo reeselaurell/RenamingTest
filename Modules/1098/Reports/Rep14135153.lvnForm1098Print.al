@@ -196,7 +196,7 @@ report 14135153 "lvnForm1098Print"
                 {
                     Caption = 'Options';
 
-                    field(EncryptSSN; EncryptSSN) { ApplicationArea = All; Caption = 'Mask SSN Numbers'; }
+                    field(EncryptSSNField; EncryptSSN) { ApplicationArea = All; Caption = 'Mask SSN Numbers'; }
                 }
             }
         }

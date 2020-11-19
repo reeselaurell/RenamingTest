@@ -109,7 +109,7 @@ report 14135116 "lvnForm1099ExcelExport"
             {
                 group(Options)
                 {
-                    field(NumberFormat; NumberFormat) { Caption = 'Currency Format'; ApplicationArea = All; TableRelation = lvnNumberFormat; }
+                    field(NumberFormatField; NumberFormat) { Caption = 'Currency Format'; ApplicationArea = All; TableRelation = lvnNumberFormat; }
                 }
             }
         }

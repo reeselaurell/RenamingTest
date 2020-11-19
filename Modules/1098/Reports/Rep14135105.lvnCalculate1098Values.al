@@ -67,10 +67,10 @@ report 14135105 "lvnCalculate1098Values"
                 {
                     Caption = 'Options';
 
-                    field(Year; Year) { Caption = 'As of Year'; ApplicationArea = All; }
-                    field(Box1Limit; Box1Limit) { Caption = 'Box 1 Limit'; ApplicationArea = All; }
-                    field(Box5Limit; Box5Limit) { Caption = 'Box 5 Limit'; ApplicationArea = All; }
-                    field(Box1Plus6Limit; Box1Plus6Limit) { Caption = 'Box 1 + Box 6 Limit'; ApplicationArea = All; }
+                    field(YearField; Year) { Caption = 'As of Year'; ApplicationArea = All; }
+                    field(Box1LimitField; Box1Limit) { Caption = 'Box 1 Limit'; ApplicationArea = All; }
+                    field(Box5LimitField; Box5Limit) { Caption = 'Box 5 Limit'; ApplicationArea = All; }
+                    field(Box1Plus6LimitField; Box1Plus6Limit) { Caption = 'Box 1 + Box 6 Limit'; ApplicationArea = All; }
                 }
             }
         }

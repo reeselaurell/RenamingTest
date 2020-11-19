@@ -213,14 +213,14 @@ report 14135113 "lvnSuggestVendorPayments"
                                     UsePriority := true;
                             end;
                         }
-                        field(SkipExportedPayments; SkipExportedPayments)
+                        field(SkipExportedPaymentsField; SkipExportedPayments)
                         {
                             ApplicationArea = Basic, Suite;
                             Caption = 'Skip Exported Payments';
                             Importance = Additional;
                             ToolTip = 'Specifies if you do not want the batch job to insert payment journal lines for documents for which payments have already been exported to a bank file.';
                         }
-                        field(CheckOtherJournalBatches; CheckOtherJournalBatches)
+                        field(CheckOtherJournalBatchesField; CheckOtherJournalBatches)
                         {
                             ApplicationArea = Basic, Suite;
                             Caption = 'Check Other Journal Batches';
@@ -242,7 +242,7 @@ report 14135113 "lvnSuggestVendorPayments"
                                     Error(PmtDiscUnavailableErr);
                             end;
                         }
-                        field(SummarizePerDimText; SummarizePerDimText)
+                        field(SummarizePerDimTxt; SummarizePerDimText)
                         {
                             ApplicationArea = Dimensions;
                             Caption = 'By Dimension';
@@ -262,7 +262,7 @@ report 14135113 "lvnSuggestVendorPayments"
                     group("Fill in Journal Lines")
                     {
                         Caption = 'Fill in Journal Lines';
-                        field(PostingDate; PostingDate)
+                        field(PostingDateField; PostingDate)
                         {
                             ApplicationArea = Basic, Suite;
                             Caption = 'Posting Date';
@@ -275,7 +275,7 @@ report 14135113 "lvnSuggestVendorPayments"
                                 ValidatePostingDate;
                             end;
                         }
-                        field(UseDueDateAsPostingDate; UseDueDateAsPostingDate)
+                        field(UseDueDateAsPostingDateField; UseDueDateAsPostingDate)
                         {
                             ApplicationArea = Basic, Suite;
                             Caption = 'Calculate Posting Date from Applies-to-Doc. Due Date';
@@ -290,7 +290,7 @@ report 14135113 "lvnSuggestVendorPayments"
                                     Clear(DueDateOffset);
                             end;
                         }
-                        field(DueDateOffset; DueDateOffset)
+                        field(Offset; DueDateOffset)
                         {
                             ApplicationArea = Basic, Suite;
                             Caption = 'Applies-to-Doc. Due Date Offset';

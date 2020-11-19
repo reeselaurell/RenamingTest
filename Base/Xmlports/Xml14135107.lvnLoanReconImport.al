@@ -41,8 +41,8 @@ xmlport 14135107 "lvnLoanReconImport"
             {
                 group(Option)
                 {
-                    field(FlipSign; FlipSign) { ApplicationArea = All; Caption = 'Flip Sign'; }
-                    field(GLAccountSource; GLAccountSource) { ApplicationArea = All; Caption = 'G/L Account Source'; }
+                    field(FlipSignField; FlipSign) { ApplicationArea = All; Caption = 'Flip Sign'; }
+                    field(GLAccountSourceField; GLAccountSource) { ApplicationArea = All; Caption = 'G/L Account Source'; }
                 }
             }
         }

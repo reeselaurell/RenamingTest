@@ -293,7 +293,7 @@ page 14135172 "lvnQuickPayWorksheet"
                     CreatePaymentJournal();
                 end;
             }
-            action(ShowAll)
+            action(ShowAllAction)
             {
                 ApplicationArea = All;
                 Caption = 'Show All Documents';
@@ -308,7 +308,7 @@ page 14135172 "lvnQuickPayWorksheet"
                     ShowDocuments();
                 end;
             }
-            action(ShowNonApplied)
+            action(ShowNonAppliedAction)
             {
                 ApplicationArea = All;
                 Caption = 'Show Non-Applied Documents';

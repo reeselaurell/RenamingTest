@@ -11,8 +11,8 @@ report 14135120 "lvnReclassLoanGLEntries"
             {
                 group(Journal)
                 {
-                    field(TemplateName; TemplateName) { Caption = 'Journal Template'; ApplicationArea = All; TableRelation = "Gen. Journal Template".Name; }
-                    field(BatchName; BatchName)
+                    field(TemplateNameField; TemplateName) { Caption = 'Journal Template'; ApplicationArea = All; TableRelation = "Gen. Journal Template".Name; }
+                    field(BatchNameField; BatchName)
                     {
                         Caption = 'Journal Batch';
                         ApplicationArea = All;
@@ -29,11 +29,11 @@ report 14135120 "lvnReclassLoanGLEntries"
 
                 group(Details)
                 {
-                    field(PostingDate; PostingDate) { Caption = 'Posting Date'; ApplicationArea = All; }
-                    field(DocumentNo; DocumentNo) { Caption = 'Document No.'; ApplicationArea = All; }
-                    field(UseNumberSeries; UseNumberSeries) { Caption = 'Use Number Series'; ApplicationArea = All; }
-                    field(BalAccountType; BalAccountType) { Caption = 'Bal. Account Type'; ApplicationArea = All; }
-                    field(BalAccountNo; BalAccountNo)
+                    field(PostingDateField; PostingDate) { Caption = 'Posting Date'; ApplicationArea = All; }
+                    field(DocumentNoField; DocumentNo) { Caption = 'Document No.'; ApplicationArea = All; }
+                    field(UseNumberSeriesField; UseNumberSeries) { Caption = 'Use Number Series'; ApplicationArea = All; }
+                    field(BalAccountTypeField; BalAccountType) { Caption = 'Bal. Account Type'; ApplicationArea = All; }
+                    field(BalAccountNoField; BalAccountNo)
                     {
                         Caption = 'Bal. Account No.';
                         ApplicationArea = All;
@@ -62,7 +62,7 @@ report 14135120 "lvnReclassLoanGLEntries"
                                     BalAccountNo := GLAccount."No.";
                         end;
                     }
-                    field(ReasonCode; ReasonCode) { Caption = 'Reason Code'; ApplicationArea = All; TableRelation = "Reason Code".Code; }
+                    field(ReasonCodeField; ReasonCode) { Caption = 'Reason Code'; ApplicationArea = All; TableRelation = "Reason Code".Code; }
                 }
             }
         }

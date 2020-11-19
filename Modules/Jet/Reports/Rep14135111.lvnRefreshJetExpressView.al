@@ -9,7 +9,7 @@ report 14135111 "lvnRefreshJetExpressView"
         {
             area(Content)
             {
-                field(ViewCode; ViewCode) { Caption = 'View Code'; ApplicationArea = All; TableRelation = lvnLoanNormalizedViewSetup; }
+                field(ViewCodeField; ViewCode) { Caption = 'View Code'; ApplicationArea = All; TableRelation = lvnLoanNormalizedViewSetup; }
             }
         }
     }

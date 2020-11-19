@@ -254,13 +254,13 @@ report 14135300 lvnCalculateCommissions
             {
                 group(Options)
                 {
-                    field(RemoveManualAdjustments; RemoveManualAdjustments)
+                    field(RemoveManualAdjustmentsField; RemoveManualAdjustments)
                     {
                         ApplicationArea = All;
                         Caption = 'Remove Manual Adjustments';
                     }
 
-                    field(ExcludePeriodCalculation; ExcludePeriodCalculation)
+                    field(ExcludePeriodCalculationField; ExcludePeriodCalculation)
                     {
                         ApplicationArea = All;
                         Caption = 'Exclude Period Calculation';

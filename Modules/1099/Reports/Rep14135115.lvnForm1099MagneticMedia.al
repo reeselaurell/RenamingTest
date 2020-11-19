@@ -81,13 +81,13 @@ report 14135115 "lvnForm1099MagneticMedia"
         {
             area(Content)
             {
-                field(Year; Year) { Caption = 'Year'; ApplicationArea = All; Editable = false; }
+                field(YearField; Year) { Caption = 'Year'; ApplicationArea = All; Editable = false; }
 
                 group(TransmitterInfo)
                 {
                     Caption = 'Transmitter Information';
 
-                    field(TransCode; TransCode)
+                    field(TransCodeField; TransCode)
                     {
                         Caption = 'Transmitter Control Code';
                         ApplicationArea = All;
@@ -104,7 +104,7 @@ report 14135115 "lvnForm1099MagneticMedia"
                     field(TransInfoState; TempTransmitterInfo.County) { Caption = 'State'; ApplicationArea = All; }
                     field(TransInfoZIP; TempTransmitterInfo."Post Code") { Caption = 'ZIP Code'; ApplicationArea = All; }
                     field(TransInfoEmployerID; TempTransmitterInfo."Federal ID No.") { Caption = 'Employer ID'; ApplicationArea = All; }
-                    field(ContactName; ContactName)
+                    field(ContactNameField; ContactName)
                     {
                         Caption = 'Contact Name';
                         ApplicationArea = All;
@@ -115,7 +115,7 @@ report 14135115 "lvnForm1099MagneticMedia"
                                 Error(ContactNameErr);
                         end;
                     }
-                    field(ContactPhoneNo; ContactPhoneNo)
+                    field(ContactPhoneNoField; ContactPhoneNo)
                     {
                         Caption = 'Contact Phone No.';
                         ApplicationArea = All;
@@ -126,15 +126,15 @@ report 14135115 "lvnForm1099MagneticMedia"
                                 Error(ContactPhoneNoErr);
                         end;
                     }
-                    field(ContactEmail; ContactEmail) { Caption = 'Contact E-Mail'; ApplicationArea = All; }
+                    field(ContactEmailField; ContactEmail) { Caption = 'Contact E-Mail'; ApplicationArea = All; }
                 }
 
                 group(VendorInfo)
                 {
                     Caption = 'Vendor Information';
 
-                    field(VendIndicator; VendIndicator) { Caption = 'Vendor Indicator'; ApplicationArea = All; }
-                    field(VendorInfoName; TempVendorInfo.Name)
+                    field(VendIndicatorField; VendIndicator) { Caption = 'Vendor Indicator'; ApplicationArea = All; }
+                    field(VendorInfoNameField; TempVendorInfo.Name)
                     {
                         Caption = 'Vendor Name';
                         ApplicationArea = All;
@@ -189,7 +189,7 @@ report 14135115 "lvnForm1099MagneticMedia"
                                 Error(VendInfoErr);
                         end;
                     }
-                    field(VendContactName; VendContactName)
+                    field(VendContactNameField; VendContactName)
                     {
                         Caption = 'Vendor Contact Name';
                         ApplicationArea = All;
@@ -200,7 +200,7 @@ report 14135115 "lvnForm1099MagneticMedia"
                                 Error(VendNameErr);
                         end;
                     }
-                    field(VendContactPhoneNo; VendContactPhoneNo)
+                    field(VendContactPhoneNoField; VendContactPhoneNo)
                     {
                         Caption = 'Vendor Contact Phone No.';
                         ApplicationArea = All;

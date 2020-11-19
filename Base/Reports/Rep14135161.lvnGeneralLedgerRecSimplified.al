@@ -171,8 +171,8 @@ report 14135161 "lvnGeneralLedgerRecSimplified"
             {
                 group(Options)
                 {
-                    field(ShowDetails; ShowDetails) { ApplicationArea = All; Caption = 'Show Details'; }
-                    field(HideZeroBalance; HideZeroBalance) { ApplicationArea = All; Caption = 'Hide Zero Balance'; }
+                    field(ShowDetailsField; ShowDetails) { ApplicationArea = All; Caption = 'Show Details'; }
+                    field(HideZeroBalanceField; HideZeroBalance) { ApplicationArea = All; Caption = 'Hide Zero Balance'; }
                 }
             }
         }

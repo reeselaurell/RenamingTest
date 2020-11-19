@@ -58,7 +58,7 @@ xmlport 14135105 "lvnDimensionChangeSetImport"
         {
             area(Content)
             {
-                field(Overwrite; Overwrite) { Caption = 'Overwrite Existing Entries'; ApplicationArea = All; }
+                field(OverwriteField; Overwrite) { Caption = 'Overwrite Existing Entries'; ApplicationArea = All; }
             }
         }
     }

@@ -11,7 +11,7 @@ report 14135188 "lvnGLReconExcelExport"
             {
                 group(Options)
                 {
-                    field(NumberFormat; NumberFormat) { ApplicationArea = All; Caption = 'Currency Format'; TableRelation = lvnNumberFormat.Code; }
+                    field(NumberFormatField; NumberFormat) { ApplicationArea = All; Caption = 'Currency Format'; TableRelation = lvnNumberFormat.Code; }
                 }
             }
         }

@@ -240,9 +240,9 @@ report 14135165 "lvnAccountReconByLoan"
             {
                 group(Options)
                 {
-                    field(ShowDetails; ShowDetails) { ApplicationArea = All; Caption = 'Show Details'; }
-                    field(ExcelToExport; ExcelToExport) { ApplicationArea = All; Caption = 'Export to Excel'; }
-                    field(NumberFormat; NumberFormat) { ApplicationArea = All; Caption = 'Currency Format'; Editable = ExcelToExport; TableRelation = lvnNumberFormat.Code; }
+                    field(ShowDetailsField; ShowDetails) { ApplicationArea = All; Caption = 'Show Details'; }
+                    field(ExcelToExportField; ExcelToExport) { ApplicationArea = All; Caption = 'Export to Excel'; }
+                    field(NumberFormatField; NumberFormat) { ApplicationArea = All; Caption = 'Currency Format'; Editable = ExcelToExport; TableRelation = lvnNumberFormat.Code; }
                 }
             }
         }

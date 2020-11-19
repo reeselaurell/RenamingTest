@@ -29,7 +29,7 @@ report 14135104 "lvnGenerate1098LoanEntries"
                 {
                     Caption = 'Options';
 
-                    field(RemoveExistingData; RemoveExistingData) { ApplicationArea = All; Caption = 'Remove Existing Worksheet'; }
+                    field(RemoveExistingDataField; RemoveExistingData) { ApplicationArea = All; Caption = 'Remove Existing Worksheet'; }
                 }
             }
         }

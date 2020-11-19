@@ -176,8 +176,8 @@ report 14135155 "lvnUseTaxPayableReport"
             {
                 group(Excel)
                 {
-                    field(PrintToExcel; PrintToExcel) { Caption = 'Print To Excel'; ApplicationArea = All; }
-                    field(NumberFormat; NumberFormat)
+                    field(PrintToExcelField; PrintToExcel) { Caption = 'Print To Excel'; ApplicationArea = All; }
+                    field(NumberFormatField; NumberFormat)
                     {
                         Caption = 'Currency Format';
                         ApplicationArea = All;

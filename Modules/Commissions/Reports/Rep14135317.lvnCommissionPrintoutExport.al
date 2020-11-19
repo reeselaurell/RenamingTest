@@ -465,9 +465,9 @@ report 14135317 lvnCommissionPrintoutExport
             {
                 group(Options)
                 {
-                    field(PrintDetails; PrintDetails) { Caption = 'Print Details'; ApplicationArea = All; }
-                    field(ExportFormat; ExportFormat) { Caption = 'Output Format'; ApplicationArea = All; }
-                    field(NumberFormat; NumberFormat) { Caption = 'Currency Format'; ApplicationArea = All; TableRelation = lvnNumberFormat.Code; }
+                    field(PrintDetailsField; PrintDetails) { Caption = 'Print Details'; ApplicationArea = All; }
+                    field(ExportFormatField; ExportFormat) { Caption = 'Output Format'; ApplicationArea = All; }
+                    field(NumberFormatField; NumberFormat) { Caption = 'Currency Format'; ApplicationArea = All; TableRelation = lvnNumberFormat.Code; }
                 }
             }
         }

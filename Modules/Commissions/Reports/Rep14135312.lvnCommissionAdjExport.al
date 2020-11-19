@@ -13,7 +13,7 @@ report 14135312 lvnCommissionAdjExport
             {
                 group(Options)
                 {
-                    field(DateFilter; DateFilter)
+                    field(DateFilterField; DateFilter)
                     {
                         ApplicationArea = All;
                         Caption = 'Date Filter';
@@ -24,7 +24,7 @@ report 14135312 lvnCommissionAdjExport
                         end;
                     }
 
-                    field(PeriodIdentifierFilter; PeriodIdentifierFilter)
+                    field(PeriodIdentifierFilterField; PeriodIdentifierFilter)
                     {
                         ApplicationArea = All;
                         Caption = 'Period Identifier Filter';

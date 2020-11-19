@@ -51,7 +51,7 @@ xmlport 14135300 lvnCommissionAdjImport
             {
                 group(General)
                 {
-                    field(ScheduleNo; ScheduleNo)
+                    field(ScheduleNoField; ScheduleNo)
                     {
                         Caption = 'Commission Schedule No.';
                         ApplicationArea = All;
@@ -64,7 +64,7 @@ xmlport 14135300 lvnCommissionAdjImport
                             AsOfDate := CommissionSchedule."Period End Date";
                         end;
                     }
-                    field(AsOfDate; AsOfDate)
+                    field(AsOfDateField; AsOfDate)
                     {
                         Caption = 'As Of Date';
                         ApplicationArea = All;

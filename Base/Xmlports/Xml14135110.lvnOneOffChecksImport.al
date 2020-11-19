@@ -60,10 +60,10 @@ xmlport 14135110 "lvnOneOffChecksImport"
             {
                 group(Group)
                 {
-                    field(BankAccountNo; BankAccountNo) { Caption = 'Bank Account No.'; ApplicationArea = All; TableRelation = "Bank Account"."No."; }
-                    field(CheckType; CheckType) { Caption = 'Bank Payment Type'; ApplicationArea = All; }
-                    field(ReasonCode; ReasonCode) { Caption = 'Reason Code'; ApplicationArea = All; TableRelation = "Reason Code".Code; }
-                    field(PostingDate; PostingDate) { Caption = 'Posting Date'; ApplicationArea = All; }
+                    field(BankAccountNoField; BankAccountNo) { Caption = 'Bank Account No.'; ApplicationArea = All; TableRelation = "Bank Account"."No."; }
+                    field(CheckTypeField; CheckType) { Caption = 'Bank Payment Type'; ApplicationArea = All; }
+                    field(ReasonCodeField; ReasonCode) { Caption = 'Reason Code'; ApplicationArea = All; TableRelation = "Reason Code".Code; }
+                    field(PostingDateField; PostingDate) { Caption = 'Posting Date'; ApplicationArea = All; }
                 }
             }
         }

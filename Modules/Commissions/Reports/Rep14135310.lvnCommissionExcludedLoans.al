@@ -144,7 +144,7 @@ report 14135310 lvnCommissionExcludedLoans
             {
                 group(Options)
                 {
-                    field(CommissionReportTemplateCode; CommissionReportTemplateCode)
+                    field(CommissionReportTemplateCodeField; CommissionReportTemplateCode)
                     {
                         ApplicationArea = All;
                         Caption = 'Report Template Code';
@@ -155,7 +155,7 @@ report 14135310 lvnCommissionExcludedLoans
                                 CommissionReportTemplateCode := CommissionReportTemplate.Code;
                         end;
                     }
-                    field(CommissionScheduleNo; CommissionScheduleNo)
+                    field(CommissionScheduleNoField; CommissionScheduleNo)
                     {
                         ApplicationArea = All;
                         Caption = 'Commission Schedule';

@@ -212,8 +212,8 @@ xmlport 14135109 "lvnSalesInvImport"
             {
                 group(Options)
                 {
-                    field(DimensionValidation; DimensionValidation) { Caption = 'Dimension Valitation'; ApplicationArea = All; }
-                    field(LoanNoValidation; LoanNoValidation) { Caption = 'Loan No. Validation'; ApplicationArea = All; }
+                    field(DimensionValidationField; DimensionValidation) { Caption = 'Dimension Valitation'; ApplicationArea = All; }
+                    field(LoanNoValidationField; LoanNoValidation) { Caption = 'Loan No. Validation'; ApplicationArea = All; }
                 }
             }
         }

@@ -137,7 +137,7 @@ report 14135160 "lvnLoanProfitability"
                         field(ToDate; PeriodEnd) { ApplicationArea = All; Caption = 'To Date'; }
                     }
 
-                    field(ReportingType; ReportingType) { ApplicationArea = All; Caption = 'Reporting Type'; }
+                    field(ReportingTypeField; ReportingType) { ApplicationArea = All; Caption = 'Reporting Type'; }
 
                     group(Dimensions)
                     {

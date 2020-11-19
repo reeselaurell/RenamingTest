@@ -17,7 +17,7 @@ report 14135220 "lvnPerformanceWorksheet"
                 {
                     Caption = 'Schema';
 
-                    field(RowSchemaCode; RowSchemaCode)
+                    field(RowSchemaCodeField; RowSchemaCode)
                     {
                         Caption = 'Row Schema';
                         ApplicationArea = All;
@@ -29,7 +29,7 @@ report 14135220 "lvnPerformanceWorksheet"
                             BandSchemaCode := '';
                         end;
                     }
-                    field(BandSchemaCode; BandSchemaCode)
+                    field(BandSchemaCodeField; BandSchemaCode)
                     {
                         Caption = 'Band Schema';
                         ApplicationArea = All;
@@ -76,7 +76,7 @@ report 14135220 "lvnPerformanceWorksheet"
                 {
                     Caption = 'Date Filter';
 
-                    field(DateFilter; DateFilter)
+                    field(DateFilterField; DateFilter)
                     {
                         Caption = 'Date Filter';
                         ApplicationArea = All;

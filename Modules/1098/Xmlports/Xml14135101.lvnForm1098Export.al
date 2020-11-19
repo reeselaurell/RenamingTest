@@ -127,7 +127,7 @@ xmlport 14135101 "lvnForm1098Export"
                 {
                     Caption = 'Parameters';
 
-                    field(EncryptSSN; EncryptSSN) { Caption = 'Mask SSN'; ApplicationArea = All; }
+                    field(EncryptSSNField; EncryptSSN) { Caption = 'Mask SSN'; ApplicationArea = All; }
                 }
             }
         }

@@ -10,7 +10,7 @@ codeunit 14135119 "lvnServicingManagement"
 
     procedure GetPrincipalAndInterest(
         Loan: Record lvnLoan;
-        var NextPaymentDate: Date;
+        NextPaymentDate: Date;
         var PrincipalAmount: Decimal;
         var InterestAmount: Decimal)
     var

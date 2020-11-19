@@ -15,8 +15,8 @@ report 14135222 "lvnLoanLevelWorksheet"
             {
                 group(General)
                 {
-                    field(ColSchemaCode; ColSchemaCode) { Caption = 'Column Schema'; ApplicationArea = All; }
-                    field(BaseDate; BaseDate) { ApplicationArea = All; Caption = 'Base Date'; }
+                    field(ColSchemaCodeField; ColSchemaCode) { Caption = 'Column Schema'; ApplicationArea = All; }
+                    field(BaseDateField; BaseDate) { ApplicationArea = All; Caption = 'Base Date'; }
                     field(DateFilter; SystemFilter."Date Filter")
                     {
                         Caption = 'Date Filter';
@@ -29,7 +29,7 @@ report 14135222 "lvnLoanLevelWorksheet"
                             FilterTokens.MakeDateFilter(SystemFilter."Date Filter");
                         end;
                     }
-                    field(ShowTotals; ShowTotals) { ApplicationArea = All; Caption = 'Show Totals'; }
+                    field(ShowTotalsField; ShowTotals) { ApplicationArea = All; Caption = 'Show Totals'; }
                 }
                 group(Dimensions)
                 {

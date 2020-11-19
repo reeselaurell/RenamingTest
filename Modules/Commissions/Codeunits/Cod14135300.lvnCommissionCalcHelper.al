@@ -86,7 +86,7 @@ codeunit 14135300 lvnCommissionCalcHelper
     end;
 
     local procedure CalculateTiersAmount(
-        var CommissionTierHeaderCode: Code[20];
+     CommissionTierHeaderCode: Code[20];
         BaseAmount: Decimal;
         OnGoingAmount: Decimal;
         TotalAmount: Decimal;

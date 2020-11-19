@@ -11,9 +11,9 @@ report 14135221 "lvnRptGeneratorBatchProcess"
             {
                 group(Options)
                 {
-                    field(ReportGeneratorBatch; ReportGeneratorBatch.Code) { ApplicationArea = All; Caption = 'Batch Code'; }
-                    field(ToDate; ToDate) { ApplicationArea = All; Caption = 'To Date'; }
-                    field(ExportFormat; ExportFormat)
+                    field(ReportGeneratorBatchField; ReportGeneratorBatch.Code) { ApplicationArea = All; Caption = 'Batch Code'; }
+                    field(ToDateField; ToDate) { ApplicationArea = All; Caption = 'To Date'; }
+                    field(ExportFormatField; ExportFormat)
                     {
                         ApplicationArea = All;
                         Caption = 'Output Format';

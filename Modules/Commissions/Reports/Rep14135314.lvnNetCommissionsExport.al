@@ -13,7 +13,7 @@ report 14135314 lvnNetCommissionsExport
             {
                 group(Options)
                 {
-                    field(CommissionScheduleNo; CommissionScheduleNo)
+                    field(CommissionScheduleNoField; CommissionScheduleNo)
                     {
                         ApplicationArea = All;
                         Caption = 'Commission Schedule';
@@ -27,7 +27,7 @@ report 14135314 lvnNetCommissionsExport
                             end;
                         end;
                     }
-                    field(DateFilter; DateFilter)
+                    field(DateFilterField; DateFilter)
                     {
                         ApplicationArea = All;
                         Caption = 'Date Filter';
@@ -38,7 +38,7 @@ report 14135314 lvnNetCommissionsExport
                         end;
                     }
 
-                    field(PeriodIdentifierFilter; PeriodIdentifierFilter)
+                    field(PeriodIdentifierFilterField; PeriodIdentifierFilter)
                     {
                         ApplicationArea = All;
                         Caption = 'Period Identifier Filter';

@@ -141,7 +141,7 @@ report 14135110 "lvnPostDimensionChangeSet"
                     field(DimensionTransferFlag7; DimensionTransferFlag[7]) { Caption = 'Dimension 7'; ApplicationArea = All; }
                     field(DimensionTransferFlag8; DimensionTransferFlag[8]) { Caption = 'Dimension 8'; ApplicationArea = All; }
                     field(DimensionTransferFlag9; DimensionTransferFlag[9]) { Caption = 'Business Unit'; ApplicationArea = All; }
-                    field(LoanChangeFlag; LoanChangeFlag) { Caption = 'Loan No.'; ApplicationArea = All; }
+                    field(LoanChangeFlagField; LoanChangeFlag) { Caption = 'Loan No.'; ApplicationArea = All; }
                 }
             }
         }
