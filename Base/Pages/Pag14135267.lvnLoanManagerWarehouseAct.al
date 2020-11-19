@@ -214,7 +214,7 @@ page 14135267 "lvnLoanManagerWarehouseAct"
         Clear(WarehouseLineCaptions);
         WarehouseLine.Reset();
         WarehouseLine.SetRange("Show In Rolecenter", true);
-        if WarehouseLine.FindSet() then begin
+        if WarehouseLine.FindSet() then
             repeat
                 Idx := Idx + 1;
                 WarehouseLineCaptions[Idx] := WarehouseLine.Description;
@@ -239,7 +239,7 @@ page 14135267 "lvnLoanManagerWarehouseAct"
                 end;
                 FundedDoc.SetRange("Warehouse Line Code", WarehouseLine.Code);
                 FundedDocFilter[Idx] := '';
-                FundedDoc.SetFilter("Posting Date", '<>%1', CalcDate('0D'));
+                FundedDoc.SetFilter("Posting Date", '<>%1', CalcDate('<CD>'));
                 FundedDoc.SetCurrentKey("Posting Date");
                 FundedDoc.SetAscending("Posting Date", false);
                 if FundedDoc.FindFirst() then begin
@@ -258,7 +258,6 @@ page 14135267 "lvnLoanManagerWarehouseAct"
                         until FundedDoc.Next() = 0;
                 end;
             until (WarehouseLine.Next() = 0) or (Idx = 8);
-        end;
     end;
 
     local procedure GetWarehouseLineCaption(LineNo: Integer): Text[250]

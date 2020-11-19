@@ -11,7 +11,7 @@ report 14135112 "lvnRefreshGLAnalysisEntries"
         {
             area(Content)
             {
-                field(CompleteRefresh; CompleteRefresh) { Caption = 'Complete Refresh'; ApplicationArea = All; ToolTip = 'Complete Refresh. Might take long time to refresh'; }
+                field(Refresh; CompleteRefresh) { Caption = 'Complete Refresh'; ApplicationArea = All; ToolTip = 'Complete Refresh. Might take long time to refresh'; }
             }
         }
     }
@@ -75,7 +75,7 @@ report 14135112 "lvnRefreshGLAnalysisEntries"
                     GroupedGLEntry."Credit Amount" := GLEntryGroupedEntriesQuery.Amount;
                     GroupedGLEntry.Insert();
                 end;
-                if GLEntryGroupedEntriesQuery.lvnLoanNo <> '' then begin
+                if GLEntryGroupedEntriesQuery.lvnLoanNo <> '' then
                     if GroupedLoanGLEntry.Get(
                             GLEntryGroupedEntriesQuery.Posting_Date,
                             GLEntryGroupedEntriesQuery.GLAccountNo,
@@ -112,7 +112,6 @@ report 14135112 "lvnRefreshGLAnalysisEntries"
                         GroupedLoanGLEntry."Credit Amount" := GLEntryGroupedEntriesQuery.Amount;
                         GroupedLoanGLEntry.Insert();
                     end;
-                end;
             end;
             GLEntryGroupedEntriesQuery.Close();
             if GuiAllowed() then

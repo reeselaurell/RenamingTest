@@ -7,6 +7,7 @@ pageextension 14135400 "lvnAccountingPeriodsExtension" extends "Accounting Perio
             field(lvnFiscalQuarter; Rec.lvnFiscalQuarter)
             {
                 Caption = 'Fiscal Quarter';
+                ApplicationArea = All;
             }
         }
     }

@@ -13,7 +13,7 @@ report 14135314 lvnNetCommissionsExport
             {
                 group(Options)
                 {
-                    field(CommissionScheduleNo; CommissionScheduleNo)
+                    field(CommissionScheduleNoField; CommissionScheduleNo)
                     {
                         ApplicationArea = All;
                         Caption = 'Commission Schedule';
@@ -27,7 +27,7 @@ report 14135314 lvnNetCommissionsExport
                             end;
                         end;
                     }
-                    field(DateFilter; DateFilter)
+                    field(DateFilterField; DateFilter)
                     {
                         ApplicationArea = All;
                         Caption = 'Date Filter';
@@ -38,7 +38,7 @@ report 14135314 lvnNetCommissionsExport
                         end;
                     }
 
-                    field(PeriodIdentifierFilter; PeriodIdentifierFilter)
+                    field(PeriodIdentifierFilterField; PeriodIdentifierFilter)
                     {
                         ApplicationArea = All;
                         Caption = 'Period Identifier Filter';
@@ -59,19 +59,19 @@ report 14135314 lvnNetCommissionsExport
     begin
         CommissionSetup.Get();
         LoanVisionSetup.Get();
-        ExcelBuffer.AddColumn(LoanOfficerCodeLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(PayrollIDLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(LoanOfficerNameLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(CostCenterCodeLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        ExcelBuffer.AddColumn(CommissionSetup."Commission Identifier Code", false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
-        AmountStartPosition := ExcelBuffer.xlRowID;
+        TempExcelBuffer.AddColumn(LoanOfficerCodeLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(PayrollIDLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(LoanOfficerNameLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(CostCenterCodeLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(CommissionSetup."Commission Identifier Code", false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        AmountStartPosition := TempExcelBuffer.xlRowID;
         CommissionIdentifier.Reset();
         CommissionIdentifier.SetFilter(Code, '<>%1', CommissionSetup."Commission Identifier Code");
         if CommissionIdentifier.FindSet() then
             repeat
-                ExcelBuffer.AddColumn(CommissionIdentifier.Code, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.AddColumn(CommissionIdentifier.Code, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
             until CommissionIdentifier.Next() = 0;
-        ExcelBuffer.AddColumn(TotalLbl, false, '', true, false, false, '', ExcelBuffer."Cell Type"::Text);
+        TempExcelBuffer.AddColumn(TotalLbl, false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
 
         CommissionProfile.Reset();
         CommissionProfile.FindSet();
@@ -109,16 +109,16 @@ report 14135314 lvnNetCommissionsExport
             CommissionValueEntry.CalcSums("Commission Amount");
             CalculatedAmount := CalculatedAmount + CommissionValueEntry."Commission Amount";
             if EntryExist then begin
-                ExcelBuffer.NewRow();
+                TempExcelBuffer.NewRow();
                 DimensionValue.Get(LoanVisionSetup."Loan Officer Dimension Code", CommissionProfile.Code);
-                ExcelBuffer.AddColumn(CommissionProfile.Code, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                ExcelBuffer.AddColumn(DimensionValue.lvnAdditionalCode, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                ExcelBuffer.AddColumn(CommissionProfile.Name, false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                ExcelBuffer.AddColumn(CommissionProfile."Cost Center Code", false, '', false, false, false, '', ExcelBuffer."Cell Type"::Text);
-                ExcelBuffer.AddColumn(CalculatedAmount, false, '', false, false, false, NumberFormatLbl, ExcelBuffer."Cell Type"::Number);
+                TempExcelBuffer.AddColumn(CommissionProfile.Code, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.AddColumn(DimensionValue.lvnAdditionalCode, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.AddColumn(CommissionProfile.Name, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.AddColumn(CommissionProfile."Cost Center Code", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+                TempExcelBuffer.AddColumn(CalculatedAmount, false, '', false, false, false, NumberFormatLbl, TempExcelBuffer."Cell Type"::Number);
                 CommissionIdentifier.Reset;
                 CommissionIdentifier.SetFilter(Code, '<>%1', CommissionSetup."Commission Identifier Code");
-                if CommissionIdentifier.FindSet() then begin
+                if CommissionIdentifier.FindSet() then
                     repeat
                         Clear(CalculatedAmount);
                         CommissionJournalLine.SetRange("Identifier Code", CommissionIdentifier.Code);
@@ -127,18 +127,17 @@ report 14135314 lvnNetCommissionsExport
                         CommissionValueEntry.SetRange("Identifier Code", CommissionSetup."Commission Identifier Code");
                         CommissionValueEntry.CalcSums("Commission Amount");
                         CalculatedAmount := CalculatedAmount + CommissionValueEntry."Commission Amount";
-                        ExcelBuffer.AddColumn(CalculatedAmount, false, '', false, false, false, NumberFormatLbl, ExcelBuffer."Cell Type"::Number);
+                        TempExcelBuffer.AddColumn(CalculatedAmount, false, '', false, false, false, NumberFormatLbl, TempExcelBuffer."Cell Type"::Number);
                     until CommissionIdentifier.Next() = 0;
-                end;
-                ExcelBuffer.SetFormula(StrSubstNo(SumFormulaLbl, AmountStartPosition, ExcelBuffer.xlRowID, ExcelBuffer.xlColID, ExcelBuffer.xlRowID));
-                Formula := ExcelBuffer.GetFormula();
-                ExcelBuffer.AddColumn(Formula, true, '', false, false, false, NumberFormatLbl, ExcelBuffer."Cell Type"::Number);
+                TempExcelBuffer.SetFormula(StrSubstNo(SumFormulaLbl, AmountStartPosition, TempExcelBuffer.xlRowID, TempExcelBuffer.xlColID, TempExcelBuffer.xlRowID));
+                Formula := TempExcelBuffer.GetFormula();
+                TempExcelBuffer.AddColumn(Formula, true, '', false, false, false, NumberFormatLbl, TempExcelBuffer."Cell Type"::Number);
             end;
         until CommissionProfile.Next() = 0;
-        ExcelBuffer.CreateNewBook(ExcelSheetNameLbl);
-        ExcelBuffer.WriteSheet(ExcelSheetNameLbl, CompanyName, UserId);
-        ExcelBuffer.CloseBook();
-        ExcelBuffer.OpenExcel();
+        TempExcelBuffer.CreateNewBook(ExcelSheetNameLbl);
+        TempExcelBuffer.WriteSheet(ExcelSheetNameLbl, CompanyName, UserId);
+        TempExcelBuffer.CloseBook();
+        TempExcelBuffer.OpenExcel();
         if GuiAllowed() then
             ProcessingDialog.Close();
     end;
@@ -152,7 +151,7 @@ report 14135314 lvnNetCommissionsExport
         CommissionIdentifier: Record lvnCommissionIdentifier;
         CommissionProfile: Record lvnCommissionProfile;
         DimensionValue: Record "Dimension Value";
-        ExcelBuffer: Record "Excel Buffer" temporary;
+        TempExcelBuffer: Record "Excel Buffer" temporary;
         CommissionSchedule: Record lvnCommissionSchedule;
         FilterTokens: Codeunit "Filter Tokens";
         ProcessingDialog: Dialog;

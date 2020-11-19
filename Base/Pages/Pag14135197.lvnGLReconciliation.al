@@ -155,6 +155,7 @@ page 14135197 "lvnGLReconciliation"
             action(ShowDetails)
             {
                 Caption = 'Show Details';
+                ApplicationArea = All;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;

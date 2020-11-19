@@ -317,12 +317,12 @@ table 14135102 "lvnLoan"
             Caption = 'Servicing Finished';
             DataClassification = CustomerContent;
         }
-        field(80000; "Creation Date"; Date)
+        field(1001; "Creation Date"; Date)
         {
             Caption = 'Creation Date';
             DataClassification = CustomerContent;
         }
-        field(80001; "Modified Date"; Date)
+        field(1002; "Modified Date"; Date)
         {
             Caption = 'Modified Date';
             DataClassification = CustomerContent;
@@ -382,10 +382,10 @@ table 14135102 "lvnLoan"
     var
         LoanAddress: Record lvnLoanAddress;
         FormattedAddress: Text;
-        AddressFormat: Label '%1 %2, %3 %4 %5';
+        AddressFormatTxt: Label '%1 %2, %3 %4 %5';
     begin
         if LoanAddress.Get("No.", AddressType) then begin
-            FormattedAddress := StrSubstNo(AddressFormat, LoanAddress.Address, LoanAddress."Address 2", LoanAddress.City, LoanAddress.State, LoanAddress."ZIP Code");
+            FormattedAddress := StrSubstNo(AddressFormatTxt, LoanAddress.Address, LoanAddress."Address 2", LoanAddress.City, LoanAddress.State, LoanAddress."ZIP Code");
             if DelChr(FormattedAddress, '=', ' ,') = '' then
                 exit('')
             else

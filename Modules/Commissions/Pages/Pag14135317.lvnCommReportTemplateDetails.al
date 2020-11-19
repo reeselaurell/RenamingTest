@@ -93,13 +93,11 @@ page 14135317 lvnCommReportTemplateDetails
                                     end;
                                 end;
                             Rec."Template Line Type"::"Loan Value Field":
-                                begin
-                                    if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
-                                        Rec."Field No." := LoanFieldsConfiguration."Field No.";
-                                        if Rec.Description = '' then
-                                            Rec.Description := LoanFieldsConfiguration."Field Name";
-                                        Rec."Value Data Type" := LoanFieldsConfiguration."Value Type";
-                                    end;
+                                if Page.RunModal(0, LoanFieldsConfiguration) = Action::LookupOK then begin
+                                    Rec."Field No." := LoanFieldsConfiguration."Field No.";
+                                    if Rec.Description = '' then
+                                        Rec.Description := LoanFieldsConfiguration."Field Name";
+                                    Rec."Value Data Type" := LoanFieldsConfiguration."Value Type";
                                 end;
                         end;
                     end;

@@ -16,7 +16,7 @@ report 14135105 "lvnCalculate1098Values"
             var
                 GLEntry: Record "G/L Entry";
                 TempGLEntry: Record "G/L Entry" temporary;
-                ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+                TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
                 Loan: Record lvnLoan;
             begin
                 Progress.Update(1, "Loan No.");
@@ -32,15 +32,15 @@ report 14135105 "lvnCalculate1098Values"
                         TempGLEntry := GLEntry;
                         TempGLEntry.Insert();
                     until GLEntry.Next() = 0;
-                ExpressionValueBuffer.Reset();
-                ExpressionValueBuffer.DeleteAll();
-                ConditionsMgmt.FillLoanFieldValues(ExpressionValueBuffer, Loan);
-                "Box 1" := CalculateValue(1, TempGLEntry, ExpressionValueBuffer);
-                "Box 2" := CalculateValue(2, TempGLEntry, ExpressionValueBuffer);
-                "Box 4" := CalculateValue(4, TempGLEntry, ExpressionValueBuffer);
-                "Box 5" := CalculateValue(5, TempGLEntry, ExpressionValueBuffer);
-                "Box 6" := CalculateValue(6, TempGLEntry, ExpressionValueBuffer);
-                "Box 10" := CalculateValue(10, TempGLEntry, ExpressionValueBuffer);
+                TempExpressionValueBuffer.Reset();
+                TempExpressionValueBuffer.DeleteAll();
+                ConditionsMgmt.FillLoanFieldValues(TempExpressionValueBuffer, Loan);
+                "Box 1" := CalculateValue(1, TempGLEntry, TempExpressionValueBuffer);
+                "Box 2" := CalculateValue(2, TempGLEntry, TempExpressionValueBuffer);
+                "Box 4" := CalculateValue(4, TempGLEntry, TempExpressionValueBuffer);
+                "Box 5" := CalculateValue(5, TempGLEntry, TempExpressionValueBuffer);
+                "Box 6" := CalculateValue(6, TempGLEntry, TempExpressionValueBuffer);
+                "Box 10" := CalculateValue(10, TempGLEntry, TempExpressionValueBuffer);
                 "Not Eligible" := not ("Box 1" >= Box1Limit) or ("Box 5" >= Box5Limit) or ("Box 1" + "Box 6" >= Box1Plus6Limit);
                 Modify();
             end;
@@ -67,10 +67,10 @@ report 14135105 "lvnCalculate1098Values"
                 {
                     Caption = 'Options';
 
-                    field(Year; Year) { Caption = 'As of Year'; ApplicationArea = All; }
-                    field(Box1Limit; Box1Limit) { Caption = 'Box 1 Limit'; ApplicationArea = All; }
-                    field(Box5Limit; Box5Limit) { Caption = 'Box 5 Limit'; ApplicationArea = All; }
-                    field(Box1Plus6Limit; Box1Plus6Limit) { Caption = 'Box 1 + Box 6 Limit'; ApplicationArea = All; }
+                    field(YearField; Year) { Caption = 'As of Year'; ApplicationArea = All; }
+                    field(Box1LimitField; Box1Limit) { Caption = 'Box 1 Limit'; ApplicationArea = All; }
+                    field(Box5LimitField; Box5Limit) { Caption = 'Box 5 Limit'; ApplicationArea = All; }
+                    field(Box1Plus6LimitField; Box1Plus6Limit) { Caption = 'Box 1 + Box 6 Limit'; ApplicationArea = All; }
                 }
             }
         }
@@ -122,7 +122,7 @@ report 14135105 "lvnCalculate1098Values"
     local procedure CalculateValue(
         BoxNo: Integer;
         var TempGLEntry: Record "G/L Entry";
-        var ExpressionValueBuffer: Record lvnExpressionValueBuffer) Value: Decimal
+        var TempExpressionValueBuffer: Record lvnExpressionValueBuffer) Value: Decimal
     var
         Form1098CollectionRule: Record lvnForm1098CollectionRule;
         Form1098ColRuleDetails: Record lvnForm1098ColRuleDetails;
@@ -147,10 +147,10 @@ report 14135105 "lvnCalculate1098Values"
                     ProcessLoan := true;
                     if Form1098ColRuleDetails."Condition Code" <> '' then
                         if ExpressionHeader.Get(Form1098ColRuleDetails."Condition Code", ConditionsMgmt.GetConditionsMgmtConsumerId()) then
-                            ProcessLoan := ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer)
+                            ProcessLoan := ExpressionEngine.CheckCondition(ExpressionHeader, TempExpressionValueBuffer)
                         else
                             ProcessLoan := false;
-                    if ProcessLoan then begin
+                    if ProcessLoan then
                         if Form1098ColRuleDetails.Type = Form1098ColRuleDetails.Type::"G/L Entry" then begin
                             TempGLEntry.Reset();
                             if ApplyGLEntryFilters(TempGLEntry, Form1098ColRuleDetails) then
@@ -179,7 +179,7 @@ report 14135105 "lvnCalculate1098Values"
                                                         VendorLedgerEntry.SetCurrentKey("Transaction No.");
                                                         VendorLedgerEntry.SetRange("Transaction No.", TempGLEntry."Transaction No.");
                                                         VendorLedgerEntry.SetRange("Document No.", TempGLEntry."Document No.");
-                                                        if VendorLedgerEntry.FindFirst() then begin
+                                                        if VendorLedgerEntry.FindFirst() then
                                                             if not VendorLedgerEntry.Open then begin
                                                                 if VendorLedgerEntry."Closed at Date" = 0D then begin
                                                                     ClosingVendorLedgerEntry.Reset();
@@ -209,7 +209,6 @@ report 14135105 "lvnCalculate1098Values"
                                                                     Form1098Details.Insert();
                                                                 end;
                                                             end;
-                                                        end;
                                                     end;
                                                 TempGLEntry."Source Type"::Customer:
                                                     begin
@@ -217,7 +216,7 @@ report 14135105 "lvnCalculate1098Values"
                                                         CustLedgerEntry.SetCurrentKey("Transaction No.");
                                                         CustLedgerEntry.SetRange("Transaction No.", TempGLEntry."Transaction No.");
                                                         CustLedgerEntry.SetRange("Document No.", TempGLEntry."Document No.");
-                                                        if CustLedgerEntry.FindFirst() then begin
+                                                        if CustLedgerEntry.FindFirst() then
                                                             if not CustLedgerEntry.Open then begin
                                                                 if CustLedgerEntry."Closed at Date" = 0D then begin
                                                                     ClosingCustLedgerEntry.Reset();
@@ -247,13 +246,12 @@ report 14135105 "lvnCalculate1098Values"
                                                                     Form1098Details.Insert();
                                                                 end;
                                                             end;
-                                                        end;
                                                     end;
                                             end;
                                     until TempGLEntry.Next() = 0;
                         end else
                             if ExpressionHeader.Get(Form1098ColRuleDetails."Formula Code", ConditionsMgmt.GetConditionsMgmtConsumerId()) then
-                                if Evaluate(CalculatedValue, ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer)) then begin
+                                if Evaluate(CalculatedValue, ExpressionEngine.CalculateFormula(ExpressionHeader, TempExpressionValueBuffer)) then begin
                                     Value += CalculatedValue;
                                     Clear(Form1098Details);
                                     Form1098Details."Loan No." := FormEntry."Loan No.";
@@ -266,7 +264,6 @@ report 14135105 "lvnCalculate1098Values"
                                     Form1098Details."Rule Line No." := Form1098ColRuleDetails."Line No.";
                                     Form1098Details.Insert();
                                 end;
-                    end;
                 until Form1098ColRuleDetails.Next() = 0;
         end;
     end;

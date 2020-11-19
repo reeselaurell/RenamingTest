@@ -69,6 +69,7 @@ page 14135238 "lvnCloseManagerActivities"
             action(ToggleFilterByAssignedTo)
             {
                 ApplicationArea = All;
+                Image = ToggleBreakpoint;
                 Caption = 'Toggle Filter By Assigned To';
 
                 trigger OnAction()
@@ -81,6 +82,7 @@ page 14135238 "lvnCloseManagerActivities"
             action(ToggleFilterByAssignedApprover)
             {
                 ApplicationArea = All;
+                Image = ToggleBreakpoint;
                 Caption = 'Toggle Filter By Assigned Approver';
 
                 trigger OnAction()

@@ -14,6 +14,7 @@ page 14135105 "lvnLoanAddressCard"
 
                 field("Address Type"; Rec."Address Type")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                 }
                 field(Address; Rec.Address)

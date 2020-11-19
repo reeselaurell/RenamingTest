@@ -156,7 +156,6 @@ page 14135239 "lvnExpressionList"
 
     procedure SelectExpression(ConsumerId: Guid; ConsumerMetadata: Text; SelectedRecord: Code[20]; PreferredType: Enum lvnExpressionType): Code[20]
     var
-        ExpressionList: Page lvnExpressionList;
         ExpressionHeader: Record lvnExpressionHeader;
     begin
         Metadata := ConsumerMetadata;

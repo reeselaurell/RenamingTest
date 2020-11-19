@@ -96,6 +96,7 @@ page 14135153 "lvnPostedServicingCrMemo"
             part(ServicingCrMemoSubform; lvnPostedServCrMemoSubform)
             {
                 Caption = 'Lines';
+                ApplicationArea = All;
                 SubPageLink = "Servicing Document Type" = field("Servicing Document Type"), "Document No." = field("No.");
             }
         }

@@ -240,9 +240,9 @@ report 14135165 "lvnAccountReconByLoan"
             {
                 group(Options)
                 {
-                    field(ShowDetails; ShowDetails) { ApplicationArea = All; Caption = 'Show Details'; }
-                    field(ExcelToExport; ExcelToExport) { ApplicationArea = All; Caption = 'Export to Excel'; }
-                    field(NumberFormat; NumberFormat) { ApplicationArea = All; Caption = 'Currency Format'; Editable = ExcelToExport; TableRelation = lvnNumberFormat.Code; }
+                    field(ShowDetailsField; ShowDetails) { ApplicationArea = All; Caption = 'Show Details'; }
+                    field(ExcelToExportField; ExcelToExport) { ApplicationArea = All; Caption = 'Export to Excel'; }
+                    field(NumberFormatField; NumberFormat) { ApplicationArea = All; Caption = 'Currency Format'; Editable = ExcelToExport; TableRelation = lvnNumberFormat.Code; }
                 }
             }
         }
@@ -265,7 +265,7 @@ report 14135165 "lvnAccountReconByLoan"
         MaxDate := "G/L Account".GetRangeMax("Date Filter");
         LoanNoFilter := LoanFilters.GetFilter("No.");
         if ExcelToExport then begin
-            ExcelExport.Init(ExcelExportCaller, OutputFormat::Xlsx);
+            ExcelExport.Init(ExcelExportCallerLbl, OutputFormat::Xlsx);
             WriteExcelHeaders();
         end;
     end;
@@ -274,7 +274,7 @@ report 14135165 "lvnAccountReconByLoan"
     begin
         WriteExcelTotals(2);
         if ExcelToExport then
-            ExcelExport.Download(FileName);
+            ExcelExport.Download(FileNameTxt);
     end;
 
     var
@@ -309,8 +309,8 @@ report 14135165 "lvnAccountReconByLoan"
         ColorCodeLbl: Label '#D2D2D2';
         NoDateFilterErr: Label 'Date Filter can''t be blank';
         NoLoanFiltersErr: Label 'Please prefilter Loan Card information';
-        ExcelExportCaller: Label 'AccountReconByLoan';
-        FileName: Label 'AccountReconExport.xlsx';
+        ExcelExportCallerLbl: Label 'AccountReconByLoan';
+        FileNameTxt: Label 'AccountReconExport.xlsx';
 
     local procedure WriteExcelHeaders()
     begin

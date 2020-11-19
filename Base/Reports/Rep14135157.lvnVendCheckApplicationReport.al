@@ -207,8 +207,8 @@ report 14135157 "lvnVendCheckApplicationReport"
             {
                 group(Options)
                 {
-                    field(HideCheckSummaryGroup; HideCheckSummaryGroup) { Caption = 'Hide Check Summary Group'; ApplicationArea = All; }
-                    field(HideDocumentDetails; HideDocumentDetails) { Caption = 'Hide Document Details'; ApplicationArea = All; }
+                    field(HideCheckSummaryGroupField; HideCheckSummaryGroup) { Caption = 'Hide Check Summary Group'; ApplicationArea = All; }
+                    field(HideDocumentDetailsField; HideDocumentDetails) { Caption = 'Hide Document Details'; ApplicationArea = All; }
                 }
             }
         }

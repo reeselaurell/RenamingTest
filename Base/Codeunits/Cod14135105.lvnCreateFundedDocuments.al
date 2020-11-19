@@ -30,9 +30,9 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         if LoanJournalLine.FindSet() then
             repeat
                 if not LoanJournalErrorMgmt.HasError(LoanJournalLine) then begin
-                    TempLoanDocument.Reset;
+                    TempLoanDocument.Reset();
                     TempLoanDocument.DeleteAll();
-                    TempLoanDocumentLine.Reset;
+                    TempLoanDocumentLine.Reset();
                     TempLoanDocumentLine.DeleteAll();
                     CreateSingleDocument(LoanJournalLine, TempLoanDocument, TempLoanDocumentLine, false);
                     TempLoanDocument.Reset();
@@ -72,7 +72,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         LoanFundedDocument: Record lvnLoanFundedDocument;
         LoanFundedDocumentLine: Record lvnLoanFundedDocumentLine;
         LoanJournalValue: Record lvnLoanJournalValue;
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         NoSeriesManagement: Codeunit NoSeriesManagement;
         LineNo: Integer;
         DocumentAmount: Decimal;
@@ -118,24 +118,24 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         LoanJournalLine.TestField("Processing Schema Code");
         LoanProcessingSchema.Get(LoanJournalLine."Processing Schema Code");
         LoanJournalBatch.Get(LoanJournalLine."Loan Journal Batch Code");
-        ExpressionValueBuffer.Reset();
-        ExpressionValueBuffer.DeleteAll();
+        TempExpressionValueBuffer.Reset();
+        TempExpressionValueBuffer.DeleteAll();
         FieldSequenceNo := 0;
-        ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
-        Clear(ExpressionValueBuffer);
+        ConditionsMgmt.FillJournalFieldValues(TempExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
+        Clear(TempExpressionValueBuffer);
         FieldSequenceNo += 1;
-        ExpressionValueBuffer.Number := FieldSequenceNo;
-        ExpressionValueBuffer.Name := '!CalculationParameter';
-        ExpressionValueBuffer.Value := '0';
-        ExpressionValueBuffer.Type := 'Decimal';
-        ExpressionValueBuffer.Insert();
-        Clear(ExpressionValueBuffer);
+        TempExpressionValueBuffer.Number := FieldSequenceNo;
+        TempExpressionValueBuffer.Name := '!CalculationParameter';
+        TempExpressionValueBuffer.Value := '0';
+        TempExpressionValueBuffer.Type := 'Decimal';
+        TempExpressionValueBuffer.Insert();
+        Clear(TempExpressionValueBuffer);
         FieldSequenceNo += 1;
-        ExpressionValueBuffer.Number := FieldSequenceNo;
-        ExpressionValueBuffer.Name := '!ProcessingParameter';
-        ExpressionValueBuffer.Value := '';
-        ExpressionValueBuffer.Type := 'Text';
-        ExpressionValueBuffer.Insert();
+        TempExpressionValueBuffer.Number := FieldSequenceNo;
+        TempExpressionValueBuffer.Name := '!ProcessingParameter';
+        TempExpressionValueBuffer.Value := '';
+        TempExpressionValueBuffer.Type := 'Text';
+        TempExpressionValueBuffer.Insert();
         LineNo := 10000;
         Clear(LoanDocument);
         LoanDocument.Init();
@@ -161,11 +161,9 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         AssignDimensions(LoanDocument."Shortcut Dimension 8 Code", LoanProcessingSchema."Shortcut Dimension 8 Code", LoanJournalLine."Shortcut Dimension 8 Code", LoanProcessingSchema."Dimension 8 Rule");
         AssignDimensions(LoanDocument."Business Unit Code", LoanProcessingSchema."Business Unit Code", LoanJournalLine."Business Unit Code", LoanProcessingSchema."Business Unit Rule");
         LoanDocument.GenerateDimensionSetId();
-        if LoanProcessingSchema."External Document No. Field" <> 0 then begin
-            if LoanJournalValue.Get(LoanJournalLine."Loan Journal Batch Code", LoanJournalLine."Line No.", LoanProcessingSchema."External Document No. Field") then begin
+        if LoanProcessingSchema."External Document No. Field" <> 0 then
+            if LoanJournalValue.Get(LoanJournalLine."Loan Journal Batch Code", LoanJournalLine."Line No.", LoanProcessingSchema."External Document No. Field") then
                 LoanDocument."External Document No." := CopyStr(LoanJournalValue."Field Value", 1, MaxStrLen(LoanDocument."External Document No."));
-            end;
-        end;
         LoanDocument.Modify(true);
         if LoanProcessingSchema."Use Global Schema Code" <> '' then begin
             LoanProcessingSchemaLine.Reset();
@@ -174,7 +172,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
             LoanProcessingSchemaLine.SetRange("Processing Code", LoanProcessingSchema."Use Global Schema Code");
             if LoanProcessingSchemaLine.FindSet() then
                 repeat
-                    CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo, ExpressionValueBuffer);
+                    CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo, TempExpressionValueBuffer);
                 until LoanProcessingSchemaLine.Next() = 0;
         end;
         LoanProcessingSchemaLine.Reset();
@@ -183,7 +181,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         LoanProcessingSchemaLine.SetFilter("Processing Source Type", '<>%1', LoanProcessingSchemaLine."Processing Source Type"::Tag);
         if LoanProcessingSchemaLine.FindSet() then
             repeat
-                CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo, ExpressionValueBuffer);
+                CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo, TempExpressionValueBuffer);
             until LoanProcessingSchemaLine.Next() = 0;
         TempLoanDocumentLine.Reset();
         TempLoanDocumentLine.DeleteAll();
@@ -200,7 +198,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
             LoanProcessingSchemaLine.SetRange("Processing Code", LoanProcessingSchema."Use Global Schema Code");
             if LoanProcessingSchemaLine.FindSet() then
                 repeat
-                    CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo, ExpressionValueBuffer);
+                    CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo, TempExpressionValueBuffer);
                 until LoanProcessingSchemaLine.Next() = 0;
         end;
         LoanProcessingSchemaLine.Reset();
@@ -208,7 +206,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         LoanProcessingSchemaLine.SetRange("Balancing Entry", true);
         if LoanProcessingSchemaLine.FindSet() then
             repeat
-                CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo, ExpressionValueBuffer);
+                CreateDocumentLine(LoanDocumentLine, LoanDocument, LoanProcessingSchemaLine, LoanJournalLine, LineNo, TempExpressionValueBuffer);
             until LoanProcessingSchemaLine.Next() = 0;
         LoanDocumentLine.Reset();
         LoanDocumentLine.SetRange(Amount, 0);
@@ -226,34 +224,30 @@ codeunit 14135105 "lvnCreateFundedDocuments"
             LoanProcessingSchema."Document Type Option"::"Credit Memo":
                 LoanDocument."Document Type" := LoanDocument."Document Type"::"Credit Memo";
             LoanProcessingSchema."Document Type Option"::"Amount Based":
-                begin
-                    if DocumentAmount > 0 then
-                        LoanDocument."Document Type" := LoanDocument."Document Type"::Invoice
-                    else begin
-                        LoanDocument."Document Type" := LoanDocument."Document Type"::"Credit Memo";
-                        LoanDocumentLine.Reset();
-                        LoanDocumentLine.SetRange("Balancing Entry", false);
-                        if LoanDocumentLine.FindSet() then
-                            repeat
-                                LoanDocumentLine.Amount := -LoanDocumentLine.Amount;
-                                LoanDocumentLine.Modify();
-                            until LoanDocumentLine.Next() = 0;
-                    end;
+                if DocumentAmount > 0 then
+                    LoanDocument."Document Type" := LoanDocument."Document Type"::Invoice
+                else begin
+                    LoanDocument."Document Type" := LoanDocument."Document Type"::"Credit Memo";
+                    LoanDocumentLine.Reset();
+                    LoanDocumentLine.SetRange("Balancing Entry", false);
+                    if LoanDocumentLine.FindSet() then
+                        repeat
+                            LoanDocumentLine.Amount := -LoanDocumentLine.Amount;
+                            LoanDocumentLine.Modify();
+                        until LoanDocumentLine.Next() = 0;
                 end;
             LoanProcessingSchema."Document Type Option"::"Amount Based Reversed":
-                begin
-                    if DocumentAmount > 0 then
-                        LoanDocument."Document Type" := LoanDocument."Document Type"::"Credit Memo"
-                    else begin
-                        LoanDocument."Document Type" := LoanDocument."Document Type"::Invoice;
-                        LoanDocumentLine.Reset();
-                        LoanDocumentLine.SetRange("Balancing Entry", false);
-                        if LoanDocumentLine.FindSet() then
-                            repeat
-                                LoanDocumentLine.Amount := -LoanDocumentLine.Amount;
-                                LoanDocumentLine.Modify();
-                            until LoanDocumentLine.Next() = 0;
-                    end;
+                if DocumentAmount > 0 then
+                    LoanDocument."Document Type" := LoanDocument."Document Type"::"Credit Memo"
+                else begin
+                    LoanDocument."Document Type" := LoanDocument."Document Type"::Invoice;
+                    LoanDocumentLine.Reset();
+                    LoanDocumentLine.SetRange("Balancing Entry", false);
+                    if LoanDocumentLine.FindSet() then
+                        repeat
+                            LoanDocumentLine.Amount := -LoanDocumentLine.Amount;
+                            LoanDocumentLine.Modify();
+                        until LoanDocumentLine.Next() = 0;
                 end;
         end;
         LoanDocument.Modify();
@@ -265,7 +259,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         LoanProcessingSchemaLine: Record lvnLoanProcessingSchemaLine;
         LoanJournalLine: Record lvnLoanJournalLine;
         var LineNo: Integer;
-        var ExpressionValueBuffer: Record lvnExpressionValueBuffer)
+        var TempExpressionValueBuffer: Record lvnExpressionValueBuffer)
     var
         LoanJournalValue: Record lvnLoanJournalValue;
         RecordReference: RecordRef;
@@ -273,15 +267,15 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         AccountNo: Code[20];
         DecimalValue: Decimal;
     begin
-        ExpressionValueBuffer.Reset();
-        ExpressionValueBuffer.Ascending(false);
-        ExpressionValueBuffer.FindSet(true);
-        ExpressionValueBuffer.Value := LoanProcessingSchemaLine."Processing Parameter";
-        ExpressionValueBuffer.Modify();
-        ExpressionValueBuffer.Next();
-        ExpressionValueBuffer.Value := Format(LoanProcessingSchemaLine."Calculation Parameter", 0, 9);
-        ExpressionValueBuffer.Modify();
-        if CheckCondition(LoanProcessingSchemaLine."Condition Code", ExpressionValueBuffer) then begin
+        TempExpressionValueBuffer.Reset();
+        TempExpressionValueBuffer.Ascending(false);
+        TempExpressionValueBuffer.FindSet(true);
+        TempExpressionValueBuffer.Value := LoanProcessingSchemaLine."Processing Parameter";
+        TempExpressionValueBuffer.Modify();
+        TempExpressionValueBuffer.Next();
+        TempExpressionValueBuffer.Value := Format(LoanProcessingSchemaLine."Calculation Parameter", 0, 9);
+        TempExpressionValueBuffer.Modify();
+        if CheckCondition(LoanProcessingSchemaLine."Condition Code", TempExpressionValueBuffer) then begin
             Clear(LoanDocumentLine);
             LoanDocumentLine.Init();
             LoanDocumentLine."Document No." := LoanDocument."Document No.";
@@ -302,13 +296,13 @@ codeunit 14135105 "lvnCreateFundedDocuments"
             LoanDocumentLine."Account Type" := LoanProcessingSchemaLine."Account Type";
             LoanDocumentLine."Account No." := LoanProcessingSchemaLine."Account No.";
             if LoanProcessingSchemaLine."Account No. Switch Code" <> '' then begin
-                AccountNo := GetSwitchValue(LoanProcessingSchemaLine."Account No. Switch Code", ExpressionValueBuffer);
+                AccountNo := GetSwitchValue(LoanProcessingSchemaLine."Account No. Switch Code", TempExpressionValueBuffer);
                 if AccountNo <> '' then
                     LoanDocumentLine."Account No." := AccountNo;
             end;
             case LoanProcessingSchemaLine."Processing Source Type" of
                 LoanProcessingSchemaLine."Processing Source Type"::Function:
-                    if Evaluate(DecimalValue, GetFunctionValue(LoanProcessingSchemaLine."Function Code", ExpressionValueBuffer)) then
+                    if Evaluate(DecimalValue, GetFunctionValue(LoanProcessingSchemaLine."Function Code", TempExpressionValueBuffer)) then
                         LoanDocumentLine.Amount := DecimalValue;
                 LoanProcessingSchemaLine."Processing Source Type"::"Loan Journal Value":
                     begin
@@ -367,7 +361,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
 
     local procedure CheckCondition(
         ConditionCode: Code[20];
-        var ExpressionValueBuffer: Record lvnExpressionValueBuffer): Boolean
+        var TempExpressionValueBuffer: Record lvnExpressionValueBuffer): Boolean
     var
         ExpressionHeader: Record lvnExpressionHeader;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
@@ -375,28 +369,28 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         if ConditionCode = '' then
             exit(true);
         ExpressionHeader.Get(ConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));
+        exit(ExpressionEngine.CheckCondition(ExpressionHeader, TempExpressionValueBuffer));
     end;
 
     local procedure GetFunctionValue(
         FunctionCode: Code[20];
-        var ExpressionValueBuffer: Record lvnExpressionValueBuffer): Text
+        var TempExpressionValueBuffer: Record lvnExpressionValueBuffer): Text
     var
         ExpressionHeader: Record lvnExpressionHeader;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
     begin
         ExpressionHeader.Get(FunctionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        exit(ExpressionEngine.CalculateFormula(ExpressionHeader, ExpressionValueBuffer));
+        exit(ExpressionEngine.CalculateFormula(ExpressionHeader, TempExpressionValueBuffer));
     end;
 
-    local procedure GetSwitchValue(SwitchCode: Code[20]; var ExpressionValueBuffer: Record lvnExpressionValueBuffer): Code[20]
+    local procedure GetSwitchValue(SwitchCode: Code[20]; var TempExpressionValueBuffer: Record lvnExpressionValueBuffer): Code[20]
     var
         ExpressionHeader: Record lvnExpressionHeader;
         ConditionsMgmt: Codeunit lvnConditionsMgmt;
         Result: Text;
     begin
         ExpressionHeader.Get(SwitchCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        if not ExpressionEngine.SwitchCase(ExpressionHeader, Result, ExpressionValueBuffer) then
+        if not ExpressionEngine.SwitchCase(ExpressionHeader, Result, TempExpressionValueBuffer) then
             exit('');
         exit(CopyStr(Result, 1, 20));
     end;

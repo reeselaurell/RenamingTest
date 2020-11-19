@@ -179,8 +179,8 @@ report 14135156 "lvnForm1099Printout"
             {
                 group(Group)
                 {
-                    field(Year; Year) { Caption = 'Year'; ApplicationArea = All; Editable = false; }
-                    field(TestPrint; TestPrint) { Caption = 'Test Print'; ApplicationArea = All; }
+                    field(YearField; Year) { Caption = 'Year'; ApplicationArea = All; Editable = false; }
+                    field(TestPrintField; TestPrint) { Caption = 'Test Print'; ApplicationArea = All; }
                 }
             }
         }

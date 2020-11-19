@@ -30,6 +30,7 @@ table 14135255 "lvnLVAcctRCHeadline"
     {
         key(PK; "Dimension Code", Code) { Clustered = true; }
         key(Name; Name) { }
+        key(NetChange; "Net Change") { }
     }
 
     procedure FillDimensions()
@@ -56,7 +57,6 @@ table 14135255 "lvnLVAcctRCHeadline"
     procedure SetNetChange()
     var
         GLAccount: Record "G/L Account";
-        DateFilter: Text;
     begin
         Reset();
         FindSet();

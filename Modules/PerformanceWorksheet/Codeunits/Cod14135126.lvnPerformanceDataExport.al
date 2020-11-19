@@ -34,7 +34,6 @@ codeunit 14135126 "lvnPerformanceDataExport"
         DataColStartIdx: Integer;
         DataRowStartIdx: Integer;
         BandIdx: Integer;
-        OutputFileName: Text;
     begin
         //Skip empty lines and calculate excel row indexes (zero based)
         Clear(RowIndexLookup);
@@ -174,7 +173,7 @@ codeunit 14135126 "lvnPerformanceDataExport"
                                         //Apply row formula
                                         ExpressionHeader.Get(BandInfo."Row Formula Code", PerformanceMgmt.GetPeriodRowExpressionConsumerId());
                                         ExcelExport.WriteFormula('=' + TranslateRowFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), TempRowLine."Data Row Index", RowLine."Column No." - 1, DataRowStartIdx, DataColStartIdx, ColumnCount, BandIndexLookup));
-                                    end else begin
+                                    end else
                                         if CalcUnit.Type = CalcUnit.Type::Expression then begin
                                             //Apply column formula
                                             ExpressionHeader.Get(CalcUnit."Expression Code", PerformanceMgmt.GetBandExpressionConsumerId());
@@ -191,13 +190,11 @@ codeunit 14135126 "lvnPerformanceDataExport"
                                                 else
                                                     Error(UnsupportedFormulaTypeErr);
                                             end
-                                        end else begin
+                                        end else
                                             if Buffer.Get(TempRowLine."Line No.", BandInfo."Band No.", RowLine."Column No.") then
                                                 ExcelExport.WriteNumber(Buffer.Value)
                                             else
                                                 ExcelExport.WriteNumber(0);
-                                        end;
-                                    end;
                             until RowLine.Next() = 0;
                             BandIdx += 1;
                         until BandInfo.Next() = 0;
@@ -218,9 +215,7 @@ codeunit 14135126 "lvnPerformanceDataExport"
                         end;
                     end;
                 RowLine."Row Type"::Empty:
-                    begin
-                        ExcelExport.NewRow(RowLine."Line No.");
-                    end;
+                    ExcelExport.NewRow(RowLine."Line No.");
             end;
         until TempRowLine.Next() = 0;
         ExcelExport.AutoFit(false, true);

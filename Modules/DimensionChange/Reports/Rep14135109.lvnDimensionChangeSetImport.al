@@ -42,7 +42,7 @@ report 14135109 "lvnDimensionChangeSetImport"
                 {
                     Caption = 'General';
 
-                    field(Overwrite; Overwrite) { Caption = 'Overwrite Existing Entries'; ApplicationArea = All; }
+                    field(OverwriteField; Overwrite) { Caption = 'Overwrite Existing Entries'; ApplicationArea = All; }
                 }
             }
         }

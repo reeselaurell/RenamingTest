@@ -26,7 +26,7 @@ report 14135153 "lvnForm1098Print"
             column(LenderEIN; LenderEIN)
             {
             }
-            column(LoanNo1; Form1098Entry1."Loan No.")
+            column(LoanNo1; TempForm1098Entry1."Loan No.")
             {
             }
             column(BorrowerSSN1; BorrowerSSN1)
@@ -47,37 +47,37 @@ report 14135153 "lvnForm1098Print"
             column(BorrowerAddr15; BorrowerAddr1[5])
             {
             }
-            column(Box11; Form1098Entry1."Box 1")
+            column(Box11; TempForm1098Entry1."Box 1")
             {
             }
-            column(Box12; Form1098Entry1."Box 2")
+            column(Box12; TempForm1098Entry1."Box 2")
             {
             }
-            column(Box13; Form1098Entry1."Box 3")
+            column(Box13; TempForm1098Entry1."Box 3")
             {
             }
-            column(Box14; Form1098Entry1."Box 4")
+            column(Box14; TempForm1098Entry1."Box 4")
             {
             }
-            column(Box15; Form1098Entry1."Box 5")
+            column(Box15; TempForm1098Entry1."Box 5")
             {
             }
-            column(Box16; Form1098Entry1."Box 6")
+            column(Box16; TempForm1098Entry1."Box 6")
             {
             }
-            column(Box17; Form1098Entry1."Box 7")
+            column(Box17; TempForm1098Entry1."Box 7")
             {
             }
-            column(Box18; Form1098Entry1."Box 8")
+            column(Box18; TempForm1098Entry1."Box 8")
             {
             }
-            column(Box19; Form1098Entry1."Box 9")
+            column(Box19; TempForm1098Entry1."Box 9")
             {
             }
-            column(Box110; Form1098Entry1."Box 10")
+            column(Box110; TempForm1098Entry1."Box 10")
             {
             }
-            column(LoanNo2; Form1098Entry1."Loan No.")
+            column(LoanNo2; TempForm1098Entry1."Loan No.")
             {
             }
             column(BorrowerSSN2; BorrowerSSN2)
@@ -148,19 +148,19 @@ report 14135153 "lvnForm1098Print"
                 else
                     BaseForm1098Entry.Next();
                 MaxLen := MaxStrLen(Addr1);
-                Form1098Entry1 := BaseForm1098Entry;
+                TempForm1098Entry1 := BaseForm1098Entry;
                 if EncryptSSN then
-                    BorrowerSSN1 := StrSubstNo(SSNMaskTxt, CopyStr(Form1098Entry1."Borrower SSN", StrLen(Form1098Entry1."Borrower SSN") - 3))
+                    BorrowerSSN1 := StrSubstNo(SSNMaskTxt, CopyStr(TempForm1098Entry1."Borrower SSN", StrLen(TempForm1098Entry1."Borrower SSN") - 3))
                 else
-                    BorrowerSSN1 := Form1098Entry1."Borrower SSN";
-                if StrLen(Form1098Entry1."Borrower Mailing Address") > MaxLen then begin
-                    Addr1 := CopyStr(Form1098Entry1."Borrower Mailing Address", 1, MaxLen);
-                    Addr2 := CopyStr(Form1098Entry1."Borrower Mailing Address", MaxLen + 1, MaxStrLen(Addr2));
+                    BorrowerSSN1 := TempForm1098Entry1."Borrower SSN";
+                if StrLen(TempForm1098Entry1."Borrower Mailing Address") > MaxLen then begin
+                    Addr1 := CopyStr(TempForm1098Entry1."Borrower Mailing Address", 1, MaxLen);
+                    Addr2 := CopyStr(TempForm1098Entry1."Borrower Mailing Address", MaxLen + 1, MaxStrLen(Addr2));
                 end else begin
-                    Addr1 := Form1098Entry1."Borrower Mailing Address";
+                    Addr1 := TempForm1098Entry1."Borrower Mailing Address";
                     Addr2 := '';
                 end;
-                FormatAddress.FormatAddr(BorrowerAddr1, Form1098Entry1."Borrower Name", '', '', Addr1, Addr2, Form1098Entry1."Borrower Mailing City", Form1098Entry1."Borrower ZIP Code", Form1098Entry1."Borrower State", '');
+                FormatAddress.FormatAddr(BorrowerAddr1, TempForm1098Entry1."Borrower Name", '', '', Addr1, Addr2, TempForm1098Entry1."Borrower Mailing City", TempForm1098Entry1."Borrower ZIP Code", TempForm1098Entry1."Borrower State", '');
                 CompressArray(BorrowerAddr1);
                 if BaseForm1098Entry.Next() <> 0 then begin
                     Form1098Entry2 := BaseForm1098Entry;
@@ -196,7 +196,7 @@ report 14135153 "lvnForm1098Print"
                 {
                     Caption = 'Options';
 
-                    field(EncryptSSN; EncryptSSN) { ApplicationArea = All; Caption = 'Mask SSN Numbers'; }
+                    field(EncryptSSNField; EncryptSSN) { ApplicationArea = All; Caption = 'Mask SSN Numbers'; }
                 }
             }
         }
@@ -218,7 +218,7 @@ report 14135153 "lvnForm1098Print"
     var
         CompanyInformation: Record "Company Information";
         BaseForm1098Entry: Record lvnForm1098Entry;
-        Form1098Entry1: Record lvnForm1098Entry temporary;
+        TempForm1098Entry1: Record lvnForm1098Entry temporary;
         Form1098Entry2: Record lvnForm1098Entry temporary;
         EncryptSSN: Boolean;
         LenderNameBox: Text;

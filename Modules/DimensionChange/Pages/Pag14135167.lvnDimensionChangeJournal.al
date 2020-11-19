@@ -191,8 +191,8 @@ page 14135167 "lvnDimensionChangeJournal"
                 var
                     DimensionChangeLedgerEntry: Record lvnDimensionChangeLedgerEntry;
                     DimensionChangeJnlEntry: Record lvnDimensionChangeJnlEntry;
-                    DimensionChangeLedger: Page lvnDimensionChangeLedger;
                     PostDimensionChangeSet: Report lvnPostDimensionChangeSet;
+                    DimensionChangeLedger: Page lvnDimensionChangeLedger;
                 begin
                     if Rec.Count > 0 then begin
                         DimensionChangeJnlEntry.SetRange("Change Set ID", Rec."Change Set ID");
@@ -213,10 +213,9 @@ page 14135167 "lvnDimensionChangeJournal"
     trigger OnAfterGetRecord()
     begin
         Clear(GLAccountName);
-        if GLAccount."No." <> Rec."G/L Account No." then begin
+        if GLAccount."No." <> Rec."G/L Account No." then
             if GLAccount.Get(Rec."G/L Account No.") then
                 GLAccountName := GLAccount.Name;
-        end;
     end;
 
     var

@@ -97,21 +97,21 @@ pageextension 14135100 "lvnGeneralJournal" extends "General Journal"
 
                 trigger OnAction()
                 var
-                    GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
-                    ImportBufferError: Record lvnImportBufferError temporary;
+                    TempGenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
+                    TempImportBufferError: Record lvnImportBufferError temporary;
                     ImportGenJnlFile: Codeunit lvnGenJnlFileImportManagement;
                     JournalDataImport: Page lvnJournalDataImport;
                 begin
                     Clear(ImportGenJnlFile);
-                    if not ImportGenJnlFile.ManualFileImport(GenJnlImportBuffer, ImportBufferError) then
+                    if not ImportGenJnlFile.ManualFileImport(TempGenJnlImportBuffer, TempImportBufferError) then
                         exit;
-                    ImportBufferError.Reset();
-                    if not ImportBufferError.IsEmpty() then begin
+                    TempImportBufferError.Reset();
+                    if not TempImportBufferError.IsEmpty() then begin
                         Clear(JournalDataImport);
-                        JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
+                        JournalDataImport.SetParams(TempGenJnlImportBuffer, TempImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        ImportGenJnlFile.CreateJournalLines(GenJnlImportBuffer, Rec."Journal Template Name", Rec."Journal Batch Name", CreateGuid());
+                        ImportGenJnlFile.CreateJournalLines(TempGenJnlImportBuffer, Rec."Journal Template Name", Rec."Journal Batch Name", CreateGuid());
                     CurrPage.Update(false);
                 end;
             }
@@ -126,20 +126,20 @@ pageextension 14135100 "lvnGeneralJournal" extends "General Journal"
 
                 trigger OnAction()
                 var
-                    GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
-                    ImportBufferError: Record lvnImportBufferError temporary;
+                    TempGenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
+                    TempImportBufferError: Record lvnImportBufferError temporary;
                     GenJnlFlexImportMgmt: Codeunit lvnGenJnlFlexImportManagement;
                     JournalDataImport: Page lvnJournalDataImport;
                 begin
                     Clear(GenJnlFlexImportMgmt);
-                    if not GenJnlFlexImportMgmt.ManualFileImport(GenJnlImportBuffer, ImportBufferError) then
+                    if not GenJnlFlexImportMgmt.ManualFileImport(TempGenJnlImportBuffer, TempImportBufferError) then
                         exit;
-                    if not ImportBufferError.IsEmpty() then begin
+                    if not TempImportBufferError.IsEmpty() then begin
                         Clear(JournalDataImport);
-                        JournalDataImport.SetParams(GenJnlImportBuffer, ImportBufferError);
+                        JournalDataImport.SetParams(TempGenJnlImportBuffer, TempImportBufferError);
                         JournalDataImport.Run();
                     end else
-                        GenJnlFlexImportMgmt.CreateJournalLines(GenJnlImportBuffer, Rec."Journal Template Name", Rec."Journal Batch Name", CreateGuid());
+                        GenJnlFlexImportMgmt.CreateJournalLines(TempGenJnlImportBuffer, Rec."Journal Template Name", Rec."Journal Batch Name", CreateGuid());
                     CurrPage.Update(false);
                 end;
             }

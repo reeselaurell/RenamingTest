@@ -6,7 +6,7 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         FieldSeparatorLbl: Label '<TAB>';
         OpenFileLbl: Label 'Open File for Import';
         ReadingToStreamErr: Label 'Error reading file to stream';
-        NotSupportedExpressionType: Label 'Expression type is not supported: %1';
+        NotSupportedExpressionTypeErr: Label 'Expression type is not supported: %1';
         SchemaEmptyErr: Label 'Import schema is empty';
         PostingDateIsBlankErr: Label 'Posting Date is Blank';
         PostingDateIsNotValidErr: Label '%1 Posting Date is not within allowed date ranges';
@@ -113,7 +113,7 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         var ImportBufferError: Record lvnImportBufferError)
     var
         FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine;
-        ValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         Loan: Record lvnLoan;
         UserSetupMgmt: Codeunit "User Setup Management";
         LoanExists: Boolean;
@@ -128,8 +128,8 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
                 LoanExists := Loan.Get(GenJnlImportBuffer."Loan No.");
                 if not LoanExists then
                     Clear(Loan);
-                ValueBuffer.Reset();
-                ValueBuffer.DeleteAll();
+                TempExpressionValueBuffer.Reset();
+                TempExpressionValueBuffer.DeleteAll();
                 //Amount
                 if FlexibleImportSchemaLine."Reverse Amount" then
                     GenJnlImportBuffer.Amount := -GenJnlImportBuffer.Amount;
@@ -145,14 +145,14 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
                 GenJnlImportBuffer."Account Type" := FlexibleImportSchemaLine."Account Type";
                 GenJnlImportBuffer."Account No." := FlexibleImportSchemaLine."Account No.";
                 if LoanExists then
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Account No.", GenJnlImportBuffer."Account No.");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Account No.", GenJnlImportBuffer."Account No.");
                 if not CheckAccountNo(GenJnlImportBuffer."Account Type", GenJnlImportBuffer."Account No.") then
                     AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(AccountNoBlankOrMissingErr, GenJnlImportBuffer."Account Type", GenJnlImportBuffer."Account No."));
                 //Bal. Account Type and Bal. Account No.
                 GenJnlImportBuffer."Bal. Account Type" := FlexibleImportSchemaLine."Bal. Account Type";
                 GenJnlImportBuffer."Bal. Account No." := FlexibleImportSchemaLine."Bal. Account No.";
                 if LoanExists then
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Bal. Account No.", GenJnlImportBuffer."Bal. Account No.");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Bal. Account No.", GenJnlImportBuffer."Bal. Account No.");
                 if GenJnlImportBuffer."Bal. Account No." <> '' then
                     if not CheckAccountNo(GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No.") then
                         AddErrorLine(GenJnlImportBuffer, ImportBufferError, StrSubstNo(BalAccountNoBlankOrMissingErr, GenJnlImportBuffer."Bal. Account Type", GenJnlImportBuffer."Bal. Account No."));
@@ -163,15 +163,15 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
                 AssignDimensionValues(FlexibleImportSchemaLine."Dimension Validation Rule 2", GenJnlImportBuffer, FlexibleImportSchemaLine, LoanExists, Loan, ImportBufferError);
                 AssignDimensionValues(FlexibleImportSchemaLine."Dimension Validation Rule 3", GenJnlImportBuffer, FlexibleImportSchemaLine, LoanExists, Loan, ImportBufferError);
                 if LoanExists then begin
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 1", GenJnlImportBuffer."Global Dimension 1 Code");
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 2", GenJnlImportBuffer."Global Dimension 2 Code");
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 3", GenJnlImportBuffer."Shortcut Dimension 3 Code");
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 4", GenJnlImportBuffer."Shortcut Dimension 4 Code");
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 5", GenJnlImportBuffer."Shortcut Dimension 5 Code");
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 6", GenJnlImportBuffer."Shortcut Dimension 6 Code");
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 7", GenJnlImportBuffer."Shortcut Dimension 7 Code");
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Dimension 8", GenJnlImportBuffer."Shortcut Dimension 8 Code");
-                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, ValueBuffer, ValueAssignType::"Business Unit", GenJnlImportBuffer."Business Unit Code");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Dimension 1", GenJnlImportBuffer."Global Dimension 1 Code");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Dimension 2", GenJnlImportBuffer."Global Dimension 2 Code");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Dimension 3", GenJnlImportBuffer."Shortcut Dimension 3 Code");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Dimension 4", GenJnlImportBuffer."Shortcut Dimension 4 Code");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Dimension 5", GenJnlImportBuffer."Shortcut Dimension 5 Code");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Dimension 6", GenJnlImportBuffer."Shortcut Dimension 6 Code");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Dimension 7", GenJnlImportBuffer."Shortcut Dimension 7 Code");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Dimension 8", GenJnlImportBuffer."Shortcut Dimension 8 Code");
+                    CheckConditionAssignments(FlexibleImportSchemaLine, Loan, TempExpressionValueBuffer, ValueAssignType::"Business Unit", GenJnlImportBuffer."Business Unit Code");
                 end;
                 ValidateDimension(GenJnlImportBuffer, 1, GenJnlImportBuffer."Global Dimension 1 Code", ImportBufferError);
                 ValidateDimension(GenJnlImportBuffer, 2, GenJnlImportBuffer."Global Dimension 2 Code", ImportBufferError);
@@ -315,7 +315,7 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
     local procedure CheckConditionAssignments(
         var FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine;
         var Loan: Record lvnLoan;
-        var ValueBuffer: Record lvnExpressionValueBuffer;
+        var TempExpressionValueBuffer: Record lvnExpressionValueBuffer;
         AssignValueType: Enum lvnFlexImportAssignTarget;
         var ValueToAssign: Code[20])
     var
@@ -330,19 +330,19 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         FlexImportSchemaExpression.SetRange("Amount Column No.", FlexibleImportSchemaLine."Amount Column No.");
         FlexImportSchemaExpression.SetRange("Assign Result To Field", AssignValueType);
         if FlexImportSchemaExpression.FindSet() then begin
-            if ValueBuffer.IsEmpty() then
-                ConditionsMgmt.FillLoanFieldValues(ValueBuffer, Loan);
+            if TempExpressionValueBuffer.IsEmpty() then
+                ConditionsMgmt.FillLoanFieldValues(TempExpressionValueBuffer, Loan);
             repeat
                 ExpressionHeader.Get(FlexImportSchemaExpression."Expression Code", ConditionsMgmt.GetConditionsMgmtConsumerId());
                 case ExpressionHeader.Type of
                     ExpressionHeader.Type::Condition:
-                        if ExpressionEngine.CheckCondition(ExpressionHeader, ValueBuffer) then
+                        if ExpressionEngine.CheckCondition(ExpressionHeader, TempExpressionValueBuffer) then
                             ValueToAssign := FlexImportSchemaExpression.Value;
                     ExpressionHeader.Type::Switch:
-                        if ExpressionEngine.SwitchCase(ExpressionHeader, Value, ValueBuffer) then
+                        if ExpressionEngine.SwitchCase(ExpressionHeader, Value, TempExpressionValueBuffer) then
                             ValueToAssign := Value;
                     else
-                        Error(NotSupportedExpressionType, ExpressionHeader.Type);
+                        Error(NotSupportedExpressionTypeErr, ExpressionHeader.Type);
                 end;
             until FlexImportSchemaExpression.Next() = 0;
         end;
@@ -389,7 +389,7 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
     local procedure ProcessImportCSVBuffer(var GenJnlImportBuffer: Record lvnGenJnlImportBuffer)
     var
         FlexibleImportSchemaLine: Record lvnFlexibleImportSchemaLine;
-        BaseGenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
+        TempBaseGenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
         AccountValueMap: Dictionary of [Integer, Decimal];
         CurrRow: Integer;
         EndRow: Integer;
@@ -406,62 +406,60 @@ codeunit 14135123 "lvnGenJnlFlexImportManagement"
         EndRow := TempCSVBuffer.GetNumberOfLines();
         LineNo := 100;
         repeat
-            Clear(BaseGenJnlImportBuffer);
+            Clear(TempBaseGenJnlImportBuffer);
             Clear(AccountValueMap);
             TempCSVBuffer.ResetFilters();
             TempCSVBuffer.SetRange("Line No.", CurrRow);
             TempCSVBuffer.FindSet();
             repeat
                 RawValue := DelChr(TempCSVBuffer.Value, '<>', ' ');
-                if RawValue <> '' then begin
+                if RawValue <> '' then
                     case TempCSVBuffer."Field No." of
                         FlexibleImportSchema."Document Type Column No.":
-                            if not Evaluate(BaseGenJnlImportBuffer."Document Type", RawValue) then
-                                BaseGenJnlImportBuffer."Document Type" := BaseGenJnlImportBuffer."Document Type"::" ";
+                            if not Evaluate(TempBaseGenJnlImportBuffer."Document Type", RawValue) then
+                                TempBaseGenJnlImportBuffer."Document Type" := TempBaseGenJnlImportBuffer."Document Type"::" ";
                         FlexibleImportSchema."Document No. Column No.":
-                            BaseGenJnlImportBuffer."Document No." := FlexibleImportSchema."Document No. Prefix" + RawValue;
+                            TempBaseGenJnlImportBuffer."Document No." := FlexibleImportSchema."Document No. Prefix" + RawValue;
                         FlexibleImportSchema."Posting Date Column No.":
-                            if not Evaluate(BaseGenJnlImportBuffer."Posting Date", RawValue) then
-                                BaseGenJnlImportBuffer."Posting Date" := 0D;
+                            if not Evaluate(TempBaseGenJnlImportBuffer."Posting Date", RawValue) then
+                                TempBaseGenJnlImportBuffer."Posting Date" := 0D;
                         FlexibleImportSchema."Document Date Column No.":
-                            if not Evaluate(BaseGenJnlImportBuffer."Document Date", RawValue) then
-                                BaseGenJnlImportBuffer."Document Date" := 0D;
+                            if not Evaluate(TempBaseGenJnlImportBuffer."Document Date", RawValue) then
+                                TempBaseGenJnlImportBuffer."Document Date" := 0D;
                         FlexibleImportSchema."Dimension 1 Code Column No.":
-                            BaseGenJnlImportBuffer."Global Dimension 1 Value" := RawValue;
+                            TempBaseGenJnlImportBuffer."Global Dimension 1 Value" := RawValue;
                         FlexibleImportSchema."Dimension 2 Code Column No.":
-                            BaseGenJnlImportBuffer."Global Dimension 2 Value" := RawValue;
+                            TempBaseGenJnlImportBuffer."Global Dimension 2 Value" := RawValue;
                         FlexibleImportSchema."Dimension 3 Code Column No.":
-                            BaseGenJnlImportBuffer."Shortcut Dimension 3 Value" := RawValue;
+                            TempBaseGenJnlImportBuffer."Shortcut Dimension 3 Value" := RawValue;
                         FlexibleImportSchema."Dimension 4 Code Column No.":
-                            BaseGenJnlImportBuffer."Shortcut Dimension 4 Value" := RawValue;
+                            TempBaseGenJnlImportBuffer."Shortcut Dimension 4 Value" := RawValue;
                         FlexibleImportSchema."Dimension 5 Code Column No.":
-                            BaseGenJnlImportBuffer."Shortcut Dimension 5 Value" := RawValue;
+                            TempBaseGenJnlImportBuffer."Shortcut Dimension 5 Value" := RawValue;
                         FlexibleImportSchema."Dimension 6 Code Column No.":
-                            BaseGenJnlImportBuffer."Shortcut Dimension 6 Value" := RawValue;
+                            TempBaseGenJnlImportBuffer."Shortcut Dimension 6 Value" := RawValue;
                         FlexibleImportSchema."Dimension 7 Code Column No.":
-                            BaseGenJnlImportBuffer."Shortcut Dimension 7 Value" := RawValue;
+                            TempBaseGenJnlImportBuffer."Shortcut Dimension 7 Value" := RawValue;
                         FlexibleImportSchema."Dimension 8 Code Column No.":
-                            BaseGenJnlImportBuffer."Shortcut Dimension 8 Value" := RawValue;
+                            TempBaseGenJnlImportBuffer."Shortcut Dimension 8 Value" := RawValue;
                         FlexibleImportSchema."Business Unit Code Column No.":
-                            BaseGenJnlImportBuffer."Business Unit Value" := RawValue;
+                            TempBaseGenJnlImportBuffer."Business Unit Value" := RawValue;
                         FlexibleImportSchema."Loan No. Column No.":
-                            BaseGenJnlImportBuffer."Loan No." := FlexibleImportSchema."Loan No. Prefix" + RawValue;
+                            TempBaseGenJnlImportBuffer."Loan No." := FlexibleImportSchema."Loan No. Prefix" + RawValue;
                         FlexibleImportSchema."External Document Column No.":
-                            BaseGenJnlImportBuffer."External Document No." := RawValue;
+                            TempBaseGenJnlImportBuffer."External Document No." := RawValue;
                         FlexibleImportSchema."Comment Column No.":
-                            BaseGenJnlImportBuffer.Comment := RawValue;
+                            TempBaseGenJnlImportBuffer.Comment := RawValue;
                         else
-                            if FlexibleImportSchemaLine.Get(FlexibleImportSchema.Code, TempCSVBuffer."Field No.") then begin
+                            if FlexibleImportSchemaLine.Get(FlexibleImportSchema.Code, TempCSVBuffer."Field No.") then
                                 if Evaluate(DecimalValue, RawValue) then
                                     if DecimalValue <> 0 then
                                         AccountValueMap.Add(TempCSVBuffer."Field No.", DecimalValue);
-                            end;
                     end;
-                end;
             until TempCSVBuffer.Next() = 0;
             foreach FieldNo in AccountValueMap.Keys() do begin
                 Clear(GenJnlImportBuffer);
-                GenJnlImportBuffer.TransferFields(BaseGenJnlImportBuffer, false);
+                GenJnlImportBuffer.TransferFields(TempBaseGenJnlImportBuffer, false);
                 GenJnlImportBuffer."Line No." := LineNo;
                 GenJnlImportBuffer.Amount := AccountValueMap.Get(FieldNo);
                 GenJnlImportBuffer."Flexible Line No." := FieldNo;

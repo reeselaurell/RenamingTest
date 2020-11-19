@@ -11,7 +11,7 @@ report 14135188 "lvnGLReconExcelExport"
             {
                 group(Options)
                 {
-                    field(NumberFormat; NumberFormat) { ApplicationArea = All; Caption = 'Currency Format'; TableRelation = lvnNumberFormat.Code; }
+                    field(NumberFormatField; NumberFormat) { ApplicationArea = All; Caption = 'Currency Format'; TableRelation = lvnNumberFormat.Code; }
                 }
             }
         }
@@ -19,7 +19,7 @@ report 14135188 "lvnGLReconExcelExport"
 
     trigger OnPreReport()
     begin
-        ExcelExport.Init(GLReconExportCaller, ExportFormat::Xlsx);
+        ExcelExport.Init(GLReconExportCallerTxt, ExportFormat::Xlsx);
         ExcelExport.NewRow(0);
         WriteToExcel(HeaderTxt, true, 18, true, '', true, false);
         ExcelExport.NewRow(1);
@@ -81,7 +81,7 @@ report 14135188 "lvnGLReconExcelExport"
         NumberFormat: Code[20];
         FileNameLbl: Label 'GLReconExport.xlsx';
         DetailsColHdrTxt: Label 'Details';
-        GLReconExportCaller: Label 'GLReconExport';
+        GLReconExportCallerTxt: Label 'GLReconExport';
         HeaderTxt: Label 'G/L Reconciliation';
         ColorCodeLbl: Label '#D2D2D2';
 

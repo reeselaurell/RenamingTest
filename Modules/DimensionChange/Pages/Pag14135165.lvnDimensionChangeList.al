@@ -75,6 +75,7 @@ page 14135165 "lvnDimensionChangeList"
             action(Post)
             {
                 Caption = 'Post';
+                ApplicationArea = All;
                 Image = PostBatch;
                 Promoted = true;
                 PromotedCategory = Process;
@@ -85,8 +86,8 @@ page 14135165 "lvnDimensionChangeList"
                 var
                     DimensionChangeJnlEntry: Record lvnDimensionChangeJnlEntry;
                     DimensionChangeLedgerEntry: Record lvnDimensionChangeLedgerEntry;
-                    DimensionChangeLedger: Page lvnDimensionChangeLedger;
                     PostDimensionChangeSet: Report lvnPostDimensionChangeSet;
+                    DimensionChangeLedger: Page lvnDimensionChangeLedger;
                 begin
                     DimensionChangeJnlEntry.SetRange("Change Set ID", Rec."Change Set ID");
                     PostDimensionChangeSet.SetTableView(DimensionChangeJnlEntry);

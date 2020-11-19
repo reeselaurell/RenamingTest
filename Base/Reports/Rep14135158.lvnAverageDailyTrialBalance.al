@@ -119,7 +119,7 @@ report 14135158 "lvnAverageDailyTrialBalance"
             {
                 group(Options)
                 {
-                    field(PrintType; PrintType) { Caption = 'Show'; ApplicationArea = All; }
+                    field(PrintTypeField; PrintType) { Caption = 'Show'; ApplicationArea = All; }
                 }
             }
         }

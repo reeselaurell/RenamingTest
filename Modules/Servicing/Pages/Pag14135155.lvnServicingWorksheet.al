@@ -98,6 +98,7 @@ page 14135155 "lvnServicingWorksheet"
             part(Escrows; lvnLoanEscrowFields)
             {
                 Caption = 'Escrows Breakdown';
+                ApplicationArea = All;
             }
         }
     }
@@ -155,11 +156,11 @@ page 14135155 "lvnServicingWorksheet"
 
                 trigger OnAction()
                 var
-                    BorrowerCustomersCreatedlbl: Label 'Borrower Customers Created';
+                    BorrowerCustomersCreatedLbl: Label 'Borrower Customers Created';
                 begin
                     ServicingManagement.CreateBorrowerCustomers();
                     ServicingManagement.ValidateServicingWorksheet();
-                    Message(BorrowerCustomersCreatedlbl);
+                    Message(BorrowerCustomersCreatedLbl);
                     CurrPage.Update(false);
                 end;
             }

@@ -255,7 +255,7 @@ table 14135113 "lvnLoanProcessingSchemaLine"
         ExpressionList: Page lvnExpressionList;
         DimensionNamesRetrieved: Boolean;
         DimensionNames: array[8] of Text;
-        lvnRuleLabel: Label '%1 Rule';
+        RuleLbl: Label '%1 Rule';
 
     local procedure GetRuleCaptionString(Index: Integer): Text
     begin
@@ -264,7 +264,7 @@ table 14135113 "lvnLoanProcessingSchemaLine"
                 DimensionsManagement.GetDimensionNames(DimensionNames);
                 DimensionNamesRetrieved := true;
             end;
-            exit(StrSubstNo(lvnRuleLabel, DimensionNames[Index]));
+            exit(StrSubstNo(RuleLbl, DimensionNames[Index]));
         end;
         exit('')
     end;

@@ -67,7 +67,6 @@ report 14135155 "lvnUseTaxPayableReport"
                 trigger OnPreDataItem()
                 var
                     CrLineCount: Integer;
-                    InvLineCount: Integer;
                 begin
                     PurchInvLine.SetCurrentKey(lvnDeliveryState);
                     PurchCrMemoLine.SetCurrentKey(lvnDeliveryState);
@@ -104,7 +103,6 @@ report 14135155 "lvnUseTaxPayableReport"
                 var
                     TempDimSet: Record "Dimension Set Entry" temporary;
                     DimMgmt: Codeunit DimensionManagement;
-                    InvLineCount: Integer;
                 begin
                     if Number > 1 then
                         if Number <= InvLineCount then
@@ -178,8 +176,8 @@ report 14135155 "lvnUseTaxPayableReport"
             {
                 group(Excel)
                 {
-                    field(PrintToExcel; PrintToExcel) { Caption = 'Print To Excel'; ApplicationArea = All; }
-                    field(NumberFormat; NumberFormat)
+                    field(PrintToExcelField; PrintToExcel) { Caption = 'Print To Excel'; ApplicationArea = All; }
+                    field(NumberFormatField; NumberFormat)
                     {
                         Caption = 'Currency Format';
                         ApplicationArea = All;
@@ -238,7 +236,8 @@ report 14135155 "lvnUseTaxPayableReport"
         ReportLineTtl: Decimal;
         ReportTaxTtl: Decimal;
         NumberFormat: Code[20];
-        ExportCallLabel: Label 'UseTaxPayableExport';
+        InvLineCount: Integer;
+        ExportCallLbl: Label 'UseTaxPayableExport';
         FileNameLbl: Label 'UseTaxPayableReport.xlsx';
         ColorTxt: Label '#E1E1E1';
         RepHeaderLbl: Label 'Use Tax Payable Report';
@@ -249,7 +248,6 @@ report 14135155 "lvnUseTaxPayableReport"
         ExtDocNoLbl: Label 'Ext. Doc. No.';
         LineAmtLbl: Label 'Line Amount';
         GLAccLbl: Label 'G/L Account';
-        CostCenterLbl: Label 'Cost Center';
         TaxRateLbl: Label 'Tax Rate';
         TaxAmtLbl: Label 'Tax Amount';
         PayFreqLbl: Label 'Payment Frequency';
@@ -289,7 +287,7 @@ report 14135155 "lvnUseTaxPayableReport"
     begin
         if Dimension.Get(LoanVisionSetup."Cost Center Dimension Code") then
             DimName := Dimension.Name;
-        ExcelExport.Init(ExportCallLabel, ExportFormat::Xlsx);
+        ExcelExport.Init(ExportCallLbl, ExportFormat::Xlsx);
         ExcelExport.NewRow(-10);
         WriteToExcel(RepHeaderLbl, true, 22, true, '', true, false);
         ExcelExport.NewRow(-10);

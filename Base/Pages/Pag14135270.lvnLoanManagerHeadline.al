@@ -96,7 +96,7 @@ page 14135270 "lvnLoanManagerHeadline"
         Total: Decimal;
     begin
         FundedDocFilter := '';
-        FundedDoc.SetFilter("Posting Date", '<>%1', CalcDate('0D'));
+        FundedDoc.SetFilter("Posting Date", '<>%1', CalcDate('<CD>'));
         FundedDoc.SetCurrentKey("Posting Date");
         FundedDoc.SetAscending("Posting Date", false);
         if FundedDoc.FindFirst() then begin
@@ -124,7 +124,7 @@ page 14135270 "lvnLoanManagerHeadline"
         Total: Decimal;
     begin
         SoldDocFilter := '';
-        SoldDoc.SetFilter("Posting Date", '<>%1', CalcDate('0D'));
+        SoldDoc.SetFilter("Posting Date", '<>%1', CalcDate('<CD>'));
         SoldDoc.SetCurrentKey("Posting Date");
         SoldDoc.SetAscending("Posting Date", false);
         if SoldDoc.FindFirst() then begin

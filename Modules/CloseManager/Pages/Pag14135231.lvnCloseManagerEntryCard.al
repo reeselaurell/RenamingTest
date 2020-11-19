@@ -43,6 +43,7 @@ page 14135231 "lvnCloseManagerEntryCard"
             part(Subform; lvnCloseManagerEntrySubform)
             {
                 Caption = 'Lines';
+                ApplicationArea = All;
                 SubPageLink = "Template No." = field("Template No.");
                 UpdatePropagation = Both;
             }

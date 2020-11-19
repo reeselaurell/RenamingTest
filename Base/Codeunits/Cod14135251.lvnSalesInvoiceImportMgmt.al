@@ -10,7 +10,7 @@ codeunit 14135251 "lvnSalesInvoiceImportMgmt"
         InvoiceErrorDetail: Record lvnInvoiceErrorDetail;
     begin
         InvoiceErrorDetail.Reset();
-        exit(not InvoiceErrorDetail.FindSet());
+        exit(InvoiceErrorDetail.IsEmpty());
     end;
 
     procedure CreateInvoices(
@@ -21,7 +21,6 @@ codeunit 14135251 "lvnSalesInvoiceImportMgmt"
         SalesHeader: Record "Sales Header";
         TempSalesHeader: Record "Sales Header" temporary;
         SalesLine: Record "Sales Line";
-        DocNo: Code[20];
         EmptyJnlErr: Label 'Sales Invoice Import Journal is empty';
     begin
         SalesHeaderBuffer.Reset();
@@ -145,56 +144,56 @@ codeunit 14135251 "lvnSalesInvoiceImportMgmt"
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 1);
                     DimensionValue.SetRange(Code, SalesInvLineBuffer."Shortcut Dimension 1 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(SalesInvJnlError, SalesInvLineBuffer."Document No.", false, SalesInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, SalesInvLineBuffer."Line No.", SalesInvLineBuffer."Shortcut Dimension 1 Code", Format(1)));
                 end;
                 if SalesInvLineBuffer."Shortcut Dimension 2 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 2);
                     DimensionValue.SetRange(Code, SalesInvLineBuffer."Shortcut Dimension 2 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(SalesInvJnlError, SalesInvLineBuffer."Document No.", false, SalesInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, SalesInvLineBuffer."Line No.", SalesInvLineBuffer."Shortcut Dimension 2 Code", Format(2)));
                 end;
                 if SalesInvLineBuffer."Shortcut Dimension 3 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 3);
                     DimensionValue.SetRange(Code, SalesInvLineBuffer."Shortcut Dimension 3 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(SalesInvJnlError, SalesInvLineBuffer."Document No.", false, SalesInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, SalesInvLineBuffer."Line No.", SalesInvLineBuffer."Shortcut Dimension 3 Code", Format(3)));
                 end;
                 if SalesInvLineBuffer."Shortcut Dimension 4 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 4);
                     DimensionValue.SetRange(Code, SalesInvLineBuffer."Shortcut Dimension 4 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(SalesInvJnlError, SalesInvLineBuffer."Document No.", false, SalesInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, SalesInvLineBuffer."Line No.", SalesInvLineBuffer."Shortcut Dimension 4 Code", Format(4)));
                 end;
                 if SalesInvLineBuffer."Shortcut Dimension 5 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 5);
                     DimensionValue.SetRange(Code, SalesInvLineBuffer."Shortcut Dimension 5 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(SalesInvJnlError, SalesInvLineBuffer."Document No.", false, SalesInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, SalesInvLineBuffer."Line No.", SalesInvLineBuffer."Shortcut Dimension 5 Code", Format(5)));
                 end;
                 if SalesInvLineBuffer."Shortcut Dimension 6 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 6);
                     DimensionValue.SetRange(Code, SalesInvLineBuffer."Shortcut Dimension 6 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(SalesInvJnlError, SalesInvLineBuffer."Document No.", false, SalesInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, SalesInvLineBuffer."Line No.", SalesInvLineBuffer."Shortcut Dimension 6 Code", Format(6)));
                 end;
                 if SalesInvLineBuffer."Shortcut Dimension 7 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 7);
                     DimensionValue.SetRange(Code, SalesInvLineBuffer."Shortcut Dimension 7 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(SalesInvJnlError, SalesInvLineBuffer."Document No.", false, SalesInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, SalesInvLineBuffer."Line No.", SalesInvLineBuffer."Shortcut Dimension 7 Code", Format(7)));
                 end;
                 if SalesInvLineBuffer."Shortcut Dimension 8 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 8);
                     DimensionValue.SetRange(Code, SalesInvLineBuffer."Shortcut Dimension 8 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(SalesInvJnlError, SalesInvLineBuffer."Document No.", false, SalesInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, SalesInvLineBuffer."Line No.", SalesInvLineBuffer."Shortcut Dimension 8 Code", Format(8)));
                 end;
             until SalesInvLineBuffer.Next() = 0;

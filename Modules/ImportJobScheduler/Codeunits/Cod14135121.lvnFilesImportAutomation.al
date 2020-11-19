@@ -6,7 +6,7 @@ codeunit 14135121 "lvnFilesImportAutomation"
     var
         ImportJobSchedulerTask: Record lvnImportJobSchedulerTask;
         ImportJobSchedulerLog: Record lvnImportJobSchedulerLog;
-        FileList: Record "Name/Value Buffer" temporary;
+        TempNameValueList: Record "Name/Value Buffer" temporary;
         FileMgmt: Codeunit "File Management";
         StorageMgmt: Codeunit lvnAzureBlobManagement;
         Postfix: Text;
@@ -17,28 +17,28 @@ codeunit 14135121 "lvnFilesImportAutomation"
         ImportJobSchedulerTask.Reset();
         ImportJobSchedulerTask.SetRange(Code, Rec."Parameter String");
         ImportJobSchedulerTask.FindFirst();
-        FileList.Reset();
-        FileList.DeleteAll();
-        StorageMgmt.GetFileList(ImportJobSchedulerTask."Import Folder", FileList);
-        FileList.Reset();
-        if FileList.FindSet() then
+        TempNameValueList.Reset();
+        TempNameValueList.DeleteAll();
+        StorageMgmt.GetFileList(ImportJobSchedulerTask."Import Folder", TempNameValueList);
+        TempNameValueList.Reset();
+        if TempNameValueList.FindSet() then
             repeat
                 Clear(ImportJobSchedulerLog);
                 ImportJobSchedulerLog.Init();
                 ImportJobSchedulerLog."Job Scheduler Task Code" := ImportJobSchedulerTask.Code;
-                ImportJobSchedulerLog."File Name" := FileList.Name;
+                ImportJobSchedulerLog."File Name" := TempNameValueList.Name;
                 ImportJobSchedulerLog."Import Date/Time" := CurrentDateTime;
                 ImportJobSchedulerLog."Import ID" := CreateGuid();
                 ImportJobSchedulerLog.Insert(true);
                 Commit();
-                NewFileName := FileMgmt.GetFileNameWithoutExtension(FileList.Name) + Postfix;
-                FileExtension := FileMgmt.GetExtension(FileList.Name);
-                if not ProcessFileImport(ImportJobSchedulerTask, FileList.Name, ImportJobSchedulerLog."Import ID") then begin
+                NewFileName := FileMgmt.GetFileNameWithoutExtension(TempNameValueList.Name) + Postfix;
+                FileExtension := FileMgmt.GetExtension(TempNameValueList.Name);
+                if not ProcessFileImport(ImportJobSchedulerTask, TempNameValueList.Name, ImportJobSchedulerLog."Import ID") then begin
                     ImportJobSchedulerLog."Error Text" := CopyStr(GetLastErrorText(), 1, MaxStrLen(ImportJobSchedulerLog."Error Text"));
                     ImportJobSchedulerLog."Import Failed" := true;
                     ImportJobSchedulerLog.Modify();
                     Commit();
-                    StorageMgmt.MoveFile(ImportJobSchedulerTask."Import Folder", FileList.Name, ImportJobSchedulerTask."Error Folder", NewFileName + '.err' + FileExtension);
+                    StorageMgmt.MoveFile(ImportJobSchedulerTask."Import Folder", TempNameValueList.Name, ImportJobSchedulerTask."Error Folder", NewFileName + '.err' + FileExtension);
                 end else begin
                     if ImportJobSchedulerTask.Type = ImportJobSchedulerTask.Type::"General Journal" then begin
                         CalcJournalStatistics(ImportJobSchedulerTask, ImportJobSchedulerLog);
@@ -53,11 +53,11 @@ codeunit 14135121 "lvnFilesImportAutomation"
                             end;
                     end;
                     if ImportJobSchedulerLog."Posting Failed" then
-                        StorageMgmt.MoveFile(ImportJobSchedulerTask."Import Folder", FileList.Name, ImportJobSchedulerTask."Error Folder", NewFileName + '.err' + FileExtension)
+                        StorageMgmt.MoveFile(ImportJobSchedulerTask."Import Folder", TempNameValueList.Name, ImportJobSchedulerTask."Error Folder", NewFileName + '.err' + FileExtension)
                     else
-                        StorageMgmt.MoveFile(ImportJobSchedulerTask."Import Folder", FileList.Name, ImportJobSchedulerTask."Error Folder", NewFileName + '.old' + FileExtension)
+                        StorageMgmt.MoveFile(ImportJobSchedulerTask."Import Folder", TempNameValueList.Name, ImportJobSchedulerTask."Error Folder", NewFileName + '.old' + FileExtension)
                 end;
-            until FileList.Next() = 0;
+            until TempNameValueList.Next() = 0;
     end;
 
     [TryFunction]
@@ -109,18 +109,18 @@ codeunit 14135121 "lvnFilesImportAutomation"
         FileName: Text;
         ImportID: Guid)
     var
-        GenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
-        ImportBufferError: Record lvnImportBufferError temporary;
+        TempGenJnlImportBuffer: Record lvnGenJnlImportBuffer temporary;
+        TempImportBufferError: Record lvnImportBufferError temporary;
         GenJnlFileImportMgmt: Codeunit lvnGenJnlFileImportManagement;
     begin
-        GenJnlFileImportMgmt.AutoFileImport(ImportJobSchedulerTask."Data Import Schema Code", ImportJobSchedulerTask."Import Folder", FileName, GenJnlImportBuffer, ImportBufferError);
-        ImportBufferError.Reset();
-        if not ImportBufferError.IsEmpty() then begin
-            ImportBufferError.FindFirst();
+        GenJnlFileImportMgmt.AutoFileImport(ImportJobSchedulerTask."Data Import Schema Code", ImportJobSchedulerTask."Import Folder", FileName, TempGenJnlImportBuffer, TempImportBufferError);
+        TempImportBufferError.Reset();
+        if not TempImportBufferError.IsEmpty() then begin
+            TempImportBufferError.FindFirst();
             //TODO: Add associated error list instead of just throwing first error
-            Error(ImportBufferError.Description);
+            Error(TempImportBufferError.Description);
         end else
-            GenJnlFileImportMgmt.CreateJournalLines(GenJnlImportBuffer, ImportJobSchedulerTask."Gen. Journal Template", ImportJobSchedulerTask."Gen. Journal Batch", ImportID);
+            GenJnlFileImportMgmt.CreateJournalLines(TempGenJnlImportBuffer, ImportJobSchedulerTask."Gen. Journal Template", ImportJobSchedulerTask."Gen. Journal Batch", ImportID);
     end;
 
     local procedure ProcessLoanImportFile(var ImportJobSchedulerTask: Record lvnImportJobSchedulerTask; FileName: Text)

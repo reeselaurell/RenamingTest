@@ -96,6 +96,7 @@ page 14135151 "lvnPostedServicingInvoice"
             part(ServicingInvoiceSubform; lvnPostedServInvoiceSubform)
             {
                 Caption = 'Lines';
+                ApplicationArea = All;
                 SubPageLink = "Servicing Document Type" = field("Servicing Document Type"), "Document No." = field("No.");
             }
         }

@@ -75,8 +75,6 @@ codeunit 14135300 lvnCommissionCalcHelper
         ExpressionHeader: Record lvnExpressionHeader;
         ConsumerMetadata: Text;
         var ExpressionBuffer: Record lvnExpressionValueBuffer)
-    var
-        CommissionSetup: Record lvnCommissionSetup;
     begin
         if GetCommissionConsumerId() = ExpressionHeader."Consumer Id" then
             case ConsumerMetadata of
@@ -88,7 +86,7 @@ codeunit 14135300 lvnCommissionCalcHelper
     end;
 
     local procedure CalculateTiersAmount(
-        var CommissionTierHeaderCode: Code[20];
+     CommissionTierHeaderCode: Code[20];
         BaseAmount: Decimal;
         OnGoingAmount: Decimal;
         TotalAmount: Decimal;
@@ -121,7 +119,7 @@ codeunit 14135300 lvnCommissionCalcHelper
             TempCalcTierLine."From Volume" := OnGoingAmount - CurrentAmount;
             TempCalcTierLine.Modify();
         end;
-        if TempCalcTierLine.FindSet() then begin
+        if TempCalcTierLine.FindSet() then
             repeat
                 TempCalcTierLine."Spread Amount" := (TempCalcTierLine."To Volume" - TempCalcTierLine."From Volume");
                 if TempCalcTierLine."Spread Amount" > CurrentAmount then
@@ -129,7 +127,6 @@ codeunit 14135300 lvnCommissionCalcHelper
                 CurrentAmount := CurrentAmount - TempCalcTierLine."Spread Amount";
                 TempCalcTierLine.Modify();
             until (TempCalcTierLine.Next() = 0) or (CurrentAmount <= 0);
-        end;
         TempCalcTierLine.Reset();
         TempCalcTierLine.SetFilter("Spread Amount", '<>%1', 0);
         if TempCalcTierLine.FindSet() then
@@ -180,11 +177,10 @@ codeunit 14135300 lvnCommissionCalcHelper
         FieldSequenceNo: Integer;
     begin
         LoanFieldsConfiguration.Reset();
-        if LoanFieldsConfiguration.FindSet() then begin
+        if LoanFieldsConfiguration.FindSet() then
             repeat
                 AppendExpressionField(ExpressionValueBuffer, FieldSequenceNo, LoanFieldsConfiguration."Field Name", Format(LoanFieldsConfiguration."Value Type"));
             until LoanFieldsConfiguration.Next() = 0;
-        end;
         TableFields.Reset();
         TableFields.SetRange(TableNo, Database::lvnLoan);
         TableFields.FindSet();

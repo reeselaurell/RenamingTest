@@ -14,14 +14,14 @@ page 14135214 "lvnDimensionPerformanceView"
         {
             group(Filters)
             {
-                field(SchemaName; SystemFilter.Description)
+                field(SchemaName; TempSystemCalcFilter.Description)
                 {
                     ApplicationArea = All;
                     Caption = 'View Name';
                     ShowCaption = false;
                     Editable = false;
                 }
-                field(Dim1Filter; SystemFilter."Global Dimension 1")
+                field(Dim1Filter; TempSystemCalcFilter."Global Dimension 1")
                 {
                     ApplicationArea = All;
                     Caption = 'Dimension 1 Filter';
@@ -29,7 +29,7 @@ page 14135214 "lvnDimensionPerformanceView"
                     Visible = Dim1Visible;
                     CaptionClass = '1,3,1';
                 }
-                field(Dim2Filter; SystemFilter."Global Dimension 2")
+                field(Dim2Filter; TempSystemCalcFilter."Global Dimension 2")
                 {
                     ApplicationArea = All;
                     Caption = 'Dimension 2 Filter';
@@ -37,7 +37,7 @@ page 14135214 "lvnDimensionPerformanceView"
                     Visible = Dim2Visible;
                     CaptionClass = '1,3,2';
                 }
-                field(Dim3Filter; SystemFilter."Shortcut Dimension 3")
+                field(Dim3Filter; TempSystemCalcFilter."Shortcut Dimension 3")
                 {
                     ApplicationArea = All;
                     Caption = 'Dimension 3 Filter';
@@ -45,7 +45,7 @@ page 14135214 "lvnDimensionPerformanceView"
                     Visible = Dim3Visible;
                     CaptionClass = '1,2,3';
                 }
-                field(Dim4Filter; SystemFilter."Shortcut Dimension 4")
+                field(Dim4Filter; TempSystemCalcFilter."Shortcut Dimension 4")
                 {
                     ApplicationArea = All;
                     Caption = 'Dimension 4 Filter';
@@ -53,7 +53,7 @@ page 14135214 "lvnDimensionPerformanceView"
                     Visible = Dim4Visible;
                     CaptionClass = '1,2,4';
                 }
-                field(BusinessUnitFilter; SystemFilter."Business Unit")
+                field(BusinessUnitFilter; TempSystemCalcFilter."Business Unit")
                 {
                     ApplicationArea = All;
                     Caption = 'Business Unit Filter';
@@ -120,6 +120,7 @@ page 14135214 "lvnDimensionPerformanceView"
             {
                 ApplicationArea = All;
                 Caption = 'Html Export';
+                Image = Export;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Promoted = true;
@@ -143,10 +144,9 @@ page 14135214 "lvnDimensionPerformanceView"
         BandSchema: Record lvnDimensionPerfBandSchema;
         ColSchema: Record lvnPerformanceColSchema;
         TempBandLine: Record lvnDimPerfBandSchemaLine temporary;
-        Buffer: Record lvnPerformanceValueBuffer temporary;
-        SystemFilter: Record lvnSystemCalculationFilter temporary;
+        TempPerValueBuffer: Record lvnPerformanceValueBuffer temporary;
+        TempSystemCalcFilter: Record lvnSystemCalculationFilter temporary;
         PerformanceMgmt: Codeunit lvnPerformanceMgmt;
-        PerformanceDataExport: Codeunit lvnPerformanceDataExport;
         BandIndexLookup: Dictionary of [Integer, Integer];
         StylesInUse: Dictionary of [Code[20], Boolean];
         GridExportMode: Enum lvnGridExportMode;
@@ -166,13 +166,13 @@ page 14135214 "lvnDimensionPerformanceView"
     begin
         RowSchema.Get(RowSchemaCode);
         BandSchema.Get(BandSchemaCode);
-        SystemFilter := Filter;
-        SystemFilter.Description := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
-        BusinessUnitVisible := SystemFilter."Business Unit" <> '';
-        Dim1Visible := SystemFilter."Global Dimension 1" <> '';
-        Dim2Visible := SystemFilter."Global Dimension 2" <> '';
-        Dim3Visible := SystemFilter."Shortcut Dimension 3" <> '';
-        Dim4Visible := SystemFilter."Shortcut Dimension 4" <> '';
+        TempSystemCalcFilter := Filter;
+        TempSystemCalcFilter.Description := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
+        BusinessUnitVisible := TempSystemCalcFilter."Business Unit" <> '';
+        Dim1Visible := TempSystemCalcFilter."Global Dimension 1" <> '';
+        Dim2Visible := TempSystemCalcFilter."Global Dimension 2" <> '';
+        Dim3Visible := TempSystemCalcFilter."Shortcut Dimension 3" <> '';
+        Dim4Visible := TempSystemCalcFilter."Shortcut Dimension 4" <> '';
     end;
 
     local procedure CalculateColumns()
@@ -180,7 +180,7 @@ page 14135214 "lvnDimensionPerformanceView"
         DynamicBandLink: Record lvnDynamicBandLink;
         BandLine: Record lvnDimPerfBandSchemaLine;
         DimensionValue: Record "Dimension Value";
-        BandFilter: Record lvnSystemCalculationFilter temporary;
+        TempBandFilter: Record lvnSystemCalculationFilter temporary;
         LineNo: Integer;
     begin
         TempBandLine.Reset();
@@ -189,16 +189,16 @@ page 14135214 "lvnDimensionPerformanceView"
         if BandSchema."Dynamic Layout" then begin
             DynamicBandLink.Reset();
             DynamicBandLink.SetRange("Dimension Code", BandSchema."Dimension Code");
-            if SystemFilter."Global Dimension 1" <> '' then
-                DynamicBandLink.SetFilter("Global Dimension 1 Code", SystemFilter."Global Dimension 1");
-            if SystemFilter."Global Dimension 2" <> '' then
-                DynamicBandLink.SetFilter("Global Dimension 2 Code", SystemFilter."Global Dimension 2");
-            if SystemFilter."Shortcut Dimension 3" <> '' then
-                DynamicBandLink.SetFilter("Shortcut Dimension 3 Code", SystemFilter."Shortcut Dimension 3");
-            if SystemFilter."Shortcut Dimension 4" <> '' then
-                DynamicBandLink.SetFilter("Shortcut Dimension 4 Code", SystemFilter."Shortcut Dimension 4");
-            if SystemFilter."Business Unit" <> '' then
-                DynamicBandLink.SetFilter("Business Unit Code", SystemFilter."Business Unit");
+            if TempSystemCalcFilter."Global Dimension 1" <> '' then
+                DynamicBandLink.SetFilter("Global Dimension 1 Code", TempSystemCalcFilter."Global Dimension 1");
+            if TempSystemCalcFilter."Global Dimension 2" <> '' then
+                DynamicBandLink.SetFilter("Global Dimension 2 Code", TempSystemCalcFilter."Global Dimension 2");
+            if TempSystemCalcFilter."Shortcut Dimension 3" <> '' then
+                DynamicBandLink.SetFilter("Shortcut Dimension 3 Code", TempSystemCalcFilter."Shortcut Dimension 3");
+            if TempSystemCalcFilter."Shortcut Dimension 4" <> '' then
+                DynamicBandLink.SetFilter("Shortcut Dimension 4 Code", TempSystemCalcFilter."Shortcut Dimension 4");
+            if TempSystemCalcFilter."Business Unit" <> '' then
+                DynamicBandLink.SetFilter("Business Unit Code", TempSystemCalcFilter."Business Unit");
             DynamicBandLink.FindSet();
             LineNo := 1;
             repeat
@@ -232,9 +232,9 @@ page 14135214 "lvnDimensionPerformanceView"
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::Normal);
         TempBandLine.FindSet();
         repeat
-            BandFilter := SystemFilter;
-            PerformanceMgmt.ApplyDimensionBandFilter(BandFilter, BandSchema, TempBandLine);
-            PerformanceMgmt.CalculatePerformanceBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, BandFilter);
+            TempBandFilter := TempSystemCalcFilter;
+            PerformanceMgmt.ApplyDimensionBandFilter(TempBandFilter, BandSchema, TempBandLine);
+            PerformanceMgmt.CalculatePerformanceBand(TempPerValueBuffer, TempBandLine."Band No.", RowSchema, ColSchema, TempBandFilter);
         until TempBandLine.Next() = 0;
 
         TempBandLine.Reset();
@@ -248,9 +248,9 @@ page 14135214 "lvnDimensionPerformanceView"
         TempBandLine.SetRange("Band Type", TempBandLine."Band Type"::Formula);
         if TempBandLine.FindSet() then
             repeat
-                BandFilter := SystemFilter;
-                PerformanceMgmt.ApplyDimensionBandFilter(BandFilter, BandSchema, TempBandLine);
-                PerformanceMgmt.CalculateFormulaBand(Buffer, TempBandLine."Band No.", RowSchema, ColSchema, BandFilter, TempBandLine."Row Formula Code", PerformanceMgmt.GetDimensionRowExpressionConsumerId());
+                TempBandFilter := TempSystemCalcFilter;
+                PerformanceMgmt.ApplyDimensionBandFilter(TempBandFilter, BandSchema, TempBandLine);
+                PerformanceMgmt.CalculateFormulaBand(TempPerValueBuffer, TempBandLine."Band No.", RowSchema, ColSchema, TempBandFilter, TempBandLine."Row Formula Code", PerformanceMgmt.GetDimensionRowExpressionConsumerId());
             until TempBandLine.Next() = 0;
     end;
 
@@ -260,7 +260,7 @@ page 14135214 "lvnDimensionPerformanceView"
         Setting: JsonObject;
     begin
         Json.Add('columns', GetColumns());
-        Json.Add('dataSource', PerformanceMgmt.GetData(Buffer, StylesInUse, RowSchema.Code, RowSchema."Column Schema"));
+        Json.Add('dataSource', PerformanceMgmt.GetData(TempPerValueBuffer, StylesInUse, RowSchema.Code, RowSchema."Column Schema"));
         Setting.Add('enabled', false);
         Json.Add('paging', Setting);
         Clear(Setting);
@@ -276,7 +276,7 @@ page 14135214 "lvnDimensionPerformanceView"
         RowLine: Record lvnPerformanceRowSchemaLine;
         CalcUnit: Record lvnCalculationUnit;
         Loan: Record lvnLoan;
-        BandFilter: Record lvnSystemCalculationFilter temporary;
+        TempBandFilter: Record lvnSystemCalculationFilter temporary;
         GLEntry: Record "G/L Entry";
         LoanList: Page lvnLoanList;
         GLEntries: Page lvnPerformanceGLEntries;
@@ -285,20 +285,20 @@ page 14135214 "lvnDimensionPerformanceView"
         if TempBandLine."Band Type" = TempBandLine."Band Type"::Normal then begin
             RowLine.Get(RowSchema.Code, RowIndex, ColIndex);
             CalcUnit.Get(RowLine."Calculation Unit Code");
-            BandFilter := SystemFilter;
-            PerformanceMgmt.ApplyDimensionBandFilter(BandFilter, BandSchema, TempBandLine);
+            TempBandFilter := TempSystemCalcFilter;
+            PerformanceMgmt.ApplyDimensionBandFilter(TempBandFilter, BandSchema, TempBandLine);
             case CalcUnit."Lookup Source" of
                 CalcUnit."Lookup Source"::"Loan Card":
                     begin
                         Loan.Reset();
-                        PerformanceMgmt.ApplyLoanFilter(Loan, CalcUnit, BandFilter);
+                        PerformanceMgmt.ApplyLoanFilter(Loan, CalcUnit, TempBandFilter);
                         LoanList.SetTableView(Loan);
                         LoanList.RunModal();
                     end;
                 CalcUnit."Lookup Source"::"Ledger Entries":
                     begin
                         GLEntry.Reset();
-                        PerformanceMgmt.ApplyGLFilter(GLEntry, CalcUnit, BandFilter);
+                        PerformanceMgmt.ApplyGLFilter(GLEntry, CalcUnit, TempBandFilter);
                         GLEntries.SetTableView(GLEntry);
                         GLEntries.RunModal();
                     end;
@@ -308,29 +308,29 @@ page 14135214 "lvnDimensionPerformanceView"
 
     local procedure ExportToExcel(GridExportMode: Enum lvnGridExportMode)
     var
-        HeaderData: Record lvnSystemCalculationFilter temporary;
-        BandInfo: Record lvnPerformanceBandLineInfo temporary;
+        TempHeaderData: Record lvnSystemCalculationFilter temporary;
+        TempBandInfo: Record lvnPerformanceBandLineInfo temporary;
         PerformanceDataExport: Codeunit lvnPerformanceDataExport;
         ExcelExport: Codeunit lvnExcelExport;
     begin
-        Clear(HeaderData);
-        HeaderData.Description := SystemFilter.Description;
-        HeaderData."Global Dimension 1" := SystemFilter."Global Dimension 1";
-        HeaderData."Global Dimension 2" := SystemFilter."Global Dimension 2";
-        HeaderData."Shortcut Dimension 3" := SystemFilter."Shortcut Dimension 3";
-        HeaderData."Shortcut Dimension 4" := SystemFilter."Shortcut Dimension 4";
-        HeaderData."Business Unit" := SystemFilter."Business Unit";
+        Clear(TempHeaderData);
+        TempHeaderData.Description := TempSystemCalcFilter.Description;
+        TempHeaderData."Global Dimension 1" := TempSystemCalcFilter."Global Dimension 1";
+        TempHeaderData."Global Dimension 2" := TempSystemCalcFilter."Global Dimension 2";
+        TempHeaderData."Shortcut Dimension 3" := TempSystemCalcFilter."Shortcut Dimension 3";
+        TempHeaderData."Shortcut Dimension 4" := TempSystemCalcFilter."Shortcut Dimension 4";
+        TempHeaderData."Business Unit" := TempSystemCalcFilter."Business Unit";
         TempBandLine.Reset();
         repeat
-            Clear(BandInfo);
-            BandInfo."Band No." := TempBandLine."Band No.";
-            BandInfo."Band Type" := TempBandLine."Band Type";
-            BandInfo."Header Description" := TempBandLine."Header Description";
-            BandInfo."Row Formula Code" := TempBandLine."Row Formula Code";
-            BandInfo.Insert();
+            Clear(TempBandInfo);
+            TempBandInfo."Band No." := TempBandLine."Band No.";
+            TempBandInfo."Band Type" := TempBandLine."Band Type";
+            TempBandInfo."Header Description" := TempBandLine."Header Description";
+            TempBandInfo."Row Formula Code" := TempBandLine."Row Formula Code";
+            TempBandInfo.Insert();
         until TempBandLine.Next() = 0;
         ExcelExport.Init('PerformanceWorksheet', GridExportMode);
-        PerformanceDataExport.ExportToExcel(ExcelExport, RowSchema, Buffer, HeaderData, BandInfo);
+        PerformanceDataExport.ExportToExcel(ExcelExport, RowSchema, TempPerValueBuffer, TempHeaderData, TempBandInfo);
         ExcelExport.Download(PerformanceDataExport.GetExportFileName(GridExportMode, RowSchema."Schema Type"));
     end;
 

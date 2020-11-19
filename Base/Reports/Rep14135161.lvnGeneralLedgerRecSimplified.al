@@ -129,6 +129,7 @@ report 14135161 "lvnGeneralLedgerRecSimplified"
                 EntriesByLoanSums.SetFilter(GLAccountNoFilter, "No.");
                 EntriesByLoanSums.SetFilter(PostingDateFilter, DateFilter);
                 EntriesByLoanSums.Open();
+                LineNo := 1;
                 while EntriesByLoanSums.Read() do begin
                     if (EntriesByLoanSums.DebitAmount <> 0) or (EntriesByLoanSums.CreditAmount <> 0) then
                         if HideZeroBalance then begin
@@ -170,8 +171,8 @@ report 14135161 "lvnGeneralLedgerRecSimplified"
             {
                 group(Options)
                 {
-                    field(ShowDetails; ShowDetails) { ApplicationArea = All; Caption = 'Show Details'; }
-                    field(HideZeroBalance; HideZeroBalance) { ApplicationArea = All; Caption = 'Hide Zero Balance'; }
+                    field(ShowDetailsField; ShowDetails) { ApplicationArea = All; Caption = 'Show Details'; }
+                    field(HideZeroBalanceField; HideZeroBalance) { ApplicationArea = All; Caption = 'Hide Zero Balance'; }
                 }
             }
         }
@@ -198,7 +199,6 @@ report 14135161 "lvnGeneralLedgerRecSimplified"
         DefaultDimension: Record "Default Dimension";
         Loan: Record lvnLoan;
         BorrowerName: Text;
-        DateFunded: Date;
         DateFilter: Text;
         LoanCardFilters: Text;
         GLEntryFilters: Text;

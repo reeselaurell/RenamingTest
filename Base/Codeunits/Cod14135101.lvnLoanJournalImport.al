@@ -280,9 +280,8 @@ codeunit 14135101 "lvnLoanJournalImport"
         UpperValue: Text;
     begin
         if LoanImportSchemaLine."Field Size" > 0 then begin
-            if LoanImportSchemaLine.Trimming = LoanImportSchemaLine.Trimming::Spaces then begin
+            if LoanImportSchemaLine.Trimming = LoanImportSchemaLine.Trimming::Spaces then
                 Value := DelChr(Value, '<>', ' ');
-            end;
             if LoanImportSchemaLine.Trimming = LoanImportSchemaLine.Trimming::"To Size" then begin
                 Value := DelChr(Value, '<>', ' ');
                 Value := CopyStr(Value, 1, LoanImportSchemaLine."Field Size");
@@ -372,9 +371,7 @@ codeunit 14135101 "lvnLoanJournalImport"
                     FieldReference.Validate(IntegerField);
                 end;
             LoanImportSchemaLine."Value Type"::Text:
-                begin
-                    FieldReference.Validate(CopyStr(Value, 1, FieldReference.Length()));
-                end;
+                FieldReference.Validate(CopyStr(Value, 1, FieldReference.Length()));
         end;
     end;
 }

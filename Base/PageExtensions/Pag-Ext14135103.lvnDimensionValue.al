@@ -34,9 +34,8 @@ pageextension 14135103 "lvnDimensionValue" extends "Dimension Values"
         LoanVisionSetup: Record lvnLoanVisionSetup;
     begin
         LoanVisionSetup.Get();
-        if LoanVisionSetup."Loan Officer Dimension Code" = Rec."Dimension Code" then begin
+        if LoanVisionSetup."Loan Officer Dimension Code" = Rec."Dimension Code" then
             LoanOfficerFieldsVisible := true;
-        end;
     end;
 
     var

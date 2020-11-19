@@ -117,7 +117,7 @@ report 14135114 "lvnForm1099CalcVendPayments"
             {
                 group(Group)
                 {
-                    field(Year; Year)
+                    field(YearField; Year)
                     {
                         Caption = 'Year';
                         ApplicationArea = All;

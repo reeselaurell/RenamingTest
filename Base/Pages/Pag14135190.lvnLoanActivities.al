@@ -215,7 +215,7 @@ page 14135190 "lvnLoanActivities"
         Clear(FundedDocumentsWarehouseLineCaptions);
         WarehouseLine.Reset();
         WarehouseLine.SetRange("Show In Rolecenter", true);
-        if WarehouseLine.FindSet() then begin
+        if WarehouseLine.FindSet() then
             repeat
                 Idx := Idx + 1;
                 FundedDocumentsWarehouseLineCaptions[Idx] := WarehouseLine.Description;
@@ -242,7 +242,6 @@ page 14135190 "lvnLoanActivities"
                         FundedDocumentVisible8 := true;
                 end;
             until (WarehouseLine.Next() = 0) or (Idx = 8);
-        end;
     end;
 
     local procedure GetWarehouseLineCaption(lvnIndex: Integer): Text

@@ -1,7 +1,7 @@
 page 14135256 "lvnSalesInvoiceImportJnl"
 {
     Caption = 'Sales Invoice Import Journal';
-    PageType = Document;
+    PageType = List;
     SourceTable = lvnSalesInvHdrBuffer;
     InsertAllowed = false;
 

@@ -276,8 +276,8 @@ report 14135117 "lvnGeneralLedgerRecGen"
             {
                 group(Options)
                 {
-                    field(HideZeroBalance; HideZeroBalance) { Caption = 'Hide Zero Balance Entries'; ApplicationArea = All; }
-                    field(DisableMultiPaySearch; DisableMultiPaySearch) { Caption = 'Disable Multipay Search'; ApplicationArea = All; }
+                    field(HideZeroBal; HideZeroBalance) { Caption = 'Hide Zero Balance Entries'; ApplicationArea = All; }
+                    field(DisableMultiPay; DisableMultiPaySearch) { Caption = 'Disable Multipay Search'; ApplicationArea = All; }
                 }
             }
         }

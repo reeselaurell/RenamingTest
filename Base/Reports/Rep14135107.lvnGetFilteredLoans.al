@@ -12,26 +12,26 @@ report 14135107 "lvnGetFilteredLoans"
 
             trigger OnAfterGetRecord()
             begin
-                Clear(ReportingBuffer);
-                ReportingBuffer."Loan No." := "No.";
-                ReportingBuffer.Insert();
+                Clear(TempReportingBuffer);
+                TempReportingBuffer."Loan No." := "No.";
+                TempReportingBuffer.Insert();
             end;
         }
     }
 
     var
-        ReportingBuffer: Record lvnLoanReportingBuffer temporary;
+        TempReportingBuffer: Record lvnLoanReportingBuffer temporary;
 
     procedure RetrieveData(var LoanReportingBuffer: Record lvnLoanReportingBuffer)
     begin
         LoanReportingBuffer.Reset();
         LoanReportingBuffer.DeleteAll();
-        ReportingBuffer.Reset();
-        ReportingBuffer.FindSet();
+        TempReportingBuffer.Reset();
+        TempReportingBuffer.FindSet();
         repeat
             Clear(LoanReportingBuffer);
-            LoanReportingBuffer := ReportingBuffer;
+            LoanReportingBuffer := TempReportingBuffer;
             LoanReportingBuffer.Insert();
-        until ReportingBuffer.Next() = 0;
+        until TempReportingBuffer.Next() = 0;
     end;
 }

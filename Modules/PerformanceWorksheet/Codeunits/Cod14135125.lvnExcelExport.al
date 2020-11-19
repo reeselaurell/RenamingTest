@@ -23,13 +23,11 @@ codeunit 14135125 "lvnExcelExport"
     */
     var
         ExcelExportSetup: Record lvnExcelExportSetup;
-        IsInitialized: Boolean;
         ExportMode: Enum lvnGridExportMode;
         ExcelData: JsonObject;
         Script: JsonArray;
         Instruction: JsonObject;
         Params: JsonObject;
-        NotInitializedErr: Label 'Excel Export is not initialized';
         CharactersTxt: Label 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         ExcelFileTxt: Label 'Excel Files (*.xlsx)|*.xlsx';
         PdfFileTxt: Label 'PDF Files (*.psf)|*.pdf';
@@ -164,9 +162,6 @@ codeunit 14135125 "lvnExcelExport"
     end;
 
     procedure StyleRow(Bold: Enum lvnDefaultBoolean; Italic: Enum lvnDefaultBoolean; Underline: Enum lvnDefaultBoolean; FontSize: Decimal; FontName: Text; ForeColor: Text; BackColor: Text)
-    var
-        Instruction: JsonObject;
-        Params: JsonObject;
     begin
         SetStyle('sr', Bold, Italic, Underline, FontSize, FontName, ForeColor, BackColor);
     end;
@@ -180,9 +175,6 @@ codeunit 14135125 "lvnExcelExport"
     end;
 
     procedure StyleCell(Bold: Enum lvnDefaultBoolean; Italic: Enum lvnDefaultBoolean; Underline: Enum lvnDefaultBoolean; FontSize: Decimal; FontName: Text; ForeColor: Text; BackColor: Text)
-    var
-        Instruction: JsonObject;
-        Params: JsonObject;
     begin
         SetStyle('sx', Bold, Italic, Underline, FontSize, FontName, ForeColor, BackColor);
     end;
@@ -398,8 +390,6 @@ codeunit 14135125 "lvnExcelExport"
     procedure FormatComparison(LeftHand: Text; Comparison: Enum lvnComparison; RightHand: Text): Text
     var
         Split: List of [Text];
-        RangeStart: Text;
-        RangeEnd: Text;
     begin
         case (Comparison) of
             Comparison::Equal:
@@ -416,13 +406,11 @@ codeunit 14135125 "lvnExcelExport"
                 exit(LeftHand + '<>' + RightHand);
             Comparison::Within,
             Comparison::Contains:
-                begin
-                    if RightHand.IndexOf('..') <> 0 then begin
-                        Split := DelChr(RightHand, '<>', '()').Split('..');
-                        exit(StrSubstNo('(%1>=%2)AND(%1<=%2)', LeftHand, Split.Get(1), Split.Get(2)));
-                    end else
-                        exit(StrSubstNo('ISNUMBER(MATCH(%1,{%2},0))', LeftHand, DelChr(RightHand, '<>', '()').Replace('|', ',')));
-                end;
+                if RightHand.IndexOf('..') <> 0 then begin
+                    Split := DelChr(RightHand, '<>', '()').Split('..');
+                    exit(StrSubstNo('(%1>=%2)AND(%1<=%2)', LeftHand, Split.Get(1), Split.Get(2)));
+                end else
+                    exit(StrSubstNo('ISNUMBER(MATCH(%1,{%2},0))', LeftHand, DelChr(RightHand, '<>', '()').Replace('|', ',')));
         end;
     end;
 }

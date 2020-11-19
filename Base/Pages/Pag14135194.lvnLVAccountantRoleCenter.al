@@ -263,16 +263,16 @@ page 14135194 "lvnLVAccountantRoleCenter"
                         ApplicationArea = All;
                         RunObject = page "Analysis by Dimensions";
                     }
-                    action(LoanLevelReportbyPeriod)
-                    {
-                        Caption = 'Loan Level Report by Period';
-                        ApplicationArea = All;
-                    }
-                    action(LoanLevelReportByPeriodNoBps)
-                    {
-                        Caption = 'Loan Level Report By Period No Bps';
-                        ApplicationArea = All;
-                    }
+                    // action(LoanLevelReportbyPeriod)
+                    // {
+                    //     Caption = 'Loan Level Report by Period';
+                    //     ApplicationArea = All;
+                    // }
+                    // action(LoanLevelReportByPeriodNoBps)
+                    // {
+                    //     Caption = 'Loan Level Report By Period No Bps';
+                    //     ApplicationArea = All;
+                    // }
                     action(LoanLevelValuesFinancial)
                     {
                         Caption = 'Loan Level Worksheet';

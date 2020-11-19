@@ -376,7 +376,7 @@ table 14135107 "lvnLoanJournalLine"
             Caption = 'Document Amount';
             DataClassification = CustomerContent;
         }
-        field(50000; "Error Exists"; Boolean)
+        field(10001; "Error Exists"; Boolean)
         {
             Caption = 'Error Exists';
             FieldClass = FlowField;

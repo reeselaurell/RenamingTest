@@ -47,12 +47,14 @@ page 14135320 lvnCommissionJournalView
             part(LoanLevelJournalSubform; lvnLoanLevelJournalSubform)
             {
                 Caption = 'Loan Level';
+                ApplicationArea = All;
                 Editable = false;
                 SubPageLink = "Profile Code" = field(Code), "Profile Line Type" = const("Loan Level");
             }
             part(PeriodLevelJournalSubform; lvnPeriodLevelJournalSubform)
             {
                 Caption = 'Period Level';
+                ApplicationArea = All;
                 SubPageLink = "Profile Code" = field(Code), "Profile Line Type" = const("Period Level");
                 UpdatePropagation = Both;
             }

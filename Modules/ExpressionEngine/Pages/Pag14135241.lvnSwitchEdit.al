@@ -23,7 +23,7 @@ page 14135241 "lvnSwitchEdit"
                     begin
                         Clear(FormulaEdit);
                         FormulaEdit.SetFormula(SwitchValue);
-                        FormulaEdit.SetFieldList(ConditionValueBuffer);
+                        FormulaEdit.SetFieldList(TempExpressionValueBuffer);
                         FormulaEdit.LookupMode(true);
                         FormulaEdit.RunModal();
                         if FormulaEdit.IsFormulaCreated() then
@@ -103,7 +103,7 @@ page 14135241 "lvnSwitchEdit"
                     begin
                         if AddInInitialized then begin
                             FormulaEdit.SetFormula(Value);
-                            FormulaEdit.SetFieldList(ConditionValueBuffer);
+                            FormulaEdit.SetFieldList(TempExpressionValueBuffer);
                             FormulaEdit.LookupMode(true);
                             FormulaEdit.RunModal();
                             if FormulaEdit.IsFormulaCreated() then begin
@@ -132,7 +132,7 @@ page 14135241 "lvnSwitchEdit"
     end;
 
     var
-        ConditionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         Engine: Codeunit lvnExpressionEngine;
         SwitchValue: Text;
         Ready: Boolean;
@@ -141,7 +141,7 @@ page 14135241 "lvnSwitchEdit"
 
     procedure SetFieldList(var FieldList: Record lvnExpressionValueBuffer)
     begin
-        Engine.CloneValueBuffer(FieldList, ConditionValueBuffer);
+        Engine.CloneValueBuffer(FieldList, TempExpressionValueBuffer);
     end;
 
     local procedure RunLoadFields()
@@ -149,14 +149,14 @@ page 14135241 "lvnSwitchEdit"
         Object: JsonObject;
         Data: JsonArray;
     begin
-        ConditionValueBuffer.Reset();
-        if ConditionValueBuffer.FindSet() then
+        TempExpressionValueBuffer.Reset();
+        if TempExpressionValueBuffer.FindSet() then
             repeat
                 Clear(Object);
-                Object.Add('n', ConditionValueBuffer.Name);
+                Object.Add('n', TempExpressionValueBuffer.Name);
                 Object.Add('type', 'v');
                 data.Add(Object);
-            until ConditionValueBuffer.Next() = 0;
+            until TempExpressionValueBuffer.Next() = 0;
         CurrPage.SwitchControl.LoadFields(Data);
     end;
 

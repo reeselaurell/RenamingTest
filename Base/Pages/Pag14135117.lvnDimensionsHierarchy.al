@@ -26,15 +26,13 @@ page 14135117 "lvnDimensionsHierarchy"
                         DimensionCode := DimensionsManagement.GetMainHierarchyDimensionCode();
                         if DimensionCode = '' then begin
                             BusinessUnit.Reset;
-                            if Page.RunModal(0, BusinessUnit) = Action::LookupOK then begin
+                            if Page.RunModal(0, BusinessUnit) = Action::LookupOK then
                                 Rec.Code := BusinessUnit.Code;
-                            end;
                         end else begin
                             DimensionValue.Reset;
                             DimensionValue.SetRange("Dimension Code", DimensionCode);
-                            if Page.RunModal(0, DimensionValue) = Action::LookupOK then begin
+                            if Page.RunModal(0, DimensionValue) = Action::LookupOK then
                                 Rec.Code := DimensionValue.Code;
-                            end;
                         end;
                     end;
                 }
@@ -74,7 +72,6 @@ page 14135117 "lvnDimensionsHierarchy"
     trigger OnOpenPage()
     var
         LoanVisionSetup: Record lvnLoanVisionSetup;
-        DimensionsManagement: Codeunit lvnDimensionsManagement;
     begin
         LoanVisionSetup.Get();
         if LoanVisionSetup."Hierarchy Levels" = 1 then

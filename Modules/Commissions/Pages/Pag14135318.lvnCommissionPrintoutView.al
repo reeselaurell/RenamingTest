@@ -98,13 +98,6 @@ page 14135318 lvnCommissionPrintoutView
         GrossCommissionLbl: Label 'Gross Commission';
         BpsLbl: Label 'Bps';
         NetCommissionLbl: Label 'Net Commission';
-        TotalsLbl: Label 'Totals';
-        DescriptionLbl: Label 'Description';
-        BranchLbl: Label 'Branch';
-        BaseAmountLbl: Label 'Base Amount';
-        AmountLbl: Label 'Amount';
-        OverrideLbl: Label 'Overrides/Bonuses';
-        AdjustmentLbl: Label 'Adjustments';
 
     procedure SetParams(ScheduleNo: Integer; ProfileCode: Code[20])
     begin
@@ -216,17 +209,17 @@ page 14135318 lvnCommissionPrintoutView
         GridColumns.Add(GetColumn('net', NetCommissionLbl));
     end;
 
-    local procedure GetOverrideColumns() GridColumns: JsonArray
+    local procedure GetOverrideColumns(): JsonArray
     begin
         ImplMgmt.ThrowNotImplementedError();
     end;
 
-    local procedure GetAdjustmentColumns() GridColumns: JsonArray
+    local procedure GetAdjustmentColumns(): JsonArray
     begin
         ImplMgmt.ThrowNotImplementedError();
     end;
 
-    local procedure GetCommissionData() DataSource: JsonArray
+    local procedure GetCommissionData(): JsonArray
     begin
         if CommissionSchedule."Period Posted" then
             exit(GetPostedCommissionData())
@@ -234,12 +227,12 @@ page 14135318 lvnCommissionPrintoutView
             exit(GetJournalCommissionData());
     end;
 
-    local procedure GetOverrideData() DataSource: JsonArray
+    local procedure GetOverrideData(): JsonArray
     begin
         ImplMgmt.ThrowNotImplementedError();
     end;
 
-    local procedure GetAdjustmentData() DataSource: JsonArray
+    local procedure GetAdjustmentData(): JsonArray
     begin
         ImplMgmt.ThrowNotImplementedError();
     end;
@@ -301,7 +294,6 @@ page 14135318 lvnCommissionPrintoutView
 
     local procedure GetJournalCommissionData() DataSource: JsonArray
     var
-        CommissionJournalLine: Record lvnCommissionJournalLine;
         Loan: Record lvnLoan;
         CommissionJournalLoans: Query lvnCommissionJournalLoans;
         RowData: JsonObject;
@@ -339,7 +331,7 @@ page 14135318 lvnCommissionPrintoutView
         CommissionJournalLoans.Close();
     end;
 
-    local procedure GetPostedCommissionData() DataSource: JsonArray
+    local procedure GetPostedCommissionData(): JsonArray
     begin
     end;
 }

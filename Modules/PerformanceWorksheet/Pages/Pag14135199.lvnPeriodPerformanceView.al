@@ -14,14 +14,14 @@ page 14135199 "lvnPeriodPerformanceView"
         {
             group(Filters)
             {
-                field(SchemaName; SystemFilter.Description)
+                field(SchemaName; TempSystemCalcFilter.Description)
                 {
                     ApplicationArea = All;
                     Caption = 'View Name';
                     ShowCaption = false;
                     Editable = false;
                 }
-                field(Dim1Filter; SystemFilter."Global Dimension 1")
+                field(Dim1Filter; TempSystemCalcFilter."Global Dimension 1")
                 {
                     ApplicationArea = All;
                     Caption = 'Dimension 1 Filter';
@@ -29,7 +29,7 @@ page 14135199 "lvnPeriodPerformanceView"
                     Visible = Dim1Visible;
                     CaptionClass = '1,3,1';
                 }
-                field(Dim2Filter; SystemFilter."Global Dimension 2")
+                field(Dim2Filter; TempSystemCalcFilter."Global Dimension 2")
                 {
                     ApplicationArea = All;
                     Caption = 'Dimension 2 Filter';
@@ -37,7 +37,7 @@ page 14135199 "lvnPeriodPerformanceView"
                     Visible = Dim2Visible;
                     CaptionClass = '1,3,2';
                 }
-                field(Dim3Filter; SystemFilter."Shortcut Dimension 3")
+                field(Dim3Filter; TempSystemCalcFilter."Shortcut Dimension 3")
                 {
                     ApplicationArea = All;
                     Caption = 'Dimension 3 Filter';
@@ -45,7 +45,7 @@ page 14135199 "lvnPeriodPerformanceView"
                     Visible = Dim3Visible;
                     CaptionClass = '1,2,3';
                 }
-                field(Dim4Filter; SystemFilter."Shortcut Dimension 4")
+                field(Dim4Filter; TempSystemCalcFilter."Shortcut Dimension 4")
                 {
                     ApplicationArea = All;
                     Caption = 'Dimension 4 Filter';
@@ -53,14 +53,14 @@ page 14135199 "lvnPeriodPerformanceView"
                     Visible = Dim4Visible;
                     CaptionClass = '1,2,4';
                 }
-                field(BusinessUnitFilter; SystemFilter."Business Unit")
+                field(BusinessUnitFilter; TempSystemCalcFilter."Business Unit")
                 {
                     ApplicationArea = All;
                     Caption = 'Business Unit Filter';
                     Editable = false;
                     Visible = BusinessUnitVisible;
                 }
-                field(AsOfDate; SystemFilter."As Of Date")
+                field(AsOfDate; TempSystemCalcFilter."As Of Date")
                 {
                     ApplicationArea = All;
                     Caption = 'As Of Date';
@@ -120,6 +120,7 @@ page 14135199 "lvnPeriodPerformanceView"
             {
                 ApplicationArea = All;
                 Caption = 'Html Export';
+                Image = Export;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Promoted = true;
@@ -134,16 +135,15 @@ page 14135199 "lvnPeriodPerformanceView"
 
     trigger OnOpenPage()
     begin
-        PerformanceMgmt.CalculatePeriodsData(RowSchema, BandSchema, SystemFilter, BandInfoBuffer, ValueBuffer);
+        PerformanceMgmt.CalculatePeriodsData(RowSchema, BandSchema, TempSystemCalcFilter, TempBandInfoBuffer, TempValueBuffer);
     end;
 
     var
         RowSchema: Record lvnPerformanceRowSchema;
         BandSchema: Record lvnPeriodPerfBandSchema;
-        ColSchema: Record lvnPerformanceColSchema;
-        BandInfoBuffer: Record lvnPerformanceBandLineInfo temporary;
-        ValueBuffer: Record lvnPerformanceValueBuffer temporary;
-        SystemFilter: Record lvnSystemCalculationFilter temporary;
+        TempBandInfoBuffer: Record lvnPerformanceBandLineInfo temporary;
+        TempValueBuffer: Record lvnPerformanceValueBuffer temporary;
+        TempSystemCalcFilter: Record lvnSystemCalculationFilter temporary;
         PerformanceMgmt: Codeunit lvnPerformanceMgmt;
         GridExportMode: Enum lvnGridExportMode;
         Dim1Visible: Boolean;
@@ -160,15 +160,15 @@ page 14135199 "lvnPeriodPerformanceView"
     begin
         RowSchema.Get(RowSchemaCode);
         BandSchema.Get(BandSchemaCode);
-        SystemFilter := Filter;
-        if SystemFilter."As Of Date" = 0D then
-            SystemFilter."As Of Date" := Today;
-        SystemFilter.Description := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
-        BusinessUnitVisible := SystemFilter."Business Unit" <> '';
-        Dim1Visible := SystemFilter."Global Dimension 1" <> '';
-        Dim2Visible := SystemFilter."Global Dimension 2" <> '';
-        Dim3Visible := SystemFilter."Shortcut Dimension 3" <> '';
-        Dim4Visible := SystemFilter."Shortcut Dimension 4" <> '';
+        TempSystemCalcFilter := Filter;
+        if TempSystemCalcFilter."As Of Date" = 0D then
+            TempSystemCalcFilter."As Of Date" := Today;
+        TempSystemCalcFilter.Description := StrSubstNo(SchemaNameFormatTxt, RowSchema.Description, BandSchema.Description);
+        BusinessUnitVisible := TempSystemCalcFilter."Business Unit" <> '';
+        Dim1Visible := TempSystemCalcFilter."Global Dimension 1" <> '';
+        Dim2Visible := TempSystemCalcFilter."Global Dimension 2" <> '';
+        Dim3Visible := TempSystemCalcFilter."Shortcut Dimension 3" <> '';
+        Dim4Visible := TempSystemCalcFilter."Shortcut Dimension 4" <> '';
     end;
 
     local procedure InitializeDataGrid()
@@ -178,7 +178,7 @@ page 14135199 "lvnPeriodPerformanceView"
         StylesInUse: Dictionary of [Code[20], Boolean];
     begin
         Json.Add('columns', GetColumns());
-        Json.Add('dataSource', PerformanceMgmt.GetData(ValueBuffer, StylesInUse, RowSchema.Code, RowSchema."Column Schema"));
+        Json.Add('dataSource', PerformanceMgmt.GetData(TempValueBuffer, StylesInUse, RowSchema.Code, RowSchema."Column Schema"));
         Setting.Add('enabled', false);
         Json.Add('paging', Setting);
         Clear(Setting);
@@ -207,14 +207,14 @@ page 14135199 "lvnPeriodPerformanceView"
                 CalcUnit."Lookup Source"::"Loan Card":
                     begin
                         Loan.Reset();
-                        PerformanceMgmt.ApplyLoanFilter(Loan, CalcUnit, SystemFilter);
+                        PerformanceMgmt.ApplyLoanFilter(Loan, CalcUnit, TempSystemCalcFilter);
                         LoanList.SetTableView(Loan);
                         LoanList.RunModal();
                     end;
                 CalcUnit."Lookup Source"::"Ledger Entries":
                     begin
                         GLEntry.Reset();
-                        PerformanceMgmt.ApplyGLFilter(GLEntry, CalcUnit, SystemFilter);
+                        PerformanceMgmt.ApplyGLFilter(GLEntry, CalcUnit, TempSystemCalcFilter);
                         GLEntries.SetTableView(GLEntry);
                         GLEntries.RunModal();
                     end;
@@ -224,19 +224,19 @@ page 14135199 "lvnPeriodPerformanceView"
 
     local procedure ExportToExcel(GridExportMode: Enum lvnGridExportMode)
     var
-        HeaderData: Record lvnSystemCalculationFilter temporary;
+        TempHeaderData: Record lvnSystemCalculationFilter temporary;
         PerformanceDataExport: Codeunit lvnPerformanceDataExport;
         ExcelExport: Codeunit lvnExcelExport;
     begin
-        Clear(HeaderData);
-        HeaderData.Description := SystemFilter.Description;
-        HeaderData."Global Dimension 1" := SystemFilter."Global Dimension 1";
-        HeaderData."Global Dimension 2" := SystemFilter."Global Dimension 2";
-        HeaderData."Shortcut Dimension 3" := SystemFilter."Shortcut Dimension 3";
-        HeaderData."Shortcut Dimension 4" := SystemFilter."Shortcut Dimension 4";
-        HeaderData."Business Unit" := SystemFilter."Business Unit";
+        Clear(TempHeaderData);
+        TempHeaderData.Description := TempSystemCalcFilter.Description;
+        TempHeaderData."Global Dimension 1" := TempSystemCalcFilter."Global Dimension 1";
+        TempHeaderData."Global Dimension 2" := TempSystemCalcFilter."Global Dimension 2";
+        TempHeaderData."Shortcut Dimension 3" := TempSystemCalcFilter."Shortcut Dimension 3";
+        TempHeaderData."Shortcut Dimension 4" := TempSystemCalcFilter."Shortcut Dimension 4";
+        TempHeaderData."Business Unit" := TempSystemCalcFilter."Business Unit";
         ExcelExport.Init('PerformanceWorksheet', GridExportMode);
-        PerformanceDataExport.ExportToExcel(ExcelExport, RowSchema, ValueBuffer, HeaderData, BandInfoBuffer);
+        PerformanceDataExport.ExportToExcel(ExcelExport, RowSchema, TempValueBuffer, TempHeaderData, TempBandInfoBuffer);
         ExcelExport.Download(PerformanceDataExport.GetExportFileName(GridExportMode, RowSchema."Schema Type"));
     end;
 
@@ -256,21 +256,21 @@ page 14135199 "lvnPeriodPerformanceView"
         PeriodBand.Add('columns', BandColumns);
         GridColumns.Add(PeriodBand);
         //Bands
-        BandInfoBuffer.Reset();
-        BandInfoBuffer.FindSet();
+        TempBandInfoBuffer.Reset();
+        TempBandInfoBuffer.FindSet();
         repeat
             Clear(PeriodBand);
             Clear(BandColumns);
-            PeriodBand.Add('caption', BandInfoBuffer."Header Description");
+            PeriodBand.Add('caption', TempBandInfoBuffer."Header Description");
             ColLine.Reset();
             ColLine.SetRange("Schema Code", RowSchema."Column Schema");
             ColLine.FindFirst();
             repeat
-                BandColumns.Add(GetColumn(StrSubstNo(PerformanceMgmt.GetFieldFormat(), BandInfoBuffer."Band No.", ColLine."Column No."), ColLine."Primary Caption", ''));
+                BandColumns.Add(GetColumn(StrSubstNo(PerformanceMgmt.GetFieldFormat(), TempBandInfoBuffer."Band No.", ColLine."Column No."), ColLine."Primary Caption", ''));
             until ColLine.Next() = 0;
             PeriodBand.Add('columns', BandColumns);
             GridColumns.Add(PeriodBand);
-        until BandInfoBuffer.Next() = 0;
+        until TempBandInfoBuffer.Next() = 0;
     end;
 
     local procedure GetColumn(DataField: Text; Caption: Text; CssClass: Text) Col: JsonObject

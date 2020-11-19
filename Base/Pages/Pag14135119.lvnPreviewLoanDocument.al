@@ -142,10 +142,10 @@ page 14135119 "lvnPreviewLoanDocument"
 
     procedure SetJournalLine(LoanJournalLine: Record lvnLoanJournalLine)
     var
-        LoanDocumentLine: Record lvnLoanDocumentLine temporary;
+        TempLoanDocumentLine: Record lvnLoanDocumentLine temporary;
         CreateFundedDocuments: Codeunit lvnCreateFundedDocuments;
     begin
-        CreateFundedDocuments.CreateSingleDocument(LoanJournalLine, Rec, LoanDocumentLine, true);
-        CurrPage.Lines.Page.SetLines(LoanDocumentLine);
+        CreateFundedDocuments.CreateSingleDocument(LoanJournalLine, Rec, TempLoanDocumentLine, true);
+        CurrPage.Lines.Page.SetLines(TempLoanDocumentLine);
     end;
 }

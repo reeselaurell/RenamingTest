@@ -116,7 +116,7 @@ report 14135162 "lvnGeneralLedgerByReasonCode"
             {
                 group(Options)
                 {
-                    field(DateOption; DateOption) { Caption = 'Date'; ApplicationArea = All; }
+                    field(DateOptionTime; DateOption) { Caption = 'Date'; ApplicationArea = All; }
                 }
             }
         }

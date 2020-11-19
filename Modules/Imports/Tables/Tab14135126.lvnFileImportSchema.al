@@ -207,43 +207,27 @@ table 14135126 "lvnFileImportSchema"
             begin
                 case "Gen. Jnl. Account Type" of
                     "Gen. Jnl. Account Type"::"Bank Account":
-                        begin
-                            if Page.RunModal(0, BankAccount) = Action::LookupOK then begin
-                                "Default Account No." := BankAccount."No.";
-                            end;
-                        end;
+                        if Page.RunModal(0, BankAccount) = Action::LookupOK then
+                            "Default Account No." := BankAccount."No.";
                     "Gen. Jnl. Account Type"::Customer:
-                        begin
-                            if Page.RunModal(0, Customer) = Action::LookupOK then begin
-                                "Default Account No." := Customer."No.";
-                            end;
-                        end;
+                        if Page.RunModal(0, Customer) = Action::LookupOK then
+                            "Default Account No." := Customer."No.";
                     "Gen. Jnl. Account Type"::"Fixed Asset":
-                        begin
-                            if Page.RunModal(0, FixedAsset) = Action::LookupOK then begin
-                                "Default Account No." := FixedAsset."No.";
-                            end;
-                        end;
+                        if Page.RunModal(0, FixedAsset) = Action::LookupOK then
+                            "Default Account No." := FixedAsset."No.";
                     "Gen. Jnl. Account Type"::"G/L Account":
                         begin
                             GLAccount.Reset;
                             GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
-                            if Page.RunModal(0, GLAccount) = Action::LookupOK then begin
+                            if Page.RunModal(0, GLAccount) = Action::LookupOK then
                                 "Default Account No." := GLAccount."No.";
-                            end;
                         end;
                     "Gen. Jnl. Account Type"::"IC Partner":
-                        begin
-                            if Page.RunModal(0, ICPartner) = Action::LookupOK then begin
-                                "Default Account No." := ICPartner.Code;
-                            end;
-                        end;
+                        if Page.RunModal(0, ICPartner) = Action::LookupOK then
+                            "Default Account No." := ICPartner.Code;
                     "Gen. Jnl. Account Type"::Vendor:
-                        begin
-                            if Page.RunModal(0, Vendor) = Action::LookupOK then begin
-                                "Default Account No." := Vendor."No.";
-                            end;
-                        end;
+                        if Page.RunModal(0, Vendor) = Action::LookupOK then
+                            "Default Account No." := Vendor."No.";
                 end;
             end;
         }
@@ -283,43 +267,27 @@ table 14135126 "lvnFileImportSchema"
             begin
                 case "Gen. Jnl. Bal. Account Type" of
                     "Gen. Jnl. Bal. Account Type"::"Bank Account":
-                        begin
-                            if Page.RunModal(0, BankAccount) = Action::LookupOK then begin
-                                "Default Bal. Account No." := BankAccount."No.";
-                            end;
-                        end;
+                        if Page.RunModal(0, BankAccount) = Action::LookupOK then
+                            "Default Bal. Account No." := BankAccount."No.";
                     "Gen. Jnl. Bal. Account Type"::Customer:
-                        begin
-                            if Page.RunModal(0, Customer) = Action::LookupOK then begin
-                                "Default Bal. Account No." := Customer."No.";
-                            end;
-                        end;
+                        if Page.RunModal(0, Customer) = Action::LookupOK then
+                            "Default Bal. Account No." := Customer."No.";
                     "Gen. Jnl. Bal. Account Type"::"Fixed Asset":
-                        begin
-                            if Page.RunModal(0, FixedAsset) = Action::LookupOK then begin
-                                "Default Bal. Account No." := FixedAsset."No.";
-                            end;
-                        end;
+                        if Page.RunModal(0, FixedAsset) = Action::LookupOK then
+                            "Default Bal. Account No." := FixedAsset."No.";
                     "Gen. Jnl. Bal. Account Type"::"G/L Account":
                         begin
-                            GLAccount.Reset;
+                            GLAccount.Reset();
                             GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
-                            if Page.RunModal(0, GLAccount) = Action::LookupOK then begin
+                            if Page.RunModal(0, GLAccount) = Action::LookupOK then
                                 "Default Bal. Account No." := GLAccount."No.";
-                            end;
                         end;
                     "Gen. Jnl. Bal. Account Type"::"IC Partner":
-                        begin
-                            if Page.RunModal(0, ICPartner) = Action::LookupOK then begin
-                                "Default Bal. Account No." := ICPartner.Code;
-                            end;
-                        end;
+                        if Page.RunModal(0, ICPartner) = Action::LookupOK then
+                            "Default Bal. Account No." := ICPartner.Code;
                     "Gen. Jnl. Bal. Account Type"::Vendor:
-                        begin
-                            if Page.RunModal(0, Vendor) = Action::LookupOK then begin
-                                "Default Bal. Account No." := Vendor."No.";
-                            end;
-                        end;
+                        if Page.RunModal(0, Vendor) = Action::LookupOK then
+                            "Default Bal. Account No." := Vendor."No.";
                 end;
             end;
         }

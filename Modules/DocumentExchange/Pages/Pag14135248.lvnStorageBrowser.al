@@ -49,7 +49,7 @@ page 14135248 "lvnStorageBrowser"
 
                     trigger OnAction()
                     var
-                        NameValueBuffer: Record "Name/Value Buffer" temporary;
+                        TempNameValueBuffer: Record "Name/Value Buffer" temporary;
                         FPBuilder: FilterPageBuilder;
                         ContainerName: Text;
                     begin
@@ -57,8 +57,8 @@ page 14135248 "lvnStorageBrowser"
                         FPBuilder.AddRecord(ContainersLbl, Rec);
                         FPBuilder.AddField(ContainersLbl, Rec.Name);
                         if FPBuilder.RunModal() then begin
-                            NameValueBuffer.SetView(FPBuilder.GetView(ContainersLbl));
-                            ContainerName := NameValueBuffer.GetFilter(Name);
+                            TempNameValueBuffer.SetView(FPBuilder.GetView(ContainersLbl));
+                            ContainerName := TempNameValueBuffer.GetFilter(Name);
                             if ContainerName <> '' then begin
                                 AzureBlobMgmt.CreateContainer(ContainerName);
                                 Refresh();

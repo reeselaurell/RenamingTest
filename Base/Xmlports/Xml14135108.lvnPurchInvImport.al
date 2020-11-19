@@ -133,26 +133,24 @@ xmlport 14135108 "lvnPurchInvImport"
                                     PurchInvLineBuffer."Shortcut Dimension 8 Code" := Dimension8Code;
                                 end;
                             DimensionValidation::"Dimensions from Loan":
-                                begin
-                                    if Loan.Get(LoanNo) then begin
-                                        PurchInvLineBuffer."Shortcut Dimension 1 Code" := Loan."Global Dimension 1 Code";
-                                        PurchInvLineBuffer."Shortcut Dimension 2 Code" := Loan."Global Dimension 2 Code";
-                                        PurchInvLineBuffer."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
-                                        PurchInvLineBuffer."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
-                                        PurchInvLineBuffer."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
-                                        PurchInvLineBuffer."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
-                                        PurchInvLineBuffer."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
-                                        PurchInvLineBuffer."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
-                                    end else begin
-                                        PurchInvLineBuffer."Shortcut Dimension 1 Code" := '';
-                                        PurchInvLineBuffer."Shortcut Dimension 2 Code" := '';
-                                        PurchInvLineBuffer."Shortcut Dimension 3 Code" := '';
-                                        PurchInvLineBuffer."Shortcut Dimension 4 Code" := '';
-                                        PurchInvLineBuffer."Shortcut Dimension 5 Code" := '';
-                                        PurchInvLineBuffer."Shortcut Dimension 6 Code" := '';
-                                        PurchInvLineBuffer."Shortcut Dimension 7 Code" := '';
-                                        PurchInvLineBuffer."Shortcut Dimension 8 Code" := '';
-                                    end;
+                                if Loan.Get(LoanNo) then begin
+                                    PurchInvLineBuffer."Shortcut Dimension 1 Code" := Loan."Global Dimension 1 Code";
+                                    PurchInvLineBuffer."Shortcut Dimension 2 Code" := Loan."Global Dimension 2 Code";
+                                    PurchInvLineBuffer."Shortcut Dimension 3 Code" := Loan."Shortcut Dimension 3 Code";
+                                    PurchInvLineBuffer."Shortcut Dimension 4 Code" := Loan."Shortcut Dimension 4 Code";
+                                    PurchInvLineBuffer."Shortcut Dimension 5 Code" := Loan."Shortcut Dimension 5 Code";
+                                    PurchInvLineBuffer."Shortcut Dimension 6 Code" := Loan."Shortcut Dimension 6 Code";
+                                    PurchInvLineBuffer."Shortcut Dimension 7 Code" := Loan."Shortcut Dimension 7 Code";
+                                    PurchInvLineBuffer."Shortcut Dimension 8 Code" := Loan."Shortcut Dimension 8 Code";
+                                end else begin
+                                    PurchInvLineBuffer."Shortcut Dimension 1 Code" := '';
+                                    PurchInvLineBuffer."Shortcut Dimension 2 Code" := '';
+                                    PurchInvLineBuffer."Shortcut Dimension 3 Code" := '';
+                                    PurchInvLineBuffer."Shortcut Dimension 4 Code" := '';
+                                    PurchInvLineBuffer."Shortcut Dimension 5 Code" := '';
+                                    PurchInvLineBuffer."Shortcut Dimension 6 Code" := '';
+                                    PurchInvLineBuffer."Shortcut Dimension 7 Code" := '';
+                                    PurchInvLineBuffer."Shortcut Dimension 8 Code" := '';
                                 end;
                             DimensionValidation::"From Dimension Hierarchy":
                                 begin
@@ -214,8 +212,8 @@ xmlport 14135108 "lvnPurchInvImport"
             {
                 group(Options)
                 {
-                    field(DimensionValidation; DimensionValidation) { Caption = 'Dimension Valitation'; ApplicationArea = All; }
-                    field(LoanNoValidation; LoanNoValidation) { Caption = 'Loan No. Validation'; ApplicationArea = All; }
+                    field(DimensionValidationField; DimensionValidation) { Caption = 'Dimension Valitation'; ApplicationArea = All; }
+                    field(LoanNoValidationField; LoanNoValidation) { Caption = 'Loan No. Validation'; ApplicationArea = All; }
                 }
             }
         }

@@ -10,7 +10,7 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
         InvoiceErrorDetail: Record lvnInvoiceErrorDetail;
     begin
         InvoiceErrorDetail.Reset();
-        exit(not InvoiceErrorDetail.FindSet());
+        exit(InvoiceErrorDetail.IsEmpty());
     end;
 
     procedure CreateInvoices(
@@ -21,7 +21,6 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
         PurchaseHeader: Record "Purchase Header";
         TempPurchHeader: Record "Purchase Header" temporary;
         PurchaseLine: Record "Purchase Line";
-        DocNo: Code[20];
         EmptyJnlErr: Label 'Purchase Invoice Import Journal is empty';
     begin
         PurchHeaderBuffer.Reset();
@@ -146,56 +145,56 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 1);
                     DimensionValue.SetRange(Code, PurchInvLineBuffer."Shortcut Dimension 1 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(PurchInvJnlError, PurchInvLineBuffer."Document No.", false, PurchInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, PurchInvLineBuffer."Line No.", PurchInvLineBuffer."Shortcut Dimension 1 Code", Format(1)));
                 end;
                 if PurchInvLineBuffer."Shortcut Dimension 2 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 2);
                     DimensionValue.SetRange(Code, PurchInvLineBuffer."Shortcut Dimension 2 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(PurchInvJnlError, PurchInvLineBuffer."Document No.", false, PurchInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, PurchInvLineBuffer."Line No.", PurchInvLineBuffer."Shortcut Dimension 2 Code", Format(2)));
                 end;
                 if PurchInvLineBuffer."Shortcut Dimension 3 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 3);
                     DimensionValue.SetRange(Code, PurchInvLineBuffer."Shortcut Dimension 3 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(PurchInvJnlError, PurchInvLineBuffer."Document No.", false, PurchInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, PurchInvLineBuffer."Line No.", PurchInvLineBuffer."Shortcut Dimension 3 Code", Format(3)));
                 end;
                 if PurchInvLineBuffer."Shortcut Dimension 4 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 4);
                     DimensionValue.SetRange(Code, PurchInvLineBuffer."Shortcut Dimension 4 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(PurchInvJnlError, PurchInvLineBuffer."Document No.", false, PurchInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, PurchInvLineBuffer."Line No.", PurchInvLineBuffer."Shortcut Dimension 4 Code", Format(4)));
                 end;
                 if PurchInvLineBuffer."Shortcut Dimension 5 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 5);
                     DimensionValue.SetRange(Code, PurchInvLineBuffer."Shortcut Dimension 5 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(PurchInvJnlError, PurchInvLineBuffer."Document No.", false, PurchInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, PurchInvLineBuffer."Line No.", PurchInvLineBuffer."Shortcut Dimension 5 Code", Format(5)));
                 end;
                 if PurchInvLineBuffer."Shortcut Dimension 6 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 6);
                     DimensionValue.SetRange(Code, PurchInvLineBuffer."Shortcut Dimension 6 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(PurchInvJnlError, PurchInvLineBuffer."Document No.", false, PurchInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, PurchInvLineBuffer."Line No.", PurchInvLineBuffer."Shortcut Dimension 6 Code", Format(6)));
                 end;
                 if PurchInvLineBuffer."Shortcut Dimension 7 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 7);
                     DimensionValue.SetRange(Code, PurchInvLineBuffer."Shortcut Dimension 7 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(PurchInvJnlError, PurchInvLineBuffer."Document No.", false, PurchInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, PurchInvLineBuffer."Line No.", PurchInvLineBuffer."Shortcut Dimension 7 Code", Format(7)));
                 end;
                 if PurchInvLineBuffer."Shortcut Dimension 8 Code" <> '' then begin
                     DimensionValue.Reset();
                     DimensionValue.SetRange("Global Dimension No.", 8);
                     DimensionValue.SetRange(Code, PurchInvLineBuffer."Shortcut Dimension 8 Code");
-                    if not DimensionValue.FindFirst() then
+                    if DimensionValue.IsEmpty() then
                         AddErrorLine(PurchInvJnlError, PurchInvLineBuffer."Document No.", false, PurchInvLineBuffer."Line No.", StrSubstNo(InvalidDimensionErr, PurchInvLineBuffer."Line No.", PurchInvLineBuffer."Shortcut Dimension 8 Code", Format(8)));
                 end;
             until PurchInvLineBuffer.Next() = 0;
@@ -296,7 +295,7 @@ codeunit 14135250 "lvnPurchInvoiceImportMgmt"
         PurchInvJnlError.SetRange("Line No.", LineNo);
         ErrorNo := PurchInvJnlError.Count() + 1;
         PurchInvJnlError.SetRange("Error Text", ErrorTxt);
-        if not PurchInvJnlError.IsEmpty then
+        if not PurchInvJnlError.IsEmpty() then
             exit;
         Clear(PurchInvJnlError);
         PurchInvJnlError."Document No." := DocumentNo;

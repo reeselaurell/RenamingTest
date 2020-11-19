@@ -35,14 +35,13 @@ xmlport 14135106 "lvnDimensionLoanChangeImport"
             Progress.Update(1, Index);
             GLEntry.Reset();
             GLEntry.SetRange(lvnLoanNo, LoanBuffer."Loan No.");
-            if GLEntry.FindSet() then begin
+            if GLEntry.FindSet() then
                 repeat
                     Clear(DimensionChangeJnlEntry);
                     DimensionChangeJnlEntry."Change Set ID" := ChangeSetId;
                     DimensionChangeJnlEntry.TransferValuesFromRecord(GLEntry);
                     if DimensionChangeJnlEntry.Insert() then;
                 until GLEntry.Next() = 0;
-            end;
         until LoanBuffer.Next() = 0;
         Progress.Close();
     end;

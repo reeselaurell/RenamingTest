@@ -112,7 +112,7 @@ page 14135192 "lvnLVAccountantLoanActivities"
                     begin
                         VendorLedgerEntry.Reset();
                         VendorLedgerEntry.SetRange("Document Type", VendorLedgerEntry."Document Type"::Invoice);
-                        VendorLedgerEntry.SetRange("Closed at Date", CalcDate('0D'));
+                        VendorLedgerEntry.SetRange("Closed at Date", CalcDate('<CD>'));
                         if VendorLedgerEntry.FindSet() then
                             Page.Run(Page::"Vendor Ledger Entries", VendorLedgerEntry);
                     end;
@@ -198,7 +198,7 @@ page 14135192 "lvnLVAccountantLoanActivities"
     begin
         UserSetup.Reset();
         UserSetup.SetRange("Approver ID", UserId);
-        ApprovalsIDExists := UserSetup.FindFirst();
+        ApprovalsIDExists := not UserSetup.IsEmpty();
     end;
 
     local procedure CalculateGenJnlEntriesCount(): Integer
@@ -283,7 +283,7 @@ page 14135192 "lvnLVAccountantLoanActivities"
     begin
         VendorLedgerEntry.Reset();
         VendorLedgerEntry.SetRange("Document Type", VendorLedgerEntry."Document Type"::Invoice);
-        VendorLedgerEntry.SetRange("Closed at Date", CalcDate('0D'));
+        VendorLedgerEntry.SetRange("Closed at Date", CalcDate('<CD>'));
         exit(VendorLedgerEntry.Count());
     end;
 

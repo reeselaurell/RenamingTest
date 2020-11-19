@@ -66,7 +66,7 @@ page 14135243 lvnIifEdit
                     begin
                         if InitState >= 2 then begin
                             FormulaEdit.SetFormula(Value);
-                            FormulaEdit.SetFieldList(ExpressionValueBuffer);
+                            FormulaEdit.SetFieldList(TempExpressionValueBuffer);
                             FormulaEdit.LookupMode(true);
                             FormulaEdit.RunModal();
                             if FormulaEdit.IsFormulaCreated() then begin
@@ -145,7 +145,7 @@ page 14135243 lvnIifEdit
                     begin
                         if InitState >= 2 then begin
                             FormulaEdit.SetFormula(Value);
-                            FormulaEdit.SetFieldList(ExpressionValueBuffer);
+                            FormulaEdit.SetFieldList(TempExpressionValueBuffer);
                             FormulaEdit.LookupMode(true);
                             FormulaEdit.RunModal();
                             if FormulaEdit.IsFormulaCreated() then begin
@@ -171,7 +171,7 @@ page 14135243 lvnIifEdit
     end;
 
     var
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         ExpressionLine: Record lvnExpressionLine;
         Engine: Codeunit lvnExpressionEngine;
         ReadyState: Integer;
@@ -181,7 +181,7 @@ page 14135243 lvnIifEdit
 
     procedure SetFieldList(var FieldList: Record lvnExpressionValueBuffer)
     begin
-        Engine.CloneValueBuffer(FieldList, ExpressionValueBuffer);
+        Engine.CloneValueBuffer(FieldList, TempExpressionValueBuffer);
     end;
 
     local procedure LoadPredicateFields()
@@ -189,14 +189,14 @@ page 14135243 lvnIifEdit
         Object: JsonObject;
         Data: JsonArray;
     begin
-        ExpressionValueBuffer.Reset();
-        if ExpressionValueBuffer.FindSet() then
+        TempExpressionValueBuffer.Reset();
+        if TempExpressionValueBuffer.FindSet() then
             repeat
                 Clear(Object);
-                Object.Add('n', ExpressionValueBuffer.Name);
+                Object.Add('n', TempExpressionValueBuffer.Name);
                 Object.Add('type', 'v');
                 data.Add(Object);
-            until ExpressionValueBuffer.Next() = 0;
+            until TempExpressionValueBuffer.Next() = 0;
         CurrPage.PredicateControl.LoadFields(Data);
     end;
 
@@ -205,14 +205,14 @@ page 14135243 lvnIifEdit
         Object: JsonObject;
         Data: JsonArray;
     begin
-        ExpressionValueBuffer.Reset();
-        if ExpressionValueBuffer.FindSet() then
+        TempExpressionValueBuffer.Reset();
+        if TempExpressionValueBuffer.FindSet() then
             repeat
                 Clear(Object);
-                Object.Add('n', ExpressionValueBuffer.Name);
+                Object.Add('n', TempExpressionValueBuffer.Name);
                 Object.Add('type', 'v');
                 data.Add(Object);
-            until ExpressionValueBuffer.Next() = 0;
+            until TempExpressionValueBuffer.Next() = 0;
         CurrPage.SwitchControl.LoadFields(Data);
     end;
 
@@ -225,13 +225,12 @@ page 14135243 lvnIifEdit
         ExpressionLine.Reset();
         ExpressionLine.SetRange("Expression Code", Rec.Code);
         ExpressionLine.SetRange("Line No.", 0);
-        if ExpressionLine.FindSet() then begin
+        if ExpressionLine.FindSet() then
             repeat
                 Left := Left + ExpressionLine."Left Side";
                 Right := Right + ExpressionLine."Right Side";
                 Cond := Engine.FormatComparison(ExpressionLine.Comparison);
             until ExpressionLine.Next() = 0;
-        end;
         CurrPage.PredicateControl.SetPredicate(Left, Cond, Right);
     end;
 

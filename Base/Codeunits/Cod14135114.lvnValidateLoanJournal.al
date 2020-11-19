@@ -25,7 +25,7 @@ codeunit 14135114 "lvnValidateLoanJournal"
     local procedure ValidateSingleJournalLine(var LoanJournalLine: Record lvnLoanJournalLine)
     var
         JournalValidationRule: Record lvnJournalValidationRule;
-        ExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
+        TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         FieldSequenceNo: Integer;
     begin
         if LoanJournalLine."Loan No." = '' then
@@ -39,22 +39,22 @@ codeunit 14135114 "lvnValidateLoanJournal"
         JournalValidationRule.Reset();
         JournalValidationRule.SetRange("Journal Batch Code", LoanJournalLine."Loan Journal Batch Code");
         if JournalValidationRule.FindSet() then begin
-            ConditionsMgmt.FillJournalFieldValues(ExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
+            ConditionsMgmt.FillJournalFieldValues(TempExpressionValueBuffer, LoanJournalLine, FieldSequenceNo);
             repeat
-                if not ValidateConditionLine(ExpressionValueBuffer, JournalValidationRule."Condition Code") then
+                if not ValidateConditionLine(TempExpressionValueBuffer, JournalValidationRule."Condition Code") then
                     LoanJournalErrorMgmt.AddJournalLineError(LoanJournalLine, JournalValidationRule."Error Message");
             until JournalValidationRule.Next() = 0;
         end;
     end;
 
     local procedure ValidateConditionLine(
-        var ExpressionValueBuffer: Record lvnExpressionValueBuffer;
+        var TempExpressionValueBuffer: Record lvnExpressionValueBuffer;
         ConditionCode: Code[20]): Boolean
     var
         ExpressionHeader: Record lvnExpressionHeader;
         ExpressionEngine: Codeunit lvnExpressionEngine;
     begin
         ExpressionHeader.Get(ConditionCode, ConditionsMgmt.GetConditionsMgmtConsumerId());
-        exit(ExpressionEngine.CheckCondition(ExpressionHeader, ExpressionValueBuffer));
+        exit(ExpressionEngine.CheckCondition(ExpressionHeader, TempExpressionValueBuffer));
     end;
 }

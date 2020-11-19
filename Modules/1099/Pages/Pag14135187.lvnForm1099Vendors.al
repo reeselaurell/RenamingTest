@@ -300,7 +300,6 @@ page 14135187 "lvnForm1099Vendors"
 
     var
         FedID: Dictionary of [Text[30], Text];
-        Year: Integer;
         ConfirmMsg: Label 'This process will erase current calculations, Do you wish to continue?';
         NoVendorsErr: Label 'Vendors List is empty';
         CalcErr: Label 'Payments not calculated';

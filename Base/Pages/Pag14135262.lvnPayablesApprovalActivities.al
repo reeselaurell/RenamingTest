@@ -23,7 +23,7 @@ page 14135262 "lvnPayablesApprovalActivities"
                         PurchInvHdr: Record "Purch. Inv. Header";
                     begin
                         PurchInvHdr.Reset();
-                        PurchInvHdr.SetRange("Due Date", CalcDate('CD'));
+                        PurchInvHdr.SetRange("Due Date", CalcDate('<CD>'));
                         if PurchInvHdr.FindSet() then
                             Page.Run(Page::"Posted Purchase Invoices", PurchInvHdr);
                     end;
@@ -97,7 +97,7 @@ page 14135262 "lvnPayablesApprovalActivities"
         PurchInvHdr: Record "Purch. Inv. Header";
     begin
         PurchInvHdr.Reset();
-        PurchInvHdr.SetRange("Due Date", CalcDate('CD'));
+        PurchInvHdr.SetRange("Due Date", CalcDate('<CD>'));
         exit(PurchInvHdr.Count());
     end;
 
@@ -107,7 +107,7 @@ page 14135262 "lvnPayablesApprovalActivities"
     begin
         UserSetup.Reset();
         UserSetup.SetRange("Approver ID", UserId);
-        ApprovalsIDExists := UserSetup.FindFirst();
+        ApprovalsIDExists := not UserSetup.IsEmpty();
     end;
 
     local procedure ApprovedNotPostedCount(): Integer

@@ -45,8 +45,8 @@ xmlport 14135102 "lvnPaymentsImport"
             {
                 group(Parameters)
                 {
-                    field(BankPaymentType; BankPaymentType) { Caption = 'Bank Payment Type'; ApplicationArea = All; }
-                    field(BankAccountNo; BankAccountNo)
+                    field(BankPaymentTypeField; BankPaymentType) { Caption = 'Bank Payment Type'; ApplicationArea = All; }
+                    field(BankAccountNoField; BankAccountNo)
                     {
                         Caption = 'Bank Account No.';
                         ApplicationArea = All;
@@ -60,7 +60,7 @@ xmlport 14135102 "lvnPaymentsImport"
                             BankAccountName := BankAccount.Name;
                         end;
                     }
-                    field(BankAccountName; BankAccountName) { Caption = 'Bank Account Name'; ApplicationArea = All; Editable = false; }
+                    field(BankAccountNameField; BankAccountName) { Caption = 'Bank Account Name'; ApplicationArea = All; Editable = false; }
                 }
             }
         }
