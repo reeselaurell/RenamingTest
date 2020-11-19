@@ -10,7 +10,7 @@ table 14135175 "lvnCalculationUnitLine"
             Caption = 'Unit Code';
             DataClassification = CustomerContent;
         }
-        field(2; "Line no."; Integer)
+        field(2; "Line No."; Integer)
         {
             Caption = 'Line No.';
             DataClassification = CustomerContent;
@@ -31,7 +31,7 @@ table 14135175 "lvnCalculationUnitLine"
 
     keys
     {
-        key(PK; "Unit Code", "Line no.") { Clustered = true; }
+        key(PK; "Unit Code", "Line No.") { Clustered = true; }
     }
 
     trigger OnInsert()
@@ -41,8 +41,8 @@ table 14135175 "lvnCalculationUnitLine"
         CalculationUnitLine.Reset();
         CalculationUnitLine.SetRange("Unit Code", "Unit Code");
         if CalculationUnitLine.FindLast() then
-            "Line no." := CalculationUnitLine."Line no." + 10
+            "Line No." := CalculationUnitLine."Line No." + 10
         else
-            "Line no." := 10;
+            "Line No." := 10;
     end;
 }

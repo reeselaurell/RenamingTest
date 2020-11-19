@@ -110,6 +110,16 @@ table 14135174 "lvnCalculationUnit"
             Caption = 'Business Unit Filter';
             DataClassification = CustomerContent;
         }
+        field(70; "Row No."; Integer)
+        {
+            Caption = 'Row No.';
+            DataClassification = CustomerContent;
+        }
+        field(71; "Column No."; Integer)
+        {
+            Caption = 'Column No.';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

@@ -87,10 +87,9 @@ page 14135207 "lvnCalculationUnitCard"
             {
                 Visible = Rec.Type = Rec.Type::Expression;
 
-                grid(ExpressionCode)
+                group(ExpressionCode)
                 {
                     ShowCaption = false;
-                    GridLayout = Rows;
 
                     group(ExpressionGroup)
                     {
@@ -120,6 +119,19 @@ page 14135207 "lvnCalculationUnitCard"
                             SubPageLink = "Unit Code" = field(Code);
                         }
                     }
+                }
+            }
+            group("Cell Reference")
+            {
+                Visible = Rec.Type = Rec.Type::"Cell Reference";
+
+                field("Row No."; Rec."Row No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Column No."; Rec."Column No.")
+                {
+                    ApplicationArea = All;
                 }
             }
             group("Provider Value")

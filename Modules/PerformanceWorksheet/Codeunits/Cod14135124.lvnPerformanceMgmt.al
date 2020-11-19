@@ -293,6 +293,11 @@ codeunit 14135124 "lvnPerformanceMgmt"
                     begin
                         Clear(RowData);
                         RowData.Add('rowId', RowLine."Line No.");
+                        RowData.Add('Name', RowLine.Description);
+                        if RowLine."Row Style" <> '' then begin
+                            StylesInUse.Set(RowLine."Row Style", true);
+                            RowData.Add('CssClass', 'pw-' + LowerCase(RowLine."Row Style"));
+                        end;
                         DataSource.Add(RowData);
                     end;
             end;
@@ -438,10 +443,15 @@ codeunit 14135124 "lvnPerformanceMgmt"
     end;
 
     procedure CalculateSingleValue(
+        var RowLine: Record lvnPerformanceRowSchemaLine;
         var CalculationUnit: Record lvnCalculationUnit;
         var SystemFilter: Record lvnSystemCalculationFilter;
         var Cache: Dictionary of [Code[20], Decimal];
         Path: List of [Code[20]]) Result: Decimal
+    var
+        RefRowLine: Record lvnPerformanceRowSchemaLine;
+        RefCalculationUnit: Record lvnCalculationUnit;
+        IsVolatile: Boolean;
     begin
         if Cache.Get(CalculationUnit.Code, Result) then
             exit;
@@ -464,15 +474,30 @@ codeunit 14135124 "lvnPerformanceMgmt"
             CalculationUnit.Type::Expression:
                 begin
                     Path.Add(CalculationUnit.Code);
-                    Result := CalculateBandExpression(CalculationUnit, SystemFilter, Cache, Path);
+                    Result := CalculateBandExpression(RowLine, CalculationUnit, SystemFilter, Cache, Path);
                     Path.RemoveAt(Path.Count());
+                end;
+            CalculationUnit.Type::"Cell Reference":
+                begin
+                    IsVolatile := (CalculationUnit."Row No." = 0) or (CalculationUnit."Column No." = 0);
+                    if CalculationUnit."Row No." = 0 then
+                        CalculationUnit."Row No." := RowLine."Line No.";
+                    if CalculationUnit."Column No." = 0 then
+                        CalculationUnit."Column No." := RowLine."Column No.";
+                    if (CalculationUnit."Row No." = RowLine."Line No.") and (CalculationUnit."Column No." = RowLine."Column No.") then
+                        Error(CircularReferenceErr);
+                    if RefRowLine.Get(RowLine."Schema Code", CalculationUnit."Row No.", CalculationUnit."Column No.") then
+                        if RefCalculationUnit.Get(RefRowLine."Calculation Unit Code") then
+                            Result := CalculateSingleValue(RowLine, RefCalculationUnit, SystemFilter, Cache, Path);
                 end;
             CalculationUnit.Type::"Provider Value":
                 begin
                     GetProviderValue(CalculationUnit."Provider Metadata", SystemFilter, Result);
+                    IsVolatile := true;
                 end;
         end;
-        Cache.Add(CalculationUnit.Code, Result);
+        if not IsVolatile then
+            Cache.Add(CalculationUnit.Code, Result);
     end;
 
     procedure ApplyPeriodBandFilter(
@@ -810,7 +835,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                 Buffer."Band No." := BandNo;
                 Buffer."Calculation Unit Code" := RowLine."Calculation Unit Code";
                 if CalculationUnit.Get(RowLine."Calculation Unit Code") then begin
-                    Buffer.Value := CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path);
+                    Buffer.Value := CalculateSingleValue(RowLine, CalculationUnit, SystemFilter, Cache, Path);
                     Buffer.Interactive := IsClickableCell(CalculationUnit);
                 end else
                     Buffer.Value := 0;
@@ -1135,6 +1160,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
     end;
 
     local procedure CalculateBandExpression(
+        var RowLine: Record lvnPerformanceRowSchemaLine;
         var BaseCalculationUnit: Record lvnCalculationUnit;
         var SystemFilter: Record lvnSystemCalculationFilter;
         var Cache: Dictionary of [Code[20], Decimal];
@@ -1157,7 +1183,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
             ValueBuffer.Name := CalculationLine."Source Unit Code";
             ValueBuffer.Number := CalculationLine."Line no.";
             ValueBuffer.Type := 'Decimal';
-            ValueBuffer.Value := Format(CalculateSingleValue(CalculationUnit, SystemFilter, Cache, Path), 0, 9);
+            ValueBuffer.Value := Format(CalculateSingleValue(RowLine, CalculationUnit, SystemFilter, Cache, Path), 0, 9);
             ValueBuffer.Insert();
         until CalculationLine.Next() = 0;
         ExpressionHeader.Get(BaseCalculationUnit."Expression Code", GetBandExpressionConsumerId());

@@ -18,6 +18,10 @@ enum 14135157 "lvnCalculationUnitType"
     {
         Caption = 'Expression';
     }
+    value(4; "Cell Reference")
+    {
+        Caption = 'Cell Reference';
+    }
     value(10; "Provider Value")
     {
         Caption = 'Provider Value';

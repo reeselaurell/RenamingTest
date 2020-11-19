@@ -10,7 +10,7 @@ page 14135208 "lvnCalculationUnitLines"
         {
             repeater(Group)
             {
-                field("Line no."; Rec."Line no.")
+                field("Line no."; Rec."Line No.")
                 {
                     ApplicationArea = All;
                 }

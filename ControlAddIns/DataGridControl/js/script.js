@@ -257,6 +257,11 @@ function InitializeDXGrid(data) {
                 fixedRows.detach();
                 fixedHead.after(fixedRows);
             }
+            var h = grid.height() + 'px';
+            var frame = $(window.frameElement, window.parent.document);
+            frame.css('min-height', h);
+            frame.css('height', h);
+            frame.css('max-height', h);
         }
         CreateInfrastructure();
         data.scrolling = {
