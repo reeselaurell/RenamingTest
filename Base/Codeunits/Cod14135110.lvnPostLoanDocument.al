@@ -95,7 +95,7 @@ codeunit 14135110 "lvnPostLoanDocument"
         lvnLoanDocumentLine: Record lvnLoanDocumentLine;
         DocumentAmount: Decimal;
     begin
-        lvnLoanDocumentLine.Reset;
+        lvnLoanDocumentLine.Reset();
         lvnLoanDocumentLine.SetRange("Transaction Type", lvnLoanDocument."Transaction Type");
         lvnLoanDocumentLine.SetRange("Document No.", lvnLoanDocument."Document No.");
         if lvnLoanDocumentLine.FindSet() then
@@ -252,7 +252,7 @@ codeunit 14135110 "lvnPostLoanDocument"
         CustLedgerEntry: Record "Cust. Ledger Entry";
         lvnLedgerVoidEntry: Record lvnLedgerVoidEntry;
     begin
-        GLEntry.Reset;
+        GLEntry.Reset();
         GLEntry.SetCurrentKey("Document No.", "Posting Date");
         GLEntry.SetRange("Document No.", lvnDocumentNo);
         GLEntry.SetRange("Posting Date", lvnPostingDate);
@@ -261,7 +261,7 @@ codeunit 14135110 "lvnPostLoanDocument"
                 Clear(lvnLedgerVoidEntry);
                 lvnLedgerVoidEntry.InsertFromGLEntry(GLEntry);
             until GLEntry.Next() = 0;
-        CustLedgerEntry.Reset;
+        CustLedgerEntry.Reset();
         CustLedgerEntry.SetCurrentKey("Document No.", "Posting Date");
         CustLedgerEntry.SetRange("Document No.", lvnDocumentNo);
         CustLedgerEntry.SetRange("Posting Date", lvnPostingDate);
@@ -270,7 +270,7 @@ codeunit 14135110 "lvnPostLoanDocument"
                 Clear(lvnLedgerVoidEntry);
                 lvnLedgerVoidEntry.InsertFromCustLedgEntry(CustLedgerEntry);
             until CustLedgerEntry.Next() = 0;
-        BankAccountLedgerEntry.Reset;
+        BankAccountLedgerEntry.Reset();
         BankAccountLedgerEntry.SetCurrentKey("Document No.", "Posting Date");
         BankAccountLedgerEntry.SetRange("Document No.", lvnDocumentNo);
         BankAccountLedgerEntry.SetRange("Posting Date", lvnPostingDate);

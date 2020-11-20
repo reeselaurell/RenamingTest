@@ -34,7 +34,7 @@ page 14135317 lvnCommReportTemplateDetails
                         case Rec."Template Line Type" of
                             Rec."Template Line Type"::"Loan Card Field":
                                 begin
-                                    FieldRec.Reset;
+                                    FieldRec.Reset();
                                     FieldRec.SetRange(TableNo, Database::lvnLoanJournalLine);
                                     FieldRec.SetRange("No.", Rec."Field No.");
                                     FieldRec.FindFirst();
@@ -70,7 +70,7 @@ page 14135317 lvnCommReportTemplateDetails
                         case Rec."Template Line Type" of
                             Rec."Template Line Type"::"Loan Card Field":
                                 begin
-                                    FieldRec.Reset;
+                                    FieldRec.Reset();
                                     FieldRec.SetRange(TableNo, Database::lvnLoan);
                                     Clear(FieldsListPage);
                                     FieldsListPage.SetTableView(FieldRec);

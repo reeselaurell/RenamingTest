@@ -144,8 +144,8 @@ page 14135197 "lvnGLReconciliation"
                     Clear(RetrieveData);
                     RetrieveData.RunModal();
                     RetrieveData.GetData(Rec);
-                    GLAccountNo := RetrieveData.GetAccountNumber;
-                    DateFilter := RetrieveData.GetDateFilter;
+                    GLAccountNo := RetrieveData.GetAccountNumber();
+                    DateFilter := RetrieveData.GetDateFilter();
                     CurrPage.Update(false);
                 end;
             }

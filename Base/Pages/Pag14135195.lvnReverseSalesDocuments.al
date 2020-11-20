@@ -233,7 +233,7 @@ page 14135195 "lvnReverseSalesDocuments"
                                 Clear(SalesHeader);
                                 SalesHeader."Document Type" := SalesHeader."Document Type"::"Credit Memo";
                                 SalesHeader.Insert(true);
-                                CopyDocumentMgt.SetPropertiesForCreditMemoCorrection;
+                                CopyDocumentMgt.SetPropertiesForCreditMemoCorrection();
                                 CopyDocumentMgt.CopySalesDoc(SalesDocTypeFrom::"Posted Invoice", Rec."No.", SalesHeader);
                                 SalesInvHeader.Get(Rec."No.");
                                 LoanNoLength := StrLen(SalesInvHeader.lvnLoanNo);

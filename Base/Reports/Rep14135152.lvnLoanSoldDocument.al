@@ -150,7 +150,7 @@ report 14135152 "lvnLoanSoldDocument"
     local procedure GetDimensionValueName(DimensionCode: Code[20]): Text
     begin
 
-        DimensionValue.Reset;
+        DimensionValue.Reset();
         DimensionValue.SetRange("Dimension Code", DimensionCode);
         DimensionValue.SetRange(Code, GetDimensionValueCode(DimensionCode));
         DimensionValue.SetLoadFields(DimensionValue.Name);

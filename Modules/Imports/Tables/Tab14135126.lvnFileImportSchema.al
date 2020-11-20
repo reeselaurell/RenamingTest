@@ -217,7 +217,7 @@ table 14135126 "lvnFileImportSchema"
                             "Default Account No." := FixedAsset."No.";
                     "Gen. Jnl. Account Type"::"G/L Account":
                         begin
-                            GLAccount.Reset;
+                            GLAccount.Reset();
                             GLAccount.SetRange("Account Type", GLAccount."Account Type"::Posting);
                             if Page.RunModal(0, GLAccount) = Action::LookupOK then
                                 "Default Account No." := GLAccount."No.";

@@ -658,7 +658,7 @@ codeunit 14135118 "lvnDepositFileImportMgmt"
                         end;
                     GenJnlAccountType::"IC Partner":
                         begin
-                            ICPartner.Reset;
+                            ICPartner.Reset();
                             ICPartner.SetFilter(Name, '@' + Value);
                             if ICPartner.FindFirst() then
                                 AccountNo := ICPartner.Code;

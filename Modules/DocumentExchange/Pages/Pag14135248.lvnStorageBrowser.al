@@ -1,7 +1,7 @@
 page 14135248 "lvnStorageBrowser"
 {
     Caption = 'Storage Browser';
-    DataCaptionExpression = GetCaption;
+    DataCaptionExpression = GetCaption();
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;
@@ -22,7 +22,7 @@ page 14135248 "lvnStorageBrowser"
                 field(Name; Rec.Name)
                 {
                     ApplicationArea = All;
-                    CaptionClass = GetColumnName;
+                    CaptionClass = GetColumnName();
                 }
             }
         }

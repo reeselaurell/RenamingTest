@@ -334,7 +334,7 @@ report 14135115 "lvnForm1099MagneticMedia"
     local procedure WriteTRec()
     begin
         // T Record - 1 per transmission, 750 length
-        IncrementSequenceNo;
+        IncrementSequenceNo();
         IRSData.WriteText(StrSubstNo('T') +
           StrSubstNo('#1##', CopyStr(Format(Year), 1, 4)) +
           StrSubstNo(PriorYear) + // Prior Year Indicator
@@ -378,7 +378,7 @@ report 14135115 "lvnForm1099MagneticMedia"
     local procedure WriteARec()
     begin
         // A Record - 1 per Payer per 1099 type, 750 length
-        IncrementSequenceNo;
+        IncrementSequenceNo();
         IRSData.WriteText();
         IRSData.WriteText(StrSubstNo('A') +
           StrSubstNo('#1##', CopyStr(Format(Year), 1, 4)) +
@@ -506,7 +506,7 @@ report 14135115 "lvnForm1099MagneticMedia"
     local procedure WriteFRec()
     begin
         // F Record - 1
-        IncrementSequenceNo;
+        IncrementSequenceNo();
         IRSData.WriteText();
         IRSData.WriteText(StrSubstNo('F') +
           StrSubstNo('#1######', MagMediaManagement.FormatAmount(ARecNum, 8)) + // number of A recs.

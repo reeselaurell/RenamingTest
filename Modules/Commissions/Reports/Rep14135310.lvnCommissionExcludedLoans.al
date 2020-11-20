@@ -60,7 +60,7 @@ report 14135310 lvnCommissionExcludedLoans
                     RecordReference.GetTable(Loan);
                     TempCommissionReportBuffer.Reset();
                     TempCommissionReportBuffer.DeleteAll();
-                    TempCommissionReportTemplateLine.Reset;
+                    TempCommissionReportTemplateLine.Reset();
                     TempCommissionReportTemplateLine.SetRange("Template Code", CommissionReportTemplate.Code);
                     TempCommissionReportTemplateLine.SetFilter("Template Line Type", TypeFilterLbl, TempCommissionReportTemplateLine."Template Line Type"::"Loan Card Field", TempCommissionReportTemplateLine."Template Line Type"::"Loan Value Field");
                     TempCommissionReportTemplateLine.FindSet();
@@ -227,7 +227,7 @@ report 14135310 lvnCommissionExcludedLoans
     begin
         TempExpressionValueBuffer.Reset();
         TempExpressionValueBuffer.DeleteAll();
-        TempLoanFieldsConfiguration.Reset;
+        TempLoanFieldsConfiguration.Reset();
         if TempLoanFieldsConfiguration.FindSet() then
             repeat
                 FieldSequenceNo := FieldSequenceNo + 1;

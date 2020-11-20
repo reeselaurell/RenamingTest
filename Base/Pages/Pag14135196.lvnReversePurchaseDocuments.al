@@ -117,7 +117,7 @@ page 14135196 "lvnReversePurchaseDocuments"
                                 Clear(PurchHeader);
                                 PurchHeader."Document Type" := PurchHeader."Document Type"::"Credit Memo";
                                 PurchHeader.Insert(true);
-                                CopyDocumentMgt.SetPropertiesForCreditMemoCorrection;
+                                CopyDocumentMgt.SetPropertiesForCreditMemoCorrection();
                                 CopyDocumentMgt.CopyPurchDoc(PurchDocTypeFrom::"Posted Invoice", Rec."No.", PurchHeader);
                                 PurchHeader."Vendor Cr. Memo No." := Rec."Vendor Invoice No.";
                                 PurchHeader.Modify();

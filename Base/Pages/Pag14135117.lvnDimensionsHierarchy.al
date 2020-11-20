@@ -25,11 +25,11 @@ page 14135117 "lvnDimensionsHierarchy"
                     begin
                         DimensionCode := DimensionsManagement.GetMainHierarchyDimensionCode();
                         if DimensionCode = '' then begin
-                            BusinessUnit.Reset;
+                            BusinessUnit.Reset();
                             if Page.RunModal(0, BusinessUnit) = Action::LookupOK then
                                 Rec.Code := BusinessUnit.Code;
                         end else begin
-                            DimensionValue.Reset;
+                            DimensionValue.Reset();
                             DimensionValue.SetRange("Dimension Code", DimensionCode);
                             if Page.RunModal(0, DimensionValue) = Action::LookupOK then
                                 Rec.Code := DimensionValue.Code;

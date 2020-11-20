@@ -57,7 +57,7 @@ report 14135181 "lvnDisbursementDataExport"
                 DetailedVendLedgEntry.SetLoadFields("Vendor Ledger Entry No.");
                 if DetailedVendLedgEntry.FindSet() then
                     repeat
-                        NewRow;
+                        NewRow();
                         VendorLedgerEntry.Get(DetailedVendLedgEntry."Vendor Ledger Entry No.");
                         ExportDateColumn(VendorLedgerEntry."Posting Date");
                         ExportTextColumn(VendorLedgerEntry."External Document No.", false);

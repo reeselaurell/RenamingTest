@@ -81,7 +81,7 @@ codeunit 14135101 "lvnLoanJournalImport"
         repeat
             TempLoanImportSchemaLine := LoanImportSchemaLine;
             TempLoanImportSchemaLine.Insert();
-        until LoanImportSchemaLine.Next = 0;
+        until LoanImportSchemaLine.Next() = 0;
         TempCSVBuffer.ResetFilters();
         LoanJournalLine.Reset();
         LoanJournalLine.SetRange("Loan Journal Batch Code", LoanJournalBatch.Code);

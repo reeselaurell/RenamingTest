@@ -83,7 +83,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
         if LoanVisionSetup."Funded Void Reason Code" <> '' then
             if (LoanVisionSetup."Funded Void Reason Code" = LoanJournalLine."Reason Code") then begin
                 LoanVisionSetup.TestField("Void Funded No. Series");
-                LoanFundedDocument.Reset;
+                LoanFundedDocument.Reset();
                 LoanFundedDocument.SetRange("Loan No.", LoanJournalLine."Loan No.");
                 LoanFundedDocument.SetRange(Void, false);
                 LoanFundedDocument.FindLast();
@@ -102,7 +102,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
                 LoanDocument.Void := true;
                 LoanDocument."Void Document No." := LoanFundedDocument."Document No.";
                 LoanDocument.Insert();
-                LoanFundedDocumentLine.Reset;
+                LoanFundedDocumentLine.Reset();
                 LoanFundedDocumentLine.SetRange("Document No.", LoanFundedDocument."Document No.");
                 LoanFundedDocumentLine.FindSet();
                 repeat

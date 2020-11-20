@@ -82,7 +82,7 @@ report 14135120 "lvnReclassLoanGLEntries"
         NoSeriesManagement: Codeunit NoSeriesManagement;
         LineNo: Integer;
     begin
-        LoanVisionSetup.Get;
+        LoanVisionSetup.Get();
         ReasonCodeRec.Get(ReasonCode);
         GenJnlTemplate.Get(TemplateName);
         GenJnlBatch.Get(TemplateName, BatchName);

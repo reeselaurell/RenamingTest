@@ -25,7 +25,7 @@ page 14135193 "lvnLVAccountantFinanceAct"
                     var
                         ActivitiesMgt: Codeunit "Activities Mgt.";
                     begin
-                        ActivitiesMgt.DrillDownCalcCashAccountsBalances;
+                        ActivitiesMgt.DrillDownCalcCashAccountsBalances();
                     end;
                 }
                 field(LoanHeldForSaleBalance; CalculateLoansHeldForSale())
@@ -130,11 +130,11 @@ page 14135193 "lvnLVAccountantFinanceAct"
 
     trigger OnOpenPage()
     begin
-        Rec.Reset;
-        if not Rec.Get then begin
-            Rec.Init;
-            Rec.Insert;
-            Commit;
+        Rec.Reset();
+        if not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
+            Commit();
         end;
         ActSetupRetrieved := false;
     end;
@@ -156,7 +156,7 @@ page 14135193 "lvnLVAccountantFinanceAct"
         ActivitiesMgt: Codeunit "Activities Mgt.";
     begin
         if Rec.FieldActive("Cash Accounts Balance") then
-            Rec."Cash Accounts Balance" := ActivitiesMgt.CalcCashAccountsBalances;
+            Rec."Cash Accounts Balance" := ActivitiesMgt.CalcCashAccountsBalances();
     end;
 
     local procedure CalculateFundedLastBusDay(): Decimal

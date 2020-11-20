@@ -83,7 +83,7 @@ pageextension 14135108 "lvnPaymentJournal" extends "Payment Journal"
                 begin
                     Clear(SuggestVendorPayments);
                     SuggestVendorPayments.SetGenJnlLine(Rec);
-                    SuggestVendorPayments.RunModal;
+                    SuggestVendorPayments.RunModal();
                 end;
             }
         }

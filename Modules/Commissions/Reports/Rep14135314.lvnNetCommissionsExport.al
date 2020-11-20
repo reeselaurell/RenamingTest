@@ -116,7 +116,7 @@ report 14135314 lvnNetCommissionsExport
                 TempExcelBuffer.AddColumn(CommissionProfile.Name, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
                 TempExcelBuffer.AddColumn(CommissionProfile."Cost Center Code", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
                 TempExcelBuffer.AddColumn(CalculatedAmount, false, '', false, false, false, NumberFormatLbl, TempExcelBuffer."Cell Type"::Number);
-                CommissionIdentifier.Reset;
+                CommissionIdentifier.Reset();
                 CommissionIdentifier.SetFilter(Code, '<>%1', CommissionSetup."Commission Identifier Code");
                 if CommissionIdentifier.FindSet() then
                     repeat

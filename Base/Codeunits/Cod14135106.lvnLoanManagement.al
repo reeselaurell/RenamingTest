@@ -1308,7 +1308,7 @@ codeunit 14135106 "lvnLoanManagement"
     begin
         if not LoanFieldsConfigurationRetrieved then begin
             LoanFieldsConfigurationRetrieved := true;
-            LoanFieldsConfiguration.Reset;
+            LoanFieldsConfiguration.Reset();
             if LoanFieldsConfiguration.FindSet() then
                 repeat
                     Clear(TempLoanFieldsConfiguration);
