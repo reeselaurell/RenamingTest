@@ -35,9 +35,6 @@ page 14135173 "lvnForm1098Rules"
                 ApplicationArea = All;
                 Caption = 'Rules Collection';
                 Image = SalesTax;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 RunObject = page lvnForm1098RulesCollection;
                 RunPageView = sorting("Box No.", "Line No.");
                 RunPageLink = "Box No." = field("Box No.");

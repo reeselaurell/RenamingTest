@@ -35,9 +35,6 @@ page 14135171 "lvnQuickPayPresets"
                 ApplicationArea = All;
                 Caption = 'Edit Filters';
                 Image = Filter;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin

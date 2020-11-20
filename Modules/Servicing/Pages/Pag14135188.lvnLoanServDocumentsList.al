@@ -50,9 +50,6 @@ page 14135188 "lvnLoanServDocumentsList"
             {
                 Caption = 'Show Document';
                 Image = DocumentEdit;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 ApplicationArea = All;
 
                 trigger OnAction()
@@ -64,9 +61,6 @@ page 14135188 "lvnLoanServDocumentsList"
             {
                 Caption = 'Post';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = PostDocument;
 
                 trigger OnAction()
@@ -82,9 +76,6 @@ page 14135188 "lvnLoanServDocumentsList"
             {
                 Caption = 'Post Batch';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = PostBatch;
                 RunObject = report lvnPostLoanDocuments;
             }
@@ -92,9 +83,6 @@ page 14135188 "lvnLoanServDocumentsList"
             {
                 Caption = 'Print';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Report;
                 Image = Print;
                 RunObject = report lvnLoanDocument;
             }

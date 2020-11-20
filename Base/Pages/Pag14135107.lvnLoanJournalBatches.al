@@ -67,9 +67,6 @@ page 14135107 "lvnLoanJournalBatches"
             action(EditJournal)
             {
                 Caption = 'Edit Journal';
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 ApplicationArea = All;
                 Image = Journal;
 
@@ -114,10 +111,7 @@ page 14135107 "lvnLoanJournalBatches"
                 RunObject = page lvnPostProcessingSchemaLines;
                 RunPageMode = Edit;
                 RunPageLink = "Journal Batch Code" = field(Code);
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = EditLines;
-                PromotedCategory = Process;
                 ApplicationArea = All;
             }
             action(ValidationRules)
@@ -126,9 +120,6 @@ page 14135107 "lvnLoanJournalBatches"
                 RunObject = page lvnJournalValidationRules;
                 RunPageMode = Edit;
                 RunPageLink = "Journal Batch Code" = field(Code);
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = BreakRulesOn;
                 ApplicationArea = All;
             }
@@ -138,9 +129,6 @@ page 14135107 "lvnLoanJournalBatches"
                 RunObject = page lvnLoanUpdateSchema;
                 RunPageMode = Edit;
                 RunPageLink = "Journal Batch Code" = field(Code);
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = UpdateDescription;
                 ApplicationArea = All;
             }

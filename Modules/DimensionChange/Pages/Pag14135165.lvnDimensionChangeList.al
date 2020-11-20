@@ -41,9 +41,6 @@ page 14135165 "lvnDimensionChangeList"
                 Caption = 'Show Changes';
                 ApplicationArea = All;
                 Image = ChangeBatch;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ShortcutKey = Return;
 
                 trigger OnAction()
@@ -77,9 +74,6 @@ page 14135165 "lvnDimensionChangeList"
                 Caption = 'Post';
                 ApplicationArea = All;
                 Image = PostBatch;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Enabled = HasJournalEntries;
 
                 trigger OnAction()

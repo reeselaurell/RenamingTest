@@ -166,9 +166,6 @@ page 14135175 "lvnForm1098Loans"
                 ApplicationArea = All;
                 Caption = 'Collect Period Loans';
                 Image = GetEntries;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 RunObject = report lvnGenerate1098LoanEntries;
             }
             action(CalculateAmounts)
@@ -176,9 +173,6 @@ page 14135175 "lvnForm1098Loans"
                 ApplicationArea = All;
                 Caption = 'Calculate Amounts';
                 Image = Calculate;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 RunObject = report lvnCalculate1098Values;
             }
             action(ExportPrintout)
@@ -186,9 +180,6 @@ page 14135175 "lvnForm1098Loans"
                 ApplicationArea = All;
                 Caption = 'Export for Printout';
                 Image = ExportFile;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 RunObject = xmlport lvnForm1098Export;
             }
             action(ExportIRS)
@@ -196,9 +187,6 @@ page 14135175 "lvnForm1098Loans"
                 ApplicationArea = All;
                 Caption = 'Export IRS Data';
                 Image = Export;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 RunObject = report Form1098MagneticMedia;
             }
             action(PrintForm)
@@ -206,9 +194,6 @@ page 14135175 "lvnForm1098Loans"
                 ApplicationArea = All;
                 Caption = 'Print 1098 Form';
                 Image = Print;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 RunObject = report lvnForm1098Print;
             }
         }
@@ -219,9 +204,9 @@ page 14135175 "lvnForm1098Loans"
                 ApplicationArea = All;
                 Caption = 'Loan Card';
                 Image = Loaners;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
+
+
+
                 RunObject = page lvnLoanCard;
                 RunPageView = sorting("No.");
                 RunPageLink = "No." = field("Loan No.");
@@ -231,9 +216,9 @@ page 14135175 "lvnForm1098Loans"
                 ApplicationArea = All;
                 Caption = 'General Ledger Entries';
                 Image = GeneralLedger;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
+
+
+
                 RunObject = page "General Ledger Entries";
                 RunPageView = sorting(lvnLoanNo);
                 RunPageLink = lvnLoanNo = field("Loan No.");

@@ -48,7 +48,7 @@ codeunit 14135105 "lvnCreateFundedDocuments"
                                     LoanDocumentLine := TempLoanDocumentLine;
                                     LoanDocumentLine.Insert();
                                 until TempLoanDocumentLine.Next() = 0;
-                        until TempLoanDocumentLine.Next() = 0;
+                        until TempLoanDocument.Next() = 0;
                         LoanJournalLine.Mark(true);
                         DocumentsCreated := DocumentsCreated + 1;
                     end;

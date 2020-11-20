@@ -54,9 +54,6 @@ page 14135176 "lvnForm1098Details"
                 Caption = 'General Ledger Entries';
                 Enabled = Rec.Type = Rec.Type::"G/L Entry";
                 Image = GeneralLedger;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 RunObject = page "General Ledger Entries";
                 RunPageLink = "Entry No." = field("G/L Entry No.");
             }

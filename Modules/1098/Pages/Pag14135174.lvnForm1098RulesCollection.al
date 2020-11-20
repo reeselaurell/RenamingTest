@@ -69,9 +69,6 @@ page 14135174 "lvnForm1098RulesCollection"
                 ApplicationArea = All;
                 Caption = 'Edit G/L Filter';
                 Image = Filter;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 begin

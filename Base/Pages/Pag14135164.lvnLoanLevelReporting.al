@@ -107,8 +107,6 @@ page 14135164 "lvnLoanLevelReporting"
                 Caption = 'Import Loans From File';
                 ApplicationArea = All;
                 Image = Import;
-                Promoted = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -124,8 +122,6 @@ page 14135164 "lvnLoanLevelReporting"
                 Caption = 'Get Filtered Loans';
                 ApplicationArea = All;
                 Image = Allocations;
-                Promoted = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -141,8 +137,6 @@ page 14135164 "lvnLoanLevelReporting"
                 Caption = 'Get Loans with Activity';
                 ApplicationArea = All;
                 Image = GeneralLedger;
-                Promoted = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -158,8 +152,6 @@ page 14135164 "lvnLoanLevelReporting"
                 Caption = 'Clear List';
                 ApplicationArea = All;
                 Image = ClearLog;
-                Promoted = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 begin

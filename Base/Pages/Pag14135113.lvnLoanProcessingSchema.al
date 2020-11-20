@@ -141,9 +141,6 @@ page 14135113 "lvnLoanProcessingSchema"
                 ApplicationArea = All;
                 Caption = 'Processing Schema Lines';
                 Image = LineDescription;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 RunObject = page lvnLoanProcessingSchemaLines;
                 RunPageLink = "Processing Code" = field(Code);
             }

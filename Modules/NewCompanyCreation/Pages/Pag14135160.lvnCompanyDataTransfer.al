@@ -43,9 +43,6 @@ page 14135160 "lvnCompanyDataTransfer"
                 ApplicationArea = All;
                 Caption = 'Copy Setup To Company';
                 Image = Copy;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 RunObject = codeunit lvnCreateNewCompany;
             }
             action(GetLoanVisionObjects)
@@ -53,9 +50,6 @@ page 14135160 "lvnCompanyDataTransfer"
                 ApplicationArea = All;
                 Caption = 'Get Loan Vision Objects';
                 Image = AddAction;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var

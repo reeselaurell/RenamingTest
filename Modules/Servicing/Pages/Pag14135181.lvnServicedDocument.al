@@ -115,7 +115,6 @@ page 14135181 "lvnServicedDocument"
             {
                 Caption = 'Post';
                 ApplicationArea = All;
-                Promoted = true;
                 Image = PostDocument;
 
                 trigger OnAction()
@@ -131,9 +130,6 @@ page 14135181 "lvnServicedDocument"
             {
                 Caption = 'Print';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Report;
                 Image = Print;
 
                 trigger OnAction()

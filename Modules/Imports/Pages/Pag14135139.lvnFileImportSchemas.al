@@ -45,9 +45,6 @@ page 14135139 "lvnFileImportSchemas"
             {
                 Caption = 'Edit Schema';
                 Image = DocumentEdit;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 ApplicationArea = All;
 
                 trigger OnAction()

@@ -33,9 +33,6 @@ page 14135316 lvnCommissionReportTemplates
                 Caption = 'Template Details';
                 ApplicationArea = All;
                 Image = ViewDetails;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 RunObject = page lvnCommReportTemplateDetails;
                 RunPageMode = Edit;
                 RunPageLink = "Template Code" = field(Code);

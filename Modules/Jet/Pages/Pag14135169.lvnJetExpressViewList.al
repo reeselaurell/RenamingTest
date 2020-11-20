@@ -51,9 +51,6 @@ page 14135169 "lvnJetExpressViewList"
                 Caption = 'Refresh View Data';
                 ApplicationArea = All;
                 Image = RefreshLines;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var

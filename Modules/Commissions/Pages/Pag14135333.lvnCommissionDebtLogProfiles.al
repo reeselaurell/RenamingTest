@@ -92,9 +92,6 @@ page 14135333 lvnCommissionDebtLogProfiles
                 Caption = 'Show All Profiles';
                 ApplicationArea = All;
                 Image = ShowList;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin
@@ -107,9 +104,6 @@ page 14135333 lvnCommissionDebtLogProfiles
                 Caption = 'Show Active Profiles';
                 ApplicationArea = All;
                 Image = ShowSelected;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin
@@ -122,9 +116,6 @@ page 14135333 lvnCommissionDebtLogProfiles
                 Caption = 'Export Profiles Data';
                 ApplicationArea = All;
                 Image = ExportToExcel;
-                Promoted = true;
-                PromotedCategory = Report;
-                PromotedIsBig = true;
                 RunObject = Report lvnCommissionProfiles;
             }
         }

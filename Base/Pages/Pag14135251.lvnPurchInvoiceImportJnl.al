@@ -73,9 +73,6 @@ page 14135251 "lvnPurchInvoiceImportJnl"
             {
                 ApplicationArea = All;
                 Caption = 'Create Invoices';
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = NewPurchaseInvoice;
 
                 trigger OnAction()
@@ -102,9 +99,6 @@ page 14135251 "lvnPurchInvoiceImportJnl"
             {
                 ApplicationArea = All;
                 Caption = 'Create and Post Invoices';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Image = PostTaxInvoice;
 
                 trigger OnAction()

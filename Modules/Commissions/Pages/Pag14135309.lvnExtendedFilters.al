@@ -37,9 +37,6 @@ page 14135309 lvnExtendedFilters
             {
                 Caption = 'Edit Filter';
                 Image = EditFilter;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ApplicationArea = All;
 
                 trigger OnAction()

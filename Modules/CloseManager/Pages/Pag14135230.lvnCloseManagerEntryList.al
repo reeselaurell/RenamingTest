@@ -65,9 +65,6 @@ page 14135230 "lvnCloseManagerEntryList"
                 ApplicationArea = All;
                 Caption = 'Create Entry';
                 Image = CreateForm;
-                Promoted = true;
-                PromotedCategory = New;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var

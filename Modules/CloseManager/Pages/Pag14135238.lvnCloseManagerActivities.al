@@ -113,7 +113,7 @@ page 14135238 "lvnCloseManagerActivities"
         Clear(CloseManagerEntryLine);
         CloseManagerEntryLine.SetRange(Reconciled, true);
         CloseManagerEntryLine.SetAutoCalcFields("G/L Total");
-        if CloseManagerEntryLine.FindSet() then
+        if not CloseManagerEntryLine.IsEmpty() then
             if CloseManagerEntryLine."G/L Total" <> CloseManagerEntryLine."Reconciled Total" then
                 ItemDiscrepancy := ItemDiscrepancy + 1;
     end;

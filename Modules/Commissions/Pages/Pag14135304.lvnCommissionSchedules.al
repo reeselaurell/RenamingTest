@@ -88,9 +88,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Calculate Commissions';
                 Image = CalculateInventory;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var
@@ -105,9 +102,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Import Adjustments';
                 Image = Import;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Visible = not Rec."Period Posted";
                 RunObject = xmlport lvnCommissionAdjImport;
             }
@@ -116,9 +110,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Printout';
                 Image = PrintDocument;
-                Promoted = true;
-                PromotedCategory = Report;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var
@@ -133,9 +124,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Export Printout';
                 Image = Export;
-                Promoted = true;
-                PromotedCategory = Report;
-                PromotedIsBig = true;
                 RunObject = report lvnCommissionPrintoutExport;
             }
             action(JournalView)
@@ -143,9 +131,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Journal View';
                 Image = ConsumptionJournal;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var
@@ -160,9 +145,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Journal Lines';
                 Image = CalculateLines;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 RunObject = page lvnCommissionJournalLines;
                 RunPageLink = "Schedule No." = field("No.");
             }
@@ -171,9 +153,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'List Excluded Loans';
                 Image = ExportToExcel;
-                Promoted = true;
-                PromotedCategory = Report;
-                PromotedIsBig = true;
                 RunObject = report lvnCommissionExcludedLoans;
             }
             action(GrossCommissionExport)
@@ -181,9 +160,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Gross Commission Export';
                 Image = ExportToExcel;
-                Promoted = true;
-                PromotedCategory = Report;
-                PromotedIsBig = true;
                 RunObject = report lvnGrossCommissionExport;
             }
             action(CommissionAdjustmentsExport)
@@ -191,9 +167,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Commission Adjustments Export';
                 Image = ExportToExcel;
-                Promoted = true;
-                PromotedCategory = Report;
-                PromotedIsBig = true;
                 RunObject = report lvnCommissionAdjExport;
             }
             action(LOsWOClosings)
@@ -201,9 +174,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Loan Officers w/o Closings';
                 Image = ExportToExcel;
-                Promoted = true;
-                PromotedCategory = Report;
-                PromotedIsBig = true;
                 RunObject = report lvnLOsWithoutClosings;
             }
             action(NetCommissionsExport)
@@ -211,9 +181,6 @@ page 14135304 lvnCommissionSchedules
                 ApplicationArea = All;
                 Caption = 'Net Commissions Export';
                 Image = ExportToExcel;
-                Promoted = true;
-                PromotedCategory = Report;
-                PromotedIsBig = true;
                 RunObject = report lvnNetCommissionsExport;
             }
         }

@@ -167,9 +167,6 @@ page 14135100 "lvnLoanVisionSetup"
                 Image = CheckRulesSyntax;
                 RunObject = page lvnLoanNoMatchPatterns;
                 RunPageMode = Edit;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
             }
         }
     }

@@ -218,9 +218,6 @@ page 14135168 "lvnJetExpressViewCard"
                 Caption = 'Refresh View Data';
                 ApplicationArea = All;
                 Image = RefreshLines;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var

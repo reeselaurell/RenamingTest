@@ -242,9 +242,6 @@ page 14135172 "lvnQuickPayWorksheet"
                 ApplicationArea = All;
                 Caption = 'Retrieve Invoices to Pay';
                 Image = GetEntries;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
-                Promoted = true;
 
                 trigger OnAction()
                 begin
@@ -257,9 +254,6 @@ page 14135172 "lvnQuickPayWorksheet"
                 ApplicationArea = All;
                 Caption = 'Select All To Pay';
                 Image = AllLines;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin
@@ -271,9 +265,6 @@ page 14135172 "lvnQuickPayWorksheet"
                 ApplicationArea = All;
                 Caption = 'Clear Selection';
                 Image = AllLines;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
-                Promoted = true;
 
                 trigger OnAction()
                 begin
@@ -285,9 +276,6 @@ page 14135172 "lvnQuickPayWorksheet"
                 ApplicationArea = All;
                 Caption = 'Create Payment Journal';
                 Image = PaymentJournal;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin
@@ -299,9 +287,6 @@ page 14135172 "lvnQuickPayWorksheet"
                 ApplicationArea = All;
                 Caption = 'Show All Documents';
                 Image = FilterLines;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
-                Promoted = true;
                 Visible = ShowAll;
 
                 trigger OnAction()
@@ -314,9 +299,6 @@ page 14135172 "lvnQuickPayWorksheet"
                 ApplicationArea = All;
                 Caption = 'Show Non-Applied Documents';
                 Image = FilterLines;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Visible = ShowNonApplied;
 
                 trigger OnAction()

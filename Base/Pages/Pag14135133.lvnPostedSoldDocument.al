@@ -118,9 +118,6 @@ page 14135133 "lvnPostedSoldDocument"
             {
                 Caption = 'Create Void Document';
                 Image = VoidElectronicDocument;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ApplicationArea = All;
 
                 trigger OnAction()
@@ -134,9 +131,6 @@ page 14135133 "lvnPostedSoldDocument"
             {
                 Caption = 'Print';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Report;
                 Image = Print;
 
                 trigger OnAction()

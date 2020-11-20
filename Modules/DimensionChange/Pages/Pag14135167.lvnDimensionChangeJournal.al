@@ -129,9 +129,6 @@ page 14135167 "lvnDimensionChangeJournal"
                 Caption = 'Import From File';
                 ApplicationArea = All;
                 Image = ImportExcel;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var
@@ -147,9 +144,6 @@ page 14135167 "lvnDimensionChangeJournal"
                 Caption = 'Import From Loan List File';
                 ApplicationArea = All;
                 Image = ImportExcel;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var
@@ -165,9 +159,6 @@ page 14135167 "lvnDimensionChangeJournal"
                 Caption = 'Import From G/L';
                 ApplicationArea = All;
                 Image = ImportChartOfAccounts;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var
@@ -183,9 +174,6 @@ page 14135167 "lvnDimensionChangeJournal"
                 Caption = 'Post';
                 ApplicationArea = All;
                 Image = PostBatch;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var

@@ -61,9 +61,6 @@ page 14135312 lvnCommissionProfiles
                 Caption = 'Show All Profiles';
                 ApplicationArea = All;
                 Image = ShowList;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin

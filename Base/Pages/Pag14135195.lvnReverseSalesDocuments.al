@@ -77,9 +77,6 @@ page 14135195 "lvnReverseSalesDocuments"
             {
                 Caption = 'Get Invoices to Reverse';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = GetSourceDoc;
 
                 trigger OnAction()

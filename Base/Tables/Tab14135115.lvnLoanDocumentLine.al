@@ -187,7 +187,7 @@ table 14135115 "lvnLoanDocumentLine"
 
     keys
     {
-        key(PK; "Transaction Type", "Document No.", "Line No.") { Clustered = true; }
+        key(PK; "Transaction Type", "Document No.", "Line No.") { Clustered = true; SumIndexFields = Amount; }
     }
 
     var

@@ -133,10 +133,7 @@ page 14135197 "lvnGLReconciliation"
             {
                 Caption = 'Retrieve Loan Data';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = Accounts;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -156,9 +153,6 @@ page 14135197 "lvnGLReconciliation"
             {
                 Caption = 'Show Details';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Visible = false;
                 Enabled = false;
                 Image = EntriesList;
@@ -178,9 +172,6 @@ page 14135197 "lvnGLReconciliation"
             {
                 Caption = 'Loan Card';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Image = Loaner;
 
                 trigger OnAction()
@@ -195,9 +186,6 @@ page 14135197 "lvnGLReconciliation"
             {
                 Caption = 'Quick Trace';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Image = Trace;
 
                 trigger OnAction()
@@ -213,9 +201,6 @@ page 14135197 "lvnGLReconciliation"
             {
                 Caption = 'Export to Excel';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = Excel;
 
                 trigger OnAction()

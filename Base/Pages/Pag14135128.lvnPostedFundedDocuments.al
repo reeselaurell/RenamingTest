@@ -104,9 +104,6 @@ page 14135128 "lvnPostedFundedDocuments"
             {
                 Caption = 'Create Void Document';
                 Image = VoidElectronicDocument;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ApplicationArea = All;
 
                 trigger OnAction()
@@ -120,9 +117,6 @@ page 14135128 "lvnPostedFundedDocuments"
             {
                 Caption = 'Create Multiple Void Documents';
                 Image = VoidAllElectronicDocuments;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ApplicationArea = All;
                 RunObject = report lvnVoidPostedFundDocuments;
             }
@@ -130,9 +124,6 @@ page 14135128 "lvnPostedFundedDocuments"
             {
                 Caption = 'Print';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Report;
                 Image = Print;
                 RunObject = report lvnLoanFundedDocument;
             }

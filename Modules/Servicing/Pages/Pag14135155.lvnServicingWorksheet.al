@@ -112,9 +112,6 @@ page 14135155 "lvnServicingWorksheet"
                 Caption = 'Loan Card';
                 ApplicationArea = All;
                 Image = Card;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 RunObject = page lvnLoanCard;
                 RunPageLink = "No." = field("Loan No.");
             }
@@ -123,9 +120,6 @@ page 14135155 "lvnServicingWorksheet"
                 Caption = 'Retrieve Loans for Servicing';
                 ApplicationArea = All;
                 Image = GetLines;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 RunObject = report lvnPrepareServicingDocuments;
             }
             action(ValidateLines)
@@ -133,9 +127,6 @@ page 14135155 "lvnServicingWorksheet"
                 Caption = 'Validate Lines';
                 ApplicationArea = All;
                 Image = Approve;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var
@@ -150,9 +141,6 @@ page 14135155 "lvnServicingWorksheet"
                 Caption = 'Create Borrower Customers';
                 ApplicationArea = All;
                 Image = CustomerList;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var
@@ -169,9 +157,6 @@ page 14135155 "lvnServicingWorksheet"
                 Caption = 'Create Servicing Documents';
                 ApplicationArea = All;
                 Image = CreateDocuments;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var

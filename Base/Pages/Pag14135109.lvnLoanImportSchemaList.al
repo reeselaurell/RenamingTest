@@ -47,9 +47,6 @@ page 14135109 "lvnLoanImportSchemaList"
                 RunObject = page lvnLoanImportSchemaLines;
                 RunPageMode = Edit;
                 RunPageLink = Code = field(Code);
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = EditJournal;
             }
         }

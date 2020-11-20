@@ -80,9 +80,6 @@ page 14135310 lvnCommissionTiers
                 RunObject = page lvnCommissionTiersBreakdown;
                 RunPageLink = "Tier Code" = field(Code);
                 Image = Percentage;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
             }
         }
     }

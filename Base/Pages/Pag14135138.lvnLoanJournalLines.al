@@ -320,10 +320,7 @@ page 14135138 "lvnLoanJournalLines"
             {
                 Caption = 'Import';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = Import;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -346,10 +343,7 @@ page 14135138 "lvnLoanJournalLines"
             {
                 Caption = 'Validate Lines';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = Approve;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -363,9 +357,6 @@ page 14135138 "lvnLoanJournalLines"
             {
                 Caption = 'Create Loan Cards';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = CreateForm;
 
                 trigger OnAction()
@@ -380,8 +371,6 @@ page 14135138 "lvnLoanJournalLines"
                 ApplicationArea = All;
                 Caption = 'Edit Loan Values';
                 Image = ShowList;
-                Promoted = true;
-                PromotedCategory = Process;
                 RunObject = page lvnLoanImportValueEdit;
                 RunPageMode = Edit;
                 RunPageLink = "Loan Journal Batch Code" = field("Loan Journal Batch Code"), "Line No." = field("Line No.");
@@ -391,8 +380,6 @@ page 14135138 "lvnLoanJournalLines"
                 ApplicationArea = All;
                 Caption = 'Show Error Lines';
                 Image = ErrorLog;
-                Promoted = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 begin
@@ -405,8 +392,6 @@ page 14135138 "lvnLoanJournalLines"
                 ApplicationArea = All;
                 Caption = 'Show All Lines';
                 Image = AllLines;
-                Promoted = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 begin

@@ -332,8 +332,6 @@ page 14135104 "lvnLoanCard"
                 ApplicationArea = All;
                 Caption = 'Edit Loan Values';
                 Image = ShowList;
-                Promoted = true;
-                PromotedCategory = Process;
                 RunObject = page lvnLoanCardValuesEdit;
                 RunPageMode = Edit;
                 RunPageLink = "Loan No." = field("No.");

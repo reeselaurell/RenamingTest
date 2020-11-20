@@ -66,9 +66,6 @@ page 14135231 "lvnCloseManagerEntryCard"
                 ApplicationArea = All;
                 Caption = 'Archive';
                 Image = Archive;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var

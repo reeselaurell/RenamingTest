@@ -128,9 +128,6 @@ page 14135187 "lvnForm1099Vendors"
             {
                 Caption = 'Retrieve Vendors';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Image = Vendor;
 
                 trigger OnAction()
@@ -167,9 +164,6 @@ page 14135187 "lvnForm1099Vendors"
             {
                 Caption = 'Retrieve Grouped Vendors';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = VendorCode;
 
                 trigger OnAction()
@@ -209,9 +203,6 @@ page 14135187 "lvnForm1099Vendors"
             {
                 Caption = 'Calculate Total Payments';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Image = Calculate;
 
                 trigger OnAction()
@@ -230,9 +221,6 @@ page 14135187 "lvnForm1099Vendors"
             {
                 Caption = 'Magnetic Media Export';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Report;
                 Image = Export1099;
 
                 trigger OnAction()
@@ -252,9 +240,6 @@ page 14135187 "lvnForm1099Vendors"
             {
                 Caption = 'Form 1099 Printout';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Report;
                 Image = PrintForm;
 
                 trigger OnAction()
@@ -274,9 +259,6 @@ page 14135187 "lvnForm1099Vendors"
             {
                 Caption = 'Export Form 1099';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedCategory = Report;
-                PromotedIsBig = true;
                 Image = Export;
 
                 trigger OnAction()

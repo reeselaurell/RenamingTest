@@ -41,9 +41,6 @@ page 14135248 "lvnStorageBrowser"
                 {
                     Caption = 'New...';
                     ApplicationArea = All;
-                    Promoted = true;
-                    PromotedIsBig = true;
-                    PromotedCategory = Process;
                     Image = NewItem;
                     Visible = not BrowsingFiles;
 
@@ -70,9 +67,6 @@ page 14135248 "lvnStorageBrowser"
                 {
                     Caption = 'Browse...';
                     ApplicationArea = All;
-                    Promoted = true;
-                    PromotedIsBig = true;
-                    PromotedCategory = Process;
                     Image = ShowList;
                     Visible = not BrowsingFiles;
                     Enabled = Rec.Name <> '';
@@ -92,9 +86,6 @@ page 14135248 "lvnStorageBrowser"
                 {
                     Caption = 'Delete';
                     ApplicationArea = All;
-                    Promoted = true;
-                    PromotedIsBig = true;
-                    PromotedCategory = Process;
                     Image = Delete;
                     Visible = not BrowsingFiles;
                     Enabled = Rec.Name <> '';
@@ -118,9 +109,6 @@ page 14135248 "lvnStorageBrowser"
                 {
                     Caption = 'Upload...';
                     ApplicationArea = All;
-                    Promoted = true;
-                    PromotedIsBig = true;
-                    PromotedCategory = Process;
                     Image = Open;
                     Visible = BrowsingFiles;
 
@@ -143,9 +131,6 @@ page 14135248 "lvnStorageBrowser"
                 {
                     Caption = 'Download';
                     ApplicationArea = All;
-                    Promoted = true;
-                    PromotedIsBig = true;
-                    PromotedCategory = Process;
                     Image = Close;
                     Visible = BrowsingFiles;
                     Enabled = Rec.Name <> '';
@@ -164,9 +149,6 @@ page 14135248 "lvnStorageBrowser"
                 {
                     Caption = 'Copy To...';
                     ApplicationArea = All;
-                    Promoted = true;
-                    PromotedIsBig = true;
-                    PromotedCategory = Process;
                     Image = Copy;
                     Visible = BrowsingFiles;
                     Enabled = Rec.Name <> '';
@@ -190,9 +172,6 @@ page 14135248 "lvnStorageBrowser"
                 {
                     Caption = 'Move To...';
                     ApplicationArea = All;
-                    Promoted = true;
-                    PromotedIsBig = true;
-                    PromotedCategory = Process;
                     Image = CreateMovement;
                     Visible = BrowsingFiles;
                     Enabled = Rec.Name <> '';
@@ -218,9 +197,6 @@ page 14135248 "lvnStorageBrowser"
                 {
                     Caption = 'Delete';
                     ApplicationArea = All;
-                    Promoted = true;
-                    PromotedIsBig = true;
-                    PromotedCategory = Process;
                     Image = Delete;
                     Visible = BrowsingFiles;
                     Enabled = Rec.Name <> '';

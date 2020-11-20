@@ -219,9 +219,6 @@ page 14135198 "lvnLoanFileReconWorksheet"
                 Caption = 'Import from File';
                 ApplicationArea = All;
                 Image = Import;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 var
@@ -246,8 +243,6 @@ page 14135198 "lvnLoanFileReconWorksheet"
                 ApplicationArea = All;
                 Image = Reconcile;
                 Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -263,9 +258,6 @@ page 14135198 "lvnLoanFileReconWorksheet"
                 Caption = 'Mark All to Reclass';
                 ApplicationArea = All;
                 Image = AllLines;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin
@@ -279,9 +271,6 @@ page 14135198 "lvnLoanFileReconWorksheet"
                 Caption = 'Clear Marks';
                 ApplicationArea = All;
                 Image = Reject;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
 
                 trigger OnAction()
                 begin

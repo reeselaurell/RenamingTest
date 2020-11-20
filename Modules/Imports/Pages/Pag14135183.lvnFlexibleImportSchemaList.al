@@ -33,9 +33,6 @@ page 14135183 "lvnFlexibleImportSchemaList"
                 ApplicationArea = All;
                 Caption = 'Edit Schema';
                 Image = OpenJournal;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var

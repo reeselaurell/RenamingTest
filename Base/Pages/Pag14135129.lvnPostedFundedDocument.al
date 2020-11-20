@@ -118,9 +118,6 @@ page 14135129 "lvnPostedFundedDocument"
             {
                 Caption = 'Create Void Document';
                 Image = VoidElectronicDocument;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 ApplicationArea = All;
 
                 trigger OnAction()

@@ -245,10 +245,7 @@ page 14135137 "lvnSoldJournalLines"
             {
                 Caption = 'Import';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = Import;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -271,10 +268,7 @@ page 14135137 "lvnSoldJournalLines"
             {
                 Caption = 'Validate Lines';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = Approve;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -288,10 +282,7 @@ page 14135137 "lvnSoldJournalLines"
             {
                 Caption = 'Preview Document';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = PreviewChecks;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -305,9 +296,6 @@ page 14135137 "lvnSoldJournalLines"
             {
                 Caption = 'Create Documents';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = CreateDocuments;
 
                 trigger OnAction()
@@ -321,9 +309,6 @@ page 14135137 "lvnSoldJournalLines"
             {
                 Caption = 'Create Loan Cards';
                 ApplicationArea = All;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedCategory = Process;
                 Image = CreateForm;
 
                 trigger OnAction()
@@ -338,8 +323,6 @@ page 14135137 "lvnSoldJournalLines"
                 ApplicationArea = All;
                 Caption = 'Edit Loan Values';
                 Image = ShowList;
-                Promoted = true;
-                PromotedCategory = Process;
                 RunObject = page lvnLoanImportValueEdit;
                 RunPageMode = Edit;
                 RunPageLink = "Loan Journal Batch Code" = field("Loan Journal Batch Code"), "Line No." = field("Line No.");
@@ -349,8 +332,6 @@ page 14135137 "lvnSoldJournalLines"
                 ApplicationArea = All;
                 Caption = 'Show Error Lines';
                 Image = ErrorLog;
-                Promoted = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 begin
@@ -363,8 +344,6 @@ page 14135137 "lvnSoldJournalLines"
                 ApplicationArea = All;
                 Caption = 'Show All Lines';
                 Image = AllLines;
-                Promoted = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 begin

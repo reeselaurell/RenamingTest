@@ -110,8 +110,6 @@ page 14135185 "lvnFlexibleImportSchemaLine"
                 Caption = 'Conditions';
                 ApplicationArea = All;
                 Image = Planning;
-                Promoted = true;
-                PromotedCategory = Process;
                 RunObject = page lvnFlexImportSchemaConditions;
                 RunPageView = sorting("Schema Code", "Amount Column No.", "Condition Line No.");
                 RunPageLink = "Schema Code" = field("Schema Code"), "Amount Column No." = field("Amount Column No.");

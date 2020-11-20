@@ -91,9 +91,6 @@ page 14135121 "lvnLoanUpdateSchema"
             {
                 ApplicationArea = All;
                 Caption = 'Copy from Import Schema';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
                 Image = Copy;
 
                 trigger OnAction()
@@ -113,7 +110,6 @@ page 14135121 "lvnLoanUpdateSchema"
                 {
                     ApplicationArea = all;
                     Image = Change;
-                    Promoted = true;
                     Caption = 'Always';
 
                     trigger OnAction()
@@ -128,7 +124,6 @@ page 14135121 "lvnLoanUpdateSchema"
                 {
                     ApplicationArea = all;
                     Image = Change;
-                    Promoted = true;
                     Caption = 'If Destination Blank';
 
                     trigger OnAction()
@@ -143,7 +138,6 @@ page 14135121 "lvnLoanUpdateSchema"
                 {
                     ApplicationArea = all;
                     Image = Change;
-                    Promoted = true;
                     Caption = 'If Source not Blank';
 
                     trigger OnAction()
