@@ -220,9 +220,11 @@ codeunit 14135128 "lvnExpressionEngine"
             ExpressionLine.SetRange("Line No.", 1)
         else
             ExpressionLine.SetRange("Line No.", 2);
-        repeat
-            Return += ExpressionLine."Right Side";
-        until ExpressionLine.Next() = 0;
+        Return := '';
+        if ExpressionLine.FindSet() then
+            repeat
+                Return += ExpressionLine."Right Side";
+            until ExpressionLine.Next() = 0;
         exit(CalculateOrReturnValue(Return, ValueBuffer));
     end;
 
@@ -638,48 +640,10 @@ codeunit 14135128 "lvnExpressionEngine"
 
     local procedure CalculateDecimalValue(Expression: Text; var ValueBuffer: Record lvnExpressionValueBuffer): Text
     var
-        i: Integer;
-        OpenIdx: Integer;
-        ExpLen: Integer;
-        ParCount: Integer;
-        OpIdx: Integer;
-        ExpandFrom: Integer;
-        ExpandTo: Integer;
+        ExpressionCalculator: Codeunit lvnExpressionCalculator;
     begin
-        ExpLen := StrLen(Expression);
-        OpenIdx := StrPos(Expression, '(');
-        while OpenIdx > 0 do begin
-            //Open Parenthesis
-            ParCount := 1;
-            for i := OpenIdx + 1 to ExpLen do
-                if Expression[i] = '(' then
-                    ParCount += 1
-                else
-                    if Expression[i] = ')' then begin
-                        if ParCount = 1 then
-                            Expression := CopyStr(Expression, 1, OpenIdx - 1) + CalculateDecimalValue(CopyStr(Expression, OpenIdx + 1, i - OpenIdx - 1), ValueBuffer) + CopyStr(Expression, i + 1);
-                        ParCount -= 1;
-                    end;
-            OpenIdx := StrPos(Expression, '(');
-        end;
-        //At this point we have an expression without parenthesis
-        OpIdx := IndexOfAny(Expression, '*/');
-        while OpIdx > 0 do begin
-            ExpandFrom := ExpandToNextOperand(Expression, OpIdx, -1);
-            ExpandTo := ExpandToNextOperand(Expression, OpIdx, 1);
-            //Here we have a single expression to calculate
-            Expression := CopyStr(Expression, 1, ExpandFrom - 1) + Format(EvaluateDecimalExpression(ResolveVariables(CopyStr(Expression, ExpandFrom, ExpandTo - ExpandFrom), ValueBuffer)), 0, 9) + CopyStr(Expression, ExpandTo);
-            OpIdx := IndexOfAny(Expression, '*/');
-        end;
-        OpIdx := IndexOfAny(Expression, '+-');
-        while OpIdx > 0 do begin
-            ExpandFrom := ExpandToNextOperand(Expression, OpIdx, -1);
-            ExpandTo := ExpandToNextOperand(Expression, OpIdx, 1);
-            //Here we have a single expression to calculate
-            Expression := CopyStr(Expression, 1, ExpandFrom - 1) + Format(EvaluateDecimalExpression(ResolveVariables(CopyStr(Expression, ExpandFrom, ExpandTo - ExpandFrom), ValueBuffer)), 0, 9) + CopyStr(Expression, ExpandTo);
-            OpIdx := IndexOfAny(Expression, '+-');
-        end;
-        exit(ResolveVariables(Expression, ValueBuffer));
+        ExpressionCalculator.Init(Expression);
+        exit(Format(ExpressionCalculator.Calculate(ValueBuffer)));
     end;
 
     local procedure ExpandToNextOperand(Expression: Text; StartIndex: Integer; Direction: Integer): Integer
@@ -723,14 +687,37 @@ codeunit 14135128 "lvnExpressionEngine"
         exit(StartIndex);
     end;
 
+    local procedure SkipChars(Expression: Text; Chars: Text): Integer
+    var
+        i: Integer;
+        x: Integer;
+        Found: Boolean;
+    begin
+        for i := 1 to StrLen(Expression) do begin
+            Found := false;
+            for x := 1 to StrLen(Chars) do begin
+                if Chars[x] = Expression[i] then
+                    Found := true;
+            end;
+            if not Found then
+                exit(i);
+        end;
+        exit(i + 1);
+    end;
+
     local procedure IndexOfAny(Expression: Text; Operations: Text): Integer
+    begin
+        exit(IndexOfAny(Expression, Operations, 1));
+    end;
+
+    local procedure IndexOfAny(Expression: Text; Operations: Text; StartIndex: Integer): Integer
     var
         i: Integer;
         x: Integer;
         Skip: Boolean;
     begin
         Skip := false;
-        for i := 1 to StrLen(Expression) do begin
+        for i := StartIndex to StrLen(Expression) do begin
             if Expression[i] = '[' then
                 Skip := true
             else
