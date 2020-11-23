@@ -257,12 +257,17 @@ function InitializeDXGrid(data) {
                 fixedRows.detach();
                 fixedHead.after(fixedRows);
             }
+            var h = grid.height() + 'px';
+            var frame = $(window.frameElement, window.parent.document);
+            frame.css('min-height', h);
+            frame.css('height', h);
+            frame.css('max-height', h);
         }
         CreateInfrastructure();
         data.scrolling = {
             useNative: true
         }
-        data.height = 680;
+        //data.height = 680;
         for (var i = 0; i < data.columns.length; i++) {
             SetCellTemplate(data.columns[i]);
         }
@@ -292,4 +297,10 @@ function ExportToExcel() {
 
 function Print() {
     window.print();
+}
+function SetHeight(newHeight) {
+    grid.dxDataGrid('instance').option('height', newHeight);
+    if (typeof newHeight === 'number')
+        newHeight = newHeight.toString() + 'px';
+    $(window.frameElement).css('height', newHeight).css('min-height', newHeight).css('max-height', newHeight);
 }

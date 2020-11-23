@@ -15,6 +15,16 @@
             "id": "PTE0001",
             "action": "None",
             "justification": "We use our own id range"
+        },
+        {
+            "id": "AA0218",
+            "action": "Hidden",
+            "justification": "Tooltips not neccessary for app source"
+        },
+        {
+            "id": "AA0072",
+            "action": "Hidden",
+            "justification": "Microsoft Bug"
         }
     ]
 }

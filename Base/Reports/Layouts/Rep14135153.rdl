@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="LenderNameBox">
+          <DataField>LenderNameBox</DataField>
+        </Field>
+        <Field Name="LenderEIN">
+          <DataField>LenderEIN</DataField>
+        </Field>
+        <Field Name="LoanNo1">
+          <DataField>LoanNo1</DataField>
+        </Field>
+        <Field Name="BorrowerSSN1">
+          <DataField>BorrowerSSN1</DataField>
+        </Field>
+        <Field Name="BorrowerAddr11">
+          <DataField>BorrowerAddr11</DataField>
+        </Field>
+        <Field Name="BorrowerAddr12">
+          <DataField>BorrowerAddr12</DataField>
+        </Field>
+        <Field Name="BorrowerAddr13">
+          <DataField>BorrowerAddr13</DataField>
+        </Field>
+        <Field Name="BorrowerAddr14">
+          <DataField>BorrowerAddr14</DataField>
+        </Field>
+        <Field Name="BorrowerAddr15">
+          <DataField>BorrowerAddr15</DataField>
+        </Field>
+        <Field Name="Box11">
+          <DataField>Box11</DataField>
+        </Field>
+        <Field Name="Box11Format">
+          <DataField>Box11Format</DataField>
+        </Field>
+        <Field Name="Box12">
+          <DataField>Box12</DataField>
+        </Field>
+        <Field Name="Box12Format">
+          <DataField>Box12Format</DataField>
+        </Field>
+        <Field Name="Box13">
+          <DataField>Box13</DataField>
+        </Field>
+        <Field Name="Box14">
+          <DataField>Box14</DataField>
+        </Field>
+        <Field Name="Box14Format">
+          <DataField>Box14Format</DataField>
+        </Field>
+        <Field Name="Box15">
+          <DataField>Box15</DataField>
+        </Field>
+        <Field Name="Box15Format">
+          <DataField>Box15Format</DataField>
+        </Field>
+        <Field Name="Box16">
+          <DataField>Box16</DataField>
+        </Field>
+        <Field Name="Box16Format">
+          <DataField>Box16Format</DataField>
+        </Field>
+        <Field Name="Box17">
+          <DataField>Box17</DataField>
+        </Field>
+        <Field Name="Box18">
+          <DataField>Box18</DataField>
+        </Field>
+        <Field Name="Box19">
+          <DataField>Box19</DataField>
+        </Field>
+        <Field Name="Box110">
+          <DataField>Box110</DataField>
+        </Field>
+        <Field Name="Box110Format">
+          <DataField>Box110Format</DataField>
+        </Field>
+        <Field Name="LoanNo2">
+          <DataField>LoanNo2</DataField>
+        </Field>
+        <Field Name="BorrowerSSN2">
+          <DataField>BorrowerSSN2</DataField>
+        </Field>
+        <Field Name="BorrowerAddr21">
+          <DataField>BorrowerAddr21</DataField>
+        </Field>
+        <Field Name="BorrowerAddr22">
+          <DataField>BorrowerAddr22</DataField>
+        </Field>
+        <Field Name="BorrowerAddr23">
+          <DataField>BorrowerAddr23</DataField>
+        </Field>
+        <Field Name="BorrowerAddr24">
+          <DataField>BorrowerAddr24</DataField>
+        </Field>
+        <Field Name="BorrowerAddr25">
+          <DataField>BorrowerAddr25</DataField>
+        </Field>
+        <Field Name="Box21">
+          <DataField>Box21</DataField>
+        </Field>
+        <Field Name="Box21Format">
+          <DataField>Box21Format</DataField>
+        </Field>
+        <Field Name="Box22">
+          <DataField>Box22</DataField>
+        </Field>
+        <Field Name="Box22Format">
+          <DataField>Box22Format</DataField>
+        </Field>
+        <Field Name="Box23">
+          <DataField>Box23</DataField>
+        </Field>
+        <Field Name="Box24">
+          <DataField>Box24</DataField>
+        </Field>
+        <Field Name="Box24Format">
+          <DataField>Box24Format</DataField>
+        </Field>
+        <Field Name="Box25">
+          <DataField>Box25</DataField>
+        </Field>
+        <Field Name="Box25Format">
+          <DataField>Box25Format</DataField>
+        </Field>
+        <Field Name="Box26">
+          <DataField>Box26</DataField>
+        </Field>
+        <Field Name="Box26Format">
+          <DataField>Box26Format</DataField>
+        </Field>
+        <Field Name="Box27">
+          <DataField>Box27</DataField>
+        </Field>
+        <Field Name="Box28">
+          <DataField>Box28</DataField>
+        </Field>
+        <Field Name="Box29">
+          <DataField>Box29</DataField>
+        </Field>
+        <Field Name="Box210">
+          <DataField>Box210</DataField>
+        </Field>
+        <Field Name="Box210Format">
+          <DataField>Box210Format</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>
