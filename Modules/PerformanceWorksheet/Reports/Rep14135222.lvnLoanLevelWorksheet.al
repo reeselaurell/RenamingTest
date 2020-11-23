@@ -25,8 +25,11 @@ report 14135222 "lvnLoanLevelWorksheet"
                         trigger OnValidate()
                         var
                             FilterTokens: Codeunit "Filter Tokens";
+                            DateFilter: Text;
                         begin
-                            FilterTokens.MakeDateFilter(SystemFilter."Date Filter");
+                            DateFilter := SystemFilter."Date Filter";
+                            FilterTokens.MakeDateFilter(DateFilter);
+                            SystemFilter."Date Filter" := CopyStr(DateFilter, 1, MaxStrLen(SystemFilter."Date Filter"));
                         end;
                     }
                     field(ShowTotalsField; ShowTotals) { ApplicationArea = All; Caption = 'Show Totals'; }

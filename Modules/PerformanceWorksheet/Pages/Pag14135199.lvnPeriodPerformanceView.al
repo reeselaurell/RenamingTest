@@ -88,7 +88,7 @@ page 14135199 "lvnPeriodPerformanceView"
     {
         area(Processing)
         {
-            action(ExcelExport)
+            action(XlsExport)
             {
                 ApplicationArea = All;
                 Caption = 'Excel Export';
@@ -96,6 +96,7 @@ page 14135199 "lvnPeriodPerformanceView"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -110,6 +111,7 @@ page 14135199 "lvnPeriodPerformanceView"
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -124,6 +126,7 @@ page 14135199 "lvnPeriodPerformanceView"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Promoted = true;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -151,7 +154,7 @@ page 14135199 "lvnPeriodPerformanceView"
         Dim3Visible: Boolean;
         Dim4Visible: Boolean;
         BusinessUnitVisible: Boolean;
-        SchemaNameFormatTxt: Label '%1 - %2';
+        SchemaNameFormatTxt: Label '%1 - %2', Comment = '%1 - Row Schema Description; %2 - Band Schema Description';
 
     procedure SetParams(
         RowSchemaCode: Code[20];
@@ -264,7 +267,7 @@ page 14135199 "lvnPeriodPerformanceView"
             PeriodBand.Add('caption', TempBandInfoBuffer."Header Description");
             ColLine.Reset();
             ColLine.SetRange("Schema Code", RowSchema."Column Schema");
-            ColLine.FindFirst();
+            ColLine.FindSet();
             repeat
                 BandColumns.Add(GetColumn(StrSubstNo(PerformanceMgmt.GetFieldFormat(), TempBandInfoBuffer."Band No.", ColLine."Column No."), ColLine."Primary Caption", ''));
             until ColLine.Next() = 0;

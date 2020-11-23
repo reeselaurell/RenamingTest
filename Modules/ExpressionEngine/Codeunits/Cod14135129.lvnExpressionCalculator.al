@@ -16,10 +16,10 @@ codeunit 14135131 "lvnExpressionCalculator"
         //- literal end
         //- content
         CharacterClass: Option Whitespace,Operator,"Variable Start","Variable End","Scope Start","Scope End",Literal,Content;
-        UnrecognizedFieldErr: Label 'Unrecognized field name: %1';
-        UnSupportedTypeErr: Label 'Unsupported value type: %1';
-        InvalidExpressionErr: Label 'Invalid expression: %1';
-        UnexpectedOperatorErr: Label 'Unexpected operator in scope: %1';
+        UnrecognizedFieldErr: Label 'Unrecognized field name: %1', Comment = '%1 - Field name';
+        UnSupportedTypeErr: Label 'Unsupported value type: %1', Comment = '%1 - Value type';
+        InvalidExpressionErr: Label 'Invalid expression: %1', Comment = '%1 - Expression';
+        UnexpectedOperatorErr: Label 'Unexpected operator in scope: %1', Comment = '%1 - Json representation of the scope';
         OperatorTok: Label 'op';
         ScopeTok: Label 'sc';
         VariableTok: Label 'var';
@@ -230,7 +230,7 @@ codeunit 14135131 "lvnExpressionCalculator"
                         CharacterClass::Operator:
                             begin
                                 if CurrentOperator <> '' then
-                                    ThrowInvalidExpressionError;
+                                    ThrowInvalidExpressionError();
                                 CurrentOperator := CurrentChar;
                             end;
                         CharacterClass::"Variable Start":
@@ -272,22 +272,20 @@ codeunit 14135131 "lvnExpressionCalculator"
                             ThrowInvalidExpressionError();
                     end;
                 ParserState::Variable:
-                    begin
-                        if CharacterClass = CharacterClass::"Variable End" then begin
-                            Clear(Operand);
-                            Operand.Add(OperatorTok, CurrentOperator);
-                            Operand.Add(VariableTok, BackBuffer.ToText());
-                            ScopeArray.Add(Operand);
-                            CurrentOperator := '';
-                            Clear(BackBuffer);
-                            ParserState := ParserState::Whitespace;
-                        end else
-                            BackBuffer.Append(CurrentChar);
-                    end;
+                    if CharacterClass = CharacterClass::"Variable End" then begin
+                        Clear(Operand);
+                        Operand.Add(OperatorTok, CurrentOperator);
+                        Operand.Add(VariableTok, BackBuffer.ToText());
+                        ScopeArray.Add(Operand);
+                        CurrentOperator := '';
+                        Clear(BackBuffer);
+                        ParserState := ParserState::Whitespace;
+                    end else
+                        BackBuffer.Append(CurrentChar);
                 ParserState::Literal:
                     begin
                         Ok := true;
-                        if (CharacterClass = CharacterClass::Literal) then begin
+                        if (CharacterClass = CharacterClass::Literal) then
                             if PeekNextChar() = '"' then
                                 GetNextChar()
                             else begin
@@ -300,7 +298,6 @@ codeunit 14135131 "lvnExpressionCalculator"
                                 Clear(BackBuffer);
                                 ParserState := ParserState::Whitespace;
                             end;
-                        end;
                         if Ok then
                             BackBuffer.Append(CurrentChar);
                     end;

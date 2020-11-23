@@ -125,7 +125,7 @@ report 14135220 "lvnPerformanceWorksheet"
             PeriodPerformanceView.RunModal();
         end else begin
             Clear(DimensionPerformanceView);
-            TempSystemCalcFilter."Date Filter" := DateFilter;
+            TempSystemCalcFilter."Date Filter" := CopyStr(DateFilter, 1, MaxStrLen(TempSystemCalcFilter."Date Filter"));
             DimensionPerformanceView.SetParams(RowSchemaCode, BandSchemaCode, TempSystemCalcFilter);
             DimensionPerformanceView.RunModal();
         end;
@@ -138,5 +138,5 @@ report 14135220 "lvnPerformanceWorksheet"
         RowSchemaCode: Code[20];
         BandSchemaCode: Code[20];
         AsOfDate: Date;
-        DateFilterLbl: Label '..%1';
+        DateFilterLbl: Label '..%1', Comment = '%1 - End Date';
 }

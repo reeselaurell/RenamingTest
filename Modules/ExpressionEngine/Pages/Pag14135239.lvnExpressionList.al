@@ -37,6 +37,7 @@ page 14135239 "lvnExpressionList"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
 
                 trigger OnAction();
                 var
@@ -102,6 +103,7 @@ page 14135239 "lvnExpressionList"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 ApplicationArea = All;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 var

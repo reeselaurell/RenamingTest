@@ -144,7 +144,7 @@ page 14135242 "lvnConditionEdit"
         TempExpressionValueBuffer: Record lvnExpressionValueBuffer temporary;
         ConditionLine: Record lvnExpressionLine;
         Engine: Codeunit lvnExpressionEngine;
-        ConditionNoTxt: Label 'Condition #%1';
+        ConditionNoTxt: Label 'Condition #%1', Comment = '%1 - Condition number';
         ConditionValue: Text;
         Ready: Boolean;
         ItemCount: Integer;

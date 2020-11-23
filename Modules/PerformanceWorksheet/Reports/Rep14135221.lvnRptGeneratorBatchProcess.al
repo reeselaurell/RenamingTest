@@ -96,12 +96,12 @@ report 14135221 "lvnRptGeneratorBatchProcess"
         PerformanceDataExport: Codeunit lvnPerformanceDataExport;
         ToDate: Date;
         ExportFormat: Enum lvnGridExportMode;
-        ProcessProgressMsg: Label 'Processing item #1#### of #2####';
+        ProcessProgressMsg: Label 'Processing item #1#### of #2####', Comment = '#1 - Current Item; #2 - Total Item Count';
         HtmlExportWarningMsg: Label 'Warning: Html format will only process first entry in whole batch!';
         ExportCallerLbl: Label 'ReportGeneratorBatchProcess';
-        RenamedSheetTemplateLbl: Label '%1 %2';
-        RenamedSubSeqSheetTemplateLbl: Label '%1.%2 %3 %4';
-        ProgressTemplateMsg: Label '%1.%2';
+        RenamedSheetTemplateLbl: Label '%1 %2', Comment = '%1 - Sequence Number; %2 - Description';
+        RenamedSubSeqSheetTemplateLbl: Label '%1.%2 %3 %4', Comment = '%1 - Sequence Number; %2 - Sub-sequence Number; %3 - Sequence Description; %4 - Expand (Sub-sequence) Description';
+        ProgressTemplateMsg: Label '%1.%2', Comment = '%1 - Processed Item Count; %2 - Processed Sub-item Count';
 
     procedure SetParams(BatchCode: Code[20])
     begin
@@ -128,15 +128,15 @@ report 14135221 "lvnRptGeneratorBatchProcess"
     begin
         case ReportGeneratorSequence."Expand Filter" of
             ReportGeneratorSequence."Expand Filter"::"Business Unit":
-                ReportGeneratorSequence."Business Unit Filter" := Value;
+                ReportGeneratorSequence."Business Unit Filter" := CopyStr(Value, 1, MaxStrLen(ReportGeneratorSequence."Business Unit Filter"));
             ReportGeneratorSequence."Expand Filter"::"Dimension 1":
-                ReportGeneratorSequence."Dimension 1 Filter" := Value;
+                ReportGeneratorSequence."Dimension 1 Filter" := CopyStr(Value, 1, MaxStrLen(ReportGeneratorSequence."Dimension 1 Filter"));
             ReportGeneratorSequence."Expand Filter"::"Dimension 2":
-                ReportGeneratorSequence."Dimension 2 Filter" := Value;
+                ReportGeneratorSequence."Dimension 2 Filter" := CopyStr(Value, 1, MaxStrLen(ReportGeneratorSequence."Dimension 2 Filter"));
             ReportGeneratorSequence."Expand Filter"::"Dimension 3":
-                ReportGeneratorSequence."Dimension 3 Filter" := Value;
+                ReportGeneratorSequence."Dimension 3 Filter" := CopyStr(Value, 1, MaxStrLen(ReportGeneratorSequence."Dimension 3 Filter"));
             ReportGeneratorSequence."Expand Filter"::"Dimension 4":
-                ReportGeneratorSequence."Dimension 4 Filter" := Value;
+                ReportGeneratorSequence."Dimension 4 Filter" := CopyStr(Value, 1, MaxStrLen(ReportGeneratorSequence."Dimension 4 Filter"));
         end;
     end;
 

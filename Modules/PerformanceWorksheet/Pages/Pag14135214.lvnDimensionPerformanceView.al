@@ -88,7 +88,7 @@ page 14135214 "lvnDimensionPerformanceView"
     {
         area(Processing)
         {
-            action(ExcelExport)
+            action(XlsExport)
             {
                 ApplicationArea = All;
                 Caption = 'Excel Export';
@@ -96,6 +96,7 @@ page 14135214 "lvnDimensionPerformanceView"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -110,6 +111,7 @@ page 14135214 "lvnDimensionPerformanceView"
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -124,6 +126,7 @@ page 14135214 "lvnDimensionPerformanceView"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Promoted = true;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -156,7 +159,7 @@ page 14135214 "lvnDimensionPerformanceView"
         Dim4Visible: Boolean;
         BusinessUnitVisible: Boolean;
         DateFilter: Text;
-        SchemaNameFormatTxt: Label '%1 - %2';
+        SchemaNameFormatTxt: Label '%1 - %2', Comment = '%1 - Row Schema Description; %2 - Band Schema Description';
         NoDimensionPerformanceTotalsErr: Label 'Totals row is not supported by dimension performance view. Use row formula instead';
 
     procedure SetParams(
@@ -358,7 +361,7 @@ page 14135214 "lvnDimensionPerformanceView"
             DimensionBand.Add('caption', TempBandLine."Header Description");
             ColLine.Reset();
             ColLine.SetRange("Schema Code", RowSchema."Column Schema");
-            ColLine.FindFirst();
+            ColLine.FindSet();
             repeat
                 BandColumns.Add(GetColumn(StrSubstNo(PerformanceMgmt.GetFieldFormat(), TempBandLine."Band No.", ColLine."Column No."), ColLine."Primary Caption", ''));
             until ColLine.Next() = 0;

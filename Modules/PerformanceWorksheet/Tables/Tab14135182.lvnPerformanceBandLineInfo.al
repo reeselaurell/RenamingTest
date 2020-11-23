@@ -10,7 +10,7 @@ table 14135182 "lvnPerformanceBandLineInfo"
             Caption = 'Band No.';
             DataClassification = CustomerContent;
         }
-        field(10; "Header Description"; Text[50])
+        field(10; "Header Description"; Text[100])
         {
             Caption = 'Header Description';
             DataClassification = CustomerContent;

@@ -1,4 +1,4 @@
-page 14135243 lvnIifEdit
+page 14135243 "lvnIifEdit"
 {
     PageType = Card;
     SourceTable = lvnExpressionHeader;
@@ -9,7 +9,7 @@ page 14135243 lvnIifEdit
     {
         area(Content)
         {
-            group(Predicate)
+            group(PredicateControlContainer)
             {
                 usercontrol(PredicateControl; lvnPredicateControl)
                 {

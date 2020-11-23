@@ -50,5 +50,5 @@ table 14135179 "lvnDimPerfBandSchemaLine"
     }
 
     var
-        ShouldBePositiveErr: Label '%1 should be positive number';
+        ShouldBePositiveErr: Label '%1 should be positive number', Comment = '%1 - Band No. Field Caption';
 }

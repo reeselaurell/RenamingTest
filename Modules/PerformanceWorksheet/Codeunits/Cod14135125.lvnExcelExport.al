@@ -33,6 +33,8 @@ codeunit 14135125 "lvnExcelExport"
         PdfFileTxt: Label 'PDF Files (*.psf)|*.pdf';
         HtmlFileTxt: Label 'HTML Files (*.html)|*.html';
         AllFileTxt: Label 'All Files (*.*)|*.*';
+        RangeComparisonTxt: Label '(%1>=%2)AND(%1<=%3)', Comment = '%1 - Value to Test; %2 - Range Start; %3 - Range End';
+        SetComparisonTxt: Label 'ISNUMBER(MATCH(%1,{%2},0))', Comment = '%1 - Value to Test; %2 - Comma-delimited set of values';
 
     procedure Init(Caller: Text; Mode: Enum lvnGridExportMode)
     begin
@@ -408,9 +410,9 @@ codeunit 14135125 "lvnExcelExport"
             Comparison::Contains:
                 if RightHand.IndexOf('..') <> 0 then begin
                     Split := DelChr(RightHand, '<>', '()').Split('..');
-                    exit(StrSubstNo('(%1>=%2)AND(%1<=%3)', LeftHand, Split.Get(1), Split.Get(2)));
+                    exit(StrSubstNo(RangeComparisonTxt, LeftHand, Split.Get(1), Split.Get(2)));
                 end else
-                    exit(StrSubstNo('ISNUMBER(MATCH(%1,{%2},0))', LeftHand, DelChr(RightHand, '<>', '()').Replace('|', ',')));
+                    exit(StrSubstNo(SetComparisonTxt, LeftHand, DelChr(RightHand, '<>', '()').Replace('|', ',')));
         end;
     end;
 }

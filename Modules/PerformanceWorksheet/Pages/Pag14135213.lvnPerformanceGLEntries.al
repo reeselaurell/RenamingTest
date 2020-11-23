@@ -4,7 +4,7 @@ page 14135213 "lvnPerformanceGLEntries"
     SourceTable = "G/L Entry";
     Caption = 'General Ledger Entries';
     Editable = false;
-    DataCaptionExpression = GetCaption;
+    DataCaptionExpression = GetCaption();
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
@@ -240,6 +240,7 @@ page 14135213 "lvnPerformanceGLEntries"
         DimensionVisible6: Boolean;
         DimensionVisible7: Boolean;
         DimensionVisible8: Boolean;
+        PageCaptionFormatTxt: Label '%1 %2', Comment = '%1 - G/L Account No.; %2 - G/L Account Name';
 
     procedure EnableCostCenterDocumentFiltering()
     begin
@@ -276,6 +277,6 @@ page 14135213 "lvnPerformanceGLEntries"
             if not GLAcc.Get(Rec."G/L Account No.") then
                 if Rec.GetFilter("G/L Account No.") <> '' then
                     if GLAcc.Get(Rec.GetRangeMin("G/L Account No.")) then;
-        exit(StrSubstNo('%1 %2', GLAcc."No.", GLAcc.Name));
+        exit(StrSubstNo(PageCaptionFormatTxt, GLAcc."No.", GLAcc.Name));
     end;
 }

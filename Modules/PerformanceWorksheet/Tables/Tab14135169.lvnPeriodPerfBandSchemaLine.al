@@ -76,5 +76,5 @@ table 14135169 "lvnPeriodPerfBandSchemaLine"
     }
 
     var
-        ShouldBePositiveNumberErr: Label '%1 should be positive number';
+        ShouldBePositiveNumberErr: Label '%1 should be positive number', Comment = '%1 - Band No. Field Caption';
 }

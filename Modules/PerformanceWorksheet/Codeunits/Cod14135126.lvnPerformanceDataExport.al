@@ -12,13 +12,23 @@ codeunit 14135126 "lvnPerformanceDataExport"
         NameTxt: Label 'Name';
         UnsupportedFormulaTypeErr: Label 'Formula type is not supported';
         IntranslatableRowFormulaErr: Label 'Row formula cannot be translated';
+        TernaryExpressionTxt: Label '=IF(%1,%2,%3)', Comment = '%1 - Value to Test; %2 - True Part; %3 - False Part';
 
     procedure ExportToExcel(
-        var ExcelExport: Codeunit lvnExcelExport;
-        var RowSchema: Record lvnPerformanceRowSchema;
-        var Buffer: Record lvnPerformanceValueBuffer;
-        var HeaderData: Record lvnSystemCalculationFilter;
-        var BandInfo: Record lvnPerformanceBandLineInfo)
+        var
+            ExcelExport: Codeunit lvnExcelExport;
+
+    var
+        RowSchema: Record lvnPerformanceRowSchema;
+
+    var
+        Buffer: Record lvnPerformanceValueBuffer;
+
+    var
+        HeaderData: Record lvnSystemCalculationFilter;
+
+    var
+        BandInfo: Record lvnPerformanceBandLineInfo)
     var
         ColLine: Record lvnPerformanceColSchemaLine;
         RowLine: Record lvnPerformanceRowSchemaLine;
@@ -183,7 +193,7 @@ codeunit 14135126 "lvnPerformanceDataExport"
                                                 ExpressionHeader.Type::Switch:
                                                     ExcelExport.WriteFormula('=IFS(' + TranslateColSwitch(TranslateColFormula(ExpressionEngine.GetFormulaFromLines(ExpressionHeader), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount, Buffer, RowIndexLookup), ExpressionHeader, DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount, Buffer, RowIndexLookup) + ')');
                                                 ExpressionHeader.Type::Iif:
-                                                    ExcelExport.WriteFormula(StrSubstNo('=IF(%1,%2,%3)',
+                                                    ExcelExport.WriteFormula(StrSubstNo(TernaryExpressionTxt,
                                                         TranslateColPredicate(ExpressionHeader, DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount, Buffer, RowIndexLookup),
                                                         TranslateColFormula(GetFormulaFromIif(ExpressionHeader, true), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount, Buffer, RowIndexLookup),
                                                         TranslateColFormula(GetFormulaFromIif(ExpressionHeader, false), DataRowStartIdx, DataColStartIdx, BandIdx, ColumnCount, Buffer, RowIndexLookup)))

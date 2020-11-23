@@ -104,5 +104,5 @@ table 14135167 "lvnPerformanceRowSchemaLine"
 
     var
         RenameIsNotAllowedErr: Label 'It is not allowed to rename Performance Row Schema Lines. Delete and create new instead.';
-        ShouldBePositiveErr: Label '%1 should be positive number';
+        ShouldBePositiveErr: Label '%1 should be positive number', Comment = '%1 - Line No. Field Caption';
 }

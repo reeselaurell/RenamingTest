@@ -99,6 +99,7 @@ table 14135172 "lvnSystemCalculationFilter"
 
     var
         InvalidOperationErr: Label 'System Calculation Filter table is not designed to store values';
+        ClosingDateFilterTxt: Label '&<>%1', Comment = '%1 - Closing Date for Accounting Period Starting Date';
 
     procedure GetGLPostingDateFilter() DateFilter: Text
     var
@@ -113,7 +114,7 @@ table 14135172 "lvnSystemCalculationFilter"
             AccountingPeriod.SetRange(Closed, true);
             if AccountingPeriod.FindSet() then
                 repeat
-                    DateFilter += StrSubstNo('&<>%1', ClosingDate(AccountingPeriod."Starting Date"));
+                    DateFilter += StrSubstNo(ClosingDateFilterTxt, ClosingDate(AccountingPeriod."Starting Date"));
                 until AccountingPeriod.Next() = 0;
         end;
     end;

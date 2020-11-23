@@ -54,7 +54,7 @@ page 14135207 "lvnCalculationUnitCard"
 
                         field("Invert Sign"; Rec."Invert Sign")
                         {
-                            Caption = 'Invert Sign';
+                            ApplicationArea = All;
                         }
                     }
                 }

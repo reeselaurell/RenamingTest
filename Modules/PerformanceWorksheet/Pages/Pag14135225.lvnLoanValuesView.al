@@ -92,7 +92,7 @@ page 14135225 "lvnLoanValuesView"
     {
         area(Processing)
         {
-            action(ExcelExport)
+            action(XlsExport)
             {
                 ApplicationArea = All;
                 Caption = 'Excel Export';
@@ -100,6 +100,7 @@ page 14135225 "lvnLoanValuesView"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -114,6 +115,7 @@ page 14135225 "lvnLoanValuesView"
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -128,6 +130,7 @@ page 14135225 "lvnLoanValuesView"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Promoted = true;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -363,7 +366,7 @@ page 14135225 "lvnLoanValuesView"
             TempLoanLevelValueBuffer."Row No." := TempRowBuffer.Id;
             TempLoanLevelValueBuffer."Column No." := LoanLevelReportSchemaLine."Column No.";
             TempLoanLevelValueBuffer."Number Format Code" := LoanLevelReportSchemaLine."Number Format Code";
-            TempLoanLevelValueBuffer."Raw Value" := CalculatedValue;
+            TempLoanLevelValueBuffer."Raw Value" := CopyStr(CalculatedValue, 1, MaxStrLen(TempLoanLevelValueBuffer."Raw Value"));
             if Evaluate(TempLoanLevelValueBuffer."Numeric Value", CalculatedValue) then
                 TempLoanLevelValueBuffer."Value Type" := TempLoanLevelValueBuffer."Value Type"::Number
             else

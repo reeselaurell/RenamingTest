@@ -9,9 +9,14 @@ codeunit 14135124 "lvnPerformanceMgmt"
         CircularReferenceErr: Label 'Circular reference detected!';
         BandCountTxt: Label '$BANDCOUNT';
         ColCountTxt: Label '$COLCOUNT';
-        FieldFormatTxt: Label 'b%1c%2';
-        UnsupportedExpressionTypeErr: Label 'Unsupported expression type %1';
-        UnsupportedBandTypeErr: Label 'Band type is not supported: %1';
+        FieldFormatTxt: Label 'b%1c%2', Comment = '%1 - Band Index; %2 - Column Index';
+        FilterRangeTxt: Label '%1..%2', Comment = '%1 - Filter Range Start; %2 - Filter Range End';
+        PixelSizeTxt: Label '%1px', Comment = '%1 - CSS Size in pixels';
+        DateOffsetMonthTxt: Label '<%1M>', Comment = '%1 - Month Count to Add or Substract';
+        DateOffsetQuarterTxt: Label '<%1Q>', Comment = '%1 - Quarter Count to Add or Substract';
+        DateOffsetYearTxt: Label '<%1Y>', Comment = '%1 - Year Count to Add or Substract';
+        UnsupportedExpressionTypeErr: Label 'Unsupported expression type %1', Comment = '%1 - Type of Expression';
+        UnsupportedBandTypeErr: Label 'Band type is not supported: %1', Comment = '%1 - Type of Band';
 
     procedure GetFieldFormat(): Text
     begin
@@ -431,7 +436,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                         CssClass.Add('text-decoration', 'none');
                 end;
                 if Style."Font Size" > 0 then
-                    CssClass.Add('font-size', StrSubstNo('%1px', Style."Font Size"));
+                    CssClass.Add('font-size', StrSubstNo(PixelSizeTxt, Style."Font Size"));
                 if Style."Font Color" <> '' then
                     CssClass.Add('color', Style."Font Color");
                 if Style."Background Color" <> '' then
@@ -509,7 +514,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
     begin
         Clear(TempSystemCalcFilter);
         TempSystemCalcFilter := BaseFilter;
-        TempSystemCalcFilter."Date Filter" := StrSubstNo('%1..%2', BandLineInfo."Date From", BandLineInfo."Date To");
+        TempSystemCalcFilter."Date Filter" := StrSubstNo(FilterRangeTxt, BandLineInfo."Date From", BandLineInfo."Date To");
     end;
 
     procedure ApplyDimensionBandFilter(
@@ -586,7 +591,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                                 begin
                                     StartDate := CalcDate('<-CM>', BaseFilter."As Of Date");
                                     if BandLine."Period Offset" <> 0 then
-                                        StartDate := CalcDate(StrSubstNo('<%1M>', BandLine."Period Offset"), StartDate);
+                                        StartDate := CalcDate(StrSubstNo(DateOffsetMonthTxt, BandLine."Period Offset"), StartDate);
                                     EndDate := CalcDate('<CM>', StartDate);
                                     BandInfoBuffer."Date From" := StartDate;
                                     BandInfoBuffer."Date To" := EndDate;
@@ -597,7 +602,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                                 begin
                                     StartDate := CalcDate('<-CQ>', BaseFilter."As Of Date");
                                     if BandLine."Period Offset" <> 0 then begin
-                                        StartDate := CalcDate(StrSubstNo('<%1Q>', BandLine."Period Offset"), StartDate);
+                                        StartDate := CalcDate(StrSubstNo(DateOffsetQuarterTxt, BandLine."Period Offset"), StartDate);
                                         if Format(BandLine."Period Length Formula") = '' then
                                             EndDate := CalcDate('<CQ>', BaseFilter."As Of Date")
                                         else
@@ -616,7 +621,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                                 begin
                                     StartDate := CalcDate('<-CY>', BaseFilter."As Of Date");
                                     if BandLine."Period Offset" <> 0 then begin
-                                        StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
+                                        StartDate := CalcDate(StrSubstNo(DateOffsetYearTxt, BandLine."Period Offset"), StartDate);
                                         EndDate := CalcDate('<CY>', StartDate);
                                     end else
                                         EndDate := BaseFilter."As Of Date";
@@ -634,7 +639,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                                     StartDate := AccountingPeriod."Starting Date";
                                     if BandLine."Period Offset" <> 0 then begin
                                         Multiplier := 3 * BandLine."Period Offset";
-                                        StartDate := CalcDate(StrSubstNo('<%1M>', Multiplier), StartDate);
+                                        StartDate := CalcDate(StrSubstNo(DateOffsetMonthTxt, Multiplier), StartDate);
                                         if Format(BandLine."Period Length Formula") = '' then begin
                                             AccountingPeriod.SetFilter("Starting Date", '>%1', StartDate);
                                             AccountingPeriod.FindFirst();
@@ -667,7 +672,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                                         StartDate := AccountingPeriod."Starting Date";
                                     end;
                                     if BandLine."Period Offset" <> 0 then begin
-                                        StartDate := CalcDate(StrSubstNo('<%1Y>', BandLine."Period Offset"), StartDate);
+                                        StartDate := CalcDate(StrSubstNo(DateOffsetYearTxt, BandLine."Period Offset"), StartDate);
                                         if Format(BandLine."Period Length Formula") = '' then begin
                                             EndDate := CalcDate('<-1Y>', BaseFilter."As Of Date");
                                             EndDate := CalcDate('<CM>', EndDate);
@@ -691,8 +696,8 @@ codeunit 14135124 "lvnPerformanceMgmt"
                                         EndDate := CalcDate(BandLine."Period Length Formula", EndDate);
                                     EndDate := CalcDate('<CM>', EndDate);
                                     if BandLine."Header Description" <> '' then
-                                        BandInfoBuffer."Header Description" := BandLine."Header Description" + ' ';
-                                    BandInfoBuffer."Header Description" := BandInfoBuffer."Header Description" + Format(EndDate, 0, '<Month Text>/<Year4>');
+                                        BandInfoBuffer."Header Description" := CopyStr(BandLine."Header Description" + ' ', 1, MaxStrLen(BandInfoBuffer."Header Description"));
+                                    BandInfoBuffer."Header Description" := CopyStr(BandInfoBuffer."Header Description" + Format(EndDate, 0, '<Month Text>/<Year4>'), 1, MaxStrLen(BandInfoBuffer."Header Description"));
                                     BandInfoBuffer."Date From" := StartDate;
                                     BandInfoBuffer."Date To" := EndDate;
                                 end;
@@ -805,7 +810,7 @@ codeunit 14135124 "lvnPerformanceMgmt"
                             ExpressionBuffer.Number := DimPerfBandSchemaLine."Band no.";
                             ExpressionBuffer.Type := 'Decimal';
                             ExpressionBuffer.Insert();
-                        until PeriodPerfBandSchemaLine.Next() = 0;
+                        until DimPerfBandSchemaLine.Next() = 0;
                 end;
         end;
     end;
